@@ -33,7 +33,7 @@ export class ExamesService {
         params = params.set('global', filtro.global);
       }
 
-    return this.http.get<IApiResponse<Exame>>(`${this.host}`, { params });
+    return this.http.get<IApiResponse<Exame>>(`${this.host}/filter`, { params });
 
   }
 
