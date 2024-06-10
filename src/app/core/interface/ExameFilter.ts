@@ -1,5 +1,5 @@
 export interface ExameFilter {
-    description?: string,
+    global?: string,
     pagina: number,
     ordenamento: string,
     itensPorPagina: number

@@ -5,7 +5,7 @@
 <div class="container">
 
   <div style="display:inline;">
-    <p style="margin-top: 20px; font-size: 30px;">Exames sss</p>
+    <p style="margin-top: 20px; font-size: 30px;">Exames</p>
   </div>
 
   <p style="margin-top: 20px; margin-bottom: 20px; font-size: 0.85rem;"> Na ku-DONDZA, trabalhamos durro para obter o
@@ -28,7 +28,8 @@
 
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
-          <input pInputText type="text" style="width: 300px;" placeholder="Pesquisa" />
+          <input pInputText [(ngModel)]="filtro.global" (ngModelChange)="findAll()" type="text" style="width: 300px;"
+            placeholder="Pesquisa" />
         </span>
 
         <button style="margin-left: 10px; background-color: #3734ed; border: none;" type="button" pButton pRipple

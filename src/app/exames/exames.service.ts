@@ -25,14 +25,16 @@ export class ExamesService {
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
 
-    //if (filtro.name) {
-    //  params = params.set('name', filtro.name);
-    //}
-
-    console.log(params);
-    console.log("Passando pelo metodo listar");
+      //if (filtro.sort) {
+      //  params = params.set('employeeOrderBy', filter.sort);
+      //}
+  
+      if (filtro.global) {
+        params = params.set('global', filtro.global);
+      }
 
     return this.http.get<IApiResponse<Exame>>(`${this.host}`, { params });
+
   }
 
   save(subject: string, description: string, level: string, file: File): Observable<Exame> {
