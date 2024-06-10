@@ -1,0 +1,42 @@
+<nav>
+  <div class="container">
+    <h2 class="logo" style="color: white;">Ku-DONDZA</h2>
+
+    <!--
+      <div class="search-bar">
+          <i class="uil uil-search"></i>
+          <input
+          type="search"
+          placeholder="Search"
+          />
+      </div>
+      -->
+    <span>
+      <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
+        <span>Home</span>
+      </a>
+      <a class="menu-item" [class.active]="isActive('/exames')" routerLink="/exames">
+        <span>Exames</span>
+      </a>
+      <a class="menu-item" routerLink="/exames">
+        <span>Instituições</span>
+      </a>
+      <a class="menu-item" routerLink="/exames">
+        <span>Cursos</span>
+      </a>
+      <a class="menu-item" routerLink="/exames">
+        <span>Explicadores</span>
+      </a>
+    </span>
+
+    <div class="create">
+      <div class="profile-pic">
+
+        <a href="javascript:;" [routerLink]="['/user/profile']">
+          <img src="{{imagePath}}/profile-11.jpg" alt="pic 1" />
+        </a>
+
+      </div>
+    </div>
+  </div>
+</nav>

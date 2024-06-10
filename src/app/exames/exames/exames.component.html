@@ -1,0 +1,129 @@
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+
+  <div style="display:inline;">
+    <p style="margin-top: 20px; font-size: 30px;">Exames</p>
+  </div>
+
+  <p style="margin-top: 20px; margin-bottom: 20px; font-size: 0.85rem;"> Na ku-DONDZA, trabalhamos durro para obter o
+    melhor resultado. Um mundo mais connectado, incluso e sustentavel. <a style="color: #1c80cf;" href="">Saiba mais</a>
+  </p>
+
+  <p-table [value]="exames" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
+    selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[2, 5, 10, 25, 50, 100]" [lazy]="true"
+    currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalExames}}" [showCurrentPageReport]="true"
+    styleClass="p-datatable-sm" #tabela>
+
+    <ng-template pTemplate="caption">
+      <div class="flex">
+
+
+        <button class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
+
+        <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
+          {{totalRegistros}} dos {{totalExames}}</p>
+
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" style="width: 300px;" placeholder="Pesquisa" />
+        </span>
+
+        <button style="margin-left: 10px; background-color: #3734ed; border: none;" type="button" pButton pRipple
+          icon="pi pi-filter"></button>
+
+
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-exame>
+      <tr>
+        <td>
+          <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.description }}</p>
+          <p style="font-size: 0.85rem;"> {{exame.subject}}</p>
+          <p style="font-size: 0.85rem; color: #1c80cf "> {{exame.level}} </p>
+        </td>
+        <td>
+          <p style="font-size: 0.85rem;">{{ exame.date | date:'yyyy' }}</p>
+
+        </td>
+        <td>
+          <button pButton type="button" icon="pi pi-download"
+            style="height: 30px; background-color: #3734ed; border: none;"></button>
+          <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
+        </td>
+        <td style="width: 150px;">
+          <span class="p-buttonset mr-auto">
+            <button pButton pTooltip="Edit"
+              (click)="onEdit(exame.id, exame.subject, exame.description, exame.level, file)" tooltipPosition="top"
+              type="button" icon="pi pi-pencil" style="height: 30px; background-color: #3734ed;"></button>
+            <button pButton (click)="confirmarExclusao(exame)" pTooltip="Delete" tooltipPosition="top" type="button"
+              icon="pi pi-trash"
+              style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
+          </span>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="10">
+          <span *ngIf="showLoading" style="color:#1c80cf;">Carregando... </span>
+          <span *ngIf="!showLoading">Nenhum exame encontrado </span>
+          <i *ngIf="showLoading" class="pi pi-spin pi-spinner"></i>
+          <a href="javascript:;">
+            <i *ngIf="!showLoading" style="color: #1c80cf;" (click)="findAll(0)" pTooltip="Refresh"
+              class="pi pi-refresh"></i>
+          </a>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog header="Exame {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
+  [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
+  <form enctype="multipart/form-data">
+
+    <div class="col-12 p-fluid">
+      <label>Descrição</label>
+      <input pInputText type="text" name="description" ngModel #description="ngModel" required minlength="1"
+        [(ngModel)]="exame.description">
+    </div>
+
+    <div class="col-12 p-fluid">
+      <label>Disciplina</label>
+      <input pInputText type="text" name="subject" ngModel #subject="ngModel" required minlength="1"
+        [(ngModel)]="exame.subject">
+    </div>
+
+    <div class="col-12 p-fluid">
+      <label>Nivel</label>
+      <input pInputText type="text" name="level" ngModel #level="ngModel" required minlength="1"
+        [(ngModel)]="exame.level">
+    </div>
+
+
+    <div class="col-12 p-fluid">
+      <fieldset>
+        <div class="form-group">
+          <div>
+            <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf"
+              class="form-control" />
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-12 p-fluid" style="margin-top: 15px;">
+      <button (click)="save()" pButton type="button" label="Salvar" style="background-color: #3734ed; border: none;">
+        <span *ngIf="showLoading">Loading...</span>
+      </button>
+    </div>
+  </form>
+</p-dialog>

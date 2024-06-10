@@ -1,0 +1,145 @@
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css" />
+
+<main>
+  <div class="container">
+    <div class="left">
+      <div class="sidebar">
+        <a class="menu-item active">
+          <span><i class="uil uil-home"></i></span>
+          <h3>Home</h3>
+        </a>
+
+        <a class="menu-item ">
+          <span><i class="uil uil-setting"></i></span>
+          <h3>Users</h3>
+        </a>
+      </div>
+    </div>
+
+
+
+    <div class="middle">
+
+      <form class="create-post" #newPostForm="ngForm" (ngSubmit)="onAddPostUser(newPostForm)">
+        <div class="profile-pic">
+          <img src="{{imagePath}}/profile-1.jpg" alt="">
+        </div>
+        <input type="text" placeholder="Start the post" id="create-post" name="text" [(ngModel)]="post.text">
+        <div class="">
+          <input type="file" id="upload-button" multiple accept="**" name="postImage"
+            (change)="onPostImageChange($event, $event)" />
+          <label for="upload-button">
+            <i></i>file
+          </label>
+        </div>
+
+      </form>
+
+      <div class="feeds">
+        <div class="feed" *ngFor="let feed of feeds">
+          <div class="user" href="javascript:;">
+            <div class="profile-pic">
+              <img src="{{imagePath}}/profile-1.jpg" alt="">
+            </div>
+            <div class="info">
+              <a style="color:hsl(252, 30%, 10%);" href="javascript:;">
+                <h3>fabio condo</h3>
+              </a>
+              <small>fabio condo, {{feed.date | date:'dd/MM/y'}} </small>
+            </div>
+            <SPAN class="edit"><i class="uil uil-ellipsis-h"></i></SPAN>
+          </div>
+          <div class="" style="margin-top: 1em;">{{feed.text}}</div>
+
+          <div class="photo">
+            <img src="{{feed.imageUrl}}" alt="">
+          </div>
+
+          <div class="action-button">
+            <div class="interaction-button">
+              <a><i class="uil uil-thumbs-up"></i></a>
+              <a><i style="color: hsl(252, 75%, 60%)" class="uil uil-thumbs-up"></i></a>
+              <a><span><i class="uil uil-comment"></i></span></a>
+              <span><i class="uil uil-share"></i></span>
+            </div>
+            <div class="bookmark">
+              <span><i class="uil uil-bookmark"></i></span>
+            </div>
+          </div>
+
+          <div class="liked-by">
+          </div>
+
+          <form class="create-post" #newCommentForm="ngForm">
+            <div>
+              <input type="text" placeholder="Add your comment here" ngModel name="comment">
+            </div>
+          </form>
+
+          <div class="comments text-muted">No comments</div>
+
+          <div>
+            <a class="text-muted" href="javascript:;" (click)="onSelectPost(feed)">View all comments</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="right">
+
+      <div class="messages">
+        <h4>Requests</h4>
+        <div class="request">
+          <div class="info">
+            <div class="profile-pic">
+              <a href="javascript:;"><img src="{{imagePath}}/profile-1.jpg"></a>
+            </div>
+            <div>
+              <a>
+                <h5>fabio condo</h5>
+              </a>
+              <p class="text-muted">8 mutual friends</p>
+            </div>
+          </div>
+          <div class="action">
+            <button class="btn btn-primary">Accept</button>
+            <button class="btn">Decline</button>
+          </div>
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="messages">
+        <div class="heading">
+          <h4>Friends</h4>
+        </div>
+
+        <div class="search-bar">
+          <span><i class="uil uil-search"></i></span>
+          <input type="search" placeholder="Search Friends" id="message-search">
+        </div>
+
+        <div class="message">
+        </div>
+
+      </div>
+
+      <br>
+
+
+      <div class="messages">
+        <div class="heading">
+          <h4>Users</h4>
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</main>
