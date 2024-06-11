@@ -22,6 +22,7 @@ export class ExamesComponent implements OnInit {
   file!: File;
   totalExames: number = 0;
 
+  isAdmin: boolean = false;
 
 
   constructor(
@@ -183,6 +184,30 @@ export class ExamesComponent implements OnInit {
         return 'info';
     }
     return '';
+  }
+
+  // Depois usar
+  incrementDownloadCount(currentCount: number): number {
+    return currentCount + 1;
+  }
+  
+  download(id: number, filename: string): void {
+    this.examesService.download(id, filename).subscribe((data: Blob) => {
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+
+      // Criar um link temporário para o Blob
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+
+      // Definir o atributo "download" com o nome do arquivo
+      link.download = filename;
+
+      // Simular um clique no link para iniciar o download
+      link.click();
+
+      // Limpar o link após o download iniciar
+      window.URL.revokeObjectURL(link.href);
+    });
   }
 
   private sendErrorNotification(message: string): void {

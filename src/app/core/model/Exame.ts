@@ -3,6 +3,7 @@ export class Exame {
     description!: string;
     level!: string;
     subject!: string;
+    fileName!: string;
     urlFile!: string;
     date!: Date;
     totalDownloadNumber!: string;

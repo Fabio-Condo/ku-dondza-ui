@@ -21,7 +21,7 @@
       <div class="flex">
 
 
-        <button class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
+        <button *ngIf="!isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
 
         <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
           {{totalRegistros}} dos {{totalExames}}</p>
@@ -55,11 +55,11 @@
 
         </td>
         <td>
-          <button pButton type="button" icon="pi pi-download"
+          <button pButton (click)="download(exame.id, exame.fileName)" type="button" icon="pi pi-download"
             style="height: 30px; background-color: #3734ed; border: none;"></button>
           <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
         </td>
-        <td style="width: 150px;">
+        <td *ngIf="!isAdmin" style="width: 150px;">
           <span class="p-buttonset mr-auto">
             <button pButton pTooltip="Edit"
               (click)="onEdit(exame.id, exame.subject, exame.description, exame.level, file)" tooltipPosition="top"
