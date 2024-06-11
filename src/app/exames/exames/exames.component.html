@@ -8,6 +8,10 @@
     <p style="margin-top: 20px; font-size: 30px;">Exames</p>
   </div>
 
+  <p *ngIf="showLoadingDownload" style="background-color: green; color: white; padding: 10px; text-align: center; margin-top: 20px;">
+    Baixando arquivo...
+  </p>
+
   <p style="margin-top: 20px; font-size: 0.85rem;">Explore nossa variedade de exames de admissão, abrangendo uma ampla
     gama de disciplinas e níveis educacionais. </p>
   <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na ku-DONDZA, trabalhamos durro para obter o
@@ -54,12 +58,13 @@
         </td>
         <td>
           <p style="font-size: 0.85rem;">{{ exame.date | date:'yyyy' }}</p>
-
         </td>
+        
         <td>
           <button pButton (click)="download(exame.id, exame.fileName)" type="button" icon="pi pi-download"
             style="height: 30px; background-color: #3734ed; border: none;"></button>
           <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
+
         </td>
         <td *ngIf="!isAdmin" style="width: 150px;">
           <span class="p-buttonset mr-auto">

@@ -24,6 +24,8 @@ export class ExamesComponent implements OnInit {
 
   isAdmin: boolean = false;
 
+  showLoadingDownload: boolean = false;
+
   niveis = [
     { label: 'Superior', value: 'Ensino' },
     { label: 'Técnico', value: 'Técnico' },
@@ -210,8 +212,9 @@ export class ExamesComponent implements OnInit {
   incrementDownloadCount(currentCount: number): number {
     return currentCount + 1;
   }
-  
+
   download(id: number, filename: string): void {
+    this.showLoadingDownload = true
     this.examesService.download(id, filename).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
@@ -227,6 +230,7 @@ export class ExamesComponent implements OnInit {
 
       // Limpar o link após o download iniciar
       window.URL.revokeObjectURL(link.href);
+      this.showLoadingDownload = false;
     });
   }
 
