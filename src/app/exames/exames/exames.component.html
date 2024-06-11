@@ -122,8 +122,7 @@
     </div>
 
     <div class="col-12 p-fluid" style="margin-top: 15px;">
-      <button (click)="save()" pButton type="button" label="Salvar" style="background-color: #3734ed; border: none;">
-        <span *ngIf="showLoading">Loading...</span>
+      <button (click)="save()" pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}" style="background-color: #3734ed; border: none;">
       </button>
     </div>
   </form>
