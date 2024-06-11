@@ -22,7 +22,25 @@ export class ExamesComponent implements OnInit {
   file!: File;
   totalExames: number = 0;
 
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
+
+  niveis = [
+    { label: 'Superior', value: 'Ensino' },
+    { label: 'Técnico', value: 'Técnico' },
+    { label: 'Geral', value: 'Geral' },
+  ];
+
+  subjects = [
+    { label: 'Matemática', value: 'Matemática' },
+    { label: 'Português', value: 'Português' },
+    { label: 'Fisica', value: 'Fisica' },
+    { label: 'Quimica', value: 'Quimica' },
+    { label: 'Biológia', value: 'Biológia' },
+    { label: 'Inglês', value: 'Inglês' },
+    { label: 'Francês', value: 'Francês' },
+    { label: 'História', value: 'História' },
+    { label: 'Geográfia', value: 'Geográfia' },
+  ];
 
 
   constructor(
@@ -60,6 +78,7 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
     this.examesService.update(this.exame.id, this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
       response => {
+        this.exame = response
         this.messageService.add({ severity: 'success', detail: 'Exame actualizado com sucesso!' });
         this.showLoading = false;
         this.findAll();
@@ -75,6 +94,7 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
     this.examesService.save(this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
       response => {
+        this.exame = response
         this.messageService.add({ severity: 'success', detail: 'Exame salvo com sucesso!' });
         this.showLoading = false;
         this.findAll();
