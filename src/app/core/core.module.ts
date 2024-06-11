@@ -12,11 +12,13 @@ import { ErrorHandlerService } from './error-handler.service';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { RouterModule } from '@angular/router';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
   declarations: [
     NavbarComponent,
+    FooterComponent,
     PaginaNaoEncontradaComponent,
     NaoAutorizadoComponent,
    /* , */
@@ -29,6 +31,7 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     NavbarComponent,
+    FooterComponent,
     ToastModule,
     ConfirmDialogModule
   ],
