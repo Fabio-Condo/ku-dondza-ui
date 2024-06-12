@@ -22,14 +22,14 @@ export class ExamesComponent implements OnInit {
   file!: File;
   totalExames: number = 0;
 
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
   showLoadingDownload: boolean = false;
 
   niveis = [
-    { label: 'Superior', value: 'Ensino' },
-    { label: 'Técnico', value: 'Técnico' },
-    { label: 'Geral', value: 'Geral' },
+    { label: 'Ensino Superior', value: 'Ensino Superior' },
+    { label: 'Ensino Técnico', value: 'Ensino Técnico' },
+    { label: 'Ensino Geral', value: 'Ensino Geral' },
   ];
 
   subjects = [
@@ -42,6 +42,30 @@ export class ExamesComponent implements OnInit {
     { label: 'Francês', value: 'Francês' },
     { label: 'História', value: 'História' },
     { label: 'Geográfia', value: 'Geográfia' },
+  ];
+
+  institutosSuperiores = [
+    { label: 'Universidade Eduardo Mondlane (UEM)', value: 'Universidade Eduardo Mondlane (UEM)' },
+    { label: 'Universidade Pedagógica (UP)', value: 'Universidade Pedagógica (UP)' },
+    { label: 'Universidade Joaquim Chissano (UJC)', value: 'Universidade Joaquim Chissano (UJC)' },
+    { label: 'Universidade Lúrio (UniLúrio)', value: 'Universidade Lúrio (UniLúrio)' },
+    { label: 'Universidade Zambeze (UniZambeze)', value: 'Universidade Zambeze (UniZambeze)' },
+    { label: 'Universidade Rovuma (UniRovuma)', value: 'Universidade Rovuma (UniRovuma)' },
+    { label: 'Instituto Superior de Ciências de Saúde (ISCISA)', value: 'Instituto Superior de Ciências de Saúde (ISCISA)' },
+    { label: 'Academia de Ciências Policiais (ACIPOL)', value: 'Academia de Ciências Policiais (ACIPOL)' },
+    { label: 'Academia Militar "Marechal Samora Machel"', value: 'Academia Militar "Marechal Samora Machel"' },  
+    { label: 'Escola Superior de Ciências Nauticas', value: 'Escola Superior de Ciências Nauticas' },    
+  ];
+
+  institutosTecnicos = [
+    { label: 'Instituto Comercial de Maputo (ICM)', value: 'Instituto Comercial de Maputo (ICM)' },
+    { label: 'Instituto Industrial de Maputo (IIM)', value: 'Instituto Industrial de Maputo (IIM)' },
+    { label: 'Instituto de Ciências de Saúde de Infulene', value: 'Instituto de Ciências de Saúde de Infulene' },
+  ];
+
+  institutosDeEnsinoGeral = [
+    { label: '12ª Classe', value: '12 Classe' },
+    { label: '10ª Classe', value: '10 Classe' },
   ];
 
 
@@ -78,7 +102,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exame.id, this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
+    this.examesService.update(this.exame.id, this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
       response => {
         this.exame = response
         this.messageService.add({ severity: 'success', detail: 'Exame actualizado com sucesso!' });
@@ -94,7 +118,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
+    this.examesService.save(this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
       response => {
         this.exame = response
         this.messageService.add({ severity: 'success', detail: 'Exame salvo com sucesso!' });
@@ -170,6 +194,7 @@ export class ExamesComponent implements OnInit {
 
   onAddNewExame(): void {
     this.exame = new Exame();
+    //this.file = undefined;
     this.displayModalSave = true;
   }
 
@@ -179,8 +204,9 @@ export class ExamesComponent implements OnInit {
     this.findAll(pagina);
   }
 
-  public onEdit(id: number, subject: string, description: string, level: string, file: File): void {
+  public onEdit(id: number, institution: string, subject: string, description: string, level: string, file: File): void {
     this.exame.id = id
+    this.exame.institution = institution;
     this.exame.subject = subject;
     this.exame.description = description;
     this.exame.level = level;
@@ -231,6 +257,7 @@ export class ExamesComponent implements OnInit {
       // Limpar o link após o download iniciar
       window.URL.revokeObjectURL(link.href);
       this.showLoadingDownload = false;
+      this.findAll()
     });
   }
 

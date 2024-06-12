@@ -37,8 +37,9 @@ export class ExamesService {
 
   }
 
-  save(subject: string, description: string, level: string, file: File): Observable<Exame> {
+  save(institution: string, subject: string, description: string, level: string, file: File): Observable<Exame> {
     const formData = new FormData();
+    formData.append('institution', institution);
     formData.append('subject', subject);
     formData.append('description', description);
     formData.append('level', level);
@@ -46,9 +47,10 @@ export class ExamesService {
     return this.http.post<Exame>(`${this.host}`, formData);
   }
   
-  update(id: number, subject: string, description: string, level: string, file: File): Observable<Exame> {
+  update(id: number, institution: string, subject: string, description: string, level: string, file: File): Observable<Exame> {
     const formData = new FormData();
     formData.append('id', id.toString());
+    formData.append('institution', institution);
     formData.append('subject', subject);
     formData.append('description', description);
     formData.append('level', level);
