@@ -22,7 +22,7 @@ export class ExamesComponent implements OnInit {
   file!: File;
   totalExames: number = 0;
 
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
 
   showLoadingDownload: boolean = false;
 
