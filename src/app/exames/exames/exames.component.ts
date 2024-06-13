@@ -26,6 +26,8 @@ export class ExamesComponent implements OnInit {
 
   showLoadingDownload: boolean = false;
 
+  displayModalFilter: boolean = false;
+
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },
     { label: 'Ensino Técnico', value: 'Ensino Técnico' },
@@ -102,9 +104,10 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exame.id, this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
+    this.examesService.update(this.exame.id, this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.exame.date, this.file).subscribe(
       response => {
         this.exame = response
+        this.exame.date = new Date(this.exame.date);
         this.messageService.add({ severity: 'success', detail: 'Exame actualizado com sucesso!' });
         this.showLoading = false;
         this.findAll();
@@ -118,9 +121,10 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.file).subscribe(
+    this.examesService.save(this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.exame.date, this.file).subscribe(
       response => {
         this.exame = response
+        this.exame.date = new Date(this.exame.date);
         this.messageService.add({ severity: 'success', detail: 'Exame salvo com sucesso!' });
         this.showLoading = false;
         this.findAll();
@@ -198,19 +202,25 @@ export class ExamesComponent implements OnInit {
     this.displayModalSave = true;
   }
 
+  onFilter(): void {
+    this.displayModalFilter = true;
+  }
+
   aoMudarPagina(event: LazyLoadEvent) {
     const pagina = event!.first! / event!.rows!;
     this.filtro.itensPorPagina = event!.rows!;
     this.findAll(pagina);
   }
 
-  public onEdit(id: number, institution: string, subject: string, description: string, level: string, file: File): void {
+  public onEdit(id: number, institution: string, subject: string, description: string, level: string, date: Date, file: File): void {
     this.exame.id = id
     this.exame.institution = institution;
     this.exame.subject = subject;
     this.exame.description = description;
     this.exame.level = level;
-    this.file = file
+    this.file = file;
+    this.exame.date = date;
+    this.exame.date = new Date(this.exame.date);
     this.displayModalSave = true;
   }
 
@@ -259,6 +269,20 @@ export class ExamesComponent implements OnInit {
       this.showLoadingDownload = false;
       this.findAll()
     });
+  }
+
+  limparCampos() {
+    this.filtro.global = "";
+    this.filtro.subject = "";
+    this.filtro.description = "";
+    this.filtro.institution = "";
+    this.filtro.level = "";
+    this.filtro.beginDate = undefined;
+    this.filtro.endDate = undefined;
+    this.filtro.pagina = 0;
+    this.filtro.itensPorPagina = 10;
+    this.filtro.ordenamento = "id,desc"
+    this.findAll();
   }
 
   private sendErrorNotification(message: string): void {

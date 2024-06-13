@@ -39,8 +39,8 @@
             placeholder="Pesquisa" />
         </span>
 
-        <button style="margin-left: 10px; background-color: #3734ed; border: none;" type="button" pButton pRipple
-          icon="pi pi-filter"></button>
+        <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;" type="button"
+          pButton pRipple icon="pi pi-filter"></button>
 
 
       </div>
@@ -73,8 +73,9 @@
         <td *ngIf="!isAdmin" style="width: 150px;">
           <span class="p-buttonset mr-auto">
             <button pButton pTooltip="Edit"
-              (click)="onEdit(exame.id, exame.institution, exame.subject, exame.description, exame.level, file)" tooltipPosition="top"
-              type="button" icon="pi pi-pencil" style="height: 30px; background-color: #3734ed;"></button>
+              (click)="onEdit(exame.id, exame.institution, exame.subject, exame.description, exame.level, exame.date, file)"
+              tooltipPosition="top" type="button" icon="pi pi-pencil"
+              style="height: 30px; background-color: #3734ed;"></button>
             <button pButton (click)="confirmarExclusao(exame)" pTooltip="Delete" tooltipPosition="top" type="button"
               icon="pi pi-trash"
               style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
@@ -110,26 +111,33 @@
 
     <div *ngIf="exame.level == 'Ensino Superior'" class="col-12 p-fluid">
       <label>Institutição</label>
-      <p-dropdown placeholder="Selecione" [options]="institutosSuperiores" [(ngModel)]="exame.institution" name="institution"
-        #institution="ngModel"></p-dropdown>
+      <p-dropdown placeholder="Selecione" [options]="institutosSuperiores" [(ngModel)]="exame.institution"
+        name="institution" #institution="ngModel"></p-dropdown>
     </div>
 
     <div *ngIf="exame.level == 'Ensino Técnico'" class="col-12 p-fluid">
       <label>Institutição</label>
-      <p-dropdown placeholder="Selecione" [options]="institutosTecnicos" [(ngModel)]="exame.institution" name="institution"
-        #institution="ngModel"></p-dropdown>
+      <p-dropdown placeholder="Selecione" [options]="institutosTecnicos" [(ngModel)]="exame.institution"
+        name="institution" #institution="ngModel"></p-dropdown>
     </div>
 
     <div *ngIf="exame.level == 'Ensino Geral'" class="col-12 p-fluid">
       <label>Institutição</label>
-      <p-dropdown placeholder="Selecione" [options]="institutosDeEnsinoGeral" [(ngModel)]="exame.institution" name="institution"
-        #institution="ngModel"></p-dropdown>
+      <p-dropdown placeholder="Selecione" [options]="institutosDeEnsinoGeral" [(ngModel)]="exame.institution"
+        name="institution" #institution="ngModel"></p-dropdown>
     </div>
 
     <div class="col-12 p-fluid">
       <label>Disciplina</label>
       <p-dropdown placeholder="Selecione" [options]="subjects" [(ngModel)]="exame.subject" name="subject"
         #subject="ngModel"></p-dropdown>
+    </div>
+
+    <div class="col-12 md-12 p-fluid">
+      <label>Data</label>
+      <p-calendar name="date" view="year" dateFormat="yy" placeholder="Ex: 2024" [inputStyle]="{ 'width': '100px'}"
+        [showOnFocus]="false" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
+        [(ngModel)]="exame.date"></p-calendar>
     </div>
 
     <div class="col-12 p-fluid">
@@ -155,4 +163,69 @@
       </button>
     </div>
   </form>
+</p-dialog>
+
+
+<!--Filtrar-->
+<p-dialog [header]=" 'Filtros' " [(visible)]="displayModalFilter" [style]="{width: '33vw'}" [modal]="true">
+
+
+  <div class="col-12 p-fluid">
+    <label>Nivel</label>
+    <p-dropdown placeholder="Selecione" [options]="niveis" [(ngModel)]="filtro.level" name="level" #level="ngModel"
+      (onChange)="findAll()"></p-dropdown>
+  </div>
+
+  <div *ngIf="filtro.level == 'Ensino Superior'" class="col-12 p-fluid">
+    <label>Institutição</label>
+    <p-dropdown placeholder="Selecione" [options]="institutosSuperiores" [(ngModel)]="filtro.institution"
+      name="institution" #institution="ngModel" (onChange)="findAll()"></p-dropdown>
+  </div>
+
+  <div *ngIf="filtro.level == 'Ensino Técnico'" class="col-12 p-fluid">
+    <label>Institutição</label>
+    <p-dropdown placeholder="Selecione" [options]="institutosTecnicos" [(ngModel)]="filtro.institution"
+      name="institution" #institution="ngModel" (onChange)="findAll()"></p-dropdown>
+  </div>
+
+  <div *ngIf="filtro.level == 'Ensino Geral'" class="col-12 p-fluid">
+    <label>Institutição</label>
+    <p-dropdown placeholder="Selecione" [options]="institutosDeEnsinoGeral" [(ngModel)]="filtro.institution"
+      name="institution" #institution="ngModel" (onChange)="findAll()"></p-dropdown>
+  </div>
+
+
+  <div class="col-12 p-fluid">
+    <label>Disciplina</label>
+    <p-dropdown placeholder="Selecione" [options]="subjects" [(ngModel)]="filtro.subject" name="subject"
+      #subject="ngModel" (onChange)="findAll()"></p-dropdown>
+  </div>
+
+
+  <div class="col-12 p-fluid">
+    <label>Descrição</label>
+    <input pInputText type="text" name="description" ngModel #description="ngModel" minlength="1"
+      [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
+  </div>
+
+  <label class="col-12 p-fluid" style="margin-top: 5px;">Intervalo de datas</label>
+
+  <div class="col-12 p-fluid" style="display: flex; justify-content: space-between;">
+    <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="beginDate" [inline]="false"
+      [readonlyInput]="false" ngModel #beginDate="ngModel" [(ngModel)]="filtro.beginDate"
+      (ngModelChange)="findAll()"></p-calendar>
+
+    <span>até</span>
+
+    <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="endDate" [inline]="false"
+      [readonlyInput]="false" ngModel #endDate="ngModel" [(ngModel)]="filtro.endDate"
+      (ngModelChange)="findAll()"></p-calendar>
+
+  </div>
+
+  <div class="col-12 p-fluid" style="margin-top: 2%;">
+    <button pButton type="submit" (click)="limparCampos()" label="Reset" style="margin-top: 1%;"></button>
+  </div>
+
+
 </p-dialog>

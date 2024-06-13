@@ -17,6 +17,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
+import { CalendarModule } from 'primeng/calendar';
 
 
 
@@ -38,6 +39,7 @@ import { TagModule } from 'primeng/tag';
     SelectButtonModule,
     DialogModule,
     DividerModule,
+    CalendarModule,
 
     RouterModule,
     TagModule,
