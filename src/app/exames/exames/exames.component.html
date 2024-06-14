@@ -42,7 +42,6 @@
         <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;" type="button"
           pButton pRipple icon="pi pi-filter"></button>
 
-
       </div>
     </ng-template>
 
@@ -53,9 +52,9 @@
     <ng-template pTemplate="body" let-exame>
       <tr>
         <td>
-          <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.institution }}</p>
+          <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.institution.name }}</p>
+          <p style="font-size: 0.85rem;"> {{exame.institution.type}} </p>
           <p style="font-size: 0.85rem;"> {{exame.subject}}</p>
-          <p style="font-size: 0.85rem;"> {{exame.level}} </p>
         </td>
         <td>
           <p style="font-size: 0.85rem;">{{ exame.description }}</p>
@@ -73,7 +72,7 @@
         <td *ngIf="!isAdmin" style="width: 150px;">
           <span class="p-buttonset mr-auto">
             <button pButton pTooltip="Edit"
-              (click)="onEdit(exame.id, exame.institution, exame.subject, exame.description, exame.level, exame.date, file)"
+              (click)="onEdit(exame.id, exame.subject, exame.description, exame.date, exame.institution.id, file)"
               tooltipPosition="top" type="button" icon="pi pi-pencil"
               style="height: 30px; background-color: #3734ed;"></button>
             <button pButton (click)="confirmarExclusao(exame)" pTooltip="Delete" tooltipPosition="top" type="button"
@@ -104,27 +103,9 @@
   <form enctype="multipart/form-data">
 
     <div class="col-12 p-fluid">
-      <label>Nivel</label>
-      <p-dropdown placeholder="Selecione" [options]="niveis" [(ngModel)]="exame.level" name="level"
-        #level="ngModel"></p-dropdown>
-    </div>
-
-    <div *ngIf="exame.level == 'Ensino Superior'" class="col-12 p-fluid">
-      <label>Institutição</label>
-      <p-dropdown placeholder="Selecione" [options]="institutosSuperiores" [(ngModel)]="exame.institution"
-        name="institution" #institution="ngModel"></p-dropdown>
-    </div>
-
-    <div *ngIf="exame.level == 'Ensino Técnico'" class="col-12 p-fluid">
-      <label>Institutição</label>
-      <p-dropdown placeholder="Selecione" [options]="institutosTecnicos" [(ngModel)]="exame.institution"
-        name="institution" #institution="ngModel"></p-dropdown>
-    </div>
-
-    <div *ngIf="exame.level == 'Ensino Geral'" class="col-12 p-fluid">
-      <label>Institutição</label>
-      <p-dropdown placeholder="Selecione" [options]="institutosDeEnsinoGeral" [(ngModel)]="exame.institution"
-        name="institution" #institution="ngModel"></p-dropdown>
+      <label>Instituição</label>
+      <p-dropdown placeholder="Selecione" [options]="institutions" [(ngModel)]="exame.institution.id" name="institution"
+        #institution="ngModel"></p-dropdown>
     </div>
 
     <div class="col-12 p-fluid">

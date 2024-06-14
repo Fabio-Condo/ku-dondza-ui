@@ -25,10 +25,13 @@ export class InstitutionService {
 
   }
 
+  listarTodos(): Observable<IApiResponse<Institution>> {
+    return this.http.get<IApiResponse<Institution>>(`${this.host}/filter`, {});
+  }
+
   excluir(id: number): Observable<void> {
     return this.http.delete<void>(`${this.host}/${id}`, {});
   }
-
 
   buscarTotal(): Observable<number> {
     return this.http.get<number>(`${this.host}/total`, {});

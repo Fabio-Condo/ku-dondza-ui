@@ -6,6 +6,7 @@ import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
 
 @Component({
   selector: 'app-exames',
@@ -23,9 +24,10 @@ export class ExamesComponent implements OnInit {
   totalExames: number = 0;
   showLoadingDownload: boolean = false;
   displayModalFilter: boolean = false;
+  institutions: any[] = [];
 
-  isAdmin: boolean = true;
-  
+  isAdmin: boolean = false;
+
 
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },
@@ -72,12 +74,14 @@ export class ExamesComponent implements OnInit {
 
   constructor(
     private examesService: ExamesService,
+    private institutionService: InstitutionService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
     this.buscarTotal();
+    this.carregarInstituicoes();
     this.findAll(0);
   }
 
@@ -103,7 +107,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exame.id, this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.exame.date, this.file).subscribe(
+    this.examesService.update(this.exame.id, this.exame.subject, this.exame.description, this.exame.date, this.exame.institution.id, this.file).subscribe(
       response => {
         this.exame = response
         this.exame.date = new Date(this.exame.date);
@@ -120,7 +124,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exame.institution, this.exame.subject, this.exame.description, this.exame.level, this.exame.date, this.file).subscribe(
+    this.examesService.save(this.exame.subject, this.exame.description, this.exame.date, this.exame.institution.id, this.file).subscribe(
       response => {
         this.exame = response
         this.exame.date = new Date(this.exame.date);
@@ -181,6 +185,23 @@ export class ExamesComponent implements OnInit {
     });
   }
 
+  public carregarInstituicoes() {
+    return this.institutionService.listarTodos().subscribe(
+      dados => {
+        this.institutions = dados.content.map(dado => {
+          return {
+            label: dado.name,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
   buscarTotal() {
     this.showLoading = true;
     this.examesService.buscarTotal().subscribe(
@@ -211,12 +232,11 @@ export class ExamesComponent implements OnInit {
     this.findAll(pagina);
   }
 
-  public onEdit(id: number, institution: string, subject: string, description: string, level: string, date: Date, file: File): void {
+  public onEdit(id: number, subject: string, description: string, date: Date, institutionId: number, file: File): void {
     this.exame.id = id
-    this.exame.institution = institution;
+    this.exame.institution.id = institutionId;
     this.exame.subject = subject;
     this.exame.description = description;
-    this.exame.level = level;
     this.file = file;
     this.exame.date = date;
     this.exame.date = new Date(this.exame.date);
