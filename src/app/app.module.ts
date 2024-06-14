@@ -13,6 +13,8 @@ import { FeedsRoutingModule } from './feeds/feeds-routing.module';
 import { FeedsModule } from './feeds/feeds.module';
 import { ExamesRoutingModule } from './exames/exames-routing.module';
 import { ExamesModule } from './exames/exames.module';
+import { InstitutionsModule } from './institutions/institutions.module';
+import { InstitutionsRoutingModule } from './institutions/institutions-routing.module';
 
 @NgModule({
   declarations: [
@@ -25,11 +27,13 @@ import { ExamesModule } from './exames/exames.module';
     
     FeedsRoutingModule,
     ExamesRoutingModule,
+    InstitutionsRoutingModule,
     AppRoutingModule,
 
   
     FeedsModule,
     ExamesModule,
+    InstitutionsModule,
 
     CoreModule,
   ],

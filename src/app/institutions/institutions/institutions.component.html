@@ -1,0 +1,98 @@
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+
+    <div style="display:inline;">
+        <p style="margin-top: 20px; font-size: 30px;">Instituições de ensino</p>
+    </div>
+
+    <p *ngIf="showLoadingDownload"
+        style="background-color: rgb(44, 164, 44); color: white; padding: 10px; text-align: center; margin-top: 20px;">
+        Baixando arquivo...
+    </p>
+
+    <p style="margin-top: 20px; font-size: 0.85rem;">Explore as informações detalhadas sobre cada instituição, incluindo
+        endereço, cursos oferecidos e dados de contato. </p>
+    <p style="margin-bottom: 20px; font-size: 0.85rem;"> A ku-DONDZA visa facilitar sua busca pela instituição ideal que
+        atenda às suas necessidades educacionais. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
+    </p>
+
+    <p-table [value]="instutions" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
+        selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
+        currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalInstitutions}}" [showCurrentPageReport]="true"
+        styleClass="p-datatable-sm" #tabela>
+
+        <ng-template pTemplate="caption">
+            <div class="flex">
+
+
+                <button *ngIf="!isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
+
+                <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
+                    {{totalRegistros}} dos {{totalInstitutions}}</p>
+
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText [(ngModel)]="filtro.global" (ngModelChange)="findAll()" type="text"
+                        style="width: 300px;" placeholder="Pesquisa" />
+                </span>
+
+                <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;"
+                    type="button" pButton pRipple icon="pi pi-filter"></button>
+
+
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-institution>
+            <tr>
+                <td style="width: 250px;">
+                    <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }}</p>
+                    <p style="font-size: 0.85rem;"> privada </p>
+                    <p style="font-size: 0.85rem;  color: #1c80cf "> {{institution.type}}</p>
+                </td>
+                <td style="width: 800px;">
+                    <p style="font-size: 0.85rem;" class="texto-limitado">{{ institution.description }} </p> 
+                    <a href="{{ institution.website }}" target="_blank" style="color: #1c80cf; text-decoration: underline;">Saiba mais no website</a>
+                    <i class="pi pi-external-link" style="font-size: 0.85rem; margin-left: 5px; color: #1c80cf;"></i>
+                </td>
+
+                <td>
+                    <button pButton type="button" icon="pi pi-arrow-right"
+                      style="height: 30px; background-color: #3734ed; border: none;"></button>
+                  </td>
+
+                <td *ngIf="!isAdmin" style="width: 150px;">
+                    <span class="p-buttonset mr-auto">
+                        <button pButton pTooltip="Edit"
+                            tooltipPosition="top" type="button" icon="pi pi-pencil"
+                            style="height: 30px; background-color: #3734ed;"></button>
+                        <button pButton  pTooltip="Delete" tooltipPosition="top"
+                            type="button" icon="pi pi-trash"
+                            style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
+                    </span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="10">
+                    <span *ngIf="showLoading" style="color:#1c80cf;">Carregando... </span>
+                    <span *ngIf="!showLoading">Nenhuma instituição encontrada </span>
+                    <i *ngIf="showLoading" class="pi pi-spin pi-spinner"></i>
+                    <a href="javascript:;">
+                        <i *ngIf="!showLoading" style="color: #1c80cf;" (click)="findAll(0)" pTooltip="Refresh"
+                            class="pi pi-refresh"></i>
+                    </a>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>

@@ -21,12 +21,11 @@ export class ExamesComponent implements OnInit {
   displayModalSave: boolean = false;
   file!: File;
   totalExames: number = 0;
+  showLoadingDownload: boolean = false;
+  displayModalFilter: boolean = false;
 
   isAdmin: boolean = true;
-
-  showLoadingDownload: boolean = false;
-
-  displayModalFilter: boolean = false;
+  
 
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },

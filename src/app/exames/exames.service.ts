@@ -14,10 +14,6 @@ export class ExamesService {
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
-  //findAll(filtro: ExameFilter): Observable<IApiResponse<Exame>> {
-  //  return this.http.get<IApiResponse<Exame>>(`${this.host}`, {});
-  //}
-
   findAll(filtro: ExameFilter): Observable<IApiResponse<Exame>> {
 
     let params = new HttpParams()
