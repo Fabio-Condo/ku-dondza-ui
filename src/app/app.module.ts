@@ -15,6 +15,10 @@ import { ExamesRoutingModule } from './exames/exames-routing.module';
 import { ExamesModule } from './exames/exames.module';
 import { InstitutionsModule } from './institutions/institutions.module';
 import { InstitutionsRoutingModule } from './institutions/institutions-routing.module';
+import { CoursesRoutingModule } from './courses/courses-routing.module';
+import { CoursesModule } from './courses/courses.module';
+import { TeachersModule } from './teachers/teachers.module';
+import { TeachersRoutingModule } from './teachers/institutions-routing.module';
 
 @NgModule({
   declarations: [
@@ -28,12 +32,16 @@ import { InstitutionsRoutingModule } from './institutions/institutions-routing.m
     FeedsRoutingModule,
     ExamesRoutingModule,
     InstitutionsRoutingModule,
+    CoursesRoutingModule,
+    TeachersRoutingModule,
     AppRoutingModule,
 
   
     FeedsModule,
     ExamesModule,
     InstitutionsModule,
+    CoursesModule,
+    TeachersModule,
 
     CoreModule,
   ],

@@ -8,12 +8,7 @@
         <p style="margin-top: 20px; font-size: 30px;">Instituições de ensino</p>
     </div>
 
-    <p *ngIf="showLoadingDownload"
-        style="background-color: rgb(44, 164, 44); color: white; padding: 10px; text-align: center; margin-top: 20px;">
-        Baixando arquivo...
-    </p>
-
-    <p style="margin-top: 20px; font-size: 0.85rem;">Explore as informações detalhadas sobre cada instituição, incluindo
+    <p style="margin-top: 20px; font-size: 0.85rem;">Explore as informações detalhadas sobre cada instituição de Moçambique, incluindo
         endereço, cursos oferecidos e dados de contato. </p>
     <p style="margin-bottom: 20px; font-size: 0.85rem;"> A ku-DONDZA visa facilitar sua busca pela instituição ideal que
         atenda às suas necessidades educacionais. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
@@ -54,8 +49,12 @@
             <tr>
                 <td style="width: 250px;">
                     <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }}</p>
-                    <p style="font-size: 0.85rem;"> privada </p>
-                    <p style="font-size: 0.85rem;  color: #1c80cf "> {{institution.type}}</p>
+                    <p style="font-size: 0.85rem;"> {{ institution.address }} </p>
+                    <p style="font-size: 0.85rem;"> {{institution.type}}</p>
+                </td>
+                <td style="width: 100px;">
+                    <p-tag [value]="getAdministrationTypeValue(institution.administrationType)"
+                    [severity]="getAdministrationType(institution.administrationType)"></p-tag>
                 </td>
                 <td style="width: 800px;">
                     <p style="font-size: 0.85rem;" class="texto-limitado">{{ institution.description }} </p> 

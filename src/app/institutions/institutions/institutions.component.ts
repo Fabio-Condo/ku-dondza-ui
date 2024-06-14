@@ -83,6 +83,26 @@ export class InstitutionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
+  getAdministrationTypeValue(type: string) {
+    switch (type) {
+      case 'PUBLIC':
+        return 'pública';
+      case 'PRIVATE':
+        return 'privada';
+    }
+    return '';
+  }
+
+  getAdministrationType(type: string) {
+    switch (type) {
+      case 'PUBLIC':
+        return 'primmary';
+      case 'PRIVATE':
+        return 'info';
+    }
+    return '';
+  }
+
   aoMudarPagina(event: LazyLoadEvent) {
     const pagina = event!.first! / event!.rows!;
     this.filtro.itensPorPagina = event!.rows!;
