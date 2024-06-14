@@ -150,31 +150,11 @@
 <!--Filtrar-->
 <p-dialog [header]=" 'Filtros' " [(visible)]="displayModalFilter" [style]="{width: '33vw'}" [modal]="true">
 
-
   <div class="col-12 p-fluid">
-    <label>Nivel</label>
-    <p-dropdown placeholder="Selecione" [options]="niveis" [(ngModel)]="filtro.level" name="level" #level="ngModel"
-      (onChange)="findAll()"></p-dropdown>
+    <label>Instituição</label>
+    <p-dropdown placeholder="Selecione" [options]="institutions" [(ngModel)]="filtro.institution" name="institution"
+      #institution="ngModel" (onChange)="findAll()"></p-dropdown>
   </div>
-
-  <div *ngIf="filtro.level == 'Ensino Superior'" class="col-12 p-fluid">
-    <label>Institutição</label>
-    <p-dropdown placeholder="Selecione" [options]="institutosSuperiores" [(ngModel)]="filtro.institution"
-      name="institution" #institution="ngModel" (onChange)="findAll()"></p-dropdown>
-  </div>
-
-  <div *ngIf="filtro.level == 'Ensino Técnico'" class="col-12 p-fluid">
-    <label>Institutição</label>
-    <p-dropdown placeholder="Selecione" [options]="institutosTecnicos" [(ngModel)]="filtro.institution"
-      name="institution" #institution="ngModel" (onChange)="findAll()"></p-dropdown>
-  </div>
-
-  <div *ngIf="filtro.level == 'Ensino Geral'" class="col-12 p-fluid">
-    <label>Institutição</label>
-    <p-dropdown placeholder="Selecione" [options]="institutosDeEnsinoGeral" [(ngModel)]="filtro.institution"
-      name="institution" #institution="ngModel" (onChange)="findAll()"></p-dropdown>
-  </div>
-
 
   <div class="col-12 p-fluid">
     <label>Disciplina</label>

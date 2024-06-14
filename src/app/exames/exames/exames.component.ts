@@ -47,31 +47,6 @@ export class ExamesComponent implements OnInit {
     { label: 'Geográfia', value: 'Geográfia' },
   ];
 
-  institutosSuperiores = [
-    { label: 'Universidade Eduardo Mondlane (UEM)', value: 'Universidade Eduardo Mondlane (UEM)' },
-    { label: 'Universidade Pedagógica (UP)', value: 'Universidade Pedagógica (UP)' },
-    { label: 'Universidade Joaquim Chissano (UJC)', value: 'Universidade Joaquim Chissano (UJC)' },
-    { label: 'Universidade Lúrio (UniLúrio)', value: 'Universidade Lúrio (UniLúrio)' },
-    { label: 'Universidade Zambeze (UniZambeze)', value: 'Universidade Zambeze (UniZambeze)' },
-    { label: 'Universidade Rovuma (UniRovuma)', value: 'Universidade Rovuma (UniRovuma)' },
-    { label: 'Instituto Superior de Ciências de Saúde (ISCISA)', value: 'Instituto Superior de Ciências de Saúde (ISCISA)' },
-    { label: 'Academia de Ciências Policiais (ACIPOL)', value: 'Academia de Ciências Policiais (ACIPOL)' },
-    { label: 'Academia Militar "Marechal Samora Machel"', value: 'Academia Militar "Marechal Samora Machel"' },  
-    { label: 'Escola Superior de Ciências Nauticas', value: 'Escola Superior de Ciências Nauticas' },    
-  ];
-
-  institutosTecnicos = [
-    { label: 'Instituto Comercial de Maputo (ICM)', value: 'Instituto Comercial de Maputo (ICM)' },
-    { label: 'Instituto Industrial de Maputo (IIM)', value: 'Instituto Industrial de Maputo (IIM)' },
-    { label: 'Instituto de Ciências de Saúde de Infulene', value: 'Instituto de Ciências de Saúde de Infulene' },
-  ];
-
-  institutosDeEnsinoGeral = [
-    { label: '12ª Classe', value: '12 Classe' },
-    { label: '10ª Classe', value: '10 Classe' },
-  ];
-
-
   constructor(
     private examesService: ExamesService,
     private institutionService: InstitutionService,
@@ -294,8 +269,7 @@ export class ExamesComponent implements OnInit {
     this.filtro.global = "";
     this.filtro.subject = "";
     this.filtro.description = "";
-    this.filtro.institution = "";
-    this.filtro.level = "";
+    this.filtro.institution = undefined;
     this.filtro.beginDate = undefined;
     this.filtro.endDate = undefined;
     this.filtro.pagina = 0;

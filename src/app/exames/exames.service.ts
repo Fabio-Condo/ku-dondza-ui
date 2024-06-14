@@ -29,10 +29,6 @@ export class ExamesService {
         params = params.set('global', filtro.global);
       }
 
-      if (filtro.level) {
-        params = params.set('level', filtro.level);
-      }
-
       if (filtro.subject) {
         params = params.set('subject', filtro.subject);
       }
