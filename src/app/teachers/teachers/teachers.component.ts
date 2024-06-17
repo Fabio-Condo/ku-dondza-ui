@@ -20,6 +20,7 @@ export class TeachersComponent implements OnInit {
   teachers: Teacher[] = [];
   teacher: Teacher = new Teacher;
   displayModalSave: boolean = false;
+  file!: File;
   totalTeachers: number = 0;
   displayModalFilter: boolean = false;
 
@@ -49,22 +50,22 @@ export class TeachersComponent implements OnInit {
     return Boolean(this.teacher.id)
   }
 
-  save(teacherForm: NgForm) {
+  save() {
     if (this.editing) {
-      this.update(teacherForm)
+      this.update()
     } else {
-      this.addNew(teacherForm)
+      this.addNew()
     }
   }
 
-  addNew(teacherForm: NgForm) {
+  update() {
     this.showLoading = true;
-    this.teacherService.add(this.teacher).subscribe(
-      (response) => {
-        this.teacher = response;
+    this.teacherService.update(this.teacher.id, this.teacher.name, this.teacher.email, this.file).subscribe(
+      response => {
+        this.teacher = response
+        this.messageService.add({ severity: 'success', detail: 'Explicador actualizado com sucesso!' });
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Courso adicionada com sucesso!' });
-        this.findAll(0);
+        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -73,19 +74,20 @@ export class TeachersComponent implements OnInit {
     );
   }
 
-  update(teacherForm: NgForm) {
+  addNew() {
     this.showLoading = true;
-    this.teacherService.update(this.teacher).subscribe(
-      (response) => {
-        this.teacher = response;
+    this.teacherService.save(this.teacher.name, this.teacher.email, this.file).subscribe(
+      response => {
+        this.teacher = response
+        this.messageService.add({ severity: 'success', detail: 'Explicador salvo com sucesso!' });
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' });
+        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
-    )
+    );
   }
 
   findAll(pagina: number = 0): void {
@@ -118,9 +120,21 @@ export class TeachersComponent implements OnInit {
     );
   }
 
-  public onUpdateTeacher(teacher: Teacher): void {
+  onUpdateTeacher(teacher: Teacher): void {
     this.teacher = teacher
     this.teacher.id = teacher.id
+    this.displayModalSave = true;
+  }
+
+  onFileSelected(event: any) {
+    this.file = event.target.files[0];
+  }
+
+  onUpdate(id: number, name: string, email: string, file: File): void {
+    this.teacher.id = id
+    this.teacher.name = name;
+    this.teacher.email = email;
+    this.file = file;
     this.displayModalSave = true;
   }
 

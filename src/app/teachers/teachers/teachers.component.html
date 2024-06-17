@@ -52,12 +52,12 @@
                     <div class="profile-pic">
 
                         <a href="javascript:;" [routerLink]="['/user/profile']">
-                            <img src="{{imagePath}}/profile-11.jpg" alt="pic 1" />
+                            <img src="{{teacher.urlFile}}" alt="pic 1" />
                         </a>
 
                     </div>
                 </td>
-                <td >
+                <td>
                     <p style="font-size: 0.8rem; font-weight: bold;">{{ teacher.name }}</p>
                     <p style="font-size: 0.85rem;">email: {{ teacher.email }}</p>
                     <p style="font-size: 0.85rem;">contactos: 844505579, 862434518 </p>
@@ -68,7 +68,7 @@
                 </td>
                 <td *ngIf="!isAdmin" style="width: 150px;">
                     <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit" (click)="onUpdateTeacher(teacher)" tooltipPosition="top"
+                        <button pButton pTooltip="Edit" (click)="onUpdate(teacher.id, teacher.name, teacher.email, file)" tooltipPosition="top"
                             type="button" icon="pi pi-pencil" style="height: 30px; background-color: #3734ed;"></button>
                         <button pButton pTooltip="Delete" (click)="confirmarExclusao(teacher)" tooltipPosition="top"
                             type="button" icon="pi pi-trash"
@@ -94,9 +94,9 @@
 </div>
 
 <!--Save-->
-<p-dialog header="Curso {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
+<p-dialog header="Exame {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
     [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
-    <form autocomplete="off" #teacherForm="ngForm" (ngSubmit)="save(teacherForm)">
+    <form enctype="multipart/form-data">
         <div class="col-12 p-fluid">
             <label>Nome</label>
             <input pInputText type="text" name="name" ngModel #name="ngModel" required minlength="1"
@@ -107,11 +107,22 @@
             <input pInputText type="text" name="email" ngModel #email="ngModel" required minlength="1"
                 [(ngModel)]="teacher.email">
         </div>
-        <div class="col-12 p-fluid" style="margin-top: 15px;">
-            <button pButton type="submit" [disabled]="teacherForm.invalid"
-                label="{{ showLoading ? 'Loading...' : 'Salvar' }}" style="background-color: #3734ed; border: none;">
-            </button>
+
+        <div class="col-12 p-fluid">
+            <fieldset>
+                <div class="form-group">
+                    <div>
+                        <input type="file" (change)="onFileSelected($event)" name="file" accept="application/**"
+                            class="form-control" required />
+                    </div>
+                </div>
+            </fieldset>
         </div>
 
+        <div class="col-12 p-fluid" style="margin-top: 15px;">
+            <button (click)="save()" pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}"
+                style="background-color: #3734ed; border: none;">
+            </button>
+        </div>
     </form>
 </p-dialog>
