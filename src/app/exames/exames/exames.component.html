@@ -13,9 +13,9 @@
     Baixando arquivo...
   </p>
 
-  <p style="margin-top: 20px; font-size: 0.85rem;">Explore nossa variedade de exames de admissão, abrangendo uma ampla
+  <p style="margin-top: 20px; font-size: 0.85rem;">Explore a variedade de exames de admissão das instituições de ensino de Moçambique, abrangendo uma ampla
     gama de disciplinas e níveis educacionais. </p>
-  <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na ku-DONDZA, trabalhamos durro para obter o
+  <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, trabalhamos durro para obter o
     melhor resultado. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
   </p>
 
@@ -52,17 +52,16 @@
     <ng-template pTemplate="body" let-exame>
       <tr>
         <td>
+          <p style="font-size: 0.85rem; font-weight: bold;"> {{exame.subject}}</p>
+          <p style="font-size: 0.85rem;">{{ exame.date | date:'yyyy' }}</p>
+        </td>
+        <td>
           <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.institution.name }}</p>
           <p style="font-size: 0.85rem;"> {{exame.institution.type}} </p>
-          <p style="font-size: 0.85rem;"> {{exame.subject}}</p>
         </td>
         <td>
           <p style="font-size: 0.85rem;">{{ exame.description }}</p>
         </td>
-        <td>
-          <p style="font-size: 0.85rem;">{{ exame.date | date:'yyyy' }}</p>
-        </td>
-
         <td>
           <button pButton (click)="download(exame.id, exame.fileName)" type="button" icon="pi pi-download"
             style="height: 30px; background-color: #3734ed; border: none;"></button>
@@ -72,7 +71,7 @@
         <td *ngIf="!isAdmin" style="width: 150px;">
           <span class="p-buttonset mr-auto">
             <button pButton pTooltip="Edit"
-              (click)="onEdit(exame.id, exame.subject, exame.description, exame.date, exame.institution.id, file)"
+              (click)="onUpdate(exame.id, exame.subject, exame.description, exame.date, exame.institution.id, file)"
               tooltipPosition="top" type="button" icon="pi pi-pencil"
               style="height: 30px; background-color: #3734ed;"></button>
             <button pButton (click)="confirmarExclusao(exame)" pTooltip="Delete" tooltipPosition="top" type="button"
@@ -114,7 +113,7 @@
         #subject="ngModel"></p-dropdown>
     </div>
 
-    <div class="col-12 md-12 p-fluid">
+    <div class="col-12 p-fluid">
       <label>Data</label>
       <p-calendar name="date" view="year" dateFormat="yy" placeholder="Ex: 2024" [inputStyle]="{ 'width': '100px'}"
         [showOnFocus]="false" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
@@ -162,7 +161,6 @@
       #subject="ngModel" (onChange)="findAll()"></p-dropdown>
   </div>
 
-
   <div class="col-12 p-fluid">
     <label>Descrição</label>
     <input pInputText type="text" name="description" ngModel #description="ngModel" minlength="1"
@@ -185,7 +183,7 @@
   </div>
 
   <div class="col-12 p-fluid" style="margin-top: 2%;">
-    <button pButton type="submit" (click)="limparCampos()" label="Reset" style="margin-top: 1%;"></button>
+    <button pButton type="submit" (click)="limparCampos()" label="Reset" style="margin-top: 1%; background-color: #3734ed; border: none;"></button>
   </div>
 
 

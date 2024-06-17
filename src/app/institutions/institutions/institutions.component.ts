@@ -5,6 +5,7 @@ import { Institution } from 'src/app/core/model/Institution';
 import { InstitutionService } from '../InstitutionService.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-institutions',
@@ -25,6 +26,16 @@ export class InstitutionsComponent implements OnInit {
   isAdmin: boolean = true;
 
 
+  tiposAdministracao = [
+    { label: 'Privada', value: 'PRIVATE' },
+    { label: 'Pública', value: 'PUBLIC' }
+  ];
+
+  niveis = [
+    { label: 'Ensino Superior', value: 'Ensino Superior' },
+    { label: 'Ensino Técnico', value: 'Ensino Técnico' }
+  ];
+
   constructor(
     private institutionService: InstitutionService,
     private messageService: MessageService,
@@ -42,6 +53,49 @@ export class InstitutionsComponent implements OnInit {
     pagina: 0,
     itensPorPagina: 10,
     ordenamento: 'id,asc'
+  }
+
+  get editing() {
+    return Boolean(this.institution.id)
+  }
+
+  save(institutionForm: NgForm) {
+    if (this.editing) {
+      this.update(institutionForm)
+    } else {
+      this.addNew(institutionForm)
+    }
+  }
+
+  addNew(institutionForm: NgForm) {
+    this.showLoading = true;
+    this.institutionService.add(this.institution).subscribe(
+      (response) => {
+        this.institution = response;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: ' adicionada com sucesso!' });
+        this.findAll(0);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  update(institutionForm: NgForm) {
+    this.showLoading = true;
+    this.institutionService.update(this.institution).subscribe(
+      (response) => {
+        this.institution = response;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Instituição alterada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
   }
 
   findAll(pagina: number = 0): void {
@@ -78,9 +132,41 @@ export class InstitutionsComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  onAddNewExame(): void {
+  public onUpdateInstitution(institution: Institution): void {
+    this.institution = institution
+    this.institution.id = institution.id
+    this.displayModalSave = true;
+  }
+
+  onAddNewInstitution(): void {
     this.institution = new Institution();
     this.displayModalSave = true;
+  }
+
+  excluir(institution: Institution) {
+    this.institutionService.excluir(institution.id).subscribe(() => {
+      if (this.grid.first === 0) {
+        this.findAll();
+      } else {
+        this.grid.reset();
+      }
+      this.messageService.add({ severity: 'success', detail: 'Instituição excluída com sucesso!' })
+      this.buscarTotal();
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
+  confirmarExclusao(institution: Institution): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.excluir(institution);
+      }
+    });
   }
 
   getAdministrationTypeValue(type: string) {
@@ -107,6 +193,18 @@ export class InstitutionsComponent implements OnInit {
     const pagina = event!.first! / event!.rows!;
     this.filtro.itensPorPagina = event!.rows!;
     this.findAll(pagina);
+  }
+
+  limparCampos() {
+    this.filtro.global = "";
+    this.filtro.name = "";
+    this.filtro.description = "";
+    this.filtro.administrationType = "";
+    this.filtro.type = "";
+    this.filtro.pagina = 0;
+    this.filtro.itensPorPagina = 10;
+    this.filtro.ordenamento = "id,desc"
+    this.findAll();
   }
 
   private sendErrorNotification(message: string): void {

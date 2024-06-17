@@ -11,14 +11,107 @@
     <p style="margin-top: 20px; font-size: 0.85rem;">Descubra uma seleção de explicadores disponíveis em Moçambique,
         incluindo detalhes como área de especialização,
         nível de ensino e experiência.</p>
-    <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na ku-DONDZA, facilitamos a busca por explicadores
+    <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, facilitamos a busca por explicadores
         qualificados.<a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
     </p>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <p-table [value]="teachers" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
+        selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
+        currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalTeachers}}" [showCurrentPageReport]="true"
+        styleClass="p-datatable-sm" #tabela>
+
+        <ng-template pTemplate="caption">
+            <div class="flex">
+
+
+                <button *ngIf="!isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
+
+                <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
+                    {{totalRegistros}} dos {{totalTeachers}}</p>
+
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText [(ngModel)]="filtro.name" (ngModelChange)="findAll()" type="text"
+                        style="width: 300px;" placeholder="Pesquisa" />
+                </span>
+
+                <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;"
+                    type="button" pButton pRipple icon="pi pi-filter"></button>
+
+
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-teacher>
+            <tr>
+                <td style="width: 10px;">
+                    <div class="profile-pic">
+
+                        <a href="javascript:;" [routerLink]="['/user/profile']">
+                            <img src="{{imagePath}}/profile-11.jpg" alt="pic 1" />
+                        </a>
+
+                    </div>
+                </td>
+                <td >
+                    <p style="font-size: 0.8rem; font-weight: bold;">{{ teacher.name }}</p>
+                    <p style="font-size: 0.85rem;">email: {{ teacher.email }}</p>
+                    <p style="font-size: 0.85rem;">contactos: 844505579, 862434518 </p>
+                    <!--
+                    <p style="font-size: 0.85rem;">morada: Bairro 25 de jumho, rua 8</p>
+                    -->
+
+                </td>
+                <td *ngIf="!isAdmin" style="width: 150px;">
+                    <span class="p-buttonset mr-auto">
+                        <button pButton pTooltip="Edit" (click)="onUpdateTeacher(teacher)" tooltipPosition="top"
+                            type="button" icon="pi pi-pencil" style="height: 30px; background-color: #3734ed;"></button>
+                        <button pButton pTooltip="Delete" (click)="confirmarExclusao(teacher)" tooltipPosition="top"
+                            type="button" icon="pi pi-trash"
+                            style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
+                    </span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="10">
+                    <span *ngIf="showLoading" style="color:#1c80cf;">Carregando... </span>
+                    <span *ngIf="!showLoading">Nenhum explicador encontrado </span>
+                    <i *ngIf="showLoading" class="pi pi-spin pi-spinner"></i>
+                    <a href="javascript:;">
+                        <i *ngIf="!showLoading" style="color: #1c80cf;" (click)="findAll(0)" pTooltip="Refresh"
+                            class="pi pi-refresh"></i>
+                    </a>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
+
+<!--Save-->
+<p-dialog header="Curso {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
+    [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
+    <form autocomplete="off" #teacherForm="ngForm" (ngSubmit)="save(teacherForm)">
+        <div class="col-12 p-fluid">
+            <label>Nome</label>
+            <input pInputText type="text" name="name" ngModel #name="ngModel" required minlength="1"
+                [(ngModel)]="teacher.name">
+        </div>
+        <div class="col-12 p-fluid">
+            <label>Email</label>
+            <input pInputText type="text" name="email" ngModel #email="ngModel" required minlength="1"
+                [(ngModel)]="teacher.email">
+        </div>
+        <div class="col-12 p-fluid" style="margin-top: 15px;">
+            <button pButton type="submit" [disabled]="teacherForm.invalid"
+                label="{{ showLoading ? 'Loading...' : 'Salvar' }}" style="background-color: #3734ed; border: none;">
+            </button>
+        </div>
+
+    </form>
+</p-dialog>

@@ -8,22 +8,24 @@
         <p style="margin-top: 20px; font-size: 30px;">Instituições de ensino</p>
     </div>
 
-    <p style="margin-top: 20px; font-size: 0.85rem;">Explore as informações detalhadas sobre cada instituição de Moçambique, incluindo
+    <p style="margin-top: 20px; font-size: 0.85rem;">Explore as informações detalhadas sobre cada instituição de
+        Moçambique, incluindo
         endereço, cursos oferecidos e dados de contato. </p>
-    <p style="margin-bottom: 20px; font-size: 0.85rem;"> A ku-DONDZA visa facilitar sua busca pela instituição ideal que
-        atenda às suas necessidades educacionais. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
+    <p style="margin-bottom: 20px; font-size: 0.85rem;"> A Ku-DONDZA visa facilitar sua busca pela instituição ideal que
+        atenda às suas necessidades educacionais. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba
+            mais</a>
     </p>
 
     <p-table [value]="instutions" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
         selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
-        currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalInstitutions}}" [showCurrentPageReport]="true"
-        styleClass="p-datatable-sm" #tabela>
+        currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalInstitutions}}"
+        [showCurrentPageReport]="true" styleClass="p-datatable-sm" #tabela>
 
         <ng-template pTemplate="caption">
             <div class="flex">
 
 
-                <button *ngIf="!isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
+                <button *ngIf="!isAdmin" class="btn btn-primary" (click)="onAddNewInstitution()">Novo</button>
 
                 <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
                     {{totalRegistros}} dos {{totalInstitutions}}</p>
@@ -50,30 +52,29 @@
                 <td style="width: 250px;">
                     <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }}</p>
                     <p style="font-size: 0.85rem;"> {{institution.type}}</p>
-                    <p style="font-size: 0.85rem;"> {{ institution.address }} </p>
+                    <!--<p style="font-size: 0.85rem;"> {{ institution.address }} </p>-->
                 </td>
                 <td style="width: 100px;">
                     <p-tag [value]="getAdministrationTypeValue(institution.administrationType)"
-                    [severity]="getAdministrationType(institution.administrationType)"></p-tag>
+                        [severity]="getAdministrationType(institution.administrationType)"></p-tag>
                 </td>
                 <td style="width: 800px;">
-                    <p style="font-size: 0.85rem;" class="texto-limitado">{{ institution.description }} </p> 
-                    <a href="{{ institution.website }}" target="_blank" style="color: #1c80cf; text-decoration: underline;">Saiba mais no website</a>
+                    <p style="font-size: 0.85rem;" class="texto-limitado">{{ institution.description }} </p>
+                    <a href="{{ institution.website }}" target="_blank"
+                        style="color: #1c80cf; text-decoration: underline;">Saiba mais no website</a>
                     <i class="pi pi-external-link" style="font-size: 0.85rem; margin-left: 5px; color: #1c80cf;"></i>
                 </td>
 
                 <td>
                     <button pButton type="button" icon="pi pi-arrow-right"
-                      style="height: 30px; background-color: #3734ed; border: none;"></button>
-                  </td>
+                        style="height: 30px; background-color: #3734ed; border: none;"></button>
+                </td>
 
                 <td *ngIf="!isAdmin" style="width: 150px;">
                     <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit"
-                            tooltipPosition="top" type="button" icon="pi pi-pencil"
+                        <button pButton pTooltip="Edit" (click)="onUpdateInstitution(institution)" tooltipPosition="top" type="button" icon="pi pi-pencil"
                             style="height: 30px; background-color: #3734ed;"></button>
-                        <button pButton  pTooltip="Delete" tooltipPosition="top"
-                            type="button" icon="pi pi-trash"
+                        <button pButton pTooltip="Delete" (click)="confirmarExclusao(institution)" tooltipPosition="top" type="button" icon="pi pi-trash"
                             style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
                     </span>
                 </td>
@@ -95,3 +96,81 @@
     </p-table>
 
 </div>
+
+<!--Save-->
+<p-dialog header="Instituição {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
+    [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
+    <form autocomplete="off" #institutionForm="ngForm" (ngSubmit)="save(institutionForm)">
+        <div class="col-12 p-fluid">
+            <label>Nome</label>
+            <input pInputText type="text" name="name" ngModel #name="ngModel" required minlength="1"
+                [(ngModel)]="institution.name">
+        </div>
+
+        <div class="col-12 p-fluid">
+            <label>Nivel</label>
+            <p-dropdown placeholder="Selecione" [options]="niveis" name="type" #type="ngModel"
+                [(ngModel)]="institution.type"></p-dropdown>
+        </div>
+
+        <div class="col-12 p-fluid">
+            <label>Tipo de administração</label>
+            <p-dropdown placeholder="Selecione" [options]="tiposAdministracao" name="administrationType"
+                #administrationType="ngModel" [(ngModel)]="institution.administrationType"></p-dropdown>
+        </div>
+
+        <div class="col-12 p-fluid">
+            <label>Endereço</label>
+            <input pInputText type="text" name="address" ngModel #address="ngModel" required minlength="1"
+                [(ngModel)]="institution.address">
+        </div>
+
+        <div class="col-12 p-fluid">
+            <label>Website</label>
+            <input pInputText type="text" name="website" ngModel #website="ngModel" required minlength="1"
+                [(ngModel)]="institution.website">
+        </div>
+
+        <div class="col-12 p-fluid">
+            <label>Descrição</label>
+            <input pInputText type="text" name="description" ngModel #description="ngModel" required minlength="1"
+                [(ngModel)]="institution.description">
+        </div>
+
+        <div class="col-12 p-fluid" style="margin-top: 15px;">
+            <button pButton type="submit" [disabled]="institutionForm.invalid"
+                label="{{ showLoading ? 'Loading...' : 'Salvar' }}" style="background-color: #3734ed; border: none;">
+            </button>
+        </div>
+
+    </form>
+</p-dialog>
+
+<!--Filtrar-->
+<p-dialog [header]=" 'Filtros' " [(visible)]="displayModalFilter" [style]="{width: '33vw'}" [modal]="true">
+
+    <div class="col-12 p-fluid">
+        <label>Nivel</label>
+        <p-dropdown placeholder="Selecione" [options]="niveis" [(ngModel)]="filtro.type" name="type" #type="ngModel"
+            (onChange)="findAll()"></p-dropdown>
+    </div>
+
+    <div class="col-12 p-fluid">
+        <label>Tipo de administração</label>
+        <p-dropdown placeholder="Selecione" [options]="tiposAdministracao" [(ngModel)]="filtro.administrationType"
+            name="administrationType" #administrationType="ngModel" (onChange)="findAll()"></p-dropdown>
+    </div>
+
+    <div class="col-12 p-fluid">
+        <label>Nome</label>
+        <input pInputText type="text" name="name" ngModel #name="ngModel" minlength="1" [(ngModel)]="filtro.name"
+            (ngModelChange)="findAll()">
+    </div>
+
+    <div class="col-12 p-fluid" style="margin-top: 2%;">
+        <button pButton (click)="limparCampos()" type="submit" label="Reset"
+            style="margin-top: 1%; background-color: #3734ed; border: none;"></button>
+    </div>
+
+
+</p-dialog>

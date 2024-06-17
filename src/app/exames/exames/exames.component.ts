@@ -26,7 +26,9 @@ export class ExamesComponent implements OnInit {
   displayModalFilter: boolean = false;
   institutions: any[] = [];
 
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
+
+  paginaAtual: number = 0;
 
 
   niveis = [
@@ -135,20 +137,19 @@ export class ExamesComponent implements OnInit {
   }
 
   excluir(exame: Exame) {
-    this.examesService.excluir(exame.id!)
-      .subscribe(() => {
-        if (this.grid.first === 0) {
-          this.findAll();
-        } else {
-          this.grid.reset();
-        }
-        this.messageService.add({ severity: 'success', detail: 'Exames excluído com sucesso!' })
-      },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);
-          this.showLoading = false;
-        }
-      )
+    this.examesService.excluir(exame.id!).subscribe(() => {
+      if (this.grid.first === 0) {
+        this.findAll();
+      } else {
+        this.grid.reset();
+      }
+      this.messageService.add({ severity: 'success', detail: 'Exames excluído com sucesso!' })
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
   }
 
   confirmarExclusao(exame: Exame): void {
@@ -160,7 +161,7 @@ export class ExamesComponent implements OnInit {
     });
   }
 
-  public carregarInstituicoes() {
+  carregarInstituicoes() {
     return this.institutionService.listarTodos().subscribe(
       dados => {
         this.institutions = dados.content.map(dado => {
@@ -193,7 +194,6 @@ export class ExamesComponent implements OnInit {
 
   onAddNewExame(): void {
     this.exame = new Exame();
-    //this.file = undefined;
     this.displayModalSave = true;
   }
 
@@ -205,9 +205,10 @@ export class ExamesComponent implements OnInit {
     const pagina = event!.first! / event!.rows!;
     this.filtro.itensPorPagina = event!.rows!;
     this.findAll(pagina);
+    this.paginaAtual = pagina;
   }
 
-  public onEdit(id: number, subject: string, description: string, date: Date, institutionId: number, file: File): void {
+  public onUpdate(id: number, subject: string, description: string, date: Date, institutionId: number, file: File): void {
     this.exame.id = id
     this.exame.institution.id = institutionId;
     this.exame.subject = subject;
@@ -261,7 +262,7 @@ export class ExamesComponent implements OnInit {
       // Limpar o link após o download iniciar
       window.URL.revokeObjectURL(link.href);
       this.showLoadingDownload = false;
-      this.findAll()
+      this.findAll(this.paginaAtual)
     });
   }
 
