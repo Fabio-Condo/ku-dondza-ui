@@ -18,6 +18,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { CalendarModule } from 'primeng/calendar';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 
 
@@ -40,6 +41,7 @@ import { CalendarModule } from 'primeng/calendar';
     DialogModule,
     DividerModule,
     CalendarModule,
+    ProgressBarModule,
 
     RouterModule,
     TagModule,

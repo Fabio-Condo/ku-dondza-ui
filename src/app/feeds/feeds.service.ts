@@ -31,11 +31,11 @@ export class FeedsService {
     return this.http.post<Post>(`${this.host}/post/add`, formData);  
   }
 
-  public createPostFormDate(post: Post, postImage: File): FormData {  
+  public createPostFormDate(post: Post, file: File): FormData {  
     const formData = new FormData();
     formData.append('text', post.text);
     formData.append('type', post.type);
-    formData.append('postImage', postImage);
+    formData.append('file', file);
     return formData;
   }
 
