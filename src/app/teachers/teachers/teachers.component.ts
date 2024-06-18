@@ -24,7 +24,7 @@ export class TeachersComponent implements OnInit {
   totalTeachers: number = 0;
   displayModalFilter: boolean = false;
 
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
 
   imagePath = './assets/images'
 

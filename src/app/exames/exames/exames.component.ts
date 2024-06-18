@@ -26,7 +26,7 @@ export class ExamesComponent implements OnInit {
   displayModalFilter: boolean = false;
   institutions: any[] = [];
 
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
 
   paginaAtual: number = 0;
 
