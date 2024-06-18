@@ -15,12 +15,14 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { InstitutionsViewComponent } from './institutions-view/institutions-view.component';
 
 
 
 @NgModule({
   declarations: [
-    InstitutionsComponent
+    InstitutionsComponent,
+    InstitutionsViewComponent
   ],
   imports: [
     CommonModule,

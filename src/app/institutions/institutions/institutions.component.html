@@ -58,8 +58,8 @@
 
                     </div>
                 </td>
-                <td style="width: 250px;">
-                    <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }}</p>
+                <td style="width: 300px;">
+                    <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }} <span *ngIf="institution.acronym">({{ institution.acronym }})</span></p>
                     <p style="font-size: 0.85rem;"> {{institution.type}}</p>
                     <!--<p style="font-size: 0.85rem;"> {{ institution.address }} </p>-->
                 </td>
@@ -67,7 +67,7 @@
                     <p-tag [value]="getAdministrationTypeValue(institution.administrationType)"
                         [severity]="getAdministrationType(institution.administrationType)"></p-tag>
                 </td>
-                <td style="width: 800px;">
+                <td >
                     <p style="font-size: 0.85rem;" class="texto-limitado">{{ institution.description }} </p>
                     <a href="{{ institution.website }}" target="_blank"
                         style="color: #1c80cf; text-decoration: underline;">Saiba mais no website</a>
@@ -75,14 +75,14 @@
                 </td>
 
                 <td>
-                    <button pButton type="button" icon="pi pi-arrow-right"
+                    <button pButton [routerLink]="['/instituicoes', institution.id]" type="button" icon="pi pi-arrow-right"
                         style="height: 30px; background-color: #3734ed; border: none;"></button>
                 </td>
 
                 <td *ngIf="!isAdmin" style="width: 150px;">
                     <span class="p-buttonset mr-auto">
                         <button pButton pTooltip="Edit" tooltipPosition="top" type="button" icon="pi pi-pencil"
-                        (click)="onUpdateInstitution(institution.id, institution.name, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
+                        (click)="onUpdateInstitution(institution.id, institution.name, this.institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
                             style="height: 30px; background-color: #3734ed;"></button>
                         <button pButton pTooltip="Delete" (click)="confirmarExclusao(institution)" tooltipPosition="top"
                             type="button" icon="pi pi-trash"
@@ -116,6 +116,12 @@
             <label>Nome</label>
             <input pInputText type="text" name="name" ngModel #name="ngModel" required minlength="1"
                 [(ngModel)]="institution.name">
+        </div>
+
+        <div class="col-12 p-fluid">
+            <label>Sigla</label>
+            <input pInputText type="text" name="acronym" ngModel #acronym="ngModel" required minlength="1"
+                [(ngModel)]="institution.acronym">
         </div>
 
         <div class="col-12 p-fluid">

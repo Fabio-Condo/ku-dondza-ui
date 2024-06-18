@@ -41,9 +41,10 @@ export class InstitutionService {
         return this.http.get<IApiResponse<Institution>>(`${this.host}/filter`, {});
     }
 
-    save(name: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): Observable<Institution> {
+    save(name: string, acronym: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): Observable<Institution> {
         const formData = new FormData();
         formData.append('name', name);
+        formData.append('acronym', acronym);
         formData.append('type', type);
         formData.append('administrationType', administrationType);
         formData.append('address', address);
@@ -53,10 +54,11 @@ export class InstitutionService {
         return this.http.post<Institution>(`${this.host}`, formData);
     }
 
-    update(id: number, name: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): Observable<Institution> {
+    update(id: number, name: string, acronym: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): Observable<Institution> {
         const formData = new FormData();
         formData.append('id', id.toString());
         formData.append('name', name);
+        formData.append('acronym', acronym);
         formData.append('type', type);
         formData.append('administrationType', administrationType);
         formData.append('address', address);
@@ -68,6 +70,10 @@ export class InstitutionService {
 
     excluir(id: number): Observable<void> {
         return this.http.delete<void>(`${this.host}/${id}`, {});
+    }
+
+    findById(id: number): Observable<Institution> {
+        return this.http.get<Institution>(`${this.host}/${id}`, {});
     }
 
     buscarTotal(): Observable<number> {

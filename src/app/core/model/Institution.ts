@@ -1,6 +1,7 @@
 export class Institution {
     id!: number;
     name!: string;
+    acronym!: string;
     type!: string;
     administrationType!: string;
     address!: string;
