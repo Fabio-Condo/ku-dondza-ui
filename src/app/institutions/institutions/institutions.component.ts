@@ -5,7 +5,6 @@ import { Institution } from 'src/app/core/model/Institution';
 import { InstitutionService } from '../InstitutionService.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-institutions',
@@ -20,10 +19,11 @@ export class InstitutionsComponent implements OnInit {
   instutions: Institution[] = [];
   institution: Institution = new Institution;
   displayModalSave: boolean = false;
+  file!: File;
   totalInstitutions: number = 0;
   displayModalFilter: boolean = false;
 
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
 
   tiposAdministracao = [
@@ -59,22 +59,22 @@ export class InstitutionsComponent implements OnInit {
     return Boolean(this.institution.id)
   }
 
-  save(institutionForm: NgForm) {
+  save() {
     if (this.editing) {
-      this.update(institutionForm)
+      this.update()
     } else {
-      this.addNew(institutionForm)
+      this.addNew()
     }
   }
 
-  addNew(institutionForm: NgForm) {
+  update() {
     this.showLoading = true;
-    this.institutionService.add(this.institution).subscribe(
-      (response) => {
-        this.institution = response;
+    this.institutionService.update(this.institution.id, this.institution.name, this.institution.type, this.institution.administrationType, this.institution.address, this.institution.description, this.institution.address, this.file).subscribe(
+      response => {
+        this.institution = response
+        this.messageService.add({ severity: 'success', detail: 'Instituição actualizada com sucesso!' });
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: ' adicionada com sucesso!' });
-        this.findAll(0);
+        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -83,19 +83,24 @@ export class InstitutionsComponent implements OnInit {
     );
   }
 
-  update(institutionForm: NgForm) {
+  addNew() {
     this.showLoading = true;
-    this.institutionService.update(this.institution).subscribe(
-      (response) => {
-        this.institution = response;
+    this.institutionService.save(this.institution.name, this.institution.type, this.institution.administrationType, this.institution.address, this.institution.description, this.institution.website, this.file).subscribe(
+      response => {
+        this.institution = response
+        this.messageService.add({ severity: 'success', detail: 'Instituição salva com sucesso!' });
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Instituição alterada com sucesso!' });
+        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
-    )
+    );
+  }
+
+  onFileSelected(event: any) {
+    this.file = event.target.files[0];
   }
 
   findAll(pagina: number = 0): void {
@@ -132,9 +137,15 @@ export class InstitutionsComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  public onUpdateInstitution(institution: Institution): void {
-    this.institution = institution
-    this.institution.id = institution.id
+  public onUpdateInstitution(id: number, name: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): void {
+    this.institution.id = id
+    this.institution.name = name;
+    this.institution.type = type;
+    this.institution.administrationType = administrationType;
+    this.institution.address = address;
+    this.institution.website = website;
+    this.institution.description = description;
+    this.file = file;
     this.displayModalSave = true;
   }
 

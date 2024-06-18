@@ -6,4 +6,6 @@ export class Institution {
     address!: string;
     website!: string;
     description!: string;
+    fileName!: string;
+    urlFile!: string;
 }

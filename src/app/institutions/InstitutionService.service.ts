@@ -41,12 +41,29 @@ export class InstitutionService {
         return this.http.get<IApiResponse<Institution>>(`${this.host}/filter`, {});
     }
 
-    add(institution: Institution): Observable<Institution> {
-        return this.http.post<Institution>(this.host, institution, {});
+    save(name: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): Observable<Institution> {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('type', type);
+        formData.append('administrationType', administrationType);
+        formData.append('address', address);
+        formData.append('description', description);
+        formData.append('website', website);
+        formData.append('file', file);
+        return this.http.post<Institution>(`${this.host}`, formData);
     }
 
-    update(institution: Institution): Observable<Institution> {
-        return this.http.put<Institution>(`${this.host}/${institution.id}`, institution, {});
+    update(id: number, name: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): Observable<Institution> {
+        const formData = new FormData();
+        formData.append('id', id.toString());
+        formData.append('name', name);
+        formData.append('type', type);
+        formData.append('administrationType', administrationType);
+        formData.append('address', address);
+        formData.append('description', description);
+        formData.append('website', website);
+        formData.append('file', file);
+        return this.http.put<Institution>(`${this.host}`, formData);
     }
 
     excluir(id: number): Observable<void> {

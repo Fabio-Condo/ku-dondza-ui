@@ -13,7 +13,8 @@
     Baixando arquivo...
   </p>
 
-  <p style="margin-top: 20px; font-size: 0.85rem;">Explore a variedade de exames de admissão das instituições de ensino de Moçambique, abrangendo uma ampla
+  <p style="margin-top: 20px; font-size: 0.85rem;">Explore a variedade de exames de admissão das instituições de ensino
+    de Moçambique, abrangendo uma ampla
     gama de disciplinas e níveis educacionais. </p>
   <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, trabalhamos durro para obter o
     melhor resultado. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
@@ -54,6 +55,15 @@
         <td>
           <p style="font-size: 0.85rem; font-weight: bold;"> {{exame.subject}}</p>
           <p style="font-size: 0.85rem;">{{ exame.date | date:'yyyy' }}</p>
+        </td>
+        <td style="width: 10px;">
+          <div class="profile-pic">
+
+            <a href="javascript:;" [routerLink]="['/user/profile']">
+              <img src="{{exame.institution.urlFile}}" alt="pic 1" />
+            </a>
+
+          </div>
         </td>
         <td>
           <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.institution.name }}</p>
@@ -183,7 +193,8 @@
   </div>
 
   <div class="col-12 p-fluid" style="margin-top: 2%;">
-    <button pButton type="submit" (click)="limparCampos()" label="Reset" style="margin-top: 1%; background-color: #3734ed; border: none;"></button>
+    <button pButton type="submit" (click)="limparCampos()" label="Reset"
+      style="margin-top: 1%; background-color: #3734ed; border: none;"></button>
   </div>
 
 

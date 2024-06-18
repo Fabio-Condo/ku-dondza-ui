@@ -49,6 +49,15 @@
         </ng-template>
         <ng-template pTemplate="body" let-institution>
             <tr>
+                <td style="width: 10px;">
+                    <div class="profile-pic">
+
+                        <a href="javascript:;" [routerLink]="['/user/profile']">
+                            <img src="{{institution.urlFile}}" alt="pic 1" />
+                        </a>
+
+                    </div>
+                </td>
                 <td style="width: 250px;">
                     <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }}</p>
                     <p style="font-size: 0.85rem;"> {{institution.type}}</p>
@@ -72,9 +81,11 @@
 
                 <td *ngIf="!isAdmin" style="width: 150px;">
                     <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit" (click)="onUpdateInstitution(institution)" tooltipPosition="top" type="button" icon="pi pi-pencil"
+                        <button pButton pTooltip="Edit" tooltipPosition="top" type="button" icon="pi pi-pencil"
+                        (click)="onUpdateInstitution(institution.id, institution.name, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
                             style="height: 30px; background-color: #3734ed;"></button>
-                        <button pButton pTooltip="Delete" (click)="confirmarExclusao(institution)" tooltipPosition="top" type="button" icon="pi pi-trash"
+                        <button pButton pTooltip="Delete" (click)="confirmarExclusao(institution)" tooltipPosition="top"
+                            type="button" icon="pi pi-trash"
                             style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
                     </span>
                 </td>
@@ -97,10 +108,10 @@
 
 </div>
 
-<!--Save-->
-<p-dialog header="Instituição {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
+<p-dialog header="Exame {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
     [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
-    <form autocomplete="off" #institutionForm="ngForm" (ngSubmit)="save(institutionForm)">
+    <form enctype="multipart/form-data">
+
         <div class="col-12 p-fluid">
             <label>Nome</label>
             <input pInputText type="text" name="name" ngModel #name="ngModel" required minlength="1"
@@ -137,14 +148,26 @@
                 [(ngModel)]="institution.description">
         </div>
 
-        <div class="col-12 p-fluid" style="margin-top: 15px;">
-            <button pButton type="submit" [disabled]="institutionForm.invalid"
-                label="{{ showLoading ? 'Loading...' : 'Salvar' }}" style="background-color: #3734ed; border: none;">
-            </button>
+        <div class="col-12 p-fluid">
+            <fieldset>
+                <div class="form-group">
+                    <div>
+                        <input type="file" (change)="onFileSelected($event)" name="file" accept="image/**"
+                            class="form-control" required />
+                    </div>
+                </div>
+            </fieldset>
         </div>
 
+        <div class="col-12 p-fluid" style="margin-top: 15px;">
+            <button (click)="save()" pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}"
+                style="background-color: #3734ed; border: none;">
+            </button>
+        </div>
     </form>
 </p-dialog>
+
+
 
 <!--Filtrar-->
 <p-dialog [header]=" 'Filtros' " [(visible)]="displayModalFilter" [style]="{width: '33vw'}" [modal]="true">
