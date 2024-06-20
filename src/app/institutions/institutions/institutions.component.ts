@@ -23,7 +23,7 @@ export class InstitutionsComponent implements OnInit {
   totalInstitutions: number = 0;
   displayModalFilter: boolean = false;
 
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
 
   tiposAdministracao = [
@@ -69,7 +69,7 @@ export class InstitutionsComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.institutionService.update(this.institution.id, this.institution.name, this.institution.acronym, this.institution.type, this.institution.administrationType, this.institution.address, this.institution.description, this.institution.address, this.file).subscribe(
+    this.institutionService.update(this.institution.id, this.institution.name, this.institution.acronym, this.institution.type, this.institution.administrationType, this.institution.address, this.institution.description, this.institution.website, this.file).subscribe(
       response => {
         this.institution = response
         this.messageService.add({ severity: 'success', detail: 'Instituição actualizada com sucesso!' });
