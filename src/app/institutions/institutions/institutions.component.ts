@@ -23,7 +23,7 @@ export class InstitutionsComponent implements OnInit {
   totalInstitutions: number = 0;
   displayModalFilter: boolean = false;
 
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
 
 
   tiposAdministracao = [

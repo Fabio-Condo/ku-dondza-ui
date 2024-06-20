@@ -32,19 +32,21 @@ export class TeacherService {
         return this.http.get<IApiResponse<Teacher>>(`${this.host}/filter`, {});
     }
 
-    save(name: string, email: string, file: File): Observable<Teacher> {
+    save(name: string, email: string, contactNumber: string, file: File): Observable<Teacher> {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('email', email);
+        formData.append('contactNumber', contactNumber);
         formData.append('file', file);
         return this.http.post<Teacher>(`${this.host}`, formData);
     }
 
-    update(id: number, name: string, email: string, file: File): Observable<Teacher> {
+    update(id: number, name: string, email: string, contactNumber: string, file: File): Observable<Teacher> {
         const formData = new FormData();
         formData.append('id', id.toString());
         formData.append('name', name);
         formData.append('email', email);
+        formData.append('contactNumber', contactNumber);
         formData.append('file', file);
         return this.http.put<Teacher>(`${this.host}`, formData);
     }

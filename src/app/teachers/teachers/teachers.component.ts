@@ -60,7 +60,7 @@ export class TeachersComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.teacherService.update(this.teacher.id, this.teacher.name, this.teacher.email, this.file).subscribe(
+    this.teacherService.update(this.teacher.id, this.teacher.name, this.teacher.email, this.teacher.contactNumber, this.file).subscribe(
       response => {
         this.teacher = response
         this.messageService.add({ severity: 'success', detail: 'Explicador actualizado com sucesso!' });
@@ -76,7 +76,7 @@ export class TeachersComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.teacherService.save(this.teacher.name, this.teacher.email, this.file).subscribe(
+    this.teacherService.save(this.teacher.name, this.teacher.email, this.teacher.contactNumber, this.file).subscribe(
       response => {
         this.teacher = response
         this.messageService.add({ severity: 'success', detail: 'Explicador salvo com sucesso!' });
@@ -130,10 +130,11 @@ export class TeachersComponent implements OnInit {
     this.file = event.target.files[0];
   }
 
-  onUpdate(id: number, name: string, email: string, file: File): void {
+  onUpdate(id: number, name: string, email: string, contactNumber: string, file: File): void {
     this.teacher.id = id
     this.teacher.name = name;
     this.teacher.email = email;
+    this.teacher.contactNumber = contactNumber;
     this.file = file;
     this.displayModalSave = true;
   }

@@ -56,7 +56,7 @@
                 <td>
                     <p style="font-size: 0.8rem; font-weight: bold;">{{ teacher.name }}</p>
                     <p style="font-size: 0.85rem;">email: {{ teacher.email }}</p>
-                    <p style="font-size: 0.85rem;">contactos: 844505579, 862434518 </p>
+                    <p style="font-size: 0.85rem;">telefone: {{ teacher.contactNumber }} </p>
                     <!--
                     <p style="font-size: 0.85rem;">morada: Bairro 25 de jumho, rua 8</p>
                     -->
@@ -64,7 +64,7 @@
                 </td>
                 <td *ngIf="!isAdmin" style="width: 150px;">
                     <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit" (click)="onUpdate(teacher.id, teacher.name, teacher.email, file)" tooltipPosition="top"
+                        <button pButton pTooltip="Edit" (click)="onUpdate(teacher.id, teacher.name, teacher.email, teacher.contactNumber, file)" tooltipPosition="top"
                             type="button" icon="pi pi-pencil" style="height: 30px; background-color: #3734ed;"></button>
                         <button pButton pTooltip="Delete" (click)="confirmarExclusao(teacher)" tooltipPosition="top"
                             type="button" icon="pi pi-trash"
@@ -102,6 +102,12 @@
             <label>Email</label>
             <input pInputText type="text" name="email" ngModel #email="ngModel" required minlength="1"
                 [(ngModel)]="teacher.email">
+        </div>
+
+        <div class="col-12 p-fluid">
+            <label>Número de telefone</label>
+            <input pInputText type="text" name="contactNumber" ngModel #contactNumber="ngModel" required minlength="1"
+                [(ngModel)]="teacher.contactNumber">
         </div>
 
         <div class="col-12 p-fluid">
