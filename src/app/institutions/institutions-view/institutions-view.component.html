@@ -1,18 +1,40 @@
 <div class="container" style="margin-top: 120px;">
     <div style="display: inline-block; vertical-align: top; margin-right: 20px;">
-        <p style="margin: 0; font-size: 30px;">{{institution.name}} <span *ngIf="institution.acronym">({{ institution.acronym }})</span></p>
+        <p style="margin: 0; font-size: 30px;">{{institution.name}} <span *ngIf="institution.acronym">({{
+                institution.acronym }})</span></p>
         <img src="{{institution.urlFile}}" alt="pic 1" style="max-width: 100px; max-height: 100px;" />
     </div>
-    
-    <p style="margin-top: 20px; font-size: 0.85rem;">{{institution.description}}</p>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <p style="margin-top: 20px; margin-bottom: 20px; font-size: 0.85rem;">{{institution.description}}</p>
+
+    <div style="display:inline;">
+        <p style="margin-top: 20px; font-size: 15px;">Cursos</p>
+    </div>
+
+    <p-table [value]="courses" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
+        selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
+        currentPageReportTemplate="Mostrando {{totalRegistros}} resultados" [showCurrentPageReport]="true"
+        styleClass="p-datatable-sm" #tabela>
+
+        <ng-template pTemplate="header">
+            <tr>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-course>
+            <tr>
+                <td style="width: 250px;">
+                    <p style="font-size: 0.8rem; font-weight: bold;">{{ course.name }}</p>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="10">
+                    <span *ngIf="showLoading" style="color:#1c80cf;">Carregando... </span>
+                    <span *ngIf="!showLoading">Nenhum curso encontrado </span>
+                    <i *ngIf="showLoading" class="pi pi-spin pi-spinner"></i>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
-

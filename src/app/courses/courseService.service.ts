@@ -28,7 +28,18 @@ export class CourseService {
 
     }
 
-    listarTodos(): Observable<IApiResponse<Course>> {
+    findByInstitutionId(institutionId: number, filtro: CourseFilter): Observable<IApiResponse<Course>> {
+        
+        let params = new HttpParams()
+            .set('page', filtro.pagina)
+            .set('sort', filtro.ordenamento)
+            .set('size', filtro.itensPorPagina)
+            .set('institutionId', institutionId);
+
+        return this.http.get<IApiResponse<Course>>(`${this.host}/findByInstitutionId`, { params });
+    }
+
+    getAll(): Observable<IApiResponse<Course>> {
         return this.http.get<IApiResponse<Course>>(`${this.host}/filter`, {});
     }
 
