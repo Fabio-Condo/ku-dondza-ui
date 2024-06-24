@@ -14,8 +14,11 @@ export class AppComponent {
   
   title = 'post-app';
 
-  showNavbar() {  // Metodo que vai nao negar a exibição do navbar na tela do login. Ou seja, mostra a navbar em todas URL's excepto na URL do login. Nota: Depois colocar o metodo no app.component.html
+  showNavbar() {  
     return this.router.url !== '/login';
-    //return this.router.url !== '/feed';
+  }
+
+  showFooter() {  
+    return this.router.url !== '/pagina-nao-encontrada';
   }
 }

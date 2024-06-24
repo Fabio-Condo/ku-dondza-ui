@@ -1,8 +1,8 @@
 export interface ExameFilter {
     global?: string,
-    institution?: number;
     description?: string;
-    subject?: string;
+    institution?: number;
+    subject?: number;
 
     beginDate?: Date,
     endDate?: Date,

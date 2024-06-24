@@ -1,3 +1,5 @@
+import { Subject } from "./Subject";
+
 export class Teacher {
     id!: number;
     name!: string;
@@ -5,4 +7,5 @@ export class Teacher {
     contactNumber!: string;
     fileName!: string;
     urlFile!: string;
+    subjects: Subject[] = [];
 }

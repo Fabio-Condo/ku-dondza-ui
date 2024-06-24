@@ -59,4 +59,12 @@ export class TeacherService {
         return this.http.get<number>(`${this.host}/total`, {});
     }
 
+    addSubjectToTeacherSubjectsList(teacherId: number, subjectId: number): Observable<Teacher> {
+        return this.http.post<Teacher>(`${this.host}/${teacherId}/subjects/${subjectId}`, {});
+    }
+
+    removeSubjectFromTeacherSubjectsList(teacherId: number, subjectId: number): Observable<Teacher> {
+        return this.http.put<Teacher>(`${this.host}/${teacherId}/subjects/${subjectId}`, {});
+    }
+
 }

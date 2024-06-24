@@ -23,8 +23,11 @@ export class TeachersComponent implements OnInit {
   file!: File;
   totalTeachers: number = 0;
   displayModalFilter: boolean = false;
+  displayModalTeacherSubjects: boolean = false;
+  selectedModalTeacher: Teacher = new Teacher();
 
-  isAdmin: boolean = true;
+
+  isAdmin: boolean = false;
 
   imagePath = './assets/images'
 
@@ -151,7 +154,7 @@ export class TeachersComponent implements OnInit {
       } else {
         this.grid.reset();
       }
-      this.messageService.add({ severity: 'success', detail: 'Courso excluído com sucesso!' })
+      this.messageService.add({ severity: 'success', detail: 'Teacher excluído com sucesso!' })
       this.buscarTotal();
     },
       (errorResponse: HttpErrorResponse) => {
@@ -172,6 +175,35 @@ export class TeachersComponent implements OnInit {
 
   onFilter(): void {
     this.displayModalFilter = true;
+  }
+
+  onEditSubject(teacher: Teacher): void {
+    this.selectedModalTeacher = teacher;
+    this.displayModalTeacherSubjects = true;
+  }
+
+  onRemoveSubject(teacherId: number, subjectId: number): void {
+    this.showLoading = true;
+    this.teacherService.removeSubjectFromTeacherSubjectsList(teacherId, subjectId).subscribe(
+      (response) => {
+        this.showLoading = false;
+        this.findAll();
+        this.messageService.add({ severity: 'success', detail: 'Disciplina excluída com sucesso!' })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  confirmarExclusaoSubject(teacherId: number, subjectId: number): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.onRemoveSubject(teacherId, subjectId);
+      }
+    });
   }
 
   aoMudarPagina(event: LazyLoadEvent) {

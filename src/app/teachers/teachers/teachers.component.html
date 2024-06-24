@@ -20,7 +20,7 @@
             <div class="flex">
 
 
-                <button *ngIf="!isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
+                <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
 
                 <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
                     {{totalRegistros}} dos {{totalTeachers}}</p>
@@ -62,10 +62,27 @@
                     -->
 
                 </td>
-                <td *ngIf="!isAdmin" style="width: 150px;">
+                <td>
+                    <span *ngFor="let subject of teacher.subjects">
+
+                        <span style="margin-right: 4px;">
+                            <p-tag [value]="subject.name"></p-tag>
+                        </span>
+                        <!--
+                        <span style="background-color: #3734ed; color: #fff; margin: 2px;">{{ subject.name }} </span>
+                        -->
+                    </span>
+                    <button (click)="onEditSubject(teacher)" *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</button>
+
+
+                </td>
+                <td *ngIf="isAdmin" style="width: 150px;">
                     <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit" (click)="onUpdate(teacher.id, teacher.name, teacher.email, teacher.contactNumber, file)" tooltipPosition="top"
-                            type="button" icon="pi pi-pencil" style="height: 30px; background-color: #3734ed;"></button>
+                        <button pButton pTooltip="Edit"
+                            (click)="onUpdate(teacher.id, teacher.name, teacher.email, teacher.contactNumber, file)"
+                            tooltipPosition="top" type="button" icon="pi pi-pencil"
+                            style="height: 30px; background-color: #3734ed;"></button>
                         <button pButton pTooltip="Delete" (click)="confirmarExclusao(teacher)" tooltipPosition="top"
                             type="button" icon="pi pi-trash"
                             style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
@@ -90,7 +107,7 @@
 </div>
 
 <!--Save-->
-<p-dialog header="Exame {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
+<p-dialog header="Teacher {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
     [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
     <form enctype="multipart/form-data">
         <div class="col-12 p-fluid">
@@ -122,9 +139,28 @@
         </div>
 
         <div class="col-12 p-fluid" style="margin-top: 15px;">
-            <button (click)="save()" pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}"
+            <button  pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}"
                 style="background-color: #3734ed; border: none;">
             </button>
         </div>
     </form>
+</p-dialog>
+
+<p-dialog header="{{selectedModalTeacher.name}}" [(visible)]="displayModalTeacherSubjects" [modal]="true"
+    [style]="{width: '30vw'}" [draggable]="false" [resizable]="false">
+
+    <p-table [value]="selectedModalTeacher.subjects" selectionMode="single" [lazy]="true" styleClass="p-datatable-sm">
+
+        <ng-template pTemplate="body" let-subject>
+            <tr>
+                <td>
+                    <p style="font-size: 0.8rem; font-weight: bold;">{{ subject.name }}</p>
+                </td>
+                <td>
+                    <button (click)="confirmarExclusaoSubject(selectedModalTeacher.id, subject.id)" style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">remover</button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
 </p-dialog>

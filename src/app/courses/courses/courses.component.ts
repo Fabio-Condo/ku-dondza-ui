@@ -25,7 +25,7 @@ export class CoursesComponent implements OnInit {
   displayModalFilter: boolean = false;
   institutions: any[] = [];
 
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
   paginaAtual: number = 0;
 

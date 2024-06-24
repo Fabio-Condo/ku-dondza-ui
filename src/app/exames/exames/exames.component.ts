@@ -7,6 +7,8 @@ import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api'
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
   selector: 'app-exames',
@@ -25,8 +27,10 @@ export class ExamesComponent implements OnInit {
   showLoadingDownload: boolean = false;
   displayModalFilter: boolean = false;
   institutions: any[] = [];
+  subjects: any[] = [];
 
-  isAdmin: boolean = true;
+
+  isAdmin: boolean = false;
 
   paginaAtual: number = 0;
 
@@ -37,21 +41,10 @@ export class ExamesComponent implements OnInit {
     { label: 'Ensino Geral', value: 'Ensino Geral' },
   ];
 
-  subjects = [
-    { label: 'Matemática', value: 'Matemática' },
-    { label: 'Português', value: 'Português' },
-    { label: 'Fisica', value: 'Fisica' },
-    { label: 'Quimica', value: 'Quimica' },
-    { label: 'Biológia', value: 'Biológia' },
-    { label: 'Inglês', value: 'Inglês' },
-    { label: 'Francês', value: 'Francês' },
-    { label: 'História', value: 'História' },
-    { label: 'Geográfia', value: 'Geográfia' },
-  ];
-
   constructor(
     private examesService: ExamesService,
     private institutionService: InstitutionService,
+    private subjectsService: SubjectsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
@@ -59,6 +52,7 @@ export class ExamesComponent implements OnInit {
   ngOnInit(): void {
     this.buscarTotal();
     this.carregarInstituicoes();
+    this.carregarSubjects();
     this.findAll(0);
   }
 
@@ -84,7 +78,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exame.id, this.exame.subject, this.exame.description, this.exame.date, this.exame.institution.id, this.file).subscribe(
+    this.examesService.update(this.exame.id, this.exame.description, this.exame.date, this.exame.subject.id, this.exame.institution.id, this.file).subscribe(
       response => {
         this.exame = response
         this.exame.date = new Date(this.exame.date);
@@ -101,7 +95,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exame.subject, this.exame.description, this.exame.date, this.exame.institution.id, this.file).subscribe(
+    this.examesService.save(this.exame.description, this.exame.date, this.exame.subject.id, this.exame.institution.id, this.file).subscribe(
       response => {
         this.exame = response
         this.exame.date = new Date(this.exame.date);
@@ -178,6 +172,23 @@ export class ExamesComponent implements OnInit {
     )
   }
 
+  carregarSubjects() {
+    return this.subjectsService.findAll().subscribe(
+      dados => {
+        this.subjects = dados.map(dado => {
+          return {
+            label: dado.name,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
   buscarTotal() {
     this.showLoading = true;
     this.examesService.buscarTotal().subscribe(
@@ -208,10 +219,10 @@ export class ExamesComponent implements OnInit {
     this.paginaAtual = pagina;
   }
 
-  public onUpdate(id: number, subject: string, description: string, date: Date, institutionId: number, file: File): void {
+  public onUpdate(id: number, description: string, date: Date, subjectId: number, institutionId: number, file: File): void {
     this.exame.id = id
+    this.exame.subject.id = subjectId;
     this.exame.institution.id = institutionId;
-    this.exame.subject = subject;
     this.exame.description = description;
     this.file = file;
     this.exame.date = date;
@@ -268,7 +279,7 @@ export class ExamesComponent implements OnInit {
 
   limparCampos() {
     this.filtro.global = "";
-    this.filtro.subject = "";
+    this.filtro.subject = undefined;
     this.filtro.description = "";
     this.filtro.institution = undefined;
     this.filtro.beginDate = undefined;

@@ -25,7 +25,7 @@
       <div class="flex">
 
 
-        <button *ngIf="!isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
+        <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
 
         <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
           {{totalRegistros}} dos {{totalExames}}</p>
@@ -49,7 +49,7 @@
     <ng-template pTemplate="body" let-exame>
       <tr>
         <td>
-          <p style="font-size: 0.85rem; font-weight: bold;"> {{exame.subject}}</p>
+          <p style="font-size: 0.85rem; font-weight: bold;"> {{exame.subject.name}}</p>
           <p style="font-size: 0.85rem;">{{ exame.date | date:'yyyy' }}</p>
         </td>
         <td style="width: 10px;">
@@ -74,10 +74,10 @@
           <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
 
         </td>
-        <td *ngIf="!isAdmin" style="width: 150px;">
+        <td *ngIf="isAdmin" style="width: 150px;">
           <span class="p-buttonset mr-auto">
             <button pButton pTooltip="Edit"
-              (click)="onUpdate(exame.id, exame.subject, exame.description, exame.date, exame.institution.id, file)"
+              (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
               tooltipPosition="top" type="button" icon="pi pi-pencil"
               style="height: 30px; background-color: #3734ed;"></button>
             <button pButton (click)="confirmarExclusao(exame)" pTooltip="Delete" tooltipPosition="top" type="button"
@@ -115,7 +115,7 @@
 
     <div class="col-12 p-fluid">
       <label>Disciplina</label>
-      <p-dropdown placeholder="Selecione" [options]="subjects" [(ngModel)]="exame.subject" name="subject"
+      <p-dropdown placeholder="Selecione" [options]="subjects" [(ngModel)]="exame.subject.id" name="subject"
         #subject="ngModel"></p-dropdown>
     </div>
 

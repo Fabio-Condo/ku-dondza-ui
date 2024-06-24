@@ -53,22 +53,22 @@ export class ExamesService {
 
   }
 
-  save(subject: string, description: string, date: Date, institutionId: number, file: File): Observable<Exame> {
+  save(description: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exame> {
     const formData = new FormData();
-    formData.append('subject', subject);
     formData.append('description', description);
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
+    formData.append('subjectId', subjectId.toString());
     formData.append('institutionId', institutionId.toString());
     formData.append('file', file);
     return this.http.post<Exame>(`${this.host}`, formData);
   }
   
-  update(id: number, subject: string, description: string, date: Date, institutionId: number, file: File): Observable<Exame> {
+  update(id: number, description: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exame> {
     const formData = new FormData();
     formData.append('id', id.toString());
-    formData.append('subject', subject);
     formData.append('description', description);
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
+    formData.append('subjectId', subjectId.toString());
     formData.append('institutionId', institutionId.toString());
     formData.append('file', file);
     return this.http.put<Exame>(`${this.host}`, formData);
