@@ -55,7 +55,8 @@
                     </div>
                 </td>
                 <td style="width: 300px;">
-                    <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }} <span *ngIf="institution.acronym">({{ institution.acronym }})</span></p>
+                    <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }} <span
+                            *ngIf="institution.acronym">({{ institution.acronym }})</span></p>
                     <p style="font-size: 0.85rem;"> {{institution.type}}</p>
                     <!--<p style="font-size: 0.85rem;"> {{ institution.address }} </p>-->
                 </td>
@@ -63,7 +64,7 @@
                     <p-tag [value]="getAdministrationTypeValue(institution.administrationType)"
                         [severity]="getAdministrationType(institution.administrationType)"></p-tag>
                 </td>
-                <td >
+                <td>
                     <p style="font-size: 0.85rem;" class="texto-limitado">{{ institution.description }} </p>
                     <a href="{{ institution.website }}" target="_blank"
                         style="color: #1c80cf; text-decoration: underline;">Saiba mais no website</a>
@@ -71,19 +72,22 @@
                 </td>
 
                 <td>
-                    <button pButton [routerLink]="['/instituicoes', institution.id]" type="button" icon="pi pi-arrow-right"
+                    <!--
+                    <button pButton [routerLink]="['/instituicoes', institution.id]" type="button"
+                        icon="pi pi-arrow-right"
                         style="height: 30px; background-color: #3734ed; border: none;"></button>
+                    -->
+                    <a style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline;"
+                        [routerLink]="['/instituicoes', institution.id]">ver cursos</a>
+
                 </td>
 
                 <td *ngIf="isAdmin" style="width: 150px;">
-                    <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit" tooltipPosition="top" type="button" icon="pi pi-pencil"
-                        (click)="onUpdateInstitution(institution.id, institution.name, this.institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
-                            style="height: 30px; background-color: #3734ed;"></button>
-                        <button pButton pTooltip="Delete" (click)="confirmarExclusao(institution)" tooltipPosition="top"
-                            type="button" icon="pi pi-trash"
-                            style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
-                    </span>
+                    <a (click)="onUpdateInstitution(institution.id, institution.name, this.institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
+                        *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</a>
+                    <a (click)="confirmarExclusao(institution)" *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">excluir</a>
                 </td>
             </tr>
         </ng-template>

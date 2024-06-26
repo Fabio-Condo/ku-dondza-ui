@@ -56,18 +56,16 @@
                 </td>
 
                 <td>
-                    <p style="font-size: 0.8rem; font-weight: bold;">{{ course.institution.name }} <span *ngIf="course.institution.acronym">({{ course.institution.acronym }})</span></p>
+                    <p style="font-size: 0.8rem; font-weight: bold;">{{ course.institution.name }} <span
+                            *ngIf="course.institution.acronym">({{ course.institution.acronym }})</span></p>
                     <p style="font-size: 0.85rem;"> {{ course.institution.type }}</p>
                 </td>
 
                 <td *ngIf="isAdmin" style="width: 150px;">
-                    <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit" (click)="onUpdateCourse(course)" tooltipPosition="top"
-                            type="button" icon="pi pi-pencil" style="height: 30px; background-color: #3734ed;"></button>
-                        <button pButton pTooltip="Delete" (click)="confirmarExclusao(course)" tooltipPosition="top"
-                            type="button" icon="pi pi-trash"
-                            style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
-                    </span>
+                    <a (click)="onUpdateCourse(course)" *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</a>
+                    <a (click)="confirmarExclusao(course)" *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">excluir</a>
                 </td>
             </tr>
         </ng-template>

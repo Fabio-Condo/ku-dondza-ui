@@ -30,7 +30,7 @@ export class ExamesComponent implements OnInit {
   subjects: any[] = [];
 
 
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
 
   paginaAtual: number = 0;
 
@@ -52,7 +52,7 @@ export class ExamesComponent implements OnInit {
   ngOnInit(): void {
     this.buscarTotal();
     this.carregarInstituicoes();
-    this.carregarSubjects();
+    this.carregarDisciplinas();
     this.findAll(0);
   }
 
@@ -78,7 +78,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exame.id, this.exame.description, this.exame.date, this.exame.subject.id, this.exame.institution.id, this.file).subscribe(
+    this.examesService.update(this.exame.id, this.exame.description, this.exame.date, this.exame.subject.id!, this.exame.institution.id, this.file).subscribe(
       response => {
         this.exame = response
         this.exame.date = new Date(this.exame.date);
@@ -95,7 +95,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exame.description, this.exame.date, this.exame.subject.id, this.exame.institution.id, this.file).subscribe(
+    this.examesService.save(this.exame.description, this.exame.date, this.exame.subject.id!, this.exame.institution.id, this.file).subscribe(
       response => {
         this.exame = response
         this.exame.date = new Date(this.exame.date);
@@ -172,7 +172,7 @@ export class ExamesComponent implements OnInit {
     )
   }
 
-  carregarSubjects() {
+  carregarDisciplinas() {
     return this.subjectsService.findAll().subscribe(
       dados => {
         this.subjects = dados.map(dado => {

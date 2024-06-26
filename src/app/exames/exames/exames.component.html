@@ -4,8 +4,14 @@
     <p style="margin-top: 20px; font-size: 30px;">Exames de admissão</p>
   </div>
 
-  <p *ngIf="showLoadingDownload"
+  <!--
+  <p *ngIf="showLoadingDownload"e4e5e8 dcdee1
     style="background-color: rgb(44, 164, 44); color: white; padding: 10px; text-align: center; margin-top: 20px;">
+    Baixando arquivo...
+  </p>
+  -->
+  <p *ngIf="showLoadingDownload"
+    style="background-color: #e4e5e8; color: black; padding: 10px; text-align: center; margin-top: 20px;">
     Baixando arquivo...
   </p>
 
@@ -62,7 +68,8 @@
           </div>
         </td>
         <td>
-          <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.institution.name }} <span *ngIf="exame.institution.acronym">({{ exame.institution.acronym }})</span></p>
+          <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.institution.name }} <span
+              *ngIf="exame.institution.acronym">({{ exame.institution.acronym }})</span></p>
           <p style="font-size: 0.85rem;"> {{exame.institution.type}} </p>
         </td>
         <td>
@@ -75,15 +82,11 @@
 
         </td>
         <td *ngIf="isAdmin" style="width: 150px;">
-          <span class="p-buttonset mr-auto">
-            <button pButton pTooltip="Edit"
-              (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
-              tooltipPosition="top" type="button" icon="pi pi-pencil"
-              style="height: 30px; background-color: #3734ed;"></button>
-            <button pButton (click)="confirmarExclusao(exame)" pTooltip="Delete" tooltipPosition="top" type="button"
-              icon="pi pi-trash"
-              style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
-          </span>
+          <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
+            *ngIf="isAdmin"
+            style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</a>
+          <a (click)="confirmarExclusao(exame)" *ngIf="isAdmin"
+            style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">excluir</a>
         </td>
       </tr>
     </ng-template>

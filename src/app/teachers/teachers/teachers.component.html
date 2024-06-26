@@ -72,21 +72,17 @@
                         <span style="background-color: #3734ed; color: #fff; margin: 2px;">{{ subject.name }} </span>
                         -->
                     </span>
-                    <button (click)="onEditSubject(teacher)" *ngIf="isAdmin"
-                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</button>
+                    <a (click)="onEditSubject(teacher)" *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</a>
 
 
                 </td>
                 <td *ngIf="isAdmin" style="width: 150px;">
-                    <span class="p-buttonset mr-auto">
-                        <button pButton pTooltip="Edit"
-                            (click)="onUpdate(teacher.id, teacher.name, teacher.email, teacher.contactNumber, file)"
-                            tooltipPosition="top" type="button" icon="pi pi-pencil"
-                            style="height: 30px; background-color: #3734ed;"></button>
-                        <button pButton pTooltip="Delete" (click)="confirmarExclusao(teacher)" tooltipPosition="top"
-                            type="button" icon="pi pi-trash"
-                            style="background-color: #fff; color: #e96969; border-color: #e96969; height: 30px;"></button>
-                    </span>
+                    <a (click)="onUpdate(teacher.id, teacher.name, teacher.email, teacher.contactNumber, file)"
+                        *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</a>
+                    <a (click)="confirmarExclusao(teacher)" *ngIf="isAdmin"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">excluir</a>
                 </td>
             </tr>
         </ng-template>
@@ -139,28 +135,49 @@
         </div>
 
         <div class="col-12 p-fluid" style="margin-top: 15px;">
-            <button  pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}"
+            <button pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}"
                 style="background-color: #3734ed; border: none;">
             </button>
         </div>
     </form>
 </p-dialog>
 
-<p-dialog header="{{selectedModalTeacher.name}}" [(visible)]="displayModalTeacherSubjects" [modal]="true"
-    [style]="{width: '30vw'}" [draggable]="false" [resizable]="false">
+<p-dialog header="Disciplinas - {{selectedModalTeacher.name}}" [(visible)]="displayModalTeacherSubjects" [modal]="true"
+    [style]="{width: '40vw'}" [draggable]="false" [resizable]="false">
+
+    <a (click)="onAddSubject(selectedModalTeacher)"
+        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-bottom: 10px;">adicionar</a>
 
     <p-table [value]="selectedModalTeacher.subjects" selectionMode="single" [lazy]="true" styleClass="p-datatable-sm">
 
-        <ng-template pTemplate="body" let-subject>
+        <ng-template pTemplate="body" let-subject let-rowIndex="rowIndex">
             <tr>
                 <td>
                     <p style="font-size: 0.8rem; font-weight: bold;">{{ subject.name }}</p>
                 </td>
                 <td>
-                    <button (click)="confirmarExclusaoSubject(selectedModalTeacher.id, subject.id)" style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">remover</button>
+                    <a (click)="confirmarExclusaoSubject(selectedModalTeacher.id, subject.id, rowIndex)"
+                        style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">remover</a>
                 </td>
             </tr>
         </ng-template>
     </p-table>
+
+</p-dialog>
+
+<p-dialog header="Adicionar" [(visible)]="displayModalAddTeacherSubjects" [modal]="true"
+    [style]="{width: '30vw', height: '23vw'}" [draggable]="false" [resizable]="false">
+
+    <div class="col-12 p-fluid">
+        <label>Disciplina</label>
+        <p-dropdown placeholder="Selecione" [options]="subjects" [(ngModel)]="subject.id" name="subj"
+            #subj="ngModel"></p-dropdown>
+    </div>
+
+    <div class="col-12 p-fluid" style="margin-top: 160px;">
+        <button pButton (click)="onAddSubjectToList(selectedModalTeacher.id, subject.id)" type="button"
+            label="{{ showLoading ? 'Loading...' : 'Salvar' }}" style="background-color: #3734ed; border: none;">
+        </button>
+    </div>
 
 </p-dialog>

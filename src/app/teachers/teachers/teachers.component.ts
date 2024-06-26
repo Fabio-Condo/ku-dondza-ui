@@ -6,6 +6,8 @@ import { TeacherFilter } from 'src/app/core/interface/TeacherFilter';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { NgForm } from '@angular/forms';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
   selector: 'app-teachers',
@@ -24,21 +26,26 @@ export class TeachersComponent implements OnInit {
   totalTeachers: number = 0;
   displayModalFilter: boolean = false;
   displayModalTeacherSubjects: boolean = false;
+  displayModalAddTeacherSubjects: boolean = false;
   selectedModalTeacher: Teacher = new Teacher();
 
+  subject: Subject = new Subject();
+  subjects: any[] = [];
 
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
 
   imagePath = './assets/images'
 
   constructor(
     private teacherService: TeacherService,
+    private subjectsService: SubjectsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
-    this.buscarTotal()
+    this.buscarTotal();
+    this.carregarDisciplinas();
   }
 
   @ViewChild('tabela') grid: any;
@@ -182,12 +189,17 @@ export class TeachersComponent implements OnInit {
     this.displayModalTeacherSubjects = true;
   }
 
-  onRemoveSubject(teacherId: number, subjectId: number): void {
+  onAddSubject(teacher: Teacher): void {
+    this.selectedModalTeacher = teacher;
+    this.displayModalAddTeacherSubjects = true;
+  }
+
+  onRemoveSubjectFromList(teacherId: number, subjectId: number, index: number): void {
     this.showLoading = true;
     this.teacherService.removeSubjectFromTeacherSubjectsList(teacherId, subjectId).subscribe(
       (response) => {
         this.showLoading = false;
-        this.findAll();
+        this.selectedModalTeacher.subjects.splice(index, 1);
         this.messageService.add({ severity: 'success', detail: 'Disciplina excluída com sucesso!' })
       },
       (errorResponse: HttpErrorResponse) => {
@@ -197,11 +209,54 @@ export class TeachersComponent implements OnInit {
     );
   }
 
-  confirmarExclusaoSubject(teacherId: number, subjectId: number): void {
+  onAddSubjectToList(teacherId: number, subjectId: number): void {
+    this.showLoading = true;
+    this.teacherService.addSubjectToTeacherSubjectsList(teacherId, subjectId).subscribe(
+      (response) => {
+        this.selectedModalTeacher.subjects = response.subjects
+        //this.findAll();
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  //confirmSubject(frm: NgForm) {
+  //  this.teacher.subjects[this.subjectIndex!] = this.cloneSubject(this.subject!);
+    //this.showSubjectForm = false;
+  //  frm.reset();
+  //}
+
+  //cloneSubject(subject: Subject): Subject {
+  //  return new Subject(subject.id, subject.name);
+  //}
+
+  carregarDisciplinas() {
+    return this.subjectsService.findAll().subscribe(
+      dados => {
+        this.subjects = dados.map(dado => {
+          return {
+            label: dado.name,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
+  confirmarExclusaoSubject(teacherId: number, subjectId: number, index: number): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
-        this.onRemoveSubject(teacherId, subjectId);
+        this.onRemoveSubjectFromList(teacherId, subjectId, index);
       }
     });
   }
