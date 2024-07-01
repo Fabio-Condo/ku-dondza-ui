@@ -84,7 +84,7 @@ export class CoursesComponent implements OnInit {
       (response) => {
         this.course = response;
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' + this.paginaAtual });
+        this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' });
         this.findAll(this.paginaAtual)
       },
       (errorResponse: HttpErrorResponse) => {

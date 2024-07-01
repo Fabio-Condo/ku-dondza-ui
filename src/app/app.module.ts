@@ -19,6 +19,10 @@ import { CoursesRoutingModule } from './courses/courses-routing.module';
 import { CoursesModule } from './courses/courses.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { TeachersRoutingModule } from './teachers/institutions-routing.module';
+import { CoreRoutingModule } from './core/core-routing.module';
+import { UsersModule } from './users/users.module';
+import { UsersRoutingModule } from './users/users-routing.module';
+
 
 @NgModule({
   declarations: [
@@ -34,6 +38,8 @@ import { TeachersRoutingModule } from './teachers/institutions-routing.module';
     InstitutionsRoutingModule,
     CoursesRoutingModule,
     TeachersRoutingModule,
+    UsersRoutingModule,
+    CoreRoutingModule,
     AppRoutingModule,
 
   
@@ -42,6 +48,7 @@ import { TeachersRoutingModule } from './teachers/institutions-routing.module';
     InstitutionsModule,
     CoursesModule,
     TeachersModule,
+    UsersModule,
 
     CoreModule,
   ],
