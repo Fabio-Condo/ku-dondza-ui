@@ -22,6 +22,11 @@ import { TeachersRoutingModule } from './teachers/institutions-routing.module';
 import { CoreRoutingModule } from './core/core-routing.module';
 import { UsersModule } from './users/users.module';
 import { UsersRoutingModule } from './users/users-routing.module';
+import { AuthenticationService } from './users/authentication.service';
+import { AuthenticationGuard } from './security/Guard/authentication.guard';
+import { UserService } from './users/user.service';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { AuthInterceptor } from './security/interceptor/auth.interceptor';
 
 
 @NgModule({
@@ -39,8 +44,7 @@ import { UsersRoutingModule } from './users/users-routing.module';
     CoursesRoutingModule,
     TeachersRoutingModule,
     UsersRoutingModule,
-    CoreRoutingModule,
-    AppRoutingModule,
+
 
   
     FeedsModule,
@@ -50,13 +54,27 @@ import { UsersRoutingModule } from './users/users-routing.module';
     TeachersModule,
     UsersModule,
 
+    CoreRoutingModule,
+    AppRoutingModule,
+
     CoreModule,
   ],
   providers: [
-    ConfirmationService, 
-    MessageService, 
-    ErrorHandlerService, 
+    ConfirmationService,
+    MessageService,
+    ErrorHandlerService,
+    AuthenticationGuard,
+    AuthenticationService,
+    UserService,
+    JwtHelperService,
     DatePipe,
+    //{ provide: LOCALE_ID, useValue: 'fr' },
+    //{ provide: LOCALE_ID, useValue: 'pt-MZ' },
+    //{ provide: LOCALE_ID, useValue: 'pt-US' },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+
   ],
   bootstrap: [AppComponent]
 })

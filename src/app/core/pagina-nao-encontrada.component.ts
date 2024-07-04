@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
   template: `
   <div class="container" style="position: absolute; top: 20%; width: 100%; text-align: center;  ">
     <h1 class="" style="font-size: 70px; color: #3734ed;">404</h1>
-    <h1 class=""  >Page not found!</h1>
+    <h1 class=""  >Página não encontrada!</h1>
   <div>
 
   `,

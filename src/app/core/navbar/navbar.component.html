@@ -11,7 +11,7 @@
           />
       </div>
       -->
-    <span>
+    <span *ngIf="isUserLoggedIn">
       <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
         <span>Home</span>
       </a>
@@ -32,10 +32,10 @@
       </a>
     </span>
 
-    <div class="create">
+    <div class="create" *ngIf="isUserLoggedIn">
       <div class="profile-pic">
 
-        <a href="javascript:;" [routerLink]="['/user/profile']">
+        <a href="javascript:;" [routerLink]="['v1/user/profile']">
           <img src="{{imagePath}}/profile-11.jpg" alt="pic 1" />
         </a>
 

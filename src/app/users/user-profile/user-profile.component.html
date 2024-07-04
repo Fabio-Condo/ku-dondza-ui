@@ -1,0 +1,113 @@
+<div class="container" style="margin-top: 120px;">
+    <div class="card">
+        <h5 class="text-center" style="margin-bottom: 20px;">Perfil do usuário</h5>
+        <div class="formgrid grid">
+            <div class="field col">
+                <div class="card">
+                    <p-card>
+                        <div class="text-center">
+                            <div class="">
+                                <p-image src="{{user.profileImageUrl}}" alt="Image" height="135" width="135"
+                                    [preview]="true"></p-image>
+                                <!--<img class="" height="135" width="135" src="{{user.profileImageUrl}}" style="border-radius: 50%;" alt="">-->
+                            </div>
+
+                            <h4 class="">{{user.firstName}} {{user.lastName}}</h4>
+                            <p class="">{{user.username}}</p>
+                            <div *ngIf="user?.lastLoginDate !== null" class="text-muted"><small>Último login:
+                                    {{user.lastLoginDate | date:'medium'}}</small></div>
+                            <div class="">
+                                <div class="" style="background-color: #eff3f5;">
+                                    <input type="file" accept="image/*" name="profileImage"
+                                        (change)="onProfileImageChange($event, $event)" class="custom-file-input">
+                                </div>
+                            </div>
+                            <div class="">
+                                <button pButton (click)="onLogOut()" class="btn btn-block btn-secondary"
+                                    style="margin-top: 10px;">
+                                    <span>Sair</span>
+                                    <i class="pi pi-sign-out" style="margin: 10px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+            </div>
+
+            <div class="field col">
+                <div class="card">
+                    <div class="field">
+                        <p-card>
+                            <form #profileUserForm="ngForm" (ngSubmit)="onUpdateCurrentUser(profileUserForm.value)"
+                                class="form" novalidate>
+                                <div class="col-12 p-fluid">
+                                    <label>Primeiro Nome</label>
+                                    <input pInputText type="text" name="firstName" required
+                                        [(ngModel)]="user.firstName" />
+                                </div>
+                                <div class="col-12 p-fluid" style="margin-top: 10px;">
+                                    <label>Último nome</label>
+                                    <input pInputText type="text" name="lastName" required
+                                        [(ngModel)]="user.lastName" />
+                                </div>
+
+                                <div class="col-12 p-fluid" style="margin-top: 10px;">
+                                    <label>Username</label>
+                                    <input pInputText type="text" name="username" required
+                                        [(ngModel)]="user.username" />
+                                </div>
+
+                                <div class="col-12 p-fluid" style="margin-top: 10px;">
+                                    <label>Email</label>
+                                    <input pInputText type="text" name="email" required
+                                        [(ngModel)]="user.email" />
+                                </div>
+
+                                <div class="col-12 p-fluid" style="margin-top: 10px;">
+                                    <label>Role</label>
+                                    <input pInputText readonly type="text" name="role" required
+                                        [(ngModel)]="user.role" />
+                                </div>
+
+                                <!--Select Role hidden-->
+                                <div class="col-12 md-6 p-fluid" hidden style="margin-top: 10px;">
+                                    <label>Role</label>
+                                    <p-dropdown [hidden]="!isAdmin" [options]="roles"
+                                        placeholder="Selecione" [filter]="true" #role [required]="true" name="role"
+                                        ngModel="ROLE_USER" [(ngModel)]="user.role"></p-dropdown>
+                                </div>
+
+                                <div class="col-12 p-fluid" style="margin-top: 3%;">
+                                    <a pButton type="submit"
+                                        (click)="prepararImportPassworChange()">
+                                        <span style="text-align: center;">Change password</span>
+                                    </a>
+                                </div>
+                                <div class="col-12 p-fluid" style="margin-top: 3%;">
+                                    <button pButton type="submit" [disabled]="profileUserForm.invalid">
+                                        <i *ngIf="refreshing" class="pi pi-spin pi-spinner"></i>&nbsp;&nbsp;
+                                        <span *ngIf="refreshing">Loading...</span>
+                                        <span *ngIf="!refreshing" style="text-align: center;">save</span>
+                                    </button>
+                                </div>
+
+                            </form>
+                        </p-card>
+                    </div>
+                    <div class="field">
+                        <p-card>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class=""><b>Permissões (role)</b></div>
+                                    <h6 *ngFor="let authority of user?.authorities" class="card-text">{{authority}}</h6>
+                                </div>
+                            </div>
+                        </p-card>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

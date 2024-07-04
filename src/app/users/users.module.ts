@@ -13,14 +13,20 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
+import { ImageModule } from 'primeng/image';
 import { TagModule } from 'primeng/tag';
+import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
+import { LoginComponent } from './login/login.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 
 
 @NgModule({
   declarations: [
-    UsersComponent
+    UsersComponent,
+    LoginComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +43,8 @@ import { TooltipModule } from 'primeng/tooltip';
     DialogModule,
     DividerModule,
     CalendarModule,
+    CardModule,
+    ImageModule,
 
     RouterModule,
     TagModule,
