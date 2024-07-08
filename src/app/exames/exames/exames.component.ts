@@ -24,7 +24,6 @@ export class ExamesComponent implements OnInit {
   displayModalSave: boolean = false;
   file!: File;
   totalExames: number = 0;
-  showLoadingDownload: boolean = false;
   displayModalFilter: boolean = false;
   institutions: any[] = [];
   subjects: any[] = [];
@@ -255,9 +254,9 @@ export class ExamesComponent implements OnInit {
     return currentCount + 1;
   }
 
-  download(id: number, filename: string): void {
-    this.showLoadingDownload = true
-    this.examesService.download(id, filename).subscribe((data: Blob) => {
+  download(exame: Exame, filename: string): void {
+    exame.showLoadingDownload = !exame.showLoadingDownload;
+    this.examesService.download(exame.id, filename).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
       // Criar um link temporário para o Blob
@@ -272,7 +271,6 @@ export class ExamesComponent implements OnInit {
 
       // Limpar o link após o download iniciar
       window.URL.revokeObjectURL(link.href);
-      this.showLoadingDownload = false;
       this.findAll(this.paginaAtual)
     });
   }

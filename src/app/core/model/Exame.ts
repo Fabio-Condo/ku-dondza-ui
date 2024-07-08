@@ -11,5 +11,6 @@ export class Exame {
     totalDownloadNumber!: string;
     institution = new Institution();
     subject = new Subject();
+    showLoadingDownload: boolean = false;
 
 }

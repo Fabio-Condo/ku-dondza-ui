@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Comment } from "src/app/core/model/Comment";
 
 @Component({
   selector: 'app-feed',
@@ -135,7 +136,19 @@ export class FeedComponent implements OnInit {
     }
   }
 
+  toggleReplyForm(comment: Comment): void {
+    comment.showReplyForm = !comment.showReplyForm;
+    if (comment.showReplyForm) {
+      comment.replyContent = '';
+    }
+  }
 
+  toggleComments(post: Post): void {
+    post.showComments = !post.showComments;
+    if (post.showComments && post.comments.length === 0) {
+      //this.getComments(post);
+    }
+  }
 
 }
 

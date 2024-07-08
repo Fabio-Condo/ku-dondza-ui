@@ -4,17 +4,6 @@
     <p style="margin-top: 20px; font-size: 30px;">Exames de admissão</p>
   </div>
 
-  <!--
-  <p *ngIf="showLoadingDownload"e4e5e8 dcdee1
-    style="background-color: rgb(44, 164, 44); color: white; padding: 10px; text-align: center; margin-top: 20px;">
-    Baixando arquivo...
-  </p>
-  -->
-  <p *ngIf="showLoadingDownload"
-    style="background-color: #e4e5e8; color: black; padding: 10px; text-align: center; margin-top: 20px;">
-    Baixando arquivo...
-  </p>
-
   <p style="margin-top: 20px; font-size: 0.85rem;">Explore a variedade de exames de admissão das instituições de ensino
     de Moçambique, abrangendo uma ampla
     gama de disciplinas e níveis educacionais. </p>
@@ -76,9 +65,12 @@
           <p style="font-size: 0.85rem;">{{ exame.description }}</p>
         </td>
         <td>
-          <button pButton (click)="download(exame.id, exame.fileName)" type="button" icon="pi pi-download"
+          <button pButton (click)="download(exame, exame.fileName)" type="button" icon="pi pi-download"
             style="height: 30px; background-color: #3734ed; border: none;"></button>
           <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
+
+
+          <span *ngIf="exame.showLoadingDownload" style="margin-left: 10px; font-size: 0.85rem; background-color: rgb(44, 164, 44); color: white; padding: 2px; text-align: center;">Baixando...</span>
 
         </td>
         <td *ngIf="isAdmin" style="width: 150px;">
