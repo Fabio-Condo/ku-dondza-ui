@@ -75,18 +75,16 @@
 
           <hr style="margin-bottom: 1rem;">
 
-          <form class="create-post" #newCommentForm="ngForm">
+          <form class="create-post" #commentForm="ngForm" (ngSubmit)="createComment(feed, null, commentForm.value.comment)">
             <div class="profile-pic">
               <img src="{{imagePath}}/profile-1.jpg" alt="">
             </div>
-            <input type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
-            
+            <input type="text" ngModel required name="comment" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
             <div>
-              <button class="btn btn-primary" style="padding: 0.4rem 1rem;">Publicar</button>
+              <button [disabled]="commentForm.invalid" type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem;">Publicar</button>
             </div>
             
           </form>
-          
 
           <div class="comments" *ngIf="feed.showComments">
             <div *ngFor="let comment of feed.comments" class="comment-box">
@@ -119,7 +117,7 @@
                   <div class="profile-pic">
                     <img src="{{imagePath}}/profile-1.jpg" alt="">
                   </div>
-                  <input type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
+                  <input [(ngModel)]="commentContent" type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
                   
                   <div>
                     <button class="btn btn-primary" style="padding: 0.4rem 1rem;">responder</button>

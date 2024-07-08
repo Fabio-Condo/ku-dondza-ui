@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Comment } from "src/app/core/model/Comment";
+import { CommentService } from 'src/app/core/commets/commentService .service';
 
 @Component({
   selector: 'app-feed',
@@ -40,11 +41,16 @@ export class FeedComponent implements OnInit {
 
   extension: any;
 
+  comment = new Comment();
+
+  commentContent: string = '';
+
   constructor(
     private router: Router,
     private feedsService: FeedsService,
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
+    private commentService: CommentService
     ) { }
 
   ngOnInit(): void {
@@ -149,6 +155,45 @@ export class FeedComponent implements OnInit {
       //this.getComments(post);
     }
   }
+
+  submitComment(post: Post) {
+    this.comment.post = post;
+    //this.comment.parentCommentId = 1;
+    this.commentService.createComment(this.comment).subscribe(
+      response => {
+        console.log('Comentário salvo com sucesso:', response);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.postImage = null;
+        this.showLoading = false;
+      }
+    );
+  }
+
+  createComment(post: Post, parentCommentId: number | null, content: string): void {
+    const newComment = new Comment();
+    newComment.post = post;
+    newComment.parentCommentId = parentCommentId;
+    //newComment.content = this.commentContent;
+    newComment.content = content;
+
+    console.log(content)
+
+    this.commentService.createComment(newComment).subscribe(comment => {
+        const pst = this.feeds.find(p => p.id === post.id);
+        if (post) {
+            if (parentCommentId) {
+                const parentComment = post.comments.find(c => c.id === parentCommentId);
+                if (parentComment) {
+                    parentComment.replies.push(comment);
+                }
+            } else {
+                post.comments.push(comment);
+            }
+        }
+    });
+}
 
 }
 
