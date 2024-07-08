@@ -24,7 +24,7 @@
         <div class="profile-pic">
           <img src="{{imagePath}}/profile-1.jpg" alt="">
         </div>
-        <input type="text" placeholder="Start the post" id="create-post" name="text" [(ngModel)]="post.text">
+        <input style="margin-left: 10px;" type="text" placeholder="Start the post" id="create-post" name="text" [(ngModel)]="post.text">
         <div class="">
           <input type="file" id="upload-button" multiple accept="**" name="postImage"
             (change)="onPostImageChange($event, $event)" />
@@ -49,6 +49,9 @@
             </div>
             <span class="edit"><i class="uil uil-ellipsis-h"></i></span>
           </div>
+
+          <hr style="margin-top: 5px;">
+
           <div style="margin-top: 1em;">{{feed.text}}</div>
 
           <div class="photo">
@@ -70,39 +73,56 @@
             <!-- Seção de likes, se necessário -->
           </div>
 
+          <hr style="margin-bottom: 1rem;">
+
           <form class="create-post" #newCommentForm="ngForm">
-            <div>
-              <input type="text" placeholder="Add your comment here" ngModel name="comment">
-              <button type="submit">Comment</button>
+            <div class="profile-pic">
+              <img src="{{imagePath}}/profile-1.jpg" alt="">
             </div>
+            <input type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
+            
+            <div>
+              <button class="btn btn-primary" style="padding: 0.4rem 1rem;">Publicar</button>
+            </div>
+            
           </form>
+          
 
           <div class="comments" *ngIf="feed.showComments">
             <div *ngFor="let comment of feed.comments" class="comment-box">
 
               <div class="comment">
 
-                <div class="user">
-                  <div class="profile-pic">
+                <div style="display: flex; align-items: flex-start;">
+                  <div style="width: 1.5rem; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; margin-right: 10px;">
                     <img src="{{imagePath}}/profile-1.jpg" alt="">
                   </div>
                   <div class="info">
-                    <a style="color:hsl(252, 30%, 10%);">
-                      <h3>fabio condo</h3>
+                    <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
+                      <h4 style="margin: 0;">fabio condo</h4>
                     </a>
-                    <small>fabio condo, {{feed.date | date:'dd/MM/y'}} </small>
+                    <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{comment.content}}</p>
+                    <a href="javascript:;" style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;" >Gosto</a>
+                    <a href="javascript:;" (click)="toggleReplyForm(comment)" style="color: hsl(252, 30%, 40%); text-decoration: none;">Responder</a>
                   </div>
                 </div>
+                
 
                 <div class="comment-content">
-                  <p>{{comment.content}}</p>
+                  <!--
+                  <p style="background-color: #e4e5e8; padding: 10px 10px;">{{comment.content}}</p>
                   <a href="javascript:;" (click)="toggleReplyForm(comment)">Reply</a>
+                  -->
                 </div>
 
-                <form class="reply-form" *ngIf="comment.showReplyForm">
+                <form class="create-post" #newCommentForm="ngForm" *ngIf="comment.showReplyForm">
+                  <div class="profile-pic">
+                    <img src="{{imagePath}}/profile-1.jpg" alt="">
+                  </div>
+                  <input type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
+                  
                   <div>
-                    <input type="text" name="replyContent" style="background-color: #e4e5e8;">
-                    <button type="submit" class="btn btn-primary">Reply</button>
+                    <button class="btn btn-primary" style="padding: 0.4rem 1rem;">responder</button>
                   </div>
                 </form>
                 
@@ -111,60 +131,47 @@
 
                     <div class="comment">
 
-                      <div class="user">
-                        <div class="profile-pic">
+                      <div style="display: flex; align-items: flex-start;">
+                        <div style="width: 1.5rem; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; margin-right: 10px;">
                           <img src="{{imagePath}}/profile-1.jpg" alt="">
                         </div>
                         <div class="info">
-                          <a style="color:hsl(252, 30%, 10%);">
-                            <h3>fabio condo</h3>
+                          <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
+                            <h4 style="margin: 0;">fabio condo</h4>
                           </a>
-                          <small>fabio condo, {{feed.date | date:'dd/MM/y'}} </small>
+                          <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{comment.content}}</p>
+                          <a href="javascript:;" style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;" >Gosto</a>
+                          <a href="javascript:;" (click)="toggleReplyForm(reply)" style="color: hsl(252, 30%, 40%); text-decoration: none;">Responder</a>
                         </div>
                       </div>
 
-                      <div class="comment-content">
-                        <p>{{reply.content}}</p>
-                        <a href="javascript:;" (click)="toggleReplyForm(reply)">Reply</a>
-                      </div>
-
-                      <form class="reply-form" *ngIf="reply.showReplyForm">
+                      <form class="create-post" #newCommentForm="ngForm" *ngIf="reply.showReplyForm">
+                        <div class="profile-pic">
+                          <img src="{{imagePath}}/profile-1.jpg" alt="">
+                        </div>
+                        <input type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
+                        
                         <div>
-                          <input type="text" name="replyContent">
-                          <button type="submit" class="btn btn-primary">Reply</button>
+                          <button class="btn btn-primary" style="padding: 0.4rem 1rem;">responder</button>
                         </div>
                       </form>
 
                       <div class="replies">
-                        <!-- Further nesting of replies if needed -->
                         <div *ngFor="let rep of reply.replies" class="comment-box reply">
                           <div class="comment">
 
-                            <div class="user">
-                              <div class="profile-pic">
+                            <div style="display: flex; align-items: flex-start;">
+                              <div style="width: 1.5rem; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; margin-right: 10px;">
                                 <img src="{{imagePath}}/profile-1.jpg" alt="">
                               </div>
                               <div class="info">
-                                <a style="color:hsl(252, 30%, 10%);">
-                                  <h3>fabio condo</h3>
+                                <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
+                                  <h4 style="margin: 0;">fabio condo</h4>
                                 </a>
-                                <small>fabio condo, {{feed.date | date:'dd/MM/y'}} </small>
+                                <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{comment.content}}</p>
                               </div>
-        
                             </div>
                             
-                            <div class="comment-content">
-                              <p>{{rep.content}}</p>
-                              <a href="javascript:;">Reply</a>
-                            </div>
-                            <!--
-                            <form class="reply-form">
-                              <div>
-                                <input type="text" name="replyContent">
-                                <button type="submit" class="btn btn-primary">Reply</button>
-                              </div>
-                            </form>
-                            -->
                             <div class="replies">
                               <!-- Further nesting of replies if needed -->
                             </div>
