@@ -178,21 +178,40 @@ export class FeedComponent implements OnInit {
   }
 
   createReplyComment(post: Post, parentCommentId: number | null, content: string): void {
-
+    console.log(content);
     this.commentService.createReplyComment(post.id, parentCommentId!, content).subscribe(comment => {
       const pst = this.feeds.find(p => p.id === post.id);
-      if (post) {
+      if (pst) {
         if (parentCommentId) {
-          const parentComment = post.comments.find(c => c.id === parentCommentId);
+          const parentComment = this.findCommentById(pst.comments, parentCommentId);
           if (parentComment) {
+            if (!parentComment.replies) {
+              parentComment.replies = [];
+            }
             parentComment.replies.push(comment);
           }
         } else {
-          post.comments.push(comment);
+          pst.comments.push(comment);
         }
       }
     });
   }
+  
+  findCommentById(comments: Comment[], id: number): Comment | null {
+    for (let comment of comments) {
+      if (comment.id === id) {
+        return comment;
+      }
+      if (comment.replies) {
+        const found = this.findCommentById(comment.replies, id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
+  
 
 }
 

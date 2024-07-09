@@ -138,19 +138,19 @@
                         </div>
                       </div>
 
-                      <form class="create-post" #newCommentForm="ngForm" *ngIf="reply.showReplyForm">
+                      <form class="create-post" #replyCommentForm_2="ngForm" (ngSubmit)="createReplyComment(feed, reply.id, replyCommentForm_2.value.replyComment_2)" *ngIf="reply.showReplyForm">
                         <div class="profile-pic">
                           <img src="{{imagePath}}/profile-1.jpg" alt="">
                         </div>
-                        <input type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
-                        
+                        <input type="text" ngModel required name="replyComment_2" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here">
+
                         <div>
-                          <button class="btn btn-primary" style="padding: 0.4rem 1rem;">responder</button>
+                          <button [disabled]="replyCommentForm_2.invalid" type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem;">responder</button>
                         </div>
                       </form>
 
                       <div class="replies">
-                        <div *ngFor="let rep of reply.replies" class="comment-box reply">
+                        <div *ngFor="let reply2 of reply.replies" class="comment-box reply">
                           <div class="comment">
 
                             <div style="display: flex; align-items: flex-start;">
@@ -161,7 +161,7 @@
                                 <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
                                   <h4 style="margin: 0;">fabio condo</h4>
                                 </a>
-                                <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{comment.content}}</p>
+                                <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{reply2.content}}</p>
                               </div>
                             </div>
                             
