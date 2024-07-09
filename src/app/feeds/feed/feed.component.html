@@ -22,7 +22,7 @@
 
       <form class="create-post" #newPostForm="ngForm" (ngSubmit)="onAddPostUser(newPostForm)">
         <div class="profile-pic">
-          <img src="{{imagePath}}/profile-1.jpg" alt="">
+          <img src="{{loggedUser.profileImageUrl}}" alt="">
         </div>
         <input style="margin-left: 10px;" type="text" placeholder="Start the post" id="create-post" name="text" [(ngModel)]="post.text">
         <div class="">
@@ -77,7 +77,7 @@
 
           <form class="create-post" #commentForm="ngForm" (ngSubmit)="createComment(feed, null, commentForm.value.comment)">
             <div class="profile-pic">
-              <img src="{{imagePath}}/profile-1.jpg" alt="">
+              <img src="{{loggedUser.profileImageUrl}}" alt="">
             </div>
             <input type="text" ngModel required name="comment" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here">
             <div>
@@ -111,7 +111,7 @@
 
                 <form class="create-post" #replyCommentForm="ngForm" (ngSubmit)="createReplyComment(feed, comment.id, replyCommentForm.value.replyComment)" *ngIf="comment.showReplyForm">
                   <div class="profile-pic">
-                    <img src="{{imagePath}}/profile-1.jpg" alt="">
+                    <img src="{{loggedUser.profileImageUrl}}" alt="">
                   </div>
                   <input type="text" ngModel required name="replyComment" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here">
                   <div>
@@ -140,7 +140,7 @@
 
                       <form class="create-post" #replyCommentForm_2="ngForm" (ngSubmit)="createReplyComment(feed, reply.id, replyCommentForm_2.value.replyComment_2)" *ngIf="reply.showReplyForm">
                         <div class="profile-pic">
-                          <img src="{{imagePath}}/profile-1.jpg" alt="">
+                          <img src="{{loggedUser.profileImageUrl}}" alt="">
                         </div>
                         <input type="text" ngModel required name="replyComment_2" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here">
 

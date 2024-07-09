@@ -11,6 +11,8 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Comment } from "src/app/core/model/Comment";
 import { CommentService } from 'src/app/core/commets/commentService .service';
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-feed',
@@ -39,6 +41,7 @@ export class FeedComponent implements OnInit {
   selectedPostModal = new Post();
   postId: number = 0;
 
+  loggedUser: User = new User;
 
   extension: any;
 
@@ -48,10 +51,12 @@ export class FeedComponent implements OnInit {
     private feedsService: FeedsService,
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
     this.video = 'https://www.youtube.com/watch?v=wVpXwNtIJL0'
   }

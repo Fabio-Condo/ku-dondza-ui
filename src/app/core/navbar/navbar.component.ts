@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ErrorHandlerService } from '../error-handler.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { User } from '../model/User';
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,8 @@ export class NavbarComponent {
   imagePath = './assets/images'
   isUserLoggedIn: boolean = false;
 
+  loggedUser: User = new User;
+
   constructor(
     private route: ActivatedRoute, 
     private router: Router,
@@ -24,6 +27,7 @@ export class NavbarComponent {
 
     ngOnInit(): void {
       this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
     }
 
     goToProfile(){
