@@ -1,4 +1,5 @@
 import { Comment } from "./Comment";
+import { User } from "./User";
 
 export class Post {
     public id!: number;
@@ -7,7 +8,9 @@ export class Post {
     public date: Date;
     public fileName!: string;
     public urlFile!: string;
+    public user: User;
     public comments: Comment[] = [];
+
     public showComments!: boolean;
 
     constructor() {
@@ -16,6 +19,7 @@ export class Post {
         this.date = new Date()
         this.fileName = '',
         this.urlFile = '',
+        this.user = new User();
         this.showComments = false
     }
 

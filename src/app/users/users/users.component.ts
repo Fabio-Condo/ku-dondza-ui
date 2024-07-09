@@ -39,7 +39,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   selectedUserModal: User = new User;
   displayModal: boolean = false;
 
-  imagePath = './assets/images'
 
   roles = [
     { label: 'USER', value: 'ROLE_USER' },

@@ -48,7 +48,7 @@
                     <td style="width: 10px;">
                         <div class="profile-pic">
                             <a href="javascript:;" [routerLink]="['v1/user/profile']">
-                                <img src="{{imagePath}}/profile-11.jpg" alt="pic 1" />
+                                <img src="{{appUser.profileImageUrl}}" alt="pic 1" />
                             </a>
                         </div>
                     </td>
@@ -128,7 +128,7 @@
     <p-card header="{{selectedUserModal.firstName}} {{selectedUserModal.lastName}}"
         subheader="Username: {{selectedUserModal.username}}" [style]="{width: '360px'}" styleClass="p-card-shadow">
         <ng-template pTemplate="header">
-            <img alt="Card" height="220" src="{{imagePath}}/profile-11.jpg">
+            <img alt="Card" height="220" src="{{selectedUserModal.profileImageUrl}}">
         </ng-template>
 
         <div class="formgrid grid">
