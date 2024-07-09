@@ -24,26 +24,24 @@ export class FeedComponent implements OnInit {
   video: string = 'https://www.youtube.com/watch?v=Otr3Up8wRn0'
 
   subscriptions: Subscription[] = [];
-  values: string[] = ['A','B','C','D'] ; //Depois eliminar
+  values: string[] = ['A', 'B', 'C', 'D']; //Depois eliminar
 
   imagePath = './assets/images'
 
   showLoading: boolean = false;
 
-  feeds: Post[] = []; 
+  feeds: Post[] = [];
   post = new Post();
-  postImage: any; 
-  fileName: any; 
+  postImage: any;
+  fileName: any;
 
   displayModal: boolean = false;
   selectedPostModal = new Post();
   postId: number = 0;
 
+
   extension: any;
 
-  comment = new Comment();
-
-  commentContent: string = '';
 
   constructor(
     private router: Router,
@@ -51,7 +49,7 @@ export class FeedComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
     private commentService: CommentService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.loadMore();
@@ -62,7 +60,7 @@ export class FeedComponent implements OnInit {
 
   filter: IPostFilter = {
     page: -1,
-    itemsPerPage: 5,
+    itemsPerPage: 15,
     sort: 'id,desc',
   }
 
@@ -77,7 +75,7 @@ export class FeedComponent implements OnInit {
     this.filter.page++;
     this.feedsService.search(this.filter).subscribe(
       (data: IApiResponse<Post>) => {
-        this.totalRecords = data.totalElements;    
+        this.totalRecords = data.totalElements;
         this.showLoading = false;
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
         console.log('carregando dados')
@@ -98,7 +96,7 @@ export class FeedComponent implements OnInit {
           this.post = response;
           this.fileName = null;
           this.postImage = null;
-          this.messageService.add({ severity: 'success', detail: `Post added successfully`});
+          this.messageService.add({ severity: 'success', detail: `Post added successfully` });
           this.showLoading = false;
         },
         (errorResponse: HttpErrorResponse) => {
@@ -110,8 +108,8 @@ export class FeedComponent implements OnInit {
     );
   }
 
-  onPostImageChange(fileName: any, postImage: any): void {    
-    this.fileName =  fileName.target.files[0].name;
+  onPostImageChange(fileName: any, postImage: any): void {
+    this.fileName = fileName.target.files[0].name;
     this.postImage = postImage.target.files[0];
   }
 
@@ -125,7 +123,7 @@ export class FeedComponent implements OnInit {
     this.extension = url.split('.').pop()?.toLowerCase();
     return imageExtensions.includes(this.extension);
   }
-  
+
   isVideoUrl(url: string): boolean {
     const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
     this.extension = url.split('.').pop()?.toLowerCase();
@@ -156,44 +154,45 @@ export class FeedComponent implements OnInit {
     }
   }
 
-  submitComment(post: Post) {
-    this.comment.post = post;
-    //this.comment.parentCommentId = 1;
-    this.commentService.createComment(this.comment).subscribe(
-      response => {
-        console.log('Comentário salvo com sucesso:', response);
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendNotification(errorResponse.error.message);
-        this.postImage = null;
-        this.showLoading = false;
-      }
-    );
-  }
-
   createComment(post: Post, parentCommentId: number | null, content: string): void {
     const newComment = new Comment();
     newComment.post = post;
     newComment.parentCommentId = parentCommentId;
-    //newComment.content = this.commentContent;
     newComment.content = content;
 
     console.log(content)
 
     this.commentService.createComment(newComment).subscribe(comment => {
-        const pst = this.feeds.find(p => p.id === post.id);
-        if (post) {
-            if (parentCommentId) {
-                const parentComment = post.comments.find(c => c.id === parentCommentId);
-                if (parentComment) {
-                    parentComment.replies.push(comment);
-                }
-            } else {
-                post.comments.push(comment);
-            }
+      const pst = this.feeds.find(p => p.id === post.id);
+      if (post) {
+        if (parentCommentId) {
+          const parentComment = post.comments.find(c => c.id === parentCommentId);
+          if (parentComment) {
+            parentComment.replies.push(comment);
+          }
+        } else {
+          post.comments.push(comment);
         }
+      }
     });
-}
+  }
+
+  createReplyComment(post: Post, parentCommentId: number | null, content: string): void {
+
+    this.commentService.createReplyComment(post.id, parentCommentId!, content).subscribe(comment => {
+      const pst = this.feeds.find(p => p.id === post.id);
+      if (post) {
+        if (parentCommentId) {
+          const parentComment = post.comments.find(c => c.id === parentCommentId);
+          if (parentComment) {
+            parentComment.replies.push(comment);
+          }
+        } else {
+          post.comments.push(comment);
+        }
+      }
+    });
+  }
 
 }
 

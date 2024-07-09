@@ -79,7 +79,7 @@
             <div class="profile-pic">
               <img src="{{imagePath}}/profile-1.jpg" alt="">
             </div>
-            <input type="text" ngModel required name="comment" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
+            <input type="text" ngModel required name="comment" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here">
             <div>
               <button [disabled]="commentForm.invalid" type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem;">Publicar</button>
             </div>
@@ -107,20 +107,15 @@
                 
 
                 <div class="comment-content">
-                  <!--
-                  <p style="background-color: #e4e5e8; padding: 10px 10px;">{{comment.content}}</p>
-                  <a href="javascript:;" (click)="toggleReplyForm(comment)">Reply</a>
-                  -->
                 </div>
 
-                <form class="create-post" #newCommentForm="ngForm" *ngIf="comment.showReplyForm">
+                <form class="create-post" #replyCommentForm="ngForm" (ngSubmit)="createReplyComment(feed, comment.id, replyCommentForm.value.replyComment)" *ngIf="comment.showReplyForm">
                   <div class="profile-pic">
                     <img src="{{imagePath}}/profile-1.jpg" alt="">
                   </div>
-                  <input [(ngModel)]="commentContent" type="text" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here" ngModel name="comment">
-                  
+                  <input type="text" ngModel required name="replyComment" style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;" placeholder="Add your comment here">
                   <div>
-                    <button class="btn btn-primary" style="padding: 0.4rem 1rem;">responder</button>
+                    <button [disabled]="replyCommentForm.invalid" type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem;">responder</button>
                   </div>
                 </form>
                 
@@ -137,7 +132,7 @@
                           <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
                             <h4 style="margin: 0;">fabio condo</h4>
                           </a>
-                          <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{comment.content}}</p>
+                          <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{reply.content}}</p>
                           <a href="javascript:;" style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;" >Gosto</a>
                           <a href="javascript:;" (click)="toggleReplyForm(reply)" style="color: hsl(252, 30%, 40%); text-decoration: none;">Responder</a>
                         </div>
