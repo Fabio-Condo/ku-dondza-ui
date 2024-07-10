@@ -16,11 +16,9 @@
       </div>
     </div>
 
-
-
     <div class="middle">
 
-      <form class="create-post" #newPostForm="ngForm" (ngSubmit)="onAddPostUser(newPostForm)">
+      <form class="create-post" #newPostForm="ngForm" (ngSubmit)="onAddPost(newPostForm)">
         <div class="profile-pic">
           <img src="{{loggedUser.profileImageUrl}}" alt="">
         </div>
@@ -43,9 +41,9 @@
             </div>
             <div class="info">
               <a style="color:hsl(252, 30%, 10%);">
-                <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
+                <h3>{{feed.user.firstName}} {{feed.user.lastName}} </h3>
               </a>
-              <small>{{feed.date | date:'dd/MM/y'}} </small>
+              <small>{{timeElapsed(feed.date.toString())}} </small>
             </div>
             <span class="edit"><i class="uil uil-ellipsis-h"></i></span>
           </div>
@@ -60,7 +58,7 @@
 
           <div class="action-button">
             <div class="interaction-button">
-              <a style="cursor: pointer;"><i class="uil uil-thumbs-up"></i></a>
+              <a style="cursor: pointer;"><i class="uil uil-thumbs-up" [ngClass]="{'liked': feed.isLiked}" (click)="toggleLike(feed)"></i></a>
               <a style="cursor: pointer;"><i class="uil uil-comment" (click)="toggleComments(feed)"></i></a>
               <i class="uil uil-share"></i>
             </div>
@@ -97,7 +95,12 @@
                   </div>
                   <div class="info">
                     <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
-                      <h4 style="margin: 0;">{{ comment.user.firstName }} {{ comment.user.lastName }}</h4>
+                      <h4 style="margin: 0;">
+                        {{ comment.user.firstName }} {{ comment.user.lastName }} 
+                        <span *ngIf="verificarAutor(feed.user.id, comment.user.id)" class="autor-span">
+                          {{ verificarAutor(feed.user.id, comment.user.id) }}
+                        </span>                      
+                      </h4>
                     </a>
                     <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{comment.content}}</p>
                     <a href="javascript:;" style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;" >Gosto</a>
@@ -130,7 +133,12 @@
                         </div>
                         <div class="info">
                           <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
-                            <h4 style="margin: 0;">{{ reply.user.firstName }} {{ reply.user.lastName }}</h4>
+                            <h4 style="margin: 0;">
+                              {{ reply.user.firstName }} {{ reply.user.lastName }}
+                              <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
+                                {{ verificarAutor(feed.user.id, reply.user.id) }}
+                              </span>  
+                            </h4>
                           </a>
                           <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{reply.content}}</p>
                           <a href="javascript:;" style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;" >Gosto</a>
@@ -159,7 +167,12 @@
                               </div>
                               <div class="info">
                                 <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
-                                  <h4 style="margin: 0;">{{ reply2.user.firstName }} {{ reply.user.lastName }}</h4>
+                                  <h4 style="margin: 0;">
+                                    {{ reply2.user.firstName }} {{ reply2.user.lastName }}
+                                    <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
+                                      {{ verificarAutor(feed.user.id, reply2.user.id) }}
+                                    </span>  
+                                  </h4>
                                 </a>
                                 <p style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">{{reply2.content}}</p>
                                 <a href="javascript:;" style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;" >Gosto</a>

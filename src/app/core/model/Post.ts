@@ -1,4 +1,5 @@
 import { Comment } from "./Comment";
+import { Like } from "./Like";
 import { User } from "./User";
 
 export class Post {
@@ -10,8 +11,10 @@ export class Post {
     public urlFile!: string;
     public user: User;
     public comments: Comment[] = [];
+    public likes: Like[] = [];
 
     public showComments!: boolean;
+    public isLiked: boolean;  // Adiciona a propriedade isLiked
 
     constructor() {
         this.text = '',
@@ -20,7 +23,8 @@ export class Post {
         this.fileName = '',
         this.urlFile = '',
         this.user = new User();
-        this.showComments = false
+        this.showComments = false;
+        this.isLiked = false;
     }
 
 }

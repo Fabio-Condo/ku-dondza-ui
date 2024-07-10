@@ -13,6 +13,7 @@ import { Comment } from "src/app/core/model/Comment";
 import { CommentService } from 'src/app/core/commets/commentService .service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { LikeService } from 'src/app/core/likes/like.service';
 
 @Component({
   selector: 'app-feed',
@@ -43,6 +44,8 @@ export class FeedComponent implements OnInit {
 
   loggedUser: User = new User;
 
+  isLiked: boolean = false;
+
   extension: any;
 
 
@@ -52,6 +55,7 @@ export class FeedComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
     private commentService: CommentService,
+    private likeService: LikeService,
     private authenticationService: AuthenticationService
   ) { }
 
@@ -65,7 +69,7 @@ export class FeedComponent implements OnInit {
 
   filter: IPostFilter = {
     page: -1,
-    itemsPerPage: 15,
+    itemsPerPage: 5,
     sort: 'id,desc',
   }
 
@@ -82,6 +86,9 @@ export class FeedComponent implements OnInit {
       (data: IApiResponse<Post>) => {
         this.totalRecords = data.totalElements;
         this.showLoading = false;
+        data.content.forEach(post => {
+          this.checkIfLiked(post);
+        });
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
         console.log('carregando dados')
       },
@@ -92,7 +99,7 @@ export class FeedComponent implements OnInit {
     );
   }
 
-  onAddPostUser(postForm: NgForm): void {
+  onAddPost(postForm: NgForm): void {
     this.showLoading = true;
     const formData = this.feedsService.createPostFormDate(postForm.value, this.postImage);
     this.subscriptions.push(
@@ -123,28 +130,6 @@ export class FeedComponent implements OnInit {
     this.displayModal = true;
   }
 
-  isImageUrl(url: string): boolean {
-    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
-    this.extension = url.split('.').pop()?.toLowerCase();
-    return imageExtensions.includes(this.extension);
-  }
-
-  isVideoUrl(url: string): boolean {
-    const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
-    this.extension = url.split('.').pop()?.toLowerCase();
-    console.log(url);
-    console.log(this.extension);
-    return videoExtensions.includes(this.extension);
-  }
-
-  private sendNotification(message: string): void {
-    if (message) {
-      this.messageService.add({ severity: 'error', detail: message });
-    } else {
-      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
-    }
-  }
-
   toggleReplyForm(comment: Comment): void {
     comment.showReplyForm = !comment.showReplyForm;
     if (comment.showReplyForm) {
@@ -155,8 +140,31 @@ export class FeedComponent implements OnInit {
   toggleComments(post: Post): void {
     post.showComments = !post.showComments;
     if (post.showComments && post.comments.length === 0) {
-      //this.getComments(post);
     }
+  }
+
+  toggleLike(post: Post): void {
+    this.likeService.toggleLike(post.id).subscribe(response => {
+      post.isLiked = !post.isLiked;
+      if (post.isLiked) {
+        post.likes.push({ id: response.id, post: post, user: this.loggedUser });
+      } else {
+        post.likes = post.likes.filter(like => like.user.id !== this.loggedUser.id);
+      }
+    }, 
+    (errorResponse: HttpErrorResponse) => {
+      this.sendNotification(errorResponse.error.message);
+      this.postImage = null;
+      this.showLoading = false;
+    });
+  }
+
+  checkIfLiked(post: Post): void {
+    this.likeService.checkIfLiked(post.id).subscribe(response => {
+      post.isLiked = response;
+    }, error => {
+      console.error('Erro ao verificar se o post foi curtido:', error);
+    });
   }
 
   createComment(post: Post, parentCommentId: number | null, content: string): void {
@@ -216,7 +224,52 @@ export class FeedComponent implements OnInit {
     }
     return null;
   }
-  
 
+  verificarAutor(idPostUser: number, idReplyUserPost: number): string {
+    return idPostUser === idReplyUserPost ? "Autor" : "";
+  }
+  
+  timeElapsed(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+  
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+  
+    if (years > 0) {
+      const remainingMonths = months % 12;
+      return `${years} ano${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` e ${remainingMonths} mês${remainingMonths > 1 ? 'es' : ''}` : ''}`;
+    } else if (months > 0) {
+      const remainingDays = days % 30;
+      return `${months} mês${months > 1 ? 'es' : ''}${remainingDays > 0 ? ` e ${remainingDays} dia${remainingDays > 1 ? 's' : ''}` : ''}`;
+    } else if (weeks > 0) {
+      const remainingDays = days % 7;
+      return `${weeks} semana${weeks > 1 ? 's' : ''}${remainingDays > 0 ? ` e ${remainingDays} dia${remainingDays > 1 ? 's' : ''}` : ''}`;
+    } else if (days > 0) {
+      return `${days} dia${days > 1 ? 's' : ''}`;
+    } else if (hours > 0) {
+      const remainingMinutes = minutes % 60;
+      return `${hours} hora${hours > 1 ? 's' : ''}${remainingMinutes > 0 ? ` e ${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}` : ''}`;
+    } else if (minutes > 0) {
+      const remainingSeconds = seconds % 60;
+      return `${minutes} minuto${minutes > 1 ? 's' : ''}${remainingSeconds > 0 ? ` e ${remainingSeconds} segundo${remainingSeconds > 1 ? 's' : ''}` : ''}`;
+    } else {
+      return `${seconds} segundo${seconds > 1 ? 's' : ''}`;
+    }
+  }
+
+  private sendNotification(message: string): void {
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
+  }
 }
 
