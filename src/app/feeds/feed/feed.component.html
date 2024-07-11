@@ -11,7 +11,12 @@
 
         <a class="menu-item ">
           <span><i class="uil uil-setting"></i></span>
-          <h3>Users</h3>
+          <h3>Explicadores</h3>
+        </a>
+
+        <a style="color: hsl(252, 30%, 17%);" class="menu-item " routerLink="/saved-feed">
+          <span><i class="uil uil-setting"></i></span>
+          <h3>Guardados</h3>
         </a>
       </div>
     </div>
@@ -61,7 +66,7 @@
             <div class="interaction-button">
               <a style="cursor: pointer;" (click)="toggleLike(feed)">
                 <i class="pi" [ngClass]="{'pi-thumbs-up-fill': feed.isLiked, 'pi-thumbs-up': !feed.isLiked}"
-                  style="font-size: 1.1rem;" [style.color]="feed.isLiked ? 'blue' : ''"></i>
+                  style="font-size: 1.1rem;" [style.color]="feed.isLiked ? '#3734ed' : ''"></i>
               </a>
               <a style="cursor: pointer; margin-left: 0.7rem;" (click)="toggleComments(feed)">
                 <i class="pi pi-comments" style="font-size: 1.1rem;"></i>
@@ -69,9 +74,11 @@
 
               <!--<i class="uil uil-share"></i>-->
             </div>
-            <div >
-              <a *ngIf="feed.isSaved" (click)="removePostFromSavedPosts(feed)" style="cursor: pointer;"><i class="pi pi-bookmark-fill"></i></a>
-              <a *ngIf="!feed.isSaved" (click)="addPostToSavedPosts(feed)" style="cursor: pointer;"><i class="pi pi-bookmark"></i></a>
+            <div>
+              <a *ngIf="feed.isSaved" (click)="removePostFromSavedPosts(feed)" style="cursor: pointer;"><i
+                  class="pi pi-bookmark-fill"></i></a>
+              <a *ngIf="!feed.isSaved" (click)="addPostToSavedPosts(feed)" style="cursor: pointer;"><i
+                  class="pi pi-bookmark"></i></a>
 
             </div>
           </div>
@@ -102,32 +109,23 @@
 
               <div class="comment">
 
-                <div style="display: flex; align-items: flex-start;">
-                  <div
-                    style="width: 1.5rem; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; margin-right: 10px;">
-                    <img src="{{ comment.user.profileImageUrl }}" alt="">
-                  </div>
-                  <div class="info">
-                    <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
-                      <h4 style="margin: 0;">
-                        {{ comment.user.firstName }} {{ comment.user.lastName }}
-                        <span *ngIf="verificarAutor(feed.user.id, comment.user.id)" class="autor-span">
-                          {{ verificarAutor(feed.user.id, comment.user.id) }}
-                        </span>
-                      </h4>
-                    </a>
+                <div class="comment-content">
+                  <div class="user-comment">
+                    <div class="user-info">
+                      <img src="{{comment.user.profileImageUrl}}" alt="User Image">
+                      <span class="user-name">{{comment.user.firstName}} {{comment.user.lastName}}</span>
+                    </div>
+
                     <p
                       style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">
-                      {{comment.content}}</p>
+                      {{comment.content}}
+                    </p>
+
                     <a href="javascript:;"
                       style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;">Gosto</a>
                     <a href="javascript:;" (click)="toggleReplyForm(comment)"
                       style="color: hsl(252, 30%, 40%); text-decoration: none;">Responder</a>
                   </div>
-                </div>
-
-
-                <div class="comment-content">
                 </div>
 
                 <form class="create-post" #replyCommentForm="ngForm"
@@ -150,23 +148,21 @@
 
                     <div class="comment">
 
-                      <div style="display: flex; align-items: flex-start;">
-                        <div
-                          style="width: 1.5rem; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; margin-right: 10px;">
-                          <img src="{{ reply.user.profileImageUrl }}" alt="">
-                        </div>
-                        <div class="info">
-                          <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
-                            <h4 style="margin: 0;">
-                              {{ reply.user.firstName }} {{ reply.user.lastName }}
-                              <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
-                                {{ verificarAutor(feed.user.id, reply.user.id) }}
-                              </span>
-                            </h4>
-                          </a>
+                      <div class="comment-content">
+                        <div class="user-comment">
+                          <div class="user-info">
+                            <img src="{{reply.user.profileImageUrl}}" alt="User Image">
+                            <span class="user-name">{{reply.user.firstName}} {{reply.user.lastName}}</span>
+                            <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
+                              {{ verificarAutor(feed.user.id, reply.user.id) }}
+                            </span>
+                          </div>
+
                           <p
                             style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">
-                            {{reply.content}}</p>
+                            {{reply.content}}
+                          </p>
+
                           <a href="javascript:;"
                             style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;">Gosto</a>
                           <a href="javascript:;" (click)="toggleReplyForm(reply)"
@@ -192,25 +188,24 @@
 
                       <div class="replies">
                         <div *ngFor="let reply2 of reply.replies" class="comment-box reply">
+
                           <div class="comment">
 
-                            <div style="display: flex; align-items: flex-start;">
-                              <div
-                                style="width: 1.5rem; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; margin-right: 10px;">
-                                <img src="{{ reply2.user.profileImageUrl }}" alt="">
-                              </div>
-                              <div class="info">
-                                <a style="color:hsl(252, 30%, 10%); text-decoration: none;">
-                                  <h4 style="margin: 0;">
-                                    {{ reply2.user.firstName }} {{ reply2.user.lastName }}
-                                    <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
-                                      {{ verificarAutor(feed.user.id, reply2.user.id) }}
-                                    </span>
-                                  </h4>
-                                </a>
+                            <div class="comment-content">
+                              <div class="user-comment">
+                                <div class="user-info">
+                                  <img src="{{reply2.user.profileImageUrl}}" alt="User Image">
+                                  <span class="user-name">{{reply2.user.firstName}} {{reply2.user.lastName}}</span>
+                                  <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
+                                    {{ verificarAutor(feed.user.id, reply2.user.id) }}
+                                  </span>
+                                </div>
+
                                 <p
                                   style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">
-                                  {{reply2.content}}</p>
+                                  {{reply2.content}}
+                                </p>
+
                                 <a href="javascript:;"
                                   style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;">Gosto</a>
                               </div>

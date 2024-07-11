@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { User } from '../core/model/User';
 import { CustomHttpRespone } from '../core/model/custom-http-response';
+import { IApiResponse } from '../core/interface/IApiResponse';
+import { UserFilter } from '../core/interface/UserFilter';
+import { Post } from '../core/model/Post';
 
 
 @Injectable({ providedIn: 'root' })
@@ -90,5 +93,16 @@ export class UserService {
   doesUserSavedPost(userId: number, postId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.host}/user/${userId}/savedPosts/contains/${postId}`);
   }
+
+  getSavedPosts(userId: number, filtro: UserFilter): Observable<IApiResponse<Post>> {
+
+    let params = new HttpParams()
+        .set('page', filtro.pagina)
+        .set('sort', filtro.ordenamento)
+        .set('size', filtro.itensPorPagina);
+
+    return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}/savedPostsPaginated`, { params });
+
+}
 
 }

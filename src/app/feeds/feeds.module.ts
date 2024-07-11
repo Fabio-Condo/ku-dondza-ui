@@ -4,19 +4,26 @@ import { FeedComponent } from './feed/feed.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
+import { SavedFeedComponent } from './saved-feed/saved-feed.component';
+import { TableModule } from 'primeng/table';
+import { DataViewModule } from 'primeng/dataview';
+
 
 
 
 
 @NgModule({
   declarations: [
-    FeedComponent
+    FeedComponent,
+    SavedFeedComponent
   ],
   exports: [
     FeedComponent
   ],
   imports: [
     CommonModule,
+    TableModule,
+    DataViewModule,
     FormsModule,
     RouterModule,
     DialogModule
