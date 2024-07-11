@@ -67,7 +67,7 @@ export class SavedFeedComponent implements OnInit {
 
   removePostFromSavedPosts(post: Post): void {
     this.userService.removePostFromSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
-      post.isSaved = false;
+      this.posts = this.posts.filter(p => p.id !== post.id);
     });
   }
 

@@ -247,6 +247,10 @@ export class FeedComponent implements OnInit {
       post.isSaved = response;
     });
   }
+
+  closePost(post: Post){
+    this.feeds = this.feeds.filter(p => p.id !== post.id);
+  }
   
   timeElapsed(dateString: string): string {
     const date = new Date(dateString);

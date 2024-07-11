@@ -41,17 +41,18 @@
 
       <div class="feeds">
         <div class="feed" *ngFor="let feed of feeds">
-          <div class="user">
+
+          <div class="user" style="display: flex; align-items: center;">
             <div class="profile-pic">
               <img src="{{feed.user.profileImageUrl}}" alt="">
             </div>
-            <div class="info">
-              <a style="color:hsl(252, 30%, 10%);">
-                <h3>{{feed.user.firstName}} {{feed.user.lastName}} </h3>
+            <div class="info" style="flex: 1;">
+              <a style="color: hsl(252, 30%, 10%);">
+                <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
-              <small>{{timeElapsed(feed.date.toString())}} </small>
+              <small>{{timeElapsed(feed.date.toString())}}</small>
             </div>
-            <span class="edit"><i class="uil uil-ellipsis-h"></i></span>
+            <span class="edit" (click)="closePost(feed)" style="cursor: pointer;"><i class="pi pi-times" style="font-size: 0.8rem"></i></span>
           </div>
 
           <hr style="margin-top: 5px;">
@@ -265,8 +266,8 @@
         </div>
 
         <div class="search-bar">
-          <span><i class="uil uil-search"></i></span>
-          <input type="search" placeholder="Search Friends" id="message-search">
+          <span style="border: 1px solid #dcdcdc;"><i class="uil uil-search"></i></span>
+          <input type="search" placeholder="Search Friends" id="message-search" style="border: 1px solid #dcdcdc;">
         </div>
 
         <div class="message">
