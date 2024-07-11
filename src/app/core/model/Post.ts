@@ -15,6 +15,7 @@ export class Post {
 
     public showComments!: boolean;
     public isLiked: boolean;  // Adiciona a propriedade isLiked
+    public isSaved: boolean;
 
     constructor() {
         this.text = '',
@@ -25,6 +26,7 @@ export class Post {
         this.user = new User();
         this.showComments = false;
         this.isLiked = false;
+        this.isSaved = false;
     }
 
 }

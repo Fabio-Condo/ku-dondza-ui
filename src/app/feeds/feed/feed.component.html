@@ -69,8 +69,10 @@
 
               <!--<i class="uil uil-share"></i>-->
             </div>
-            <div class="bookmark">
-              <a style="cursor: pointer;"><i class="pi pi-bookmark"></i></a>
+            <div >
+              <a *ngIf="feed.isSaved" (click)="removePostFromSavedPosts(feed)" style="cursor: pointer;"><i class="pi pi-bookmark-fill"></i></a>
+              <a *ngIf="!feed.isSaved" (click)="addPostToSavedPosts(feed)" style="cursor: pointer;"><i class="pi pi-bookmark"></i></a>
+
             </div>
           </div>
 

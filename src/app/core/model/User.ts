@@ -1,3 +1,5 @@
+import { Post } from "./Post";
+
 export class User {
   public id!: number;
   public userId: string;
@@ -13,6 +15,8 @@ export class User {
   public notLocked: boolean;
   public role: string;
   public authorities: [];
+  public savedPosts: Post[] = [];
+
 
   constructor() {
 

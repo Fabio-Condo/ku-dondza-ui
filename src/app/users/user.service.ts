@@ -79,4 +79,16 @@ export class UserService {
     return this.http.put<void>(`${this.host}/${username}/notLocked-user`, notLocked, {});
   }
 
+  addPostToSavedPosts(userId: number, postId: number): Observable<User> {
+    return this.http.post<User>(`${this.host}/user/${userId}/savedPosts/${postId}`, {});
+  }
+
+  removePostFromSavedPosts(userId: number, postId: number): Observable<User> {
+    return this.http.delete<User>(`${this.host}/user/${userId}/savedPosts/${postId}`);
+  }
+
+  doesUserSavedPost(userId: number, postId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/user/${userId}/savedPosts/contains/${postId}`);
+  }
+
 }

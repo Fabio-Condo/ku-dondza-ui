@@ -14,6 +14,7 @@ import { CommentService } from 'src/app/core/commets/commentService .service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { LikeService } from 'src/app/core/likes/like.service';
+import { UserService } from 'src/app/users/user.service';
 
 @Component({
   selector: 'app-feed',
@@ -44,8 +45,6 @@ export class FeedComponent implements OnInit {
 
   loggedUser: User = new User;
 
-  isLiked: boolean = false;
-
   extension: any;
 
 
@@ -56,6 +55,7 @@ export class FeedComponent implements OnInit {
     private messageService: MessageService,
     private commentService: CommentService,
     private likeService: LikeService,
+    private userService: UserService,
     private authenticationService: AuthenticationService
   ) { }
 
@@ -88,6 +88,7 @@ export class FeedComponent implements OnInit {
         this.showLoading = false;
         data.content.forEach(post => {
           this.checkIfLiked(post);
+          this.checkIfSaved(post);
         });
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
         console.log('carregando dados')
@@ -227,6 +228,24 @@ export class FeedComponent implements OnInit {
 
   verificarAutor(idPostUser: number, idReplyUserPost: number): string {
     return idPostUser === idReplyUserPost ? "Autor" : "";
+  }
+
+  addPostToSavedPosts(post: Post): void {
+    this.userService.addPostToSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
+      post.isSaved = true;
+    });
+  }
+
+  removePostFromSavedPosts(post: Post): void {
+    this.userService.removePostFromSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
+      post.isSaved = false;
+    });
+  }
+
+  checkIfSaved(post: Post): void {
+    this.userService.doesUserSavedPost(this.loggedUser.id, post.id).subscribe(response => {
+      post.isSaved = response;
+    });
   }
   
   timeElapsed(dateString: string): string {
