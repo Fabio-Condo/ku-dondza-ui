@@ -77,6 +77,8 @@
             Your browser does not support the video tag.
           </video>
 
+          <span *ngIf="feed.numberOfLikes > 0">{{ feed.numberOfLikes }} likes</span>
+
           <div class="action-button">
             <div class="interaction-button">
               <a style="cursor: pointer;" (click)="toggleLike(feed)">
@@ -244,11 +246,6 @@
             <a class="text-muted" href="javascript:;">View all comments</a>
           </div>
         </div>
-      </div>
-
-      <div *ngIf="showLoading" class="upload-loading-container">
-        <i class="pi pi-spin pi-spinner-dotted"></i>
-        <p class="upload-loading-text">Carregando o feed...</p>
       </div>
 
     </div>

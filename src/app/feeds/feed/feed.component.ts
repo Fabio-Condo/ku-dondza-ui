@@ -6,7 +6,7 @@ import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { Post } from 'src/app/core/model/Post';
 import { FeedsService } from '../feeds.service';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Comment } from "src/app/core/model/Comment";
@@ -91,6 +91,7 @@ export class FeedComponent implements OnInit {
         data.content.forEach(post => {
           this.checkIfLiked(post);
           this.checkIfSaved(post);
+          this.getNumberOfLikes(post);
         });
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
         console.log('carregando dados')
@@ -151,15 +152,17 @@ export class FeedComponent implements OnInit {
       post.isLiked = !post.isLiked;
       if (post.isLiked) {
         post.likes.push({ id: response.id, post: post, user: this.loggedUser });
+        post.numberOfLikes = post.numberOfLikes + 1;
       } else {
         post.likes = post.likes.filter(like => like.user.id !== this.loggedUser.id);
+        post.numberOfLikes = post.numberOfLikes - 1;
       }
-    }, 
-    (errorResponse: HttpErrorResponse) => {
-      this.sendNotification(errorResponse.error.message);
-      this.postImage = null;
-      this.showLoading = false;
-    });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.postImage = null;
+        this.showLoading = false;
+      });
   }
 
   checkIfLiked(post: Post): void {
@@ -212,7 +215,7 @@ export class FeedComponent implements OnInit {
       }
     });
   }
-  
+
   findCommentById(comments: Comment[], id: number): Comment | null {
     for (let comment of comments) {
       if (comment.id === id) {
@@ -226,6 +229,18 @@ export class FeedComponent implements OnInit {
       }
     }
     return null;
+  }
+
+  getNumberOfLikes(post: Post): void {
+    this.likeService.countLikesByPostId(post.id).subscribe((response: number) => {
+      post.numberOfLikes = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.postImage = null;
+        this.showLoading = false;
+      }
+    );
   }
 
   verificarAutor(idPostUser: number, idReplyUserPost: number): string {
@@ -250,7 +265,7 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  closePost(post: Post){
+  closePost(post: Post) {
     this.feeds = this.feeds.filter(p => p.id !== post.id);
   }
 
@@ -261,7 +276,7 @@ export class FeedComponent implements OnInit {
     console.log(this.extension);
     return imageExtensions.includes(this.extension);
   }
-  
+
   isVideoUrl(url: string): boolean {
     if (!url) return false; // Verifica se a URL é válida
     const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
@@ -269,13 +284,13 @@ export class FeedComponent implements OnInit {
     console.log(this.extension);
     return videoExtensions.includes(this.extension);
   }
-  
-  
+
+
   timeElapsed(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
     const diff = now.getTime() - date.getTime();
-  
+
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -283,7 +298,7 @@ export class FeedComponent implements OnInit {
     const weeks = Math.floor(days / 7);
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
-  
+
     if (years > 0) {
       const remainingMonths = months % 12;
       return `${years} ano${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` e ${remainingMonths} mês${remainingMonths > 1 ? 'es' : ''}` : ''}`;

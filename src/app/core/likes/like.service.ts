@@ -21,4 +21,8 @@ export class LikeService {
     return this.http.get<boolean>(`${this.apiUrl}/posts/${postId}/check`);
   }
 
+  countLikesByPostId(postId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count/${postId}`);
+  }
+
 }
