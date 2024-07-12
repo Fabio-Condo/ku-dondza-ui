@@ -77,7 +77,7 @@
             Your browser does not support the video tag.
           </video>
 
-          <a style="font-size: 0.7rem; cursor: pointer;">
+          <a style="font-size: 0.7rem; cursor: pointer;" (click)="onShowPostLikes()">
             <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
             <span *ngIf="feed.numberOfLikes == 1">1 gosto</span>
             <span *ngIf="feed.numberOfLikes > 1">{{ feed.numberOfLikes }} gostos</span>
@@ -328,6 +328,22 @@
     <div class="dialog-footer">
       <button (click)="confirmDialog(selectedPost)">Confirmar</button>
       <button (click)="closeConfirmDialog()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- like-dialog.component.html -->
+<div class="dialog-overlay" *ngIf="showPostLikesDialog">
+  <div class="dialog">
+    <div class="dialog-header">
+      <h2>Usuários que fizeram Like</h2>
+      <button class="close-button" (click)="onClosePostLikes()">x</button>
+    </div>
+    <div class="dialog-content">
+      <ul>
+        <li *ngFor="let like of likes">{{ like.user.firstName }}</li>
+      </ul>
     </div>
   </div>
 </div>

@@ -15,6 +15,8 @@ import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { LikeService } from 'src/app/core/likes/like.service';
 import { UserService } from 'src/app/users/user.service';
+import { Like } from 'src/app/core/model/Like';
+import { LikeFilter } from 'src/app/core/interface/LikeFilter';
 
 @Component({
   selector: 'app-feed',
@@ -23,8 +25,9 @@ import { UserService } from 'src/app/users/user.service';
 })
 export class FeedComponent implements OnInit {
 
+  showPostLikesDialog: boolean = false;
   showConfirmDialog: boolean = false;
-  dialogTitle: string = 'Deseja remover o post?';
+  dialogTitle: string = 'Deseja remover o post';
 
   selectedPost = new Post();
 
@@ -50,6 +53,8 @@ export class FeedComponent implements OnInit {
 
   extension: any;
 
+  likes: Like[] = [];
+
 
   constructor(
     private router: Router,
@@ -65,6 +70,7 @@ export class FeedComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
+    this.findLikesByPostId(0);
   }
 
   totalRecords: number = 0
@@ -73,6 +79,28 @@ export class FeedComponent implements OnInit {
     page: -1,
     itemsPerPage: 5,
     sort: 'id,desc',
+  }
+
+  likeFilter: LikeFilter = {
+    page: 0,
+    itemsPerPage: 5,
+    sort: 'id,desc',
+  }
+
+  findLikesByPostId(pagina: number = 0): void {
+    this.showLoading = true;
+    this.likeFilter.page = pagina;
+    this.likeService.findLikesByPostId(1, this.likeFilter).subscribe(
+      (dados: IApiResponse<Like>) => {
+        this.likes = dados.content
+        //this.totalRegistros = dados.totalElements
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   @HostListener("window:scroll", [])
@@ -297,6 +325,14 @@ export class FeedComponent implements OnInit {
   confirmDialog(post: Post) {
     this.removePostFromSavedPosts(post);
     this.closeConfirmDialog();
+  }
+
+  onShowPostLikes(){
+    this.showPostLikesDialog = true;
+  }
+
+  onClosePostLikes(){
+    this.showPostLikesDialog = false;
   }
 
   isImageUrl(url: string): boolean {

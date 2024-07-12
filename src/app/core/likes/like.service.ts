@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Like } from '../model/Like';
+import { IApiResponse } from '../interface/IApiResponse';
+import { LikeFilter } from '../interface/LikeFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,16 @@ export class LikeService {
 
   countLikesByPostId(postId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/count/${postId}`);
+  }
+
+  findLikesByPostId(postId: number, filter: LikeFilter): Observable<IApiResponse<Like>> {  
+
+    let params = new HttpParams()  
+      .set('page', filter.page)  
+      .set('size', filter.itemsPerPage)
+      .set('sort', filter.sort);  
+      
+    return this.http.get<IApiResponse<Like>>(`${this.apiUrl}/post/${postId}`, { params });
   }
 
 }
