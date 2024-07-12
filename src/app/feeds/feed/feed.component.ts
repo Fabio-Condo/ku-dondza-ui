@@ -33,6 +33,7 @@ export class FeedComponent implements OnInit {
   imagePath = './assets/images'
 
   showLoading: boolean = false;
+  showAddPostLoading: boolean = false;
 
   feeds: Post[] = [];
   post = new Post();
@@ -81,6 +82,7 @@ export class FeedComponent implements OnInit {
   }
 
   loadMore(): void {
+    this.showLoading = true;
     this.filter.page++;
     this.feedsService.search(this.filter).subscribe(
       (data: IApiResponse<Post>) => {
@@ -101,7 +103,7 @@ export class FeedComponent implements OnInit {
   }
 
   onAddPost(postForm: NgForm): void {
-    this.showLoading = true;
+    this.showAddPostLoading = true;
     const formData = this.feedsService.createPostFormDate(postForm.value, this.postImage);
     this.subscriptions.push(
       this.feedsService.addPost(formData).subscribe(
@@ -110,12 +112,12 @@ export class FeedComponent implements OnInit {
           this.fileName = null;
           this.postImage = null;
           this.messageService.add({ severity: 'success', detail: `Post added successfully` });
-          this.showLoading = false;
+          this.showAddPostLoading = false;
         },
         (errorResponse: HttpErrorResponse) => {
           this.sendNotification(errorResponse.error.message);
           this.postImage = null;
-          this.showLoading = false;
+          this.showAddPostLoading = false;
         }
       )
     );
@@ -251,6 +253,23 @@ export class FeedComponent implements OnInit {
   closePost(post: Post){
     this.feeds = this.feeds.filter(p => p.id !== post.id);
   }
+
+  isImageUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    console.log(this.extension);
+    return imageExtensions.includes(this.extension);
+  }
+  
+  isVideoUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    console.log(this.extension);
+    return videoExtensions.includes(this.extension);
+  }
+  
   
   timeElapsed(dateString: string): string {
     const date = new Date(dateString);

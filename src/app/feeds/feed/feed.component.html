@@ -30,14 +30,23 @@
         <input style="margin-left: 10px;" type="text" placeholder="Start the post" id="create-post" name="text"
           [(ngModel)]="post.text">
         <div class="">
-          <input type="file" id="upload-button" multiple accept="**" name="postImage"
+          <input type="file" id="upload-button" multiple accept="/*" name="postImage"
             (change)="onPostImageChange($event, $event)" />
           <label for="upload-button">
             <i></i>file
           </label>
         </div>
-
       </form>
+
+      <div *ngIf="showAddPostLoading" class="upload-loading-container">
+        <i class="pi pi-spin pi-spinner-dotted"></i>
+        <p class="upload-loading-text">Adicionando seu post...</p>
+      </div>
+
+      <div *ngIf="showLoading" class="upload-loading-container">
+        <i class="pi pi-spin pi-spinner-dotted"></i>
+        <p class="upload-loading-text">Carregando o feed...</p>
+      </div>
 
       <div class="feeds">
         <div class="feed" *ngFor="let feed of feeds">
@@ -52,16 +61,21 @@
               </a>
               <small>{{timeElapsed(feed.date.toString())}}</small>
             </div>
-            <span class="edit" (click)="closePost(feed)" style="cursor: pointer;"><i class="pi pi-times" style="font-size: 0.8rem"></i></span>
+            <span class="edit" (click)="closePost(feed)" style="cursor: pointer;"><i class="pi pi-times"
+                style="font-size: 0.8rem"></i></span>
           </div>
 
           <hr style="margin-top: 5px;">
 
           <div style="margin-top: 1em;">{{feed.text}}</div>
 
-          <div class="photo">
+          <div class="photo" *ngIf="isImageUrl(feed.urlFile)">
             <img src="{{feed.urlFile}}" alt="">
           </div>
+          <video class="video" *ngIf="isVideoUrl(feed.urlFile)" controls>
+            <source src="{{feed.urlFile}}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
 
           <div class="action-button">
             <div class="interaction-button">
@@ -230,6 +244,11 @@
             <a class="text-muted" href="javascript:;">View all comments</a>
           </div>
         </div>
+      </div>
+
+      <div *ngIf="showLoading" class="upload-loading-container">
+        <i class="pi pi-spin pi-spinner-dotted"></i>
+        <p class="upload-loading-text">Carregando o feed...</p>
       </div>
 
     </div>
