@@ -52,11 +52,11 @@
         <div class="feed" *ngFor="let feed of feeds">
 
           <div class="user" style="display: flex; align-items: center;">
-            <div class="profile-pic">
+            <div class="profile-pic" style="cursor: pointer">
               <img src="{{feed.user.profileImageUrl}}" alt="">
             </div>
             <div class="info" style="flex: 1;">
-              <a style="color: hsl(252, 30%, 10%);">
+              <a style="color: hsl(252, 30%, 10%); cursor: pointer;">
                 <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
               <small>{{timeElapsed(feed.date.toString())}}</small>
@@ -77,7 +77,19 @@
             Your browser does not support the video tag.
           </video>
 
-          <span *ngIf="feed.numberOfLikes > 0">{{ feed.numberOfLikes }} likes</span>
+          <a style="font-size: 0.7rem; cursor: pointer;">
+            <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
+            <span *ngIf="feed.numberOfLikes == 1">1 gosto</span>
+            <span *ngIf="feed.numberOfLikes > 1">{{ feed.numberOfLikes }} gostos</span>
+          </a>
+
+          <span style="font-size: 0.7rem; margin-right: 15px; margin-left: 15px;">|</span>
+
+          <a style="font-size: 0.7rem; cursor: pointer;" (click)="toggleComments(feed)">
+            <span *ngIf="feed.numberOfComments == 0">Sem comentários</span>
+            <span *ngIf="feed.numberOfComments == 1">1 comentário</span>
+            <span *ngIf="feed.numberOfComments > 1">{{ feed.numberOfComments }} comentários</span>
+          </a>
 
           <div class="action-button">
             <div class="interaction-button">
@@ -85,14 +97,14 @@
                 <i class="pi" [ngClass]="{'pi-thumbs-up-fill': feed.isLiked, 'pi-thumbs-up': !feed.isLiked}"
                   style="font-size: 1.1rem;" [style.color]="feed.isLiked ? '#3734ed' : ''"></i>
               </a>
-              <a style="cursor: pointer; margin-left: 0.7rem;" (click)="toggleComments(feed)">
+              <a style="cursor: pointer; margin-left: 0.7rem;" (click)="toggleShowInputComment(feed)">
                 <i class="pi pi-comments" style="font-size: 1.1rem;"></i>
               </a>
 
               <!--<i class="uil uil-share"></i>-->
             </div>
             <div>
-              <a *ngIf="feed.isSaved" (click)="removePostFromSavedPosts(feed)" style="cursor: pointer;"><i
+              <a *ngIf="feed.isSaved" (click)="onRemovePost(feed)" style="cursor: pointer;"><i
                   class="pi pi-bookmark-fill"></i></a>
               <a *ngIf="!feed.isSaved" (click)="addPostToSavedPosts(feed)" style="cursor: pointer;"><i
                   class="pi pi-bookmark"></i></a>
@@ -106,7 +118,7 @@
 
           <hr style="margin-bottom: 1rem;">
 
-          <form class="create-post" #commentForm="ngForm"
+          <form *ngIf="feed.showInputComment" class="create-post" #commentForm="ngForm"
             (ngSubmit)="createComment(feed, null, commentForm.value.comment)">
             <div class="profile-pic">
               <img src="{{loggedUser.profileImageUrl}}" alt="">
@@ -241,10 +253,6 @@
               </div>
             </div>
           </div>
-
-          <div>
-            <a class="text-muted" href="javascript:;">View all comments</a>
-          </div>
         </div>
       </div>
 
@@ -306,3 +314,20 @@
 
   </div>
 </main>
+
+<!-- confirm dialog -->
+<div class="dialog-overlay" *ngIf="showConfirmDialog">
+  <div class="dialog">
+    <div class="dialog-header">
+      <h2>{{ dialogTitle }}</h2>
+      <button class="close-button" (click)="closeConfirmDialog()">x</button>
+    </div>
+    <div class="dialog-content">
+      <ng-content></ng-content>
+    </div>
+    <div class="dialog-footer">
+      <button (click)="confirmDialog(selectedPost)">Confirmar</button>
+      <button (click)="closeConfirmDialog()">Cancelar</button>
+    </div>
+  </div>
+</div>

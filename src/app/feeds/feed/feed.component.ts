@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
@@ -6,7 +6,7 @@ import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { Post } from 'src/app/core/model/Post';
 import { FeedsService } from '../feeds.service';
 import { NgForm } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Comment } from "src/app/core/model/Comment";
@@ -23,12 +23,14 @@ import { UserService } from 'src/app/users/user.service';
 })
 export class FeedComponent implements OnInit {
 
+  showConfirmDialog: boolean = false;
+  dialogTitle: string = 'Deseja remover o post?';
+
+  selectedPost = new Post();
+
   //npm install mime-types
 
-  video: string = 'https://www.youtube.com/watch?v=Otr3Up8wRn0'
-
   subscriptions: Subscription[] = [];
-  values: string[] = ['A', 'B', 'C', 'D']; //Depois eliminar
 
   imagePath = './assets/images'
 
@@ -63,7 +65,6 @@ export class FeedComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
-    this.video = 'https://www.youtube.com/watch?v=wVpXwNtIJL0'
   }
 
   totalRecords: number = 0
@@ -92,6 +93,7 @@ export class FeedComponent implements OnInit {
           this.checkIfLiked(post);
           this.checkIfSaved(post);
           this.getNumberOfLikes(post);
+          this.getNumberOfComments(post);
         });
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
         console.log('carregando dados')
@@ -143,8 +145,10 @@ export class FeedComponent implements OnInit {
 
   toggleComments(post: Post): void {
     post.showComments = !post.showComments;
-    if (post.showComments && post.comments.length === 0) {
-    }
+  }
+
+  toggleShowInputComment(post: Post): void {
+    post.showInputComment = !post.showInputComment;
   }
 
   toggleLike(post: Post): void {
@@ -174,12 +178,12 @@ export class FeedComponent implements OnInit {
   }
 
   createComment(post: Post, parentCommentId: number | null, content: string): void {
+    post.numberOfComments = post.numberOfComments + 1;
+
     const newComment = new Comment();
     newComment.post = post;
     newComment.parentCommentId = parentCommentId;
     newComment.content = content;
-
-    console.log(content)
 
     this.commentService.createComment(newComment).subscribe(comment => {
       const pst = this.feeds.find(p => p.id === post.id);
@@ -197,7 +201,7 @@ export class FeedComponent implements OnInit {
   }
 
   createReplyComment(post: Post, parentCommentId: number | null, content: string): void {
-    console.log(content);
+    post.numberOfComments = post.numberOfComments + 1;
     this.commentService.createReplyComment(post.id, parentCommentId!, content).subscribe(comment => {
       const pst = this.feeds.find(p => p.id === post.id);
       if (pst) {
@@ -237,26 +241,22 @@ export class FeedComponent implements OnInit {
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendNotification(errorResponse.error.message);
-        this.postImage = null;
-        this.showLoading = false;
+      }
+    );
+  }
+
+  getNumberOfComments(post: Post): void {
+    this.commentService.countCommentsByPostId(post.id).subscribe((response: number) => {
+      post.numberOfComments = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
       }
     );
   }
 
   verificarAutor(idPostUser: number, idReplyUserPost: number): string {
     return idPostUser === idReplyUserPost ? "Autor" : "";
-  }
-
-  addPostToSavedPosts(post: Post): void {
-    this.userService.addPostToSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
-      post.isSaved = true;
-    });
-  }
-
-  removePostFromSavedPosts(post: Post): void {
-    this.userService.removePostFromSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
-      post.isSaved = false;
-    });
   }
 
   checkIfSaved(post: Post): void {
@@ -267,6 +267,36 @@ export class FeedComponent implements OnInit {
 
   closePost(post: Post) {
     this.feeds = this.feeds.filter(p => p.id !== post.id);
+  }
+
+  onClosePost(post: Post) {
+    this.showConfirmDialog = true;
+  }
+
+  addPostToSavedPosts(post: Post): void {
+    this.userService.addPostToSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
+      post.isSaved = true;
+    });
+  }
+
+  onRemovePost(post: Post): void {
+    this.showConfirmDialog = true;
+    this.selectedPost = post;
+  }
+
+  removePostFromSavedPosts(post: Post): void {
+    this.userService.removePostFromSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
+      post.isSaved = false;
+    });
+  }
+
+  closeConfirmDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmDialog(post: Post) {
+    this.removePostFromSavedPosts(post);
+    this.closeConfirmDialog();
   }
 
   isImageUrl(url: string): boolean {
@@ -284,7 +314,6 @@ export class FeedComponent implements OnInit {
     console.log(this.extension);
     return videoExtensions.includes(this.extension);
   }
-
 
   timeElapsed(dateString: string): string {
     const date = new Date(dateString);
