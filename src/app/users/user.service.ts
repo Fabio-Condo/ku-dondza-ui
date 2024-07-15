@@ -7,6 +7,7 @@ import { CustomHttpRespone } from '../core/model/custom-http-response';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { UserFilter } from '../core/interface/UserFilter';
 import { Post } from '../core/model/Post';
+import { IUserFilter } from '../core/model/IUserFilter';
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,6 +15,24 @@ export class UserService {
   private host = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
+
+  search(filter: IUserFilter): Observable<IApiResponse<User>> {  
+
+    let params = new HttpParams()  
+      .set('page', filter.page)  
+      .set('size', filter.itemsPerPage)
+      .set('sort', filter.sort)
+      ;  
+
+    if (filter.name) {  
+      params = params.set('name', filter.name); 
+    }
+
+    console.log(params);
+    console.log("Getting list");
+
+    return this.http.get<IApiResponse<User>>(`${this.host}/user/list/pageable`, { params });
+  }
 
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.host}/user/list`);
@@ -97,12 +116,36 @@ export class UserService {
   getSavedPosts(userId: number, filtro: UserFilter): Observable<IApiResponse<Post>> {
 
     let params = new HttpParams()
-        .set('page', filtro.pagina)
-        .set('sort', filtro.ordenamento)
-        .set('size', filtro.itensPorPagina);
+      .set('page', filtro.pagina)
+      .set('sort', filtro.ordenamento)
+      .set('size', filtro.itensPorPagina);
 
     return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}/savedPostsPaginated`, { params });
 
-}
+  }
+
+  getFriendRequests(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.host}/user/friend-requests`, {});
+  }
+
+  getFriends(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.host}/user/friends`, {});
+  }
+
+  acceptFriendRequest(friendId: number): Observable<User> {
+    return this.http.post<User>(`${this.host}/user/accept-friend-requests/${friendId}`, {});
+  }
+
+  rejectFriendRequest(friendId: number): Observable<void> {
+    return this.http.delete<void>(`${this.host}/user/reject-friend-requests/${friendId}`, {});
+  }
+
+  removeFriend(friendId: number): Observable<void> {
+    return this.http.delete<void>(`${this.host}/user/friends/${friendId}`, {});
+  }
+
+  sendFriendRequest(user: User): Observable<User> {
+    return this.http.post<User>(`${this.host}/user/send-friend-request`, user, {});
+  }
 
 }

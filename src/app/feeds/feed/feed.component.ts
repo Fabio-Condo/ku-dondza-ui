@@ -17,6 +17,8 @@ import { LikeService } from 'src/app/core/likes/like.service';
 import { UserService } from 'src/app/users/user.service';
 import { Like } from 'src/app/core/model/Like';
 import { LikeFilter } from 'src/app/core/interface/LikeFilter';
+import { CommentFilter } from 'src/app/core/interface/CommentFilter';
+import { IUserFilter } from 'src/app/core/model/IUserFilter';
 
 @Component({
   selector: 'app-feed',
@@ -26,8 +28,8 @@ import { LikeFilter } from 'src/app/core/interface/LikeFilter';
 export class FeedComponent implements OnInit {
 
   showPostLikesDialog: boolean = false;
+  //showPostCommentsDialog: boolean = false;
   showConfirmDialog: boolean = false;
-  dialogTitle: string = 'Deseja remover o post';
 
   selectedPost = new Post();
 
@@ -54,6 +56,12 @@ export class FeedComponent implements OnInit {
   extension: any;
 
   likes: Like[] = [];
+  comments: Comment[] = [];
+
+  friendRequests: User[] = []
+  friends: User[] = []
+  users: User[] = [];
+  teachers: User[] = [];
 
 
   constructor(
@@ -70,7 +78,9 @@ export class FeedComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
-    this.findLikesByPostId(0);
+    //this.getFriendRequests();
+    //this.getFriends();
+    this.loadMoreUsers();
   }
 
   totalRecords: number = 0
@@ -82,25 +92,78 @@ export class FeedComponent implements OnInit {
   }
 
   likeFilter: LikeFilter = {
-    page: 0,
-    itemsPerPage: 5,
-    sort: 'id,desc',
+    page: -1,
+    itemsPerPage: 10,
+    sort: 'id,asc',
   }
 
-  findLikesByPostId(pagina: number = 0): void {
-    this.showLoading = true;
-    this.likeFilter.page = pagina;
-    this.likeService.findLikesByPostId(1, this.likeFilter).subscribe(
-      (dados: IApiResponse<Like>) => {
-        this.likes = dados.content
-        //this.totalRegistros = dados.totalElements
-        this.showLoading = false;
+  commentFilter: CommentFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,asc',
+  }
+
+  userfilter: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'firstName,asc',
+  }
+
+  userfilterForSerach: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'firstName,asc',
+  }
+
+  loadMoreCommentsByPostId(post: Post): void {
+    this.commentFilter.page++;
+    this.commentService.findCommentsByPostId(post.id, this.commentFilter).subscribe(
+      (dados: IApiResponse<Comment>) => {
+        //this.selectedPost.comments = [...this.selectedPost.comments, ...dados.content];
+        post.comments = [...post.comments, ...dados.content];
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
+  }
+
+  onShowPostComments(post: Post) {
+    post.comments = [];
+    post.showComments = true;
+    this.commentFilter.page = -1;
+    this.commentFilter.itemsPerPage = 5;
+    this.loadMoreCommentsByPostId(post);
+  }
+
+  onClosePostComments(post: Post) {
+    post.showComments = false;
+  }
+
+  findLikesByPostId(post: Post): void {
+    this.selectedPost = post;
+    this.likeFilter.page++;
+    this.likeService.findLikesByPostId(post.id, this.likeFilter).subscribe(
+      (dados: IApiResponse<Like>) => {
+        this.likes = [...this.likes, ...dados.content];
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  onShowPostLikes(post: Post) {
+    this.showPostLikesDialog = true;
+    this.likes = [];
+    this.likeFilter.page = -1;
+    this.likeFilter.itemsPerPage = 10;
+    this.selectedPost = post;
+    this.findLikesByPostId(post);
+  }
+
+  onClosePostLikes() {
+    this.showPostLikesDialog = false;
   }
 
   @HostListener("window:scroll", [])
@@ -183,10 +246,8 @@ export class FeedComponent implements OnInit {
     this.likeService.toggleLike(post.id).subscribe(response => {
       post.isLiked = !post.isLiked;
       if (post.isLiked) {
-        post.likes.push({ id: response.id, post: post, user: this.loggedUser });
         post.numberOfLikes = post.numberOfLikes + 1;
       } else {
-        post.likes = post.likes.filter(like => like.user.id !== this.loggedUser.id);
         post.numberOfLikes = post.numberOfLikes - 1;
       }
     },
@@ -327,19 +388,102 @@ export class FeedComponent implements OnInit {
     this.closeConfirmDialog();
   }
 
-  onShowPostLikes(){
-    this.showPostLikesDialog = true;
+  loadMoreUsers() {
+    this.userfilter.page++;
+    this.userService.search(this.userfilter).subscribe(
+      (data: IApiResponse<User>) => {
+        this.teachers = [...this.teachers, ...data.content];
+        //this.totalRecords = data.totalElements;
+      },
+      (erro) => {
+        this.errorHandler.handle(erro)
+      }
+    );
   }
 
-  onClosePostLikes(){
-    this.showPostLikesDialog = false;
+  getUsersSearch(){
+    this.userService.search(this.userfilterForSerach).subscribe(
+      (data: IApiResponse<User>) => {
+        this.users = data.content
+        //this.totalRecords = data.totalElements;
+      },
+      (erro) => {
+        this.errorHandler.handle(erro)
+      }
+    );
+  }
+
+  onClickInputSearchUsers(){
+    //this.userfilterForSerach.page = 0;
+    //this.userfilterForSerach.name = ''
+  }
+
+  getFriendRequests() {
+    return this.userService.getFriendRequests().subscribe(
+      (data: User[]) => {
+        this.friendRequests = data;
+        this.getFriends();
+      },
+      erro => this.errorHandler.handle(erro)
+    )
+  }
+
+  getFriends() {
+    return this.userService.getFriends().subscribe(
+      (data: User[]) => {
+        this.friends = data;
+      },
+      erro => this.errorHandler.handle(erro)
+    )
+  }
+
+  sendFriendRequest(user: User) {
+    this.userService.sendFriendRequest(user).subscribe(
+      (user) => {
+        this.messageService.add({ severity: 'success', detail: 'Friend removed successfully' });
+      }
+    )
+
+  }
+
+  acceptFriendRequest(friendId: number) {
+    this.userService.acceptFriendRequest(friendId).subscribe(
+      (friendAcepted) => {
+        this.getFriends();
+        this.getFriendRequests();
+        this.messageService.add({ severity: 'success', detail: 'Friend accepted successfully' });
+      },
+      erro => this.errorHandler.handle(erro)
+    )
+  }
+
+  rejectFriendRequest(friendId: number) {
+    this.userService.rejectFriendRequest(friendId).subscribe(
+      () => {
+        this.getFriendRequests();
+        this.messageService.add({ severity: 'success', detail: 'Friend rejected successfully' });
+      },
+      erro => this.errorHandler.handle(erro)
+    )
+  }
+
+  removeFriend(friendId: number) {
+    this.userService.removeFriend(friendId).subscribe(
+      () => {
+        this.getFriends();
+        this.messageService.add({ severity: 'success', detail: 'Friend removed successfully' });
+      }
+    )
+  }
+
+  isAlreadyFriendWithCurrentUser(user: User): boolean {
+    return this.friends.some(friend => friend.id === user.id);
   }
 
   isImageUrl(url: string): boolean {
     if (!url) return false; // Verifica se a URL é válida
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
     this.extension = url.split('.').pop()?.toLowerCase();
-    console.log(this.extension);
     return imageExtensions.includes(this.extension);
   }
 
@@ -347,7 +491,6 @@ export class FeedComponent implements OnInit {
     if (!url) return false; // Verifica se a URL é válida
     const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
     this.extension = url.split('.').pop()?.toLowerCase();
-    console.log(this.extension);
     return videoExtensions.includes(this.extension);
   }
 

@@ -23,9 +23,10 @@
 
     <div class="middle">
 
-      <form class="create-post" #newPostForm="ngForm" (ngSubmit)="onAddPost(newPostForm)">
+      <form class="create-post" style="border: 1px solid #dcdcdc" #newPostForm="ngForm"
+        (ngSubmit)="onAddPost(newPostForm)">
         <div class="profile-pic">
-          <img src="{{loggedUser.profileImageUrl}}" alt="">
+          <img src="{{loggedUser.profileImageUrl}}" alt="photo">
         </div>
         <input style="margin-left: 10px;" type="text" placeholder="Start the post" id="create-post" name="text"
           [(ngModel)]="post.text">
@@ -51,9 +52,9 @@
       <div class="feeds">
         <div class="feed" *ngFor="let feed of feeds">
 
-          <div class="user" style="display: flex; align-items: center;">
+          <div class="user" style="display: flex; align-items: center; margin: 0.7rem;">
             <div class="profile-pic" style="cursor: pointer">
-              <img src="{{feed.user.profileImageUrl}}" alt="">
+              <img src="{{feed.user.profileImageUrl}}" alt="photo">
             </div>
             <div class="info" style="flex: 1;">
               <a style="color: hsl(252, 30%, 10%); cursor: pointer;">
@@ -67,7 +68,7 @@
 
           <hr style="margin-top: 5px;">
 
-          <div style="margin-top: 1em;">{{feed.text}}</div>
+          <div style="margin: 0.7rem">{{feed.text}}</div>
 
           <div class="photo" *ngIf="isImageUrl(feed.urlFile)">
             <img src="{{feed.urlFile}}" alt="">
@@ -77,19 +78,25 @@
             Your browser does not support the video tag.
           </video>
 
-          <a style="font-size: 0.7rem; cursor: pointer;" (click)="onShowPostLikes()">
+          <a style="font-size: 0.7rem; margin: 0.7rem;">
             <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
-            <span *ngIf="feed.numberOfLikes == 1">1 gosto</span>
-            <span *ngIf="feed.numberOfLikes > 1">{{ feed.numberOfLikes }} gostos</span>
+            <span style="cursor: pointer;" (click)="onShowPostLikes(feed)" *ngIf="feed.numberOfLikes == 1">1
+              gosto</span>
+            <span style="cursor: pointer;" (click)="onShowPostLikes(feed)" *ngIf="feed.numberOfLikes > 1">{{
+              feed.numberOfLikes }} gostos</span>
           </a>
 
-          <span style="font-size: 0.7rem; margin-right: 15px; margin-left: 15px;">|</span>
+          <span style="font-size: 0.7rem;">|</span>
 
-          <a style="font-size: 0.7rem; cursor: pointer;" (click)="toggleComments(feed)">
+          <a style="font-size: 0.7rem; margin: 0.7rem;"> <!--(click)="toggleComments(feed)"-->
             <span *ngIf="feed.numberOfComments == 0">Sem comentários</span>
-            <span *ngIf="feed.numberOfComments == 1">1 comentário</span>
-            <span *ngIf="feed.numberOfComments > 1">{{ feed.numberOfComments }} comentários</span>
+            <span style="cursor: pointer;" *ngIf="feed.numberOfComments == 1" (click)="onShowPostComments(feed)">1
+              comentário</span>
+            <span style="cursor: pointer;" *ngIf="feed.numberOfComments > 1" (click)="onShowPostComments(feed)">{{
+              feed.numberOfComments }} comentários</span>
           </a>
+
+          <hr style="margin-top: 0.5rem;">
 
           <div class="action-button">
             <div class="interaction-button">
@@ -98,7 +105,7 @@
                   style="font-size: 1.1rem;" [style.color]="feed.isLiked ? '#3734ed' : ''"></i>
               </a>
               <a style="cursor: pointer; margin-left: 0.7rem;" (click)="toggleShowInputComment(feed)">
-                <i class="pi pi-comments" style="font-size: 1.1rem;"></i>
+                <i class="pi pi-comment" style="font-size: 1.1rem;"></i>
               </a>
 
               <!--<i class="uil uil-share"></i>-->
@@ -116,12 +123,10 @@
             <!-- Seção de likes, se necessário -->
           </div>
 
-          <hr style="margin-bottom: 1rem;">
-
           <form *ngIf="feed.showInputComment" class="create-post" #commentForm="ngForm"
             (ngSubmit)="createComment(feed, null, commentForm.value.comment)">
             <div class="profile-pic">
-              <img src="{{loggedUser.profileImageUrl}}" alt="">
+              <img src="{{loggedUser.profileImageUrl}}" alt="photo">
             </div>
             <input type="text" ngModel required name="comment"
               style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;"
@@ -141,8 +146,11 @@
                 <div class="comment-content">
                   <div class="user-comment">
                     <div class="user-info">
-                      <img src="{{comment.user.profileImageUrl}}" alt="User Image">
+                      <img src="{{comment.user.profileImageUrl}}" alt="photo">
                       <span class="user-name">{{comment.user.firstName}} {{comment.user.lastName}}</span>
+                      <span *ngIf="verificarAutor(feed.user.id, comment.user.id)" class="autor-span">
+                        {{ verificarAutor(feed.user.id, comment.user.id) }}
+                      </span>
                     </div>
 
                     <p
@@ -161,7 +169,7 @@
                   (ngSubmit)="createReplyComment(feed, comment.id, replyCommentForm.value.replyComment)"
                   *ngIf="comment.showReplyForm">
                   <div class="profile-pic">
-                    <img src="{{loggedUser.profileImageUrl}}" alt="">
+                    <img src="{{loggedUser.profileImageUrl}}" alt="photo">
                   </div>
                   <input type="text" ngModel required name="replyComment"
                     style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;"
@@ -180,7 +188,7 @@
                       <div class="comment-content">
                         <div class="user-comment">
                           <div class="user-info">
-                            <img src="{{reply.user.profileImageUrl}}" alt="User Image">
+                            <img src="{{reply.user.profileImageUrl}}" alt="photo">
                             <span class="user-name">{{reply.user.firstName}} {{reply.user.lastName}}</span>
                             <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
                               {{ verificarAutor(feed.user.id, reply.user.id) }}
@@ -203,7 +211,7 @@
                         (ngSubmit)="createReplyComment(feed, reply.id, replyCommentForm_2.value.replyComment_2)"
                         *ngIf="reply.showReplyForm">
                         <div class="profile-pic">
-                          <img src="{{loggedUser.profileImageUrl}}" alt="">
+                          <img src="{{loggedUser.profileImageUrl}}" alt="photo">
                         </div>
                         <input type="text" ngModel required name="replyComment_2"
                           style="height: 30px; background-color: #fff; border-radius: 10px; margin-left: 10px;"
@@ -223,7 +231,7 @@
                             <div class="comment-content">
                               <div class="user-comment">
                                 <div class="user-info">
-                                  <img src="{{reply2.user.profileImageUrl}}" alt="User Image">
+                                  <img src="{{reply2.user.profileImageUrl}}" alt="photo">
                                   <span class="user-name">{{reply2.user.firstName}} {{reply2.user.lastName}}</span>
                                   <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
                                     {{ verificarAutor(feed.user.id, reply2.user.id) }}
@@ -252,6 +260,16 @@
                 </div>
               </div>
             </div>
+
+            <a style="cursor: pointer; margin: 0.7rem;" (click)="loadMoreCommentsByPostId(feed)">ver mais
+              comentários</a>
+
+            <span>|</span>
+
+            <a *ngIf="feed.showComments" (click)="onClosePostComments(feed)" style="cursor: pointer; margin: 0.7rem;">
+              fechar comentários
+            </a>
+
           </div>
         </div>
       </div>
@@ -286,27 +304,67 @@
 
       <div class="messages">
         <div class="heading">
-          <h4>Friends</h4>
+          <h4>Amigos</h4>
         </div>
 
-        <div class="search-bar">
-          <span style="border: 1px solid #dcdcdc;"><i class="uil uil-search"></i></span>
-          <input type="search" placeholder="Search Friends" id="message-search" style="border: 1px solid #dcdcdc;">
+        <form action="" #usersForm="ngForm" (ngSubmit)="getUsersSearch()">
+
+          <div class="search-bar">
+            <span style="border: 1px solid #dcdcdc;"><i class="uil uil-search"></i></span>
+            <input type="search" placeholder="Search Users" style="border: 1px solid #dcdcdc;"
+              (click)="onClickInputSearchUsers()" [(ngModel)]="userfilterForSerach.name" name="name" id="message-search"
+              (ngModelChange)="getUsersSearch()">
+
+          </div>
+        </form>
+
+        <div class="message" *ngFor="let user of users">
+          <div class="profile-pic" *ngIf="user.id !== loggedUser.id"> <!--Dont show the current user in list-->
+            <a href="javascript:;"><img src="{{user.profileImageUrl}}"
+                [routerLink]="['/user/profile', user.username]"></a>
+            <div class="active"></div>
+          </div>
+          <div class="message-body" *ngIf="user.id !== loggedUser.id">
+            <h5 [routerLink]="['/user/view', user.username]">{{user.firstName}} {{user.lastName}}</h5>
+            <p class="text-muted">
+              <a (click)="sendFriendRequest(user)" *ngIf="!isAlreadyFriendWithCurrentUser(user)"
+                style="color: #3734ed" href="javascript:;"> connect</a>
+              <span *ngIf="isAlreadyFriendWithCurrentUser(user)" href="javascript:;"> (already friends) <a
+                  (click)="removeFriend(user.id)" style="color: #3734ed" href="javascript:;">remove</a></span>
+            </p>
+          </div>
         </div>
 
-        <div class="message">
-        </div>
+
 
       </div>
 
       <br>
 
-
       <div class="messages">
         <div class="heading">
-          <h4>Users</h4>
+          <h4>Explicadores</h4>
         </div>
 
+        <div class="message" *ngFor="let teacher of teachers">
+          <div class="profile-pic" *ngIf="teacher.id !== loggedUser.id"> <!--Dont show the current user in list-->
+            <a href="javascript:;"><img src="{{teacher.profileImageUrl}}"
+                [routerLink]="['/user/profile', teacher.username]"></a>
+            <div class="active"></div>
+          </div>
+          <div class="message-body" *ngIf="teacher.id !== loggedUser.id">
+            <h5 [routerLink]="['/user/view', teacher.username]">{{teacher.firstName}} {{teacher.lastName}}</h5>
+            <p class="text-muted">
+              <a (click)="sendFriendRequest(teacher)" *ngIf="!isAlreadyFriendWithCurrentUser(teacher)"
+                style="color: #3734ed" href="javascript:;"> connect</a>
+              <span *ngIf="isAlreadyFriendWithCurrentUser(teacher)" href="javascript:;"> (already friends) <a
+                  (click)="removeFriend(teacher.id)" style="color: #3734ed" href="javascript:;">remove</a></span>
+            </p>
+          </div>
+        </div>
+        <a style="font-size: 0.7rem; cursor: pointer;">
+          <span (click)="loadMoreUsers()">mostrar mais explicadores</span>
+        </a>
 
       </div>
 
@@ -319,7 +377,7 @@
 <div class="dialog-overlay" *ngIf="showConfirmDialog">
   <div class="dialog">
     <div class="dialog-header">
-      <h2>{{ dialogTitle }}</h2>
+      <h4>Deseja remover o post da sua lista guardados</h4>
       <button class="close-button" (click)="closeConfirmDialog()">x</button>
     </div>
     <div class="dialog-content">
@@ -337,13 +395,19 @@
 <div class="dialog-overlay" *ngIf="showPostLikesDialog">
   <div class="dialog">
     <div class="dialog-header">
-      <h2>Usuários que fizeram Like</h2>
+      <h4>Pessoas que reagiram</h4>
       <button class="close-button" (click)="onClosePostLikes()">x</button>
     </div>
     <div class="dialog-content">
       <ul>
-        <li *ngFor="let like of likes">{{ like.user.firstName }}</li>
+        <li *ngFor="let like of likes">
+          <div class="user-info">
+            <img src="{{like.user.profileImageUrl}}" alt="photo">
+            <span class="user-name">{{like.user.firstName}} {{like.user.lastName}}</span>
+          </div>
+        </li>
       </ul>
     </div>
+    <a style="cursor: pointer;" (click)="findLikesByPostId(selectedPost)">ver todos mais</a>
   </div>
 </div>

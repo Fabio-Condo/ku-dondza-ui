@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Comment } from '../model/Comment';
 import { environment } from 'src/environments/environment';
+import { IApiResponse } from '../interface/IApiResponse';
+import { CommentFilter } from '../interface/CommentFilter';
 
 
 @Injectable({
@@ -28,5 +30,16 @@ export class CommentService {
 
   countCommentsByPostId(postId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/count/${postId}`);
+  }
+
+  
+  findCommentsByPostId(postId: number, filter: CommentFilter): Observable<IApiResponse<Comment>> {  
+
+    let params = new HttpParams()  
+      .set('page', filter.page)  
+      .set('size', filter.itemsPerPage)
+      .set('sort', filter.sort);  
+      
+    return this.http.get<IApiResponse<Comment>>(`${this.apiUrl}/post/${postId}`, { params });
   }
 }

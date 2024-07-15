@@ -64,13 +64,16 @@
         <td>
           <p style="font-size: 0.85rem;">{{ exame.description }}</p>
         </td>
-        <td>
-          <button pButton (click)="download(exame, exame.fileName)" type="button" icon="pi pi-download"
+        <td style="width: 500px;">
+          <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)" type="button" icon="pi pi-download"
             style="height: 30px; background-color: #3734ed; border: none;"></button>
           <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
 
-
-          <span *ngIf="exame.showLoadingDownload" style="margin-left: 10px; font-size: 0.85rem; background-color: rgb(44, 164, 44); color: white; padding: 2px; text-align: center;">Baixando...</span>
+          <span *ngIf="exame.showLoadingDownload"
+            style="margin-left: 10px; font-size: 0.85rem; color: black; font-weight: bold; padding: 2px; text-align: center;">
+            <i *ngIf="exame.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size: 0.7rem;"></i>
+            Baixando...
+          </span>
 
         </td>
         <td *ngIf="isAdmin" style="width: 150px;">

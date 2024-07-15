@@ -6,8 +6,8 @@ export interface IUserFilter {
   username?: string,
   role?: string,
   email?: string,
-  isActive: string,
-  isNotLocked: string
+  isActive?: string,
+  isNotLocked?: string
   page: number,
   itemsPerPage: number,
   sort: string,
