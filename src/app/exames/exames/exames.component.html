@@ -11,6 +11,100 @@
     melhor resultado. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
   </p>
 
+  <!--
+  <div class="flex">
+    <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
+
+    <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto">
+      Mostrando {{totalRegistros}} dos {{totalExames}}
+    </p>
+
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input pInputText [(ngModel)]="filtro.global" (ngModelChange)="findAll()" type="text" style="width: 300px;"
+        placeholder="Pesquisa" />
+    </span>
+
+    <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;" type="button"
+      pButton pRipple icon="pi pi-filter"></button>
+  </div>
+  -->
+
+  <table class="card-table">
+    <tbody>
+      <tr *ngFor="let exame of exames">
+        <td>
+          <div class="card">
+            <div class="card-content">
+              <div style="width: 100px; height: 100px;">
+                <a href="javascript:;" [routerLink]="['/user/profile']">
+                  <img src="{{exame.institution.urlFile}}" alt="Institution Logo" />
+                </a>
+              </div>
+              <div class="content">
+                <p class="subject-name">{{exame.subject.name}}</p>
+                <p class="exam-date">ano: {{ exame.date | date:'yyyy' }}</p>
+                <p class="institution-name">instituição: {{ exame.institution.name }} <span
+                    *ngIf="exame.institution.acronym">({{ exame.institution.acronym }})</span></p>
+                <p class="institution-type">tipo de instituição: {{ exame.institution.type }}</p>
+                <p class="exam-description">{{ exame.description }}</p>
+
+                <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)"
+                  type="button" icon="pi pi-download" class="download-button"></button>
+                <span *ngIf="!exame.showLoadingDownload" class="download-count">{{exame.totalDownloadNumber}} downloads</span>
+
+                <span *ngIf="exame.showLoadingDownload" class="loading-indicator">
+                  <i *ngIf="exame.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"></i>
+                  Baixando...
+                </span>
+
+                
+                  <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
+                    class="edit-link">editar</a>
+                  <a (click)="confirmarExclusao(exame)" class="delete-link">excluir</a>
+                
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginação -->
+  <div class="pagination-controls">
+    <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+    <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">Próximo</button>
+    <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+      <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+        [selected]="option === filtro.itensPorPagina">{{ option }}</option>
+    </select>
+  </div>
+
+  <!-- Indicador de carregamento -->
+  <div *ngIf="showLoading" class="loading-indicator">
+    Carregando...
+  </div>
+
+</div>
+
+
+
+<!--
+<div class="container" style="margin-top: 120px;">
+
+  <div style="display:inline;">
+    <p style="margin-top: 20px; font-size: 30px;">Exames de admissão</p>
+  </div>
+
+  <p style="margin-top: 20px; font-size: 0.85rem;">Explore a variedade de exames de admissão das instituições de ensino
+    de Moçambique, abrangendo uma ampla
+    gama de disciplinas e níveis educacionais. </p>
+  <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, trabalhamos durro para obter o
+    melhor resultado. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
+  </p>
+
   <p-table [value]="exames" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
     selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
     currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalExames}}" [showCurrentPageReport]="true"
@@ -65,8 +159,8 @@
           <p style="font-size: 0.85rem;">{{ exame.description }}</p>
         </td>
         <td style="width: 500px;">
-          <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)" type="button" icon="pi pi-download"
-            style="height: 30px; background-color: #3734ed; border: none;"></button>
+          <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)" type="button"
+            icon="pi pi-download" style="height: 30px; background-color: #3734ed; border: none;"></button>
           <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
 
           <span *ngIf="exame.showLoadingDownload"
@@ -100,6 +194,7 @@
     </ng-template>
   </p-table>
 </div>
+-->
 
 <p-dialog header="Exame {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
   [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">

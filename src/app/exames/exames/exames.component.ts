@@ -33,6 +33,10 @@ export class ExamesComponent implements OnInit {
 
   paginaAtual: number = 0;
 
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+
 
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },
@@ -115,7 +119,8 @@ export class ExamesComponent implements OnInit {
 
   findAll(pagina: number = 0): void {
     this.showLoading = true;
-    this.filtro.pagina = pagina;
+    //this.filtro.pagina = pagina;
+    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.examesService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<Exame>) => {
         this.exames = dados.content
@@ -286,6 +291,32 @@ export class ExamesComponent implements OnInit {
     this.filtro.itensPorPagina = 10;
     this.filtro.ordenamento = "id,desc"
     this.findAll();
+  }
+
+
+  changePageSize(event: any): void {
+    this.filtro.itensPorPagina = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findAll();
+  }
+
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findAll();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
 
   private sendErrorNotification(message: string): void {
