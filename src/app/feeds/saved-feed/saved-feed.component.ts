@@ -18,7 +18,13 @@ export class SavedFeedComponent implements OnInit {
   posts: Post[] = [];
   loggedUser: User = new User;
   showLoading: boolean = false;
-  totalRegistros: number = 0
+  totalRegistros: number = 9
+  currentPage: number = 1;
+
+  // Opções de número de itens por página
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  extension: any;
 
 
   constructor(
@@ -38,14 +44,16 @@ export class SavedFeedComponent implements OnInit {
 
   filtro: UserFilter = {
     pagina: 0,
-    itensPorPagina: 1000000,
+    itensPorPagina: 4,
     ordenamento: 'id,asc'
   }
 
 
   getSavedPosts(pagina: number = 0): void {
     this.showLoading = true;
-    this.filtro.pagina = pagina;
+    //this.filtro.pagina = pagina;
+    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+
     this.userService.getSavedPosts(this.loggedUser.id, this.filtro).subscribe(
       (dados: IApiResponse<Post>) => {
         this.posts = dados.content
@@ -59,23 +67,56 @@ export class SavedFeedComponent implements OnInit {
     );
   }
 
-  aoMudarPagina(event: LazyLoadEvent) {
-    const pagina = event!.first! / event!.rows!;
-    this.filtro.itensPorPagina = event!.rows!;
-    this.getSavedPosts(pagina);
-  }
-
   removePostFromSavedPosts(post: Post): void {
     this.userService.removePostFromSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
       this.posts = this.posts.filter(p => p.id !== post.id);
     });
   }
 
+  changePageSize(event: any): void {
+    this.filtro.itensPorPagina = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.getSavedPosts();
+  }
+
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.getSavedPosts();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.getSavedPosts();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  isImageUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    return imageExtensions.includes(this.extension);
+  }
+
+  isVideoUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    return videoExtensions.includes(this.extension);
+  }
+
   timeElapsed(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
     const diff = now.getTime() - date.getTime();
-  
+
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -83,7 +124,7 @@ export class SavedFeedComponent implements OnInit {
     const weeks = Math.floor(days / 7);
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
-  
+
     if (years > 0) {
       const remainingMonths = months % 12;
       return `${years} ano${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` e ${remainingMonths} mês${remainingMonths > 1 ? 'es' : ''}` : ''}`;
