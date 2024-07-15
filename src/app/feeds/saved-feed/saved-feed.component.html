@@ -11,15 +11,20 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="post-info">
-                                <div style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;"
-                                    *ngIf="isImageUrl(feed.urlFile)">
-                                    <img [src]="feed.urlFile" alt="">
+                                <div *ngIf="isImageUrl(feed.urlFile)">
+                                    <img [src]="feed.urlFile"
+                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;"
+                                        alt="">
                                 </div>
-                                <video style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;"
-                                    *ngIf="isVideoUrl(feed.urlFile)" > <!--controls-->
-                                    <source [src]="feed.urlFile" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div>
+                                    <video *ngIf="isVideoUrl(feed.urlFile)"
+                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;">
+                                        <!--controls-->
+                                        <source [src]="feed.urlFile" type="video/mp4" style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;"> 
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+
                                 <div class="content">
                                     <p class="texto-limitado">{{ feed.text }}</p>
                                     <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>

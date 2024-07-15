@@ -44,7 +44,7 @@ export class SavedFeedComponent implements OnInit {
 
   filtro: UserFilter = {
     pagina: 0,
-    itensPorPagina: 4,
+    itensPorPagina: 5,
     ordenamento: 'id,asc'
   }
 
