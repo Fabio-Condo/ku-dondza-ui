@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users/users.component';
 import { LoginComponent } from './login/login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 
 const routes: Routes = [
-  { 
-    path: 'users', 
+  {
+    path: 'users',
     component: UsersComponent,
   },
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
     component: UserProfileComponent,
     //canActivate: [AuthenticationGuard],
   },
+  {
+    path: 'user/profile/:userId',
+    component: UserProfileViewComponent,
+    //canActivate: [AuthenticationGuard],
+  }
 ];
 
 @NgModule({

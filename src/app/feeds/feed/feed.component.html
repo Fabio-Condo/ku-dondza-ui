@@ -25,7 +25,7 @@
 
       <form class="create-post" style="border: 1px solid #dcdcdc" #newPostForm="ngForm"
         (ngSubmit)="onAddPost(newPostForm)">
-        <div class="profile-pic">
+        <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
           <img src="{{loggedUser.profileImageUrl}}" alt="photo">
         </div>
         <input style="margin-left: 10px;" type="text" placeholder="Start the post" id="create-post" name="text"
@@ -53,12 +53,12 @@
         <div class="feed" *ngFor="let feed of feeds">
 
           <div class="user" style="display: flex; align-items: center; margin: 0.7rem;">
-            <div class="profile-pic" style="cursor: pointer">
+            <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
               <img src="{{feed.user.profileImageUrl}}" alt="photo">
             </div>
             <div class="info" style="flex: 1;">
-              <a style="color: hsl(252, 30%, 10%); cursor: pointer;">
-                <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
+              <a style="color: hsl(252, 30%, 10%); cursor: pointer;" [routerLink]="['/user/profile', loggedUser.userId]">
+                <h3 >{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
               <small>{{timeElapsed(feed.date.toString())}}</small>
             </div>
@@ -125,7 +125,7 @@
 
           <form *ngIf="feed.showInputComment" class="create-post" #commentForm="ngForm"
             (ngSubmit)="createComment(feed, null, commentForm.value.comment)">
-            <div class="profile-pic">
+            <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
               <img src="{{loggedUser.profileImageUrl}}" alt="photo">
             </div>
             <input type="text" ngModel required name="comment"
@@ -145,7 +145,7 @@
 
                 <div class="comment-content">
                   <div class="user-comment">
-                    <div class="user-info">
+                    <div class="user-info" [routerLink]="['/user/profile', comment.user.userId]">
                       <img src="{{comment.user.profileImageUrl}}" alt="photo">
                       <span class="user-name">{{comment.user.firstName}} {{comment.user.lastName}}</span>
                       <span *ngIf="verificarAutor(feed.user.id, comment.user.id)" class="autor-span">
@@ -168,7 +168,7 @@
                 <form class="create-post" #replyCommentForm="ngForm"
                   (ngSubmit)="createReplyComment(feed, comment.id, replyCommentForm.value.replyComment)"
                   *ngIf="comment.showReplyForm">
-                  <div class="profile-pic">
+                  <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
                     <img src="{{loggedUser.profileImageUrl}}" alt="photo">
                   </div>
                   <input type="text" ngModel required name="replyComment"
@@ -187,7 +187,7 @@
 
                       <div class="comment-content">
                         <div class="user-comment">
-                          <div class="user-info">
+                          <div class="user-info" [routerLink]="['/user/profile', reply.user.userId]">
                             <img src="{{reply.user.profileImageUrl}}" alt="photo">
                             <span class="user-name">{{reply.user.firstName}} {{reply.user.lastName}}</span>
                             <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
@@ -210,7 +210,7 @@
                       <form class="create-post" #replyCommentForm_2="ngForm"
                         (ngSubmit)="createReplyComment(feed, reply.id, replyCommentForm_2.value.replyComment_2)"
                         *ngIf="reply.showReplyForm">
-                        <div class="profile-pic">
+                        <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
                           <img src="{{loggedUser.profileImageUrl}}" alt="photo">
                         </div>
                         <input type="text" ngModel required name="replyComment_2"
@@ -230,7 +230,7 @@
 
                             <div class="comment-content">
                               <div class="user-comment">
-                                <div class="user-info">
+                                <div class="user-info" [routerLink]="['/user/profile', reply2.user.userId]">
                                   <img src="{{reply2.user.profileImageUrl}}" alt="photo">
                                   <span class="user-name">{{reply2.user.firstName}} {{reply2.user.lastName}}</span>
                                   <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
@@ -282,12 +282,12 @@
         <h4>Requests</h4>
         <div class="request">
           <div class="info">
-            <div class="profile-pic">
-              <a href="javascript:;"><img src="{{imagePath}}/profile-1.jpg"></a>
+            <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
+              <a href="javascript:;"><img src="{{loggedUser.profileImageUrl}}"></a>
             </div>
             <div>
-              <a>
-                <h5>fabio condo</h5>
+              <a [routerLink]="['/user/profile', loggedUser.userId]">
+                <h5>{{loggedUser.firstName}} {{loggedUser.lastName}}</h5>
               </a>
               <p class="text-muted">8 mutual friends</p>
             </div>
@@ -321,11 +321,11 @@
         <div class="message" *ngFor="let user of users">
           <div class="profile-pic" *ngIf="user.id !== loggedUser.id"> <!--Dont show the current user in list-->
             <a href="javascript:;"><img src="{{user.profileImageUrl}}"
-                [routerLink]="['/user/profile', user.username]"></a>
+                [routerLink]="['/user/profile', user.userId]"></a>
             <div class="active"></div>
           </div>
           <div class="message-body" *ngIf="user.id !== loggedUser.id">
-            <h5 [routerLink]="['/user/view', user.username]">{{user.firstName}} {{user.lastName}}</h5>
+            <h5 [routerLink]="['/user/profile', user.userId]">{{user.firstName}} {{user.lastName}}</h5>
             <p class="text-muted">
               <a (click)="sendFriendRequest(user)" *ngIf="!isAlreadyFriendWithCurrentUser(user)"
                 style="color: #3734ed" href="javascript:;"> connect</a>
@@ -348,12 +348,12 @@
 
         <div class="message" *ngFor="let teacher of teachers">
           <div class="profile-pic" *ngIf="teacher.id !== loggedUser.id"> <!--Dont show the current user in list-->
-            <a href="javascript:;"><img src="{{teacher.profileImageUrl}}"
-                [routerLink]="['/user/profile', teacher.username]"></a>
+            <a href="javascript:;" style="cursor: pointer;"><img src="{{teacher.profileImageUrl}}"
+                [routerLink]="['/user/profile', teacher.userId]"></a>
             <div class="active"></div>
           </div>
           <div class="message-body" *ngIf="teacher.id !== loggedUser.id">
-            <h5 [routerLink]="['/user/view', teacher.username]">{{teacher.firstName}} {{teacher.lastName}}</h5>
+            <h5 style="cursor: pointer;" [routerLink]="['/user/profile', teacher.userId]">{{teacher.firstName}} {{teacher.lastName}}</h5>
             <p class="text-muted">
               <a (click)="sendFriendRequest(teacher)" *ngIf="!isAlreadyFriendWithCurrentUser(teacher)"
                 style="color: #3734ed" href="javascript:;"> connect</a>

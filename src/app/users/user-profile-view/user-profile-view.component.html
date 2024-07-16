@@ -1,0 +1,67 @@
+<body>
+    <div class="profile-container">
+        <header class="profile-header">
+            <div class="profile-cover">
+                <img id="cover-photo" src="{{user.profileImageUrl}}" alt="Foto de Capa">
+                <label for="cover-upload" class="upload-button">Trocar Capa</label>
+                <input type="file" id="cover-upload" class="upload-input" accept="image/*">
+            </div>
+            <div class="profile-picture">
+                <img id="profile-photo" src="{{user.profileImageUrl}}" alt="Foto do Perfil">
+                <label for="profile-upload" class="upload-button">Trocar Foto</label>
+                <input type="file" id="profile-upload" class="upload-input" accept="image/*">
+            </div>
+            <h1 class="profile-name">{{user.firstName}} {{user.lastName}}</h1>
+            <p class="profile-bio">Estudante de Ciência da Computação na Universidade XYZ. Apaixonado por tecnologia e inovação.</p>
+            <div class="profile-contact">
+                <p><strong>Email:</strong> {{user.email}}</p>
+                <p><strong>Username:</strong> {{user.username}}</p>
+                <p><strong>Contatos:</strong> LinkedIn, Twitter</p>
+            </div>
+            <button id="edit-profile-button" class="edit-button">Editar Perfil</button>
+        </header>
+        <main class="profile-main">
+            <section class="profile-info">
+                <h2>Informações</h2>
+                <p><strong>Instituição:</strong> Universidade XYZ</p>
+                <p><strong>Curso:</strong> Ciência da Computação</p>
+                <p><strong>Interesses:</strong> Programação, IA, Desenvolvimento Web</p>
+            </section>
+            <section class="profile-posts">
+                <h2>Publicações Recentes</h2>
+                <div class="post">
+                    <h3>Título da Publicação 1</h3>
+                    <p>Conteúdo da publicação 1...</p>
+                </div>
+                <div class="post">
+                    <h3>Título da Publicação 2</h3>
+                    <p>Conteúdo da publicação 2...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('cover-upload').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('cover-photo').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('profile-upload').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-photo').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>

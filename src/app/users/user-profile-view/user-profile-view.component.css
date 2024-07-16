@@ -1,0 +1,178 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 80px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0.4rem;
+    overflow: hidden;
+    border: 1px solid #dcdcdc;
+}
+
+.profile-header {
+    text-align: center;
+    position: relative;
+}
+
+.profile-cover {
+    position: relative;
+}
+
+.profile-cover img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: absolute;
+    top: 120px;
+    left: calc(50% - 75px);
+    border: 5px solid #fff;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-button {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.upload-input {
+    display: none;
+}
+
+.profile-cover:hover .upload-button {
+    display: inline-block;
+    bottom: 10px;
+    left: 10px;
+}
+
+.profile-picture:hover .upload-button {
+    display: inline-block;
+    bottom: 10px;
+    left: 10px;
+}
+
+.profile-name {
+    margin-top: 100px;
+    font-size: 24px;
+    color: #333;
+}
+
+.profile-bio {
+    font-size: 16px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.edit-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.profile-contact {
+    font-size: 16px;
+    color: #666;
+    margin-top: 20px;
+}
+
+.profile-contact p {
+    margin: 5px 0;
+}
+
+.profile-main {
+    padding: 20px;
+}
+
+.profile-info,
+.profile-posts {
+    margin-bottom: 20px;
+}
+
+.profile-info h2,
+.profile-posts h2 {
+    font-size: 20px;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.profile-info p,
+.profile-posts .post {
+    font-size: 16px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.profile-posts .post {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        padding: 10px;
+    }
+
+    .profile-cover img {
+        height: 150px;
+    }
+
+    .profile-picture {
+        width: 100px;
+        height: 100px;
+        top: 90px;
+        left: calc(50% - 50px);
+    }
+
+    .profile-name {
+        margin-top: 80px;
+        font-size: 20px;
+    }
+
+    .profile-bio {
+        font-size: 14px;
+    }
+
+    .profile-info h2,
+    .profile-posts h2 {
+        font-size: 18px;
+    }
+
+    .profile-info p,
+    .profile-posts .post {
+        font-size: 14px;
+    }
+}
