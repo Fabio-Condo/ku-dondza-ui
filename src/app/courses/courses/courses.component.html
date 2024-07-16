@@ -10,6 +10,8 @@
         informadas. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
     </p>
 
+    <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
+
     <!-- 
     <div class="flex">
         <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
@@ -75,6 +77,44 @@
     </div>
 
 </div>
+
+
+<div class="overlay" *ngIf="displayModalSave">
+    <div class="dialog"> <!-- class="dialog"-->
+        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        <h2>Adicionar Novo Curso</h2>
+        <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
+            <div class="form-group">
+                <label for="courseName">Nome do Curso</label>
+                <input type="text" id="courseName" type="text" name="name" ngModel #name="ngModel" required
+                    minlength="1" [(ngModel)]="course.name" required>
+            </div>
+            <div class="form-group">
+                <label for="institution">Instituição</label>
+                <select id="institution" [(ngModel)]="course.institution.id" name="institution" required>
+                    <option value="" disabled selected>Selecione a instituição</option>
+                    <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="duration">Duração</label>
+                <input type="text" name="duration" ngModel #duration="ngModel" required minlength="1"
+                [(ngModel)]="course.duration">
+            </div>
+            <div class="form-group">
+                <label for="requirements">Requisitos</label>
+                <textarea id="requirements" type="text" name="requirements" ngModel #requirements="ngModel" required
+                    minlength="1" [(ngModel)]="course.requirements" required> rows="4" required></textarea>
+            </div>
+            <button type="submit" [disabled]="courseForm.invalid" class="btn">Adicionar Curso</button>
+
+        </form>
+    </div>
+</div>
+
+
+
 
 
 <!--
@@ -170,6 +210,7 @@
 -->
 
 <!--Save-->
+<!--
 <p-dialog header="Curso {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
     [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
     <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
@@ -205,3 +246,4 @@
 
     </form>
 </p-dialog>
+-->

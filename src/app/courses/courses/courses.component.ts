@@ -136,6 +136,7 @@ export class CoursesComponent implements OnInit {
 
   onAddNewCourse(): void {
     this.course = new Course();
+    console.log('Passando daqui dooo')
     this.displayModalSave = true;
   }
 
