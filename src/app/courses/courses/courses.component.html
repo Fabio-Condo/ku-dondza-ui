@@ -81,8 +81,9 @@
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog"> <!-- class="dialog"-->
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
         <h2>Adicionar Novo Curso</h2>
+        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+
         <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
             <div class="form-group">
                 <label for="courseName">Nome do Curso</label>
