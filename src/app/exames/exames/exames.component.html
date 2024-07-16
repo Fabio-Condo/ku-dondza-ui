@@ -36,33 +36,29 @@
         <td>
           <div class="card">
             <div class="card-content">
-              <div style="width: 100px; height: 100px;">
-                <a href="javascript:;" [routerLink]="['/user/profile']">
-                  <img src="{{exame.institution.urlFile}}" alt="Institution Logo" />
-                </a>
-              </div>
               <div class="content">
                 <p class="subject-name">{{exame.subject.name}}</p>
                 <p class="exam-date">ano: {{ exame.date | date:'yyyy' }}</p>
-                <p class="institution-name">instituição: {{ exame.institution.name }} <span
-                    *ngIf="exame.institution.acronym">({{ exame.institution.acronym }})</span></p>
+                <div class="user-info">
+                  <span class="institution-name" style="margin-right: 5px;">instituição: </span>
+                  <img [src]="exame.institution.urlFile" alt="User Image">
+                  <p class="institution-name">{{ exame.institution.name }}<span *ngIf="exame.institution.acronym">({{
+                      exame.institution.acronym }})</span>
+                  </p>
+                </div>
                 <p class="institution-type">tipo de instituição: {{ exame.institution.type }}</p>
                 <p class="exam-description">{{ exame.description }}</p>
-
                 <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)"
                   type="button" icon="pi pi-download" class="download-button"></button>
-                <span *ngIf="!exame.showLoadingDownload" class="download-count">{{exame.totalDownloadNumber}} downloads</span>
-
+                <span *ngIf="!exame.showLoadingDownload" class="download-count">{{exame.totalDownloadNumber}}
+                  downloads</span>
                 <span *ngIf="exame.showLoadingDownload" class="loading-indicator">
                   <i *ngIf="exame.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"></i>
                   Baixando...
                 </span>
-
-                
-                  <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
-                    class="edit-link">editar</a>
-                  <a (click)="confirmarExclusao(exame)" class="delete-link">excluir</a>
-                
+                <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
+                  class="edit-link">editar</a>
+                <a (click)="confirmarExclusao(exame)" class="delete-link">excluir</a>
               </div>
             </div>
           </div>

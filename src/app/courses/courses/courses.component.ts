@@ -27,7 +27,9 @@ export class CoursesComponent implements OnInit {
 
   isAdmin: boolean = true;
 
-  paginaAtual: number = 0;
+  //paginaAtual: number = 0;
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
 
   constructor(
@@ -39,7 +41,8 @@ export class CoursesComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscarTotal();
-    this.carregarInstituicoes()
+    this.carregarInstituicoes();
+    this.findAll(0)
   }
 
   @ViewChild('tabela') grid: any;
@@ -69,7 +72,7 @@ export class CoursesComponent implements OnInit {
         this.course = response;
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Courso adicionada com sucesso!' });
-        this.findAll(this.paginaAtual)
+        //this.findAll(this.paginaAtual)
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -85,7 +88,7 @@ export class CoursesComponent implements OnInit {
         this.course = response;
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' });
-        this.findAll(this.paginaAtual)
+        //this.findAll(this.paginaAtual)
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -96,7 +99,8 @@ export class CoursesComponent implements OnInit {
 
   findAll(pagina: number = 0): void {
     this.showLoading = true;
-    this.filtro.pagina = pagina;
+    //this.filtro.pagina = pagina;
+    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.courseService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<Course>) => {
         this.courses = dados.content
@@ -124,7 +128,7 @@ export class CoursesComponent implements OnInit {
     );
   }
 
-  public onUpdateCourse(course: Course): void {
+  onUpdateCourse(course: Course): void {
     this.course = course
     this.course.id = course.id
     this.displayModalSave = true;
@@ -141,7 +145,7 @@ export class CoursesComponent implements OnInit {
         this.findAll()
       } else {
         //this.grid.reset();
-        this.findAll(this.paginaAtual)
+        //this.findAll(this.paginaAtual)
       }
       this.messageService.add({ severity: 'success', detail: 'Courso excluído com sucesso!' })
       this.buscarTotal();
@@ -184,11 +188,35 @@ export class CoursesComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  aoMudarPagina(event: LazyLoadEvent) {
-    const pagina = event!.first! / event!.rows!;
-    this.filtro.itensPorPagina = event!.rows!;
-    this.findAll(pagina);
-    this.paginaAtual = pagina;
+  //aoMudarPagina(event: LazyLoadEvent) {
+  //  const pagina = event!.first! / event!.rows!;
+  //  this.filtro.itensPorPagina = event!.rows!;
+  //  this.findAll(pagina);
+  //  this.paginaAtual = pagina;
+  //}
+
+  changePageSize(event: any): void {
+    this.filtro.itensPorPagina = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findAll();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findAll();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
 
   limparCampos() {

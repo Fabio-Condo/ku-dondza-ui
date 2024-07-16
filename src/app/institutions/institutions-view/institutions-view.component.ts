@@ -21,6 +21,8 @@ export class InstitutionsViewComponent implements OnInit {
   totalRegistros: number = 0
   showLoading: boolean = false;
 
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
   constructor(
     private institutionService: InstitutionService,
@@ -34,8 +36,8 @@ export class InstitutionsViewComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
     if (id) {
-      this.getUserById(id);
-      //this.findByInstitutionId(0, id);
+      this.getInstitutionById(id);
+      this.findByInstitutionId(0, id);
     }
   }
   
@@ -43,11 +45,11 @@ export class InstitutionsViewComponent implements OnInit {
 
   filtro: CourseFilter = {
     pagina: 0,
-    itensPorPagina: 10,
+    itensPorPagina: 5,
     ordenamento: 'id,asc'
   }
 
-  getUserById(id: number) {
+  getInstitutionById(id: number) {
     this.institutionService.findById(id).subscribe(
       (response) => {
         this.institution = response;
@@ -60,7 +62,8 @@ export class InstitutionsViewComponent implements OnInit {
 
   findByInstitutionId(pagina: number = 0, institutionId: number): void {
     this.showLoading = true;
-    this.filtro.pagina = pagina;
+    //this.filtro.pagina = pagina;
+    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.courseService.findByInstitutionId(institutionId, this.filtro).subscribe(
       (dados: IApiResponse<Course>) => {
         this.courses = dados.content
@@ -74,11 +77,36 @@ export class InstitutionsViewComponent implements OnInit {
     );
   }
 
-  aoMudarPagina(event: LazyLoadEvent) {
-    const pagina = event!.first! / event!.rows!;
-    this.filtro.itensPorPagina = event!.rows!;
-    this.findByInstitutionId(pagina, this.route.snapshot.params['id']);
+  changePageSize(event: any): void {
+    this.filtro.itensPorPagina = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findByInstitutionId(0, this.institution.id);
   }
+
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findByInstitutionId(0, this.institution.id);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findByInstitutionId(0, this.institution.id);
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  //aoMudarPagina(event: LazyLoadEvent) {
+  //  const pagina = event!.first! / event!.rows!;
+  //  this.filtro.itensPorPagina = event!.rows!;
+  //  this.findByInstitutionId(pagina, this.route.snapshot.params['id']);
+  //}
   
   private sendErrorNotification(message: string): void {
     if (message) {

@@ -31,12 +31,10 @@ export class ExamesComponent implements OnInit {
 
   isAdmin: boolean = true;
 
-  paginaAtual: number = 0;
+  //paginaAtual: number = 0;
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-
-
 
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },
@@ -216,12 +214,12 @@ export class ExamesComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  aoMudarPagina(event: LazyLoadEvent) {
-    const pagina = event!.first! / event!.rows!;
-    this.filtro.itensPorPagina = event!.rows!;
-    this.findAll(pagina);
-    this.paginaAtual = pagina;
-  }
+  //aoMudarPagina(event: LazyLoadEvent) {
+  //  const pagina = event!.first! / event!.rows!;
+  //  this.filtro.itensPorPagina = event!.rows!;
+  //  this.findAll(pagina);
+  //  this.paginaAtual = pagina;
+  //}
 
   public onUpdate(id: number, description: string, date: Date, subjectId: number, institutionId: number, file: File): void {
     this.exame.id = id
@@ -276,7 +274,7 @@ export class ExamesComponent implements OnInit {
 
       // Limpar o link após o download iniciar
       window.URL.revokeObjectURL(link.href);
-      this.findAll(this.paginaAtual)
+      //this.findAll(this.paginaAtual)
     });
   }
 

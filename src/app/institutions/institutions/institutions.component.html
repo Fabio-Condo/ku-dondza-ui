@@ -12,6 +12,94 @@
             mais</a>
     </p>
 
+    <div class="flex">
+        <!--
+        <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewInstitution()">Novo</button>
+
+        <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
+            {{totalRegistros}} dos {{totalInstitutions}}</p>
+
+        <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText [(ngModel)]="filtro.global" (ngModelChange)="findAll()" type="text" style="width: 300px;"
+                placeholder="Pesquisa" />
+        </span>
+
+        <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;" type="button"
+            pButton pRipple icon="pi pi-filter"></button>
+        -->
+    </div>
+
+    <table class="card-table">
+        <tbody>
+            <tr *ngFor="let institution of instutions">
+                <td>
+                    <div class="card">
+                        <div class="card-content">
+                            <div style="width: 100px; height: 100px;">
+                                <a href="javascript:;" [routerLink]="['/user/profile']">
+                                    <img src="{{institution.urlFile}}" alt="Institution Logo" />
+                                </a>
+                            </div>
+                            <div class="content">
+                                <p class="subject-name">{{ institution.name }} <span
+                                        *ngIf="institution.acronym">({{ institution.acronym }})</span></p>
+                                <p class="institution-type">tipo de instituição: {{ institution.type }}</p>
+                                <p class="institution-type">tipo de administração: <p-tag
+                                        [value]="getAdministrationTypeValue(institution.administrationType)"
+                                        [severity]="getAdministrationType(institution.administrationType)"></p-tag></p>
+                                <p class="institution-type texto-limitado">{{ institution.description }} </p>
+                                <a href="{{ institution.website }}" target="_blank"
+                                    style="font-size: 0.7rem; color: #1c80cf; text-decoration: underline;">Saiba mais no website</a>
+                                <i class="pi pi-external-link"
+                                    style="font-size: 0.7rem; margin-left: 5px; color: #1c80cf;"></i>
+                                <a class="edit-link"
+                                    [routerLink]="['/instituicoes', institution.id]">ver cursos</a>
+                                <a (click)="onUpdateInstitution(institution.id, institution.name, this.institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
+                                    class="edit-link">editar</a>
+                                <a (click)="confirmarExclusao(institution)" class="delete-link">excluir</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Paginação -->
+    <div class="pagination-controls">
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+        <button class="pagination-button" (click)="nextPage()"
+            [disabled]="currentPage === totalPages()">Próximo</button>
+        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                [selected]="option === filtro.itensPorPagina">{{ option }}</option>
+        </select>
+    </div>
+
+    <!-- Indicador de carregamento -->
+    <div *ngIf="showLoading" class="loading-indicator">
+        Carregando...
+    </div>
+
+</div>
+
+<!--
+<div class="container" style="margin-top: 120px;">
+
+    <div style="display:inline;">
+        <p style="margin-top: 20px; font-size: 30px;">Instituições de ensino</p>
+    </div>
+
+    <p style="margin-top: 20px; font-size: 0.85rem;">Explore as informações detalhadas sobre cada instituição de
+        Moçambique, incluindo
+        endereço, cursos oferecidos e dados de contato. </p>
+    <p style="margin-bottom: 20px; font-size: 0.85rem;"> A Ku-DONDZA visa facilitar sua busca pela instituição ideal que
+        atenda às suas necessidades educacionais. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba
+            mais</a>
+    </p>
+
     <p-table [value]="instutions" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
         selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
         currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalInstitutions}}"
@@ -58,7 +146,6 @@
                     <p style="font-size: 0.8rem; font-weight: bold;">{{ institution.name }} <span
                             *ngIf="institution.acronym">({{ institution.acronym }})</span></p>
                     <p style="font-size: 0.85rem;"> {{institution.type}}</p>
-                    <!--<p style="font-size: 0.85rem;"> {{ institution.address }} </p>-->
                 </td>
                 <td style="width: 100px;">
                     <p-tag [value]="getAdministrationTypeValue(institution.administrationType)"
@@ -72,11 +159,6 @@
                 </td>
 
                 <td>
-                    <!--
-                    <button pButton [routerLink]="['/instituicoes', institution.id]" type="button"
-                        icon="pi pi-arrow-right"
-                        style="height: 30px; background-color: #3734ed; border: none;"></button>
-                    -->
                     <a style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline;"
                         [routerLink]="['/instituicoes', institution.id]">ver cursos</a>
 
@@ -107,6 +189,7 @@
     </p-table>
 
 </div>
+-->
 
 <p-dialog header="Exame {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
     [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">

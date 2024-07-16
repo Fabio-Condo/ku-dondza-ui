@@ -25,6 +25,9 @@ export class InstitutionsComponent implements OnInit {
 
   isAdmin: boolean = true;
 
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
 
   tiposAdministracao = [
     { label: 'Privada', value: 'PRIVATE' },
@@ -105,7 +108,9 @@ export class InstitutionsComponent implements OnInit {
 
   findAll(pagina: number = 0): void {
     this.showLoading = true;
-    this.filtro.pagina = pagina;
+    //this.filtro.pagina = pagina;
+    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+
     this.institutionService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<Institution>) => {
         this.instutions = dados.content
@@ -170,6 +175,31 @@ export class InstitutionsComponent implements OnInit {
         this.showLoading = false;
       }
     )
+  }
+
+  changePageSize(event: any): void {
+    this.filtro.itensPorPagina = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findAll();
+  }
+
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findAll();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
 
   confirmarExclusao(institution: Institution): void {

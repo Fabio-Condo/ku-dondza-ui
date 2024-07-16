@@ -1,6 +1,166 @@
 .texto-limitado {
-    width: 600px; /* Largura máxima do contêiner de texto */
-    white-space: nowrap; /* Impede a quebra de linha */
-    overflow: hidden; /* Esconde o texto que ultrapassar os limites do contêiner */
-    text-overflow: ellipsis; /* Adiciona reticências ao final do texto */
+    width: 300px;
+    /* Largura máxima do contêiner de texto */
+    white-space: nowrap;
+    /* Impede a quebra de linha */
+    overflow: hidden;
+    /* Esconde o texto que ultrapassar os limites do contêiner */
+    text-overflow: ellipsis;
+    /* Adiciona reticências ao final do texto */
+}
+
+/* Table */
+.card-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0px 5px;
+}
+
+.card {
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 0.4rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    border: 1px solid #dcdcdc;
+}
+
+.card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.content {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.subject-name {
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.exam-date,
+.institution-name,
+.institution-type,
+.exam-description {
+    font-size: 0.7rem;
+    margin: 5px 0;
+}
+
+.download-button {
+    height: 30px;
+    background-color: #3734ed;
+    border: none;
+}
+
+.download-count {
+    margin-left: 10px;
+    font-size: 0.7rem;
+}
+
+.loading-indicator {
+    margin-left: 10px;
+    font-size: 0.85rem;
+    color: black;
+    font-weight: bold;
+    padding: 2px;
+    text-align: center;
+}
+
+.admin-actions {
+    margin-top: 10px;
+}
+
+.edit-link,
+.delete-link {
+    font-size: 0.7rem;
+    color: #1c80cf;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Paginação */
+.pagination-controls {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.select-itens-por-pagina {
+    font-size: 10px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination-button {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 10px;
+    margin: 0 4px;
+}
+
+.pagination-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.pagination-button:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #adb5bd;
+}
+
+.pagination-info {
+    margin: 0 10px;
+    font-size: 10px;
+}
+
+/* Indicador de carregamento */
+.loading-indicator {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    /*.card {
+        padding: 15px;
+    }
+
+    .content p {
+        font-size: 0.85rem;
+    }
+
+    .pagination-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pagination-info,
+    .select-itens-por-pagina {
+        margin-top: 10px;
+    }*/
 }
