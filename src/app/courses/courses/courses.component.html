@@ -10,7 +10,18 @@
         informadas. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
     </p>
 
-    <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
+
+    <div class="flex">
+
+        <a style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
+            {{totalRegistros}} dos {{totalCourses}}</a>
+
+        <a *ngIf="isAdmin" (click)="onAddNewCourse()"
+            style="font-size: 0.8rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">adicionar novo</a>
+
+        <a *ngIf="isAdmin" (click)="onFilter()"
+            style="font-size: 0.8rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">Filtar</a>
+    </div>
 
     <!-- 
     <div class="flex">
@@ -80,7 +91,7 @@
 
 
 <div class="overlay" *ngIf="displayModalSave">
-    <div class="dialog"> <!-- class="dialog"-->
+    <div class="dialog">
         <h2>Adicionar Novo Curso</h2>
         <button class="close-btn" (click)="displayModalSave = false">&times;</button>
 
@@ -101,7 +112,7 @@
             <div class="form-group">
                 <label for="duration">Duração</label>
                 <input type="text" name="duration" ngModel #duration="ngModel" required minlength="1"
-                [(ngModel)]="course.duration">
+                    [(ngModel)]="course.duration">
             </div>
             <div class="form-group">
                 <label for="requirements">Requisitos</label>
