@@ -13,11 +13,8 @@
 
     <div class="flex">
 
-        <a style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
-            {{totalRegistros}} dos {{totalCourses}}</a>
-
         <a *ngIf="isAdmin" (click)="onAddNewCourse()"
-            style="font-size: 0.8rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">adicionar novo</a>
+            style="font-size: 0.8rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">Adicionar novo</a>
 
         <a *ngIf="isAdmin" (click)="onFilter()"
             style="font-size: 0.8rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">Filtar</a>
@@ -80,6 +77,8 @@
             <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
                 [selected]="option === filtro.itensPorPagina">{{ option }}</option>
         </select>
+        <a style="font-size: 0.85rem;" class="ml-auto"> Mostrando
+            {{totalRegistros}} dos {{totalCourses}}</a>
     </div>
 
     <!-- Indicador de carregamento -->
@@ -92,12 +91,12 @@
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
-        <h2>Adicionar Novo Curso</h2>
+        <h2>{{ editing ? 'Editando Curso' : 'Adicionando Novo Curso' }}</h2>
         <button class="close-btn" (click)="displayModalSave = false">&times;</button>
 
         <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
             <div class="form-group">
-                <label for="courseName">Nome do Curso</label>
+                <label for="courseName">Nome</label>
                 <input type="text" id="courseName" type="text" name="name" ngModel #name="ngModel" required
                     minlength="1" [(ngModel)]="course.name" required>
             </div>
@@ -119,7 +118,8 @@
                 <textarea id="requirements" type="text" name="requirements" ngModel #requirements="ngModel" required
                     minlength="1" [(ngModel)]="course.requirements" required> rows="4" required></textarea>
             </div>
-            <button type="submit" [disabled]="courseForm.invalid" class="btn">Adicionar Curso</button>
+            <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar'
+                }}</button>
 
         </form>
     </div>
