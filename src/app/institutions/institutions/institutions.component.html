@@ -13,7 +13,25 @@
     </p>
 
     <div class="flex">
-        <!--
+        <div>
+            <a *ngIf="isAdmin" (click)="onAddNewInstitution()" class="ml-left">Adicionar</a>
+            <a *ngIf="isAdmin" (click)="onFilter()">Filtrar</a>
+        </div>
+
+        <div class="input-group">
+            <div class="input-container">
+                <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
+
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.global"
+                    (ngModelChange)="findAll()" placeholder="Pesquisa">
+            </div>
+
+        </div>
+    </div>
+
+    <!--
+    <div class="flex">
+        
         <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewInstitution()">Novo</button>
 
         <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
@@ -27,8 +45,9 @@
 
         <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;" type="button"
             pButton pRipple icon="pi pi-filter"></button>
-        -->
+        
     </div>
+    -->
 
     <table class="card-table">
         <tbody>

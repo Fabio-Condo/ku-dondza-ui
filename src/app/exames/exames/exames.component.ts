@@ -258,7 +258,7 @@ export class ExamesComponent implements OnInit {
   }
 
   download(exame: Exame, filename: string): void {
-    exame.showLoadingDownload = !exame.showLoadingDownload;
+    exame.showLoadingDownload = true;
     this.examesService.download(exame.id, filename).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
@@ -275,6 +275,7 @@ export class ExamesComponent implements OnInit {
       // Limpar o link após o download iniciar
       window.URL.revokeObjectURL(link.href);
       //this.findAll(this.paginaAtual)
+      exame.showLoadingDownload = false;
     });
   }
 

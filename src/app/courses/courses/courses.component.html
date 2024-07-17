@@ -11,15 +11,6 @@
     </p>
 
 
-    <div class="flex">
-
-        <a *ngIf="isAdmin" (click)="onAddNewCourse()"
-            style="font-size: 0.8rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">Adicionar novo</a>
-
-        <a *ngIf="isAdmin" (click)="onFilter()"
-            style="font-size: 0.8rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">Filtar</a>
-    </div>
-
     <!-- 
     <div class="flex">
         <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
@@ -37,6 +28,25 @@
             pButton pRipple icon="pi pi-filter"></button>
     </div>
     -->
+
+    <div class="flex">
+        <div>
+            <a *ngIf="isAdmin" (click)="onAddNewCourse()" class="ml-left">Adicionar</a>
+            <a *ngIf="isAdmin" (click)="onFilter()">Filtrar</a>
+        </div>
+
+        <div class="input-group">
+            <div class="input-container">
+                <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
+
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.name"
+                    (ngModelChange)="findAll()" placeholder="Pesquisa">
+            </div>
+
+        </div>
+    </div>
+
+
 
     <table class="card-table">
         <tbody>

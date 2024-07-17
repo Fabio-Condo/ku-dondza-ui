@@ -11,6 +11,23 @@
     melhor resultado. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
   </p>
 
+  <div class="flex">
+    <div>
+      <a *ngIf="isAdmin" (click)="onAddNewExame()" class="ml-left">Adicionar</a>
+      <a *ngIf="isAdmin" (click)="onFilter()">Filtrar</a>
+    </div>
+
+    <div class="input-group">
+      <div class="input-container">
+        <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
+
+        <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.global" (ngModelChange)="findAll()"
+          placeholder="Pesquisa">
+      </div>
+
+    </div>
+  </div>
+
   <!--
   <div class="flex">
     <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
