@@ -1,75 +1,5 @@
-<style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    
-    .post-form {
-      background-color: #fff;
-      width: 90%;
-      max-width: 600px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .post-form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      resize: vertical;
-      min-height: 150px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    
-    .post-form input[type="file"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    
-    .post-form button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    
-    .post-form button:hover {
-      background-color: #45a049;
-    }
-  </style>
-
-  <body>
-    <div class="post-form">
-      <h2>Criar Post</h2>
-      <form action="#">
-        <textarea id="post-content" name="post-content" placeholder="Digite seu texto aqui..." required></textarea>
-        <input type="file" id="media-file" name="media-file" accept="image/*, video/*">
-        <br>
-        <button type="submit">Postar</button>
-      </form>
-    </div>
-  </body>
-
 <div class="container" style="margin-top: 120px;">
-
+    
 
     <div style="display:inline;">
         <p style="margin-top: 20px; font-size: 30px;">Cursos</p>
@@ -195,8 +125,7 @@
                 <textarea id="requirements" type="text" name="requirements" ngModel #requirements="ngModel" required
                     minlength="1" [(ngModel)]="course.requirements" required> rows="4" required></textarea>
             </div>
-            <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar'
-                }}</button>
+            <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
         </form>
     </div>
