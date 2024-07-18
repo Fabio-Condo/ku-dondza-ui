@@ -30,6 +30,7 @@ export class FeedComponent implements OnInit {
   showPostLikesDialog: boolean = false;
   //showPostCommentsDialog: boolean = false;
   showConfirmDialog: boolean = false;
+  showNewPostDialog: boolean = false;
 
   selectedPost = new Post();
 
@@ -196,7 +197,7 @@ export class FeedComponent implements OnInit {
     );
   }
 
-  onAddPost(postForm: NgForm): void {
+  addPost(postForm: NgForm): void {
     this.showAddPostLoading = true;
     const formData = this.feedsService.createPostFormDate(postForm.value, this.postImage);
     this.subscriptions.push(
@@ -222,7 +223,15 @@ export class FeedComponent implements OnInit {
     this.postImage = postImage.target.files[0];
   }
 
-  public onSelectPost(selectedPost: Post): void {
+  onAddNewPost(): void { 
+    this.showNewPostDialog = true;
+  }
+
+  onCloseNewPost(): void {
+    this.showNewPostDialog = false;
+  }
+
+  onSelectPost(selectedPost: Post): void { // Not used
     this.selectedPostModal = selectedPost;
     this.displayModal = true;
   }

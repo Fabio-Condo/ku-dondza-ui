@@ -24,12 +24,13 @@
     <div class="middle">
 
       <form class="create-post" style="border: 1px solid #dcdcdc" #newPostForm="ngForm"
-        (ngSubmit)="onAddPost(newPostForm)">
+        (ngSubmit)="addPost(newPostForm)">
         <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
           <img src="{{loggedUser.profileImageUrl}}" alt="photo">
         </div>
-        <input style="margin-left: 10px;" type="text" placeholder="Start the post" id="create-post" name="text"
-          [(ngModel)]="post.text">
+        <input (click)="onAddNewPost()" style="margin-left: 10px; cursor: pointer;" type="text"
+          placeholder="Start the post" id="create-post" name="text" [(ngModel)]="post.text">
+        <!--
         <div class="">
           <input type="file" id="upload-button" multiple accept="/*" name="postImage"
             (change)="onPostImageChange($event, $event)" />
@@ -37,6 +38,7 @@
             <i></i>file
           </label>
         </div>
+        -->
       </form>
 
       <div *ngIf="showAddPostLoading" class="upload-loading-container">
@@ -57,8 +59,9 @@
               <img src="{{feed.user.profileImageUrl}}" alt="photo">
             </div>
             <div class="info" style="flex: 1;">
-              <a style="color: hsl(252, 30%, 10%); cursor: pointer;" [routerLink]="['/user/profile', loggedUser.userId]">
-                <h3 >{{feed.user.firstName}} {{feed.user.lastName}}</h3>
+              <a style="color: hsl(252, 30%, 10%); cursor: pointer;"
+                [routerLink]="['/user/profile', loggedUser.userId]">
+                <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
               <small>{{timeElapsed(feed.date.toString())}}</small>
             </div>
@@ -262,7 +265,8 @@
             </div>
 
             <a style="cursor: pointer; margin: 0.7rem;" (click)="loadMoreCommentsByPostId(feed)">ver mais
-              comentários</a>
+              comentários
+            </a>
 
             <span>|</span>
 
@@ -274,7 +278,8 @@
         </div>
       </div>
 
-      <div (click)="loadMore()" class="upload-loading-container" style="cursor: pointer; margin-bottom: 80px; border: 1px solid #ccc;">
+      <div (click)="loadMore()" class="upload-loading-container"
+        style="cursor: pointer; margin-bottom: 80px; border: 1px solid #ccc;">
         <p class="upload-loading-text">carregar mais</p>
       </div>
 
@@ -314,10 +319,9 @@
         <form action="" #usersForm="ngForm" (ngSubmit)="getUsersSearch()">
 
           <div class="search-bar">
-            <span style="border: 1px solid #dcdcdc;"><i class="uil uil-search"></i></span>
-            <input type="search" placeholder="Search Users" style="border: 1px solid #dcdcdc;"
-              (click)="onClickInputSearchUsers()" [(ngModel)]="userfilterForSerach.name" name="name" id="message-search"
-              (ngModelChange)="getUsersSearch()">
+            <span><i class="uil uil-search"></i></span>
+            <input type="search" placeholder="Search Users" (click)="onClickInputSearchUsers()"
+              [(ngModel)]="userfilterForSerach.name" name="name" id="message-search" (ngModelChange)="getUsersSearch()">
 
           </div>
         </form>
@@ -331,8 +335,8 @@
           <div class="message-body" *ngIf="user.id !== loggedUser.id">
             <h5 [routerLink]="['/user/profile', user.userId]">{{user.firstName}} {{user.lastName}}</h5>
             <p class="text-muted">
-              <a (click)="sendFriendRequest(user)" *ngIf="!isAlreadyFriendWithCurrentUser(user)"
-                style="color: #3734ed" href="javascript:;"> connect</a>
+              <a (click)="sendFriendRequest(user)" *ngIf="!isAlreadyFriendWithCurrentUser(user)" style="color: #3734ed"
+                href="javascript:;"> connect</a>
               <span *ngIf="isAlreadyFriendWithCurrentUser(user)" href="javascript:;"> (already friends) <a
                   (click)="removeFriend(user.id)" style="color: #3734ed" href="javascript:;">remove</a></span>
             </p>
@@ -355,7 +359,8 @@
             <div class="active"></div>
           </div>
           <div class="message-body" *ngIf="teacher.id !== loggedUser.id">
-            <h5 style="cursor: pointer;" [routerLink]="['/user/profile', teacher.userId]">{{teacher.firstName}} {{teacher.lastName}}</h5>
+            <h5 style="cursor: pointer;" [routerLink]="['/user/profile', teacher.userId]">{{teacher.firstName}}
+              {{teacher.lastName}}</h5>
             <p class="text-muted">
               <a (click)="sendFriendRequest(teacher)" *ngIf="!isAlreadyFriendWithCurrentUser(teacher)"
                 style="color: #3734ed" href="javascript:;"> connect</a>
@@ -411,5 +416,37 @@
       </ul>
     </div>
     <a style="cursor: pointer;" (click)="findLikesByPostId(selectedPost)">ver todos mais</a>
+  </div>
+</div>
+
+<!-- New Post Dialog -->
+<div class="overlay" *ngIf="showNewPostDialog">
+  <div class="post-dialog">
+    <button class="close-button" (click)="onCloseNewPost()">
+      <span>&times;</span>
+    </button>
+    <div class="post-form">
+      <h2>Criar Post</h2>
+      <form action="#" #newPostForm="ngForm" (ngSubmit)="addPost(newPostForm)">
+
+        <div class="user-info">
+          <img src="{{loggedUser.profileImageUrl}}" alt="photo">
+          <span class="user-name">{{loggedUser.firstName}} {{loggedUser.lastName}}</span>
+        </div>
+
+        <textarea style="margin-top: 10px;" type="text" id="create-post" name="text" [(ngModel)]="post.text"
+          placeholder="Digite seu texto aqui..." required></textarea>
+
+        <input type="file" id="upload-button" multiple accept="/*" name="postImage"
+          (change)="onPostImageChange($event, $event)" />
+
+        <br>
+        <div *ngIf="showAddPostLoading" class="upload-loading-container">
+          <i class="pi pi-spin pi-spinner-dotted"></i>
+          <p class="upload-loading-text">Adicionando seu post...</p>
+        </div>
+        <button type="submit" class="btn btn-primary">Publicar</button>
+      </form>
+    </div>
   </div>
 </div>

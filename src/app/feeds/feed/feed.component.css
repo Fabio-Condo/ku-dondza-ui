@@ -3,10 +3,6 @@ main {
   top: 5.4rem;
 }
 
-input[type="file"] {
-  display: none;
-}
-
 label {
   display: block;
   position: relative;
@@ -26,9 +22,12 @@ label {
   font-size: 0.5rem;
   background-color: hsl(260, 3%, 40%);
   color: white;
-  padding: 0.5px 8px; /* Espaçamento interno de 4px na vertical e 8px na horizontal */
-  border-radius: 2rem; /* Borda arredondada */
-  margin-left: 2px; /* Margem à esquerda de 2px */
+  padding: 0.5px 8px;
+  /* Espaçamento interno de 4px na vertical e 8px na horizontal */
+  border-radius: 2rem;
+  /* Borda arredondada */
+  margin-left: 2px;
+  /* Margem à esquerda de 2px */
 }
 
 /* post.component.css */
@@ -102,18 +101,20 @@ hr {
 
 
 .user-info {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
+
 .user-info img {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
+
 .user-info .user-name {
-    font-size: 10px;
-    font-weight: bold;
+  font-size: 10px;
+  font-weight: bold;
 }
 
 .upload-loading-container {
@@ -124,17 +125,20 @@ hr {
   text-align: center;
   margin: 10px 0;
   display: flex;
-  align-items: center; /* alinha itens verticalmente */
-  justify-content: center; /* alinha itens horizontalmente */
+  align-items: center;
+  /* alinha itens verticalmente */
+  justify-content: center;
+  /* alinha itens horizontalmente */
   border: 1px solid #ccc;
 }
 
 .upload-loading-text {
   font-weight: bold;
-  margin-left: 10px; /* ajuste a margem conforme necessário */
+  margin-left: 10px;
+  /* ajuste a margem conforme necessário */
 }
 
-.feeds .feed a:hover{ 
+.feeds .feed a:hover {
   /*color: #3734ed;*/
   text-decoration: underline;
 }
@@ -202,6 +206,7 @@ hr {
   background-color: #6c757d;
   color: white;
 }
+
 /* confirm dialog */
 
 
@@ -224,7 +229,8 @@ hr {
   padding: 20px;
   border-radius: 8px;
   width: 300px;
-  max-height: 80%; /* Ajuste a altura conforme necessário */
+  max-height: 80%;
+  /* Ajuste a altura conforme necessário */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -262,4 +268,101 @@ hr {
 .dialog-content li:last-child {
   border-bottom: none;
 }
+
 /* like-dialog end */
+
+
+/*Add post dialog*/
+
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* cor do overlay com transparência */
+  z-index: 1000;
+  /* z-index alto para estar acima de outros conteúdos */
+}
+
+/* Post Dialog */
+.post-dialog {
+  /* estilos anteriores mantidos */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  width: 90%;
+  max-width: 450px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+}
+
+.post-dialog h2 {
+  margin-top: 0;
+}
+
+.post-dialog form {
+  margin-top: 10px;
+}
+
+.post-form input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.post-dialog textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 150px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.close-button {
+  background-color: hsl(252, 15%, 65%);
+  color: black;
+  padding: 3px 8px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.post-dialog button:hover {
+  background-color: #eee9e9;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  color: #666;
+  font-size: 24px; /* Tamanho maior para o ícone */
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.close-button span {
+  font-size: 24px; /* Tamanho do ícone */
+}
