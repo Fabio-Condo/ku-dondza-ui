@@ -95,8 +95,8 @@
             <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
                 [selected]="option === filtro.itensPorPagina">{{ option }}</option>
         </select>
-        <a style="font-size: 0.85rem;" class="ml-auto"> Mostrando
-            {{totalRegistros}} dos {{totalInstitutions}}</a>
+        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
+            {{totalRegistros}} dos {{totalInstitutions}}</p>
     </div>
 
     <!-- Indicador de carregamento -->
@@ -174,7 +174,7 @@
 
         <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
 
-        <form autocomplete="off" #courseForm="ngForm">
+        <form autocomplete="off" #institutionForm="ngForm">
             <div class="form-group">
                 <label for="institution">Nome</label>
                 <input type="text" name="name" ngModel #name="ngModel" minlength="1" [(ngModel)]="filtro.name"

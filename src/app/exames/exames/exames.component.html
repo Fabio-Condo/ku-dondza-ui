@@ -94,8 +94,8 @@
       <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
         [selected]="option === filtro.itensPorPagina">{{ option }}</option>
     </select>
-    <a style="font-size: 0.85rem;" class="ml-auto"> Mostrando
-      {{totalRegistros}} dos {{totalExames}}</a>
+    <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
+      {{totalRegistros}} dos {{totalExames}}</p>
   </div>
 
   <!-- Indicador de carregamento -->
@@ -111,7 +111,7 @@
 
     <button class="close-btn" (click)="displayModalSave = false">&times;</button>
 
-    <form autocomplete="off" #courseForm="ngForm">
+    <form autocomplete="off" #exameForm="ngForm">
       <div class="form-group">
         <label for="institution">Instituição</label>
         <select id="institution" [(ngModel)]="exame.institution.id" name="institution" required>
@@ -149,6 +149,60 @@
 
       <div class="form-group">
         <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="displayModalFilter">
+  <div class="dialog">
+    <h2>Filtros</h2>
+
+    <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+
+    <form autocomplete="off" #exameForm="ngForm">
+      <div class="form-group">
+        <label for="institution">Instituição</label>
+        <select id="institution" [(ngModel)]="filtro.institution" (change)="findAll()" name="institution" required>
+          <option value="" disabled selected>Selecione a instituição</option>
+          <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Disciplina</label>
+        <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
+          <option value="" disabled selected>Selecione a subject</option>
+          <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <input type="text" name="description" ngModel #description="ngModel" minlength="1"
+          [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
+      </div>
+
+      <label for="description">Intervalo de datas</label>
+      <div class="p-fluid" style="display: flex; justify-content: space-between;">
+
+        <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="beginDate" [inline]="false"
+          [readonlyInput]="false" ngModel #beginDate="ngModel" [(ngModel)]="filtro.beginDate"
+          (ngModelChange)="findAll()"></p-calendar>
+
+        <span>até</span>
+
+        <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="endDate" [inline]="false"
+          [readonlyInput]="false" ngModel #endDate="ngModel" [(ngModel)]="filtro.endDate"
+          (ngModelChange)="findAll()"></p-calendar>
+
+      </div>
+
+      <div class="form-group">
+        <button type="button" (click)="limparCampos()" class="btn">Reset</button>
       </div>
 
     </form>
@@ -312,6 +366,7 @@
 -->
 
 <!--Filtrar-->
+<!--
 <p-dialog [header]=" 'Filtros' " [(visible)]="displayModalFilter" [style]="{width: '33vw'}" [modal]="true">
 
   <div class="col-12 p-fluid">
@@ -354,3 +409,4 @@
 
 
 </p-dialog>
+-->

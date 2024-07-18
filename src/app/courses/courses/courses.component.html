@@ -10,7 +10,6 @@
         informadas. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
     </p>
 
-
     <!-- 
     <div class="flex">
         <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewCourse()">Novo</button>
@@ -42,11 +41,8 @@
                 <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.name"
                     (ngModelChange)="findAll()" placeholder="Pesquisa">
             </div>
-
         </div>
     </div>
-
-
 
     <table class="card-table">
         <tbody>
@@ -87,8 +83,8 @@
             <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
                 [selected]="option === filtro.itensPorPagina">{{ option }}</option>
         </select>
-        <a style="font-size: 0.85rem;" class="ml-auto"> Mostrando
-            {{totalRegistros}} dos {{totalCourses}}</a>
+        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
+            {{totalRegistros}} dos {{totalCourses}}</p>
     </div>
 
     <!-- Indicador de carregamento -->
@@ -128,8 +124,7 @@
                 <textarea id="requirements" type="text" name="requirements" ngModel #requirements="ngModel" required
                     minlength="1" [(ngModel)]="course.requirements" required> rows="4" required></textarea>
             </div>
-            <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar'
-                }}</button>
+            <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
         </form>
     </div>
