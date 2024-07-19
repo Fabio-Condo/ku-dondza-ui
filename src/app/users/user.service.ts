@@ -152,4 +152,16 @@ export class UserService {
     return this.http.post<User>(`${this.host}/user/send-friend-request`, user, {});
   }
 
+  updateProfilePhoto(username: string, file: File): Observable<User> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<User>(`${this.host}/user/${username}/profile-photo`, formData);
+  }
+
+  updateProfileCoverPhoto(username: string, file: File): Observable<User> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<User>(`${this.host}/user/${username}/cover-photo`, formData);
+  }
+
 }

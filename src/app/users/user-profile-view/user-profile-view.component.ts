@@ -16,9 +16,15 @@ export class UserProfileViewComponent implements OnInit {
 
   user: User = new User();
   currentUser: User = new User();
+  displayModalSave: boolean = false;
+
+  fileToUpload!: File;
+  coverFileToUpload!: File;
+
+  isProfilePhoto: boolean = true;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
     private errorHandler: ErrorHandlerService,
@@ -42,6 +48,43 @@ export class UserProfileViewComponent implements OnInit {
       },
       (erro) => this.errorHandler.handle(erro),
     );
+  }
+
+  onUpdateCurrentUser(): void {
+    this.displayModalSave = true;
+  }
+
+  onProfilePhotoFileChange(event: any) {
+    console.log('Clicking here 1');
+    if (event.target.files.length > 0) {
+      this.fileToUpload = event.target.files[0];
+
+      this.userService.updateProfilePhoto(this.currentUser.username, this.fileToUpload).subscribe(
+        response => {
+          this.user = response;
+          console.log('Upload successful', response);
+        },
+        error => {
+          console.error('Upload failed', error);
+        }
+      );
+    }
+  }
+
+  onProfileCoverPhotoFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      this.coverFileToUpload = event.target.files[0];
+
+      this.userService.updateProfileCoverPhoto(this.currentUser.username, this.coverFileToUpload).subscribe(
+        response => {
+          this.user = response;
+          console.log('Upload successful', response);
+        },
+        error => {
+          console.error('Upload failed', error);
+        }
+      );
+    }
   }
 
 }

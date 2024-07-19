@@ -1,15 +1,17 @@
 <body>
     <div class="profile-container">
         <header class="profile-header">
-            <div class="profile-cover">
-                <img id="cover-photo" src="{{user.profileImageUrl}}" alt="Foto de Capa">
-                <label for="cover-upload" class="upload-button">Trocar Capa</label>
-                <input type="file" id="cover-upload" class="upload-input" accept="image/*">
+            <div class="profile-cover"> 
+                <img id="cover-photo" src="{{user.profileCoverImageUrl}}" alt="Foto de Capa">
+                <label *ngIf="currentUser.userId == user.userId" for="cover-upload" class="upload-button">Trocar Capa</label>
+                <input *ngIf="currentUser.userId == user.userId" (change)="onProfileCoverPhotoFileChange($event)" type="file" id="cover-upload" class="upload-input" accept="image/*">
+                <form action="">
+                </form>
             </div>
             <div class="profile-picture">
                 <img id="profile-photo" src="{{user.profileImageUrl}}" alt="Foto do Perfil">
-                <label for="profile-upload" class="upload-button">Trocar Foto</label>
-                <input type="file" id="profile-upload" class="upload-input" accept="image/*">
+                <label *ngIf="currentUser.userId == user.userId" for="profile-upload" class="upload-button">Trocar Foto</label>
+                <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)" type="file" id="profile-upload" class="upload-input" accept="image/*">
             </div>
             <h1 class="profile-name">{{user.firstName}} {{user.lastName}}</h1>
             <p class="profile-bio">Estudante de Ciência da Computação na Universidade XYZ. Apaixonado por tecnologia e inovação.</p>
@@ -18,7 +20,7 @@
                 <p><strong>Username:</strong> {{user.username}}</p>
                 <p><strong>Contatos:</strong> LinkedIn, Twitter</p>
             </div>
-            <button id="edit-profile-button" class="edit-button">Editar Perfil</button>
+            <button *ngIf="currentUser.userId == user.userId" (click)="onUpdateCurrentUser()" id="edit-profile-button" class="edit-button">Editar Perfil</button>
         </header>
         <main class="profile-main">
             <section class="profile-info">
@@ -38,30 +40,57 @@
                     <p>Conteúdo da publicação 2...</p>
                 </div>
             </section>
+            <div>
+                <h2>Update Profile Photo</h2>
+                <form>
+                    <div>
+                      <label for="file">Profile Photo:</label>
+                      
+                    </div>
+                  </form>
+              </div>
         </main>
     </div>
-
-    <script>
-        document.getElementById('cover-upload').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('cover-photo').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('profile-upload').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profile-photo').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
 </body>
+
+<div class="overlay" *ngIf="displayModalSave">
+    <div class="dialog">
+        <h2>Editando Perfil</h2>
+        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+
+        <form autocomplete="off" #courseForm="ngForm">
+            <div class="form-group">
+                <label for="firstName">Nome</label>
+                <input type="text" id="firstName" type="text" name="firstName" ngModel #firstName="ngModel" required
+                    minlength="1" [(ngModel)]="user.firstName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Apelido</label>
+                <input type="text" id="lastName" type="text" name="lastName" ngModel #lastName="ngModel" required
+                    minlength="1" [(ngModel)]="user.lastName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" type="text" name="username" ngModel #username="ngModel" required
+                    minlength="1" [(ngModel)]="user.username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="text" id="username" type="text" name="username" ngModel #username="ngModel" required
+                    minlength="1" [(ngModel)]="user.username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" type="text" name="bio" ngModel #bio="ngModel" required
+                    minlength="1" [(ngModel)]="user.bio" rows="4"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="courseForm.invalid" class="btn">Salvar</button>
+
+        </form>
+    </div>
+</div>

@@ -55,12 +55,12 @@
         <div class="feed" *ngFor="let feed of feeds">
 
           <div class="user" style="display: flex; align-items: center; margin: 0.7rem;">
-            <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
+            <div class="profile-pic" [routerLink]="['/user/profile', feed.user.userId]">
               <img src="{{feed.user.profileImageUrl}}" alt="photo">
             </div>
             <div class="info" style="flex: 1;">
               <a style="color: hsl(252, 30%, 10%); cursor: pointer;"
-                [routerLink]="['/user/profile', loggedUser.userId]">
+                [routerLink]="['/user/profile', feed.user.userId]">
                 <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
               <small>{{timeElapsed(feed.date.toString())}}</small>
