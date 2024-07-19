@@ -45,7 +45,7 @@ export class InstitutionsViewComponent implements OnInit {
 
   filtro: CourseFilter = {
     pagina: 0,
-    itensPorPagina: 5,
+    itensPorPagina: 10,
     ordenamento: 'id,asc'
   }
 
