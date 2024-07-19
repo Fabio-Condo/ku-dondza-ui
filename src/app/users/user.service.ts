@@ -16,16 +16,16 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  search(filter: IUserFilter): Observable<IApiResponse<User>> {  
+  search(filter: IUserFilter): Observable<IApiResponse<User>> {
 
-    let params = new HttpParams()  
-      .set('page', filter.page)  
+    let params = new HttpParams()
+      .set('page', filter.page)
       .set('size', filter.itemsPerPage)
       .set('sort', filter.sort)
-      ;  
+      ;
 
-    if (filter.name) {  
-      params = params.set('name', filter.name); 
+    if (filter.name) {
+      params = params.set('name', filter.name);
     }
 
     console.log(params);
@@ -62,8 +62,8 @@ export class UserService {
     return this.http.delete<CustomHttpRespone>(`${this.host}/user/delete/${username}`);
   }
 
-  getUserByUserId(userId: string): Observable<User>{
-    return this.http.get<User>(`${this.host}/user/find-by-user-id/${userId}`, { });
+  getUserByUserId(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.host}/user/find-by-user-id/${userId}`, {});
   }
 
   public addUsersToLocalCache(users: User[]): void {
@@ -94,6 +94,10 @@ export class UserService {
     formData.append('isActive', JSON.stringify(true));
     formData.append('isNonLocked', JSON.stringify(true));
     return formData;
+  }
+
+  update(user: User): Observable<User> {
+    return this.http.put<User>(`${this.host}/${user.id}`, user, {});
   }
 
   changeStatusActive(username: string, active: boolean): Observable<void> {

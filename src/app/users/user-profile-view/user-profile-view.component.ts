@@ -6,6 +6,8 @@ import { User } from 'src/app/core/model/User';
 import { FeedsService } from 'src/app/feeds/feeds.service';
 import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
+import { NgForm } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -50,6 +52,19 @@ export class UserProfileViewComponent implements OnInit {
     );
   }
 
+  update(userForm: NgForm) {
+    this.userService.update(this.user).subscribe(
+      (response) => {
+        this.authenticationService.addUserToLocalCache(response);
+        this.user = response;
+        this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
   onUpdateCurrentUser(): void {
     this.displayModalSave = true;
   }
@@ -84,6 +99,19 @@ export class UserProfileViewComponent implements OnInit {
           console.error('Upload failed', error);
         }
       );
+    }
+  }
+
+  onLogOut(): void {
+    this.authenticationService.logOut();
+    this.router.navigate(['/login']);
+  }
+
+  private sendErrorNotification(message: string): void {
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
     }
   }
 
