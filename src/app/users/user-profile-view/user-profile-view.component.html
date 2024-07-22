@@ -36,8 +36,8 @@
         <main class="profile-main">
             <section class="profile-info">
                 <h2>Informações</h2>
-                <p><strong>Instituição:</strong> Universidade XYZ</p>
-                <p><strong>Curso:</strong> Ciência da Computação</p>
+                <p><strong>Instituição:</strong> {{ user.institution }}</p>
+                <p><strong>Curso:</strong> {{ user.course }}</p>
                 <p>
                     <strong>Interesses:</strong> 
                     <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
@@ -83,9 +83,21 @@
             </div>
 
             <div class="form-group">
-                <label for="username">Email</label>
-                <input type="text" id="username" type="text" name="username" ngModel #username="ngModel" required
-                    minlength="1" [(ngModel)]="user.username" required>
+                <label for="email">Email</label>
+                <input type="text" id="email" type="text" name="email" ngModel #email="ngModel" required
+                    minlength="1" [(ngModel)]="user.email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="institution">Instituição</label>
+                <input type="text" id="institution" type="text" name="institution" ngModel #institution="ngModel" required
+                    minlength="1" [(ngModel)]="user.institution" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Curso</label>
+                <input type="text" id="course" type="text" name="course" ngModel #course="ngModel" required
+                    minlength="1" [(ngModel)]="user.course" required>
             </div>
 
             <div class="form-group">

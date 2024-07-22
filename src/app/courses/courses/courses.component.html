@@ -52,7 +52,7 @@
                         <div class="card-content">
 
                             <div class="content">
-                                <p>{{ course.name }}</p>
+                                <p class="course-name">{{ course.name }}</p>
                                 <div class="user-info">
                                     <span class="institution-name" style="margin-right: 5px;">instituição: </span>
                                     <img [src]="course.institution.urlFile" alt="User Image">
@@ -60,9 +60,9 @@
                                             *ngIf="course.institution.acronym">({{ course.institution.acronym }})</span>
                                     </p>
                                 </div>
-                                <p class="institution-type">tipo de instituição: {{ course.institution.type }}</p>
+                                <p class="institution-name">tipo de instituição: {{ course.institution.type }}</p>
                                 <p class="institution-name">duração: {{ course.duration }}</p>
-                                <p class="exam-description">requisitos: {{ course.requirements }}</p>
+                                <p class="institution-name">requisitos: {{ course.requirements }}</p>
                                 <a (click)="onUpdateCourse(course)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
                             </div>
