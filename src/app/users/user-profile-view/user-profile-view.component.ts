@@ -53,7 +53,7 @@ export class UserProfileViewComponent implements OnInit {
   }
 
   update(userForm: NgForm) {
-    this.userService.update(this.user).subscribe(
+    this.userService.updateUserProfile(this.user).subscribe(
       (response) => {
         this.authenticationService.addUserToLocalCache(response);
         this.user = response;

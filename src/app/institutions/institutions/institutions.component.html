@@ -61,7 +61,7 @@
                                 </a>
                             </div>
                             <div class="content">
-                                <p class="subject-name">{{ institution.name }} <span *ngIf="institution.acronym">({{
+                                <p >{{ institution.name }} <span *ngIf="institution.acronym">({{
                                         institution.acronym }})</span></p>
                                 <p class="institution-type">tipo de instituição: {{ institution.type }}</p>
                                 <p class="institution-type">tipo de administração: <p-tag
@@ -111,6 +111,8 @@
         <h2>{{ editing ? 'Editando Instituição' : 'Adicionando Nova Instituição' }}</h2>
 
         <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+
+        <hr>
 
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">

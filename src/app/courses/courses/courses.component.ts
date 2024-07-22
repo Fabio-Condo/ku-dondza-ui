@@ -22,7 +22,6 @@ export class CoursesComponent implements OnInit {
   course: Course = new Course;
   displayModalSave: boolean = false;
   totalCourses: number = 0;
-  displayModalFilter: boolean = false;
   institutions: any[] = [];
 
   isAdmin: boolean = true;
@@ -183,10 +182,6 @@ export class CoursesComponent implements OnInit {
         this.showLoading = false;
       }
     )
-  }
-
-  onFilter(): void {
-    this.displayModalFilter = true;
   }
 
   //aoMudarPagina(event: LazyLoadEvent) {

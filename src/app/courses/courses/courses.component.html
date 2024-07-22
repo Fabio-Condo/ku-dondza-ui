@@ -32,7 +32,6 @@
     <div class="flex">
         <div>
             <a *ngIf="isAdmin" (click)="onAddNewCourse()" class="ml-left">Adicionar</a>
-            <a *ngIf="isAdmin" (click)="onFilter()">Filtrar</a>
         </div>
 
         <div class="input-group">
@@ -53,7 +52,7 @@
                         <div class="card-content">
 
                             <div class="content">
-                                <p class="subject-name">{{ course.name }}</p>
+                                <p>{{ course.name }}</p>
                                 <div class="user-info">
                                     <span class="institution-name" style="margin-right: 5px;">instituição: </span>
                                     <img [src]="course.institution.urlFile" alt="User Image">

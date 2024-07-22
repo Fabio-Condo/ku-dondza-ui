@@ -38,12 +38,35 @@ export class UserService {
     return this.http.get<User[]>(`${this.host}/user/list`);
   }
 
-  public addUser(formData: FormData): Observable<User> {
+  save(user: User, profileImageFile: File): Observable<User> {
+    const formData = new FormData();
+    formData.append('firstName', user.firstName);
+    formData.append('lastName', user.lastName);
+    formData.append('username', user.username);
+    formData.append('email', user.email);
+    formData.append('role', user.role);
+    formData.append('isActive', JSON.stringify(user.active));
+    formData.append('isNonLocked', JSON.stringify(user.notLocked));
+    formData.append('profileImage', profileImageFile);
     return this.http.post<User>(`${this.host}/user/add`, formData);
   }
 
-  public updateUser(formData: FormData): Observable<User> {
-    return this.http.post<User>(`${this.host}/user/update`, formData);
+  update(user: User, profileImageFile: File): Observable<User> {
+    const formData = new FormData();
+    formData.append('currentUsername', user.username);
+    formData.append('firstName', user.firstName);
+    formData.append('lastName', user.lastName);
+    formData.append('username', user.username);
+    formData.append('email', user.email);
+    formData.append('role', user.role);
+    formData.append('isActive', JSON.stringify(user.active));
+    formData.append('isNonLocked', JSON.stringify(user.notLocked));
+    formData.append('profileImage', profileImageFile);
+    return this.http.put<User>(`${this.host}/user/update`, formData);
+  }
+
+  updateUserProfile(user: User): Observable<User> {
+    return this.http.put<User>(`${this.host}/${user.id}`, user, {});
   }
 
   public resetPassword(email: string): Observable<CustomHttpRespone> {
@@ -80,24 +103,6 @@ export class UserService {
 
   public getUserFromLocalCache(): any {
     return localStorage.getItem('user');
-  }
-
-  public createUserFormDate(loggedInUsername: any, user: User, profileImage: File): FormData {
-    const formData = new FormData();
-    formData.append('currentUsername', loggedInUsername);
-    formData.append('firstName', user.firstName);
-    formData.append('lastName', user.lastName);
-    formData.append('username', user.username);
-    formData.append('email', user.email);
-    formData.append('role', user.role);
-    formData.append('profileImage', profileImage);
-    formData.append('isActive', JSON.stringify(true));
-    formData.append('isNonLocked', JSON.stringify(true));
-    return formData;
-  }
-
-  update(user: User): Observable<User> {
-    return this.http.put<User>(`${this.host}/${user.id}`, user, {});
   }
 
   changeStatusActive(username: string, active: boolean): Observable<void> {

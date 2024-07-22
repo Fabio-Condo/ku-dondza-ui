@@ -38,7 +38,10 @@
                 <h2>Informações</h2>
                 <p><strong>Instituição:</strong> Universidade XYZ</p>
                 <p><strong>Curso:</strong> Ciência da Computação</p>
-                <p><strong>Interesses:</strong> Programação, IA, Desenvolvimento Web</p>
+                <p>
+                    <strong>Interesses:</strong> 
+                    <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
+                </p>
             </section>
             <section class="profile-posts">
                 <h2>Publicações Recentes</h2>

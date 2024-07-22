@@ -1,3 +1,4 @@
+import { Interest } from "./Interest";
 import { Post } from "./Post";
 
 export class User {
@@ -17,6 +18,7 @@ export class User {
   public notLocked: boolean;
   public role: string;
   public authorities: [];
+  public interests: Interest[] = [];
   public savedPosts: Post[] = [];
 
 

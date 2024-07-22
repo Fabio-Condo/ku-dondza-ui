@@ -11,6 +11,8 @@ import { NgForm } from '@angular/forms';
 import { CustomHttpRespone } from 'src/app/core/model/custom-http-response';
 import { Role } from 'src/app/enum/role.enum';
 import { Subscription } from 'rxjs';
+import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 
 @Component({
   selector: 'app-users',
@@ -19,25 +21,22 @@ import { Subscription } from 'rxjs';
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
-  exbindoFormularioAddUser = false;
-  exbindoFormularioEditUser = false;
+  //exbindoFormularioAddUser = false;
+  //exbindoFormularioEditUser = false;
   exbindoFormularioSettingsUser = false;
 
-  //private titleSubject = new BehaviorSubject<string>('Users');
-  //public titleAction$ = this.titleSubject.asObservable();
-  public users: User[] = [];
-  public user: User = new User;
-  public refreshing: boolean = true;
-  public selectedUser: User = new User;
-  public fileName: any;
-  public profileImage: any;
-  private subscriptions: Subscription[] = [];
-  public editUser = new User();
-  private currentUsername: string = '';
+  users: User[] = [];
+  user: User = new User;
+  showLoading: boolean = true;
+  subscriptions: Subscription[] = [];
+  displayModalSave: boolean = false;
+  profileImageFile!: File;
 
-  selectedUserView: User | undefined;
-  selectedUserModal: User = new User;
-  displayModal: boolean = false;
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  totalRegistros: number = 0
+  totalUsers: number = 0;
 
 
   roles = [
@@ -60,117 +59,101 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.title.setTitle('Pesquisa do usuário');
     this.user = this.authenticationService.getUserFromLocalCache();
-    this.getUsers(true);
+    this.getUsersSearch();
   }
 
-  prepararNovoUser() {
-    this.exbindoFormularioAddUser = true;
+  filtro: IUserFilter = {
+    page: -1,
+    itemsPerPage: 10,
+    sort: 'firstName,asc',
   }
 
-  prepararUserSettings() {
-    this.exbindoFormularioSettingsUser = true;
+  get editing() {
+    return Boolean(this.user.id)
   }
 
-  public changeTitle(title: string): void {
-    //this.titleSubject.next(title);
+  save() {
+    if (this.editing) {
+      this.update()
+    } else {
+      this.addNew()
+    }
   }
 
-  public getUsers(showNotification: boolean): void {
-    this.refreshing = true;
-    this.subscriptions.push(
-      this.userService.getUsers().subscribe(
-        (response: User[]) => {
-          this.userService.addUsersToLocalCache(response);
-          this.users = response;
-          this.refreshing = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendNotification(errorResponse.error.message);
-          this.refreshing = false;
-        }
-      )
+  update() {
+    this.showLoading = true;
+    this.userService.update(this.user, this.profileImageFile).subscribe(
+      response => {
+        this.user = response
+        this.messageService.add({ severity: 'success', detail: 'User actualizado com sucesso!' });
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
     );
   }
 
-  public onSelectUser(selectedUser: User): void {
-    this.selectedUserModal = selectedUser;
-    this.displayModal = true;
-  }
-
-  onProfileImageChange(fileName: any, profileImage: any): void {
-    this.fileName = fileName.target.files[0].name;
-    this.profileImage = profileImage.target.files[0];
-  }
-
-  public onAddNewUser(userForm: NgForm): void {
-    this.refreshing = true;
-    const formData = this.userService.createUserFormDate(null, userForm.value, this.profileImage);
-    this.subscriptions.push(
-      this.userService.addUser(formData).subscribe(
-        (response: User) => {
-          this.exbindoFormularioAddUser = false;
-          this.getUsers(false);
-          this.fileName = null;
-          this.profileImage = null;
-          userForm.reset();
-          this.messageService.add({ severity: 'success', detail: `${response.firstName} ${response.lastName} added successfully` });
-          this.refreshing = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendNotification(errorResponse.error.message);
-          this.profileImage = null;
-          this.refreshing = false;
-        }
-      )
+  addNew() {
+    this.showLoading = true;
+    this.userService.save(this.user, this.profileImageFile).subscribe(
+      response => {
+        this.user = response
+        this.messageService.add({ severity: 'success', detail: 'User salvo com sucesso!' });
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
     );
   }
 
-  public onUpdateUser(): void {
-    this.refreshing = true;
-    const formData = this.userService.createUserFormDate(this.currentUsername, this.editUser, this.profileImage);
-    this.subscriptions.push(
-      this.userService.updateUser(formData).subscribe(
-        (response: User) => {
-          this.exbindoFormularioEditUser = false;
-          this.getUsers(false);
-          this.fileName = null;
-          this.profileImage = null;
-          this.messageService.add({ severity: 'success', detail: `${response.firstName} ${response.lastName} updated successfully` });
-          this.refreshing = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendNotification(errorResponse.error.message);
-          this.profileImage = null;
-          this.refreshing = false;
-        }
-      )
+  onFileSelected(event: any) {
+    this.profileImageFile = event.target.files[0];
+  }
+
+  getUsersSearch(pagina: number = 0){
+    this.showLoading = true;
+    this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.userService.search(this.filtro).subscribe(
+      (data: IApiResponse<User>) => {
+        this.users = data.content
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+      },
+      (erro) => {
+        this.errorHandler.handle(erro);
+        this.showLoading = false;
+      }
     );
   }
 
-  public onResetPassword(emailForm: NgForm): void {
-    this.refreshing = true;
+  onResetPassword(emailForm: NgForm): void {
+    this.showLoading = true;
     const emailAddress = emailForm.value['reset-password-email'];
     this.subscriptions.push(
       this.userService.resetPassword(emailAddress).subscribe(
         (response: CustomHttpRespone) => {
           this.messageService.add({ severity: 'success', detail: response.message });
-          this.refreshing = false;
+          this.showLoading = false;
         },
         (error: HttpErrorResponse) => {
           this.sendNotification(error.error.message);
-          this.refreshing = false;
+          this.showLoading = false;
         },
         () => emailForm.reset()
       )
     );
   }
 
-  public onDeleteUder(username: string): void {
+  onDeleteUder(username: string): void {
     this.subscriptions.push(
       this.userService.deleteUser(username).subscribe(
         (response: CustomHttpRespone) => {
           this.messageService.add({ severity: 'success', detail: response.message });
-          this.getUsers(false);
+          this.getUsersSearch();
         },
         (error: HttpErrorResponse) => {
           this.sendNotification(error.error.message);
@@ -188,33 +171,50 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onEditUser(editUser: User): void {
-    this.editUser = editUser;
-    this.currentUsername = editUser.username;
-    this.exbindoFormularioEditUser = true;
+  onEditUser(user: User): void {
+    this.user = user;
+    this.displayModalSave = true;
   }
 
-  public searchUsers(searchTerm: string): void {
-    const results: User[] = [];
-    for (const user of this.userService.getUsersFromLocalCache()) {
-      if (user.firstName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
-        user.lastName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
-        user.username.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
-        user.userId.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
-        results.push(user);
-      }
-    }
-    this.users = results;
-    if (results.length === 0 || !searchTerm) {
-      this.users = this.userService.getUsersFromLocalCache();
+  changePageSize(event: any): void {
+    this.filtro.itemsPerPage = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.getUsersSearch();
+  }
+
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.getUsersSearch();
     }
   }
 
-  public get isAdmin(): boolean {
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.getUsersSearch();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  prepararNovoUser() {
+    this.user = new User();
+    this.displayModalSave = true;
+  }
+
+  prepararUserSettings() {
+    this.exbindoFormularioSettingsUser = true;
+  }
+
+  get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
 
-  public get isSuperAdmin(): boolean {
+  get isSuperAdmin(): boolean {
     return this.getUserRole() === Role.SUPER_ADMIN;
   }
 
@@ -230,16 +230,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  private clickButton(buttonId: string): void {
-    document.getElementById(buttonId)?.click();
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   changeStatusActive(user: User): void {
-    const newStatus = !user.active;
+    const newStatus = !user.active;3
 
     this.userService.changeStatusActive(user.username, newStatus).subscribe(
       () => {
@@ -326,6 +322,14 @@ export class UsersComponent implements OnInit, OnDestroy {
         return 'info';
     }
     return '';
+  }
+
+  private sendErrorNotification(message: string): void {
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
   }
 
 }

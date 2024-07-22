@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users/users.component';
 import { LoginComponent } from './login/login.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 
 const routes: Routes = [
@@ -12,11 +11,6 @@ const routes: Routes = [
   },
   {
     path: 'login', component: LoginComponent,
-  },
-  {
-    path: 'v1/user/profile',
-    component: UserProfileComponent,
-    //canActivate: [AuthenticationGuard],
   },
   {
     path: 'user/profile/:userId',
