@@ -55,15 +55,15 @@
             <div class="card-content">
               <div class="content">
                 <p class="exame-name">{{exame.subject.name}}</p>
-                <p class="exam-date">ano: {{ exame.date | date:'yyyy' }}</p>
+                <p class="exam-date">ano: <span class="text-muted">{{ exame.date | date:'yyyy' }}</span></p>
                 <div class="user-info">
                   <span class="institution-name" style="margin-right: 5px;">instituição: </span>
                   <img [src]="exame.institution.urlFile" alt="User Image">
-                  <p class="institution-name">{{ exame.institution.name }}<span *ngIf="exame.institution.acronym">({{
+                  <p class="institution-name text-muted">{{ exame.institution.name }}<span *ngIf="exame.institution.acronym">({{
                       exame.institution.acronym }})</span>
                   </p>
                 </div>
-                <p class="institution-type">tipo de instituição: {{ exame.institution.type }}</p>
+                <p class="institution-type">tipo de instituição: <span class="text-muted">{{ exame.institution.type }}</span></p>
                 <p *ngIf="exame.description" class="exam-description">descrição: {{ exame.description }}</p>
                 <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)"
                   type="button" icon="pi pi-download" class="download-button"></button>

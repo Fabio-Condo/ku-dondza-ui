@@ -56,13 +56,13 @@
                                 <div class="user-info">
                                     <span class="institution-name" style="margin-right: 5px;">instituição: </span>
                                     <img [src]="course.institution.urlFile" alt="User Image">
-                                    <p class="institution-name">{{ course.institution.name }} <span
+                                    <p class="institution-name text-muted">{{ course.institution.name }} <span
                                             *ngIf="course.institution.acronym">({{ course.institution.acronym }})</span>
                                     </p>
                                 </div>
-                                <p class="institution-name">tipo de instituição: {{ course.institution.type }}</p>
-                                <p class="institution-name">duração: {{ course.duration }}</p>
-                                <p class="institution-name">requisitos: {{ course.requirements }}</p>
+                                <p class="institution-name">tipo de instituição: <span class="text-muted">{{ course.institution.type }}</span></p>
+                                <p class="institution-name">duração: <span class="text-muted">{{ course.duration }}</span></p>
+                                <p class="institution-name">requisitos: <span class="text-muted">{{ course.requirements }}</span></p>
                                 <a (click)="onUpdateCourse(course)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
                             </div>

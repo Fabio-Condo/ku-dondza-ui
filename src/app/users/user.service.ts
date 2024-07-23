@@ -65,9 +65,23 @@ export class UserService {
     return this.http.put<User>(`${this.host}/user/update`, formData);
   }
 
+  
   updateUserProfile(user: User): Observable<User> {
-    return this.http.put<User>(`${this.host}/${user.id}`, user, {});
+    const formData = new FormData();
+    formData.append('currentUsername', user.username);
+    formData.append('firstName', user.firstName);
+    formData.append('lastName', user.lastName);
+    formData.append('username', user.username);
+    formData.append('email', user.email);
+    formData.append('role', user.role);
+    formData.append('isActive', JSON.stringify(user.active));
+    formData.append('isNonLocked', JSON.stringify(user.notLocked));
+    return this.http.put<User>(`${this.host}/user/update`, formData);
   }
+
+  //updateUserProfile(user: User): Observable<User> {
+  //  return this.http.put<User>(`${this.host}/${user.id}`, user, {});
+  //}
 
   public resetPassword(email: string): Observable<CustomHttpRespone> {
     return this.http.get<CustomHttpRespone>(`${this.host}/user/resetpassword/${email}`);

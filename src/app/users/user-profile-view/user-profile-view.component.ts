@@ -23,7 +23,7 @@ export class UserProfileViewComponent implements OnInit {
   fileToUpload!: File;
   coverFileToUpload!: File;
 
-  isProfilePhoto: boolean = true;
+  //isProfilePhoto: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,8 +55,8 @@ export class UserProfileViewComponent implements OnInit {
   update(userForm: NgForm) {
     this.userService.updateUserProfile(this.user).subscribe(
       (response) => {
-        this.authenticationService.addUserToLocalCache(response);
         this.user = response;
+        this.authenticationService.addUserToLocalCache(response);
         this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
