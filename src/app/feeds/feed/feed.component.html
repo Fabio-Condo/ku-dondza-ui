@@ -3,6 +3,8 @@
 <main>
   <div class="container">
     <div class="left">
+
+      <!--
       <div class="sidebar">
         <a class="menu-item active">
           <span><i class="pi pi-home"></i></span>
@@ -19,6 +21,31 @@
           <h3>Guardados</h3>
         </a>
       </div>
+      -->
+
+      <div class="profile-card">
+        <div class="cover-photo">
+          <img src="{{loggedUser.profileCoverImageUrl}}" alt="Cover Photo">
+        </div>
+        <div class="profile-info">
+          <div class="profile-photo">
+            <img src="{{loggedUser.profileImageUrl}}" alt="Profile Photo">
+          </div>
+          <h2>{{ loggedUser.firstName }} {{ loggedUser.lastName }}</h2>
+          <p>{{ loggedUser.bio }}</p>
+          <div class="info-section">
+            <div class="friends-info">
+              <span>Total</span>
+              <span class="friends-count">123</span>
+            </div>
+            <div class="saved-items-info">
+              <span>Itens Guardados</span>
+              <span class="saved-items-count">45</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
 
     <div class="middle">
@@ -59,8 +86,7 @@
               <img src="{{feed.user.profileImageUrl}}" alt="photo">
             </div>
             <div class="info" style="flex: 1;">
-              <a style="color: hsl(252, 30%, 10%); cursor: pointer;"
-                [routerLink]="['/user/profile', feed.user.userId]">
+              <a style="color: hsl(252, 30%, 10%); cursor: pointer;" [routerLink]="['/user/profile', feed.user.userId]">
                 <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
               <small class="text-muted">{{timeElapsed(feed.date.toString())}}</small>
