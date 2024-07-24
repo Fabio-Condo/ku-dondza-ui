@@ -18,12 +18,12 @@
                 <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)" type="file"
                     id="profile-upload" class="upload-input" accept="image/*">
             </div>
-            <h1 class="profile-name">{{user.firstName}} {{user.lastName}}</h1>
+            <h2 class="profile-name">{{user.firstName}} {{user.lastName}}</h2>
             <p class="profile-bio">{{user.bio}}</p>
             <div class="profile-contact">
                 <p><strong>Email:</strong> {{user.email}}</p>
                 <p><strong>Username:</strong> {{user.username}}</p>
-                <p><strong>Contatos:</strong> LinkedIn, Twitter</p>
+                <p><strong>Contato:</strong> 844505579 </p>
             </div>
             <button *ngIf="currentUser.userId == user.userId" (click)="onUpdateCurrentUser()" id="edit-profile-button"
                 class="edit-button">Editar Perfil</button>
