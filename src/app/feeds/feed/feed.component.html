@@ -343,20 +343,20 @@
 
       <div class="messages">
         <div class="heading">
-          <h4>Explicadores</h4>
+          <h4>Usuários</h4>
         </div>
 
-        <div class="message" *ngFor="let teacher of teachers">
-          <div class="profile-pic" *ngIf="teacher.id !== loggedUser.id"> <!--Dont show the current user in list-->
-            <a href="javascript:;" style="cursor: pointer;"><img src="{{teacher.profileImageUrl}}"
-                [routerLink]="['/user/profile', teacher.userId]"></a>
+        <div class="message" *ngFor="let user of users">
+          <div class="profile-pic" *ngIf="user.id !== loggedUser.id"> <!--Dont show the current user in list-->
+            <a href="javascript:;" style="cursor: pointer;"><img src="{{user.profileImageUrl}}"
+                [routerLink]="['/user/profile', user.userId]"></a>
             <div class="active"></div>
           </div>
-          <div class="message-body" *ngIf="teacher.id !== loggedUser.id">
-            <h5 style="cursor: pointer;" [routerLink]="['/user/profile', teacher.userId]">{{teacher.firstName}}
-              {{teacher.lastName}}</h5>
-            <p class="text-muted">
-              <a (click)="sendFriendRequest(teacher)" style="color: #3734ed" href="javascript:;"> connect</a>
+          <div class="message-body" *ngIf="user.id !== loggedUser.id">
+            <h5 style="cursor: pointer;" [routerLink]="['/user/profile', user.userId]">{{user.firstName}}
+              {{user.lastName}}</h5>
+            <p>
+              <a class="text-muted" (click)="sendFriendRequest(user)" href="javascript:;"> 8 mutual friends</a>
             </p>
           </div>
         </div>

@@ -61,7 +61,7 @@ export class FeedComponent implements OnInit {
 
   friendRequests: User[] = []
   //friends: User[] = []
-  teachers: User[] = [];
+  users: User[] = [];
 
 
   constructor(
@@ -394,8 +394,7 @@ export class FeedComponent implements OnInit {
     this.userfilter.page++;
     this.userService.search(this.userfilter).subscribe(
       (data: IApiResponse<User>) => {
-        this.teachers = [...this.teachers, ...data.content];
-        //this.totalRecords = data.totalElements;
+        this.users = [...this.users, ...data.content];
       },
       (erro) => {
         this.errorHandler.handle(erro)
