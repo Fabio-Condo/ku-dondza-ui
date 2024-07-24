@@ -2,8 +2,10 @@
     <div class="profile-container">
         <header class="profile-header">
             <div class="profile-cover">
-                <img *ngIf="!user.profileCoverImageUrl" id="cover-photo" src="assets/images/books.jpg" alt="Foto de Capa">
-                <img *ngIf="user.profileCoverImageUrl" id="cover-photo" src="{{user.profileCoverImageUrl}}" alt="Foto de Capa">
+                <img *ngIf="!user.profileCoverImageUrl" id="cover-photo" src="assets/images/books.jpg"
+                    alt="Foto de Capa">
+                <img *ngIf="user.profileCoverImageUrl" id="cover-photo" src="{{user.profileCoverImageUrl}}"
+                    alt="Foto de Capa">
                 <label *ngIf="currentUser.userId == user.userId" for="cover-upload" class="upload-button">Trocar
                     Capa</label>
                 <input *ngIf="currentUser.userId == user.userId" (change)="onProfileCoverPhotoFileChange($event)"
@@ -26,10 +28,10 @@
                 <p><strong>Contato:</strong> 844505579 </p>
             </div>
             <button *ngIf="currentUser.userId == user.userId" (click)="onUpdateCurrentUser()" id="edit-profile-button"
-                class="edit-button">Editar Perfil</button>
+                class="btn btn-primary" style="margin-top: 10px;">Editar Perfil</button>
             <div>
                 <button *ngIf="currentUser.userId == user.userId" (click)="onLogOut()" id="edit-profile-button"
-                    class="edit-button">Logout</button>
+                    class="btn btn-primary" style="margin-top: 10px;">Logout</button>
             </div>
 
         </header>
@@ -39,20 +41,60 @@
                 <p><strong>Instituição:</strong> {{ user.institution }}</p>
                 <p><strong>Curso:</strong> {{ user.course }}</p>
                 <p>
-                    <strong>Interesses:</strong> 
+                    <strong>Interesses:</strong>
                     <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
                 </p>
             </section>
             <section class="profile-posts">
                 <h2>Publicações Recentes</h2>
-                <div class="post">
-                    <h3>Título da Publicação 1</h3>
-                    <p>Conteúdo da publicação 1...</p>
-                </div>
-                <div class="post">
-                    <h3>Título da Publicação 2</h3>
-                    <p>Conteúdo da publicação 2...</p>
-                </div>
+
+                <table class="card-table">
+                    <tbody>
+                        <tr *ngFor="let feed of posts">
+                            <td>
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="post-info">
+                                            <div *ngIf="isImageUrl(feed.urlFile)">
+                                                <img [src]="feed.urlFile"
+                                                    style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;"
+                                                    alt="">
+                                            </div>
+                                            <div>
+                                                <video *ngIf="isVideoUrl(feed.urlFile)"
+                                                    style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;">
+                                                    <!--controls-->
+                                                    <source [src]="feed.urlFile" type="video/mp4"
+                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px;">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+
+                                            <div class="content">
+                                                <p class="texto-limitado">{{ feed.text }}</p>
+                                                <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
+                                                <!--
+                                                    <div class="user-info"
+                                                        [routerLink]="['/user/profile', currentUser.userId]">
+                                                        <img [src]="feed.user.profileImageUrl" alt="User Image">
+                                                        <span class="user-name">{{ feed.user.firstName }} {{
+                                                            feed.user.lastName
+                                                            }}</span>
+                                                    </div>
+                                                    -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <div style="text-align: center;">
+                            <a style="font-size: 0.7rem; cursor: pointer;">
+                                <span (click)="onShowPostComments()">mostrar mais posts</span>
+                            </a>
+                        </div>                        
+                    </tbody>
+                </table>
             </section>
         </main>
     </div>
@@ -84,14 +126,14 @@
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="text" id="email" type="text" name="email" ngModel #email="ngModel" required
-                    minlength="1" [(ngModel)]="user.email" required>
+                <input type="text" id="email" type="text" name="email" ngModel #email="ngModel" required minlength="1"
+                    [(ngModel)]="user.email" required>
             </div>
 
             <div class="form-group">
                 <label for="institution">Instituição</label>
-                <input type="text" id="institution" type="text" name="institution" ngModel #institution="ngModel" required
-                    minlength="1" [(ngModel)]="user.institution" required>
+                <input type="text" id="institution" type="text" name="institution" ngModel #institution="ngModel"
+                    required minlength="1" [(ngModel)]="user.institution" required>
             </div>
 
             <div class="form-group">

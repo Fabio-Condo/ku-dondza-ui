@@ -8,6 +8,9 @@ import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
 import { NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Post } from 'src/app/core/model/Post';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -22,6 +25,13 @@ export class UserProfileViewComponent implements OnInit {
 
   fileToUpload!: File;
   coverFileToUpload!: File;
+
+  
+  posts: Post[] = [];
+  currentPage: number = 1;
+  totalRegistros: number = 0
+
+  extension: any;
 
   //isProfilePhoto: boolean = true;
 
@@ -43,10 +53,17 @@ export class UserProfileViewComponent implements OnInit {
     }
   }
 
+  filtro: IPostFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,desc'
+  }
+
   getUserByUserId(userId: string) {
     this.userService.getUserByUserId(userId).subscribe(
       (user: User) => {
         this.user = user;
+        this.getUserPostsByUserId(user);
       },
       (erro) => this.errorHandler.handle(erro),
     );
@@ -99,6 +116,73 @@ export class UserProfileViewComponent implements OnInit {
           console.error('Upload failed', error);
         }
       );
+    }
+  }
+
+  getUserPostsByUserId(user: User): void {
+    this.filtro.page++;
+    this.feedsService.getUserPostsByUserId(user.id, this.filtro).subscribe(
+      (dados: IApiResponse<Post>) => {
+        this.posts = [...this.posts, ...dados.content];
+        this.totalRegistros = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  onShowPostComments() {
+    this.filtro.itemsPerPage = 5;
+    this.getUserPostsByUserId(this.user);
+  }
+
+  isImageUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    return imageExtensions.includes(this.extension);
+  }
+
+  isVideoUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    return videoExtensions.includes(this.extension);
+  }
+
+  timeElapsed(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+
+    if (years > 0) {
+      const remainingMonths = months % 12;
+      return `${years} ano${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` e ${remainingMonths} mês${remainingMonths > 1 ? 'es' : ''}` : ''}`;
+    } else if (months > 0) {
+      const remainingDays = days % 30;
+      return `${months} mês${months > 1 ? 'es' : ''}${remainingDays > 0 ? ` e ${remainingDays} dia${remainingDays > 1 ? 's' : ''}` : ''}`;
+    } else if (weeks > 0) {
+      const remainingDays = days % 7;
+      return `${weeks} semana${weeks > 1 ? 's' : ''}${remainingDays > 0 ? ` e ${remainingDays} dia${remainingDays > 1 ? 's' : ''}` : ''}`;
+    } else if (days > 0) {
+      return `${days} dia${days > 1 ? 's' : ''}`;
+    } else if (hours > 0) {
+      const remainingMinutes = minutes % 60;
+      return `${hours} hora${hours > 1 ? 's' : ''}${remainingMinutes > 0 ? ` e ${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}` : ''}`;
+    } else if (minutes > 0) {
+      const remainingSeconds = seconds % 60;
+      return `${minutes} minuto${minutes > 1 ? 's' : ''}${remainingSeconds > 0 ? ` e ${remainingSeconds} segundo${remainingSeconds > 1 ? 's' : ''}` : ''}`;
+    } else {
+      return `${seconds} segundo${seconds > 1 ? 's' : ''}`;
     }
   }
 

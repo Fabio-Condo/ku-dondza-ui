@@ -31,7 +31,7 @@
           <div class="profile-photo">
             <img src="{{loggedUser.profileImageUrl}}" alt="Profile Photo">
           </div>
-          <h2>{{ loggedUser.firstName }} {{ loggedUser.lastName }}</h2>
+          <h2 class="user-name-hover">{{ loggedUser.firstName }} {{ loggedUser.lastName }}</h2>
           <p class="text-muted" style="font-size: 0.7rem;">{{ loggedUser.bio }}</p>
 
 
@@ -91,7 +91,7 @@
             </div>
             <div class="info" style="flex: 1;">
               <a style="color: hsl(252, 30%, 10%); cursor: pointer;" [routerLink]="['/user/profile', feed.user.userId]">
-                <h3>{{feed.user.firstName}} {{feed.user.lastName}}</h3>
+                <h3 class="user-name-hover">{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
               <small class="text-muted">{{timeElapsed(feed.date.toString())}}</small>
             </div>
@@ -180,7 +180,7 @@
                   <div class="user-comment">
                     <div class="user-info" [routerLink]="['/user/profile', comment.user.userId]">
                       <img src="{{comment.user.profileImageUrl}}" alt="photo">
-                      <span class="user-name">{{comment.user.firstName}} {{comment.user.lastName}}</span>
+                      <span class="user-name user-name-hover">{{comment.user.firstName}} {{comment.user.lastName}}</span>
                       <span *ngIf="verificarAutor(feed.user.id, comment.user.id)" class="autor-span">
                         {{ verificarAutor(feed.user.id, comment.user.id) }}
                       </span>
@@ -222,7 +222,7 @@
                         <div class="user-comment">
                           <div class="user-info" [routerLink]="['/user/profile', reply.user.userId]">
                             <img src="{{reply.user.profileImageUrl}}" alt="photo">
-                            <span class="user-name">{{reply.user.firstName}} {{reply.user.lastName}}</span>
+                            <span class="user-name user-name-hover">{{reply.user.firstName}} {{reply.user.lastName}}</span>
                             <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
                               {{ verificarAutor(feed.user.id, reply.user.id) }}
                             </span>
@@ -265,7 +265,7 @@
                               <div class="user-comment">
                                 <div class="user-info" [routerLink]="['/user/profile', reply2.user.userId]">
                                   <img src="{{reply2.user.profileImageUrl}}" alt="photo">
-                                  <span class="user-name">{{reply2.user.firstName}} {{reply2.user.lastName}}</span>
+                                  <span class="user-name user-name-hover">{{reply2.user.firstName}} {{reply2.user.lastName}}</span>
                                   <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
                                     {{ verificarAutor(feed.user.id, reply2.user.id) }}
                                   </span>
@@ -325,9 +325,7 @@
               <a href="javascript:;"><img src="{{loggedUser.profileImageUrl}}"></a>
             </div>
             <div>
-              <a [routerLink]="['/user/profile', loggedUser.userId]">
-                <h5>{{loggedUser.firstName}} {{loggedUser.lastName}}</h5>
-              </a>
+              <h5 class="user-name-hover" [routerLink]="['/user/profile', loggedUser.userId]">{{loggedUser.firstName}} {{loggedUser.lastName}}</h5>
               <p class="text-muted">8 mutual friends</p>
             </div>
           </div>
@@ -353,7 +351,7 @@
             <div class="active"></div>
           </div>
           <div class="message-body" *ngIf="user.id !== loggedUser.id">
-            <h5 style="cursor: pointer;" [routerLink]="['/user/profile', user.userId]">{{user.firstName}}
+            <h5 class="user-name-hover" [routerLink]="['/user/profile', user.userId]">{{user.firstName}}
               {{user.lastName}}</h5>
             <p>
               <a class="text-muted" (click)="sendFriendRequest(user)" href="javascript:;"> 8 mutual friends</a>

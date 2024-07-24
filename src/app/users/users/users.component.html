@@ -41,7 +41,7 @@
                     </div>
                 </td>
                 <td style="margin-left: 20px;">
-                    <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p>
+                    <p class="user-name user-name-hover" [routerLink]="['/user/profile', user.userId]">{{ user.firstName }} {{ user.lastName }}</p>
                     <p class="username">username: <span class="text-muted">{{ user.username }}</span></p>
                     <p class="email">email: <span class="text-muted">{{ user.email }}</span> </p>
                     <a (click)="onEditUser(user)" class="edit-link">editar</a>

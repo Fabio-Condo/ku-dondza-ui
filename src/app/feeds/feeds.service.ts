@@ -39,4 +39,14 @@ export class FeedsService {
     return formData;
   }
 
+  getUserPostsByUserId(userId: number, filter: IPostFilter): Observable<IApiResponse<Post>> {  
+
+    let params = new HttpParams()  
+      .set('page', filter.page)  
+      .set('size', filter.itemsPerPage)
+      .set('sort', filter.sort);  
+
+    return this.http.get<IApiResponse<Post>>(`${this.host}/post/user/${userId}`, { params });
+  }
+
 }

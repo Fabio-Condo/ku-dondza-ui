@@ -148,7 +148,6 @@ export class UserService {
       .set('size', filtro.itensPorPagina);
 
     return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}/savedPostsPaginated`, { params });
-
   }
 
   getFriendRequests(): Observable<User[]> {
