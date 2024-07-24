@@ -60,8 +60,7 @@ export class FeedComponent implements OnInit {
   comments: Comment[] = [];
 
   friendRequests: User[] = []
-  friends: User[] = []
-  users: User[] = [];
+  //friends: User[] = []
   teachers: User[] = [];
 
 
@@ -105,12 +104,6 @@ export class FeedComponent implements OnInit {
   }
 
   userfilter: IUserFilter = {
-    page: -1,
-    itemsPerPage: 2,
-    sort: 'firstName,asc',
-  }
-
-  userfilterForSerach: IUserFilter = {
     page: -1,
     itemsPerPage: 2,
     sort: 'firstName,asc',
@@ -410,37 +403,10 @@ export class FeedComponent implements OnInit {
     );
   }
 
-  getUsersSearch(){
-    this.userService.search(this.userfilterForSerach).subscribe(
-      (data: IApiResponse<User>) => {
-        this.users = data.content
-        //this.totalRecords = data.totalElements;
-      },
-      (erro) => {
-        this.errorHandler.handle(erro)
-      }
-    );
-  }
-
-  onClickInputSearchUsers(){
-    //this.userfilterForSerach.page = 0;
-    //this.userfilterForSerach.name = ''
-  }
-
   getFriendRequests() {
     return this.userService.getFriendRequests().subscribe(
       (data: User[]) => {
         this.friendRequests = data;
-        this.getFriends();
-      },
-      erro => this.errorHandler.handle(erro)
-    )
-  }
-
-  getFriends() {
-    return this.userService.getFriends().subscribe(
-      (data: User[]) => {
-        this.friends = data;
       },
       erro => this.errorHandler.handle(erro)
     )
@@ -458,7 +424,6 @@ export class FeedComponent implements OnInit {
   acceptFriendRequest(friendId: number) {
     this.userService.acceptFriendRequest(friendId).subscribe(
       (friendAcepted) => {
-        this.getFriends();
         this.getFriendRequests();
         this.messageService.add({ severity: 'success', detail: 'Friend accepted successfully' });
       },
@@ -479,14 +444,9 @@ export class FeedComponent implements OnInit {
   removeFriend(friendId: number) {
     this.userService.removeFriend(friendId).subscribe(
       () => {
-        this.getFriends();
         this.messageService.add({ severity: 'success', detail: 'Friend removed successfully' });
       }
     )
-  }
-
-  isAlreadyFriendWithCurrentUser(user: User): boolean {
-    return this.friends.some(friend => friend.id === user.id);
   }
 
   isImageUrl(url: string): boolean {

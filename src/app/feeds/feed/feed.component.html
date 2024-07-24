@@ -32,7 +32,11 @@
             <img src="{{loggedUser.profileImageUrl}}" alt="Profile Photo">
           </div>
           <h2>{{ loggedUser.firstName }} {{ loggedUser.lastName }}</h2>
-          <p>{{ loggedUser.bio }}</p>
+          <p class="text-muted" style="font-size: 0.7rem;">{{ loggedUser.bio }}</p>
+
+
+          <hr style="margin-top: 1rem; margin-bottom: 1rem;">
+
           <div class="info-section">
             <div class="friends-info">
               <span>Total</span>
@@ -339,42 +343,6 @@
 
       <div class="messages">
         <div class="heading">
-          <h4>Amigos</h4>
-        </div>
-
-        <form action="" #usersForm="ngForm" (ngSubmit)="getUsersSearch()">
-
-          <div class="search-bar">
-            <span><i class="uil uil-search"></i></span>
-            <input type="search" placeholder="Search Users" (click)="onClickInputSearchUsers()"
-              [(ngModel)]="userfilterForSerach.name" name="name" id="message-search" (ngModelChange)="getUsersSearch()">
-
-          </div>
-        </form>
-
-        <div class="message" *ngFor="let user of users">
-          <div class="profile-pic" *ngIf="user.id !== loggedUser.id"> <!--Dont show the current user in list-->
-            <a href="javascript:;"><img src="{{user.profileImageUrl}}"
-                [routerLink]="['/user/profile', user.userId]"></a>
-            <div class="active"></div>
-          </div>
-          <div class="message-body" *ngIf="user.id !== loggedUser.id">
-            <h5 [routerLink]="['/user/profile', user.userId]">{{user.firstName}} {{user.lastName}}</h5>
-            <p class="text-muted">
-              <a (click)="sendFriendRequest(user)" *ngIf="!isAlreadyFriendWithCurrentUser(user)" style="color: #3734ed"
-                href="javascript:;"> connect</a>
-              <span *ngIf="isAlreadyFriendWithCurrentUser(user)" href="javascript:;"> (already friends) <a
-                  (click)="removeFriend(user.id)" style="color: #3734ed" href="javascript:;">remove</a></span>
-            </p>
-          </div>
-        </div>
-
-      </div>
-
-      <br>
-
-      <div class="messages">
-        <div class="heading">
           <h4>Explicadores</h4>
         </div>
 
@@ -388,10 +356,7 @@
             <h5 style="cursor: pointer;" [routerLink]="['/user/profile', teacher.userId]">{{teacher.firstName}}
               {{teacher.lastName}}</h5>
             <p class="text-muted">
-              <a (click)="sendFriendRequest(teacher)" *ngIf="!isAlreadyFriendWithCurrentUser(teacher)"
-                style="color: #3734ed" href="javascript:;"> connect</a>
-              <span *ngIf="isAlreadyFriendWithCurrentUser(teacher)" href="javascript:;"> (already friends) <a
-                  (click)="removeFriend(teacher.id)" style="color: #3734ed" href="javascript:;">remove</a></span>
+              <a (click)="sendFriendRequest(teacher)" style="color: #3734ed" href="javascript:;"> connect</a>
             </p>
           </div>
         </div>
