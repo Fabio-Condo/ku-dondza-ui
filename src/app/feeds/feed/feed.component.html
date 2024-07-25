@@ -31,7 +31,8 @@
           <div class="profile-photo">
             <img src="{{loggedUser.profileImageUrl}}" alt="Profile Photo">
           </div>
-          <h2 class="user-name-hover">{{ loggedUser.firstName }} {{ loggedUser.lastName }}</h2>
+          <h2 class="user-name-hover" [routerLink]="['/user/profile', loggedUser.userId]">{{ loggedUser.firstName }} {{
+            loggedUser.lastName }}</h2>
           <p class="text-muted" style="font-size: 0.7rem;">{{ loggedUser.bio }}</p>
 
 
@@ -49,7 +50,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
 
     <div class="middle">
@@ -180,7 +181,8 @@
                   <div class="user-comment">
                     <div class="user-info" [routerLink]="['/user/profile', comment.user.userId]">
                       <img src="{{comment.user.profileImageUrl}}" alt="photo">
-                      <span class="user-name user-name-hover">{{comment.user.firstName}} {{comment.user.lastName}}</span>
+                      <span class="user-name user-name-hover">{{comment.user.firstName}}
+                        {{comment.user.lastName}}</span>
                       <span *ngIf="verificarAutor(feed.user.id, comment.user.id)" class="autor-span">
                         {{ verificarAutor(feed.user.id, comment.user.id) }}
                       </span>
@@ -190,11 +192,13 @@
                       style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">
                       {{comment.content}}
                     </p>
-
-                    <a href="javascript:;"
-                      style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;">Gosto</a>
-                    <a href="javascript:;" (click)="toggleReplyForm(comment)"
-                      style="color: hsl(252, 30%, 40%); text-decoration: none;">Responder</a>
+                    <a (click)="toggleLikeComment(comment)"
+                      [ngStyle]="{'color': comment.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
+                      style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">
+                      Gostei
+                    </a>
+                    <a (click)="toggleReplyForm(comment)"
+                      style="color: hsl(252, 30%, 17%); text-decoration: none; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Responder</a>
                   </div>
                 </div>
 
@@ -222,7 +226,8 @@
                         <div class="user-comment">
                           <div class="user-info" [routerLink]="['/user/profile', reply.user.userId]">
                             <img src="{{reply.user.profileImageUrl}}" alt="photo">
-                            <span class="user-name user-name-hover">{{reply.user.firstName}} {{reply.user.lastName}}</span>
+                            <span class="user-name user-name-hover">{{reply.user.firstName}}
+                              {{reply.user.lastName}}</span>
                             <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
                               {{ verificarAutor(feed.user.id, reply.user.id) }}
                             </span>
@@ -233,10 +238,11 @@
                             {{reply.content}}
                           </p>
 
-                          <a href="javascript:;"
-                            style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;">Gosto</a>
-                          <a href="javascript:;" (click)="toggleReplyForm(reply)"
-                            style="color: hsl(252, 30%, 40%); text-decoration: none;">Responder</a>
+                          <a (click)="toggleLikeComment(reply)"
+                            [ngStyle]="{'color': reply.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
+                            style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Gostei</a>
+                          <a (click)="toggleReplyForm(reply)"
+                            style="color: hsl(252, 30%, 17%); text-decoration: none; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Responder</a>
                         </div>
                       </div>
 
@@ -265,7 +271,8 @@
                               <div class="user-comment">
                                 <div class="user-info" [routerLink]="['/user/profile', reply2.user.userId]">
                                   <img src="{{reply2.user.profileImageUrl}}" alt="photo">
-                                  <span class="user-name user-name-hover">{{reply2.user.firstName}} {{reply2.user.lastName}}</span>
+                                  <span class="user-name user-name-hover">{{reply2.user.firstName}}
+                                    {{reply2.user.lastName}}</span>
                                   <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
                                     {{ verificarAutor(feed.user.id, reply2.user.id) }}
                                   </span>
@@ -276,8 +283,9 @@
                                   {{reply2.content}}
                                 </p>
 
-                                <a href="javascript:;"
-                                  style="color: hsl(252, 30%, 40%); text-decoration: none; margin-right: 10px;">Gosto</a>
+                                <a (click)="toggleLikeComment(reply2)"
+                                  [ngStyle]="{'color': reply2.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
+                                  style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Gostei</a>
                               </div>
                             </div>
 
@@ -325,7 +333,8 @@
               <a href="javascript:;"><img src="{{loggedUser.profileImageUrl}}"></a>
             </div>
             <div>
-              <h5 class="user-name-hover" [routerLink]="['/user/profile', loggedUser.userId]">{{loggedUser.firstName}} {{loggedUser.lastName}}</h5>
+              <h5 class="user-name-hover" [routerLink]="['/user/profile', loggedUser.userId]">{{loggedUser.firstName}}
+                {{loggedUser.lastName}}</h5>
               <p class="text-muted">8 mutual friends</p>
             </div>
           </div>

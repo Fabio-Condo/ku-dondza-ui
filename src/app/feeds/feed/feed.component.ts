@@ -19,6 +19,7 @@ import { Like } from 'src/app/core/model/Like';
 import { LikeFilter } from 'src/app/core/interface/LikeFilter';
 import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
 
 @Component({
   selector: 'app-feed',
@@ -57,7 +58,7 @@ export class FeedComponent implements OnInit {
   extension: any;
 
   likes: Like[] = [];
-  comments: Comment[] = [];
+  //comments: Comment[] = [];
 
   friendRequests: User[] = []
   //friends: User[] = []
@@ -71,6 +72,7 @@ export class FeedComponent implements OnInit {
     private messageService: MessageService,
     private commentService: CommentService,
     private likeService: LikeService,
+    private commentLikeService: CommentLikeService,
     private userService: UserService,
     private authenticationService: AuthenticationService
   ) { }
@@ -112,9 +114,11 @@ export class FeedComponent implements OnInit {
   loadMoreCommentsByPostId(post: Post): void {
     this.commentFilter.page++;
     this.commentService.findCommentsByPostId(post.id, this.commentFilter).subscribe(
-      (dados: IApiResponse<Comment>) => {
-        //this.selectedPost.comments = [...this.selectedPost.comments, ...dados.content];
-        post.comments = [...post.comments, ...dados.content];
+      (data: IApiResponse<Comment>) => {
+        data.content.forEach(comment => {
+          this.checkIfCommentLikedByUser(comment);
+        });
+        post.comments = [...post.comments, ...data.content];
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendNotification(errorResponse.error.message);
@@ -461,6 +465,42 @@ export class FeedComponent implements OnInit {
     this.extension = url.split('.').pop()?.toLowerCase();
     return videoExtensions.includes(this.extension);
   }
+  
+
+  //getCommentLikeCount(): void {
+  //  this.commentLikeService.countLikesByCommentId(this.comment.id).subscribe(count => {
+  //    this.likeCount = count;
+  //  });
+  //}
+
+  checkIfCommentLikedByUser(comment: Comment): void {
+    this.commentLikeService.checkIfLiked(comment.id).subscribe(isLiked => {
+      comment.isLiked = isLiked;
+      // Verifica se o comentário tem respostas e percorre cada uma delas
+      if (comment.replies && comment.replies.length > 0) {
+        comment.replies.forEach(response => {
+          this.checkIfCommentLikedByUser(response); // Chama recursivamente para verificar respostas
+        });
+      }
+    });
+  }
+  
+
+  toggleLikeComment(comment: Comment): void {
+    this.commentLikeService.toggleLike(comment.id).subscribe(response => {
+      comment.isLiked = !comment.isLiked;
+      if (comment.isLiked) {
+        comment.numberOfLikes = comment.numberOfLikes + 1;
+      } else {
+        comment.numberOfLikes = comment.numberOfLikes - 1;
+      }
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.sendNotification(errorResponse.error.message);
+      this.showLoading = false;
+    });
+  }
+  
 
   timeElapsed(dateString: string): string {
     const date = new Date(dateString);
