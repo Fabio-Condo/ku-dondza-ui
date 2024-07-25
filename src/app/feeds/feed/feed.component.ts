@@ -117,6 +117,7 @@ export class FeedComponent implements OnInit {
       (data: IApiResponse<Comment>) => {
         data.content.forEach(comment => {
           this.checkIfCommentLikedByUser(comment);
+          this.getCommentLikeCount(comment);
         });
         post.comments = [...post.comments, ...data.content];
       },
@@ -467,11 +468,17 @@ export class FeedComponent implements OnInit {
   }
   
 
-  //getCommentLikeCount(): void {
-  //  this.commentLikeService.countLikesByCommentId(this.comment.id).subscribe(count => {
-  //    this.likeCount = count;
-  //  });
-  //}
+  getCommentLikeCount(comment: Comment): void {
+    this.commentLikeService.countLikesByCommentId(comment.id).subscribe(response => {
+      comment.numberOfLikes = response;
+      
+      // Chama recursivamente para cada resposta
+      if (comment.replies && comment.replies.length > 0) {
+        comment.replies.forEach(reply => this.getCommentLikeCount(reply));
+      }
+    });
+  }
+  
 
   checkIfCommentLikedByUser(comment: Comment): void {
     this.commentLikeService.checkIfLiked(comment.id).subscribe(isLiked => {

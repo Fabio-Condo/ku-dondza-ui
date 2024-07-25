@@ -194,9 +194,14 @@
                     </p>
                     <a (click)="toggleLikeComment(comment)"
                       [ngStyle]="{'color': comment.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
-                      style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">
+                      style="text-decoration: none; margin-right: 5px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">
                       Gostei
                     </a>
+
+                    <a *ngIf="comment.numberOfLikes > 0"
+                      style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{comment.numberOfLikes}}
+                      gostos</a>
+
                     <a (click)="toggleReplyForm(comment)"
                       style="color: hsl(252, 30%, 17%); text-decoration: none; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Responder</a>
                   </div>
@@ -241,6 +246,11 @@
                           <a (click)="toggleLikeComment(reply)"
                             [ngStyle]="{'color': reply.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
                             style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Gostei</a>
+
+                          <a *ngIf="reply.numberOfLikes > 0"
+                            style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{reply.numberOfLikes}}
+                            gostos</a>
+
                           <a (click)="toggleReplyForm(reply)"
                             style="color: hsl(252, 30%, 17%); text-decoration: none; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Responder</a>
                         </div>
@@ -286,6 +296,9 @@
                                 <a (click)="toggleLikeComment(reply2)"
                                   [ngStyle]="{'color': reply2.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
                                   style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Gostei</a>
+
+                                <a *ngIf="reply2.numberOfLikes > 0"
+                                  style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{reply2.numberOfLikes}} gostos</a>
                               </div>
                             </div>
 
