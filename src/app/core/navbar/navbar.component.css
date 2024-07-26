@@ -131,3 +131,65 @@ nav .profile-pic img {
   width: 30px;
   height: 30px;
 }
+
+
+/* Menu de hambúrguer */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 1rem;
+  color: red;
+}
+
+.hamburger span {
+  height: 3px;
+  background: white;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background: var(--color-primary);
+  padding: 2rem 1rem;
+  transition: left 0.3s ease;
+  z-index: 100;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar .menu-item {
+  display: block;
+  padding: 1rem 0;
+  color: whitesmoke;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.sidebar .menu-item.active {
+  border-bottom: 4px solid whitesmoke;
+}
+
+.sidebar .menu-item:hover {
+  color: whitesmoke;
+  border-bottom: 4px solid #5553ec;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  
+  .nav-center {
+    display: none;
+  }
+}

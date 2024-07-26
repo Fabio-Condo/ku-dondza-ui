@@ -5,7 +5,6 @@
       <div class="search-bar">
         <i class="pi pi-search"></i>
         <input type="search" placeholder="Search" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" />
-        <!-- Popout para resultados da pesquisa -->
         <div class="search-results-popup" *ngIf="searchQuery.length > 2 && results.length > 0">
           <ul>
             <li *ngFor="let result of results">
@@ -20,6 +19,11 @@
           </ul>
         </div>
       </div>
+    </div>
+
+    <!-- Menu de hambúrguer -->
+    <div class="hamburger" (click)="toggleSidebar()">
+      <i class="pi pi-bars"></i>
     </div>
 
     <div class="nav-center">
@@ -51,3 +55,24 @@
     </div>
   </div>
 </nav>
+
+<!-- Navbar lateral para dispositivos pequenos -->
+<div class="sidebar" [class.active]="isSidebarActive">
+  <span *ngIf="isUserLoggedIn">
+    <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
+      <span>Home</span>
+    </a>
+    <a class="menu-item" [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
+      <span>Instituições</span>
+    </a>
+    <a class="menu-item" [class.active]="isActive('/cursos')" routerLink="/cursos">
+      <span>Cursos</span>
+    </a>
+    <a class="menu-item" [class.active]="isActive('/exames')" routerLink="/exames">
+      <span>Exames</span>
+    </a>
+    <a class="menu-item" [class.active]="isActive('/users')" routerLink="/users">
+      <span>Usuários</span>
+    </a>
+  </span>
+</div>

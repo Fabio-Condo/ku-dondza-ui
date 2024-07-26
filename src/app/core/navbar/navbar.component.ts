@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
   loggedUser: User = new User();
   searchQuery: string = '';
   results: SearchResultDTO[] = [];// Defina o tipo mais específico para os resultados
+  isSidebarActive: boolean = false;
 
   constructor(
     private router: Router,
@@ -34,6 +35,10 @@ export class NavbarComponent implements OnInit {
 
   goToProfile() {
     this.router.navigate(['/user/profile', this.loggedUser.userId]);
+  }
+
+  toggleSidebar() {
+    this.isSidebarActive = !this.isSidebarActive;
   }
 
   isActive(url: string): boolean {
