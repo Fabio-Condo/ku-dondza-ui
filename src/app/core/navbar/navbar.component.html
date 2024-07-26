@@ -5,6 +5,20 @@
       <div class="search-bar">
         <i class="pi pi-search"></i>
         <input type="search" placeholder="Search" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" />
+        <!-- Popout para resultados da pesquisa -->
+        <div class="search-results-popup" *ngIf="searchQuery.length > 2 && results.length > 0">
+          <ul>
+            <li *ngFor="let result of results">
+              <div class="profile-pic">
+                <a (click)="goToProfile()">
+                  <img src="{{result.urlFile}}" alt="Profile picture" />
+                </a>
+              </div>
+              <span>{{ result.type }}: </span>
+              <span>{{ result.content }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -37,21 +51,3 @@
     </div>
   </div>
 </nav>
-
-<!-- Popout para resultados da pesquisa -->
-<div class="search-results-popup" *ngIf="searchQuery.length > 2 && results.length > 0">
-  <ul>
-    <li *ngFor="let result of results">
-      <div class="create" *ngIf="isUserLoggedIn">
-        <div class="profile-pic">
-          <a (click)="goToProfile()">
-            <img src="{{result.urlFile}}" alt="Profile picture" />
-          </a>
-        </div>
-      </div>
-      <span>{{ result.type }}: </span>
-      <span>{{ result.content }}</span>
-    </li>
-  </ul>
-</div>
-

@@ -16,6 +16,7 @@ nav .container {
 nav .nav-left {
   display: flex;
   align-items: center;
+  position: relative; /* Para que o popout de resultados seja posicionado relativo a este elemento */
 }
 
 nav .logo {
@@ -28,6 +29,7 @@ nav .logo {
   background: var(--color-light);
   border-radius: var(--border-radius);
   padding: 0.5rem 0.5rem;
+  position: relative; /* Para posicionar o popout corretamente */
 }
 
 .search-bar i {
@@ -87,18 +89,17 @@ nav .profile-pic img {
   height: 40px;
 }
 
-/*Popout de resultados*/
-
+/* Popout de resultados */
 .search-results-popup {
-  position: fixed;
-  top: 60px; /* Ajuste conforme necessário para a distância abaixo da navbar */
-  left: 300px; /* Posiciona o popout à esquerda */
+  position: absolute;
+  top: 40px; /* Ajuste conforme necessário para a distância abaixo da navbar */
+  left: 0; /* Posiciona o popout abaixo da barra de busca */
   background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000; /* Certifique-se de que o popout está sobre outros elementos */
-  width: 300px; /* Ajuste o tamanho conforme necessário */
+  width: 100%; /* Ajuste o tamanho conforme necessário */
   max-height: 400px; /* Limite a altura máxima e adicione rolagem se necessário */
   overflow-y: auto;
   padding: 10px;
@@ -111,6 +112,8 @@ nav .profile-pic img {
 }
 
 .search-results-popup li {
+  display: flex;
+  align-items: center;
   padding: 10px;
   cursor: pointer;
 }
@@ -119,5 +122,12 @@ nav .profile-pic img {
   background-color: #f0f0f0;
 }
 
+.search-results-popup .profile-pic {
+  margin-right: 10px;
+}
 
-
+.search-results-popup .profile-pic img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
