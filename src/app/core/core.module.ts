@@ -13,6 +13,7 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { FooterComponent } from './footer/footer.component';
     ToastModule,
     ConfirmDialogModule,
     RouterModule,
+    FormsModule,
   ],
   exports: [
     NavbarComponent,

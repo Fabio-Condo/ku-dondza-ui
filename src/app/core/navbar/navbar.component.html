@@ -1,48 +1,57 @@
 <nav>
   <div class="container">
-    <h2 class="logo" style="color: white;">Ku-DONDZA</h2>
-
-    <!--
+    <div class="nav-left">
+      <h2 class="logo" style="color: white;">Ku-DONDZA</h2>
       <div class="search-bar">
-          <i class="uil uil-search"></i>
-          <input
-          type="search"
-          placeholder="Search"
-          />
+        <i class="pi pi-search"></i>
+        <input type="search" placeholder="Search" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" />
       </div>
-      -->
-    <span *ngIf="isUserLoggedIn">
-      <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
-        <span>Home</span>
-      </a>
-      <a class="menu-item" [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
-        <span>Instituições</span>
-      </a>
-      <a class="menu-item" [class.active]="isActive('/cursos')" routerLink="/cursos">
-        <span>Cursos</span>
-      </a>
-      <a class="menu-item" [class.active]="isActive('/exames')" routerLink="/exames">
-        <span>Exames</span>
-      </a>
-            <!--
-      <a class="menu-item" [class.active]="isActive('/explicadores')" routerLink="/explicadores">
-        <span>Explicadores</span>
-      </a>
-      -->
-      <a class="menu-item" [class.active]="isActive('/users')" routerLink="/users">
-        <span>Usuários</span>
-      </a>
+    </div>
 
-    </span>
+    <div class="nav-center">
+      <span *ngIf="isUserLoggedIn">
+        <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
+          <span>Home</span>
+        </a>
+        <a class="menu-item" [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
+          <span>Instituições</span>
+        </a>
+        <a class="menu-item" [class.active]="isActive('/cursos')" routerLink="/cursos">
+          <span>Cursos</span>
+        </a>
+        <a class="menu-item" [class.active]="isActive('/exames')" routerLink="/exames">
+          <span>Exames</span>
+        </a>
+        <a class="menu-item" [class.active]="isActive('/users')" routerLink="/users">
+          <span>Usuários</span>
+        </a>
+      </span>
+    </div>
 
     <div class="create" *ngIf="isUserLoggedIn">
       <div class="profile-pic">
-
-        <a href="javascript:;" [routerLink]="['/user/profile', loggedUser.userId]">
-          <img src="{{loggedUser.profileImageUrl}}" alt="pic 1" />
+        <a (click)="goToProfile()">
+          <img src="{{loggedUser.profileImageUrl}}" alt="Profile picture" />
         </a>
-
       </div>
     </div>
   </div>
 </nav>
+
+<!-- Popout para resultados da pesquisa -->
+<div class="search-results-popup" *ngIf="searchQuery.length > 2 && results.length > 0">
+  <ul>
+    <li *ngFor="let result of results">
+      <div class="create" *ngIf="isUserLoggedIn">
+        <div class="profile-pic">
+          <a (click)="goToProfile()">
+            <img src="{{result.urlFile}}" alt="Profile picture" />
+          </a>
+        </div>
+      </div>
+      <span>{{ result.type }}: </span>
+      <span>{{ result.content }}</span>
+    </li>
+  </ul>
+</div>
+
