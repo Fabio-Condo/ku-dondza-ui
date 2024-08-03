@@ -188,22 +188,19 @@
                       </span>
                     </div>
 
-                    <p
-                      style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">
+                    <p>
                       {{comment.content}}
                     </p>
                     <a (click)="toggleLikeComment(comment)"
-                      [ngStyle]="{'color': comment.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
-                      style="text-decoration: none; margin-right: 5px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">
+                      [ngStyle]="{'color': comment.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}" style="margin-left: 30px;">
                       Gostei
                     </a>
 
                     <a *ngIf="comment.numberOfLikes > 0"
-                      style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{comment.numberOfLikes}}
+                      >{{comment.numberOfLikes}}
                       gostos</a>
 
-                    <a (click)="toggleReplyForm(comment)"
-                      style="color: hsl(252, 30%, 17%); text-decoration: none; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Responder</a>
+                    <a (click)="toggleReplyForm(comment)">Responder</a>
                   </div>
                 </div>
 
@@ -238,21 +235,20 @@
                             </span>
                           </div>
 
-                          <p
-                            style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">
+                          <p>
                             {{reply.content}}
                           </p>
 
                           <a (click)="toggleLikeComment(reply)"
-                            [ngStyle]="{'color': reply.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
-                            style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Gostei</a>
+                            [ngStyle]="{'color': reply.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}" style="margin-left: 30px;">
+                            Gostei
+                          </a>
 
                           <a *ngIf="reply.numberOfLikes > 0"
                             style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{reply.numberOfLikes}}
                             gostos</a>
 
-                          <a (click)="toggleReplyForm(reply)"
-                            style="color: hsl(252, 30%, 17%); text-decoration: none; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Responder</a>
+                          <a (click)="toggleReplyForm(reply)">Responder</a>
                         </div>
                       </div>
 
@@ -288,14 +284,14 @@
                                   </span>
                                 </div>
 
-                                <p
-                                  style="background-color: #e4e5e8; border: 1px solid rgb(198, 197, 197); padding: 10px; border-radius: 10px; margin: 5px 0;">
+                                <p>
                                   {{reply2.content}}
                                 </p>
 
                                 <a (click)="toggleLikeComment(reply2)"
-                                  [ngStyle]="{'color': reply2.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
-                                  style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem; font-weight: 500;">Gostei</a>
+                                  [ngStyle]="{'color': reply2.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}" style="margin-left: 30px;">
+                                  Gostei
+                                </a>
 
                                 <a *ngIf="reply2.numberOfLikes > 0"
                                   style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{reply2.numberOfLikes}} gostos</a>

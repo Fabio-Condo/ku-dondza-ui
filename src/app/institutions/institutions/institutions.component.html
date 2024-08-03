@@ -67,6 +67,7 @@
                                 <p class="institution-type">tipo de administração: <p-tag
                                         [value]="getAdministrationTypeValue(institution.administrationType)"
                                         [severity]="getAdministrationType(institution.administrationType)"></p-tag></p>
+                                <p class="institution-type">País: <span class="text-muted">{{ institution.country }}</span></p>
                                 <p class="institution-type texto-limitado text-muted">{{ institution.description }} </p>
                                 <a href="{{ institution.website }}" target="_blank"
                                     style="font-size: 0.7rem; color: #1c80cf; text-decoration: underline;">Saiba mais no
@@ -74,7 +75,7 @@
                                 <i class="pi pi-external-link"
                                     style="font-size: 0.7rem; margin-left: 5px; color: #1c80cf;"></i>
                                 <a class="edit-link" [routerLink]="['/instituicoes', institution.id]">ver cursos</a>
-                                <a (click)="onUpdateInstitution(institution.id, institution.name, this.institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
+                                <a (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.country, institution.address, institution.description, institution.website, file)"
                                     class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(institution)" class="delete-link">excluir</a>
                             </div>
@@ -147,6 +148,16 @@
             </div>
 
             <div class="form-group">
+                <label for="country">País</label>
+                <select id="country" [(ngModel)]="institution.country" name="country"
+                    required>
+                    <option value="" disabled selected>Selecione o país</option>
+                    <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="website">Website</label>
                 <input type="text" name="website" ngModel #website="ngModel" required minlength="1"
                     [(ngModel)]="institution.website">
@@ -200,6 +211,14 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="type">País</label>
+                <select id="type" [(ngModel)]="filtro.country" name="country"
+                    #country="ngModel" (change)="findAll()" required>
+                    <option value="" disabled selected>Selecione o País</option>
+                    <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}</option>
+                </select>
+            </div>
 
             <div class="form-group">
                 <button type="button" (click)="limparCampos()" class="btn">Reset</button>
