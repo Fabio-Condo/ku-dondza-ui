@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     if (this.authenticationService.isUserLoggedIn()) {  // Se estiver autenticado, apenas abe a tela principal
-      this.router.navigateByUrl('/feed');
+      //this.router.navigateByUrl('/feed');
     } else {
       this.router.navigateByUrl('/login');
     }

@@ -1,4 +1,5 @@
 import { Comment } from "./Comment";
+import { Group } from "./Group";
 import { Like } from "./Like";
 import { User } from "./User";
 
@@ -10,6 +11,7 @@ export class Post {
     public fileName!: string;
     public urlFile!: string;
     public user: User;
+    public group: Group;
     public comments: Comment[] = [];
     public likes: Like[] = [];
 
@@ -28,6 +30,7 @@ export class Post {
         this.fileName = '',
         this.urlFile = '',
         this.user = new User();
+        this.group = new Group();
         this.showComments = false;
         this.isLiked = false;
         this.isSaved = false;
