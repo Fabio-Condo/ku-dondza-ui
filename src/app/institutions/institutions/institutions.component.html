@@ -8,7 +8,7 @@
         Moçambique, incluindo
         endereço, cursos oferecidos e dados de contato. </p>
     <p style="margin-bottom: 20px; font-size: 0.85rem;"> A Ku-DONDZA visa facilitar sua busca pela instituição ideal que
-        atenda às suas necessidades educacionais. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba
+        atenda às suas necessidades educacionais. <a style="color: #007bff; text-decoration: underline;" href="">Saiba
             mais</a>
     </p>
 
@@ -70,10 +70,10 @@
                                 <p class="institution-type">País: <span class="text-muted">{{ institution.country }}</span></p>
                                 <p class="institution-type texto-limitado text-muted">{{ institution.description }} </p>
                                 <a href="{{ institution.website }}" target="_blank"
-                                    style="font-size: 0.7rem; color: #1c80cf; text-decoration: underline;">Saiba mais no
+                                    style="font-size: 0.7rem; color: #007bff; text-decoration: underline;">Saiba mais no
                                     website</a>
                                 <i class="pi pi-external-link"
-                                    style="font-size: 0.7rem; margin-left: 5px; color: #1c80cf;"></i>
+                                    style="font-size: 0.7rem; margin-left: 5px; color: #007bff;"></i>
                                 <a class="edit-link" [routerLink]="['/instituicoes', institution.id]">ver cursos</a>
                                 <a (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.country, institution.address, institution.description, institution.website, file)"
                                     class="edit-link">editar</a>
@@ -170,7 +170,7 @@
             </div>
 
             <div class="form-group">
-                <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf"
+                <input type="file" (change)="onFileSelected($event)" name="file" accept="application/**"
                     class="form-control" required />
             </div>
 
