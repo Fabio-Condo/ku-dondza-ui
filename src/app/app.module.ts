@@ -27,6 +27,8 @@ import { AuthenticationGuard } from './security/Guard/authentication.guard';
 import { UserService } from './users/user.service';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthInterceptor } from './security/interceptor/auth.interceptor';
+import { GroupModule } from './group/group.module';
+import { GroupsRoutingModule } from './group/groups-routing.module';
 
 
 @NgModule({
@@ -44,6 +46,7 @@ import { AuthInterceptor } from './security/interceptor/auth.interceptor';
     CoursesRoutingModule,
     TeachersRoutingModule,
     UsersRoutingModule,
+    GroupsRoutingModule,
 
 
   
@@ -53,6 +56,7 @@ import { AuthInterceptor } from './security/interceptor/auth.interceptor';
     CoursesModule,
     TeachersModule,
     UsersModule,
+    GroupModule,
 
     CoreRoutingModule,
     AppRoutingModule,
