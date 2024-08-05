@@ -73,10 +73,13 @@ export class UserService {
     formData.append('lastName', user.lastName);
     formData.append('username', user.username);
     formData.append('email', user.email);
+    formData.append('institution', user.institution);
+    formData.append('bio', user.bio);
+    formData.append('course', user.course);
     formData.append('role', user.role);
     formData.append('isActive', JSON.stringify(user.active));
     formData.append('isNonLocked', JSON.stringify(user.notLocked));
-    return this.http.put<User>(`${this.host}/user/update`, formData);
+    return this.http.put<User>(`${this.host}/user/update-user-profile`, formData);
   }
 
   //updateUserProfile(user: User): Observable<User> {
