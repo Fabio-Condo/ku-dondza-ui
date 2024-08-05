@@ -174,6 +174,10 @@ export class UserService {
     return this.http.post<User>(`${this.host}/user/send-friend-request`, user, {});
   }
 
+  addInterestToUserInterests(userId: number, interestId: number): Observable<User> {
+    return this.http.post<User>(`${this.host}/${userId}/interests/${interestId}`, { });
+  }
+
   updateProfilePhoto(username: string, file: File): Observable<User> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);

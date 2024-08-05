@@ -11,6 +11,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Post } from 'src/app/core/model/Post';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { IPostFilter } from 'src/app/core/interface/IPostFilter';
+import { InterestService } from 'src/app/interest/interest.service';
+import { Interest } from 'src/app/core/model/Interest';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -26,12 +28,21 @@ export class UserProfileViewComponent implements OnInit {
   fileToUpload!: File;
   coverFileToUpload!: File;
 
-  
+
   posts: Post[] = [];
   currentPage: number = 1;
   totalRegistros: number = 0
 
   extension: any;
+
+  interests: any[] = [];
+  showInterestsDialog: boolean = false;
+  showSelectInterestsDialog: boolean = false;
+
+  showLoading: boolean = false;
+
+  selectedInterest: Interest = new Interest();
+
 
   //isProfilePhoto: boolean = true;
 
@@ -43,6 +54,7 @@ export class UserProfileViewComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private feedsService: FeedsService,
+    private interestService: InterestService,
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +63,7 @@ export class UserProfileViewComponent implements OnInit {
     if (userId) {
       this.getUserByUserId(userId);
     }
+    this.getInterests();
   }
 
   filtro: IPostFilter = {
@@ -132,6 +145,34 @@ export class UserProfileViewComponent implements OnInit {
     );
   }
 
+  getInterests() {
+    return this.interestService.getAll().subscribe(
+      dados => {
+        this.interests = dados.map(dado => {
+          return {
+            label: dado.description,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  addInterestToUserInterests() {
+    this.userService.addInterestToUserInterests(this.user.id, this.selectedInterest.id).subscribe(
+      (user) => {
+        this.user = user;
+        this.messageService.add({ severity: 'success', detail: 'Interest added successfully!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
   onShowPostComments() {
     this.filtro.itemsPerPage = 5;
     this.getUserPostsByUserId(this.user);
@@ -189,6 +230,22 @@ export class UserProfileViewComponent implements OnInit {
   onLogOut(): void {
     this.authenticationService.logOut();
     this.router.navigate(['/login']);
+  }
+
+  onShowInterests() {
+    this.showInterestsDialog = true;
+  }
+
+  onCloseInterests() {
+    this.showInterestsDialog = false;
+  }
+
+  onShowSelectInterests() {
+    this.showSelectInterestsDialog = true;
+  }
+
+  onCloseSelectInterests() {
+    this.showSelectInterestsDialog = false;
   }
 
   private sendErrorNotification(message: string): void {

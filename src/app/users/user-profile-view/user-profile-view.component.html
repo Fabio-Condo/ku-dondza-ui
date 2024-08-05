@@ -43,6 +43,10 @@
                 <p>
                     <strong>Interesses:</strong>
                     <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
+                    <a (click)="onShowInterests()"
+                        style="margin-left: 10px; color: #007bff; cursor: pointer;">editar</a>
+                    <a (click)="onShowSelectInterests()"
+                        style="margin-left: 10px; color: #007bff; cursor: pointer;">adicionar</a>
                 </p>
             </section>
             <section class="profile-posts">
@@ -92,7 +96,7 @@
                             <a style="font-size: 0.7rem; cursor: pointer;">
                                 <span (click)="onShowPostComments()">mostrar mais posts</span>
                             </a>
-                        </div>                        
+                        </div>
                     </tbody>
                 </table>
             </section>
@@ -151,5 +155,43 @@
             <button type="submit" [disabled]="userForm.invalid" class="btn">Salvar</button>
 
         </form>
+    </div>
+</div>
+
+<div class="interest-dialog-overlay" *ngIf="showInterestsDialog">
+    <div class="interest-dialog">
+        <div class="interest-dialog-header">
+            <h4>Seus interesses</h4>
+            <button class="close-button" (click)="onCloseInterests()">x</button>
+        </div>
+        <div class="interest-dialog-content">
+            <ul>
+                <li *ngFor="let interest of user.interests">
+                    <span>{{interest.description}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="interest-dialog-overlay" *ngIf="showSelectInterestsDialog">
+    <div class="interest-dialog">
+        <div class="interest-dialog-header">
+            <h4>Interesses</h4>
+            <button class="close-button" (click)="onCloseSelectInterests()">x</button>
+        </div>
+
+        <div class="form-group">
+            <label for="subject">Selecione o interesse</label>
+            <select id="subject" name="interest" [(ngModel)]="selectedInterest.id" name="institution" required>
+                <option value="" disabled selected>Selecione o interesse</option>
+                <option *ngFor="let interest of interests" [value]="interest.value">{{ interest.label }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="button" (click)="addInterestToUserInterests()" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+          </div>
     </div>
 </div>

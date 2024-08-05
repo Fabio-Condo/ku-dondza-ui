@@ -35,7 +35,6 @@ export class GroupsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.getGroups();
     this.findAll(0);
     this.buscarTotal();
   }
