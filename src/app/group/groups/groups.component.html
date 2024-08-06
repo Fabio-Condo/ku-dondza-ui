@@ -40,8 +40,9 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <p class="group-description">{{ group.description }}</p>
-                                <a (click)="onUpdate(group.id, group.description, file)" class="edit-link">editar</a>
+                                <p class="group-description">{{ group.name }}</p>
+                                <p style="font-size: 0.7rem;">{{ group.description }}</p>
+                                <a (click)="onUpdate(group.id, group.name, group.description, file)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(group)" class="delete-link" style="margin-left: 10px;">excluir</a>
                             </div>
 
@@ -80,6 +81,12 @@
         <button class="close-btn" (click)="displayModalSave = false">&times;</button>
 
         <form autocomplete="off" #exameForm="ngForm">
+
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input id="name" type="text" name="name" ngModel #name="ngModel" required
+                    minlength="1" [(ngModel)]="group.name" required>
+            </div>
 
             <div class="form-group">
                 <label for="description">Descrição</label>

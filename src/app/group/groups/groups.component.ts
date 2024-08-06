@@ -61,7 +61,7 @@ export class GroupsComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.groupService.update(this.group.id, this.group.description, this.file).subscribe(
+    this.groupService.update(this.group.id, this.group.name, this.group.description, this.file).subscribe(
       response => {
         this.group = response
         this.messageService.add({ severity: 'success', detail: 'Grupo actualizado com sucesso!' });
@@ -77,7 +77,7 @@ export class GroupsComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.groupService.save(this.group.description,  this.file).subscribe(
+    this.groupService.save(this.group.name, this.group.description,  this.file).subscribe(
       response => {
         this.group = response
         this.messageService.add({ severity: 'success', detail: 'Grupo salvo com sucesso!' });
@@ -150,8 +150,9 @@ export class GroupsComponent implements OnInit {
     );
   }
 
-  onUpdate(id: number, description: string, file: File): void {
-    this.group.id = id
+  onUpdate(id: number, name: string, description: string, file: File): void {
+    this.group.id = id;
+    this.group.name = name;
     this.group.description = description;
     this.file = file;
     this.displayModalSave = true;

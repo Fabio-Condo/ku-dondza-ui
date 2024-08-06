@@ -29,16 +29,18 @@ export class GroupService {
 
   }
 
-  save(description: string, file: File): Observable<Group> {
+  save(name: string, description: string, file: File): Observable<Group> {
     const formData = new FormData();
+    formData.append('name', name);
     formData.append('description', description);
     formData.append('file', file);
     return this.http.post<Group>(`${this.baseUrl}`, formData);
   }
   
-  update(id: number, description: string, file: File): Observable<Group> {
+  update(id: number, name: string, description: string, file: File): Observable<Group> {
     const formData = new FormData();
     formData.append('id', id.toString());
+    formData.append('name', name);
     formData.append('description', description);
     formData.append('file', file);
     return this.http.put<Group>(`${this.baseUrl}`, formData);
