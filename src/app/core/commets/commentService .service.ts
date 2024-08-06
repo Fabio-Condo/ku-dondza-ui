@@ -25,7 +25,7 @@ export class CommentService {
     formData.append('content', content);
     formData.append('postId', postId.toString());
     formData.append('parentCommentId', parentCommentId!.toString());
-    return this.http.post<Comment>(`${this.apiUrl}/v2`, formData);
+    return this.http.post<Comment>(`${this.apiUrl}/reply-comment`, formData);
   }
 
   countCommentsByPostId(postId: number): Observable<number> {
