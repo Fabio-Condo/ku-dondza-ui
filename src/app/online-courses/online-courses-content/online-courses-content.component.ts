@@ -47,9 +47,13 @@ export class OnlineCoursesContentComponent implements OnInit {
       this.getOnlineCourseById(id);
       this.findCourseContentByCourseById(0, id);
     }
+
   }
 
   @ViewChild('tabela') grid: any;
+
+  // Referência ao vídeo no template
+  @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
 
   filtro: CourseFilter = {
     pagina: 0,
@@ -144,14 +148,6 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-  
-  //onSelectContent(content: OnlineCourseContent): void {
-  //  this.onlineSelectedCourseContent = content;
-  //}
-
-  // Referência ao vídeo no template
-  @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
-
   onSelectContent(content: OnlineCourseContent): void {
     this.onlineSelectedCourseContent = content;
 
@@ -162,6 +158,7 @@ export class OnlineCoursesContentComponent implements OnInit {
       // Forçar atualização do vídeo, redefinindo o `src` e recarregando
       videoElement.src = content.urlFile;
       videoElement.load();
+      videoElement.play();
     }
   }
 

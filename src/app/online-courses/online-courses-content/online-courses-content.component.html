@@ -4,15 +4,6 @@
 
         <p style="margin: 0; font-size: 30px;">{{course.name}}</p>
 
-        <p style="margin-top: 20px; margin-bottom: 20px; font-size: 0.85rem;">{{course.description}}</p>
-
-        <div class="flex">
-            <div>
-                <a *ngIf="isAdmin" (click)="onAddNewOnlineCourseContent()" class="ml-left">Adicionar</a>
-            </div>
-        </div>
-
-
     </div>
 
     <div>
@@ -22,8 +13,13 @@
         </video>
     </div>
 
-    <div style="margin-top: 12px; margin-bottom: 12px;" *ngIf="onlineSelectedCourseContent">
-        <p class="course-description texto-limitado text-muted">{{ onlineSelectedCourseContent.description }}</p>
+    <div class="flex">
+        <div>
+            <p class="course-name">{{ onlineSelectedCourseContent.description }}</p>
+        </div>
+        <div>
+            <a *ngIf="isAdmin" (click)="onAddNewOnlineCourseContent()" class="ml-left">Adicionar</a>
+        </div>
     </div>
 
 
@@ -35,18 +31,19 @@
                         <div class="card-content" (click)="onSelectContent(content)">
                             <div>
                                 <video 
-                                    style="width: 100%; height: 40px; border-radius: 5px; border: 1px solid #ccc;">
-                                    <!--controls-->
+                                    style="width: 70px; height: 40px; border-radius: 5px; border: 1px solid #ccc;">
                                     <source [src]="content.urlFile" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
+                            
                             <div class="content">
                                 <p class="course-name">{{ content.description }}</p>
                                 <a (click)="onUpdateOnlineCourseContent(content, file)"
                                 class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(content)" class="delete-link">excluir</a>
                             </div>
+                            <p *ngIf="onlineSelectedCourseContent == content"><i class="pi pi-play" style="font-size: 1rem;"></i></p>
                         </div>
                     </div>
                 </td>
