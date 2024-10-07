@@ -17,8 +17,6 @@ import { InstitutionsModule } from './institutions/institutions.module';
 import { InstitutionsRoutingModule } from './institutions/institutions-routing.module';
 import { CoursesRoutingModule } from './courses/courses-routing.module';
 import { CoursesModule } from './courses/courses.module';
-import { TeachersModule } from './teachers/teachers.module';
-import { TeachersRoutingModule } from './teachers/institutions-routing.module';
 import { CoreRoutingModule } from './core/core-routing.module';
 import { UsersModule } from './users/users.module';
 import { UsersRoutingModule } from './users/users-routing.module';
@@ -48,7 +46,6 @@ import { OnlineCoursesRoutingModule } from './online-courses/online-courses-rout
     CoursesRoutingModule,
     CoursesRoutingModule,
     OnlineCoursesRoutingModule,
-    TeachersRoutingModule,
     UsersRoutingModule,
     GroupsRoutingModule,
   
@@ -57,7 +54,6 @@ import { OnlineCoursesRoutingModule } from './online-courses/online-courses-rout
     InstitutionsModule,
     CoursesModule,
     OnlineCoursesModule,
-    TeachersModule,
     UsersModule,
     GroupModule,
 
