@@ -5,6 +5,9 @@ import { OnlineCoursesService } from '../OnlineCoursesService.service';
 import { OnlineCourseFilter } from 'src/app/core/interface/OnlineCourseFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthenticationService } from 'src/app/users/authentication.service';
+import { UserService } from 'src/app/users/user.service';
+import { User } from 'src/app/core/model/User';
 
 @Component({
   selector: 'app-online-courses',
@@ -28,13 +31,22 @@ export class OnlineCoursesComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  loggedUser: User = new User;
+
+  selectedOnlineCourse = new OnlineCourse();
+  showConfirmDialog: boolean = false;
+
+
   constructor(
     private onlineCoursesService: OnlineCoursesService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private userService: UserService,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.buscarTotal();
     this.findAll();
   }
@@ -102,6 +114,9 @@ export class OnlineCoursesComponent implements OnInit {
     this.onlineCoursesService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<OnlineCourse>) => {
         this.courses = dados.content
+        dados.content.forEach(course => {
+          this.checkIfSubscribed(course);
+        });
         this.totalRegistros = dados.totalElements
         this.showLoading = false;
       },
@@ -195,6 +210,39 @@ export class OnlineCoursesComponent implements OnInit {
     const pagina = event!.first! / event!.rows!;
     this.filtro.itensPorPagina = event!.rows!;
     this.findAll(pagina);
+  }
+
+  checkIfSubscribed(course: OnlineCourse): void {
+    this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
+      course.isSubscribed = response;
+    });
+  }
+
+  addCourseToSubscribedOnlineCourses(course: OnlineCourse): void {
+    console.log("User id: " + this.loggedUser.id + " username: " + this.loggedUser.username)
+    this.userService.addCourseToSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
+      course.isSubscribed = true;
+    });
+  }
+
+  removeCourseFromSubscribedOnlineCourses(course: OnlineCourse): void {
+    this.userService.removeCourseFromSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
+      course.isSubscribed = false;
+    });
+  }
+
+  onRemoveCourse(course: OnlineCourse): void {
+    this.showConfirmDialog = true;
+    this.selectedOnlineCourse = course;
+  }
+
+  closeConfirmDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmDialog(course: OnlineCourse) {
+    this.removeCourseFromSubscribedOnlineCourses(course);
+    this.closeConfirmDialog();
   }
 
   private sendErrorNotification(message: string): void {

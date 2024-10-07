@@ -7,4 +7,6 @@ export class OnlineCourse {
     fileName!: string;
     coverImageUrl!: string;
     content: OnlineCourseContent[] = [];
+
+    isSubscribed: boolean = false;
 }

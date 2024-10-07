@@ -181,6 +181,18 @@ export class UserService {
     return this.http.post<User>(`${this.host}/${userId}/interests/${interestId}`, { });
   }
 
+  addCourseToSubscribedOnlineCourses(userId: number, onlineCourseId: number): Observable<User> {
+    return this.http.post<User>(`${this.host}/user/${userId}/subscribedOnlineCourses/${onlineCourseId}`, {});
+  }
+
+  removeCourseFromSubscribedOnlineCourses(userId: number, onlineCourseId: number): Observable<User> {
+    return this.http.delete<User>(`${this.host}/user/${userId}/subscribedOnlineCourses/${onlineCourseId}`);
+  }
+
+  doesUserSubscribedOnlineCourse(userId: number, onlineCourseId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/user/${userId}/subscribedOnlineCourses/contains/${onlineCourseId}`);
+  }
+
   updateProfilePhoto(username: string, file: File): Observable<User> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);

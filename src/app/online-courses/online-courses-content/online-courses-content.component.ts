@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { OnlineCourse } from 'src/app/core/model/Online-course';
 import { OnlineCourseContent } from 'src/app/core/model/Online-course-content';
@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseFilter } from 'src/app/core/interface/CourseFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { OnlineCoursesContentService } from '../OnlineCoursesContentService.service';
+import { UserService } from 'src/app/users/user.service';
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -52,7 +55,6 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
-  // Referência ao vídeo no template
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
 
   filtro: CourseFilter = {
@@ -160,6 +162,10 @@ export class OnlineCoursesContentComponent implements OnInit {
       videoElement.load();
       videoElement.play();
     }
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   changePageSize(event: any): void {
