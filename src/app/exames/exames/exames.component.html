@@ -58,26 +58,29 @@
                 <p class="exam-date">ano: <span class="text-muted">{{ exame.date | date:'yyyy' }}</span></p>
                 <div class="user-info">
                   <span class="institution-name" style="margin-right: 5px;">instituição: </span>
-                  <img [src]="exame.institution.urlFile" alt="User Image">
                   <p class="institution-name text-muted">{{ exame.institution.name }}<span *ngIf="exame.institution.acronym">({{
                       exame.institution.acronym }})</span>
                   </p>
                 </div>
                 <p class="institution-type">tipo de instituição: <span class="text-muted">{{ exame.institution.type }}</span></p>
                 <p *ngIf="exame.description" class="exam-description">descrição: {{ exame.description }}</p>
-                <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)"
-                  type="button" icon="pi pi-download" class="download-button"></button>
-                <span *ngIf="!exame.showLoadingDownload" class="download-count">{{exame.totalDownloadNumber}}
-                  downloads</span>
-                <span *ngIf="exame.showLoadingDownload" class="loading-indicator">
-                  <i *ngIf="exame.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                    style="font-size: 0.6rem;"></i>
-                  Baixando...
-                </span>
                 <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
                   class="edit-link">editar</a>
                 <a (click)="confirmarExclusao(exame)" class="delete-link">excluir</a>
               </div>
+
+              <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)"
+                type="button" icon="pi pi-download" class="download-button">
+              </button>
+              <span *ngIf="!exame.showLoadingDownload" class="download-count">{{exame.totalDownloadNumber}}
+                downloads
+              </span>
+              <span *ngIf="exame.showLoadingDownload" class="download-count" style="font-weight: bold;">
+                <i *ngIf="exame.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                  style="font-size: 0.6rem;"></i>
+                Baixando...
+              </span>
+
             </div>
           </div>
         </td>
@@ -130,10 +133,19 @@
         </select>
       </div>
 
+      <!--
       <div class="form-group">
         <label for="date">Ano</label>
         <input type="date" name="date" view="year" dateFormat="yy" ngModel #date="ngModel" required minlength="1"
           [(ngModel)]="exame.date">
+      </div>
+      -->
+
+      <div class="form-group">
+        <label>Ano</label>
+        <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '100%'}" [showIcon]="true"
+            [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel
+            #date="ngModel" [required]="true" [(ngModel)]="exame.date"></p-calendar>
       </div>
 
       <div class="form-group">
