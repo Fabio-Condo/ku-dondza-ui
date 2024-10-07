@@ -29,6 +29,8 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthInterceptor } from './security/interceptor/auth.interceptor';
 import { GroupModule } from './group/group.module';
 import { GroupsRoutingModule } from './group/groups-routing.module';
+import { OnlineCoursesModule } from './online-courses/online-courses.module';
+import { OnlineCoursesRoutingModule } from './online-courses/online-courses-routing.module';
 
 
 @NgModule({
@@ -44,16 +46,17 @@ import { GroupsRoutingModule } from './group/groups-routing.module';
     ExamesRoutingModule,
     InstitutionsRoutingModule,
     CoursesRoutingModule,
+    CoursesRoutingModule,
+    OnlineCoursesRoutingModule,
     TeachersRoutingModule,
     UsersRoutingModule,
     GroupsRoutingModule,
-
-
   
     FeedsModule,
     ExamesModule,
     InstitutionsModule,
     CoursesModule,
+    OnlineCoursesModule,
     TeachersModule,
     UsersModule,
     GroupModule,

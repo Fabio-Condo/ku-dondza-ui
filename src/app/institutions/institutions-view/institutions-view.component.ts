@@ -37,7 +37,7 @@ export class InstitutionsViewComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.getInstitutionById(id);
-      this.findByInstitutionId(0, id);
+      this.findCoursesByInstitutionId(0, id);
     }
   }
   
@@ -61,7 +61,7 @@ export class InstitutionsViewComponent implements OnInit {
     );
   }
 
-  findByInstitutionId(pagina: number = 0, institutionId: number): void {
+  findCoursesByInstitutionId(pagina: number = 0, institutionId: number): void {
     this.showLoading = true;
     //this.filtro.pagina = pagina;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
@@ -81,21 +81,21 @@ export class InstitutionsViewComponent implements OnInit {
   changePageSize(event: any): void {
     this.filtro.itensPorPagina = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
-    this.findByInstitutionId(0, this.institution.id);
+    this.findCoursesByInstitutionId(0, this.institution.id);
   }
 
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.findByInstitutionId(0, this.institution.id);
+      this.findCoursesByInstitutionId(0, this.institution.id);
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages()) {
       this.currentPage++;
-      this.findByInstitutionId(0, this.institution.id);
+      this.findCoursesByInstitutionId(0, this.institution.id);
     }
   }
 

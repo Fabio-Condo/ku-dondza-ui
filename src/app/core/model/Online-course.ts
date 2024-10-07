@@ -1,0 +1,10 @@
+import { OnlineCourseContent } from "./Online-course-content";
+
+export class OnlineCourse {
+    id!: number;
+    name!: string;
+    description!: string;
+    fileName!: string;
+    coverImageUrl!: string;
+    content: OnlineCourseContent[] = [];
+}
