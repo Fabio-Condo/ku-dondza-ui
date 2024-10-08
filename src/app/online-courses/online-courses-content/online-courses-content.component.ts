@@ -33,11 +33,18 @@ export class OnlineCoursesContentComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  loggedUser: User = new User;
+  selectedOnlineCourse = new OnlineCourse();
+
+  showConfirmDialog: boolean = false;
+
   imagePath = './assets/test.mp4'
 
   constructor(
     private onlineCoursesService: OnlineCoursesService,
     private onlineCoursesContentService: OnlineCoursesContentService,
+    private userService: UserService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute, 
@@ -45,6 +52,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.getOnlineCourseById(id);
@@ -124,6 +132,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.onlineCoursesService.findById(id).subscribe(
       (response) => {
         this.course = response;
+        this.checkIfSubscribed(this.course);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -224,6 +233,39 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.showLoading = false;
       }
     )
+  }
+
+  checkIfSubscribed(course: OnlineCourse): void {
+    this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
+      course.isSubscribed = response;
+    });
+  }
+
+  addCourseToSubscribedOnlineCourses(course: OnlineCourse): void {
+    console.log("User id: " + this.loggedUser.id + " username: " + this.loggedUser.username)
+    this.userService.addCourseToSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
+      course.isSubscribed = true;
+    });
+  }
+
+  removeCourseFromSubscribedOnlineCourses(course: OnlineCourse): void {
+    this.userService.removeCourseFromSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
+      course.isSubscribed = false;
+    });
+  }
+
+  onRemoveCourse(course: OnlineCourse): void {
+    this.showConfirmDialog = true;
+    this.selectedOnlineCourse = course;
+  }
+
+  closeConfirmDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmDialog(course: OnlineCourse) {
+    this.removeCourseFromSubscribedOnlineCourses(course);
+    this.closeConfirmDialog();
   }
 
   private sendErrorNotification(message: string): void {

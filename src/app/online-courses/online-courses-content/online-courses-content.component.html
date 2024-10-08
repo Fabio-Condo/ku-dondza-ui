@@ -29,14 +29,10 @@
                     <p><strong>Instrutor:</strong> {{ 30 }}</p>
                   </div>
               
-                  <button class="enroll-button">Inscrever-se no Curso</button>
+                  <button class="enroll-button" (click)="addCourseToSubscribedOnlineCourses(course)" *ngIf="!course.isSubscribed">Inscrever-se no Curso</button>
+                  <button class="enroll-button" (click)="onRemoveCourse(course)" *ngIf="course.isSubscribed">Anular inscrição</button>
                 </div>
               </div>
-              
-              
-
-            
-              
 
             <!--
             <p style="margin: 0; font-size: 30px;">{{ course.name }}</p>
