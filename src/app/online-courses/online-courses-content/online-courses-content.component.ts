@@ -53,6 +53,14 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   }
 
+  // Variável para controlar a aba ativa
+  activeTab: number = 1;
+
+  // Função para alterar a aba ativa
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+  }
+
   @ViewChild('tabela') grid: any;
 
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;

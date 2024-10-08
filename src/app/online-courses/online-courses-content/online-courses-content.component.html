@@ -1,71 +1,125 @@
 <div class="container" style="margin-top: 70px;">
 
-    <div style="display: inline-block; vertical-align: top; margin-right: 20px;">
-
-        <p style="margin: 0; font-size: 30px;">{{course.name}}</p>
-
-    </div>
-
-    <div *ngIf="onlineSelectedCourseContent">
-        <video class="video" #videoPlayer controls>
-            <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4"> 
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <div class="flex">
-        <div>
-            <p class="course-name">{{ onlineSelectedCourseContent.description }}</p>
+    <div>
+        <!-- Cabeçalho das Abas -->
+        <div class="tab-header">
+          <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+            Descrição
+          </div>
+          <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+            Aulas
+          </div>
         </div>
-        <div>
-            <a *ngIf="isAdmin" (click)="onAddNewOnlineCourseContent()" class="ml-left">Adicionar</a>
+
+        <!-- Conteúdo das Abas -->
+        <div *ngIf="activeTab === 1" class="active">
+
+            <div class="course-container">
+                <div class="course-image-container">
+                  <img [src]="course.coverImageUrl" alt="{{ course.name }}" class="course-image" />
+                </div>
+                
+                <div class="course-details">
+                  <h1 class="course-title">{{ course.name }}</h1>
+                  <p class="course-description">{{ course.description }}</p>
+                  
+                  <div class="course-meta">
+                    <p><strong>Total de Alunos Inscritos:</strong> {{ 10 }}</p>
+                    <p><strong>Duração:</strong> {{ 20 }}</p>
+                    <p><strong>Instrutor:</strong> {{ 30 }}</p>
+                  </div>
+              
+                  <button class="enroll-button">Inscrever-se no Curso</button>
+                </div>
+              </div>
+              
+              
+
+            
+              
+
+            <!--
+            <p style="margin: 0; font-size: 30px;">{{ course.name }}</p>
+
+            <p style="margin-top: 20px; font-size: 0.85rem;">{{ course.description }}</p>
+
+            <p style="margin-top: 20px; font-size: 0.85rem; color: blue; font-weight: bold;">524 alunos</p>
+            -->
+
+            <!--
+            <div class="video">
+                <img src="{{ course.coverImageUrl }}" alt="">
+            </div>
+            -->
+
         </div>
-    </div>
 
+        <div *ngIf="activeTab === 2" class="active">
 
-    <table class="card-table">
-        <tbody>
-            <tr *ngFor="let content of onlineCourseContentList">
-                <td>
-                    <div class="card">
-                        <div class="card-content" (click)="onSelectContent(content)" (click)="scrollToTop()">
-                            <div>
-                                <video 
-                                    style="width: 70px; height: 40px; border-radius: 5px; border: 1px solid #ccc;">
-                                    <source [src]="content.urlFile" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
+            <div *ngIf="onlineSelectedCourseContent">
+                <video class="video" #videoPlayer controls>
+                    <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4"> 
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        
+            <div class="flex">
+                <div>
+                    <p class="course-name">{{ onlineSelectedCourseContent.description }}</p>
+                </div>
+                <div>
+                    <a *ngIf="isAdmin" (click)="onAddNewOnlineCourseContent()" class="ml-left">Adicionar</a>
+                </div>
+            </div>
+        
+        
+            <table class="card-table">
+                <tbody>
+                    <tr *ngFor="let content of onlineCourseContentList">
+                        <td>
+                            <div class="card">
+                                <div class="card-content" (click)="onSelectContent(content)" (click)="scrollToTop()">
+                                    <div>
+                                        <video 
+                                            style="width: 70px; height: 40px; border-radius: 5px; border: 1px solid #ccc;">
+                                            <source [src]="content.urlFile" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                    
+                                    <div class="content">
+                                        <p class="course-name">{{ content.description }}</p>
+                                        <a (click)="onUpdateOnlineCourseContent(content, file)"
+                                        class="edit-link">editar</a>
+                                        <a (click)="confirmarExclusao(content)" class="delete-link">excluir</a>
+                                    </div>
+                                    <p *ngIf="onlineSelectedCourseContent == content"><i class="pi pi-play" style="font-size: 1rem;"></i></p>
+                                </div>
                             </div>
-                            
-                            <div class="content">
-                                <p class="course-name">{{ content.description }}</p>
-                                <a (click)="onUpdateOnlineCourseContent(content, file)"
-                                class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(content)" class="delete-link">excluir</a>
-                            </div>
-                            <p *ngIf="onlineSelectedCourseContent == content"><i class="pi pi-play" style="font-size: 1rem;"></i></p>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <!-- Paginação -->
+            <div class="pagination-controls">
+                <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+                <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+                <button class="pagination-button" (click)="nextPage()"
+                    [disabled]="currentPage === totalPages()">Próximo</button>
+                <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+                    <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                        [selected]="option === filtro.itensPorPagina">{{ option }}</option>
+                </select>
+            </div>
+        
+            <!-- Indicador de carregamento -->
+            <div *ngIf="showLoading" class="loading-indicator">
+                Carregando...
+            </div>
 
-    <!-- Paginação -->
-    <div class="pagination-controls">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()"
-            [disabled]="currentPage === totalPages()">Próximo</button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itensPorPagina">{{ option }}</option>
-        </select>
-    </div>
-
-    <!-- Indicador de carregamento -->
-    <div *ngIf="showLoading" class="loading-indicator">
-        Carregando...
+        </div>
+        
     </div>
 
 </div>

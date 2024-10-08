@@ -331,3 +331,150 @@ a {
 .flex a {
     margin-right: 10px;
 }
+  
+.tab-header {
+    display: flex; /* Alinha as abas horizontalmente */
+    justify-content: flex-start; /* Posiciona as abas à esquerda */
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd; /* Linha de separação para as abas */
+    background: transparent; /* Remove o fundo das abas */
+  }
+  
+  .tab-link {
+    text-align: center;
+    padding: 15px 20px; /* Espaçamento nas abas */
+    text-decoration: none; /* Remove a decoração de links */
+    color: #007bff; /* Cor do texto do link */
+    border-bottom: 2px solid transparent; /* Borda inferior transparente para efeito de seleção */
+    font-weight: bold;
+    min-width: 100px; /* Define uma largura mínima para cada link de aba */
+  }
+  
+  .tab-link:hover {
+    color: #0056b3; /* Altera a cor ao passar o mouse */
+    background-color: rgba(0, 85, 179, 0.1); /* Cor de fundo clara ao passar o mouse */
+  }
+  
+  .tab-link.active {
+    border-bottom: 2px solid #007bff; /* Sinaliza a aba ativa com uma borda inferior */
+    color: #0056b3; /* Cor do texto da aba ativa */
+  }
+  
+  .tab-link:last-child {
+    border-right: none; /* Remove a borda direita na última aba */
+  }
+
+  /*course dtail*/
+  .course-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha em dispositivos menores */
+    align-items: flex-start; /* Ajuste o alinhamento para iniciar no topo */
+    justify-content: space-between; /* Distribui o espaço entre os itens */
+    width: 100%;
+    max-width: 1200px;
+    overflow: hidden;
+  }
+  
+  .course-image-container {
+    flex: 1;
+    max-width: 50%;
+    margin-right: 20px; /* Espaçamento entre a imagem e o texto */
+  }
+  
+  .course-image {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+  
+  .course-details {
+    flex: 2;
+    padding: 20px;
+  }
+  
+  .course-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .course-description {
+    font-size: 1.1em;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  .course-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  .course-meta p {
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  .enroll-button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .enroll-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* MEDIA QUERIES PARA RESPONSIVIDADE */
+  @media (max-width: 768px) {
+    .course-container {
+      flex-direction: column; /* Empilha o conteúdo verticalmente */
+      padding: 10px;
+    }
+  
+    .course-image-container {
+      max-width: 100%; /* Imagem ocupa 100% da largura no mobile */
+      margin-right: 0;
+      margin-bottom: 20px; /* Espaço entre a imagem e o conteúdo no mobile */
+    }
+  
+    .course-details {
+      padding: 10px;
+    }
+  
+    .course-meta {
+      flex-direction: column; /* Metadados empilhados no mobile */
+    }
+  
+    .enroll-button {
+      width: 100%; /* Botão ocupa toda a largura no mobile */
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .course-title {
+      font-size: 1.5em; /* Ajuste o tamanho do título em dispositivos muito pequenos */
+    }
+  
+    .course-description {
+      font-size: 1em; /* Descrição mais compacta */
+    }
+  
+    .course-meta p {
+      font-size: 1em; /* Texto menor para metadados */
+    }
+  }
+  
