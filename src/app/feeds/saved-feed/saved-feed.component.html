@@ -1,9 +1,7 @@
 <div class="container" style="margin-top: 70px;">
 
     <div style="display:inline;">
-        <p style="margin-top: 20px; margin-bottom: 20px; font-size: 30px;">Posts guardados
-        <a style="color: #1c80cf; text-decoration: underline; font-size: 1rem; "
-            [routerLink]="['/feed']">voltar</a></p>
+        <h1 class="title">Posts guardados</h1>
     </div>
 
     <table class="card-table">
@@ -46,18 +44,6 @@
             </tr>
         </tbody>
     </table>
-
-    <!-- Paginação -->
-    <div style="margin-top: 20px;">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-        <span style="margin: 0 10px; font-size: 10px;">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()"
-            [disabled]="currentPage === totalPages()">Próximo</button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itemsPerPage">{{ option }}</option>
-        </select>
-    </div>
 
     <!-- Indicador de carregamento -->
     <div *ngIf="showLoading" style="margin-top: 20px;">
