@@ -36,7 +36,26 @@
     </div>
 
     <div *ngIf="activeTab === 2" class="active">
-        Membros
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let member of members">
+                    <td>
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="content">
+                                    <p class="subject-name">{{ member.firstName }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Indicador de carregamento -->
+        <div *ngIf="showLoading" class="loading-indicator">
+            Carregando...
+        </div>
     </div>
 
     <div *ngIf="activeTab === 3" class="active">

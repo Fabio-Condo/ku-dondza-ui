@@ -10,6 +10,7 @@ import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { GroupFilter } from 'src/app/core/interface/GroupFilter';
 
 @Component({
   selector: 'app-groups-view',
@@ -30,6 +31,9 @@ export class GroupsViewComponent implements OnInit {
   selectedGroup = new Group();
 
   showConfirmDialog: boolean = false;
+
+  members: User[] = [];
+
 
   constructor(
     private groupService: GroupService,
@@ -65,10 +69,17 @@ export class GroupsViewComponent implements OnInit {
     sort: 'id,desc',
   }
 
+  flitroGrupo: GroupFilter = {
+    pagina: -1,
+    itensPorPagina: 5,
+    ordenamento: 'id,desc',
+  }
+
   getGroupById(id: number) {
     this.groupService.getGroupById(id).subscribe(
       (response) => {
         this.group = response;
+        this.getGroupMembers(response);
         this.checkIfIsMember(this.group);
       },
       (errorResponse: HttpErrorResponse) => {
@@ -90,6 +101,19 @@ export class GroupsViewComponent implements OnInit {
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
+      }
+    );
+  }
+
+  getGroupMembers(group: Group): void {
+    this.filtro.page++;
+    this.groupService.getGroupMembers(group.id, this.flitroGrupo).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.members = [...this.members, ...dados.content];
+        this.totalRegistros = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
       }
     );
   }
