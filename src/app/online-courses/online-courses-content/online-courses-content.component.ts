@@ -242,7 +242,6 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   addCourseToSubscribedOnlineCourses(course: OnlineCourse): void {
-    console.log("User id: " + this.loggedUser.id + " username: " + this.loggedUser.username)
     this.userService.addCourseToSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
       course.isSubscribed = true;
     });

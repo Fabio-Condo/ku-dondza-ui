@@ -4,4 +4,6 @@ export class Group {
     description!: string;
     fileName!: string;
     urlFile!: string;
+
+    isMember: boolean = false
 }

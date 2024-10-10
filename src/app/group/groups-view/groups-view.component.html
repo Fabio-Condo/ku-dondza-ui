@@ -6,10 +6,10 @@
             Descrição
         </div>
         <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
-            Publicações
+            Membros
         </div>
         <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
-            Membros
+            Publicações
         </div>
     </div>
 
@@ -28,35 +28,55 @@
 
                 </div>
                 
-                <button class="enroll-button">Aderir o grupo</button>
+                <button class="enroll-button" (click)="addMemberToGroup(group)" *ngIf="!group.isMember">Aderir o grupo</button>
+                <button class="enroll-button" (click)="onRemoveMember(group)" *ngIf="group.isMember">Sair do grupo</button>
 
             </div>
         </div>
     </div>
 
     <div *ngIf="activeTab === 2" class="active">
-        <div *ngIf="activeTab === 2" class="active">
-            <table class="card-table">
-                <tbody>
-                    <tr *ngFor="let feed of feeds">
-                        <td>
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="content">
-                                        <p class="subject-name">{{ feed.text }}</p>
-                                    </div>
+        Membros
+    </div>
+
+    <div *ngIf="activeTab === 3" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let feed of feeds">
+                    <td>
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="content">
+                                    <p class="subject-name">{{ feed.text }}</p>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         
-            <!-- Indicador de carregamento -->
-            <div *ngIf="showLoading" class="loading-indicator">
-                Carregando...
-            </div>
+        <!-- Indicador de carregamento -->
+        <div *ngIf="showLoading" class="loading-indicator">
+            Carregando...
         </div>
     </div>
 
+</div>
+
+<!-- confirm dialog -->
+<div class="dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="dialog">
+        <div class="dialog-header">
+            <h4>Deseja sair do grupo ?</h4>
+            <button class="close-button" (click)="closeConfirmDialog()">x</button>
+        </div>
+        <div class="dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="dialog-footer">
+            <button (click)="confirmDialog(selectedGroup)">Confirmar</button>
+            <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
 </div>

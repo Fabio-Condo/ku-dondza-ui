@@ -8,6 +8,8 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-groups-view',
@@ -24,15 +26,22 @@ export class GroupsViewComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  loggedUser: User = new User;
+  selectedGroup = new Group();
+
+  showConfirmDialog: boolean = false;
+
   constructor(
     private groupService: GroupService,
     private feedsService: FeedsService,
     private messageService: MessageService,
+    private authenticationService: AuthenticationService,
     private route: ActivatedRoute, 
     private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.getGroupById(id);
@@ -60,6 +69,7 @@ export class GroupsViewComponent implements OnInit {
     this.groupService.getGroupById(id).subscribe(
       (response) => {
         this.group = response;
+        this.checkIfIsMember(this.group);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -84,12 +94,43 @@ export class GroupsViewComponent implements OnInit {
     );
   }
 
+  checkIfIsMember(group: Group): void {
+    this.groupService.doesUserMemberOfGroup(group.id, this.loggedUser.id).subscribe(response => {
+      group.isMember = response;
+    });
+  }
+
+  addMemberToGroup(group: Group): void {
+    this.groupService.addMemberToGroup(group.id, this.loggedUser.id).subscribe(() => {
+      group.isMember = true;
+    });
+  }
+
+  removeMemberFromGroup(group: Group): void {
+    this.groupService.removeMemberFromGroup(group.id, this.loggedUser.id).subscribe(() => {
+      group.isMember = false;
+    });
+  }
+
+  onRemoveMember(group: Group): void {
+    this.showConfirmDialog = true;
+    this.selectedGroup = group;
+  }
+
+  closeConfirmDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmDialog(group: Group) {
+    this.removeMemberFromGroup(group);
+    this.closeConfirmDialog();
+  }
+
   changePageSize(event: any): void {
     this.filtro.itemsPerPage = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
     this.findFeedsByGroupId(0, this.group.id);
   }
-
 
   previousPage(): void {
     if (this.currentPage > 1) {
