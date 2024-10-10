@@ -52,18 +52,6 @@
                 </tbody>
             </table>
         
-            <!-- Paginação -->
-            <div class="pagination-controls">
-                <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-                <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-                <button class="pagination-button" (click)="nextPage()"
-                    [disabled]="currentPage === totalPages()">Próximo</button>
-                <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-                    <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                        [selected]="option === filtro.itemsPerPage">{{ option }}</option>
-                </select>
-            </div>
-        
             <!-- Indicador de carregamento -->
             <div *ngIf="showLoading" class="loading-indicator">
                 Carregando...

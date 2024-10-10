@@ -51,7 +51,7 @@ export class OnlineCoursesComponent implements OnInit {
 
   filtro: OnlineCourseFilter = {
     pagina: 0,
-    itensPorPagina: 10,
+    itensPorPagina: 5,
     ordenamento: 'id,asc'
   }
 

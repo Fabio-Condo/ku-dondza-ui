@@ -60,7 +60,7 @@ export class InstitutionsComponent implements OnInit {
 
   filtro: InstitutionFilter = {
     pagina: 0,
-    itensPorPagina: 10,
+    itensPorPagina: 5,
     ordenamento: 'id,asc'
   }
 

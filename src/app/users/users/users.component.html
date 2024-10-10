@@ -55,16 +55,20 @@
 
     <!-- Paginação -->
     <div class="pagination-controls">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
+            <i class="pi pi-chevron-left"></i> Anterior
+        </button>
         <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()"
-            [disabled]="currentPage === totalPages()">Próximo</button>
+        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+            Próximo <i class="pi pi-chevron-right"></i>
+        </button>
         <select class="select-itens-por-pagina" (change)="changePageSize($event)">
             <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itemsPerPage">{{ option }}</option>
+                [selected]="option === filtro.itemsPerPage">
+                {{ option }}
+            </option>
         </select>
-        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
-            {{totalRegistros}} dos {{totalUsers}}</p>
+        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalUsers }}</p>
     </div>
 
     <!-- Indicador de carregamento -->

@@ -64,7 +64,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   filtro: IUserFilter = {
     page: -1,
-    itemsPerPage: 10,
+    itemsPerPage: 5,
     sort: 'firstName,asc',
   }
 

@@ -35,21 +35,23 @@
                 <td>
                     <div class="card">
                         <div class="card-content">
-         
+
                             <div>
                                 <img [src]="institution.urlFile"
                                     style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
                                     alt="">
                             </div>
-                            
+
                             <div class="content">
                                 <p class="institution-name">{{ institution.name }} <span *ngIf="institution.acronym">({{
                                         institution.acronym }})</span></p>
-                                <p class="institution-type">tipo de instituição: <span class="text-muted">{{ institution.type }}</span></p>
+                                <p class="institution-type">tipo de instituição: <span class="text-muted">{{
+                                        institution.type }}</span></p>
                                 <p class="institution-type">tipo de administração: <p-tag
                                         [value]="getAdministrationTypeValue(institution.administrationType)"
                                         [severity]="getAdministrationType(institution.administrationType)"></p-tag></p>
-                                <a class="details-link" [routerLink]="['/instituicoes', institution.id]">ver mais informações e cursos</a>
+                                <a class="details-link" [routerLink]="['/instituicoes', institution.id]">ver mais
+                                    informações e cursos</a>
                                 <a (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.country, institution.address, institution.description, institution.website, file)"
                                     class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(institution)" class="delete-link">excluir</a>
@@ -63,16 +65,20 @@
 
     <!-- Paginação -->
     <div class="pagination-controls">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
+            <i class="pi pi-chevron-left"></i> Anterior
+        </button>
         <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()"
-            [disabled]="currentPage === totalPages()">Próximo</button>
+        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+            Próximo <i class="pi pi-chevron-right"></i>
+        </button>
         <select class="select-itens-por-pagina" (change)="changePageSize($event)">
             <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itensPorPagina">{{ option }}</option>
+                [selected]="option === filtro.itensPorPagina">
+                {{ option }}
+            </option>
         </select>
-        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
-            {{totalRegistros}} dos {{totalInstitutions}}</p>
+        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalInstitutions }}</p>
     </div>
 
     <!-- Indicador de carregamento -->
@@ -124,8 +130,7 @@
 
             <div class="form-group">
                 <label for="country">País</label>
-                <select id="country" [(ngModel)]="institution.country" name="country"
-                    required>
+                <select id="country" [(ngModel)]="institution.country" name="country" required>
                     <option value="" disabled selected>Selecione o país</option>
                     <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}
                     </option>
@@ -188,8 +193,8 @@
 
             <div class="form-group">
                 <label for="type">País</label>
-                <select id="type" [(ngModel)]="filtro.country" name="country"
-                    #country="ngModel" (change)="findAll()" required>
+                <select id="type" [(ngModel)]="filtro.country" name="country" #country="ngModel" (change)="findAll()"
+                    required>
                     <option value="" disabled selected>Selecione o País</option>
                     <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}</option>
                 </select>

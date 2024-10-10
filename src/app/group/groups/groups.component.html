@@ -38,14 +38,17 @@
                                     style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
                                     alt="">
                             </div>
-            
+
                             <div class="content">
                                 <p class="group-name">{{ group.name }}</p>
                                 <p class="group-details">{{ group.description }}</p>
                                 <p class="group-details">326 membros</p>
-                                <a class="details-link" [routerLink]="['/groups', group.id]">ver mais informações e cursos</a>
-                                <a (click)="onUpdate(group.id, group.name, group.description, file)" class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(group)" class="delete-link" style="margin-left: 10px;">excluir</a>
+                                <a class="details-link" [routerLink]="['/groups', group.id]">ver mais informações e
+                                    cursos</a>
+                                <a (click)="onUpdate(group.id, group.name, group.description, file)"
+                                    class="edit-link">editar</a>
+                                <a (click)="confirmarExclusao(group)" class="delete-link"
+                                    style="margin-left: 10px;">excluir</a>
                             </div>
 
                         </div>
@@ -57,16 +60,20 @@
 
     <!-- Paginação -->
     <div class="pagination-controls">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
+            <i class="pi pi-chevron-left"></i> Anterior
+        </button>
         <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()"
-            [disabled]="currentPage === totalPages()">Próximo</button>
+        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+            Próximo <i class="pi pi-chevron-right"></i>
+        </button>
         <select class="select-itens-por-pagina" (change)="changePageSize($event)">
             <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itensPorPagina">{{ option }}</option>
+                [selected]="option === filtro.itensPorPagina">
+                {{ option }}
+            </option>
         </select>
-        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
-            {{totalRegistros}} dos {{totalGroups}}</p>
+        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalGroups }}</p>
     </div>
 
     <!-- Indicador de carregamento -->
@@ -86,8 +93,8 @@
 
             <div class="form-group">
                 <label for="name">Nome</label>
-                <input id="name" type="text" name="name" ngModel #name="ngModel" required
-                    minlength="1" [(ngModel)]="group.name" required>
+                <input id="name" type="text" name="name" ngModel #name="ngModel" required minlength="1"
+                    [(ngModel)]="group.name" required>
             </div>
 
             <div class="form-group">

@@ -41,7 +41,7 @@ export class GroupsComponent implements OnInit {
 
   filtro: GroupFilter = {
     pagina: 0,
-    itensPorPagina: 10,
+    itensPorPagina: 5,
     ordenamento: 'id,asc'
   }
 
