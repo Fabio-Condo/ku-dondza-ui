@@ -23,7 +23,7 @@ export class OnlineCoursesComponent implements OnInit {
   course: OnlineCourse = new OnlineCourse;
   displayModalSave: boolean = false;
   file!: File;
-  totalInstitutions: number = 0;
+  totalCourses: number = 0;
   displayModalFilter: boolean = false;
 
   isAdmin: boolean = true;
@@ -131,7 +131,7 @@ export class OnlineCoursesComponent implements OnInit {
     this.showLoading = true;
     this.onlineCoursesService.buscarTotal().subscribe(
       (total) => {
-        this.totalInstitutions = total;
+        this.totalCourses = total;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
