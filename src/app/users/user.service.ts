@@ -154,6 +154,10 @@ export class UserService {
     return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}/savedPosts`, { params });
   }
 
+  countSavedPostsByUser(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.host}/user/${userId}/savedPosts/count`, {});
+  }
+
   getFriendRequests(): Observable<User[]> {
     return this.http.get<User[]>(`${this.host}/user/friend-requests`, {});
   }

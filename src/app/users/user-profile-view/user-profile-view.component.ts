@@ -33,7 +33,7 @@ export class UserProfileViewComponent implements OnInit {
   totalRegistros: number = 0
 
   savedPosts: Post[] = [];
-  totalRegistrosPostsGuardados: number = 0
+  totalRegistrosPostsGuardados: number = 10000
 
 
   extension: any;
@@ -168,7 +168,6 @@ export class UserProfileViewComponent implements OnInit {
 
   getUserSavedPosts(user: User): void {
     this.filtroPostsGuardados.page++;
-
     this.userService.getSavedPosts(user.id, this.filtroPostsGuardados).subscribe(
       (dados: IApiResponse<Post>) => {
         this.savedPosts = [...this.savedPosts, ...dados.content];
@@ -209,12 +208,10 @@ export class UserProfileViewComponent implements OnInit {
   }
 
   onShowMorePosts() {
-    this.filtro.itemsPerPage = 5;
     this.getUserPostsByUserId(this.user);
   }
 
   onShowMoreSavedPosts() {
-    this.filtroPostsGuardados.itemsPerPage = 5;
     this.getUserSavedPosts(this.user);
   }
 
