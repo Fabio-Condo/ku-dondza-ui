@@ -1,0 +1,74 @@
+<div class="container" style="margin-top: 70px;">
+
+    <!-- Cabeçalho das Abas -->
+    <div class="tab-header">
+        <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+            Descrição
+        </div>
+        <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+            Publicações
+        </div>
+        <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+            Membros
+        </div>
+    </div>
+
+    <!-- Conteúdo das Abas -->
+    <div *ngIf="activeTab === 1" class="active">
+        <div class="institution-container">
+            <div class="institution-image-container">
+              <img [src]="group.urlFile" alt="{{ group.name }}" class="institution-image" />
+            </div>
+            
+            <div class="institution-details">
+                <h1 class="institution-title">{{ group.name }}</h1>
+                <p class="institution-description">{{ group.description }}</p>
+                
+                <div class="institution-meta">
+
+                </div>
+                
+                <button class="enroll-button">Aderir o grupo</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="activeTab === 2" class="active">
+        <div *ngIf="activeTab === 2" class="active">
+            <table class="card-table">
+                <tbody>
+                    <tr *ngFor="let feed of feeds">
+                        <td>
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="content">
+                                        <p class="subject-name">{{ feed.text }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <!-- Paginação -->
+            <div class="pagination-controls">
+                <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+                <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+                <button class="pagination-button" (click)="nextPage()"
+                    [disabled]="currentPage === totalPages()">Próximo</button>
+                <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+                    <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                        [selected]="option === filtro.itemsPerPage">{{ option }}</option>
+                </select>
+            </div>
+        
+            <!-- Indicador de carregamento -->
+            <div *ngIf="showLoading" class="loading-indicator">
+                Carregando...
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -37,68 +37,130 @@
         </header>
         <main class="profile-main">
             <section class="profile-info">
-                <h2>Informações</h2>
-                <p><strong>Instituição:</strong> {{ user.institution }}</p>
-                <p><strong>Curso:</strong> {{ user.course }}</p>
-                <p>
-                    <strong>Interesses:</strong>
-                    <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
-                    <a (click)="onShowInterests()" *ngIf="currentUser.userId == user.userId"
-                        style="margin-left: 10px; color: #007bff; cursor: pointer;">editar</a>
-                    <a (click)="onShowSelectInterests()" *ngIf="currentUser.userId == user.userId"
-                        style="margin-left: 10px; color: #007bff; cursor: pointer;">adicionar</a>
-                </p>
+                <!-- <h2>Informações</h2> -->
+                <!-- Cabeçalho das Abas -->
+                <div class="tab-header">
+                    <div class="tab-link" [class.active]="activeTabInfo === 1" (click)="setActiveTabInfo(1)">
+                        Informações
+                    </div>
+                </div>
+                <!-- Conteúdo das Abas -->
+                <div *ngIf="activeTabInfo === 1" class="active">
+
+                    <p><strong>Instituição:</strong> {{ user.institution }}</p>
+                    <p><strong>Curso:</strong> {{ user.course }}</p>
+                    <p>
+                        <strong>Interesses:</strong>
+                        <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
+                        <a (click)="onShowInterests()" *ngIf="currentUser.userId == user.userId"
+                            style="margin-left: 10px; color: #007bff; cursor: pointer;">editar</a>
+                        <a (click)="onShowSelectInterests()" *ngIf="currentUser.userId == user.userId"
+                            style="margin-left: 10px; color: #007bff; cursor: pointer;">adicionar</a>
+                    </p>
+                </div>
             </section>
             <section class="profile-posts">
-                <h2>Publicações Recentes</h2>
+                <!-- <h2>Publicações Recentes</h2> -->
 
-                <table class="card-table">
-                    <tbody>
-                        <tr *ngFor="let feed of posts">
-                            <td>
-                                <div class="card">
-                                    <div class="card-content">
-                                        <div class="post-info">
-                                            <div *ngIf="isImageUrl(feed.urlFile)">
-                                                <img [src]="feed.urlFile"
-                                                    style="width: 70px; height: 70px; margin-right: 20px; border-radius: 5px; border: 1px solid #ccc;"
-                                                    alt="">
-                                            </div>
-                                            <div>
-                                                <video *ngIf="isVideoUrl(feed.urlFile)"
-                                                    style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                                                    <!--controls-->
-                                                    <source [src]="feed.urlFile" type="video/mp4"
+                <!-- Cabeçalho das Abas -->
+                <div class="tab-header">
+                    <div class="tab-link" [class.active]="activeTabPost === 1" (click)="setActiveTabPost(1)">
+                        Publicações Recentes
+                    </div>
+                    <div class="tab-link" [class.active]="activeTabPost === 2" (click)="setActiveTabPost(2)" *ngIf="currentUser.userId == user.userId">
+                        Publicações Gurdadas
+                    </div>
+                    <div class="tab-link" [class.active]="activeTabPost === 3" (click)="setActiveTabPost(3)">
+                        Amigos
+                    </div>
+                </div>
+
+                <!-- Conteúdo das Abas -->
+                <div *ngIf="activeTabPost === 1" class="active">
+                    <table class="card-table">
+                        <tbody>
+                            <tr *ngFor="let feed of posts">
+                                <td>
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="post-info">
+                                                <div *ngIf="isImageUrl(feed.urlFile)">
+                                                    <img [src]="feed.urlFile"
+                                                        style="width: 70px; height: 70px; margin-right: 20px; border-radius: 5px; border: 1px solid #ccc;"
+                                                        alt="">
+                                                </div>
+                                                <div>
+                                                    <video *ngIf="isVideoUrl(feed.urlFile)"
                                                         style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            </div>
-
-                                            <div class="content">
-                                                <p class="texto-limitado">{{ feed.text }}</p>
-                                                <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
-                                                <!--
-                                                    <div class="user-info"
-                                                        [routerLink]="['/user/profile', currentUser.userId]">
-                                                        <img [src]="feed.user.profileImageUrl" alt="User Image">
-                                                        <span class="user-name">{{ feed.user.firstName }} {{
-                                                            feed.user.lastName
-                                                            }}</span>
-                                                    </div>
-                                                    -->
+                                                        <source [src]="feed.urlFile" type="video/mp4"
+                                                            style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+    
+                                                <div class="content">
+                                                    <p class="texto-limitado">{{ feed.text }}</p>
+                                                    <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <div style="text-align: center;">
-                            <a style="font-size: 0.7rem; cursor: pointer;">
-                                <span (click)="onShowPostComments()">mostrar mais posts</span>
-                            </a>
-                        </div>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                            <div style="text-align: center;">
+                                <a style="font-size: 0.7rem; cursor: pointer;">
+                                    <span (click)="onShowMorePosts()">mostrar mais posts</span>
+                                </a>
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="activeTabPost === 2" class="active">
+                    <table class="card-table">
+                        <tbody>
+                            <tr *ngFor="let feed of savedPosts">
+                                <td>
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="post-info">
+                                                <div *ngIf="isImageUrl(feed.urlFile)">
+                                                    <img [src]="feed.urlFile"
+                                                        style="width: 70px; height: 70px; margin-right: 20px; border-radius: 5px; border: 1px solid #ccc;"
+                                                        alt="">
+                                                </div>
+                                                <div>
+                                                    <video *ngIf="isVideoUrl(feed.urlFile)"
+                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                                        <source [src]="feed.urlFile" type="video/mp4"
+                                                            style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+    
+                                                <div class="content">
+                                                    <p class="texto-limitado">{{ feed.text }}</p>
+                                                    <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <div style="text-align: center;">
+                                <a style="font-size: 0.7rem; cursor: pointer;">
+                                    <span (click)="onShowMoreSavedPosts()">mostrar mais posts</span>
+                                </a>
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="activeTabPost === 3" class="active">
+                    Amigos
+                </div>
+
+
             </section>
         </main>
     </div>

@@ -16,12 +16,14 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { GroupsViewComponent } from './groups-view/groups-view.component';
 
 
 
 @NgModule({
   declarations: [
-    GroupsComponent
+    GroupsComponent,
+    GroupsViewComponent
   ],
   imports: [
     CommonModule,

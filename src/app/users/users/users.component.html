@@ -1,4 +1,3 @@
-
 <div class="container" style="margin-top: 70px;">
 
     <div style="display:inline;">
@@ -33,45 +32,45 @@
     <table class="card-table">
         <tbody>
             <tr *ngFor="let user of users">
-                <td>
-                    <div class="card">
-                        <div class="card-content">
-                <td>
-                    <div class="profile-pic">
-                        <img src="{{user.profileImageUrl}}" alt="pic 1" />
+
+                <div class="card">
+                    <div class="card-content">
+                        <td>
+                            <div class="profile-pic">
+                                <img src="{{user.profileImageUrl}}" alt="pic 1" />
+                            </div>
+                        </td>
+                        <td style="margin-left: 20px;">
+                            <p class="user-name user-name-hover" [routerLink]="['/user/profile', user.userId]">{{
+                                user.firstName }} {{ user.lastName }}</p>
+                            <p class="username text-muted">12 mutual friends</p>
+                            <a (click)="onEditUser(user)" class="edit-link">editar</a>
+                            <a (click)="confirmarExclusao(user)" class="delete-link">excluir</a>
+                        </td>
                     </div>
-                </td>
-                <td style="margin-left: 20px;">
-                    <p class="user-name user-name-hover" [routerLink]="['/user/profile', user.userId]">{{ user.firstName }} {{ user.lastName }}</p>
-                    <p class="username">username: <span class="text-muted">{{ user.username }}</span></p>
-                    <p class="email">email: <span class="text-muted">{{ user.email }}</span> </p>
-                    <a (click)="onEditUser(user)" class="edit-link">editar</a>
-                    <a (click)="confirmarExclusao(user)" class="delete-link">excluir</a>
-                </td>
-</div>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
+                </div>
+            </tr>
+        </tbody>
+    </table>
 
-<!-- Paginação -->
-<div class="pagination-controls">
-    <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-    <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-    <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">Próximo</button>
-    <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-        <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-            [selected]="option === filtro.itemsPerPage">{{ option }}</option>
-    </select>
-    <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
-        {{totalRegistros}} dos {{totalUsers}}</p>
-</div>
+    <!-- Paginação -->
+    <div class="pagination-controls">
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+        <button class="pagination-button" (click)="nextPage()"
+            [disabled]="currentPage === totalPages()">Próximo</button>
+        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                [selected]="option === filtro.itemsPerPage">{{ option }}</option>
+        </select>
+        <p style="font-size: 0.6rem;" class="ml-auto"> Mostrando
+            {{totalRegistros}} dos {{totalUsers}}</p>
+    </div>
 
-<!-- Indicador de carregamento -->
-<div *ngIf="showLoading" class="loading-indicator">
-    Carregando...
-</div>
+    <!-- Indicador de carregamento -->
+    <div *ngIf="showLoading" class="loading-indicator">
+        Carregando...
+    </div>
 
 </div>
 
@@ -129,252 +128,6 @@
         </form>
     </div>
 </div>
-
-<!--
-<div class="container" style="margin-top: 120px;">
-    <div class="card">
-        <div style="display:inline;">
-            <p style="margin-top: 20px; font-size: 30px;">Utilizadores</p>
-        </div>
-
-        <p style="margin-top: 20px; font-size: 0.85rem;">Conecte-se com outros utilizadores, compartilhe conhecimentos e
-            recursos, e aproveite ao máximo as funcionalidades da nossa plataforma.</p>
-        <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, ajudamos a conectar estudantes e educadores
-            para
-            promover o compartilhamento de conhecimento e recursos educacionais. <a
-                style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
-        </p>
-
-        <p-table [value]="users" selectionMode="single" selectionMode="single" [(selection)]="selectedUserView"
-            styleClass="p-datatable-sm" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,25,50,100]">
-
-            <ng-template pTemplate="caption">
-                <div class="flex">
-
-                    <button pButton (click)="prepararNovoUser()" pRipple label="Novo" icon="pi pi-plus"
-                        style="background-color: #3734ed; border: none;"></button>
-
-                    <button pButton class="p-button-sm" label="Reset de senha" (click)="prepararUserSettings()"
-                        style="background-color: #3734ed; border: none; margin-left: 5px;"></button>
-
-                    <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
-                        {{10}} dos {{20}}</p>
-
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input type="text" pInputText name="searchTerm" #searchInput="ngModel" ngModel
-                            style="width: 300px;" (ngModelChange)="searchUsers(searchInput.value)"
-                            placeholder="Pesquisa">
-                    </span>
-
-                    <button style="margin-left: 10px; background-color: #3734ed; border: none;" type="button" pButton
-                        pRipple icon="pi pi-filter"></button>
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="header">
-                <tr>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-appUser>
-                <tr [pSelectableRow]="appUser">
-                    <td style="width: 10px;">
-                        <div class="profile-pic">
-                            <a href="javascript:;" [routerLink]="['v1/user/profile']">
-                                <img src="{{appUser.profileImageUrl}}" alt="pic 1" />
-                            </a>
-                        </div>
-                    </td>
-                    <td>
-                        <p style="font-size: 0.85rem; font-weight: bold;"> {{ appUser?.firstName }} {{ appUser?.lastName
-                            }}</p>
-                        <p style="font-size: 0.85rem;">{{ appUser?.email }}</p>
-                    </td>
-
-                    <td style="max-width: 15ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        <p-tag [value]="getRoleValue(appUser.role)" [severity]="getRole(appUser.role)"></p-tag>
-                    </td>
-                    <td *ngIf="isAdmin" style="width: 200px;">
-                        <a (click)="onSelectUser(appUser)" *ngIf="isAdmin"
-                            style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">ver
-                            tudo</a>
-                        <a (click)="onEditUser(appUser)" *ngIf="isAdmin"
-                            style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">editar</a>
-                        <a (click)="confirmarExclusao(appUser)" *ngIf="isAdmin"
-                            style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">excluir</a>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td colspan="10">
-                        <span *ngIf="refreshing" style="color:#1c80cf;">Carregando... </span>
-                        <span *ngIf="!refreshing">Nenhuma usuário encontrado </span>
-                        <i *ngIf="refreshing" class="pi pi-spin pi-spinner"></i>
-                        <a href="javascript:;">
-                            <i *ngIf="!refreshing" style="color: #1c80cf;" (click)="getUsers(true)" pTooltip="Refresh"
-                                class="pi pi-refresh"></i>
-                        </a>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-</div>
--->
-
-<!--
-<p-dialog header="{{selectedUserModal.firstName}}" [(visible)]="displayModal" [modal]="true" [draggable]="false"
-    [resizable]="false">
-
-    <p-card header="{{selectedUserModal.firstName}} {{selectedUserModal.lastName}}"
-        subheader="Username: {{selectedUserModal.username}}" [style]="{width: '360px'}" styleClass="p-card-shadow">
-        <ng-template pTemplate="header">
-            <img alt="Card" height="220" src="{{selectedUserModal.profileImageUrl}}">
-        </ng-template>
-
-        <div class="formgrid grid">
-
-            <div class="col-12 p-fluid">
-                <label>Role</label>:
-                <p-tag [value]="getRoleValue(selectedUserModal.role)"
-                    [severity]="getRole(selectedUserModal.role)"></p-tag>
-            </div>
-
-            <div class="col-12 p-fluid">
-                <label>User ID</label>:
-                <span>{{selectedUserModal.userId}}</span>
-            </div>
-
-            <div class="col-12 p-fluid">
-                <label>Email</label>:
-                <span>{{selectedUserModal.email}}</span>
-            </div>
-
-            <div class="col-12 p-fluid">
-                <label>Join Date</label>:
-                <span>{{selectedUserModal.joinDate | date:'dd/MM/y, h:mm:ss a'}}</span>
-            </div>
-
-            <div class="col-12 p-fluid">
-                <label>Last Login Date</label>:
-                <span>{{selectedUserModal.lastLoginDate | date:'dd/MM/y, h:mm:ss a'}}</span>
-            </div>
-
-            <div class="col-12 p-fluid">
-                <label>Status</label>:
-                <p-tag [value]="getStatusValue(selectedUserModal.active)"
-                    [severity]="getStatus(selectedUserModal.active)"></p-tag>
-            </div>
-
-        </div>
-    </p-card>
-</p-dialog>
--->
-
-<!--Adicionar user-->
-<!--
-<p-dialog header="Novo usuário" [(visible)]="exbindoFormularioAddUser" [modal]="true" [style]="{width: '30vw'}"
-    [draggable]="false" [resizable]="false">
-    <form #newUserForm="ngForm" (ngSubmit)="onAddNewUser(newUserForm)">
-        <div class="formgrid grid">
-            <div class="col-12 p-fluid">
-                <label>Primeiro Nome</label>
-                <input pInputText type="text" ngModel name="firstName" required />
-            </div>
-            <div class="col-12 p-fluid" style="margin-top: 1%;">
-                <label>Último nome</label>
-                <input pInputText type="text" ngModel name="lastName" required />
-            </div>
-            <div class="col-12 p-fluid" style="margin-top: 1%;">
-                <label>Username</label>
-                <input pInputText type="text" ngModel name="username" required />
-            </div>
-            <div class="col-12 p-fluid" style="margin-top: 1%;">
-                <label>Email</label>
-                <input pInputText type="email" ngModel name="email" required />
-            </div>
-
-            <div class="col-12 md-6 p-fluid" style="margin-top: 1%;">
-                <label>Role</label>
-                <p-dropdown [options]="roles" placeholder="Selecione" #role [required]="true" name="role"
-                    ngModel="ROLE_USER"></p-dropdown>
-            </div>
-
-            <div class="col-12 md-6 p-fluid" style="margin-top: 1%;">
-                <div class="">
-                    <span class="">Foto de Perfil </span>
-                </div>
-                <div class="" style="background-color: #eff3f5;">
-                    <input style="background-color: #eff3f5; border:none;" type="file" accept="image/*"
-                        name="profileImage" (change)="onProfileImageChange($event, $event)" class="custom-file-input">
-                </div>
-            </div>
-
-            <div class="col-12 p-fluid" style="margin-top: 8%;">
-                <button pButton type="submit" [disabled]="newUserForm.invalid"
-                    style="background-color: #1c80cf; border: none;">
-                    <i *ngIf="refreshing" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
-                    <span *ngIf="refreshing">Loading...</span>
-                    <span *ngIf="!refreshing">Salvar</span>
-                </button>
-            </div>
-        </div>
-    </form>
-</p-dialog>
--->
-
-<!--Actualizar user-->
-<!--
-<p-dialog header="Editar usuário" [(visible)]="exbindoFormularioEditUser" [modal]="true" [style]="{width: '30vw'}"
-    [draggable]="false" [resizable]="true">
-    <form #editUserForm="ngForm" (ngSubmit)="onUpdateUser()">
-        <div class="formgrid grid">
-            <div class="col-12 p-fluid">
-                <label>Primeiro Nome</label>
-                <input pInputText type="text" name="firstName" [(ngModel)]="editUser.firstName" required />
-            </div>
-
-            <div class="col-12 p-fluid" style="margin-top: 1%;">
-                <label>Último nome</label>
-                <input pInputText type="text" name="lastName" [(ngModel)]="editUser.lastName" required />
-            </div>
-            <div class="col-12 p-fluid" style="margin-top: 1%;">
-                <label>Username</label>
-                <input pInputText type="text" name="username" [(ngModel)]="editUser.username" required />
-            </div>
-            <div class="col-12 p-fluid" style="margin-top: 1%;">
-                <label>Email</label>
-                <input pInputText type="email" name="email" [(ngModel)]="editUser.email" required />
-            </div>
-
-            <div class="col-12 md-6 p-fluid" style="margin-top: 1%;">
-                <label>Role</label>
-                <p-dropdown [options]="roles" placeholder="Selecione" #role [required]="true" name="role"
-                    ngModel="ROLE_USER" [(ngModel)]="editUser.role"></p-dropdown>
-            </div>
-
-            <div class="col-12 md-6 p-fluid" style="margin-top: 1%;">
-                <div class="">
-                    <span class="">Foto de Perfil</span>
-                </div>
-                <div class="" style="background-color: #eff3f5;">
-                    <input style="background-color: #eff3f5;" type="file" accept="image/*" name="profileImage"
-                        (change)="onProfileImageChange($event, $event)" class="custom-file-input">
-                </div>
-            </div>
-
-            <div class="col-12 p-fluid" style="margin-top: 8%;">
-                <button pButton type="submit" [disabled]="editUserForm.invalid">
-                    <i *ngIf="refreshing" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
-                    <span *ngIf="refreshing">Loading...</span>
-                    <span *ngIf="!refreshing">Salvar</span>
-                </button>
-            </div>
-        </div>
-    </form>
-</p-dialog>
--->
 
 <!--Reset password user-->
 <p-dialog header="Reset password" [(visible)]="exbindoFormularioSettingsUser" [modal]="true" [style]="{width: '30vw'}">

@@ -49,14 +49,7 @@
                                 <p class="institution-type">tipo de administração: <p-tag
                                         [value]="getAdministrationTypeValue(institution.administrationType)"
                                         [severity]="getAdministrationType(institution.administrationType)"></p-tag></p>
-                                <p class="institution-type">País: <span class="text-muted">{{ institution.country }}</span></p>
-                                <p class="institution-type texto-limitado text-muted">{{ institution.description }} </p>
-                                <a href="{{ institution.website }}" target="_blank"
-                                    style="font-size: 0.7rem; color: #007bff; text-decoration: underline;">Saiba mais no
-                                    website</a>
-                                <i class="pi pi-external-link"
-                                    style="font-size: 0.7rem; margin-left: 5px; color: #007bff;"></i>
-                                <a class="edit-link" [routerLink]="['/instituicoes', institution.id]">ver cursos</a>
+                                <a class="details-link" [routerLink]="['/instituicoes', institution.id]">ver mais informações e cursos</a>
                                 <a (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.country, institution.address, institution.description, institution.website, file)"
                                     class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(institution)" class="delete-link">excluir</a>

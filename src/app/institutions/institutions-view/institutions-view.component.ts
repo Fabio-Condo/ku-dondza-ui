@@ -28,7 +28,6 @@ export class InstitutionsViewComponent implements OnInit {
     private institutionService: InstitutionService,
     private courseService: CourseService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private route: ActivatedRoute, 
     private router: Router,
   ) { }
@@ -39,6 +38,14 @@ export class InstitutionsViewComponent implements OnInit {
       this.getInstitutionById(id);
       this.findCoursesByInstitutionId(0, id);
     }
+  }
+
+  // Variável para controlar a aba ativa
+  activeTab: number = 1;
+
+  // Função para alterar a aba ativa
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
   }
   
   @ViewChild('tabela') grid: any;
@@ -101,6 +108,26 @@ export class InstitutionsViewComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  getAdministrationTypeValue(type: string) {
+    switch (type) {
+      case 'PUBLIC':
+        return 'pública';
+      case 'PRIVATE':
+        return 'privada';
+    }
+    return '';
+  }
+
+  getAdministrationType(type: string) {
+    switch (type) {
+      case 'PUBLIC':
+        return 'primmary';
+      case 'PRIVATE':
+        return 'info';
+    }
+    return '';
   }
 
   //aoMudarPagina(event: LazyLoadEvent) {

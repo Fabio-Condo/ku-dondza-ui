@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { UserFilter } from 'src/app/core/interface/UserFilter';
 import { Post } from 'src/app/core/model/Post';
 import { User } from 'src/app/core/model/User';
@@ -42,17 +43,17 @@ export class SavedFeedComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
-  filtro: UserFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc'
+  filtro: IPostFilter = {
+    page: 0,
+    itemsPerPage: 5,
+    sort: 'id,asc'
   }
 
 
   getSavedPosts(pagina: number = 0): void {
     this.showLoading = true;
     //this.filtro.pagina = pagina;
-    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
     this.userService.getSavedPosts(this.loggedUser.id, this.filtro).subscribe(
       (dados: IApiResponse<Post>) => {
@@ -74,7 +75,7 @@ export class SavedFeedComponent implements OnInit {
   }
 
   changePageSize(event: any): void {
-    this.filtro.itensPorPagina = +event.target.value;
+    this.filtro.itemsPerPage = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
     this.getSavedPosts();
   }
@@ -95,7 +96,7 @@ export class SavedFeedComponent implements OnInit {
   }
 
   totalPages(): number {
-    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+    return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
   }
 
   isImageUrl(url: string): boolean {

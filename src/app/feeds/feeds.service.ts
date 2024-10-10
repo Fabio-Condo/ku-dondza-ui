@@ -8,7 +8,7 @@ import { Post } from '../core/model/Post';
 
 @Injectable({providedIn: 'root'})
 export class FeedsService {
-  private host = environment.apiUrl;
+  private host = environment.apiUrl + '/post';
 
   constructor(private http: HttpClient) {}
 
@@ -24,11 +24,11 @@ export class FeedsService {
       params = params.set('property', filter.property); 
     }
 
-    return this.http.get<IApiResponse<Post>>(`${this.host}/post/all`, { params });
+    return this.http.get<IApiResponse<Post>>(`${this.host}/all`, { params });
   }
 
   public addPost(formData: FormData): Observable<Post> {
-    return this.http.post<Post>(`${this.host}/post/add`, formData);  
+    return this.http.post<Post>(`${this.host}/add`, formData);  
   }
 
   public createPostFormDate(post: Post, file: File): FormData {  
@@ -46,7 +46,18 @@ export class FeedsService {
       .set('size', filter.itemsPerPage)
       .set('sort', filter.sort);  
 
-    return this.http.get<IApiResponse<Post>>(`${this.host}/post/user/${userId}`, { params });
+    return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}`, { params });
   }
+
+  findByGroupId(groupId: number, filtro: IPostFilter): Observable<IApiResponse<Post>> {
+        
+    let params = new HttpParams()
+        .set('page', filtro.page)
+        .set('sort', filtro.sort)
+        .set('size', filtro.itemsPerPage)
+        .set('groupId', groupId);
+
+    return this.http.get<IApiResponse<Post>>(`${this.host}/findByGroupId`, { params });
+}
 
 }

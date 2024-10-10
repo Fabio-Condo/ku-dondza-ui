@@ -8,6 +8,7 @@ import { IApiResponse } from '../core/interface/IApiResponse';
 import { UserFilter } from '../core/interface/UserFilter';
 import { Post } from '../core/model/Post';
 import { IUserFilter } from '../core/model/IUserFilter';
+import { IPostFilter } from '../core/interface/IPostFilter';
 
 
 @Injectable({ providedIn: 'root' })
@@ -143,14 +144,14 @@ export class UserService {
     return this.http.get<boolean>(`${this.host}/user/${userId}/savedPosts/contains/${postId}`);
   }
 
-  getSavedPosts(userId: number, filtro: UserFilter): Observable<IApiResponse<Post>> {
+  getSavedPosts(userId: number, filtro: IPostFilter): Observable<IApiResponse<Post>> {
 
     let params = new HttpParams()
-      .set('page', filtro.pagina)
-      .set('sort', filtro.ordenamento)
-      .set('size', filtro.itensPorPagina);
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
 
-    return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}/savedPostsPaginated`, { params });
+    return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}/savedPosts`, { params });
   }
 
   getFriendRequests(): Observable<User[]> {

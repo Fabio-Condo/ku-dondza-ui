@@ -40,12 +40,12 @@
                             </div>
             
                             <div class="content">
-                                <p class="group-description">{{ group.name }}</p>
-                                <p style="font-size: 0.7rem;">{{ group.description }}</p>
+                                <p class="group-name">{{ group.name }}</p>
+                                <p class="group-details">{{ group.description }}</p>
+                                <p class="group-details">326 membros</p>
+                                <a class="details-link" [routerLink]="['/groups', group.id]">ver mais informações e cursos</a>
                                 <a (click)="onUpdate(group.id, group.name, group.description, file)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(group)" class="delete-link" style="margin-left: 10px;">excluir</a>
-                                <a  class="delete-link" style="margin-left: 10px;">aderir</a>
-                                <a  class="delete-link" style="margin-left: 10px;">posts</a>
                             </div>
 
                         </div>

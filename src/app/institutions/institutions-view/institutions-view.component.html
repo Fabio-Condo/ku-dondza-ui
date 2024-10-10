@@ -1,108 +1,79 @@
 <div class="container" style="margin-top: 70px;">
 
-    <div style="display: inline-block; vertical-align: top; margin-right: 20px;">
-        <img src="{{institution.urlFile}}" alt="pic 1" style="max-width: 100px; max-height: 100px; border-radius: 5px; border: 1px solid #ccc;" />
-
-        <p style="margin: 0; font-size: 30px;">{{institution.name}}
-            <span *ngIf="institution.acronym">({{ institution.acronym }}) </span>
-            <a style="color: #1c80cf; text-decoration: underline; font-size: 1rem; "
-                [routerLink]="['/instituicoes']">voltar</a>
-        </p>
-
-        <p style="margin-top: 20px; margin-bottom: 20px; font-size: 0.85rem;">{{institution.description}}</p>
-        <div>
-            <a href="{{ institution.website }}" target="_blank" style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline;">Saiba
-                mais no website</a>
-            <i class="pi pi-external-link" style="font-size: 0.85rem; margin-left: 5px; color: #1c80cf;"></i>
+    <!-- Cabeçalho das Abas -->
+    <div class="tab-header">
+        <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+            Descrição
         </div>
-    
-        <div style="display:inline;">
-            <p style="margin-top: 20px; font-size: 15px;">Cursos</p>
+        <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+            Cursos
         </div>
     </div>
 
+    <!-- Conteúdo das Abas -->
+    <div *ngIf="activeTab === 1" class="active">
+        <div class="institution-container">
+            <div class="institution-image-container">
+              <img [src]="institution.urlFile" alt="{{ institution.name }}" class="institution-image" />
+            </div>
+            
+            <div class="institution-details">
+                <h1 class="institution-title">{{ institution.name }}</h1>
+                <p class="institution-description">{{ institution.description }}</p>
+                
+                <div class="institution-meta">
+                    <p><strong>Tipo de instituição:</strong> {{ institution.type }} </p>
+                    <p><strong>Tipo de administração: </strong> <p-tag
+                        [value]="getAdministrationTypeValue(institution.administrationType)"
+                        [severity]="getAdministrationType(institution.administrationType)"></p-tag></p>
+                    <p><strong>País:</strong> {{ institution.country }} </p>
+                </div>
 
-    <table class="card-table">
-        <tbody>
-            <tr *ngFor="let course of courses">
-                <td>
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="content">
-                                <p class="subject-name">{{ course.name }}</p>
-                                <p class="institution-type">duração: {{ course.duration }}</p>
-                                <p class="exam-description">requisitos: {{ course.requirements }}</p>
+                <br>
+                
+                <a class="goto-button" href="{{ institution.website }}" target="_blank">
+                    Saiba mais no website
+                <i class="pi pi-external-link" style="font-size: 0.85rem; margin-left: 5px; color: white;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="activeTab === 2" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let course of courses">
+                    <td>
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="content">
+                                    <p class="subject-name">{{ course.name }}</p>
+                                    <p class="institution-type">duração: {{ course.duration }}</p>
+                                    <p class="exam-description">requisitos: {{ course.requirements }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Paginação -->
-    <div class="pagination-controls">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()"
-            [disabled]="currentPage === totalPages()">Próximo</button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itensPorPagina">{{ option }}</option>
-        </select>
-    </div>
-
-    <!-- Indicador de carregamento -->
-    <div *ngIf="showLoading" class="loading-indicator">
-        Carregando...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+        <!-- Paginação -->
+        <div class="pagination-controls">
+            <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-button" (click)="nextPage()"
+                [disabled]="currentPage === totalPages()">Próximo</button>
+            <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+                <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                    [selected]="option === filtro.itensPorPagina">{{ option }}</option>
+            </select>
+        </div>
+    
+        <!-- Indicador de carregamento -->
+        <div *ngIf="showLoading" class="loading-indicator">
+            Carregando...
+        </div>
     </div>
 
 </div>
-
-
-<!--
-<div class="container" style="margin-top: 120px;">
-
-
-    <p style="margin-top: 20px; margin-bottom: 20px; font-size: 0.85rem;">{{institution.description}}</p>
-    <div>
-        <a href="{{ institution.website }}" target="_blank" style="color: #1c80cf; text-decoration: underline;">Saiba
-            mais no website</a>
-        <i class="pi pi-external-link" style="font-size: 0.85rem; margin-left: 5px; color: #1c80cf;"></i>
-    </div>
-
-    <div style="display:inline;">
-        <p style="margin-top: 20px; font-size: 15px;">Cursos</p>
-    </div>
-
-    <p-table [value]="courses" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
-        selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
-        currentPageReportTemplate="Mostrando {{totalRegistros}} resultados" [showCurrentPageReport]="true"
-        styleClass="p-datatable-sm" #tabela>
-
-        <ng-template pTemplate="header">
-            <tr>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-course>
-            <tr>
-                <td style="width: 250px;">
-                    <p style="font-size: 0.8rem; font-weight: bold;">{{ course.name }}</p>
-                    <p style="font-size: 0.85rem;">duração: {{ course.duration }}</p>
-                    <p style="font-size: 0.85rem;">requisitos: {{ course.requirements }}</p>
-                </td>
-
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="10">
-                    <span *ngIf="showLoading" style="color:#1c80cf;">Carregando... </span>
-                    <span *ngIf="!showLoading">Nenhum curso encontrado </span>
-                    <i *ngIf="showLoading" class="pi pi-spin pi-spinner"></i>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
-</div>
--->

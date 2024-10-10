@@ -29,8 +29,6 @@ import { GroupModule } from './group/group.module';
 import { GroupsRoutingModule } from './group/groups-routing.module';
 import { OnlineCoursesModule } from './online-courses/online-courses.module';
 import { OnlineCoursesRoutingModule } from './online-courses/online-courses-routing.module';
-import { QuizTestModule } from './quiz-test/quiz-test.module';
-
 
 @NgModule({
   declarations: [
@@ -57,7 +55,6 @@ import { QuizTestModule } from './quiz-test/quiz-test.module';
     OnlineCoursesModule,
     UsersModule,
     GroupModule,
-    QuizTestModule,
 
     CoreRoutingModule,
     AppRoutingModule,

@@ -30,8 +30,11 @@ export class UserProfileViewComponent implements OnInit {
 
 
   posts: Post[] = [];
-  currentPage: number = 1;
   totalRegistros: number = 0
+
+  savedPosts: Post[] = [];
+  totalRegistrosPostsGuardados: number = 0
+
 
   extension: any;
 
@@ -42,6 +45,9 @@ export class UserProfileViewComponent implements OnInit {
   showLoading: boolean = false;
 
   selectedInterest: Interest = new Interest();
+
+  activeTabPost: number = 1;
+  activeTabInfo: number = 1;
 
 
   //isProfilePhoto: boolean = true;
@@ -72,11 +78,26 @@ export class UserProfileViewComponent implements OnInit {
     sort: 'id,desc'
   }
 
+  filtroPostsGuardados: IPostFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,desc'
+  }
+
+  setActiveTabPost(tabIndex: number) {
+    this.activeTabPost = tabIndex;
+  }
+
+  setActiveTabInfo(tabIndex: number) {
+    this.activeTabInfo = tabIndex;
+  }
+
   getUserByUserId(userId: string) {
     this.userService.getUserByUserId(userId).subscribe(
       (user: User) => {
         this.user = user;
         this.getUserPostsByUserId(user);
+        this.getUserSavedPosts(user)
       },
       (erro) => this.errorHandler.handle(erro),
     );
@@ -145,6 +166,20 @@ export class UserProfileViewComponent implements OnInit {
     );
   }
 
+  getUserSavedPosts(user: User): void {
+    this.filtroPostsGuardados.page++;
+
+    this.userService.getSavedPosts(user.id, this.filtroPostsGuardados).subscribe(
+      (dados: IApiResponse<Post>) => {
+        this.savedPosts = [...this.savedPosts, ...dados.content];
+        this.totalRegistrosPostsGuardados = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
   getInterests() {
     return this.interestService.getAll().subscribe(
       dados => {
@@ -173,9 +208,14 @@ export class UserProfileViewComponent implements OnInit {
     )
   }
 
-  onShowPostComments() {
+  onShowMorePosts() {
     this.filtro.itemsPerPage = 5;
     this.getUserPostsByUserId(this.user);
+  }
+
+  onShowMoreSavedPosts() {
+    this.filtroPostsGuardados.itemsPerPage = 5;
+    this.getUserSavedPosts(this.user);
   }
 
   isImageUrl(url: string): boolean {

@@ -1,0 +1,119 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Group } from 'src/app/core/model/Group';
+import { Post } from 'src/app/core/model/Post';
+import { GroupService } from '../groups.service';
+import { FeedsService } from 'src/app/feeds/feeds.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
+import { IPostFilter } from 'src/app/core/interface/IPostFilter';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+
+@Component({
+  selector: 'app-groups-view',
+  templateUrl: './groups-view.component.html',
+  styleUrls: ['./groups-view.component.css']
+})
+export class GroupsViewComponent implements OnInit {
+
+  group: Group = new Group();
+  feeds: Post[] = [];
+  totalRegistros: number = 0
+  showLoading: boolean = false;
+
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  constructor(
+    private groupService: GroupService,
+    private feedsService: FeedsService,
+    private messageService: MessageService,
+    private route: ActivatedRoute, 
+    private router: Router,
+  ) { }
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.params['id'];
+    if (id) {
+      this.getGroupById(id);
+      this.findFeedsByGroupId(0, id);
+    }
+  }
+
+  // Variável para controlar a aba ativa
+  activeTab: number = 1;
+
+  // Função para alterar a aba ativa
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+  }
+    
+  @ViewChild('tabela') grid: any;
+  
+  filtro: IPostFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,desc',
+  }
+
+  getGroupById(id: number) {
+    this.groupService.getGroupById(id).subscribe(
+      (response) => {
+        this.group = response;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  findFeedsByGroupId(pagina: number = 0, groupId: number): void {
+    this.showLoading = true;
+    //this.filtro.pagina = pagina;
+    this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.feedsService.findByGroupId(groupId, this.filtro).subscribe(
+      (dados: IApiResponse<Post>) => {
+        this.feeds = dados.content
+        this.totalRegistros = dados.totalElements
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  changePageSize(event: any): void {
+    this.filtro.itemsPerPage = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findFeedsByGroupId(0, this.group.id);
+  }
+
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findFeedsByGroupId(0, this.group.id);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findFeedsByGroupId(0, this.group.id);
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  private sendErrorNotification(message: string): void {
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
+  }
+}

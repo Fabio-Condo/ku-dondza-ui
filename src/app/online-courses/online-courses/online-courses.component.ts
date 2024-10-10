@@ -33,10 +33,6 @@ export class OnlineCoursesComponent implements OnInit {
 
   loggedUser: User = new User;
 
-  selectedOnlineCourse = new OnlineCourse();
-  showConfirmDialog: boolean = false;
-
-
   constructor(
     private onlineCoursesService: OnlineCoursesService,
     private messageService: MessageService,
@@ -216,33 +212,6 @@ export class OnlineCoursesComponent implements OnInit {
     this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
       course.isSubscribed = response;
     });
-  }
-
-  addCourseToSubscribedOnlineCourses(course: OnlineCourse): void {
-    console.log("User id: " + this.loggedUser.id + " username: " + this.loggedUser.username)
-    this.userService.addCourseToSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
-      course.isSubscribed = true;
-    });
-  }
-
-  removeCourseFromSubscribedOnlineCourses(course: OnlineCourse): void {
-    this.userService.removeCourseFromSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
-      course.isSubscribed = false;
-    });
-  }
-
-  onRemoveCourse(course: OnlineCourse): void {
-    this.showConfirmDialog = true;
-    this.selectedOnlineCourse = course;
-  }
-
-  closeConfirmDialog() {
-    this.showConfirmDialog = false;
-  }
-
-  confirmDialog(course: OnlineCourse) {
-    this.removeCourseFromSubscribedOnlineCourses(course);
-    this.closeConfirmDialog();
   }
 
   private sendErrorNotification(message: string): void {

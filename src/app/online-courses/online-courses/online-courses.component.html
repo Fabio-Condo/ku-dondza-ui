@@ -43,9 +43,7 @@
                             <div class="content">
                                 <p class="course-name">{{ course.name }}</p>
                                 <p class="course-description texto-limitado text-muted">{{ course.description }} </p>
-                                <a *ngIf="!course.isSubscribed" (click)="addCourseToSubscribedOnlineCourses(course)" class="enter-link">aderir</a>
-                                <a *ngIf="course.isSubscribed" (click)="onRemoveCourse(course)" class="enter-link">sair</a>
-                                <a class="edit-link" [routerLink]="['/coursos-online', course.id]">ver conteúdo</a>
+                                <a class="enter-link" [routerLink]="['/coursos-online', course.id]">ver conteúdo</a>
                                 <a (click)="onUpdateOnlineCourse(course, file)"
                                     class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
@@ -110,22 +108,5 @@
                 <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
-    </div>
-</div>
-
-<!-- confirm dialog -->
-<div class="dialog-overlay" *ngIf="showConfirmDialog">
-    <div class="dialog">
-        <div class="dialog-header">
-            <h4>Deseja sair do grupo ?</h4>
-            <button class="close-button" (click)="closeConfirmDialog()">x</button>
-        </div>
-        <div class="dialog-content">
-            <ng-content></ng-content>
-        </div>
-        <div class="dialog-footer">
-            <button (click)="confirmDialog(selectedOnlineCourse)">Confirmar</button>
-            <button (click)="closeConfirmDialog()">Cancelar</button>
-        </div>
     </div>
 </div>

@@ -26,27 +26,13 @@
                   <div class="course-meta">
                     <p><strong>Total de Alunos Inscritos:</strong> {{ 10 }}</p>
                     <p><strong>Duração:</strong> {{ 20 }}</p>
-                    <p><strong>Instrutor:</strong> {{ 30 }}</p>
+                    <p><strong>Instrutor:</strong> Fabio Enosse </p>
                   </div>
               
                   <button class="enroll-button" (click)="addCourseToSubscribedOnlineCourses(course)" *ngIf="!course.isSubscribed">Inscrever-se no Curso</button>
                   <button class="enroll-button" (click)="onRemoveCourse(course)" *ngIf="course.isSubscribed">Anular inscrição</button>
                 </div>
-              </div>
-
-            <!--
-            <p style="margin: 0; font-size: 30px;">{{ course.name }}</p>
-
-            <p style="margin-top: 20px; font-size: 0.85rem;">{{ course.description }}</p>
-
-            <p style="margin-top: 20px; font-size: 0.85rem; color: blue; font-weight: bold;">524 alunos</p>
-            -->
-
-            <!--
-            <div class="video">
-                <img src="{{ course.coverImageUrl }}" alt="">
             </div>
-            -->
 
         </div>
 
@@ -145,5 +131,22 @@
                 <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- confirm dialog -->
+<div class="dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="dialog">
+        <div class="dialog-header">
+            <h4>Deseja sair do grupo ?</h4>
+            <button class="close-button" (click)="closeConfirmDialog()">x</button>
+        </div>
+        <div class="dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="dialog-footer">
+            <button (click)="confirmDialog(selectedOnlineCourse)">Confirmar</button>
+            <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
     </div>
 </div>
