@@ -1,0 +1,154 @@
+/* Regras gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.btn {
+    background-color: #3734ed;
+    color: white;
+    padding: 12px 24px; /* Aumentar o padding para botões */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s; /* Adicionando transição ao hover */
+    display: inline-block; /* Adiciona display inline-block para os botões */
+}
+
+.btn:hover {
+    background-color: #302fcc; 
+    transform: translateY(-2px); /* Leve movimento para cima ao passar o mouse */
+}
+
+.hero {
+    /*background: linear-gradient(135deg, #f4f4f4 30%, #e6e6e6 100%); /* Gradiente suave */
+    background: linear-gradient(35deg, #f4f4f4 30%, #7b7a92 100%);
+
+    /*border-radius: 10px;*/
+    padding: 80px 20px; /* Aumenta o padding */
+    text-align: center;
+    position: relative; /* Para o posicionamento dos elementos dentro */
+}
+
+.navbar {
+    position: absolute; /* Para posicionar a navbar dentro da hero */
+    top: 20px; /* Ajuste conforme necessário */
+    right: 20px; /* Ajuste conforme necessário */
+    left: 20px; /* Ajuste conforme necessário */
+    display: flex; /* Usar flexbox para alinhamento */
+    justify-content: space-between; /* Espaço entre logo e botão */
+    align-items: center; /* Alinhar verticalmente */
+}
+
+.navbar .logo img {
+    height: 50px; /* Altura da logo */
+}
+
+.hero h1 {
+    font-size: 36px; /* Tamanho menor */
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px; /* Tamanho do texto */
+    margin-bottom: 30px;
+    color: #555; /* Cor do texto */
+}
+
+.mission {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f7f7f7;
+}
+
+.mission h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.mission p {
+    font-size: 20px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.offerings {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.offerings h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+}
+
+.offerings-list {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os cards se ajustem em várias linhas */
+    justify-content: center; /* Centraliza os cards na tela */
+    gap: 20px; /* Espaçamento entre os cards */
+}
+
+.offering {
+    border-radius: 10px;
+    padding: 20px;
+    flex: 1 1 200px; /* Faz com que cada card tenha um tamanho flexível */
+    max-width: 300px; /* Limita a largura máxima do card */
+    text-align: left; /* Alinhamento do texto à esquerda */
+}
+
+.offering h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.offering p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.testimonials {
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f4f4f4 30%, #e6e6e6 100%); /* Gradiente adicionado */
+    text-align: center;
+}
+
+.testimonials h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+.testimonial-slider {
+    font-size: 20px;
+    font-style: italic;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Alinhamento em coluna para logo e botão em telas menores */
+        align-items: flex-start; /* Alinhamento à esquerda */
+    }
+
+    .navbar .login-button {
+        margin-top: 10px; /* Espaço entre logo e botão */
+    }
+
+    .offerings-list {
+        flex-direction: column; /* Alinhamento em coluna para os cards em telas menores */
+    }
+}

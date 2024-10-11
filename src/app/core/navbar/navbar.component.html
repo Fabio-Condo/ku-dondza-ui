@@ -27,8 +27,11 @@
 
     <div class="nav-center">
       <span *ngIf="isUserLoggedIn">
-        <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
+        <a class="menu-item" [class.active]="isActive('/home')" routerLink="/home">
           <span>Home</span>
+        </a>
+        <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
+          <span>Feed</span>
         </a>
         <a class="menu-item" [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
           <span>Instituições</span>
@@ -65,7 +68,7 @@
 <div class="sidebar" [class.active]="isSidebarActive">
   <span *ngIf="isUserLoggedIn">
     <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
-      <span>Home</span>
+      <span>Feed</span>
     </a>
     <a class="menu-item" [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
       <span>Instituições</span>
