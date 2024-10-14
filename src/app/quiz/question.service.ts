@@ -10,24 +10,24 @@ import { QuestionFilter } from '../core/interface/QuestionFilter';
   providedIn: 'root'
 })
 export class QuestionService {
-  private baseUrl  = environment.apiUrl + '/questions';
+  private baseUrl = environment.apiUrl + '/questions';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getQuestions(filter: QuestionFilter): Observable<IApiResponse<Question>> {  
+  getQuestions(filter: QuestionFilter): Observable<IApiResponse<Question>> {
 
-    let params = new HttpParams()  
-      .set('page', filter.page)  
+    let params = new HttpParams()
+      .set('page', filter.page)
       .set('sort', filter.sort)
-      .set('size', filter.itemsPerPage);  
+      .set('size', filter.itemsPerPage);
 
     console.log(params);
 
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}`, { params });
   }
 
-  findAll() : Observable<IApiResponse<Question>> { 
-    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}`, { });
+  findAll(): Observable<IApiResponse<Question>> {
+    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}`, {});
   }
 
   findById(id: number): Observable<Question> {
@@ -35,30 +35,36 @@ export class QuestionService {
   }
 
   add(question: Question): Observable<Question> {
-    return this.http.post<Question>(this.baseUrl, question, { });
+    return this.http.post<Question>(this.baseUrl, question, {});
   }
 
   update(question: Question): Observable<Question> {
-    return this.http.put<Question>(`${this.baseUrl}/${question.id}`, question, { });
+    return this.http.put<Question>(`${this.baseUrl}/${question.id}`, question, {});
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { });
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }
 
   getTotal(): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/total`, { });
+    return this.http.get<number>(`${this.baseUrl}/total`, {});
   }
 
   findQuestionsByQuizId(quizId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
-        
+
     let params = new HttpParams()
-        .set('page', filtro.page)
-        .set('sort', filtro.sort)
-        .set('size', filtro.itemsPerPage)
-        .set('quizId', quizId);
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage)
+      .set('quizId', quizId);
 
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/findQuestionsByQuizId`, { params });
-}
-   
+  }
+
+  updateQuestionImage(id: number, file: File): Observable<Question> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<Question>(`${this.baseUrl}/${id}/question-image`, formData);
+  }
+
 }

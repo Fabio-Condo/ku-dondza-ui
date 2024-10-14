@@ -37,6 +37,9 @@ export class QuestionsComponent implements OnInit {
   showAnswerForm = false;
   answerIndex?: number;
 
+  fileToUpload!: File;
+
+
   constructor(
     private quizService: QuizService,
     private questionService: QuestionService,
@@ -181,6 +184,22 @@ export class QuestionsComponent implements OnInit {
       this.messageService.add({ severity: 'error', detail: message });
     } else {
       this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
+  }
+
+  onUpdateQuestionImage(question: Question, event: any) {
+    if (event.target.files.length > 0) {
+      this.fileToUpload = event.target.files[0];
+
+      this.questionService.updateQuestionImage(question.id, this.fileToUpload).subscribe(
+        response => {
+          question = response;
+          console.log('Upload successful', response);
+        },
+        error => {
+          console.error('Upload failed', error);
+        }
+      );
     }
   }
 
