@@ -186,17 +186,6 @@ export class QuestionsComponent implements OnInit {
 
 
   currentQuestionIndex: number = 0;
-  isShowingAllQuestions: boolean = false; // Para controlar a visualização de todas as perguntas
-
-  // Método para mostrar todas as perguntas
-  toggleQuestions() {
-    this.isShowingAllQuestions = !this.isShowingAllQuestions; // Alterna entre mostrar todas ou uma por uma
-
-    // Se mudar para ver uma por uma, resetar o índice atual
-    if (!this.isShowingAllQuestions) {
-      this.currentQuestionIndex = 0; // Reseta para a primeira pergunta
-    }
-  }
 
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
@@ -209,5 +198,47 @@ export class QuestionsComponent implements OnInit {
       this.currentQuestionIndex++;
     }
   }
+
+
+  // Adicione as propriedades para armazenar respostas
+  userAnswers: { questionId: number; answerId: number }[] = [];
+  result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
+
+  // Método para submeter as respostas
+  submitAnswers() {
+    this.result.correctAnswers = 0;
+    this.result.incorrectAnswers = 0;
+
+    this.questions.forEach(question => {
+      const userAnswer = this.userAnswers.find(answer => answer.questionId === question.id);
+      if (userAnswer) {
+        const isCorrect = question.answers.some(answer => answer.id === userAnswer.answerId && answer.correct);
+        if (isCorrect) {
+          this.result.correctAnswers++;
+        } else {
+          this.result.incorrectAnswers++;
+        }
+      }
+    });
+
+    this.displayResults();
+  }
+
+  // Método para exibir os resultados
+  private displayResults() {
+    const message = `Você acertou ${this.result.correctAnswers} resposta(s) e errou ${this.result.incorrectAnswers} resposta(s).`;
+    this.messageService.add({ severity: 'info', detail: message });
+  }
+
+  // Método para capturar a resposta do usuário
+  captureUserAnswer(questionId: number, answerId: number) {
+    const existingAnswerIndex = this.userAnswers.findIndex(answer => answer.questionId === questionId);
+    if (existingAnswerIndex !== -1) {
+      this.userAnswers[existingAnswerIndex].answerId = answerId;
+    } else {
+      this.userAnswers.push({ questionId, answerId });
+    }
+  }
+
 
 }
