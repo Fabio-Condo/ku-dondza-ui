@@ -10,6 +10,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionService } from '../question.service';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { NgForm } from '@angular/forms';
+import { Answer } from 'src/app/core/model/Answer';
 
 @Component({
   selector: 'app-questions',
@@ -31,14 +32,17 @@ export class QuestionsComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
-
+  answer?: Answer;
+  answwers: Array<Answer> = []
+  showAnswerForm = false;
+  answerIndex?: number;
 
   constructor(
     private quizService: QuizService,
     private questionService: QuestionService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
   ) { }
 
@@ -54,7 +58,7 @@ export class QuestionsComponent implements OnInit {
 
   filtro: QuestionFilter = {
     page: 0,
-    itemsPerPage: 5,
+    itemsPerPage: 105,
     sort: 'id,asc'
   }
 
@@ -141,11 +145,68 @@ export class QuestionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
+  // Answeres
+  getReadyNewAnswer() {
+    this.showAnswerForm = true;
+    this.answer = new Answer();
+    this.answerIndex = this.question.answers.length;
+  }
+
+  getReadyAnswerEdit(answer: Answer, index: number) {
+    this.answer = this.cloneAnswer(answer);
+    this.showAnswerForm = true;
+    this.answerIndex = index;
+  }
+
+  confirmAnswer(frm: NgForm) {
+    this.question.answers[this.answerIndex!] = this.cloneAnswer(this.answer!);
+    this.showAnswerForm = false;
+    frm.reset();
+  }
+
+  cloneAnswer(answer: Answer): Answer {
+    return new Answer(answer.id, answer.text, answer.correct);
+  }
+
+  get editingAnswer() {
+    return this.answer && this.answer?.id;
+  }
+
+  removeAnswer(index: number) {
+    this.question.answers.splice(index, 1);
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
     } else {
       this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
+  }
+
+
+  currentQuestionIndex: number = 0;
+  isShowingAllQuestions: boolean = false; // Para controlar a visualização de todas as perguntas
+
+  // Método para mostrar todas as perguntas
+  toggleQuestions() {
+    this.isShowingAllQuestions = !this.isShowingAllQuestions; // Alterna entre mostrar todas ou uma por uma
+
+    // Se mudar para ver uma por uma, resetar o índice atual
+    if (!this.isShowingAllQuestions) {
+      this.currentQuestionIndex = 0; // Reseta para a primeira pergunta
+    }
+  }
+
+  goToPreviousQuestion() {
+    if (this.currentQuestionIndex > 0) {
+      this.currentQuestionIndex--;
+    }
+  }
+
+  goToNextQuestion() {
+    if (this.currentQuestionIndex < this.questions.length - 1) {
+      this.currentQuestionIndex++;
     }
   }
 
