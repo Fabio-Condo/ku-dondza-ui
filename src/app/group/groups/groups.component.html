@@ -5,12 +5,9 @@
         <h1 class="title">Grupos</h1>
     </div>
 
-    <p style="margin-top: 20px; font-size: 0.85rem;">Explore a variedade de grupos disponíveis, incluindo detalhes como
-        nome do grupo, descrição e quantidade de membros.</p>
+    <p style="margin-top: 20px; font-size: 0.85rem;">Crie grupos de estudo e colabore com colegas em tempo real.</p>
     <p style="margin-bottom: 20px; font-size: 0.85rem;">Na Ku-DONDZA, ajudamos você a encontrar e participar de grupos
-        que correspondem aos seus interesses. <a style="color: #007bff; text-decoration: underline;" href="">Saiba
-            mais</a></p>
-
+        que correspondem aos seus interesses.
     <div class="flex">
         <div>
             <a *ngIf="isAdmin" (click)="onAddNewGroup()" class="ml-left">Adicionar</a>
@@ -41,8 +38,8 @@
 
                             <div class="content">
                                 <p class="group-name">{{ group.name }}</p>
-                                <p class="group-details">{{ group.description }}</p>
-                                <p class="group-details">326 membros</p>
+                                <p class="details texto-limitado">{{ group.description }}</p>
+                                <p class="details">326 membros</p>
                                 <a class="details-link" [routerLink]="['/groups', group.id]">ver mais informações e
                                     cursos</a>
                                 <a (click)="onUpdate(group.id, group.name, group.description, file)"

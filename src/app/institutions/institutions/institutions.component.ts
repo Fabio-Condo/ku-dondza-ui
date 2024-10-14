@@ -39,12 +39,6 @@ export class InstitutionsComponent implements OnInit {
     { label: 'Ensino Técnico', value: 'Ensino Técnico' }
   ];
 
-  countries = [
-    { label: 'MOZAMBIQUE', value: 'MOZAMBIQUE' },
-    { label: 'ANGOLA', value: 'ANGOLA' },
-    { label: 'PORTUGAL', value: 'PORTUGAL' },
-  ];
-
   constructor(
     private institutionService: InstitutionService,
     private messageService: MessageService,
@@ -78,7 +72,7 @@ export class InstitutionsComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.institutionService.update(this.institution.id, this.institution.name, this.institution.acronym, this.institution.type, this.institution.administrationType, this.institution.country, this.institution.address, this.institution.description, this.institution.website, this.file).subscribe(
+    this.institutionService.update(this.institution.id, this.institution.name, this.institution.acronym, this.institution.type, this.institution.administrationType, this.institution.address, this.institution.description, this.institution.website, this.file).subscribe(
       response => {
         this.institution = response
         this.messageService.add({ severity: 'success', detail: 'Instituição actualizada com sucesso!' });
@@ -94,7 +88,7 @@ export class InstitutionsComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.institutionService.save(this.institution.name, this.institution.acronym, this.institution.type, this.institution.administrationType, this.institution.country, this.institution.address, this.institution.description, this.institution.website, this.file).subscribe(
+    this.institutionService.save(this.institution.name, this.institution.acronym, this.institution.type, this.institution.administrationType, this.institution.address, this.institution.description, this.institution.website, this.file).subscribe(
       response => {
         this.institution = response
         this.messageService.add({ severity: 'success', detail: 'Instituição salva com sucesso!' });
@@ -148,13 +142,12 @@ export class InstitutionsComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  public onUpdateInstitution(id: number, name: string, acronym: string, type: string, administrationType: string, country: string, address: string, description: string, website: string, file: File): void {
+  public onUpdateInstitution(id: number, name: string, acronym: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): void {
     this.institution.id = id
     this.institution.name = name;
     this.institution.acronym = acronym;
     this.institution.type = type;
     this.institution.administrationType = administrationType;
-    this.institution.country = country;
     this.institution.address = address;
     this.institution.website = website;
     this.institution.description = description;

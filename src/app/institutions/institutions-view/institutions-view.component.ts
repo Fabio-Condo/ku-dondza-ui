@@ -85,31 +85,6 @@ export class InstitutionsViewComponent implements OnInit {
     );
   }
 
-  changePageSize(event: any): void {
-    this.filtro.itensPorPagina = +event.target.value;
-    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
-    this.findCoursesByInstitutionId(0, this.institution.id);
-  }
-
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.findCoursesByInstitutionId(0, this.institution.id);
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-      this.findCoursesByInstitutionId(0, this.institution.id);
-    }
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
-  }
-
   getAdministrationTypeValue(type: string) {
     switch (type) {
       case 'PUBLIC':

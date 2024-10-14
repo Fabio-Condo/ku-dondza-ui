@@ -23,10 +23,7 @@
                 
                 <div class="institution-meta">
                     <p><strong>Tipo de instituição:</strong> {{ institution.type }} </p>
-                    <p><strong>Tipo de administração: </strong> <p-tag
-                        [value]="getAdministrationTypeValue(institution.administrationType)"
-                        [severity]="getAdministrationType(institution.administrationType)"></p-tag></p>
-                    <p><strong>País:</strong> {{ institution.country }} </p>
+                    <p><strong>Tipo de administração:</strong> {{ getAdministrationTypeValue(institution.administrationType) }} </p>
                 </div>
 
                 <br>
@@ -48,8 +45,8 @@
                             <div class="card-content">
                                 <div class="content">
                                     <p class="subject-name">{{ course.name }}</p>
-                                    <p class="institution-type">duração: {{ course.duration }}</p>
-                                    <p class="exam-description">requisitos: {{ course.requirements }}</p>
+                                    <p class="details">duração: {{ course.duration }}</p>
+                                    <p class="details">requisitos: {{ course.requirements }}</p>
                                 </div>
                             </div>
                         </div>

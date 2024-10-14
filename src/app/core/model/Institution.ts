@@ -4,7 +4,6 @@ export class Institution {
     acronym!: string;
     type!: string;
     administrationType!: string;
-    country!: string;
     address!: string;
     website!: string;
     description!: string;

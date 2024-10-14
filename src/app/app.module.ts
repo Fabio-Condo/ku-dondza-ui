@@ -31,6 +31,8 @@ import { OnlineCoursesModule } from './online-courses/online-courses.module';
 import { OnlineCoursesRoutingModule } from './online-courses/online-courses-routing.module';
 import { HomeModule } from './home/home.module';
 import { HomeRoutingModule } from './home/home-routing.module';
+import { QuizModule } from './quiz/quiz.module';
+import { QuizRoutingModule } from './quiz/quiz-routing.module';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,7 @@ import { HomeRoutingModule } from './home/home-routing.module';
     UsersRoutingModule,
     GroupsRoutingModule,
     HomeRoutingModule,
+    QuizModule,
   
     FeedsModule,
     ExamesModule,
@@ -59,6 +62,7 @@ import { HomeRoutingModule } from './home/home-routing.module';
     UsersModule,
     GroupModule,
     HomeModule,
+    QuizRoutingModule,
 
     CoreRoutingModule,
     AppRoutingModule,

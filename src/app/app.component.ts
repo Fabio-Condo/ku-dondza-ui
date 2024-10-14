@@ -16,6 +16,7 @@ export class AppComponent {
 
   showNavbar() {  
     return this.router.url !== '/login' && this.router.url !== '/home';
+    //return this.router.url !== '/login';
   }
 
   showFooter() {  

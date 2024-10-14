@@ -185,30 +185,6 @@ export class OnlineCoursesContentComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  changePageSize(event: any): void {
-    this.filtro.itensPorPagina = +event.target.value;
-    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
-    this.findCourseContentByCourseById(0, this.course.id);
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.findCourseContentByCourseById(0, this.course.id);
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-      this.findCourseContentByCourseById(0, this.course.id);
-    }
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
-  }
-
   confirmarExclusao(content: OnlineCourseContent): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',

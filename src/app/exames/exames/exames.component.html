@@ -8,7 +8,7 @@
     de Moçambique, abrangendo uma ampla
     gama de disciplinas e níveis educacionais. </p>
   <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, trabalhamos durro para obter o
-    melhor resultado. <a style="color: #007bff; text-decoration: underline;" href="">Saiba mais</a>
+    melhor resultado.
   </p>
 
   <div class="flex">
@@ -36,15 +36,10 @@
             <div class="card-content">
               <div class="content">
                 <p class="exame-name">{{exame.subject.name}}</p>
-                <p class="exam-date">ano: <span class="text-muted">{{ exame.date | date:'yyyy' }}</span></p>
-                <div class="user-info">
-                  <span class="institution-name" style="margin-right: 5px;">instituição: </span>
-                  <p class="institution-name text-muted">{{ exame.institution.name }}<span *ngIf="exame.institution.acronym">({{
-                      exame.institution.acronym }})</span>
-                  </p>
-                </div>
-                <p class="institution-type">tipo de instituição: <span class="text-muted">{{ exame.institution.type }}</span></p>
-                <p *ngIf="exame.description" class="exam-description">descrição: {{ exame.description }}</p>
+                <p class="details">ano: <span class="text-muted">{{ exame.date | date:'yyyy' }}</span></p>
+                <p class="details">instituição: <span class="text-muted">{{ exame.institution.name }}</span></p>
+                <p class="details">tipo de instituição: <span class="text-muted">{{ exame.institution.type }}</span></p>
+                <p *ngIf="exame.description" class="details">descrição: {{ exame.description }}</p>
                 <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
                   class="edit-link">editar</a>
                 <a (click)="confirmarExclusao(exame)" class="delete-link">excluir</a>
