@@ -18,7 +18,6 @@ export class GroupsComponent implements OnInit {
   selectedGroup: Group = new Group();
   group: Group = new Group();
   file!: File;
-
   displayModalSave: boolean = false;
   showLoading: boolean = false;
   currentPage: number = 1;
@@ -26,6 +25,14 @@ export class GroupsComponent implements OnInit {
   totalGroups: number = 0;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   isAdmin: boolean = true;
+
+  @ViewChild('tabela') grid: any;
+
+  filtro: GroupFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc'
+  }
 
 
   constructor(
@@ -38,14 +45,6 @@ export class GroupsComponent implements OnInit {
     this.findAll(0);
     this.buscarTotal();
   }
-
-  filtro: GroupFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc'
-  }
-
-  @ViewChild('tabela') grid: any;
 
   get editing() {
     return Boolean(this.group.id)
@@ -163,64 +162,6 @@ export class GroupsComponent implements OnInit {
     this.group = new Group();
     this.displayModalSave = true;
   }
-
-  /*
-  getGroups(): void {
-    this.showLoading = true;
-    this.groupService.getAllGroups().subscribe((data: Group[]) => {
-      this.groups = data;
-      this.showLoading = false;
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  createGroup(): void {
-    this.groupService.createGroup(this.newGroup).subscribe(group => {
-      this.groups.push(group);
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  updateGroup(): void {
-    if (this.selectedGroup && this.selectedGroup.id) {
-      this.groupService.updateGroup(this.selectedGroup.id, this.selectedGroup).subscribe(updatedGroup => {
-        this.groups = this.groups.map(group => group.id === updatedGroup.id ? updatedGroup : group);
-      },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);
-          this.showLoading = false;
-        }
-      );
-    }
-  }
-
-  deleteGroup(id: number): void {
-    this.groupService.deleteGroup(id).subscribe(() => {
-      this.groups = this.groups.filter(group => group.id !== id);
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  selectGroup(group: Group): void {
-    this.selectedGroup = { ...group };
-  }
-
-  cancelEdit(): void {
-  }
-
-  */
 
   changePageSize(event: any): void {
     this.filtro.itensPorPagina = +event.target.value;

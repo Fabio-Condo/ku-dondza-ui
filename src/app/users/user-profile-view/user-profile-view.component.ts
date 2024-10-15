@@ -49,6 +49,18 @@ export class UserProfileViewComponent implements OnInit {
   activeTabPost: number = 1;
   activeTabInfo: number = 1;
 
+  filtro: IPostFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,desc'
+  }
+
+  filtroPostsGuardados: IPostFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,desc'
+  }
+
 
   //isProfilePhoto: boolean = true;
 
@@ -70,18 +82,6 @@ export class UserProfileViewComponent implements OnInit {
       this.getUserByUserId(userId);
     }
     this.getInterests();
-  }
-
-  filtro: IPostFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'id,desc'
-  }
-
-  filtroPostsGuardados: IPostFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'id,desc'
   }
 
   setActiveTabPost(tabIndex: number) {

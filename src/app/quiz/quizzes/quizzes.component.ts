@@ -25,6 +25,14 @@ export class QuizzesComponent implements OnInit {
   isAdmin: boolean = true;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  @ViewChild('table') grid: any;
+
+  filter: QuizFilter = {
+    page: 0,
+    itemsPerPage: 5,
+    sort: 'id,asc'
+  }
+
 
   constructor(
     private quizService: QuizService,
@@ -38,14 +46,6 @@ export class QuizzesComponent implements OnInit {
     this.getTotalQuizzes();
     this.getQuizzes();
   }
-
-  filter: QuizFilter = {
-    page: 0,
-    itemsPerPage: 5,
-    sort: 'id,asc'
-  }
-
-  @ViewChild('table') grid: any;
 
   get editing() {
     return Boolean(this.quiz.id);

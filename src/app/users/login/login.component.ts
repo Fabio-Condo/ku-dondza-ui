@@ -14,6 +14,7 @@ import { User } from 'src/app/core/model/User';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  
   imagePath = './assets/scilogo.png'
   public showLoading: any;
   private subscriptions: Subscription[] = [];

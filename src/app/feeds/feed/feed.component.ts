@@ -29,62 +29,30 @@ import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-serv
 export class FeedComponent implements OnInit {
 
   showPostLikesDialog: boolean = false;
-  //showPostCommentsDialog: boolean = false;
   showConfirmDialog: boolean = false;
   showNewPostDialog: boolean = false;
-
-  selectedPost = new Post();
-
-  //npm install mime-types
-
-  subscriptions: Subscription[] = [];
-
-  imagePath = './assets/images'
-
   showLoading: boolean = false;
   showAddPostLoading: boolean = false;
+
+  selectedPost = new Post();
+  subscriptions: Subscription[] = [];
+
+
 
   feeds: Post[] = [];
   post = new Post();
   postImage: any;
   fileName: any;
-
   displayModal: boolean = false;
   selectedPostModal = new Post();
   postId: number = 0;
-
   loggedUser: User = new User;
-
   extension: any;
-
   likes: Like[] = [];
   //comments: Comment[] = [];
-
   friendRequests: User[] = []
   //friends: User[] = []
   users: User[] = [];
-
-
-  constructor(
-    private router: Router,
-    private feedsService: FeedsService,
-    private errorHandler: ErrorHandlerService,
-    private messageService: MessageService,
-    private commentService: CommentService,
-    private likeService: LikeService,
-    private commentLikeService: CommentLikeService,
-    private userService: UserService,
-    private authenticationService: AuthenticationService
-  ) { }
-
-  ngOnInit(): void {
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.loadMore();
-    //this.getFriendRequests();
-    //this.getFriends();
-    this.loadMoreUsers();
-  }
-
   totalRecords: number = 0
 
   filter: IPostFilter = {
@@ -109,6 +77,27 @@ export class FeedComponent implements OnInit {
     page: -1,
     itemsPerPage: 2,
     sort: 'firstName,asc',
+  }
+
+
+  constructor(
+    private router: Router,
+    private feedsService: FeedsService,
+    private errorHandler: ErrorHandlerService,
+    private messageService: MessageService,
+    private commentService: CommentService,
+    private likeService: LikeService,
+    private commentLikeService: CommentLikeService,
+    private userService: UserService,
+    private authenticationService: AuthenticationService
+  ) { }
+
+  ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    this.loadMore();
+    //this.getFriendRequests();
+    //this.getFriends();
+    this.loadMoreUsers();
   }
 
   loadMoreCommentsByPostId(post: Post): void {

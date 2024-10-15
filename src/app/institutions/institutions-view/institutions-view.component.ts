@@ -21,8 +21,20 @@ export class InstitutionsViewComponent implements OnInit {
   totalRegistros: number = 0
   showLoading: boolean = false;
 
+  activeTab: number = 1;
+
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  @ViewChild('tabela') grid: any;
+
+  filtro: CourseFilter = {
+    pagina: 0,
+    itensPorPagina: 10,
+    ordenamento: 'id,asc',
+    name: ''
+  }
+
 
   constructor(
     private institutionService: InstitutionService,
@@ -40,23 +52,11 @@ export class InstitutionsViewComponent implements OnInit {
     }
   }
 
-  // Variável para controlar a aba ativa
-  activeTab: number = 1;
-
   // Função para alterar a aba ativa
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
   }
   
-  @ViewChild('tabela') grid: any;
-
-  filtro: CourseFilter = {
-    pagina: 0,
-    itensPorPagina: 10,
-    ordenamento: 'id,asc',
-    name: ''
-  }
-
   getInstitutionById(id: number) {
     this.institutionService.findById(id).subscribe(
       (response) => {
@@ -70,7 +70,6 @@ export class InstitutionsViewComponent implements OnInit {
 
   findCoursesByInstitutionId(pagina: number = 0, institutionId: number): void {
     this.showLoading = true;
-    //this.filtro.pagina = pagina;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.courseService.findByInstitutionId(institutionId, this.filtro).subscribe(
       (dados: IApiResponse<Course>) => {
@@ -104,12 +103,6 @@ export class InstitutionsViewComponent implements OnInit {
     }
     return '';
   }
-
-  //aoMudarPagina(event: LazyLoadEvent) {
-  //  const pagina = event!.first! / event!.rows!;
-  //  this.filtro.itensPorPagina = event!.rows!;
-  //  this.findByInstitutionId(pagina, this.route.snapshot.params['id']);
-  //}
   
   private sendErrorNotification(message: string): void {
     if (message) {

@@ -38,6 +38,18 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   showConfirmDialog: boolean = false;
 
+  @ViewChild('tabela') grid: any;
+  @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
+
+  filtro: CourseFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc',
+    name: ''
+  }
+
+  activeTab: number = 1;
+
   imagePath = './assets/test.mp4'
 
   constructor(
@@ -61,23 +73,8 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   }
 
-  // Variável para controlar a aba ativa
-  activeTab: number = 1;
-
-  // Função para alterar a aba ativa
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
-  }
-
-  @ViewChild('tabela') grid: any;
-
-  @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
-
-  filtro: CourseFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc',
-    name: ''
   }
 
   get editing() {

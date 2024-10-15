@@ -25,11 +25,18 @@ export class OnlineCoursesComponent implements OnInit {
   file!: File;
   totalCourses: number = 0;
   displayModalFilter: boolean = false;
-
   isAdmin: boolean = true;
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  @ViewChild('tabela') grid: any;
+
+  filtro: OnlineCourseFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc'
+  }
 
   loggedUser: User = new User;
 
@@ -45,14 +52,6 @@ export class OnlineCoursesComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.buscarTotal();
     this.findAll();
-  }
-
-  @ViewChild('tabela') grid: any;
-
-  filtro: OnlineCourseFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc'
   }
 
   get editing() {

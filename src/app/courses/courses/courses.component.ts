@@ -15,21 +15,29 @@ import { CourseService } from '../courseService.service';
 })
 export class CoursesComponent implements OnInit {
 
+  // Variáveis de controle de estado
   showLoadingDownload: boolean = false;
   showLoading: boolean = false;
-  totalRegistros: number = 0
-  courses: Course[] = [];
-  course: Course = new Course;
-  displayModalSave: boolean = false;
+  totalRegistros: number = 0;
   totalCourses: number = 0;
-  institutions: any[] = [];
-
+  displayModalSave: boolean = false;
   isAdmin: boolean = true;
 
-  //paginaAtual: number = 0;
+  // Dados dos cursos
+  courses: Course[] = [];
+  course: Course = new Course();
+  institutions: any[] = [];
+
+  // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+  filtro: CourseFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc'
+  };
 
+  @ViewChild('tabela') grid: any;
 
   constructor(
     private courseService: CourseService,
@@ -41,26 +49,19 @@ export class CoursesComponent implements OnInit {
   ngOnInit(): void {
     this.buscarTotal();
     this.carregarInstituicoes();
-    this.findAll(0)
-  }
-
-  @ViewChild('tabela') grid: any;
-
-  filtro: CourseFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc'
+    this.findAll(0);
   }
 
   get editing() {
-    return Boolean(this.course.id)
+    return Boolean(this.course.id);
   }
 
+  // Métodos de CRUD
   save(courseForm: NgForm) {
     if (this.editing) {
-      this.update(courseForm)
+      this.update(courseForm);
     } else {
-      this.addNew(courseForm)
+      this.addNew(courseForm);
     }
   }
 
@@ -70,8 +71,7 @@ export class CoursesComponent implements OnInit {
       (response) => {
         this.course = response;
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Courso adicionada com sucesso!' });
-        //this.findAll(this.paginaAtual)
+        this.messageService.add({ severity: 'success', detail: 'Curso adicionado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -86,31 +86,37 @@ export class CoursesComponent implements OnInit {
       (response) => {
         this.course = response;
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' });
-        //this.findAll(this.paginaAtual)
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    )
-  }
-
-  findAll(pagina: number = 0): void {
-    this.showLoading = true;
-    //this.filtro.pagina = pagina;
-    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.courseService.findAll(this.filtro).subscribe(
-      (dados: IApiResponse<Course>) => {
-        this.courses = dados.content
-        this.totalRegistros = dados.totalElements
-        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Curso alterado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
     );
+  }
+
+  excluir(course: Course) {
+    this.courseService.excluir(course.id).subscribe(() => {
+      if (this.grid.first === 0) {
+        this.findAll();
+      }
+      this.messageService.add({ severity: 'success', detail: 'Curso excluído com sucesso!' });
+      this.buscarTotal();
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  confirmarExclusao(course: Course): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.excluir(course);
+      }
+    });
   }
 
   buscarTotal() {
@@ -127,45 +133,23 @@ export class CoursesComponent implements OnInit {
     );
   }
 
-  onUpdateCourse(course: Course): void {
-    this.course = course
-    this.course.id = course.id
-    this.displayModalSave = true;
-  }
-
-  onAddNewCourse(): void {
-    this.course = new Course();
-    this.displayModalSave = true;
-  }
-
-  excluir(course: Course) {
-    this.courseService.excluir(course.id).subscribe(() => {
-      if (this.grid.first === 0) {
-        this.findAll()
-      } else {
-        //this.grid.reset();
-        //this.findAll(this.paginaAtual)
-      }
-      this.messageService.add({ severity: 'success', detail: 'Courso excluído com sucesso!' })
-      this.buscarTotal();
-    },
+  // Métodos de carregamento
+  findAll(pagina: number = 0): void {
+    this.showLoading = true;
+    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.courseService.findAll(this.filtro).subscribe(
+      (dados: IApiResponse<Course>) => {
+        this.courses = dados.content;
+        this.totalRegistros = dados.totalElements;
+        this.showLoading = false;
+      },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
-    )
+    );
   }
 
-  confirmarExclusao(course: Course): void {
-    this.confirmationService.confirm({
-      message: 'Tem certeza que deseja excluir?',
-      accept: () => {
-        this.excluir(course);
-      }
-    });
-  }
-
-  
   carregarInstituicoes() {
     return this.institutionService.listarTodos().subscribe(
       dados => {
@@ -173,23 +157,17 @@ export class CoursesComponent implements OnInit {
           return {
             label: dado.name,
             value: dado.id
-          }
-        })
+          };
+        });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
-    )
+    );
   }
 
-  //aoMudarPagina(event: LazyLoadEvent) {
-  //  const pagina = event!.first! / event!.rows!;
-  //  this.filtro.itensPorPagina = event!.rows!;
-  //  this.findAll(pagina);
-  //  this.paginaAtual = pagina;
-  //}
-
+  // Métodos de paginação
   changePageSize(event: any): void {
     this.filtro.itensPorPagina = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
@@ -214,20 +192,31 @@ export class CoursesComponent implements OnInit {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
 
+  // Método para limpar campos
   limparCampos() {
     this.filtro.name = "";
     this.filtro.pagina = 0;
     this.filtro.itensPorPagina = 10;
-    this.filtro.ordenamento = "id,desc"
+    this.filtro.ordenamento = "id,desc";
     this.findAll();
+  }
+
+  // Métodos para abrir o modal
+  onUpdateCourse(course: Course): void {
+    this.course = course;
+    this.displayModalSave = true;
+  }
+
+  onAddNewCourse(): void {
+    this.course = new Course();
+    this.displayModalSave = true;
   }
 
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
     } else {
-      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+      this.messageService.add({ severity: 'error', detail: 'Ocorreu um erro. Por favor, tente novamente.' });
     }
   }
-
 }

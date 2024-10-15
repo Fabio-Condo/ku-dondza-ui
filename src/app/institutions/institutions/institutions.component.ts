@@ -24,10 +24,16 @@ export class InstitutionsComponent implements OnInit {
   displayModalFilter: boolean = false;
 
   isAdmin: boolean = true;
-
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  @ViewChild('tabela') grid: any;
+
+  filtro: InstitutionFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc'
+  }
 
   tiposAdministracao = [
     { label: 'Privada', value: 'PRIVATE' },
@@ -48,14 +54,6 @@ export class InstitutionsComponent implements OnInit {
   ngOnInit(): void {
     this.buscarTotal();
     this.findAll();
-  }
-
-  @ViewChild('tabela') grid: any;
-
-  filtro: InstitutionFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc'
   }
 
   get editing() {
@@ -108,7 +106,6 @@ export class InstitutionsComponent implements OnInit {
 
   findAll(pagina: number = 0): void {
     this.showLoading = true;
-    //this.filtro.pagina = pagina;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
     this.institutionService.findAll(this.filtro).subscribe(

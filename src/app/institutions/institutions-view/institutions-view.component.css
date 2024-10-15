@@ -9,7 +9,6 @@
     cursor: pointer;
     background-color: #fff;
     border-radius: 0.4rem;
-    /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
     padding: 20px;
     width: 100%;
     border: 1px solid #dcdcdc;
@@ -80,66 +79,56 @@
 }
 
 .tab-header {
-    display: flex; /* Alinha as abas horizontalmente */
-    justify-content: flex-start; /* Posiciona as abas à esquerda */
+    display: flex;
+    justify-content: flex-start;
     cursor: pointer;
     padding: 0;
     margin: 0;
     margin-bottom: 20px;
-    border-bottom: 1px solid #ccc; /* Linha de separação para as abas */
-    background: transparent; /* Remove o fundo das abas */
+    border-bottom: 1px solid #ccc;
+    background: transparent;
 }
-  
+
 .tab-link {
     text-align: center;
     padding: 15px 20px;
-    /* Espaçamento nas abas */
     text-decoration: none;
-    /* Remove a decoração de links */
     color: var(--color-black);
-    /* Cor do texto do link */
     border-bottom: 1px solid transparent;
-    /* Borda inferior transparente para efeito de seleção */
     font-weight: bold;
     min-width: 100px;
-    /* Define uma largura mínima para cada link de aba */
 }
 
 .tab-link:hover {
     color: #0056b3;
-    /* Altera a cor ao passar o mouse */
-    /*background-color: rgba(0, 85, 179, 0.1); /* Cor de fundo clara ao passar o mouse */
 }
 
 .tab-link.active {
     border-bottom: 1px solid #007bff;
-    /* Sinaliza a aba ativa com uma borda inferior */
     color: #007bff;
-    /* Cor do texto da aba ativa */
 }
 
 .tab-link:last-child {
     border-right: none;
-    /* Remove a borda direita na última aba */
 }
 
 /*course dtail*/
 .institution-container {
     display: flex;
-    flex-wrap: wrap; /* Permite quebrar linha em dispositivos menores */
-    align-items: flex-start; /* Ajuste o alinhamento para iniciar no topo */
-    justify-content: space-between; /* Distribui o espaço entre os itens */
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
     width: 100%;
     max-width: 1200px;
     overflow: hidden;
 }
-  
+
 .institution-image-container {
     flex: 1;
     max-width: 50%;
-    margin-right: 20px; /* Espaçamento entre a imagem e o texto */
+    margin-right: 20px;
 }
-  
+
 .institution-image {
     width: 100%;
     height: auto;
@@ -147,39 +136,39 @@
     object-fit: cover;
     border: 1px solid #ccc;
 }
-  
+
 .institution-details {
     flex: 2;
     padding: 20px;
 }
-  
+
 .institution-title {
     font-size: 2em;
     font-weight: bold;
     margin-bottom: 10px;
     color: var(--color-black);
 }
-  
+
 .institution-description {
     font-size: 1.1em;
     line-height: 1.5;
     margin-bottom: 20px;
     color: var(--color-black);
 }
-  
+
 .institution-meta {
     /*display: flex;*/
     justify-content: space-between;
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
-  
+
 .institution-meta p {
     margin: 0 0 10px;
     font-size: 1.1em;
     color: var(--color-black);
 }
-  
+
 .goto-button {
     padding: 15px 30px;
     font-size: 1.1rem;
@@ -190,7 +179,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-  
+
 .goto-button:hover {
     background-color: #0056b3;
 }
@@ -205,63 +194,45 @@
 }
 
 /* Responsividade */
-@media (max-width: 600px) {
-    /*.card {
-        padding: 15px;
-    }
+@media (max-width: 600px) {}
 
-    .content p {
-        font-size: 0.85rem;
-    }
-
-    .pagination-controls {
+/* MEDIA QUERIES PARA RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .institution-container {
         flex-direction: column;
-        align-items: flex-start;
+        padding: 10px;
     }
 
-    .pagination-info,
-    .select-itens-por-pagina {
-        margin-top: 10px;
-    }*/
+    .institution-image-container {
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .institution-details {
+        padding: 10px;
+    }
+
+    .institution-meta {
+        flex-direction: column;
+    }
+
+    .enroll-button {
+        width: 100%;
+        text-align: center;
+    }
 }
 
-  /* MEDIA QUERIES PARA RESPONSIVIDADE */
-  @media (max-width: 768px) {
-    .institution-container {
-      flex-direction: column; /* Empilha o conteúdo verticalmente */
-      padding: 10px;
-    }
-  
-    .institution-image-container {
-      max-width: 100%; /* Imagem ocupa 100% da largura no mobile */
-      margin-right: 0;
-      margin-bottom: 20px; /* Espaço entre a imagem e o conteúdo no mobile */
-    }
-  
-    .institution-details {
-      padding: 10px;
-    }
-  
-    .institution-meta {
-      flex-direction: column; /* Metadados empilhados no mobile */
-    }
-  
-    .enroll-button {
-      width: 100%; /* Botão ocupa toda a largura no mobile */
-      text-align: center;
-    }
-  }
-  
-  @media (max-width: 480px) {
+@media (max-width: 480px) {
     .institution-title {
-      font-size: 1.5em; /* Ajuste o tamanho do título em dispositivos muito pequenos */
+        font-size: 1.5em;
     }
-  
+
     .institution-description {
-      font-size: 1em; /* Descrição mais compacta */
+        font-size: 1em;
     }
-  
+
     .institution-meta p {
-      font-size: 1em; /* Texto menor para metadados */
+        font-size: 1em;
     }
-  }
+}

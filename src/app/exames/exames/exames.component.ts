@@ -18,34 +18,39 @@ import { Subject } from 'src/app/core/model/Subject';
 export class ExamesComponent implements OnInit {
 
   showLoading: boolean = false;
-  totalRegistros: number = 0
+  totalRegistros: number = 0;
   exams: Exam[] = [];
-  exam: Exam = new Exam;
+  exam: Exam = new Exam();
   displayModalSave: boolean = false;
   file!: File;
   totalExames: number = 0;
   displayModalFilter: boolean = false;
   institutions: any[] = [];
   subjects: any[] = [];
-
-
   isAdmin: boolean = true;
-
-  //paginaAtual: number = 0;
-
+  
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-
+  
+  filtro: ExameFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc'
+  };
+  
+  @ViewChild('tabela') grid: any;
+  
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },
     { label: 'Ensino Técnico', value: 'Ensino Técnico' },
     { label: 'Ensino Geral', value: 'Ensino Geral' },
   ];
-
+  
   examStatus = [
     { label: 'Resolvido', value: 'RESOLVED' },
     { label: 'Não Resolvido', value: 'UNRESOLVED' }
   ];
+  
 
   constructor(
     private examesService: ExamesService,
@@ -61,14 +66,6 @@ export class ExamesComponent implements OnInit {
     this.carregarDisciplinas();
     this.findAll(0);
   }
-
-  filtro: ExameFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc'
-  }
-
-  @ViewChild('tabela') grid: any;
 
   get editing() {
     return Boolean(this.exam.id)
@@ -122,7 +119,6 @@ export class ExamesComponent implements OnInit {
 
   findAll(pagina: number = 0): void {
     this.showLoading = true;
-    //this.filtro.pagina = pagina;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.examesService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<Exam>) => {
@@ -219,13 +215,6 @@ export class ExamesComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  //aoMudarPagina(event: LazyLoadEvent) {
-  //  const pagina = event!.first! / event!.rows!;
-  //  this.filtro.itensPorPagina = event!.rows!;
-  //  this.findAll(pagina);
-  //  this.paginaAtual = pagina;
-  //}
-
   public onUpdate(id: number, description: string, status: string, date: Date, subjectId: number, institutionId: number, file: File): void {
     this.exam.id = id
     this.exam.subject.id = subjectId;
@@ -266,11 +255,6 @@ export class ExamesComponent implements OnInit {
         return 'Não resolvido';
     }
     return '';
-  }
-
-  // Depois usar
-  incrementDownloadCount(currentCount: number): number {
-    return currentCount + 1;
   }
 
   download(exam: Exam, filename: string): void {
