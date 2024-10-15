@@ -3,7 +3,7 @@
 
     <div class="flex header-section">
         <div>
-            <button *ngIf="isAdmin" (click)="onAddNewQuestion()" class="add-new">Adicionar perguntas</button>
+            <!--<button *ngIf="isAdmin" (click)="onAddNewQuestion()" class="add-new">Adicionar perguntas</button>-->
         </div>
     </div>
 
@@ -18,14 +18,21 @@
             <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
 
             <div class="answer-options">
-                <label *ngFor="let answer of questions[currentQuestionIndex].answers">
+                <label *ngFor="let answer of questions[currentQuestionIndex].answers" 
+                       [ngClass]="{
+                          'correct-answer': showCorrection && answer.correct,
+                          'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
+                       }">
                     <input 
                         type="radio" 
                         name="question-{{ questions[currentQuestionIndex].id }}" 
                         [value]="answer.id" 
                         [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)" 
-                        (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)" />
-                    {{ answer.text }}
+                        (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)" 
+                        [disabled]="showCorrection" />
+                    <span>
+                        {{ answer.text }}
+                    </span>
                 </label>
             </div>
 
@@ -46,9 +53,11 @@
 
     <br>
 
-    <!-- O botão de submissão só aparece quando todas as perguntas foram visualizadas -->
+    <!-- Botão para mostrar a correção -->
     <div *ngIf="currentQuestionIndex === questions.length - 1" class="text-center">
         <button class="submit-button" (click)="submitAnswers()">Submeter Respostas</button>
+        <br>
+        <button class="submit-button" (click)="toggleCorrection()">Ver Correção</button>
     </div>
 
     <div *ngIf="showLoading" class="loading-indicator">
@@ -56,6 +65,7 @@
     </div>
 </div>
 
+<!-- Modal para Adicionar ou Editar Perguntas -->
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
         <h2>{{ editing ? 'Editando Quiz' : 'Adicionando Novo Quiz' }}</h2>

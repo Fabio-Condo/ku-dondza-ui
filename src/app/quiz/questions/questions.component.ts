@@ -260,4 +260,11 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
+  showCorrection: boolean = false;
+  // ... outras propriedades
+
+  toggleCorrection() {
+    this.showCorrection = !this.showCorrection;
+  }
+
 }
