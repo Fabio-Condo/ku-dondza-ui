@@ -30,30 +30,29 @@
 
   <table class="card-table">
     <tbody>
-      <tr *ngFor="let exame of exames">
+      <tr *ngFor="let exam of exams">
         <td>
           <div class="card">
             <div class="card-content">
               <div class="content">
-                <p class="exame-name">{{exame.subject.name}}</p>
-                <p class="details">ano: <span class="text-muted">{{ exame.date | date:'yyyy' }}</span></p>
-                <p class="details">instituição: <span class="text-muted">{{ exame.institution.name }}</span></p>
-                <p class="details">tipo de instituição: <span class="text-muted">{{ exame.institution.type }}</span></p>
-                <p *ngIf="exame.description" class="details">descrição: {{ exame.description }}</p>
-                <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
+                <p class="exame-name">{{exam.subject.name}}</p>
+                <p class="details">ano: <span class="text-muted">{{ exam.date | date:'yyyy' }}</span></p>
+                <p class="details">tEstado: <span class="text-muted">{{ getStatusValue(exam.status) }}</span></p>
+                <p class="details">instituição: <span class="text-muted">{{ exam.institution.name }}</span></p>
+                <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
+                <a (click)="onUpdate(exam.id, exam.description, exam.status, exam.date, exam.subject.id, exam.institution.id, file)"
                   class="edit-link">editar</a>
-                <a (click)="confirmarExclusao(exame)" class="delete-link">excluir</a>
+                <a (click)="confirmarExclusao(exam)" class="delete-link">excluir</a>
               </div>
 
-              <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)"
+              <button [disabled]="exam.showLoadingDownload" pButton (click)="download(exam, exam.fileName)"
                 type="button" icon="pi pi-download" class="download-button">
               </button>
-              <span *ngIf="!exame.showLoadingDownload" class="download-count">{{exame.totalDownloadNumber}}
+              <span *ngIf="!exam.showLoadingDownload" class="download-count">{{exam.totalDownloadNumber}}
                 downloads
               </span>
-              <span *ngIf="exame.showLoadingDownload" class="download-count" style="font-weight: bold;">
-                <i *ngIf="exame.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                  style="font-size: 0.6rem;"></i>
+              <span *ngIf="exam.showLoadingDownload" class="download-count" style="font-weight: bold;">
+                <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size: 0.6rem;"></i>
                 Baixando...
               </span>
 
@@ -67,16 +66,17 @@
   <!-- Paginação -->
   <div class="pagination-controls">
     <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
-        <i class="pi pi-chevron-left"></i> Anterior
+      <i class="pi pi-chevron-left"></i> Anterior
     </button>
     <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
     <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
-        Próximo <i class="pi pi-chevron-right"></i>
+      Próximo <i class="pi pi-chevron-right"></i>
     </button>
     <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-        <option *ngFor="let option of opcoesItensPorPagina" [value]="option" [selected]="option === filtro.itensPorPagina">
-            {{ option }}
-        </option>
+      <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+        [selected]="option === filtro.itensPorPagina">
+        {{ option }}
+      </option>
     </select>
     <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalExames }}</span>
   </div>
@@ -97,7 +97,7 @@
     <form autocomplete="off" #exameForm="ngForm">
       <div class="form-group">
         <label for="institution">Instituição</label>
-        <select id="institution" [(ngModel)]="exame.institution.id" name="institution" required>
+        <select id="institution" [(ngModel)]="exam.institution.id" name="institution" required>
           <option value="" disabled selected>Selecione a instituição</option>
           <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
           </option>
@@ -106,32 +106,33 @@
 
       <div class="form-group">
         <label for="subject">Disciplina</label>
-        <select id="subject" [(ngModel)]="exame.subject.id" name="subject" required>
+        <select id="subject" [(ngModel)]="exam.subject.id" name="subject" required>
           <option value="" disabled selected>Selecione a subject</option>
           <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}
           </option>
         </select>
       </div>
 
-      <!--
       <div class="form-group">
-        <label for="date">Ano</label>
-        <input type="date" name="date" view="year" dateFormat="yy" ngModel #date="ngModel" required minlength="1"
-          [(ngModel)]="exame.date">
+        <label for="status">Estado</label>
+        <select id="status" [(ngModel)]="exam.status" name="status" required>
+          <option value="" disabled selected>Selecione o estado</option>
+          <option *ngFor="let status of examStatus" [value]="status.value">{{ status.label }}
+          </option>
+        </select>
       </div>
-      -->
 
       <div class="form-group">
         <label>Ano</label>
         <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '100%'}" [showIcon]="true"
-            [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel
-            #date="ngModel" [required]="true" [(ngModel)]="exame.date"></p-calendar>
+          [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
+          [required]="true" [(ngModel)]="exam.date"></p-calendar>
       </div>
 
       <div class="form-group">
         <label for="description">Descrição</label>
         <textarea id="description" type="text" name="description" ngModel #description="ngModel" required minlength="1"
-          [(ngModel)]="exame.description" required></textarea>
+          [(ngModel)]="exam.description" required></textarea>
       </div>
 
       <div class="form-group">
@@ -200,205 +201,3 @@
     </form>
   </div>
 </div>
-
-
-<!--
-<div class="container" style="margin-top: 120px;">
-
-  <div style="display:inline;">
-    <p style="margin-top: 20px; font-size: 30px;">Exames de admissão</p>
-  </div>
-
-  <p style="margin-top: 20px; font-size: 0.85rem;">Explore a variedade de exames de admissão das instituições de ensino
-    de Moçambique, abrangendo uma ampla
-    gama de disciplinas e níveis educacionais. </p>
-  <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, trabalhamos durro para obter o
-    melhor resultado. <a style="color: #1c80cf; text-decoration: underline;" href="">Saiba mais</a>
-  </p>
-
-  <p-table [value]="exames" [paginator]="true" (onLazyLoad)="aoMudarPagina($event)" [rows]="filtro.itensPorPagina"
-    selectionMode="single" [totalRecords]="totalRegistros" [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [lazy]="true"
-    currentPageReportTemplate="Mostrando {{totalRegistros}} dos {{totalExames}}" [showCurrentPageReport]="true"
-    styleClass="p-datatable-sm" #tabela>
-
-    <ng-template pTemplate="caption">
-      <div class="flex">
-
-
-        <button *ngIf="isAdmin" class="btn btn-primary" (click)="onAddNewExame()">Novo</button>
-
-        <p style="font-size: 0.85rem; margin-top: 10px; margin-right: 10px;" class="ml-auto"> Mostrando
-          {{totalRegistros}} dos {{totalExames}}</p>
-
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input pInputText [(ngModel)]="filtro.global" (ngModelChange)="findAll()" type="text" style="width: 300px;"
-            placeholder="Pesquisa" />
-        </span>
-
-        <button (click)="onFilter()" style="margin-left: 10px; background-color: #3734ed; border: none;" type="button"
-          pButton pRipple icon="pi pi-filter"></button>
-
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="header">
-      <tr>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-exame>
-      <tr>
-        <td>
-          <p style="font-size: 0.85rem; font-weight: bold;"> {{exame.subject.name}}</p>
-          <p style="font-size: 0.85rem;">{{ exame.date | date:'yyyy' }}</p>
-        </td>
-        <td style="width: 10px;">
-          <div class="profile-pic">
-
-            <a href="javascript:;" [routerLink]="['/user/profile']">
-              <img src="{{exame.institution.urlFile}}" alt="pic 1" />
-            </a>
-
-          </div>
-        </td>
-        <td>
-          <p style="font-size: 0.8rem; font-weight: bold;">{{ exame.institution.name }} <span
-              *ngIf="exame.institution.acronym">({{ exame.institution.acronym }})</span></p>
-          <p style="font-size: 0.85rem;"> {{exame.institution.type}} </p>
-        </td>
-        <td>
-          <p style="font-size: 0.85rem;">{{ exame.description }}</p>
-        </td>
-        <td style="width: 500px;">
-          <button [disabled]="exame.showLoadingDownload" pButton (click)="download(exame, exame.fileName)" type="button"
-            icon="pi pi-download" style="height: 30px; background-color: #3734ed; border: none;"></button>
-          <span style="margin-left: 10px; font-size: 0.85rem;">{{exame.totalDownloadNumber}} downlods</span>
-
-          <span *ngIf="exame.showLoadingDownload"
-            style="margin-left: 10px; font-size: 0.85rem; color: black; font-weight: bold; padding: 2px; text-align: center;">
-            <i *ngIf="exame.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size: 0.7rem;"></i>
-            Baixando...
-          </span>
-
-        </td>
-        <td *ngIf="isAdmin" style="width: 150px;">
-          <a (click)="onUpdate(exame.id, exame.description, exame.date, exame.subject.id, exame.institution.id, file)"
-            *ngIf="isAdmin"
-            style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer;">editar</a>
-          <a (click)="confirmarExclusao(exame)" *ngIf="isAdmin"
-            style="font-size: 0.85rem; color: #1c80cf; text-decoration: underline; cursor: pointer; margin-left: 10px;">excluir</a>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="10">
-          <span *ngIf="showLoading" style="color:#1c80cf;">Carregando... </span>
-          <span *ngIf="!showLoading">Nenhum exame encontrado </span>
-          <i *ngIf="showLoading" class="pi pi-spin pi-spinner"></i>
-          <a href="javascript:;">
-            <i *ngIf="!showLoading" style="color: #1c80cf;" (click)="findAll(0)" pTooltip="Refresh"
-              class="pi pi-refresh"></i>
-          </a>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
--->
-
-<!--
-<p-dialog header="Exame {{ editing ? '- editando' : '- novo' }}" [(visible)]="displayModalSave" [modal]="true"
-  [style]="{width: '45vw'}" [draggable]="false" [resizable]="false">
-  <form enctype="multipart/form-data">
-
-    <div class="col-12 p-fluid">
-      <label>Instituição</label>
-      <p-dropdown placeholder="Selecione" [options]="institutions" [(ngModel)]="exame.institution.id" name="institution"
-        #institution="ngModel"></p-dropdown>
-    </div>
-
-    <div class="col-12 p-fluid">
-      <label>Disciplina</label>
-      <p-dropdown placeholder="Selecione" [options]="subjects" [(ngModel)]="exame.subject.id" name="subject"
-        #subject="ngModel"></p-dropdown>
-    </div>
-
-    <div class="col-12 p-fluid">
-      <label>Data</label>
-      <p-calendar name="date" view="year" dateFormat="yy" placeholder="Ex: 2024" [inputStyle]="{ 'width': '100px'}"
-        [showOnFocus]="false" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
-        [(ngModel)]="exame.date"></p-calendar>
-    </div>
-
-    <div class="col-12 p-fluid">
-      <label>Descrição</label>
-      <input pInputText type="text" name="description" ngModel #description="ngModel" minlength="1"
-        [(ngModel)]="exame.description">
-    </div>
-
-    <div class="col-12 p-fluid">
-      <fieldset>
-        <div class="form-group">
-          <div>
-            <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf"
-              class="form-control" required />
-          </div>
-        </div>
-      </fieldset>
-    </div>
-
-    <div class="col-12 p-fluid" style="margin-top: 15px;">
-      <button (click)="save()" pButton type="button" label="{{ showLoading ? 'Loading...' : 'Salvar' }}"
-        style="background-color: #3734ed; border: none;">
-      </button>
-    </div>
-  </form>
-</p-dialog>
--->
-
-<!--Filtrar-->
-<!--
-<p-dialog [header]=" 'Filtros' " [(visible)]="displayModalFilter" [style]="{width: '33vw'}" [modal]="true">
-
-  <div class="col-12 p-fluid">
-    <label>Instituição</label>
-    <p-dropdown placeholder="Selecione" [options]="institutions" [(ngModel)]="filtro.institution" name="institution"
-      #institution="ngModel" (onChange)="findAll()"></p-dropdown>
-  </div>
-
-  <div class="col-12 p-fluid">
-    <label>Disciplina</label>
-    <p-dropdown placeholder="Selecione" [options]="subjects" [(ngModel)]="filtro.subject" name="subject"
-      #subject="ngModel" (onChange)="findAll()"></p-dropdown>
-  </div>
-
-  <div class="col-12 p-fluid">
-    <label>Descrição</label>
-    <input pInputText type="text" name="description" ngModel #description="ngModel" minlength="1"
-      [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
-  </div>
-
-  <label class="col-12 p-fluid" style="margin-top: 5px;">Intervalo de datas</label>
-
-  <div class="col-12 p-fluid" style="display: flex; justify-content: space-between;">
-    <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="beginDate" [inline]="false"
-      [readonlyInput]="false" ngModel #beginDate="ngModel" [(ngModel)]="filtro.beginDate"
-      (ngModelChange)="findAll()"></p-calendar>
-
-    <span>até</span>
-
-    <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="endDate" [inline]="false"
-      [readonlyInput]="false" ngModel #endDate="ngModel" [(ngModel)]="filtro.endDate"
-      (ngModelChange)="findAll()"></p-calendar>
-
-  </div>
-
-  <div class="col-12 p-fluid" style="margin-top: 2%;">
-    <button pButton type="submit" (click)="limparCampos()" label="Reset"
-      style="margin-top: 1%; background-color: #3734ed; border: none;"></button>
-  </div>
-
-
-</p-dialog>
--->

@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs'; 
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { Exame } from '../core/model/Exame';
+import { Exam } from '../core/model/Exam';
 import { ExameFilter } from '../core/interface/ExameFilter';
 import { DatePipe } from '@angular/common';
 
@@ -14,7 +14,7 @@ export class ExamesService {
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
-  findAll(filtro: ExameFilter): Observable<IApiResponse<Exame>> {
+  findAll(filtro: ExameFilter): Observable<IApiResponse<Exam>> {
 
     let params = new HttpParams()
       .set('page', filtro.pagina)
@@ -49,29 +49,31 @@ export class ExamesService {
       }
 
 
-    return this.http.get<IApiResponse<Exame>>(`${this.host}/filter`, { params });
+    return this.http.get<IApiResponse<Exam>>(`${this.host}/filter`, { params });
 
   }
 
-  save(description: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exame> {
+  save(description: string, status: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('description', description);
+    formData.append('status', status)
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
     formData.append('institutionId', institutionId.toString());
     formData.append('file', file);
-    return this.http.post<Exame>(`${this.host}`, formData);
+    return this.http.post<Exam>(`${this.host}`, formData);
   }
   
-  update(id: number, description: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exame> {
+  update(id: number, description: string, status: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('id', id.toString());
     formData.append('description', description);
+    formData.append('status', status)
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
     formData.append('institutionId', institutionId.toString());
     formData.append('file', file);
-    return this.http.put<Exame>(`${this.host}`, formData);
+    return this.http.put<Exam>(`${this.host}`, formData);
   }
 
   excluir(id: number): Observable<void> {

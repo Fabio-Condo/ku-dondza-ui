@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ExamesService } from '../exames.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { Exame } from 'src/app/core/model/Exame';
+import { Exam } from 'src/app/core/model/Exam';
 import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -19,8 +19,8 @@ export class ExamesComponent implements OnInit {
 
   showLoading: boolean = false;
   totalRegistros: number = 0
-  exames: Exame[] = [];
-  exame: Exame = new Exame;
+  exams: Exam[] = [];
+  exam: Exam = new Exam;
   displayModalSave: boolean = false;
   file!: File;
   totalExames: number = 0;
@@ -40,6 +40,11 @@ export class ExamesComponent implements OnInit {
     { label: 'Ensino Superior', value: 'Ensino Superior' },
     { label: 'Ensino Técnico', value: 'Ensino Técnico' },
     { label: 'Ensino Geral', value: 'Ensino Geral' },
+  ];
+
+  examStatus = [
+    { label: 'Resolvido', value: 'RESOLVED' },
+    { label: 'Não Resolvido', value: 'UNRESOLVED' }
   ];
 
   constructor(
@@ -66,7 +71,7 @@ export class ExamesComponent implements OnInit {
   @ViewChild('tabela') grid: any;
 
   get editing() {
-    return Boolean(this.exame.id)
+    return Boolean(this.exam.id)
   }
 
   save() {
@@ -79,10 +84,10 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exame.id, this.exame.description, this.exame.date, this.exame.subject.id!, this.exame.institution.id, this.file).subscribe(
+    this.examesService.update(this.exam.id, this.exam.description, this.exam.status, this.exam.date, this.exam.subject.id!, this.exam.institution.id, this.file).subscribe(
       response => {
-        this.exame = response
-        this.exame.date = new Date(this.exame.date);
+        this.exam = response
+        this.exam.date = new Date(this.exam.date);
         this.messageService.add({ severity: 'success', detail: 'Exame actualizado com sucesso!' });
         this.showLoading = false;
         this.findAll();
@@ -96,10 +101,10 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exame.description, this.exame.date, this.exame.subject.id!, this.exame.institution.id, this.file).subscribe(
+    this.examesService.save(this.exam.description, this.exam.status, this.exam.date, this.exam.subject.id!, this.exam.institution.id, this.file).subscribe(
       response => {
-        this.exame = response
-        this.exame.date = new Date(this.exame.date);
+        this.exam = response
+        this.exam.date = new Date(this.exam.date);
         this.messageService.add({ severity: 'success', detail: 'Exame salvo com sucesso!' });
         this.showLoading = false;
         this.findAll();
@@ -120,8 +125,8 @@ export class ExamesComponent implements OnInit {
     //this.filtro.pagina = pagina;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.examesService.findAll(this.filtro).subscribe(
-      (dados: IApiResponse<Exame>) => {
-        this.exames = dados.content
+      (dados: IApiResponse<Exam>) => {
+        this.exams = dados.content
         this.totalRegistros = dados.totalElements
         this.showLoading = false;
       },
@@ -132,14 +137,14 @@ export class ExamesComponent implements OnInit {
     );
   }
 
-  excluir(exame: Exame) {
-    this.examesService.excluir(exame.id!).subscribe(() => {
+  excluir(exam: Exam) {
+    this.examesService.excluir(exam.id!).subscribe(() => {
       if (this.grid.first === 0) {
         this.findAll();
       } else {
         this.grid.reset();
       }
-      this.messageService.add({ severity: 'success', detail: 'Exames excluído com sucesso!' })
+      this.messageService.add({ severity: 'success', detail: 'Exame excluído com sucesso!' })
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -148,11 +153,11 @@ export class ExamesComponent implements OnInit {
     )
   }
 
-  confirmarExclusao(exame: Exame): void {
+  confirmarExclusao(exam: Exam): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
-        this.excluir(exame);
+        this.excluir(exam);
       }
     });
   }
@@ -206,7 +211,7 @@ export class ExamesComponent implements OnInit {
   }
 
   onAddNewExame(): void {
-    this.exame = new Exame();
+    this.exam = new Exam();
     this.displayModalSave = true;
   }
 
@@ -221,14 +226,15 @@ export class ExamesComponent implements OnInit {
   //  this.paginaAtual = pagina;
   //}
 
-  public onUpdate(id: number, description: string, date: Date, subjectId: number, institutionId: number, file: File): void {
-    this.exame.id = id
-    this.exame.subject.id = subjectId;
-    this.exame.institution.id = institutionId;
-    this.exame.description = description;
+  public onUpdate(id: number, description: string, status: string, date: Date, subjectId: number, institutionId: number, file: File): void {
+    this.exam.id = id
+    this.exam.subject.id = subjectId;
+    this.exam.institution.id = institutionId;
+    this.exam.description = description;
+    this.exam.status = status;
     this.file = file;
-    this.exame.date = date;
-    this.exame.date = new Date(this.exame.date);
+    this.exam.date = date;
+    this.exam.date = new Date(this.exam.date);
     this.displayModalSave = true;
   }
 
@@ -252,14 +258,24 @@ export class ExamesComponent implements OnInit {
     return '';
   }
 
+  getStatusValue(type: string) {
+    switch (type) {
+      case 'RESOLVED':
+        return 'Resolvido';
+      case 'UNRESOLVED':
+        return 'Não resolvido';
+    }
+    return '';
+  }
+
   // Depois usar
   incrementDownloadCount(currentCount: number): number {
     return currentCount + 1;
   }
 
-  download(exame: Exame, filename: string): void {
-    exame.showLoadingDownload = true;
-    this.examesService.download(exame.id, filename).subscribe((data: Blob) => {
+  download(exam: Exam, filename: string): void {
+    exam.showLoadingDownload = true;
+    this.examesService.download(exam.id, filename).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
       // Criar um link temporário para o Blob
@@ -275,7 +291,7 @@ export class ExamesComponent implements OnInit {
       // Limpar o link após o download iniciar
       window.URL.revokeObjectURL(link.href);
       //this.findAll(this.paginaAtual)
-      exame.showLoadingDownload = false;
+      exam.showLoadingDownload = false;
     });
   }
 

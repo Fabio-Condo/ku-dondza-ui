@@ -1,10 +1,10 @@
 import { Institution } from "./Institution";
 import { Subject } from "./Subject";
 
-export class Exame {
+export class Exam {
     id!: number;
-    //subject!: string;
     description: string = '';
+    status!: string; // RESOLVED, UNRESOLVED
     fileName!: string;
     urlFile!: string;
     date!: Date;
