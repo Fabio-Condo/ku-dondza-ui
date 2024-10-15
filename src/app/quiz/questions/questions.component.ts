@@ -17,32 +17,34 @@ import { Answer } from 'src/app/core/model/Answer';
   styleUrls: ['./questions.component.css']
 })
 export class QuestionsComponent implements OnInit {
-
-  quiz: Quiz = new Quiz;
+  quiz: Quiz = new Quiz();
   questions: Question[] = [];
-  totalRegistros: number = 0
+  totalRegistros: number = 0;
   showLoading: boolean = false;
-
   displayModalSave: boolean = false;
-  question: Question = new Question;
-
+  question: Question = new Question();
   isAdmin: boolean = true;
-
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-
   answer?: Answer;
-  answwers: Array<Answer> = []
+  answers: Array<Answer> = [];
   showAnswerForm = false;
   answerIndex?: number;
-
   fileToUpload!: File;
-
   currentQuestionIndex: number = 0;
 
   // Armazenar as respostas do usuário
   userAnswers: { questionId: number; answerId: number }[] = [];
   result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
+  showCorrection: boolean = false;
+
+  @ViewChild('tabela') grid: any;
+
+  filtro: QuestionFilter = {
+    page: 0,
+    itemsPerPage: 105,
+    sort: 'id,asc'
+  };
 
   constructor(
     private quizService: QuizService,
@@ -50,8 +52,8 @@ export class QuestionsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -61,18 +63,11 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
-  @ViewChild('tabela') grid: any;
-
-  filtro: QuestionFilter = {
-    page: 0,
-    itemsPerPage: 105,
-    sort: 'id,asc'
-  }
-
   get editing() {
     return Boolean(this.question.id);
   }
 
+  // Métodos de gerenciamento de questões
   save(questionForm: NgForm) {
     if (this.editing) {
       this.updateQuestion(questionForm);
@@ -110,7 +105,6 @@ export class QuestionsComponent implements OnInit {
 
   addNewQuestion(questionForm: NgForm) {
     this.question.quiz.id = this.quiz.id;
-    console.log("id: " + this.question.quiz.id);
     this.showLoading = true;
     this.questionService.add(this.question).subscribe(
       (question) => {
@@ -151,7 +145,7 @@ export class QuestionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-  // Answers
+  // Métodos de gerenciamento de respostas
   getReadyNewAnswer() {
     this.showAnswerForm = true;
     this.answer = new Answer();
@@ -185,7 +179,6 @@ export class QuestionsComponent implements OnInit {
   onUpdateQuestionImage(question: Question, event: any) {
     if (event.target.files.length > 0) {
       this.fileToUpload = event.target.files[0];
-
       this.questionService.updateQuestionImage(question.id, this.fileToUpload).subscribe(
         response => {
           question = response;
@@ -231,7 +224,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   // Método para exibir os resultados
-  private displayResults() {
+  displayResults() {
     const message = `Você acertou ${this.result.correctAnswers} resposta(s) e errou ${this.result.incorrectAnswers} resposta(s).`;
     this.messageService.add({ severity: 'info', detail: message });
   }
@@ -260,11 +253,7 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
-  showCorrection: boolean = false;
-  // ... outras propriedades
-
   toggleCorrection() {
     this.showCorrection = !this.showCorrection;
   }
-
 }

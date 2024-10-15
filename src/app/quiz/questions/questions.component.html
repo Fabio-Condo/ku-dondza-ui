@@ -55,9 +55,8 @@
 
     <!-- Botão para mostrar a correção -->
     <div *ngIf="currentQuestionIndex === questions.length - 1" class="text-center">
-        <button class="submit-button" (click)="submitAnswers()">Submeter Respostas</button>
+        <button class="submit-button" (click)="submitAnswers(); toggleCorrection()">Submeter Respostas</button>
         <br>
-        <button class="submit-button" (click)="toggleCorrection()">Ver Correção</button>
     </div>
 
     <div *ngIf="showLoading" class="loading-indicator">
