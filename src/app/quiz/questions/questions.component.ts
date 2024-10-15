@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { AuthenticationService } from 'src/app/users/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
@@ -39,6 +38,11 @@ export class QuestionsComponent implements OnInit {
 
   fileToUpload!: File;
 
+  currentQuestionIndex: number = 0;
+
+  // Armazenar as respostas do usuário
+  userAnswers: { questionId: number; answerId: number }[] = [];
+  result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
 
   constructor(
     private quizService: QuizService,
@@ -71,9 +75,9 @@ export class QuestionsComponent implements OnInit {
 
   save(questionForm: NgForm) {
     if (this.editing) {
-      this.updateQuestion(questionForm)
+      this.updateQuestion(questionForm);
     } else {
-      this.addNewQuestion(questionForm)
+      this.addNewQuestion(questionForm);
     }
   }
 
@@ -93,8 +97,8 @@ export class QuestionsComponent implements OnInit {
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.questionService.findQuestionsByQuizId(quizId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
-        this.questions = dados.content
-        this.totalRegistros = dados.totalElements
+        this.questions = dados.content;
+        this.totalRegistros = dados.totalElements;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -104,9 +108,9 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
-  addNewQuestion(questioForm: NgForm) {
+  addNewQuestion(questionForm: NgForm) {
     this.question.quiz.id = this.quiz.id;
-    console.log("id: " + this.question.quiz.id)
+    console.log("id: " + this.question.quiz.id);
     this.showLoading = true;
     this.questionService.add(this.question).subscribe(
       (question) => {
@@ -121,8 +125,7 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
-  updateQuestion(questioForm: NgForm) {
-    //this.question.quiz = this.quiz;
+  updateQuestion(questionForm: NgForm) {
     this.showLoading = true;
     this.questionService.update(this.question).subscribe(
       (question) => {
@@ -134,12 +137,12 @@ export class QuestionsComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
-    )
+    );
   }
 
   onUpdateQuestion(question: Question): void {
-    this.question = question
-    this.question.id = question.id
+    this.question = question;
+    this.question.id = question.id;
     this.displayModalSave = true;
   }
 
@@ -148,7 +151,7 @@ export class QuestionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-  // Answeres
+  // Answers
   getReadyNewAnswer() {
     this.showAnswerForm = true;
     this.answer = new Answer();
@@ -179,14 +182,6 @@ export class QuestionsComponent implements OnInit {
     this.question.answers.splice(index, 1);
   }
 
-  private sendErrorNotification(message: string): void {
-    if (message) {
-      this.messageService.add({ severity: 'error', detail: message });
-    } else {
-      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
-    }
-  }
-
   onUpdateQuestionImage(question: Question, event: any) {
     if (event.target.files.length > 0) {
       this.fileToUpload = event.target.files[0];
@@ -203,9 +198,6 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
-
-  currentQuestionIndex: number = 0;
-
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
@@ -217,11 +209,6 @@ export class QuestionsComponent implements OnInit {
       this.currentQuestionIndex++;
     }
   }
-
-
-  // Adicione as propriedades para armazenar respostas
-  userAnswers: { questionId: number; answerId: number }[] = [];
-  result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
 
   // Método para submeter as respostas
   submitAnswers() {
@@ -259,5 +246,18 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
+  // Método para verificar se uma opção foi selecionada
+  isSelected(questionId: number, answerId: number): boolean {
+    const userAnswer = this.userAnswers.find(answer => answer.questionId === questionId);
+    return userAnswer ? userAnswer.answerId === answerId : false;
+  }
+
+  private sendErrorNotification(message: string): void {
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
+  }
 
 }
