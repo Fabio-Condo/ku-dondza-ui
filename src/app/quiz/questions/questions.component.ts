@@ -94,7 +94,8 @@ export class QuestionsComponent implements OnInit {
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Question added successfully' });
         questionForm.reset(); // Reseta o formulário
-        this.displayModalSave = false; // Fecha o modal
+        //this.displayModalSave = false; // Fecha o modal
+        this.findQuestionsByQuizId(0, question.quiz.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -118,7 +119,8 @@ export class QuestionsComponent implements OnInit {
         this.question = question;
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Question updated successfully!' });
-        this.displayModalSave = false; // Fecha o modal
+        //this.displayModalSave = false; // Fecha o modal
+        this.findQuestionsByQuizId(0, question.quiz.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
