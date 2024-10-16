@@ -35,7 +35,7 @@
               <div class="content">
                 <p class="exame-name">{{exam.subject.name}}</p>
                 <p class="details">ano: <span class="text-muted">{{ exam.date | date:'yyyy' }}</span></p>
-                <p class="details">tEstado: <span class="text-muted">{{ getStatusValue(exam.status) }}</span></p>
+                <p class="details">Estado: <span class="text-muted">{{ getStatusValue(exam.status) }}</span></p>
                 <p class="details">instituição: <span class="text-muted">{{ exam.institution.name }}</span></p>
                 <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
                 <a (click)="onUpdate(exam.id, exam.description, exam.status, exam.date, exam.subject.id, exam.institution.id, file)" class="edit-link">editar</a>

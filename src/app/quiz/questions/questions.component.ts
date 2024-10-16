@@ -38,6 +38,8 @@ export class QuestionsComponent implements OnInit {
   result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
   showCorrection: boolean = false;
 
+  correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
+
   @ViewChild('tabela') grid: any;
 
   filtro: QuestionFilter = {
@@ -53,7 +55,7 @@ export class QuestionsComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -67,13 +69,62 @@ export class QuestionsComponent implements OnInit {
     return Boolean(this.question.id);
   }
 
-  // Métodos de gerenciamento de questões
+  // Método de salvar
   save(questionForm: NgForm) {
     if (this.editing) {
       this.updateQuestion(questionForm);
     } else {
       this.addNewQuestion(questionForm);
     }
+  }
+
+  // Método para adicionar nova pergunta
+  addNewQuestion(questionForm: NgForm) {
+    this.question.quiz = this.quiz; 
+    this.showLoading = true;
+
+    // Marcar a resposta correta
+    this.question.answers.forEach(answer => {
+      answer.correct = (answer.text === this.correctAnswer); // Define a resposta correta
+    });
+
+    this.questionService.add(this.question).subscribe(
+      (question) => {
+        this.question = question;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Question added successfully' });
+        questionForm.reset(); // Reseta o formulário
+        this.displayModalSave = false; // Fecha o modal
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  // Método para atualizar pergunta
+  updateQuestion(questionForm: NgForm) {
+    this.question.quiz = this.quiz; 
+    this.showLoading = true;
+
+    // Marcar a resposta correta
+    this.question.answers.forEach(answer => {
+      answer.correct = (answer.text === this.correctAnswer); // Define a resposta correta
+    });
+
+    this.questionService.update(this.question).subscribe(
+      (question) => {
+        this.question = question;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Question updated successfully!' });
+        this.displayModalSave = false; // Fecha o modal
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   getQuizById(id: number) {
@@ -103,41 +154,15 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
-  addNewQuestion(questionForm: NgForm) {
-    this.question.quiz.id = this.quiz.id;
-    this.showLoading = true;
-    this.questionService.add(this.question).subscribe(
-      (question) => {
-        this.question = question;
-        this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Question added successfully' });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  updateQuestion(questionForm: NgForm) {
-    this.showLoading = true;
-    this.questionService.update(this.question).subscribe(
-      (question) => {
-        this.question = question;
-        this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Question updated successfully!' });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
   onUpdateQuestion(question: Question): void {
     this.question = question;
     this.question.id = question.id;
     this.displayModalSave = true;
+
+    // Captura a resposta correta (assumindo que a propriedade correta está na classe Question)
+    const correctAnswerObj = this.question.answers.find(answer => answer.correct);
+    this.correctAnswer = correctAnswerObj ? correctAnswerObj.text : undefined; // Armazena o texto da resposta correta
+
   }
 
   onAddNewQuestion(): void {

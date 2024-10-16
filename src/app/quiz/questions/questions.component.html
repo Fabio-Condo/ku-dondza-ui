@@ -3,7 +3,7 @@
 
     <div class="flex header-section">
         <div>
-            <!--<button *ngIf="isAdmin" (click)="onAddNewQuestion()" class="add-new">Adicionar perguntas</button>-->
+            <button *ngIf="isAdmin" (click)="onAddNewQuestion()" class="add-new">Adicionar perguntas</button>
         </div>
     </div>
 
@@ -77,18 +77,19 @@
                        id="questionText" 
                        name="text" 
                        ngModel 
-                       #text="ngModel" 
                        required 
                        minlength="1" 
                        [(ngModel)]="question.text" />
             </div>
 
-            <input *ngIf="!editingAnswer" 
-                   (change)="onUpdateQuestionImage(question, $event)" 
-                   type="file" 
-                   id="cover-upload" 
-                   class="upload-input" 
-                   accept="image/*">
+            <div class="form-group">
+                <label>Imagem da Pergunta</label>
+                <input 
+                    (change)="onUpdateQuestionImage(question, $event)" 
+                    type="file" 
+                    class="upload-input" 
+                    accept="image/*">
+            </div>
 
             <div class="answers-container">
                 <div class="header-section">
@@ -106,7 +107,7 @@
                     </ng-template>
 
                     <ng-template pTemplate="body" let-answer let-rowIndex="rowIndex">
-                        <tr [pSelectableRow]="answer">
+                        <tr>
                             <td>{{ answer.text }}</td>
                             <td>{{ answer.correct ? 'Sim' : 'Não' }}</td>
                             <td class="actions">
@@ -128,12 +129,22 @@
                 </p-table>
             </div>
 
+            <div class="form-group">
+                <label>Resposta Correta</label>
+                <select [(ngModel)]="correctAnswer" name="correctAnswer" required>
+                    <option *ngFor="let answer of question.answers" [value]="answer.text">
+                        {{ answer.text }}
+                    </option>
+                </select>
+            </div>
+
             <button type="submit" [disabled]="questionForm.invalid" class="btn">
                 {{ showLoading ? 'Loading...' :'Salvar' }}
             </button>
         </form>
     </div>
 </div>
+
 
 <p-dialog [header]="editingAnswer ? 'Edição' : 'Novo'" [(visible)]="showAnswerForm" [modal]="true" *ngIf="answer">
     <form #frmAnswer="ngForm" (ngSubmit)="confirmAnswer(frmAnswer)">
@@ -148,14 +159,7 @@
                    #textModel="ngModel" 
                    placeholder="Digite a resposta" />
         </div>
-        <div class="col-12 p-fluid">
-            <label for="correct">É a correta?</label>
-            <p-dropdown id="correct" 
-                         [options]="[{label: 'Sim', value: true}, {label: 'Não', value: false}]"
-                         [(ngModel)]="answer.correct" 
-                         name="correct" 
-                         placeholder="Selecione uma opção"></p-dropdown>
-        </div>
+
         <div class="col-12 p-fluid">
             <button pButton type="submit" label="Confirmar" 
                     [disabled]="frmAnswer.invalid" 
