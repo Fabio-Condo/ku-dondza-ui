@@ -17,6 +17,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { QuestionsComponent } from './questions/questions.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 
@@ -41,6 +42,7 @@ import { QuestionsComponent } from './questions/questions.component';
     DividerModule,
     CalendarModule,
     ProgressBarModule,
+    CKEditorModule, 
 
     RouterModule,
     TagModule,

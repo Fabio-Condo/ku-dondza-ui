@@ -10,6 +10,8 @@ import { QuestionService } from '../question.service';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { NgForm } from '@angular/forms';
 import { Answer } from 'src/app/core/model/Answer';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 @Component({
   selector: 'app-questions',
@@ -64,6 +66,9 @@ export class QuestionsComponent implements OnInit {
       this.findQuestionsByQuizId(0, id);
     }
   }
+
+  public Editor = ClassicEditor;  // Associa o editor clássico ao componente
+  public postContent: string = ''; // Propriedade para armazenar o conteúdo do editor
 
   get editing() {
     return Boolean(this.question.id);
