@@ -148,53 +148,56 @@ nav .profile-pic img {
   top: 100%; /* Alinha o menu logo abaixo do botão */
   right: 0; /* Colar ao botão */
   background: white;
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 1rem;
   display: none;
   z-index: 1000;
-  width: 300px; /* Tornando o menu mais largo */
-  max-width: 400px;
+  width: 400px; /* Largura do menu */
 }
 
 .menu-dropdown.large.active {
-  display: block;
+  display: grid; /* Usar grid para layout */
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+  gap: 0.5rem; /* Espaço entre os itens */
 }
 
 .menu-dropdown ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  display: contents; /* Faz com que o ul não quebre o grid */
 }
 
 .menu-dropdown ul li {
-  padding: 0.5rem 0;
+  text-align: center; /* Centraliza texto e ícone */
   cursor: pointer;
 }
 
-.menu-dropdown ul li:hover {
-  background-color: var(--color-light);
-}
-
 .menu-dropdown ul li a {
-  text-decoration: none;
+  display: flex;
+  flex-direction: column; /* Coloca ícone acima do texto */
+  align-items: center; /* Alinha os itens ao centro */
   color: var(--color-dark);
-  font-size: 1rem;
+  font-size: 0.9rem; /* Tamanho da fonte */
   font-weight: bold;
+  text-decoration: none; /* Remove sublinhado */
+  padding: 0.5rem;
+  transition: background-color 0.2s ease; /* Transição suave ao passar o mouse */
 }
 
 .menu-dropdown ul li a:hover {
-  color: var(--color-primary);
+  background-color: var(--color-light); /* Cor de fundo ao passar o mouse */
 }
 
-/* Esconde a barra de pesquisa, o popout de resultados e os links de navegação em dispositivos pequenos */
+.menu-dropdown ul li a i {
+  margin-bottom: 0.25rem; /* Espaço entre o ícone e o texto */
+  color: var(--color-primary); /* Altera a cor do ícone */
+}
+
+/* Media query para ajustar em telas menores */
 @media (max-width: 768px) {
-  .search-bar {
-    display: none; /* Esconde a barra de pesquisa */
-  }
-
-  .search-results-popup {
-    display: none; /* Esconde o popout de resultados */
+  .menu-dropdown.large {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas em dispositivos pequenos */
   }
 }
+
+
 
