@@ -257,6 +257,7 @@ export class FeedComponent implements OnInit {
   checkIfLiked(post: Post): void {
     this.likeService.checkIfLiked(post.id).subscribe(response => {
       post.isLiked = response;
+      console.log(response)
     }, error => {
       console.error('Erro ao verificar se o post foi curtido:', error);
     });

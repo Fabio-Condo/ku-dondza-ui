@@ -140,9 +140,10 @@
           <div class="action-button">
             <div class="interaction-button">
               <a style="cursor: pointer;" (click)="toggleLike(feed)">
-                <i class="pi" [ngClass]="{'pi-thumbs-up-fill': feed.isLiked, 'pi-thumbs-up': !feed.isLiked}"
-                  style="font-size: 1.1rem;" [style.color]="feed.isLiked ? '#3734ed' : ''"></i>
+                <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked" style="font-size: 1.1rem;"></i>
+                <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
               </a>
+              
               <a style="cursor: pointer; margin-left: 0.7rem;" (click)="toggleShowInputComment(feed)">
                 <i class="pi pi-comment" style="font-size: 1.1rem;"></i>
               </a>
