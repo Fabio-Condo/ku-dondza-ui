@@ -50,18 +50,6 @@ nav .logo {
   color: var(--color-gray);
 }
 
-nav .nav-center {
-  display: flex;
-  align-items: center;
-}
-
-.menu-item {
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: whitesmoke;
-  margin: 1rem;
-}
-
 .active {
   font-size: 1.0rem;
   text-decoration: none;
@@ -132,55 +120,69 @@ nav .profile-pic img {
   height: 30px;
 }
 
-
-/* Menu de hambúrguer */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  padding: 1rem;
-  color: red;
+/* Estilizar o botão do menu */
+.menu-button {
+  position: relative;
 }
 
-.hamburger span {
-  height: 3px;
-  background: white;
-  margin: 4px 0;
-  transition: 0.4s;
-}
-
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  left: -250px;
-  top: 0;
-  width: 250px;
-  height: 100%;
+.menu-button .menu-icon {
   background: var(--color-primary);
-  padding: 2rem 1rem;
-  transition: left 0.3s ease;
-  z-index: 100;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.sidebar.active {
-  left: 0;
+.menu-button .menu-icon:hover {
+  /*background: var(--color-dark);*/
 }
 
-.sidebar .menu-item {
+/* Menu dropdown grande */
+.menu-dropdown.large {
+  position: absolute;
+  top: 100%; /* Alinha o menu logo abaixo do botão */
+  right: 0; /* Colar ao botão */
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  display: none;
+  z-index: 1000;
+  width: 300px; /* Tornando o menu mais largo */
+  max-width: 400px;
+}
+
+.menu-dropdown.large.active {
   display: block;
-  padding: 1rem 0;
-  color: whitesmoke;
-  font-weight: bold;
+}
+
+.menu-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-dropdown ul li {
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+
+.menu-dropdown ul li:hover {
+  background-color: var(--color-light);
+}
+
+.menu-dropdown ul li a {
   text-decoration: none;
+  color: var(--color-dark);
+  font-size: 1rem;
+  font-weight: bold;
 }
 
-.sidebar .menu-item.active {
-  border-bottom: 4px solid whitesmoke;
-}
-
-.sidebar .menu-item:hover {
-  color: whitesmoke;
-  border-bottom: 4px solid #5553ec;
+.menu-dropdown ul li a:hover {
+  color: var(--color-primary);
 }
 
 /* Esconde a barra de pesquisa, o popout de resultados e os links de navegação em dispositivos pequenos */
@@ -192,22 +194,5 @@ nav .profile-pic img {
   .search-results-popup {
     display: none; /* Esconde o popout de resultados */
   }
-
-  .nav-center {
-    display: none; /* Esconde todos os links de navegação */
-  }
-
-  .hamburger {
-    display: flex; /* Exibe o menu de hambúrguer */
-  }
-
-  .sidebar {
-    display: block; /* Exibe a barra lateral */
-  }
 }
-
-
-
-
-
 

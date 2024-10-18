@@ -19,7 +19,6 @@ export class NavbarComponent implements OnInit {
   loggedUser: User = new User();
   searchQuery: string = '';
   results: SearchResultDTO[] = [];// Defina o tipo mais específico para os resultados
-  isSidebarActive: boolean = false;
 
   constructor(
     private router: Router,
@@ -28,6 +27,12 @@ export class NavbarComponent implements OnInit {
     private authenticationService: AuthenticationService,
   ) { }
 
+  isMenuActive = false; // Controla a exibição do menu
+
+  toggleMenu() {
+    this.isMenuActive = !this.isMenuActive;
+  }
+
   ngOnInit(): void {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
@@ -35,10 +40,6 @@ export class NavbarComponent implements OnInit {
 
   goToProfile() {
     this.router.navigate(['/user/profile', this.loggedUser.userId]);
-  }
-
-  toggleSidebar() {
-    this.isSidebarActive = !this.isSidebarActive;
   }
 
   isActive(url: string): boolean {

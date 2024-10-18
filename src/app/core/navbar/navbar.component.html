@@ -1,3 +1,5 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 <nav>
   <div class="container">
     <div class="nav-left">
@@ -21,45 +23,46 @@
       </div>
     </div>
 
-    <div class="hamburger" (click)="toggleSidebar()">
-      <i class="pi pi-bars"></i>
-    </div>
-
-    <div class="nav-center">
-      <span *ngIf="isUserLoggedIn">
-        <!--
-        <a class="menu-item" [class.active]="isActive('/home')" routerLink="/home">
-          <span>Home</span>
-        </a>
-        -->
-        <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
-          <span>Feed</span>
-        </a>
-        <a class="menu-item" [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
-          <span>Instituições</span>
-        </a>
-        <a class="menu-item" [class.active]="isActive('/cursos')" routerLink="/cursos">
-          <span>Cursos</span>
-        </a>
-        <a class="menu-item" [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">
-          <span>Cursos online</span>
-        </a>
-        <a class="menu-item" [class.active]="isActive('/exames')" routerLink="/exames">
-          <span>Exames</span>
-        </a>
-        <a class="menu-item" [class.active]="isActive('/quizzes')" routerLink="/quizzes">
-          <span>Quizzes</span>
-        </a>
-        <a class="menu-item" [class.active]="isActive('/grupos')" routerLink="/grupos">
-          <span>Grupos</span>
-        </a>
-        <a class="menu-item" [class.active]="isActive('/users')" routerLink="/users">
-          <span>Usuários</span>
-        </a>
-      </span>
-    </div>
-
+    
     <div class="create" *ngIf="isUserLoggedIn">
+      <!-- Botão grande do menu -->
+      <div class="menu-button">
+        <button (click)="toggleMenu()" class="menu-icon">
+          <!--<i class="pi pi-bars"></i>-->
+          <i class="fas fa-th"></i>
+        </button>
+
+        <!-- Menu dropdown grande -->
+        <div class="menu-dropdown large" [class.active]="isMenuActive">
+          <ul (click)="toggleMenu()">
+            <li [class.active]="isActive('/feed')" routerLink="/feed" >
+              <a class="menu-item">Feed</a>
+            </li>
+            <li [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
+              <a class="menu-item">Instituições
+              </a>
+            </li>
+            <li [class.active]="isActive('/cursos')" routerLink="/cursos">
+              <a class="menu-item">Cursos</a>
+            </li>
+            <li [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">
+              <a class="menu-item">Cursos online</a>
+            </li>
+            <li [class.active]="isActive('/exames')" routerLink="/exames">
+              <a class="menu-item">Exames</a>
+            </li>
+            <li [class.active]="isActive('/quizzes')" routerLink="/quizzes">
+              <a class="menu-item">Quizzes</a>
+            </li>
+            <li [class.active]="isActive('/grupos')" routerLink="/grupos">
+              <a class="menu-item">Grupos</a>
+            </li>
+            <li [class.active]="isActive('/users')" routerLink="/users">
+              <a class="menu-item">Usuários</a>
+            </li>
+          </ul>
+        </div>
+      </div>
       <div class="profile-pic">
         <a (click)="goToProfile()">
           <img src="{{loggedUser.profileImageUrl}}" alt="Profile picture" />
@@ -68,24 +71,3 @@
     </div>
   </div>
 </nav>
-
-<!-- Navbar lateral para dispositivos pequenos -->
-<div class="sidebar" [class.active]="isSidebarActive">
-  <span *ngIf="isUserLoggedIn">
-    <a class="menu-item" [class.active]="isActive('/feed')" routerLink="/feed">
-      <span>Feed</span>
-    </a>
-    <a class="menu-item" [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
-      <span>Instituições</span>
-    </a>
-    <a class="menu-item" [class.active]="isActive('/cursos')" routerLink="/cursos">
-      <span>Cursos</span>
-    </a>
-    <a class="menu-item" [class.active]="isActive('/exames')" routerLink="/exames">
-      <span>Exames</span>
-    </a>
-    <a class="menu-item" [class.active]="isActive('/users')" routerLink="/users">
-      <span>Usuários</span>
-    </a>
-  </span>
-</div>
