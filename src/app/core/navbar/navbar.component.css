@@ -151,53 +151,69 @@ nav .profile-pic img {
   border-radius: 0.3rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 1rem;
-  display: none;
+  display: none; /* Escondido por padrão */
   z-index: 1000;
-  width: 400px; /* Largura do menu */
+  width: 700px; /* Largura do menu em telas grandes */
+  max-width: 700px; /* Largura máxima em telas grandes */
+  max-height: 600px; /* Altura máxima do menu */
+  overflow-y: auto; /* Permite rolagem vertical */
+  transition: all 0.3s ease; /* Suaviza a transição */
 }
 
+
 .menu-dropdown.large.active {
-  display: grid; /* Usar grid para layout */
-  grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-  gap: 0.5rem; /* Espaço entre os itens */
+  display: block; /* Mostra o menu quando ativo */
 }
 
 .menu-dropdown ul {
-  display: contents; /* Faz com que o ul não quebre o grid */
+  list-style: none; /* Remove os marcadores */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
 }
 
 .menu-dropdown ul li {
-  text-align: center; /* Centraliza texto e ícone */
+  padding: 0.5rem; /* Espaçamento entre os itens */
+  border-bottom: 1px solid var(--color-light-gray); /* Linha de separação */
   cursor: pointer;
+}
+
+.menu-dropdown ul li:last-child {
+  border-bottom: none; /* Remove a linha do último item */
 }
 
 .menu-dropdown ul li a {
   display: flex;
-  flex-direction: column; /* Coloca ícone acima do texto */
-  align-items: center; /* Alinha os itens ao centro */
-  color: var(--color-dark);
-  font-size: 0.9rem; /* Tamanho da fonte */
-  font-weight: bold;
-  text-decoration: none; /* Remove sublinhado */
-  padding: 0.5rem;
-  transition: background-color 0.2s ease; /* Transição suave ao passar o mouse */
+  flex-direction: column; /* Alinha o texto em coluna */
+  align-items: flex-start; /* Alinha o texto à esquerda */
+  text-align: left; /* Alinha o texto à esquerda */
+  color: var(--color-dark); /* Cor do texto */
+  text-decoration: none; /* Remove o sublinhado */
+  transition: background-color 0.3s ease; /* Suaviza a transição de fundo */
+  padding: 0.5rem; /* Adiciona padding para clicar */
+  border-radius: 0.25rem; /* Arredonda as bordas ao passar o mouse */
 }
 
-.menu-dropdown ul li a:hover {
+.menu-dropdown ul li a .description {
+  font-size: 0.7rem; /* Aumenta o tamanho da fonte da descrição */
+  color: var(--color-gray); /* Cor da descrição */
+  margin-top: 0.2rem; /* Espaçamento acima da descrição */
+  font-weight: normal; /* Garante que o texto não esteja em negrito */
+}
+
+
+.menu-dropdown ul li:hover a {
   background-color: var(--color-light); /* Cor de fundo ao passar o mouse */
 }
 
-.menu-dropdown ul li a i {
-  margin-bottom: 0.25rem; /* Espaço entre o ícone e o texto */
-  color: var(--color-primary); /* Altera a cor do ícone */
+/* Estilo do texto do título */
+.menu-dropdown ul li a span {
+  font-weight: bold; /* Torna o título em negrito */
 }
 
-/* Media query para ajustar em telas menores */
+/* Esconde a barra de pesquisa, o popout de resultados e os links de navegação em dispositivos pequenos */
 @media (max-width: 768px) {
   .menu-dropdown.large {
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas em dispositivos pequenos */
+    width: 100%; /* Largura 100% em dispositivos pequenos */
+    right: 0; /* Alinha à esquerda */
   }
 }
-
-
-

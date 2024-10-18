@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    
+
     <div class="create" *ngIf="isUserLoggedIn">
       <!-- Botão grande do menu -->
       <div class="menu-button">
@@ -36,33 +36,57 @@
         <div class="menu-dropdown large" [class.active]="isMenuActive">
           <ul (click)="toggleMenu()">
             <li [class.active]="isActive('/feed')" routerLink="/feed">
-              <a class="menu-item"><i class="fas fa-home"></i> Feed</a>
+              <a class="menu-item">
+                <span>Feed</span>
+                <span class="description">Veja as atualizações mais recentes de seus amigos e instituições. Mantenha-se informado sobre atividades, postagens e eventos importantes que estão acontecendo na sua rede.</span>
+              </a>
             </li>
             <li [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
-              <a class="menu-item"><i class="fas fa-building"></i> Instituições</a>
+              <a class="menu-item">
+                <span>Instituições</span>
+                <span class="description">Explore as instituições disponíveis em nossa plataforma. Descubra cursos, eventos e recursos oferecidos por cada instituição, além de poder interagir com elas.</span>
+              </a>
             </li>
             <li [class.active]="isActive('/cursos')" routerLink="/cursos">
-              <a class="menu-item"><i class="fas fa-book"></i> Cursos</a>
+              <a class="menu-item">
+                <span>Cursos</span>
+                <span class="description">Descubra uma variedade de cursos projetados para aprimorar suas habilidades e conhecimentos. Cada curso é ministrado por especialistas e inclui materiais didáticos abrangentes.</span>
+              </a>
             </li>
             <li [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">
-              <a class="menu-item"><i class="fas fa-laptop"></i> Cursos online</a>
+              <a class="menu-item">
+                <span>Cursos online</span>
+                <span class="description">Acesse cursos online de qualquer lugar, a qualquer hora. Nossos cursos online são flexíveis e adaptáveis às suas necessidades, permitindo que você aprenda no seu próprio ritmo.</span>
+              </a>
             </li>
             <li [class.active]="isActive('/exames')" routerLink="/exames">
-              <a class="menu-item"><i class="fas fa-pencil-alt"></i> Exames</a>
+              <a class="menu-item">
+                <span>Exames</span>
+                <span class="description">Participe de exames que testam seu conhecimento e habilidades. Obtenha feedback instantâneo e descubra áreas onde você pode melhorar para alcançar seus objetivos acadêmicos.</span>
+              </a>
             </li>
             <li [class.active]="isActive('/quizzes')" routerLink="/quizzes">
-              <a class="menu-item"><i class="fas fa-question-circle"></i> Quizzes</a>
+              <a class="menu-item">
+                <span>Quizzes</span>
+                <span class="description">Participe de quizzes interativos e educativos. Os quizzes são uma maneira divertida de revisar o que você aprendeu e avaliar seu conhecimento em diferentes tópicos.</span>
+              </a>
             </li>
             <li [class.active]="isActive('/grupos')" routerLink="/grupos">
-              <a class="menu-item"><i class="fas fa-users"></i> Grupos</a>
+              <a class="menu-item">
+                <span>Grupos</span>
+                <span class="description">Junte-se a grupos de discussão e colabore com outros usuários. Participe de debates, troque ideias e trabalhe em projetos em equipe para um aprendizado mais enriquecedor.</span>
+              </a>
             </li>
             <li [class.active]="isActive('/users')" routerLink="/users">
-              <a class="menu-item"><i class="fas fa-user-friends"></i> Usuários</a>
+              <a class="menu-item">
+                <span>Usuários</span>
+                <span class="description">Conecte-se e interaja com outros usuários na plataforma. Descubra novos amigos, colabore em projetos e participe de atividades sociais que promovem a troca de conhecimento.</span>
+              </a>
             </li>
           </ul>
         </div>
         
-        
+
       </div>
       <div class="profile-pic">
         <a (click)="goToProfile()">
