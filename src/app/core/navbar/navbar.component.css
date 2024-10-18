@@ -53,7 +53,7 @@ nav .logo {
 .active {
   font-size: 1.0rem;
   text-decoration: none;
-  border-bottom: 4px solid whitesmoke;
+  /*border-bottom: 4px solid var(--color-primary);*/
   padding-bottom: 5px;
 }
 
@@ -61,7 +61,7 @@ a:hover {
   font-weight: bold;
   color: whitesmoke;
   text-decoration: none;
-  border-bottom: 4px solid #5553ec;
+  border-bottom: 4px solid var(--color-primary);
   padding-bottom: 5px;
 }
 
@@ -212,8 +212,17 @@ nav .profile-pic img {
 
 /* Esconde a barra de pesquisa, o popout de resultados e os links de navegação em dispositivos pequenos */
 @media (max-width: 768px) {
+
   .menu-dropdown.large {
     width: 400px; /* Largura 100% em dispositivos pequenos */
     /*right: 0; /* Alinha à esquerda */
+  }
+
+  .search-bar {
+    display: none; /* Esconde a barra de pesquisa */
+  }
+
+  .search-results-popup {
+    display: none; /* Esconde o popout de resultados */
   }
 }
