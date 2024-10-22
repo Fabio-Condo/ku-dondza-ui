@@ -23,13 +23,6 @@ nav .logo {
   margin-right: 1rem;
 }
 
-.flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0px 0px 20px 0px;
-}
-
 .search-bar {
   display: flex;
   align-items: center;
@@ -60,21 +53,6 @@ nav .logo {
 .search-bar input:focus {
   width: 25vw; /* Largura do input ao focar */
   transition: width 0.3s ease; /* Suaviza a transição ao aumentar a largura */
-}
-
-.active {
-  font-size: 1.0rem;
-  text-decoration: none;
-  /*border-bottom: 4px solid var(--color-primary);*/
-  padding-bottom: 5px;
-}
-
-a:hover {
-  font-weight: bold;
-  color: whitesmoke;
-  text-decoration: none;
-  /*border-bottom: 4px solid var(--color-primary);*/
-  padding-bottom: 5px;
 }
 
 nav .create {
@@ -156,84 +134,119 @@ nav .profile-pic img {
 }
 */
 
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 0px 20px 10px;
+}
+
 /* Menu dropdown grande */
 .menu-dropdown.large {
   position: absolute;
   top: 100%; /* Alinha o menu logo abaixo do botão */
   right: 0; /* Colar ao botão */
-  background: white;
+  background-color: white;
   border-radius: 0.3rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 1rem;
   display: none; /* Escondido por padrão */
   z-index: 1000;
   width: 700px; /* Largura do menu em telas grandes */
-  max-width: 700px; /* Largura máxima em telas grandes */
-  max-height: 600px; /* Altura máxima do menu */
+  max-width: 700px;
+  max-height: 600px; /* Limita a altura para menus longos */
   overflow-y: auto; /* Permite rolagem vertical */
-  transition: all 0.3s ease; /* Suaviza a transição */
+  transition: all 0.3s ease;
 }
 
-
+/* Mostra o menu quando ativo */
 .menu-dropdown.large.active {
-  display: block; /* Mostra o menu quando ativo */
+  display: block;
 }
 
+/* Estilização básica da lista */
 .menu-dropdown ul {
-  list-style: none; /* Remove os marcadores */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
+  list-style: none; /* Remove bullets */
+  padding: 0;
+  margin: 0;
 }
 
 .menu-dropdown ul li {
-  padding: 0; /* Espaçamento entre os itens */
-  border-bottom: 1px solid var(--color-light-gray); /* Linha de separação */
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-light-gray);
   cursor: pointer;
+  display: flex;
+  align-items: center; /* Centraliza os itens no eixo vertical */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .menu-dropdown ul li:last-child {
-  border-bottom: none; /* Remove a linha do último item */
+  border-bottom: none;
 }
 
-.menu-dropdown ul li a {
+.menu-dropdown ul li .menu-item {
   display: flex;
-  flex-direction: column; /* Alinha o texto em coluna */
-  align-items: flex-start; /* Alinha o texto à esquerda */
-  text-align: left; /* Alinha o texto à esquerda */
-  color: var(--color-dark); /* Cor do texto */
-  text-decoration: none; /* Remove o sublinhado */
-  transition: background-color 0.3s ease; /* Suaviza a transição de fundo */
-  padding: 0.5rem; /* Adiciona padding para clicar */
-  border-radius: 0.25rem; /* Arredonda as bordas ao passar o mouse */
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  text-decoration: none;
+  color: var(--color-dark); /* Cor do texto padrão */
+  padding-left: 1rem;
+  transition: color 0.3s ease;
 }
 
-.menu-dropdown ul li a .description {
-  font-size: 0.7rem; /* Aumenta o tamanho da fonte da descrição */
-  color: var(--color-gray); /* Cor da descrição */
-  margin-top: 0.5rem; /* Espaçamento acima da descrição */
-  font-weight: normal; /* Garante que o texto não esteja em negrito */
-}
-
-
-.menu-dropdown ul li:hover a {
-  background-color: var(--color-light); /* Cor de fundo ao passar o mouse */
+/* Ícones alinhados à esquerda */
+.menu-dropdown ul li i {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  color: var(--color-gray); /* Cor padrão do ícone */
+  transition: color 0.3s ease;
 }
 
 /* Estilo do texto do título */
 .menu-dropdown ul li a span {
-  font-weight: bold; /* Torna o título em negrito */
+  font-weight: bold;
+}
+
+/* Estilo da descrição */
+.menu-dropdown ul li a .description {
+  font-size: 0.8rem;
+  color: var(--color-gray);
+  margin-top: 0.3rem;
+  font-weight: normal;
+}
+
+/* Comportamento ao passar o mouse sobre um item */
+.menu-dropdown ul li:hover {
+  background-color: var(--color-light);
+}
+
+.menu-dropdown ul li:hover i {
+  color: var(--color-dark); /* Escurece o ícone no hover */
+}
+
+.menu-dropdown ul li:hover .menu-item {
+  color: var(--color-dark); /* Altera a cor do texto ao passar o mouse */
 }
 
 /* Estilo para o item ativo (selecionado) */
-.menu-dropdown ul li.active a {
-  background-color: var(--color-light); /* Cor de fundo para destacar */
-  /*color: white; /* Cor do texto */
+.menu-dropdown ul li.active {
+  background-color: var(--color-light); /* Cor de fundo para o item ativo */
 }
 
-/* Se desejar, pode mudar o estilo da descrição também */
-.menu-dropdown ul li.active a .description {
+.menu-dropdown ul li.active i {
+  color: var(--color-primary); /* Destaca o ícone do item ativo */
+}
+
+.menu-dropdown ul li.active .menu-item {
+  color: var(--color-primary); /* Destaca o texto do item ativo */
+}
+
+/* Estilo para a descrição no item ativo */
+.menu-dropdown ul li.active .description {
   color: var(--color-light-gray); /* Cor da descrição no item ativo */
 }
+
 
 /* Manter a borda arredondada no item ativo */
 /*
