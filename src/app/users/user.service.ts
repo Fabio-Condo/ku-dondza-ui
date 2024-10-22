@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { User } from '../core/model/User';
 import { CustomHttpRespone } from '../core/model/custom-http-response';
 import { IApiResponse } from '../core/interface/IApiResponse';
-import { UserFilter } from '../core/interface/UserFilter';
 import { Post } from '../core/model/Post';
 import { IUserFilter } from '../core/model/IUserFilter';
 import { IPostFilter } from '../core/interface/IPostFilter';
@@ -164,6 +163,16 @@ export class UserService {
 
   getFriends(): Observable<User[]> {
     return this.http.get<User[]>(`${this.host}/user/friends`, {});
+  }
+
+  getFriendsV2(userId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
+
+    return this.http.get<IApiResponse<User>>(`${this.host}/user/${userId}/friends`, { params });
   }
 
   acceptFriendRequest(friendId: number): Observable<User> {

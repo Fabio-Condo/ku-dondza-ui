@@ -95,9 +95,9 @@ export class FeedComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
-    //this.getFriendRequests();
+    this.getFriendRequests();
     //this.getFriends();
-    this.loadMoreUsers();
+    //this.loadMoreUsers();
   }
 
   loadMoreCommentsByPostId(post: Post): void {

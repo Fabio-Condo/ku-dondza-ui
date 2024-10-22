@@ -158,7 +158,34 @@
                 </div>
 
                 <div *ngIf="activeTabPost === 3" class="active">
-                    Amigos
+                    <table class="card-table">
+                        <tbody>
+                            <tr *ngFor="let friend of friends">
+                                <td>
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <td>
+                                                <div class="profile-pic">
+                                                    <img src="{{friend.profileImageUrl}}" alt="pic 1" />
+                                                </div>
+                                            </td>
+                                            <td style="margin-left: 20px;">
+                                                <p class="user-name user-name-hover" [routerLink]="['/user/profile', friend.userId]">{{
+                                                    friend.firstName }} {{ friend.lastName }}</p>
+                                                <p class="username text-muted">12 mutual friends</p>
+                                            </td>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <div (click)="onShowMoreSavedPosts()" class="upload-loading-container"
+                                style="cursor: pointer; border: 1px solid #ccc;">
+                                <p class="upload-loading-text">carregar mais posts guardados</p>
+                            </div>
+
+                        </tbody>
+                    </table>
                 </div>
 
 

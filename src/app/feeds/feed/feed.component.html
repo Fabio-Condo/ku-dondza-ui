@@ -348,20 +348,19 @@
 
       <div class="messages">
         <h4>Requests</h4>
-        <div class="request">
+        <div class="request" *ngFor="let friendReq of friendRequests">
           <div class="info">
-            <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
-              <a href="javascript:;"><img src="{{loggedUser.profileImageUrl}}"></a>
+            <div class="profile-pic" [routerLink]="['/friendReq/profile', friendReq.userId]">
+              <a href="javascript:;"><img src="{{friendReq.profileImageUrl}}" [routerLink]="['/user/profile', friendReq.userId]"></a>
             </div>
             <div>
-              <h5 class="user-name-hover" [routerLink]="['/user/profile', loggedUser.userId]">{{loggedUser.firstName}}
-                {{loggedUser.lastName}}</h5>
+              <a><h5 [routerLink]="['/user/profile', friendReq.userId]">{{friendReq.firstName}} {{friendReq.lastName}}</h5></a>
               <p class="text-muted">8 mutual friends</p>
             </div>
           </div>
           <div class="action">
-            <button class="btn btn-primary">Accept</button>
-            <button class="btn">Decline</button>
+            <button (click)="acceptFriendRequest(friendReq.id)" class="btn btn-primary">Confirmar</button>
+            <button (click)="rejectFriendRequest(friendReq.id)" class="btn">Eliminar</button>
           </div>
         </div>
 

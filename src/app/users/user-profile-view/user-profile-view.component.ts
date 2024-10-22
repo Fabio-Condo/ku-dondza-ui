@@ -13,6 +13,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { InterestService } from 'src/app/interest/interest.service';
 import { Interest } from 'src/app/core/model/Interest';
+import { IUserFilter } from 'src/app/core/model/IUserFilter';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -35,6 +36,8 @@ export class UserProfileViewComponent implements OnInit {
   savedPosts: Post[] = [];
   totalRegistrosPostsGuardados: number = 10000
 
+  friends: User[] = [];
+  totalRegistrosAmigos: number = 10000
 
   extension: any;
 
@@ -59,6 +62,12 @@ export class UserProfileViewComponent implements OnInit {
     page: -1,
     itemsPerPage: 5,
     sort: 'id,desc'
+  }
+
+  filtroAmigos: IUserFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'firstName,asc',
   }
 
 
@@ -97,7 +106,8 @@ export class UserProfileViewComponent implements OnInit {
       (user: User) => {
         this.user = user;
         this.getUserPostsByUserId(user);
-        this.getUserSavedPosts(user)
+        this.getUserSavedPosts(user);
+        this.getUserFriends(user);
       },
       (erro) => this.errorHandler.handle(erro),
     );
@@ -172,6 +182,19 @@ export class UserProfileViewComponent implements OnInit {
       (dados: IApiResponse<Post>) => {
         this.savedPosts = [...this.savedPosts, ...dados.content];
         this.totalRegistrosPostsGuardados = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getUserFriends(user: User): void {
+    this.filtroAmigos.page++;
+    this.userService.getFriendsV2(user.id, this.filtroAmigos).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.friends = [...this.friends, ...dados.content];
+        this.totalRegistrosAmigos = dados.totalElements
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

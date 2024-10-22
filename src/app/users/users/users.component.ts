@@ -32,6 +32,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   displayModalSave: boolean = false;
   profileImageFile!: File;
 
+  friendRequests: User[] = []
+
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
@@ -259,6 +261,53 @@ export class UsersComponent implements OnInit, OnDestroy {
       erro => this.errorHandler.handle(erro)
     );
   }
+
+  sendFriendRequest(user: User) {
+    this.userService.sendFriendRequest(user).subscribe(
+      (user) => {
+        this.messageService.add({ severity: 'success', detail: 'Friend request sent successfully' });
+      }
+    )
+
+  }
+
+  getFriendRequests() {
+    return this.userService.getFriendRequests().subscribe(
+      (data: User[]) => {
+        this.friendRequests = data;
+      },
+      erro => this.errorHandler.handle(erro)
+    )
+  }
+
+  acceptFriendRequest(friendId: number) {
+    this.userService.acceptFriendRequest(friendId).subscribe(
+      (friendAcepted) => {
+        this.getFriendRequests();
+        this.messageService.add({ severity: 'success', detail: 'Friend accepted successfully' });
+      },
+      erro => this.errorHandler.handle(erro)
+    )
+  }
+
+  rejectFriendRequest(friendId: number) {
+    this.userService.rejectFriendRequest(friendId).subscribe(
+      () => {
+        this.getFriendRequests();
+        this.messageService.add({ severity: 'success', detail: 'Friend rejected successfully' });
+      },
+      erro => this.errorHandler.handle(erro)
+    )
+  }
+
+  removeFriend(friendId: number) {
+    this.userService.removeFriend(friendId).subscribe(
+      () => {
+        this.messageService.add({ severity: 'success', detail: 'Friend removed successfully' });
+      }
+    )
+  }
+
 
   getStatusValue(status: boolean) {
     switch (status) {
