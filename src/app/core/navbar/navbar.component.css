@@ -128,133 +128,122 @@ nav .profile-pic img {
   transition: background-color 0.3s ease;
 }
 
-/*
-.menu-button .menu-icon:hover {
-  background: var(--color-dark);
-}
-*/
-
-.flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0px 0px 20px 10px;
-}
-
 /* Menu dropdown grande */
 .menu-dropdown.large {
   position: absolute;
-  top: 100%; /* Alinha o menu logo abaixo do botão */
-  right: 0; /* Colar ao botão */
+  top: 100%;
+  right: 0;
   background-color: white;
   border-radius: 0.3rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 1rem;
-  display: none; /* Escondido por padrão */
+  display: none;
   z-index: 1000;
-  width: 700px; /* Largura do menu em telas grandes */
+  width: 700px;
   max-width: 700px;
-  max-height: 600px; /* Limita a altura para menus longos */
-  overflow-y: auto; /* Permite rolagem vertical */
+  max-height: 600px;
+  overflow-y: auto;
   transition: all 0.3s ease;
 }
 
-/* Mostra o menu quando ativo */
 .menu-dropdown.large.active {
   display: block;
 }
 
-/* Estilização básica da lista */
+.menu-dropdown .menu-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-dark);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-light-gray);
+  margin-bottom: 1rem;
+}
+
 .menu-dropdown ul {
-  list-style: none; /* Remove bullets */
+  list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .menu-dropdown ul li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--color-light-gray);
-  cursor: pointer;
   display: flex;
-  align-items: center; /* Centraliza os itens no eixo vertical */
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-light-gray);
   transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
 }
 
-.menu-dropdown ul li:last-child {
-  border-bottom: none;
+.menu-dropdown ul li .menu-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-.menu-dropdown ul li .menu-item {
+/* Estilização dos ícones */
+.menu-dropdown ul li i {
+  font-size: 1.5rem;  /* Tamanho fixo para todos os ícones */
+  width: 2.5rem;      /* Largura fixa */
+  height: 2.5rem;     /* Altura fixa */
+  margin-right: 1.5rem; /* Espaçamento consistente entre ícone e texto */
+  color: var(--color-gray);
+  transition: color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-light-gray); /* Fundo opcional para ajustar visualmente */
+}
+
+/* Estilo do texto e descrição do menu */
+.menu-dropdown ul li a {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   text-align: left;
   text-decoration: none;
-  color: var(--color-dark); /* Cor do texto padrão */
-  padding-left: 1rem;
+  color: var(--color-dark);
   transition: color 0.3s ease;
+  flex-grow: 1;
 }
 
-/* Ícones alinhados à esquerda */
-.menu-dropdown ul li i {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  color: var(--color-gray); /* Cor padrão do ícone */
-  transition: color 0.3s ease;
-}
-
-/* Estilo do texto do título */
 .menu-dropdown ul li a span {
   font-weight: bold;
+  font-size: 1rem;
 }
 
-/* Estilo da descrição */
 .menu-dropdown ul li a .description {
-  font-size: 0.8rem;
-  color: var(--color-gray);
-  margin-top: 0.3rem;
+  font-size: 0.7rem;
   font-weight: normal;
+  margin-top: 0.25rem;
 }
 
-/* Comportamento ao passar o mouse sobre um item */
 .menu-dropdown ul li:hover {
   background-color: var(--color-light);
 }
 
 .menu-dropdown ul li:hover i {
-  color: var(--color-dark); /* Escurece o ícone no hover */
+  color: var(--color-dark);
 }
 
-.menu-dropdown ul li:hover .menu-item {
-  color: var(--color-dark); /* Altera a cor do texto ao passar o mouse */
+.menu-dropdown ul li:hover a {
+  color: var(--color-dark);
 }
 
-/* Estilo para o item ativo (selecionado) */
 .menu-dropdown ul li.active {
-  background-color: var(--color-light); /* Cor de fundo para o item ativo */
+  background-color: var(--color-light);
 }
 
 .menu-dropdown ul li.active i {
-  color: var(--color-primary); /* Destaca o ícone do item ativo */
+  color: var(--color-primary);
 }
 
-.menu-dropdown ul li.active .menu-item {
-  color: var(--color-primary); /* Destaca o texto do item ativo */
-}
-
-/* Estilo para a descrição no item ativo */
-.menu-dropdown ul li.active .description {
-  color: var(--color-light-gray); /* Cor da descrição no item ativo */
-}
-
-
-/* Manter a borda arredondada no item ativo */
-/*
 .menu-dropdown ul li.active a {
-  border-radius: 0.25rem;
-  border-bottom: 4px solid var(--color-primary);
+  color: var(--color-primary);
 }
-*/
+
+.menu-dropdown ul li.active a .description {
+  color: var(--color-light-gray);
+}
+
 
 /* Esconde a barra de pesquisa, o popout de resultados e os links de navegação em dispositivos pequenos */
 @media (max-width: 768px) {
