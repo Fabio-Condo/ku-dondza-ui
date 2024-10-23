@@ -175,6 +175,16 @@ export class UserService {
     return this.http.get<IApiResponse<User>>(`${this.host}/user/${userId}/friends`, { params });
   }
 
+  getCurrentUserFriends(filtro: IUserFilter): Observable<IApiResponse<User>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
+
+    return this.http.get<IApiResponse<User>>(`${this.host}/user/current-user-friends`, { params });
+  }
+
   acceptFriendRequest(friendId: number): Observable<User> {
     return this.http.post<User>(`${this.host}/user/accept-friend-requests/${friendId}`, {});
   }
@@ -185,6 +195,10 @@ export class UserService {
 
   removeFriend(friendId: number): Observable<void> {
     return this.http.delete<void>(`${this.host}/user/friends/${friendId}`, {});
+  }
+
+  checkFriendship(friendId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/user/friends/${friendId}`, {});
   }
 
   sendFriendRequest(user: User): Observable<User> {

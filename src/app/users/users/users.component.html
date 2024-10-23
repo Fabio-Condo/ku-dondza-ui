@@ -1,7 +1,15 @@
 <div class="container" style="margin-top: 70px;">
 
-    <div style="display:inline;">
-        <h1 class="title">Usuários</h1>
+    <div class="tab-header">
+        <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+            Todos
+        </div>
+        <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+            Amigos
+        </div>
+        <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+            Pedidos de amizade
+        </div>
     </div>
 
     <p style="margin-top: 20px; font-size: 0.85rem;">Conecte-se com outros usuários, compartilhe conhecimentos e
@@ -29,53 +37,106 @@
         </div>
     </div>
 
-    <table class="card-table">
-        <tbody>
-            <tr *ngFor="let user of users">
+    <div *ngIf="activeTab === 1" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let user of users">
 
-                <div class="card">
-                    <div class="card-content">
-                        <td>
+                    <div class="card">
+                        <div class="card-content">
                             <div class="profile-pic">
                                 <img src="{{user.profileImageUrl}}" alt="pic 1" />
                             </div>
-                        </td>
-                        <td style="margin-left: 20px;">
-                            <p class="user-name user-name-hover" [routerLink]="['/user/profile', user.userId]">{{
-                                user.firstName }} {{ user.lastName }}</p>
-                            <p class="username text-muted">12 mutual friends</p>
-                            <a (click)="onEditUser(user)" class="edit-link">editar</a>
-                            <a (click)="confirmarExclusao(user)" class="delete-link">excluir</a>
-                            <a (click)="sendFriendRequest(user)" class="edit-link">adicionar amigo</a>
-                        </td>
+                            <div class="content" style="margin-left: 20px;">
+                                <p class="user-name user-name-hover" [routerLink]="['/user/profile', user.userId]">
+                                    {{ user.firstName }} {{ user.lastName }}
+                                </p>
+                                <p class="username text-muted">12 mutual friends</p>
+                                <a (click)="onEditUser(user)" class="edit-link">editar</a>
+                                <a (click)="confirmarExclusao(user)" class="delete-link">excluir</a>
+                            </div>
+                            <div class="button-container">
+                                <button pButton *ngIf="!user.isFriend" type="button" (click)="sendFriendRequest(user)">Adicionar amigo</button>
+                                <button pButton *ngIf="user.isFriend" type="button" (click)="removeFriend(user.id)" style="background-color: rgb(196, 79, 79); border-color: rgb(196, 79, 79);">Remover amizade</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </tr>
-        </tbody>
-    </table>
+                    
+                </tr>
+            </tbody>
+        </table>
 
-    <!-- Paginação -->
-    <div class="pagination-controls">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
-            <i class="pi pi-chevron-left"></i> Anterior
-        </button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
-            Próximo <i class="pi pi-chevron-right"></i>
-        </button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itemsPerPage">
-                {{ option }}
-            </option>
-        </select>
-        <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalUsers }}</span>
+        <!-- Paginação -->
+        <div class="pagination-controls">
+            <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
+                <i class="pi pi-chevron-left"></i> Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+                Próximo <i class="pi pi-chevron-right"></i>
+            </button>
+            <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+                <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                    [selected]="option === filtro.itemsPerPage">
+                    {{ option }}
+                </option>
+            </select>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalUsers }}</span>
+        </div>
+
+    </div>
+
+    <div *ngIf="activeTab === 2" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let friend of friends">
+
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="profile-pic">
+                                <img src="{{friend.profileImageUrl}}" alt="pic 1" />
+                            </div>
+                            <div class="content" style="margin-left: 20px;">
+                                <p class="user-name user-name-hover" [routerLink]="['/user/profile', friend.userId]">
+                                    {{ friend.firstName }} {{ friend.lastName }}
+                                </p>
+                                <p class="username text-muted">12 mutual friends</p>
+                            </div>
+                            <div class="button-container">
+                                <button pButton type="button" (click)="removeFriend(user.id)" style="background-color: rgb(196, 79, 79); border-color: rgb(196, 79, 79);">Remover amizade</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        <div class="pagination-controls">
+            <button class="pagination-button" (click)="previousPageFriends()" [disabled]="currentPageFriends === 1">
+                <i class="pi pi-chevron-left"></i> Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPageFriends }} de {{ totalPagesFriends() }}</span>
+            <button class="pagination-button" (click)="nextPageFriends()" [disabled]="currentPageFriends === totalPagesFriends()">
+                Próximo <i class="pi pi-chevron-right"></i>
+            </button>
+            <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+                <option *ngFor="let option of opcoesItensPorPaginaAmigos" [value]="option"
+                    [selected]="option === filtroAmigos.itemsPerPage">
+                    {{ option }}
+                </option>
+            </select>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistrosAmigos }} dos {{ totalUsers }}</span>
+        </div>
+
     </div>
 
     <!-- Indicador de carregamento -->
     <div *ngIf="showLoading" class="loading-indicator">
         Carregando...
     </div>
+
 
 </div>
 

@@ -3,12 +3,10 @@ import { ExamesService } from '../exames.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { Exam } from 'src/app/core/model/Exam';
 import { ExameFilter } from 'src/app/core/interface/ExameFilter';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
-import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
   selector: 'app-exames',

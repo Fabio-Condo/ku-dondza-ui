@@ -23,6 +23,8 @@ export class User {
   public interests: Interest[] = [];
   public savedPosts: Post[] = [];
 
+  public isFriend: boolean = false;
+
 
   constructor() {
 

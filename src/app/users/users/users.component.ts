@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   //exbindoFormularioEditUser = false;
   exbindoFormularioSettingsUser = false;
 
-  users: User[] = [];
+
   user: User = new User;
   showLoading: boolean = true;
   subscriptions: Subscription[] = [];
@@ -33,13 +33,20 @@ export class UsersComponent implements OnInit, OnDestroy {
   profileImageFile!: File;
 
   friendRequests: User[] = []
-
+  
+  users: User[] = [];
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
   totalRegistros: number = 0
   totalUsers: number = 0;
 
+  friends: User[] = [];
+  currentPageFriends: number = 1;
+  totalRegistrosAmigos: number = 10000
+  opcoesItensPorPaginaAmigos: number[] = [5, 10, 20, 50];
+
+  activeTab: number = 1;
 
   roles = [
     { label: 'USER', value: 'ROLE_USER' },
@@ -62,9 +69,16 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.title.setTitle('Pesquisa do usuário');
     this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsersSearch();
+    this.getUserFriends();
   }
 
   filtro: IUserFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'firstName,asc',
+  }
+
+  filtroAmigos: IUserFilter = {
     page: -1,
     itemsPerPage: 5,
     sort: 'firstName,asc',
@@ -121,6 +135,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.userService.search(this.filtro).subscribe(
       (data: IApiResponse<User>) => {
+        data.content.forEach(user => {
+          this.checkFriendship(user);
+        });
         this.users = data.content
         this.totalRegistros = data.totalElements;
         this.showLoading = false;
@@ -184,7 +201,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getUsersSearch();
   }
 
-
+  // All users
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -201,6 +218,25 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  // Friends
+  previousPageFriends(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.getUserFriends();
+    }
+  }
+
+  nextPageFriends(): void {
+    if (this.currentPageFriends < this.totalPages()) {
+      this.currentPageFriends++;
+      this.getUserFriends();
+    }
+  }
+
+  totalPagesFriends(): number {
+    return Math.ceil(this.totalRegistrosAmigos / this.filtroAmigos.itemsPerPage);
   }
 
   prepararNovoUser() {
@@ -279,6 +315,19 @@ export class UsersComponent implements OnInit, OnDestroy {
     )
   }
 
+  getUserFriends(): void {
+    this.filtroAmigos.page++;
+    this.userService.getCurrentUserFriends(this.filtroAmigos).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.friends = [...this.friends, ...dados.content];
+        this.totalRegistrosAmigos = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
   acceptFriendRequest(friendId: number) {
     this.userService.acceptFriendRequest(friendId).subscribe(
       (friendAcepted) => {
@@ -305,6 +354,20 @@ export class UsersComponent implements OnInit, OnDestroy {
     )
   }
 
+  checkFriendship(friend: User): void {
+    this.userService.checkFriendship(friend.id).subscribe(
+      (isFriend) => {
+        friend.isFriend = isFriend;
+      },
+      (error) => {
+        console.error('Erro ao verificar amizade:', error);
+      }
+    );
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+  }
 
   getStatusValue(status: boolean) {
     switch (status) {
