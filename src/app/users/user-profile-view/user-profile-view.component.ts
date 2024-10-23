@@ -118,7 +118,6 @@ export class UserProfileViewComponent implements OnInit {
       (response) => {
         this.user = response;
         this.authenticationService.addUserToLocalCache(response);
-        this.messageService.add({ severity: 'success', detail: 'Courso alterado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -138,7 +137,6 @@ export class UserProfileViewComponent implements OnInit {
       this.userService.updateProfilePhoto(this.currentUser.username, this.fileToUpload).subscribe(
         response => {
           this.user = response;
-          console.log('Upload successful', response);
         },
         error => {
           console.error('Upload failed', error);
@@ -154,7 +152,6 @@ export class UserProfileViewComponent implements OnInit {
       this.userService.updateProfileCoverPhoto(this.currentUser.username, this.coverFileToUpload).subscribe(
         response => {
           this.user = response;
-          console.log('Upload successful', response);
         },
         error => {
           console.error('Upload failed', error);
@@ -191,7 +188,7 @@ export class UserProfileViewComponent implements OnInit {
 
   getUserFriends(user: User): void {
     this.filtroAmigos.page++;
-    this.userService.getFriendsV2(user.id, this.filtroAmigos).subscribe(
+    this.userService.getUserFriends(user.id, this.filtroAmigos).subscribe(
       (dados: IApiResponse<User>) => {
         this.friends = [...this.friends, ...dados.content];
         this.totalRegistrosAmigos = dados.totalElements
@@ -200,6 +197,14 @@ export class UserProfileViewComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  removeFriend(friendId: number) {
+    this.userService.removeFriend(friendId).subscribe(
+      () => {
+        this.getUserFriends(this.user);
+      }
+    )
   }
 
   getInterests() {
@@ -222,7 +227,6 @@ export class UserProfileViewComponent implements OnInit {
     this.userService.addInterestToUserInterests(this.user.id, this.selectedInterest.id).subscribe(
       (user) => {
         this.user = user;
-        this.messageService.add({ severity: 'success', detail: 'Interest added successfully!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

@@ -165,7 +165,7 @@ export class UserService {
     return this.http.get<User[]>(`${this.host}/user/friends`, {});
   }
 
-  getFriendsV2(userId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
+  getUserFriends(userId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
 
     let params = new HttpParams()
       .set('page', filtro.page)

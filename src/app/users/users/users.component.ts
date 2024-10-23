@@ -265,7 +265,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   sendFriendRequest(user: User) {
     this.userService.sendFriendRequest(user).subscribe(
       (user) => {
-        this.messageService.add({ severity: 'success', detail: 'Friend request sent successfully' });
       }
     )
 
@@ -284,7 +283,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.acceptFriendRequest(friendId).subscribe(
       (friendAcepted) => {
         this.getFriendRequests();
-        this.messageService.add({ severity: 'success', detail: 'Friend accepted successfully' });
       },
       erro => this.errorHandler.handle(erro)
     )
@@ -294,7 +292,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.rejectFriendRequest(friendId).subscribe(
       () => {
         this.getFriendRequests();
-        this.messageService.add({ severity: 'success', detail: 'Friend rejected successfully' });
       },
       erro => this.errorHandler.handle(erro)
     )
