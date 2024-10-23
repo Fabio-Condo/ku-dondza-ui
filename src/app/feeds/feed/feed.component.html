@@ -86,7 +86,8 @@
       <div class="feeds">
         <div class="feed" *ngFor="let feed of feeds">
 
-          <div class="user" style="display: flex; align-items: center; margin: 0.7rem;">
+          <!--Post feito pelo user fora do grupo-->
+          <div class="user" *ngIf="!feed.group" style="display: flex; align-items: center; margin: 0.7rem;">
             <div class="profile-pic" [routerLink]="['/user/profile', feed.user.userId]">
               <img src="{{feed.user.profileImageUrl}}" alt="photo">
             </div>
@@ -95,15 +96,35 @@
                 <h3 class="user-name-hover">{{feed.user.firstName}} {{feed.user.lastName}}</h3>
               </a>
               <small class="text-muted">{{timeElapsed(feed.date.toString())}}</small>
-              <span *ngIf="feed.group" style="padding: 10px;"><i class="pi pi-share-alt" style="font-size: 0.8rem"></i></span>
-              <small *ngIf="feed.group" style="font-weight: bold;">apartir do grupo: {{feed.group.name}}</small>
-              <small *ngIf="feed.group" style="font-weight: bold; margin-left: 10px; color: #007bff;">aderir</small>
-
-
             </div>
-            <span class="edit" (click)="closePost(feed)" style="cursor: pointer;"><i class="pi pi-times"
-                style="font-size: 0.8rem"></i></span>
+            <span class="edit" (click)="closePost(feed)" aria-label="Fechar post" style="cursor: pointer; margin-left: auto;">
+              <i class="pi pi-times" style="font-size: 0.8rem"></i>
+            </span>
           </div>
+          
+          <!--Post feito apartir de um grupo-->
+          <div class="group-user-info" *ngIf="feed.group" style="display: flex; align-items: center; margin: 0.7rem;">
+            <div class="group-pic-wrapper">
+              <img class="group-pic" src="{{feed.group.urlFile}}" alt="Group Photo">
+              <img class="user-pic" src="{{feed.user.profileImageUrl}}" alt="User Photo">
+            </div>
+            <div class="group-details">
+              <div style="display: flex; align-items: center;">
+                <a [routerLink]="['/group', feed.group.id]" class="group-name">{{feed.group.name}}</a>
+                <span class="bullet">•</span>
+                <a class="join-group">Aderir</a>
+              </div>
+              <div class="post-author-info">
+                <a [routerLink]="['/user/profile', feed.user.userId]" class="user-name">{{feed.user.firstName}} {{feed.user.lastName}}</a>
+                <span class="bullet">•</span>
+                <span class="post-time">{{timeElapsed(feed.date.toString())}}</span>
+              </div>
+            </div>
+            <span class="edit" (click)="closePost(feed)" aria-label="Fechar post" style="cursor: pointer; margin-left: auto;">
+              <i class="pi pi-times" style="font-size: 0.8rem"></i>
+            </span>
+          </div>
+
 
           <hr style="margin-top: 5px;">
 
