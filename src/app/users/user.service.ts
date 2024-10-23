@@ -185,6 +185,16 @@ export class UserService {
     return this.http.get<IApiResponse<User>>(`${this.host}/user/current-user-friends`, { params });
   }
 
+  getCurrentUserFriendRequests(filtro: IUserFilter): Observable<IApiResponse<User>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
+
+    return this.http.get<IApiResponse<User>>(`${this.host}/user/current-user-friend-requests`, { params });
+  }
+
   acceptFriendRequest(friendId: number): Observable<User> {
     return this.http.post<User>(`${this.host}/user/accept-friend-requests/${friendId}`, {});
   }

@@ -31,15 +31,17 @@ export class UsersComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   displayModalSave: boolean = false;
   profileImageFile!: File;
-
-  friendRequests: User[] = []
   
   users: User[] = [];
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-
   totalRegistros: number = 0
   totalUsers: number = 0;
+
+  friendRequests: User[] = []
+  currentPageFriendRequests: number = 1;
+  totalRegistrosPedidosAmizades: number = 10000;
+  opcoesItensPorPaginaPedidosDeAmizade: number[] = [5, 10, 20, 50];
 
   friends: User[] = [];
   currentPageFriends: number = 1;
@@ -70,6 +72,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsersSearch();
     this.getUserFriends();
+    this.getCurrentUserFriendRequests();
   }
 
   filtro: IUserFilter = {
@@ -79,6 +82,12 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   filtroAmigos: IUserFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'firstName,asc',
+  }
+
+  filtroPedidosDeAmizade: IUserFilter = {
     page: -1,
     itemsPerPage: 5,
     sort: 'firstName,asc',
@@ -201,6 +210,19 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getUsersSearch();
   }
 
+  
+  changePageSizeFriends(event: any): void {
+    this.filtroAmigos.itemsPerPage = +event.target.value;
+    this.currentPageFriends = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.getUserFriends();
+  }
+
+  changePageSizeFriendRequests(event: any): void {
+    this.filtroPedidosDeAmizade.itemsPerPage = +event.target.value;
+    this.currentPageFriendRequests = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.getCurrentUserFriendRequests();
+  }
+
   // All users
   previousPage(): void {
     if (this.currentPage > 1) {
@@ -237,6 +259,25 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   totalPagesFriends(): number {
     return Math.ceil(this.totalRegistrosAmigos / this.filtroAmigos.itemsPerPage);
+  }
+  
+  // Friend Requests
+  previousPageFriendRequests(): void {
+    if (this.currentPageFriendRequests > 1) {
+      this.currentPageFriendRequests--;
+      this.getCurrentUserFriendRequests();
+    }
+  }
+  
+  nextPageFriendRequests(): void {
+    if (this.currentPageFriendRequests < this.totalPages()) {
+      this.currentPageFriendRequests++;
+      this.getCurrentUserFriendRequests();
+    }
+  }
+  
+  totalPagesFriendRequests(): number {
+    return Math.ceil(this.totalRegistrosPedidosAmizades / this.filtroPedidosDeAmizade.itemsPerPage);
   }
 
   prepararNovoUser() {
@@ -313,6 +354,19 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       erro => this.errorHandler.handle(erro)
     )
+  }
+
+  getCurrentUserFriendRequests(): void {
+    this.filtroPedidosDeAmizade.page++;
+    this.userService.getCurrentUserFriendRequests(this.filtroPedidosDeAmizade).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.friendRequests = [...this.friendRequests, ...dados.content];
+        this.totalRegistrosPedidosAmizades = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
   }
 
   getUserFriends(): void {
