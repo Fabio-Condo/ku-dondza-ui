@@ -344,24 +344,14 @@ export class UsersComponent implements OnInit, OnDestroy {
       (user) => {
       }
     )
-
-  }
-
-  getFriendRequests() {
-    return this.userService.getFriendRequests().subscribe(
-      (data: User[]) => {
-        this.friendRequests = data;
-      },
-      erro => this.errorHandler.handle(erro)
-    )
   }
 
   getCurrentUserFriendRequests(): void {
-    this.filtroPedidosDeAmizade.page++;
+    this.filtroPedidosDeAmizade.page = this.currentPageFriendRequests - 1; // Ajuste para o padrão de paginação começando em 0
     this.userService.getCurrentUserFriendRequests(this.filtroPedidosDeAmizade).subscribe(
       (dados: IApiResponse<User>) => {
         this.friendRequests = [...this.friendRequests, ...dados.content];
-        this.totalRegistrosPedidosAmizades = dados.totalElements
+        this.totalRegistrosPedidosAmizades = dados.totalElements;    
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -370,7 +360,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   getUserFriends(): void {
-    this.filtroAmigos.page++;
+    this.filtroAmigos.page = this.currentPageFriends - 1; // Ajuste para o padrão de paginação começando em 0
     this.userService.getCurrentUserFriends(this.filtroAmigos).subscribe(
       (dados: IApiResponse<User>) => {
         this.friends = [...this.friends, ...dados.content];
@@ -382,29 +372,38 @@ export class UsersComponent implements OnInit, OnDestroy {
     );
   }
 
-  acceptFriendRequest(friendId: number) {
-    this.userService.acceptFriendRequest(friendId).subscribe(
+  acceptFriendRequest(friend: User) {
+    this.userService.acceptFriendRequest(friend.id).subscribe(
       (friendAcepted) => {
-        this.getFriendRequests();
+        // Remove a solicitação pendente da lista
+        this.friendRequests = this.friendRequests.filter(request => request.id !== friend.id);
+        // Adiciona o novo amigo à lista de amigos
+        this.friends.push(friend);
+        this.getUsersSearch();
       },
       erro => this.errorHandler.handle(erro)
     )
   }
 
-  rejectFriendRequest(friendId: number) {
-    this.userService.rejectFriendRequest(friendId).subscribe(
+  rejectFriendRequest(friend: User) {
+    this.userService.rejectFriendRequest(friend.id).subscribe(
       () => {
-        this.getFriendRequests();
+        // Remove a solicitação rejeitada da lista de pendentes
+        this.friendRequests = this.friendRequests.filter(request => request.id !== friend.id);
+      },
+      error => this.errorHandler.handle(error)
+    );
+  }
+  
+
+  removeFriend(friend: User) {
+    this.userService.removeFriend(friend.id).subscribe(
+      () => {
+        // Remove o amigo da lista de amigos
+        this.friends = this.friends.filter(existingFriend => existingFriend.id !== friend.id);
+        this.getUsersSearch();
       },
       erro => this.errorHandler.handle(erro)
-    )
-  }
-
-  removeFriend(friendId: number) {
-    this.userService.removeFriend(friendId).subscribe(
-      () => {
-        this.messageService.add({ severity: 'success', detail: 'Friend removed successfully' });
-      }
     )
   }
 

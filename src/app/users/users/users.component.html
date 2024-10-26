@@ -54,7 +54,7 @@
                                 <p class="username text-muted">12 mutual friends</p>
                             </div>
                             <div class="button-container">
-                                <button pButton type="button" (click)="removeFriend(user.id)" style="background-color: rgb(196, 79, 79); border-color: rgb(196, 79, 79);">Remover amizade</button>
+                                <button (click)="removeFriend(friend)" class="btn">Remover amizade</button>
                             </div>
                         </div>
                     </div>
@@ -100,8 +100,8 @@
                                 <p class="username text-muted">12 mutual friends</p>
                             </div>
                             <div class="button-container">
-                                <button (click)="acceptFriendRequest(friendReq.id)" class="btn btn-primary">Confirmar</button>
-                                <button (click)="rejectFriendRequest(friendReq.id)" class="btn">Eliminar</button>                            
+                                <button (click)="acceptFriendRequest(friendReq)" class="btn btn-primary">Confirmar</button>
+                                <button (click)="rejectFriendRequest(friendReq)" class="btn" style="margin-left: 5px;">Eliminar</button>                            
                             </div>
                         </div>
                     </div>
@@ -149,8 +149,8 @@
                                 <a (click)="confirmarExclusao(user)" class="delete-link">excluir</a>
                             </div>
                             <div class="button-container">
-                                <button pButton *ngIf="!user.isFriend" type="button" (click)="sendFriendRequest(user)">Adicionar amigo</button>
-                                <button pButton *ngIf="user.isFriend" type="button" (click)="removeFriend(user.id)" style="background-color: rgb(196, 79, 79); border-color: rgb(196, 79, 79);">Remover amizade</button>
+                                <button (click)="sendFriendRequest(user)" *ngIf="!user.isFriend" class="btn btn-primary">Adicionar amigo</button>
+                                <button (click)="removeFriend(user)" *ngIf="user.isFriend" class="btn" style="margin-left: 5px;">Remover amizade</button>                            
                             </div>
                         </div>
                     </div>
