@@ -38,14 +38,14 @@
 
                             <div class="content">
                                 <p class="group-name">{{ group.name }}</p>
-                                <p class="details texto-limitado">{{ group.description }}</p>
                                 <p class="details">326 membros</p>
-                                <a class="details-link" [routerLink]="['/groups', group.id]">ver mais informações e
-                                    cursos</a>
                                 <a (click)="onUpdate(group.id, group.name, group.description, file)"
                                     class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(group)" class="delete-link"
                                     style="margin-left: 10px;">excluir</a>
+                            </div>
+                            <div class="button-container">
+                                <button class="btn btn-primary" [routerLink]="['/groups', group.id]">Ver</button>
                             </div>
 
                         </div>

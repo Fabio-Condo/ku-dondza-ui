@@ -48,11 +48,12 @@
                                         institution.type }}</span></p>
                                 <p class="details">tipo de administração: <span class="text-muted">{{
                                         getAdministrationTypeValue(institution.administrationType) }}</span></p>        
-                                <a class="details-link" [routerLink]="['/instituicoes', institution.id]">ver mais
-                                    informações e cursos</a>
                                 <a (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
                                     class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(institution)" class="delete-link">excluir</a>
+                            </div>
+                            <div class="button-container">
+                                <button class="btn btn-primary" [routerLink]="['/instituicoes', institution.id]">Ver</button>
                             </div>
                         </div>
                     </div>

@@ -34,11 +34,12 @@
                                 <p class="quiz-title">{{ quiz.title }}</p>
                                 <p class="details">{{ 10 }} questoes</p>
                                 <p class="details">Categoria: Matematica</p>
-                                <a class="enter-link" [routerLink]="['/quizzes', quiz.id, 'questions']">ver conteúdo</a>
                                 <a (click)="onUpdateQuiz(quiz)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(quiz)" class="delete-link">excluir</a>
                             </div>
-
+                            <div class="button-container">
+                                <button class="btn btn-primary" [routerLink]="['/quizzes', quiz.id, 'questions']">Iniciar</button>
+                            </div>
                         </div>
                     </div>
                 </td>

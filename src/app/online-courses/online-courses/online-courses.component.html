@@ -42,12 +42,14 @@
 
                             <div class="content">
                                 <p class="course-name">{{ course.name }}</p>
-                                <p class="details texto-limitado">{{ course.description }} </p>
-                                <a class="enter-link" [routerLink]="['/coursos-online', course.id]">ver conteúdo</a>
+                                <p class="details">Instrutor: <span class="text-muted">Fabio Enosse</span></p>
+                                <a *ngIf="course.isSubscribed" class="enter-link" style="font-weight: bold;">inscrito</a>
                                 <a (click)="onUpdateOnlineCourse(course, file)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
                             </div>
-                            <p *ngIf="course.isSubscribed" class="edit-link" style="font-weight: bold;">inscrito</p>
+                            <div class="button-container">
+                                <button class="btn btn-primary" [routerLink]="['/coursos-online', course.id]">Ver</button>
+                            </div>
 
                         </div>
                     </div>
