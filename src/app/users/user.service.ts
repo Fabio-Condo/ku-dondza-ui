@@ -211,6 +211,10 @@ export class UserService {
     return this.http.get<boolean>(`${this.host}/user/friends/${friendId}`, {});
   }
 
+  checkIfSentFriendRequest(receptorUserId: number, emissorUserId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/user/${receptorUserId}/requests/${emissorUserId}`, {});
+  }
+
   sendFriendRequest(user: User): Observable<User> {
     return this.http.post<User>(`${this.host}/user/send-friend-request`, user, {});
   }

@@ -21,6 +21,8 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
+  currentUser: User = new User(); // logged user
+
   //exbindoFormularioAddUser = false;
   //exbindoFormularioEditUser = false;
   exbindoFormularioSettingsUser = false;
@@ -69,7 +71,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle('Pesquisa do usuário');
-    this.user = this.authenticationService.getUserFromLocalCache();
+    this.currentUser = this.authenticationService.getUserFromLocalCache();
     this.getUsersSearch();
     this.getUserFriends();
     this.getCurrentUserFriendRequests();
@@ -146,6 +148,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       (data: IApiResponse<User>) => {
         data.content.forEach(user => {
           this.checkFriendship(user);
+          this.checkIfSentFriendRequest(user);
+          this.checkIfCurrentUserSentFriendRequest(user);
         });
         this.users = data.content
         this.totalRegistros = data.totalElements;
@@ -414,6 +418,28 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.error('Erro ao verificar amizade:', error);
+      }
+    );
+  }
+
+  checkIfSentFriendRequest(user: User): void {
+    this.userService.checkIfSentFriendRequest(this.currentUser.id, user.id).subscribe(
+      (sentFriendRequest) => {
+        user.sentFriendRequest = sentFriendRequest;
+      },
+      (error) => {
+        console.error('Erro ao verificar:', error);
+      }
+    );
+  }
+
+  checkIfCurrentUserSentFriendRequest(user: User): void {
+    this.userService.checkIfSentFriendRequest(user.id, this.currentUser.id).subscribe(
+      (sentFriendRequest) => {
+        user.currentUserSentFriendRequest = sentFriendRequest;
+      },
+      (error) => {
+        console.error('Erro ao verificar:', error);
       }
     );
   }

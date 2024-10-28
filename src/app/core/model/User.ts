@@ -24,6 +24,8 @@ export class User {
   public savedPosts: Post[] = [];
 
   public isFriend: boolean = false;
+  public currentUserSentFriendRequest: boolean = false;
+  public sentFriendRequest: boolean = false;
 
 
   constructor() {
