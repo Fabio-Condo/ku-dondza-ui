@@ -33,6 +33,8 @@ import { HomeModule } from './home/home.module';
 import { HomeRoutingModule } from './home/home-routing.module';
 import { QuizModule } from './quiz/quiz.module';
 import { QuizRoutingModule } from './quiz/quiz-routing.module';
+import { CompetitionRoutingModule } from './competitions/competition-routing.module';
+import { CompetitionsModule } from './competitions/competitions.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import { QuizRoutingModule } from './quiz/quiz-routing.module';
     UsersRoutingModule,
     GroupsRoutingModule,
     HomeRoutingModule,
-    QuizModule,
+    QuizRoutingModule,
+    CompetitionRoutingModule,
   
     FeedsModule,
     ExamesModule,
@@ -62,7 +65,8 @@ import { QuizRoutingModule } from './quiz/quiz-routing.module';
     UsersModule,
     GroupModule,
     HomeModule,
-    QuizRoutingModule,
+    QuizModule,
+    CompetitionsModule,
 
     CoreRoutingModule,
     AppRoutingModule,
