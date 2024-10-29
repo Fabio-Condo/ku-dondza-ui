@@ -34,13 +34,11 @@
                                 <p class="details">{{ 27 }} participantes</p>
                                 <a (click)="onUpdateCompetition(competition)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(competition)" class="delete-link">excluir</a>
-                                <a (click)="onShowQuestions(competition)" class="delete-link">show questao</a>
                                 <a (click)="onShowSelectQuestions(competition)" class="delete-link">add questao</a>
                                 <a (click)="addParticipantToCompetition(competition)" class="delete-link">subscrever</a>
-
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary">Previsualizar</button>
+                                <button class="btn btn-primary" (click)="onShowQuestions(competition)">Previsualizar</button>
                             </div>
                         </div>
                     </div>
@@ -90,15 +88,37 @@
 <div class="question-dialog-overlay" *ngIf="showQuestionsDialog">
     <div class="question-dialog">
         <div class="question-dialog-header">
-            <h4>Questoes</h4>
+            <div class="tab-header">
+                <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+                    Questoes
+                </div>
+                <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+                    Participantes
+                </div>
+            </div>
             <button class="close-button" (click)="onCloseQuestions()">x</button>
         </div>
-        <div class="question-dialog-content">
-            <ul>
-                <li *ngFor="let question of competition.questions">
-                    <span>{{question.text}}</span>
-                </li>
-            </ul>
+        <div *ngIf="activeTab === 1" class="active">
+            <div class="question-dialog-content">
+                <ul>
+                    <li *ngFor="let question of competition.questions">
+                        <span>{{question.text}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div *ngIf="activeTab === 2" class="active">
+            <div class="question-dialog-content">
+                <ul>
+                    <li *ngFor="let participant of competition.participants">
+                        <span>{{participant.firstName}} {{participant.lastName}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div (click)="onShowQuestions(competition)" class="upload-loading-container"
+                style="cursor: pointer; border: 1px solid #ccc;">
+                <p class="upload-loading-text">carregar mais posts recentes</p>
+            </div>
         </div>
     </div>
 </div>

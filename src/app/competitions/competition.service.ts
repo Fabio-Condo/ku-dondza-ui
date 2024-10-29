@@ -9,6 +9,7 @@ import { QuestionFilter } from '../core/interface/QuestionFilter';
 import { Question } from '../core/model/Question';
 import { User } from '../core/model/User';
 import { UserFilter } from '../core/interface/UserFilter';
+import { IUserFilter } from '../core/model/IUserFilter';
 
 
 @Injectable({ providedIn: 'root' })
@@ -56,12 +57,12 @@ export class CompetitionService {
         return this.http.delete<Competition>(`${this.host}/${competitionId}/participants/${userId}`);
     }
 
-    getParticipantsByCompetitionId(competitionId: number, filtro: UserFilter): Observable<IApiResponse<User>> {
+    getParticipantsByCompetitionId(competitionId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
 
         let params = new HttpParams()
-            .set('page', filtro.pagina)
-            .set('sort', filtro.ordenamento)
-            .set('size', filtro.itensPorPagina);
+            .set('page', filtro.page)
+            .set('sort', filtro.sort)
+            .set('size', filtro.itemsPerPage);
 
         return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/participants`, { params });
     }

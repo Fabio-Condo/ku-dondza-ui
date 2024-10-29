@@ -6,11 +6,11 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { QuizService } from 'src/app/quiz/quiz.service';
 import { QuestionService } from 'src/app/questions/question2.service';
 import { Question } from 'src/app/core/model/Question';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { IUserFilter } from 'src/app/core/model/IUserFilter';
 
 @Component({
   selector: 'app-competitions',
@@ -37,6 +37,10 @@ export class CompetitionsComponent implements OnInit {
 
   loggedUser: User = new User;
 
+  activeTab: number = 1;
+
+  participants: User[] = [];
+
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -45,6 +49,13 @@ export class CompetitionsComponent implements OnInit {
     itemsPerPage: 5,
     sort: 'id,asc'
   };
+
+  
+  filtroParticipants: IUserFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,asc',
+  }
 
   @ViewChild('tabela') grid: any;
 
@@ -187,7 +198,7 @@ export class CompetitionsComponent implements OnInit {
   }
 
   addQuestionToCompetition(competition: Competition) {
-    this.competitionService.addQuestionToCompetition(competition.id, this.selectedQuestion.id).subscribe(
+    this.competitionService.addQuestionToCompetition(this.competition.id, this.selectedQuestion.id).subscribe(
       (competition) => {
         this.competition = competition;
       },
@@ -196,6 +207,24 @@ export class CompetitionsComponent implements OnInit {
       }
     )
   }
+
+  getParticipantsByCompetitionId(competition: Competition): void {
+    this.filtroParticipants.page++;
+    this.competitionService.getParticipantsByCompetitionId(competition.id, this.filtroParticipants).subscribe(
+      (dados: IApiResponse<User>) => {
+        competition.participants = [...competition.participants, ...dados.content];
+        //this.competition.participants = dados.content;
+        //this.totalRegistrosPostsGuardados = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  //onShowMoreParticipants(competition: Competition) {
+  //  this.getParticipantsByCompetitionId(competition);
+  //}
 
   onShowQuestions(competition: Competition) {
     this.competition = competition
@@ -207,7 +236,8 @@ export class CompetitionsComponent implements OnInit {
   }
 
   onShowSelectQuestions(competition: Competition) {
-    this.competition = competition
+    //this.competition.participants = [];
+    this.competition = competition;
     this.showSelectQuestionsDialog = true;
   }
 
@@ -258,6 +288,10 @@ export class CompetitionsComponent implements OnInit {
   onAddNewCompetition(): void {
     this.competition = new Competition();
     this.displayModalSave = true;
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
   }
 
   private sendErrorNotification(message: string): void {
