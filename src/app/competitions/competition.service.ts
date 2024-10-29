@@ -5,6 +5,10 @@ import { Observable } from 'rxjs';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { Competition } from '../core/model/Competition';
 import { CompetitionFilter } from '../core/interface/CompetitionFilter';
+import { QuestionFilter } from '../core/interface/QuestionFilter';
+import { Question } from '../core/model/Question';
+import { User } from '../core/model/User';
+import { UserFilter } from '../core/interface/UserFilter';
 
 
 @Injectable({ providedIn: 'root' })
@@ -42,5 +46,41 @@ export class CompetitionService {
 
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});
+    }
+
+    addParticipantToCompetition(competitionId: number, userId: number): Observable<Competition> {
+        return this.http.post<Competition>(`${this.host}/${competitionId}/participants/${userId}`, {});
+    }
+
+    removeParticipantFromCompetition(competitionId: number, userId: number): Observable<Competition> {
+        return this.http.delete<Competition>(`${this.host}/${competitionId}/participants/${userId}`);
+    }
+
+    getParticipantsByCompetitionId(competitionId: number, filtro: UserFilter): Observable<IApiResponse<User>> {
+
+        let params = new HttpParams()
+            .set('page', filtro.pagina)
+            .set('sort', filtro.ordenamento)
+            .set('size', filtro.itensPorPagina);
+
+        return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/participants`, { params });
+    }
+
+    addQuestionToCompetition(competitionId: number, questionId: number): Observable<Competition> {
+        return this.http.post<Competition>(`${this.host}/${competitionId}/questions/${questionId}`, {});
+    }
+
+    removeQuestionFromCompetition(competitionId: number, questionId: number): Observable<Competition> {
+        return this.http.delete<Competition>(`${this.host}/${competitionId}/questions/${questionId}`);
+    }
+
+    getQuestionsByCompetitionId(competitionId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
+
+        let params = new HttpParams()
+            .set('page', filtro.page)
+            .set('sort', filtro.sort)
+            .set('size', filtro.itemsPerPage);
+
+        return this.http.get<IApiResponse<Question>>(`${this.host}/${competitionId}/questions`, { params });
     }
 }

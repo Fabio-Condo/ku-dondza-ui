@@ -30,9 +30,15 @@
                         <div class="card-content">
                             <div class="content">
                                 <p class="course-name">{{ competition.title }}</p>
-                                <p class="details">Quiz: <span class="text-muted">{{ competition.quiz.title }}</span></p>
+                                <p class="details">{{ 10 }} questoes</p>
+                                <p class="details">{{ 27 }} participantes</p>
                                 <a (click)="onUpdateCompetition(competition)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(competition)" class="delete-link">excluir</a>
+                                <a (click)="onShowQuestions(competition)" class="delete-link">show questao</a>
+                                <a (click)="onShowSelectQuestions(competition)" class="delete-link">add questao</a>
+                            </div>
+                            <div class="button-container">
+                                <button class="btn btn-primary">Previsualizar</button>
                             </div>
                         </div>
                     </div>
@@ -74,14 +80,45 @@
                 <label for="title">Title</label>
                 <input type="text" id="title" name="title" ngModel #title="ngModel" required minlength="1" [(ngModel)]="competition.title">
             </div>
-            <div class="form-group">
-                <label for="quiz">Quizzes</label>
-                <select id="quiz" [(ngModel)]="competition.quiz.id" name="quiz" required>
-                    <option value="" disabled selected>Selecione o quiz</option>
-                    <option *ngFor="let quiz of quizzes" [value]="quiz.value">{{ quiz.label }}</option>
-                </select>
-            </div>
             <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
         </form>
+    </div>
+</div>
+
+<div class="question-dialog-overlay" *ngIf="showQuestionsDialog">
+    <div class="question-dialog">
+        <div class="question-dialog-header">
+            <h4>Questoes</h4>
+            <button class="close-button" (click)="onCloseQuestions()">x</button>
+        </div>
+        <div class="question-dialog-content">
+            <ul>
+                <li *ngFor="let question of competition.questions">
+                    <span>{{question.text}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="question-dialog-overlay" *ngIf="showSelectQuestionsDialog">
+    <div class="question-dialog">
+        <div class="question-dialog-header">
+            <h4>Questoes</h4>
+            <button class="close-button" (click)="onCloseSelectQuestions()">x</button>
+        </div>
+
+        <div class="form-group">
+            <label for="question">Selecione a questao</label>
+            <select id="question" name="question" [(ngModel)]="selectedQuestion.id" required>
+                <option value="" disabled selected>Selecione a questao</option>
+                <option *ngFor="let question of questions" [value]="question.value">{{ question.label }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="button" (click)="addQuestionToCompetition(competition)" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+          </div>
     </div>
 </div>

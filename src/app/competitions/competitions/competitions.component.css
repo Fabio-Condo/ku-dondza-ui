@@ -172,24 +172,6 @@
     background-size: 16px 12px;
 }
 
-.btn {
-    display: inline-block;
-    background-color: #007BFF;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.btn:hover {
-    background-color: #0056b3;
-}
-
 .close-btn {
     position: absolute;
     top: 25px;
@@ -255,4 +237,62 @@ a {
     text-decoration: underline;
     cursor: pointer;
     margin-right: 10px;
+}
+
+/*Question dialog*/
+.question-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.question-dialog {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    max-height: 80%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.question-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.question-dialog-content {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.question-dialog-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.question-dialog-content li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.question-dialog-content li:last-child {
+    border-bottom: none;
 }

@@ -7,6 +7,8 @@ import { NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuizService } from 'src/app/quiz/quiz.service';
+import { QuestionService } from 'src/app/questions/question2.service';
+import { Question } from 'src/app/core/model/Question';
 
 @Component({
   selector: 'app-competitions',
@@ -26,7 +28,11 @@ export class CompetitionsComponent implements OnInit {
   // Dados das competições
   competitions: Competition[] = [];
   competition: Competition = new Competition();
-  quizzes: any[] = [];
+  selectedQuestion: Question = new Question();
+  questions: any[] = [];
+  showQuestionsDialog: boolean = false;
+  showSelectQuestionsDialog: boolean = false;
+
 
   // Paginação
   currentPage: number = 1;
@@ -41,6 +47,7 @@ export class CompetitionsComponent implements OnInit {
 
   constructor(
     private competitionService: CompetitionService,
+    private questionService: QuestionService,
     private quizService: QuizService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -48,8 +55,8 @@ export class CompetitionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscarTotal();
-    this.carregarQuizzes();
     this.findAll(0);
+    this.getQuestions();
   }
 
   get editing() {
@@ -148,21 +155,49 @@ export class CompetitionsComponent implements OnInit {
     );
   }
 
-  carregarQuizzes() {
-    return this.quizService.findAll().subscribe(
+  getQuestions() {
+    return this.questionService.getAll().subscribe(
       dados => {
-        this.quizzes = dados.content.map(dado => {
+        this.questions = dados.map(dado => {
           return {
-            label: dado.title,
+            label: dado.text,
             value: dado.id
-          };
-        });
+          }
+        })
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
-    );
+    )
+  }
+
+  addQuestionToCompetition(competition: Competition) {
+    this.competitionService.addQuestionToCompetition(competition.id, this.selectedQuestion.id).subscribe(
+      (competition) => {
+        this.competition = competition;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  onShowQuestions(competition: Competition) {
+    this.competition = competition
+    this.showQuestionsDialog = true;
+  }
+
+  onCloseQuestions() {
+    this.showQuestionsDialog = false;
+  }
+
+  onShowSelectQuestions(competition: Competition) {
+    this.competition = competition
+    this.showSelectQuestionsDialog = true;
+  }
+
+  onCloseSelectQuestions() {
+    this.showSelectQuestionsDialog = false;
   }
 
   // Métodos de paginação
