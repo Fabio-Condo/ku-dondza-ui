@@ -9,6 +9,8 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuizService } from 'src/app/quiz/quiz.service';
 import { QuestionService } from 'src/app/questions/question2.service';
 import { Question } from 'src/app/core/model/Question';
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-competitions',
@@ -33,6 +35,7 @@ export class CompetitionsComponent implements OnInit {
   showQuestionsDialog: boolean = false;
   showSelectQuestionsDialog: boolean = false;
 
+  loggedUser: User = new User;
 
   // Paginação
   currentPage: number = 1;
@@ -48,12 +51,13 @@ export class CompetitionsComponent implements OnInit {
   constructor(
     private competitionService: CompetitionService,
     private questionService: QuestionService,
-    private quizService: QuizService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.buscarTotal();
     this.findAll(0);
     this.getQuestions();
@@ -153,6 +157,17 @@ export class CompetitionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  addParticipantToCompetition(competition: Competition) {
+    this.competitionService.addParticipantToCompetition(competition.id, this.loggedUser.id).subscribe(
+      (competition) => {
+        this.competition = competition;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
   }
 
   getQuestions() {
