@@ -30,6 +30,7 @@ export class CompetitionsComponent implements OnInit {
   // Dados das competições
   competitions: Competition[] = [];
   competition: Competition = new Competition();
+  selectedCompetition: Competition = new Competition();
   selectedQuestion: Question = new Question();
   questions: any[] = [];
   showQuestionsDialog: boolean = false;
@@ -40,6 +41,8 @@ export class CompetitionsComponent implements OnInit {
   activeTab: number = 1;
 
   participants: User[] = [];
+  totalRegistrosParticipants: number = 10000
+
 
   // Paginação
   currentPage: number = 1;
@@ -50,10 +53,10 @@ export class CompetitionsComponent implements OnInit {
     sort: 'id,asc'
   };
 
-  
+
   filtroParticipants: IUserFilter = {
     page: -1,
-    itemsPerPage: 5,
+    itemsPerPage: 2,
     sort: 'id,asc',
   }
 
@@ -208,35 +211,42 @@ export class CompetitionsComponent implements OnInit {
     )
   }
 
-  getParticipantsByCompetitionId(competition: Competition): void {
-    this.filtroParticipants.page++;
-    this.competitionService.getParticipantsByCompetitionId(competition.id, this.filtroParticipants).subscribe(
+  getParticipantsByCompetitionId(): void {
+  
+    this.competitionService.getParticipantsByCompetitionId(this.selectedCompetition.id, this.filtroParticipants).subscribe(
       (dados: IApiResponse<User>) => {
-        competition.participants = [...competition.participants, ...dados.content];
-        //this.competition.participants = dados.content;
-        //this.totalRegistrosPostsGuardados = dados.totalElements
+        this.selectedCompetition.participants = [...this.selectedCompetition.participants, ...dados.content];
+        this.totalRegistrosParticipants = dados.totalElements;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+        this.sendErrorNotification(errorResponse.error.message || "Erro ao carregar participantes");
       }
     );
   }
-
-  //onShowMoreParticipants(competition: Competition) {
-  //  this.getParticipantsByCompetitionId(competition);
-  //}
-
-  onShowQuestions(competition: Competition) {
-    this.competition = competition
+  
+  onShowMoreQuestions(): void {
+    if (this.selectedCompetition) {
+      this.filtroParticipants.page++;
+      this.getParticipantsByCompetitionId();
+    }
+  }
+  
+  onShowQuestions(competition: Competition): void {
+    this.selectedCompetition = competition;
+    this.selectedCompetition.participants = []; // Limpar a lista de participantes ao selecionar nova competição
+    this.filtroParticipants.page = 0; // Reset da página ao mudar de competição
+    //this.totalRegistrosParticipants = 0; // Reset do total de registros
+    this.getParticipantsByCompetitionId();
     this.showQuestionsDialog = true;
   }
+  
+  
 
   onCloseQuestions() {
     this.showQuestionsDialog = false;
   }
 
   onShowSelectQuestions(competition: Competition) {
-    //this.competition.participants = [];
     this.competition = competition;
     this.showSelectQuestionsDialog = true;
   }

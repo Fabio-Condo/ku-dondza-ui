@@ -88,36 +88,41 @@
 <div class="question-dialog-overlay" *ngIf="showQuestionsDialog">
     <div class="question-dialog">
         <div class="question-dialog-header">
-            <div class="tab-header">
-                <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
-                    Questoes
-                </div>
-                <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
-                    Participantes
-                </div>
-            </div>
+            <h4>{{selectedCompetition.title}}</h4>
             <button class="close-button" (click)="onCloseQuestions()">x</button>
+        </div>
+        <div class="tab-header">
+            <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+                Questoes
+            </div>
+            <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+                Participantes
+            </div>
         </div>
         <div *ngIf="activeTab === 1" class="active">
             <div class="question-dialog-content">
                 <ul>
-                    <li *ngFor="let question of competition.questions">
+                    <li *ngFor="let question of selectedCompetition.questions">
                         <span>{{question.text}}</span>
                     </li>
                 </ul>
+            </div>
+            <div class="upload-loading-container"
+                style="cursor: pointer; border: 1px solid #ccc;">
+                <p class="upload-loading-text">carregar mais questões</p>
             </div>
         </div>
         <div *ngIf="activeTab === 2" class="active">
             <div class="question-dialog-content">
                 <ul>
-                    <li *ngFor="let participant of competition.participants">
-                        <span>{{participant.firstName}} {{participant.lastName}}</span>
+                    <li *ngFor="let p of selectedCompetition.participants">
+                        <span>{{p.firstName}} {{p.lastName}}</span>
                     </li>
                 </ul>
             </div>
-            <div (click)="onShowQuestions(competition)" class="upload-loading-container"
+            <div (click)="onShowMoreQuestions()" class="upload-loading-container"
                 style="cursor: pointer; border: 1px solid #ccc;">
-                <p class="upload-loading-text">carregar mais posts recentes</p>
+                <p class="upload-loading-text">carregar mais participantes</p>
             </div>
         </div>
     </div>
