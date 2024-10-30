@@ -11,6 +11,7 @@ import { Question } from 'src/app/core/model/Question';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 
 @Component({
   selector: 'app-competitions',
@@ -32,7 +33,6 @@ export class CompetitionsComponent implements OnInit {
   competition: Competition = new Competition();
   selectedCompetition: Competition = new Competition();
   selectedQuestion: Question = new Question();
-  questions: any[] = [];
   showQuestionsDialog: boolean = false;
   showSelectQuestionsDialog: boolean = false;
 
@@ -43,6 +43,9 @@ export class CompetitionsComponent implements OnInit {
   participants: User[] = [];
   totalRegistrosParticipants: number = 10000
 
+  questionsList: any[] = [];
+  questions: User[] = [];
+  totalRegistrosQuestions: number = 10000
 
   // Paginação
   currentPage: number = 1;
@@ -53,8 +56,13 @@ export class CompetitionsComponent implements OnInit {
     sort: 'id,asc'
   };
 
-
   filtroParticipants: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
+
+  filtroQuestions: QuestionFilter = {
     page: -1,
     itemsPerPage: 2,
     sort: 'id,asc',
@@ -187,7 +195,7 @@ export class CompetitionsComponent implements OnInit {
   getQuestions() {
     return this.questionService.getAll().subscribe(
       dados => {
-        this.questions = dados.map(dado => {
+        this.questionsList = dados.map(dado => {
           return {
             label: dado.text,
             value: dado.id
@@ -211,8 +219,26 @@ export class CompetitionsComponent implements OnInit {
     )
   }
 
-  getParticipantsByCompetitionId(): void {
+  getQuestionsByCompetitionId(): void {
+    this.competitionService.getQuestionsByCompetitionId(this.selectedCompetition.id, this.filtroQuestions).subscribe(
+      (dados: IApiResponse<Question>) => {
+        this.selectedCompetition.questions = [...this.selectedCompetition.questions, ...dados.content];
+        this.totalRegistrosQuestions = dados.totalElements;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message || "Erro ao carregar participantes");
+      }
+    );
+  }
   
+  onShowMoreQuestions(): void {
+    if (this.selectedCompetition) {
+      this.filtroQuestions.page++;
+      this.getQuestionsByCompetitionId();
+    }
+  }
+
+  getParticipantsByCompetitionId(): void {
     this.competitionService.getParticipantsByCompetitionId(this.selectedCompetition.id, this.filtroParticipants).subscribe(
       (dados: IApiResponse<User>) => {
         this.selectedCompetition.participants = [...this.selectedCompetition.participants, ...dados.content];
@@ -224,23 +250,25 @@ export class CompetitionsComponent implements OnInit {
     );
   }
   
-  onShowMoreQuestions(): void {
+  onShowMoreParticipantes(): void {
     if (this.selectedCompetition) {
       this.filtroParticipants.page++;
       this.getParticipantsByCompetitionId();
     }
   }
-  
-  onShowQuestions(competition: Competition): void {
+
+  onShowSelectedCompetition(competition: Competition): void {
     this.selectedCompetition = competition;
+
     this.selectedCompetition.participants = []; // Limpar a lista de participantes ao selecionar nova competição
     this.filtroParticipants.page = 0; // Reset da página ao mudar de competição
-    //this.totalRegistrosParticipants = 0; // Reset do total de registros
     this.getParticipantsByCompetitionId();
+
+    this.selectedCompetition.questions = []; // Limpar a lista de participantes ao selecionar nova competição
+    this.filtroQuestions.page = 0; // Reset da página ao mudar de competição
+    this.getQuestionsByCompetitionId();
     this.showQuestionsDialog = true;
-  }
-  
-  
+  } 
 
   onCloseQuestions() {
     this.showQuestionsDialog = false;

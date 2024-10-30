@@ -38,7 +38,7 @@
                                 <a (click)="addParticipantToCompetition(competition)" class="delete-link">subscrever</a>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary" (click)="onShowQuestions(competition)">Previsualizar</button>
+                                <button class="btn btn-primary" (click)="onShowSelectedCompetition(competition)">Previsualizar</button>
                             </div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="upload-loading-container"
+            <div (click)="onShowMoreQuestions()" class="upload-loading-container"
                 style="cursor: pointer; border: 1px solid #ccc;">
                 <p class="upload-loading-text">carregar mais questões</p>
             </div>
@@ -115,12 +115,12 @@
         <div *ngIf="activeTab === 2" class="active">
             <div class="question-dialog-content">
                 <ul>
-                    <li *ngFor="let p of selectedCompetition.participants">
-                        <span>{{p.firstName}} {{p.lastName}}</span>
+                    <li *ngFor="let participant of selectedCompetition.participants">
+                        <span>{{participant.firstName}} {{participant.lastName}}</span>
                     </li>
                 </ul>
             </div>
-            <div (click)="onShowMoreQuestions()" class="upload-loading-container"
+            <div (click)="onShowMoreParticipantes()" class="upload-loading-container"
                 style="cursor: pointer; border: 1px solid #ccc;">
                 <p class="upload-loading-text">carregar mais participantes</p>
             </div>
@@ -139,7 +139,7 @@
             <label for="question">Selecione a questao</label>
             <select id="question" name="question" [(ngModel)]="selectedQuestion.id" required>
                 <option value="" disabled selected>Selecione a questao</option>
-                <option *ngFor="let question of questions" [value]="question.value">{{ question.label }}
+                <option *ngFor="let question of questionsList" [value]="question.value">{{ question.label }}
                 </option>
             </select>
         </div>
