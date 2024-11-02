@@ -63,7 +63,7 @@ export class QuestionsComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.getQuizById(id);
-      this.findQuestionsByQuizId(0, id);
+      this.getQuestionsByQuizId(id);
     }
   }
 
@@ -85,7 +85,7 @@ export class QuestionsComponent implements OnInit {
 
   // Método para adicionar nova pergunta
   addNewQuestion(questionForm: NgForm) {
-    this.question.quiz = this.quiz; 
+    //this.question.quiz = this.quiz; 
     this.showLoading = true;
 
     // Marcar a resposta correta
@@ -100,7 +100,7 @@ export class QuestionsComponent implements OnInit {
         this.messageService.add({ severity: 'success', detail: 'Question added successfully' });
         questionForm.reset(); // Reseta o formulário
         //this.displayModalSave = false; // Fecha o modal
-        this.findQuestionsByQuizId(0, question.quiz.id);
+        //this.findQuestionsByQuizId(0, question.quiz.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -111,7 +111,7 @@ export class QuestionsComponent implements OnInit {
 
   // Método para atualizar pergunta
   updateQuestion(questionForm: NgForm) {
-    this.question.quiz = this.quiz; 
+    //this.question.quiz = this.quiz; 
     this.showLoading = true;
 
     // Marcar a resposta correta
@@ -125,7 +125,7 @@ export class QuestionsComponent implements OnInit {
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Question updated successfully!' });
         //this.displayModalSave = false; // Fecha o modal
-        this.findQuestionsByQuizId(0, question.quiz.id);
+        //this.findQuestionsByQuizId(0, question.quiz.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -145,13 +145,12 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
-  findQuestionsByQuizId(pagina: number = 0, quizId: number): void {
+  getQuestionsByQuizId(quizId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.questionService.findQuestionsByQuizId(quizId, this.filtro).subscribe(
+    this.quizService.getQuestionsByQuizId(quizId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
-        this.questions = dados.content;
-        this.totalRegistros = dados.totalElements;
+        this.questions  = dados.content;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

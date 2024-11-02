@@ -55,4 +55,8 @@ export class OnlineCoursesService {
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});
     }
+
+    countOnlineCourseStudentsByCourseId(courseId: number): Observable<number> {
+        return this.http.get<number>(`${this.host}/${courseId}/students/total`, {});
+    }
 }

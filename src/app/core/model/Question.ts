@@ -1,11 +1,11 @@
 import { Answer } from "./Answer";
-import { Quiz } from "./Quiz";
+import { Subject } from "./Subject";
 
 export class Question {
     id!: number;
     text!: string;
     fileName!: string;
     urlFile!: string;
-    quiz = new Quiz();
+    subject = new Subject();
     answers: Answer[] = [];
 }

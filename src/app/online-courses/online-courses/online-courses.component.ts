@@ -111,6 +111,7 @@ export class OnlineCoursesComponent implements OnInit {
         this.courses = dados.content
         dados.content.forEach(course => {
           this.checkIfSubscribed(course);
+          this.countOnlineCourseStudentsByCourseId(course);
         });
         this.totalRegistros = dados.totalElements
         this.showLoading = false;
@@ -211,6 +212,20 @@ export class OnlineCoursesComponent implements OnInit {
     this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
       course.isSubscribed = response;
     });
+  }
+
+  countOnlineCourseStudentsByCourseId(course: OnlineCourse) {
+    this.showLoading = true;
+    this.onlineCoursesService.countOnlineCourseStudentsByCourseId(course.id,).subscribe(
+      (total) => {
+        course.totalStudents = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   private sendErrorNotification(message: string): void {

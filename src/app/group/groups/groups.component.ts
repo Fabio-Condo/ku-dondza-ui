@@ -5,6 +5,8 @@ import { ConfirmationService, MessageService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { GroupFilter } from "src/app/core/interface/GroupFilter";
 import { IApiResponse } from "src/app/core/interface/IApiResponse";
+import { User } from "src/app/core/model/User";
+import { AuthenticationService } from "src/app/users/authentication.service";
 
 
 @Component({
@@ -26,6 +28,8 @@ export class GroupsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   isAdmin: boolean = true;
 
+  loggedUser: User = new User;
+
   @ViewChild('tabela') grid: any;
 
   filtro: GroupFilter = {
@@ -37,11 +41,13 @@ export class GroupsComponent implements OnInit {
 
   constructor(
     private groupService: GroupService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.buscarTotal();
   }
@@ -100,6 +106,10 @@ export class GroupsComponent implements OnInit {
     this.groupService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<Group>) => {
         this.groups = dados.content
+        dados.content.forEach(group => {
+          this.checkIfIsMember(group);
+          this.countMembersByGroupId(group);
+        });
         this.totalRegistros = dados.totalElements
         this.showLoading = false;
       },
@@ -140,6 +150,26 @@ export class GroupsComponent implements OnInit {
     this.groupService.buscarTotal().subscribe(
       (total) => {
         this.totalGroups = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  checkIfIsMember(group: Group): void {
+    this.groupService.doesUserMemberOfGroup(group.id, this.loggedUser.id).subscribe(response => {
+      group.isMember = response;
+    });
+  }
+
+  countMembersByGroupId(group: Group) {
+    this.showLoading = true;
+    this.groupService.countMembersByGroupId(group.id,).subscribe(
+      (total) => {
+        group.totalMembers = total;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

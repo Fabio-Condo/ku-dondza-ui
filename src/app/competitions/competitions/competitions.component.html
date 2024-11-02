@@ -30,15 +30,15 @@
                         <div class="card-content">
                             <div class="content">
                                 <p class="course-name">{{ competition.title }}</p>
-                                <p class="details">{{ 10 }} questoes</p>
-                                <p class="details">{{ 27 }} participantes</p>
+                                <p class="details">{{ competition.totalQuestions }} questoes</p>
+                                <p class="details">{{ competition.totalParticipants }} participantes</p>
                                 <a (click)="onUpdateCompetition(competition)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(competition)" class="delete-link">excluir</a>
-                                <a (click)="onShowSelectQuestions(competition)" class="delete-link">add questao</a>
-                                <a (click)="addParticipantToCompetition(competition)" class="delete-link">subscrever</a>
+                                <a (click)="onAddQuestions(competition)" class="delete-link">add questao</a>
+                                <a (click)="onShowSelectedCompetition(competition)" class="delete-link">previsualizar</a>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary" (click)="onShowSelectedCompetition(competition)">Previsualizar</button>
+                                <button class="btn btn-primary" (click)="sendParticipationRequest(competition)">Subscrever</button>
                             </div>
                         </div>
                     </div>
@@ -85,11 +85,11 @@
     </div>
 </div>
 
-<div class="question-dialog-overlay" *ngIf="showQuestionsDialog">
+<div class="question-dialog-overlay" *ngIf="showCompetitionDialog">
     <div class="question-dialog">
         <div class="question-dialog-header">
             <h4>{{selectedCompetition.title}}</h4>
-            <button class="close-button" (click)="onCloseQuestions()">x</button>
+            <button class="close-button" (click)="showCompetitionDialog = false">x</button>
         </div>
         <div class="tab-header">
             <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
@@ -98,12 +98,24 @@
             <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
                 Participantes
             </div>
+            <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+                Pedidos de Participação
+            </div>
         </div>
         <div *ngIf="activeTab === 1" class="active">
             <div class="question-dialog-content">
                 <ul>
                     <li *ngFor="let question of selectedCompetition.questions">
-                        <span>{{question.text}}</span>
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="content" style="margin-left: 20px;">
+                                    <p>{{question.text}}</p>
+                                </div>
+                                <div class="button-container">
+                                    <button class="btn" style="margin-left: 10px;" (click)="removeQuestionFromCompetition(question)">Remover</button>                            
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -116,7 +128,22 @@
             <div class="question-dialog-content">
                 <ul>
                     <li *ngFor="let participant of selectedCompetition.participants">
-                        <span>{{participant.firstName}} {{participant.lastName}}</span>
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="profile-pic">
+                                    <img src="{{participant.profileImageUrl}}" alt="pic 1" />
+                                </div>
+                                <div class="content" style="margin-left: 20px;">
+                                    <p class="user-name user-name-hover" [routerLink]="['/user/profile', participant.userId]">
+                                        {{ participant.firstName }} {{ participant.lastName }}
+                                    </p>
+                                    <p class="username text-muted">12 mutual friends</p>
+                                </div>
+                                <div class="button-container">
+                                    <button class="btn" style="margin-left: 10px;" (click)="removeParticipantFromCompetition(participant)">Remover</button>                            
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -125,14 +152,43 @@
                 <p class="upload-loading-text">carregar mais participantes</p>
             </div>
         </div>
+        <div *ngIf="activeTab === 3" class="active">
+            <div class="question-dialog-content">
+                <ul>
+                    <li *ngFor="let participantReq of selectedCompetition.participationRequests">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="profile-pic">
+                                    <img src="{{participantReq.profileImageUrl}}" alt="pic 1" />
+                                </div>
+                                <div class="content" style="margin-left: 20px;">
+                                    <p class="user-name user-name-hover" [routerLink]="['/user/profile', participantReq.userId]">
+                                        {{ participantReq.firstName }} {{ participantReq.lastName }}
+                                    </p>
+                                    <p class="username text-muted">12 mutual friends</p>
+                                </div>
+                                <div class="button-container">
+                                    <button class="btn btn-primary" (click)="acceptParticipationRequest(participantReq)" >Confirmar</button>
+                                    <button class="btn" style="margin-left: 10px;" (click)="rejectParticipationRequest(participantReq)">Eliminar</button>                            
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div (click)="onShowMoreParticipanteRequests()" class="upload-loading-container"
+                style="cursor: pointer; border: 1px solid #ccc;">
+                <p class="upload-loading-text">carregar mais pedidos</p>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="question-dialog-overlay" *ngIf="showSelectQuestionsDialog">
+<div class="question-dialog-overlay" *ngIf="showAddQuestionsDialog">
     <div class="question-dialog">
         <div class="question-dialog-header">
             <h4>Questoes</h4>
-            <button class="close-button" (click)="onCloseSelectQuestions()">x</button>
+            <button class="close-button" (click)="showAddQuestionsDialog = false">x</button>
         </div>
 
         <div class="form-group">
@@ -145,7 +201,7 @@
         </div>
 
         <div class="form-group">
-            <button type="button" (click)="addQuestionToCompetition(competition)" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            <button type="button" (click)="addQuestionToCompetition()" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
           </div>
     </div>
 </div>

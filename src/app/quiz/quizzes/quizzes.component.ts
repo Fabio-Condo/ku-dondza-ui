@@ -7,6 +7,9 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
 import { Quiz } from 'src/app/core/model/Quiz';
+import { Question } from 'src/app/core/model/Question';
+import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
+import { QuestionService } from 'src/app/questions/question2.service';
 
 @Component({
   selector: 'app-quizzes',
@@ -24,6 +27,15 @@ export class QuizzesComponent implements OnInit {
   displayModalSave: boolean = false;
   isAdmin: boolean = true;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+  selectedQuiz: Quiz = new Quiz();
+
+  selectedQuestion: Question = new Question();
+  showQuestionsDialog: boolean = false;
+  showSelectQuestionsDialog: boolean = false;
+
+  questionsList: any[] = [];
+  totalRegistrosQuestions: number = 10000
+
 
   @ViewChild('table') grid: any;
 
@@ -32,10 +44,17 @@ export class QuizzesComponent implements OnInit {
     itemsPerPage: 5,
     sort: 'id,asc'
   }
+  
+  filtroQuestions: QuestionFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
 
 
   constructor(
     private quizService: QuizService,
+    private questionService: QuestionService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private title: Title,
@@ -45,6 +64,7 @@ export class QuizzesComponent implements OnInit {
     this.title.setTitle('Quiz page');
     this.getTotalQuizzes();
     this.getQuizzes();
+    this.getQuestions();
   }
 
   get editing() {
@@ -97,6 +117,9 @@ export class QuizzesComponent implements OnInit {
     this.quizService.getQuizzes(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {
         this.quizzes = data.content;
+        data.content.forEach(quiz => {
+          this.countQuestionsByQuizId(quiz);
+        });
         this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
@@ -119,6 +142,79 @@ export class QuizzesComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  getQuestions() {
+    return this.questionService.getAll().subscribe(
+      dados => {
+        this.questionsList = dados.map(dado => {
+          return {
+            label: dado.text,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  addQuestionToQuiz() {
+    this.quizService.addQuestionToQuiz(this.quiz.id, this.selectedQuestion.id).subscribe(
+      (quiz) => {
+        this.quiz = quiz;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  getQuestionsByQuizId(): void {
+    this.quizService.getQuestionsByQuizId(this.selectedQuiz.id, this.filtroQuestions).subscribe(
+      (dados: IApiResponse<Question>) => {
+        this.selectedQuiz.questions = [...this.selectedQuiz.questions, ...dados.content];
+        this.totalRegistrosQuestions = dados.totalElements;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  countQuestionsByQuizId(quiz: Quiz) {
+    this.showLoading = true;
+    this.quizService.countQuestionsByQuizId(quiz.id,).subscribe(
+      (total) => {
+        quiz.totalQuestions = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+  
+  onShowMoreQuestions(): void {
+    if (this.selectedQuiz) {
+      this.filtroQuestions.page++;
+      this.getQuestionsByQuizId();
+    }
+  }
+
+  onShowSelectedQuiz(quiz: Quiz): void {
+    this.selectedQuiz = quiz;
+    this.selectedQuiz.questions = [];
+    this.filtroQuestions.page = 0; 
+    this.getQuestionsByQuizId();
+    this.showQuestionsDialog = true;
+  }
+
+  onAddQuestions(quiz: Quiz) {
+    this.quiz = quiz;
+    this.showSelectQuestionsDialog = true;
   }
 
   onUpdateQuiz(quiz: Quiz): void {

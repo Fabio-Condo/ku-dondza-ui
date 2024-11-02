@@ -8,7 +8,6 @@ import { CompetitionFilter } from '../core/interface/CompetitionFilter';
 import { QuestionFilter } from '../core/interface/QuestionFilter';
 import { Question } from '../core/model/Question';
 import { User } from '../core/model/User';
-import { UserFilter } from '../core/interface/UserFilter';
 import { IUserFilter } from '../core/model/IUserFilter';
 
 
@@ -67,6 +66,10 @@ export class CompetitionService {
         return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/participants`, { params });
     }
 
+    countParticipantsByCompetitionId(competitionId: number): Observable<number> {
+        return this.http.get<number>(`${this.host}/${competitionId}/participants/total`, {});
+    }
+
     addQuestionToCompetition(competitionId: number, questionId: number): Observable<Competition> {
         return this.http.post<Competition>(`${this.host}/${competitionId}/questions/${questionId}`, {});
     }
@@ -84,4 +87,31 @@ export class CompetitionService {
 
         return this.http.get<IApiResponse<Question>>(`${this.host}/${competitionId}/questions`, { params });
     }
+
+    countQuestionsByCompetitionId(competitionId: number): Observable<number> {
+        return this.http.get<number>(`${this.host}/${competitionId}/questions/total`, {});
+    }
+
+    findParticipationRequestsByCompetitionId(competitionId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
+
+        let params = new HttpParams()
+            .set('page', filtro.page)
+            .set('sort', filtro.sort)
+            .set('size', filtro.itemsPerPage);
+
+        return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/participation-requests`, { params });
+    }
+
+    sendParticipationRequest(competitionId: number, userId: number): Observable<Competition> {
+        return this.http.post<Competition>(`${this.host}/${competitionId}/send-participation-request/${userId}`, {});
+    }
+
+    acceptParticipationRequest(competitionId: number, userId: number): Observable<Competition> {
+        return this.http.post<Competition>(`${this.host}/${competitionId}/accept-participation-requests/${userId}`, {});
+    }
+
+    rejectParticipationRequest(competitionId: number, userId: number): Observable<void> {
+        return this.http.delete<void>(`${this.host}/${competitionId}/reject-participation-requests/${userId}`);
+    }
+
 }

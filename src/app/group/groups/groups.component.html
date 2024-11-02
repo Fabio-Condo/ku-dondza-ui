@@ -38,7 +38,12 @@
 
                             <div class="content">
                                 <p class="group-name">{{ group.name }}</p>
-                                <p class="details">326 membros</p>
+                                <p class="details" *ngIf="group.totalMembers == 0">Seja primeiro membro a aderir ao grupo</p>
+                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 1"> Apenas uma(1) pessoa é membro deste grupo</p>
+                                <p class="details" *ngIf="group.isMember && group.totalMembers == 1"> Apenas Tu és membro deste grupo</p>
+                                <p class="details" *ngIf="group.isMember && group.totalMembers == 2">Tu e mais uma(1) pessoa são membros deste grupo</p>
+                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 2">Duas pessoas são membros deste grupo</p>
+                                <p class="details" *ngIf="group.isMember && group.totalMembers > 2">Tu e mais {{ group.totalMembers - 1}} pessoas são membros deste grupo</p>
                                 <a (click)="onUpdate(group.id, group.name, group.description, file)"
                                     class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(group)" class="delete-link"

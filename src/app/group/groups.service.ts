@@ -80,5 +80,9 @@ export class GroupService {
 
     return this.http.get<IApiResponse<User>>(`${this.baseUrl}/${groupId}/members`, { params });
   }
+
+  countMembersByGroupId(groupId: number): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/${groupId}/members/total`, {});
+  }
    
 }

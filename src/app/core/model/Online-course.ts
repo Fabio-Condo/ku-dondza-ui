@@ -9,4 +9,5 @@ export class OnlineCourse {
     content: OnlineCourseContent[] = [];
 
     isSubscribed: boolean = false;
+    totalStudents: number = 0;
 }

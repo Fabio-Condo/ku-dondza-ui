@@ -8,6 +8,7 @@ import { Answer } from 'src/app/core/model/Answer';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionService } from '../question2.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 @Component({
   selector: 'app-questions',
@@ -30,6 +31,7 @@ export class QuestionsComponent implements OnInit {
   showAnswerForm = false;
   answerIndex?: number;
   fileToUpload!: File;
+  subjects: any[] = [];
   //currentQuestionIndex: number = 0;
 
   // Armazenar as respostas do usuário
@@ -43,12 +45,13 @@ export class QuestionsComponent implements OnInit {
 
   filtro: QuestionFilter = {
     page: 0,
-    itemsPerPage: 105,
+    itemsPerPage: 5,
     sort: 'id,asc'
   };
 
   constructor(
     private questionService: QuestionService,
+    private subjectsService: SubjectsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
@@ -58,6 +61,7 @@ export class QuestionsComponent implements OnInit {
   ngOnInit(): void {
     this.buscarTotal();
     this.findAll(0);
+    this.carregarDisciplinas();
   }
 
   //public Editor = ClassicEditor;  // Associa o editor clássico ao componente
@@ -175,6 +179,24 @@ export class QuestionsComponent implements OnInit {
         this.excluir(question);
       }
     });
+  }
+
+  
+  carregarDisciplinas() {
+    return this.subjectsService.findAll().subscribe(
+      dados => {
+        this.subjects = dados.map(dado => {
+          return {
+            label: dado.name,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
   }
 
   // Métodos de gerenciamento de respostas

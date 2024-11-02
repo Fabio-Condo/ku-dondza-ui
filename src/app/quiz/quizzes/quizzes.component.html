@@ -33,9 +33,11 @@
                             <div class="content">
                                 <p class="quiz-title">{{ quiz.title }}</p>
                                 <p class="details">Categoria: Matematica</p>
-                                <p class="details">{{ 10 }} questoes</p>
+                                <p class="details">{{ quiz.totalQuestions }} questoes</p>
                                 <a (click)="onUpdateQuiz(quiz)" class="edit-link">editar</a>
                                 <a (click)="confirmarExclusao(quiz)" class="delete-link">excluir</a>
+                                <a (click)="onAddQuestions(quiz)" class="delete-link">add questao</a>
+                                <a (click)="onShowSelectedQuiz(quiz)" class="delete-link">ver questoes</a>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary" [routerLink]="['/quizzes', quiz.id, 'questions']">Iniciar</button>
@@ -72,6 +74,34 @@
 
 </div>
 
+<div class="question-dialog-overlay" *ngIf="showQuestionsDialog">
+    <div class="question-dialog">
+        <div class="question-dialog-header">
+            <h4>{{selectedQuiz.title}}</h4>
+            <button class="close-button" (click)="showQuestionsDialog = false">x</button>
+        </div>
+        <div class="question-dialog-content">
+            <ul>
+                <li *ngFor="let question of selectedQuiz.questions">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content" style="margin-left: 20px;">
+                                <p>{{question.text}}</p>
+                            </div>
+                            <div class="button-container">
+                                <button class="btn" style="margin-left: 10px;">Remover</button>                            
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div (click)="onShowMoreQuestions()" class="upload-loading-container"
+            style="cursor: pointer; border: 1px solid #ccc;">
+            <p class="upload-loading-text">carregar mais questões</p>
+        </div>
+    </div>
+</div>
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
@@ -88,6 +118,28 @@
                 }}</button>
 
         </form>
+    </div>
+</div>
+
+<div class="question-dialog-overlay" *ngIf="showSelectQuestionsDialog">
+    <div class="question-dialog">
+        <div class="question-dialog-header">
+            <h4>Questoes</h4>
+            <button class="close-button" (click)="showSelectQuestionsDialog = false">x</button>
+        </div>
+
+        <div class="form-group">
+            <label for="question">Selecione a questao</label>
+            <select id="question" name="question" [(ngModel)]="selectedQuestion.id" required>
+                <option value="" disabled selected>Selecione a questao</option>
+                <option *ngFor="let question of questionsList" [value]="question.value">{{ question.label }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="button" (click)="addQuestionToQuiz()" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+          </div>
     </div>
 </div>
 

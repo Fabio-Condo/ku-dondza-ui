@@ -4,4 +4,6 @@ export class Quiz {
     id!: number;
     title!: string;
     questions: Question[] = [];
+
+    totalQuestions: number = 0;
 }

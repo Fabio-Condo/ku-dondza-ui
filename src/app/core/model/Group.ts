@@ -6,4 +6,5 @@ export class Group {
     urlFile!: string;
 
     isMember: boolean = false
+    totalMembers: number = 0;
 }
