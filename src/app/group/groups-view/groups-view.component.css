@@ -1,289 +1,307 @@
-/* Table */
-.card-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0px 5px;
-}
-
-.card {
-    cursor: pointer;
-    background-color: #fff;
-    border-radius: 0.4rem;
-    /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
-    padding: 20px;
-    width: 100%;
-    border: 1px solid #dcdcdc;
-}
-
-.card:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.card-content {
+/* Contêiner principal da página */
+.main-content {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    gap: 20px; /* Adiciona espaçamento entre a lista de posts e a sidebar */
 }
 
-.content {
-    flex: 1;
-}
-
-.post-info {
+/* Página do Grupo */
+.group-page {
     display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho do Grupo */
+.group-header {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-right: 20px;
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    position: relative; /* Necessário para o posicionamento da imagem de fundo */
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para o cabeçalho */
 }
 
-.subject-name {
-    font-size: 1rem;
+/* Imagem de Banner */
+.group-banner {
+    width: 100%; /* A imagem preencherá toda a largura do container */
+    height: 200px; /* Altura fixa para a imagem */
+    object-fit: cover; /* Faz a imagem cobrir toda a área */
+    object-position: center; /* Centraliza a imagem dentro do elemento */
+}
+
+/* Informações do Grupo */
+.group-info {
+    text-align: center;
+    z-index: 1; /* Garante que o conteúdo fique visível acima da imagem */
+    margin-top: -50px; /* Levanta o conteúdo para sobrepor a imagem */
+    padding: 0 20px; /* Adiciona padding nas laterais para os textos */
+}
+
+.group-name {
+    font-size: 2rem; /* Aumentando o tamanho do nome do grupo */
     font-weight: bold;
-    color: var(--color-black);
+    color: var(--color-white);
+    margin-bottom: 10px; /* Espaçamento abaixo do nome do grupo */
 }
 
-.exam-date,
-.institution-name,
-.institution-type,
-.exam-description {
-    font-size: 0.7rem;
-    margin: 5px 0;
-}
-
-.download-button {
-    height: 30px;
-    background-color: #3734ed;
-    border: none;
-}
-
-.download-count {
-    margin-left: 10px;
-    font-size: 0.7rem;
-}
-
-.loading-indicator {
-    margin-left: 10px;
-    font-size: 0.85rem;
-    color: var(--color-black);
-    font-weight: bold;
-    padding: 2px;
+.group-description {
+    font-size: 1rem; /* Diminui o tamanho da descrição */
+    color: var(--color-gray);
+    margin-top: 10px; /* Adiciona espaçamento acima da descrição */
+    line-height: 1.4;
     text-align: center;
 }
 
-.admin-actions {
+/* Botões */
+.join-button, .leave-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--color-secondary);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    width: auto; /* Ajusta o tamanho dos botões */
+}
+
+/* Hover dos botões */
+.join-button:hover, .leave-button:hover {
+    background-color: darkorange;
+}
+
+.leave-button {
+    background-color: #e74c3c; /* Cor vermelha para o botão "Sair" */
+}
+
+/* Conteúdo Principal */
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Lista de Posts */
+.posts-list {
+    flex: 3; /* Define que a lista de posts ocupa 3 partes da largura */
+}
+
+/* Estilo do Post */
+.post {
+    background-color: white;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho do Post */
+.post-header {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.post-date {
+    color: var(--color-gray);
+    font-size: 0.9rem;
+}
+
+/* Corpo do Post */
+.post-body {
+    margin-top: 15px;
+}
+
+.post-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.post-content {
     margin-top: 10px;
 }
 
-.edit-link,
-.delete-link {
-    font-size: 0.7rem;
-    color: #1c80cf;
-    text-decoration: underline;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.tab-header {
-    display: flex;
-    /* Alinha as abas horizontalmente */
-    justify-content: flex-start;
-    /* Posiciona as abas à esquerda */
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-    /* Linha de separação para as abas */
-    background: transparent;
-    /* Remove o fundo das abas */
-}
-
-.tab-link {
-    text-align: center;
-    padding: 15px 20px;
-    /* Espaçamento nas abas */
-    text-decoration: none;
-    /* Remove a decoração de links */
-    color: var(--color-black);
-    /* Cor do texto do link */
-    border-bottom: 1px solid transparent;
-    /* Borda inferior transparente para efeito de seleção */
-    font-weight: bold;
-    min-width: 100px;
-    /* Define uma largura mínima para cada link de aba */
-}
-
-.tab-link:hover {
-    opacity: 0.8;
-}
-
-.tab-link.active {
-    border-bottom: 1px solid var(--color-primary);
+/* Botão de Expandir no Post */
+.expand-btn {
+    background-color: transparent;
     color: var(--color-primary);
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
-.tab-link:last-child {
-    border-right: none;
-    /* Remove a borda direita na última aba */
-}
-
-/*course dtail*/
-.institution-container {
-    display: flex;
-    flex-wrap: wrap;
-    /* Permite quebrar linha em dispositivos menores */
-    align-items: flex-start;
-    /* Ajuste o alinhamento para iniciar no topo */
-    justify-content: space-between;
-    /* Distribui o espaço entre os itens */
-    width: 100%;
-    max-width: 1200px;
-    overflow: hidden;
-}
-
-.institution-image-container {
-    flex: 1;
-    max-width: 50%;
-    margin-right: 20px;
-    /* Espaçamento entre a imagem e o texto */
-}
-
-.institution-image {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-}
-
-.institution-details {
-    flex: 2;
-    padding: 20px;
-}
-
-.institution-title {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: var(--color-black);
-}
-
-.institution-description {
-    font-size: 1.1em;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    color: #555;
-}
-
-.institution-meta {
+/* Interações do Post (Curtidas, Comentários) */
+.post-interactions {
     display: flex;
     justify-content: space-between;
+    margin-top: 15px;
+}
+
+.like-btn, .comment-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.like-count, .comment-count {
+    color: var(--color-gray);
+}
+
+/* Barra Lateral (Sidebar) com membros */
+
+
+/* Barra Lateral (Sidebar) com membros */
+.group-sidebar {
+    flex: 1; /* Sidebar ocupa 1 parte da largura */
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 50vh; /* Impede que a sidebar se estique além da altura da tela */
+    overflow-y: auto; /* Adiciona barra de rolagem vertical caso o conteúdo seja maior que o limite */
+}
+
+/* Estilo para o título "Membros do Grupo" */
+.group-sidebar h3 {
+    margin-bottom: 15px; /* Adiciona espaçamento abaixo do título */
+}
+
+/* Lista de Membros */
+.members-list {
+    display: flex;
+    gap: 15px;  /* Espaçamento horizontal entre os itens */
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Adicionando espaçamento abaixo da lista */
 }
 
-.institution-meta p {
-    font-size: 1.1em;
-    color: var(--color-black);
+.member-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* Remover sublinhado nos links */
+    margin-bottom: 10px;  /* Adiciona espaço entre os membros na linha */
 }
 
-.enroll-button {
-    padding: 15px 30px;
-    font-size: 1.1rem;
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--color-primary);  /* Borda ao redor do avatar */
+    margin-right: 10px;  /* Espaço entre o avatar e o nome */
+}
+
+.member-name {
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+    line-height: 40px; /* Alinha o texto verticalmente com o avatar */
+}
+
+/* Botão de Ver Mais Membros */
+.load-more {
     background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 300ms ease;
-}
-
-.enroll-button:hover {
-    opacity: 0.8;
-}
-
-/* Indicador de carregamento */
-.loading-indicator {
-    margin-top: 20px;
-    font-size: 0.85rem;
-    color: var(--color-black);
-    font-weight: bold;
-    text-align: center;
-}
-
-.upload-loading-container {
-    background-color: #dcdcdc;
-    color: black;
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 5px;
-    text-align: center;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc;
-}
-  
-.upload-loading-text {
-    font-weight: bold;
-    margin-left: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
 }
 
-/* Responsividade */
-@media (max-width: 600px) {
-    /*.card {
-        padding: 15px;
-    }
-
-    .content p {
-        font-size: 0.85rem;
-    }
-    */
+.load-more:hover {
+    background-color: #0056b3;
 }
 
-/* MEDIA QUERIES PARA RESPONSIVIDADE */
+/* Estilo para imagem e vídeo nos posts */
+.post-image {
+    width: 100%; /* Faz a imagem preencher a largura do post */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-top: 15px; /* Espaçamento acima da imagem */
+    padding: 0; /* Remove o padding */
+    margin-left: 0; /* Remove a margem esquerda */
+    margin-right: 0; /* Remove a margem direita */
+}
+
+.post-video {
+    width: 100%; /* Faz o vídeo preencher a largura do post */
+    height: auto; /* Ajusta a altura conforme a proporção do vídeo */
+    margin-top: 15px; /* Espaçamento acima do vídeo */
+    padding: 0; /* Remove o padding */
+    margin-left: 0; /* Remove a margem esquerda */
+    margin-right: 0; /* Remove a margem direita */
+}
+
+/* Responsividade para telas pequenas */
 @media (max-width: 768px) {
-    .institution-container {
-        flex-direction: column;
-        /* Empilha o conteúdo verticalmente */
-        padding: 10px;
+    .main-content {
+        flex-direction: column; /* Faz o conteúdo principal ser exibido em coluna */
     }
 
-    .institution-image-container {
-        max-width: 100%;
-        /* Imagem ocupa 100% da largura no mobile */
-        margin-right: 0;
-        margin-bottom: 20px;
-        /* Espaço entre a imagem e o conteúdo no mobile */
+    .posts-list {
+        flex: none; /* Garante que a lista de posts ocupe toda a largura disponível */
+        width: 100%; /* Post ocupa toda a largura */
+        margin-right: 0; /* Remove margem direita para ocupar toda a largura */
+        margin-left: 0; /* Remove margem esquerda */
     }
 
-    .institution-details {
-        padding: 10px;
+    .post {
+        width: 100%; /* Garante que o post ocupe 100% da largura da tela */
+        margin-bottom: 15px; /* Ajusta o espaçamento entre os posts */
     }
 
-    .institution-meta {
-        flex-direction: column;
-        /* Metadados empilhados no mobile */
+    .group-sidebar {
+        margin-top: 20px; /* Adiciona um pequeno espaçamento entre o conteúdo e a sidebar */
+        width: 100%; /* A sidebar também ocupa a largura total */
     }
 
-    .enroll-button {
-        width: 100%;
-        /* Botão ocupa toda a largura no mobile */
-        text-align: center;
+    .group-banner {
+        height: 150px; /* Reduz a altura da imagem de banner em telas pequenas */
+    }
+
+    .group-name {
+        font-size: 1.5rem; /* Ajusta o tamanho do nome do grupo para telas pequenas */
+    }
+
+    .group-description {
+        font-size: 1rem; /* Ajusta o tamanho da descrição para telas pequenas */
+    }
+
+    /* Botões */
+    .join-button, .leave-button {
+        width: 100%; /* Faz com que os botões ocupem toda a largura disponível */
+        margin-top: 10px;
+    }
+
+    .main-content {
+        flex-direction: column; /* Faz o conteúdo principal ser exibido em coluna */
+    }
+
+    .posts-list, .group-sidebar {
+        width: 100%; /* Ambos ocupam toda a largura em telas pequenas */
+    }
+
+    .group-banner {
+        height: 150px; /* Ajusta a altura do banner */
     }
 }
 
-@media (max-width: 480px) {
-    .institution-title {
-        font-size: 1.5em;
-        /* Ajuste o tamanho do título em dispositivos muito pequenos */
-    }
 
-    .institution-description {
-        font-size: 1em;
-        /* Descrição mais compacta */
-    }
 
-    .institution-meta p {
-        font-size: 1em;
-        /* Texto menor para metadados */
-    }
-}
+
+
+
+
+
