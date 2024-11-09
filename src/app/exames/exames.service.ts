@@ -25,8 +25,8 @@ export class ExamesService {
       //  params = params.set('employeeOrderBy', filter.sort);
       //}
   
-      if (filtro.global) {
-        params = params.set('global', filtro.global);
+      if (filtro.searchParam) {
+        params = params.set('searchParam', filtro.searchParam);
       }
 
       if (filtro.subject) {

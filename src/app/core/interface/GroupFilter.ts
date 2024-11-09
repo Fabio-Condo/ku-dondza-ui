@@ -1,6 +1,5 @@
 export interface GroupFilter {
-    description?: string;
-
+    searchParam?: string,
     pagina: number,
     ordenamento: string,
     itensPorPagina: number

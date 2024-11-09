@@ -24,12 +24,16 @@ export class CompetitionService {
             .set('sort', filtro.sort)
             .set('size', filtro.itemsPerPage);
 
-        if (filtro.title) {
-            params = params.set('title', filtro.title);
+        if (filtro.searchParam) {
+            params = params.set('searchParam', filtro.searchParam);
         }
 
         return this.http.get<IApiResponse<Competition>>(`${this.host}/filter`, { params });
 
+    }
+
+    findById(id: number): Observable<Competition> {
+        return this.http.get<Competition>(`${this.host}/${id}`, {});
     }
 
     add(competition: Competition): Observable<Competition> {
@@ -66,6 +70,10 @@ export class CompetitionService {
         return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/participants`, { params });
     }
 
+    checkIfIsParticipant(competitionId: number, userId: number): Observable<boolean> {
+        return this.http.get<boolean>(`${this.host}/${competitionId}/participants/contains/${userId}`);
+    }
+
     countParticipantsByCompetitionId(competitionId: number): Observable<number> {
         return this.http.get<number>(`${this.host}/${competitionId}/participants/total`, {});
     }
@@ -100,6 +108,10 @@ export class CompetitionService {
             .set('size', filtro.itemsPerPage);
 
         return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/participation-requests`, { params });
+    }
+
+    checkIfRequestedParticipation(competitionId: number, userId: number): Observable<boolean> {
+        return this.http.get<boolean>(`${this.host}/${competitionId}/participation-requests/contains/${userId}`);
     }
 
     sendParticipationRequest(competitionId: number, userId: number): Observable<Competition> {

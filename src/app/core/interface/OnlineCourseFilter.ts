@@ -1,5 +1,5 @@
 export interface OnlineCourseFilter {
-    name?: string;
+    searchParam?: string;
     pagina: number,
     ordenamento: string,
     itensPorPagina: number

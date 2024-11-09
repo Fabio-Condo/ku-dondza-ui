@@ -25,7 +25,7 @@ export class ExamesComponent implements OnInit {
   displayModalFilter: boolean = false;
   institutions: any[] = [];
   subjects: any[] = [];
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
   
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -63,6 +63,11 @@ export class ExamesComponent implements OnInit {
     this.carregarInstituicoes();
     this.carregarDisciplinas();
     this.findAll(0);
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {
@@ -278,7 +283,7 @@ export class ExamesComponent implements OnInit {
   }
 
   limparCampos() {
-    this.filtro.global = "";
+    this.filtro.searchParam = "";
     this.filtro.subject = undefined;
     this.filtro.description = "";
     this.filtro.institution = undefined;

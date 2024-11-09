@@ -12,4 +12,7 @@ export class Competition {
 
     totalParticipants: number = 0;
     totalQuestions: number = 0;
+
+    requestedParticipation: boolean = false;
+    isParticipant: boolean = false;
 }

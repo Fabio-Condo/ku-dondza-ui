@@ -6,7 +6,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { QuestionService } from 'src/app/questions/question2.service';
+import { QuestionService } from 'src/app/questions/question.service';
 import { Question } from 'src/app/core/model/Question';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
@@ -27,7 +27,7 @@ export class CompetitionsComponent implements OnInit {
   totalRegistros: number = 0;
   totalCompetitions: number = 0;
   displayModalSave: boolean = false;
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
   // Dados das competições
   competitions: Competition[] = [];
@@ -91,6 +91,11 @@ export class CompetitionsComponent implements OnInit {
     this.buscarTotal();
     this.findAll(0);
     this.getQuestions();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {
@@ -182,6 +187,8 @@ export class CompetitionsComponent implements OnInit {
         dados.content.forEach(competition => {
           this.countQuestionsByCompetitionId(competition);
           this.countParticipantsByCompetitionId(competition);
+          this.checkIfRequestedParticipation(competition);
+          this.checkIfIsParticipant(competition);
         });
         this.totalRegistros = dados.totalElements;
         this.showLoading = false;
@@ -191,6 +198,18 @@ export class CompetitionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  checkIfIsParticipant(competition: Competition): void {
+    this.competitionService.checkIfIsParticipant(competition.id, this.loggedUser.id).subscribe(response => {
+      competition.isParticipant = response;
+    });
+  }
+
+  checkIfRequestedParticipation(competition: Competition): void {
+    this.competitionService.checkIfRequestedParticipation(competition.id, this.loggedUser.id).subscribe(response => {
+      competition.requestedParticipation = response;
+    });
   }
 
   addParticipantToCompetition(competition: Competition) {
@@ -354,7 +373,11 @@ export class CompetitionsComponent implements OnInit {
 
   sendParticipationRequest(competition: Competition) {
     this.competitionService.sendParticipationRequest(competition.id, this.loggedUser.id).subscribe(
-      () => {
+      (response) => {
+        competition.requestedParticipation = true;
+        // Adiciona o novo user à lista de pedidos de participação
+        this.selectedCompetition.participationRequests.push(this.loggedUser);
+        //this.selectedCompetition.requestedParticipation = true;
       },
       erro => this.errorHandler.handle(erro)
     )
@@ -365,7 +388,7 @@ export class CompetitionsComponent implements OnInit {
       (competition) => {
         // Remove a solicitação pendente da lista
         this.selectedCompetition.participationRequests = this.selectedCompetition.participationRequests.filter(request => request.id !== user.id);
-        // Adiciona o novo amigo à lista de amigos
+        // Adiciona o novo participante à lista de participantes
         this.selectedCompetition.participants.push(user);
         //this.getUsersSearch();
       },
@@ -383,6 +406,14 @@ export class CompetitionsComponent implements OnInit {
     );
   }
 
+  cancelParticipationRequest(competition: Competition) {
+    this.competitionService.rejectParticipationRequest(competition.id, this.loggedUser.id).subscribe(
+      () => {
+        competition.requestedParticipation = false;
+      },
+      error => this.errorHandler.handle(error)
+    );
+  }
 
   onAddQuestions(competition: Competition) {
     this.competition = competition;
@@ -416,7 +447,7 @@ export class CompetitionsComponent implements OnInit {
 
   // Método para limpar campos
   limparCampos() {
-    this.filtro.title = "";
+    this.filtro.searchParam = "";
     this.filtro.page = 0;
     this.filtro.itemsPerPage = 10;
     this.filtro.sort = "id,desc";

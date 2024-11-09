@@ -26,7 +26,7 @@ export class GroupsComponent implements OnInit {
   totalRegistros: number = 0
   totalGroups: number = 0;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
   loggedUser: User = new User;
 
@@ -50,6 +50,11 @@ export class GroupsComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.buscarTotal();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {
@@ -107,7 +112,7 @@ export class GroupsComponent implements OnInit {
       (dados: IApiResponse<Group>) => {
         this.groups = dados.content
         dados.content.forEach(group => {
-          this.checkIfIsMember(group);
+          this.checkMembership(group);
           this.countMembersByGroupId(group);
         });
         this.totalRegistros = dados.totalElements
@@ -159,8 +164,8 @@ export class GroupsComponent implements OnInit {
     );
   }
 
-  checkIfIsMember(group: Group): void {
-    this.groupService.doesUserMemberOfGroup(group.id, this.loggedUser.id).subscribe(response => {
+  checkMembership(group: Group): void {
+    this.groupService.checkMembership(group.id, this.loggedUser.id).subscribe(response => {
       group.isMember = response;
     });
   }

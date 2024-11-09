@@ -34,6 +34,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('/login');
     }
 
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   public onLogin(user: User): void {

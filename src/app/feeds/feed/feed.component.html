@@ -420,16 +420,16 @@
 </main>
 
 <!-- confirm dialog -->
-<div class="dialog-overlay" *ngIf="showConfirmDialog">
-  <div class="dialog">
-    <div class="dialog-header">
-      <h4>Deseja remover o post da sua lista guardados</h4>
-      <button class="close-button" (click)="closeConfirmDialog()">x</button>
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+  <div class="confirm-dialog">
+    <div class="confirm-dialog-header">
+      <h4>Deseja remover o post da sua lista guardados ?</h4>
+      <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
     </div>
-    <div class="dialog-content">
+    <div class="confirm-dialog-content">
       <ng-content></ng-content>
     </div>
-    <div class="dialog-footer">
+    <div class="confirm-dialog-footer">
       <button (click)="confirmDialog(selectedPost)">Confirmar</button>
       <button (click)="closeConfirmDialog()">Cancelar</button>
     </div>

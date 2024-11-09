@@ -21,7 +21,7 @@ export class CoursesComponent implements OnInit {
   totalRegistros: number = 0;
   totalCourses: number = 0;
   displayModalSave: boolean = false;
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
   // Dados dos cursos
   courses: Course[] = [];
@@ -50,6 +50,11 @@ export class CoursesComponent implements OnInit {
     this.buscarTotal();
     this.carregarInstituicoes();
     this.findAll(0);
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {

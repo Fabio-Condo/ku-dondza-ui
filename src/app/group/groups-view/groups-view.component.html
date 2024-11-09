@@ -42,13 +42,23 @@
                     <td>
                         <div class="card">
                             <div class="card-content">
-                                <div class="content">
-                                    <p class="subject-name">{{ member.firstName }}</p>
+                                <div class="profile-pic">
+                                    <img src="{{member.profileImageUrl}}" alt="pic 1" />
+                                </div>
+                                <div class="content" style="margin-left: 20px;">
+                                    <p class="user-name user-name-hover" [routerLink]="['/user/profile', member.userId]">
+                                        {{ member.firstName }} {{ member.lastName }}
+                                    </p>
+                                    <p class="username text-muted">12 mutual friends</p>
                                 </div>
                             </div>
                         </div>
                     </td>
                 </tr>
+                <div (click)="onShowMoreMembers()" class="upload-loading-container"
+                    style="cursor: pointer; border: 1px solid #ccc;">
+                    <p class="upload-loading-text">carregar mais membros</p>
+                </div>
             </tbody>
         </table>
         
@@ -65,13 +75,36 @@
                     <td>
                         <div class="card">
                             <div class="card-content">
+                                <div class="post-info">
+                                    <div *ngIf="isImageUrl(feed.urlFile)">
+                                        <img [src]="feed.urlFile"
+                                            style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;"
+                                            alt="">
+                                    </div>
+                                    <div>
+                                        <video *ngIf="isVideoUrl(feed.urlFile)"
+                                            style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                            <source [src]="feed.urlFile" type="video/mp4"
+                                                style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
                                 <div class="content">
-                                    <p class="subject-name">{{ feed.text }}</p>
+                                    <p class="texto-limitado">{{ feed.text }}</p>
+                                    <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
+                                </div>
+                                <div class="button-container">
+                                    <button class="btn btn-primary" style="margin-left: 10px;">Ver</button>                            
                                 </div>
                             </div>
                         </div>
                     </td>
                 </tr>
+                <div (click)="onShowMoreFeeds()" class="upload-loading-container"
+                    style="cursor: pointer; border: 1px solid #ccc;">
+                    <p class="upload-loading-text">carregar mais publicações</p>
+                </div>
             </tbody>
         </table>
         
@@ -84,16 +117,16 @@
 </div>
 
 <!-- confirm dialog -->
-<div class="dialog-overlay" *ngIf="showConfirmDialog">
-    <div class="dialog">
-        <div class="dialog-header">
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
             <h4>Deseja sair do grupo ?</h4>
-            <button class="close-button" (click)="closeConfirmDialog()">x</button>
+            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
         </div>
-        <div class="dialog-content">
+        <div class="confirm-dialog-content">
             <ng-content></ng-content>
         </div>
-        <div class="dialog-footer">
+        <div class="confirm-dialog-footer">
             <button (click)="confirmDialog(selectedGroup)">Confirmar</button>
             <button (click)="closeConfirmDialog()">Cancelar</button>
         </div>

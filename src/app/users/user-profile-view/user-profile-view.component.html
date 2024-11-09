@@ -85,7 +85,7 @@
                                             <div class="post-info">
                                                 <div *ngIf="isImageUrl(feed.urlFile)">
                                                     <img [src]="feed.urlFile"
-                                                        style="width: 70px; height: 70px; margin-right: 20px; border-radius: 5px; border: 1px solid #ccc;"
+                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;"
                                                         alt="">
                                                 </div>
                                                 <div>
@@ -96,11 +96,13 @@
                                                         Your browser does not support the video tag.
                                                     </video>
                                                 </div>
-    
-                                                <div class="content">
-                                                    <p class="texto-limitado">{{ feed.text }}</p>
-                                                    <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
-                                                </div>
+                                            </div>
+                                            <div class="content">
+                                                <p class="texto-limitado">{{ feed.text }}</p>
+                                                <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
+                                            </div>
+                                            <div class="button-container">
+                                                <button class="btn btn-primary" style="margin-left: 10px;">Ver</button>                            
                                             </div>
                                         </div>
                                     </div>
@@ -126,7 +128,7 @@
                                             <div class="post-info">
                                                 <div *ngIf="isImageUrl(feed.urlFile)">
                                                     <img [src]="feed.urlFile"
-                                                        style="width: 70px; height: 70px; margin-right: 20px; border-radius: 5px; border: 1px solid #ccc;"
+                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;"
                                                         alt="">
                                                 </div>
                                                 <div>
@@ -137,11 +139,13 @@
                                                         Your browser does not support the video tag.
                                                     </video>
                                                 </div>
-    
-                                                <div class="content">
-                                                    <p class="texto-limitado">{{ feed.text }}</p>
-                                                    <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
-                                                </div>
+                                            </div>
+                                            <div class="content">
+                                                <p class="texto-limitado">{{ feed.text }}</p>
+                                                <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
+                                            </div>
+                                            <div class="button-container">
+                                                <button class="btn btn-primary" style="margin-left: 10px;">Ver</button>                            
                                             </div>
                                         </div>
                                     </div>
@@ -164,26 +168,26 @@
                                 <td>
                                     <div class="card">
                                         <div class="card-content">
-                                            <td>
-                                                <div class="profile-pic">
-                                                    <img src="{{friend.profileImageUrl}}" alt="pic 1" />
-                                                </div>
-                                            </td>
-                                            <td style="margin-left: 20px;">
-                                                <p class="user-name user-name-hover" [routerLink]="['/user/profile', friend.userId]">{{
-                                                    friend.firstName }} {{ friend.lastName }}</p>
+                                            <div class="profile-pic">
+                                                <img src="{{friend.profileImageUrl}}" alt="pic 1" />
+                                            </div>
+                                            <div class="content" style="margin-left: 20px;">
+                                                <p class="user-name user-name-hover" [routerLink]="['/user/profile', friend.userId]">
+                                                    {{ friend.firstName }} {{ friend.lastName }}
+                                                </p>
                                                 <p class="username text-muted">12 mutual friends</p>
-                                                <p class="text-muted"><a (click)="removeFriend(friend.id)" style="color: #007bff" href="javascript:;"> remove</a></p>
-
-                                            </td>
+                                            </div>
+                                            <div class="button-container">
+                                                <button class="btn" (click)="onRemoveFriend(friend)">Remover amizade</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
 
-                            <div (click)="onShowMoreSavedPosts()" class="upload-loading-container"
+                            <div (click)="onShowMoreFriends()" class="upload-loading-container"
                                 style="cursor: pointer; border: 1px solid #ccc;">
-                                <p class="upload-loading-text">carregar mais posts guardados</p>
+                                <p class="upload-loading-text">carregar mais amigos</p>
                             </div>
 
                         </tbody>
@@ -285,5 +289,22 @@
         <div class="form-group">
             <button type="button" (click)="addInterestToUserInterests()" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
           </div>
+    </div>
+</div>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover amizade ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmDialog(selectedFriendToBeRemoved)">Confirmar</button>
+            <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
     </div>
 </div>

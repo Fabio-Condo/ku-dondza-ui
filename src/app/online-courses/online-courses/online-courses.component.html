@@ -20,7 +20,7 @@
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
 
-                <input type="text" id="input" class="transparent-input" (ngModelChange)="findAll()"
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()"
                     placeholder="Pesquisa">
             </div>
 
@@ -42,15 +42,15 @@
 
                             <div class="content">
                                 <p class="course-name">{{ course.name }}</p>
-                                <p class="details">Instrutor: <span class="text-muted">Fabio Enosse</span></p>
+                                <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor }}</span></p>
                                 <p class="details" *ngIf="course.totalStudents == 0">Seja primeiro estudante a aderir ao curso</p>
                                 <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas uma(1) pessoa é estudante deste curso</p>
                                 <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas Tu és estudante deste curso</p>
                                 <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2">Tu e mais uma(1) pessoa são estudantes deste curso</p>
                                 <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2">Duas pessoas são estudantes deste curso</p>
                                 <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2">Tu e mais {{ course.totalStudents - 1}} pessoas são estudantes deste curso</p>
-                                <a (click)="onUpdateOnlineCourse(course, file)" class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
+                                <a *ngIf="isAdmin" (click)="onUpdateOnlineCourse(course, file)" class="edit-link">editar</a>
+                                <a *ngIf="isAdmin" (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary" [routerLink]="['/coursos-online', course.id]">Ver</button>
@@ -106,6 +106,12 @@
                 <label for="description">Descrição</label>
                 <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
                     [(ngModel)]="course.description">
+            </div>
+
+            <div class="form-group">
+                <label for="instrutor">Instrutor</label>
+                <input type="text" name="instrutor" ngModel #instrutor="ngModel" required minlength="1"
+                    [(ngModel)]="course.instrutor">
             </div>
 
             <div class="form-group">

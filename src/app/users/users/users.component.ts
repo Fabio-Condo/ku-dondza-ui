@@ -36,21 +36,44 @@ export class UsersComponent implements OnInit, OnDestroy {
   
   users: User[] = [];
   currentPage: number = 1;
-  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-  totalRegistros: number = 0
+  totalUsersRecord: number = 0
   totalUsers: number = 0;
+  itemsPerPageUsers: number[] = [5, 10, 20, 50];
 
   friendRequests: User[] = []
   currentPageFriendRequests: number = 1;
-  totalRegistrosPedidosAmizades: number = 10000;
-  opcoesItensPorPaginaPedidosDeAmizade: number[] = [5, 10, 20, 50];
+  totalFriendRequestRecord: number = 0;
+  totalFriendRequests: number = 0
+  itemsPerPageFriendRequests: number[] = [5, 10, 20, 50];
 
   friends: User[] = [];
   currentPageFriends: number = 1;
-  totalRegistrosAmigos: number = 10000
-  opcoesItensPorPaginaAmigos: number[] = [5, 10, 20, 50];
+  totalFriendsRecord: number = 0
+  totalFriends: number = 0
+  itemsPerPageFriends: number[] = [5, 10, 20, 50];
+
+  selectedFriendToBeRemoved = new User();
+  showConfirmDialog: boolean = false;
 
   activeTab: number = 1;
+
+  filtroUsers: IUserFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'firstName,asc',
+  }
+
+  filtroFriends: IUserFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'firstName,asc',
+  }
+
+  filtroFriendRequests: IUserFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'firstName,asc',
+  }
 
   roles = [
     { label: 'USER', value: 'ROLE_USER' },
@@ -75,24 +98,14 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getUsersSearch();
     this.getUserFriends();
     this.getCurrentUserFriendRequests();
+    this.getTotalUsers();
+    this.countFriendsByUserId();
+    this.countFriendRequestsByUserId();
+    this.scrollToTop();
   }
 
-  filtro: IUserFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'firstName,asc',
-  }
-
-  filtroAmigos: IUserFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'firstName,asc',
-  }
-
-  filtroPedidosDeAmizade: IUserFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'firstName,asc',
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {
@@ -143,8 +156,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getUsersSearch(pagina: number = 0){
     this.showLoading = true;
-    this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.userService.search(this.filtro).subscribe(
+    this.filtroUsers.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.userService.search(this.filtroUsers).subscribe(
       (data: IApiResponse<User>) => {
         data.content.forEach(user => {
           this.checkFriendship(user);
@@ -152,11 +165,25 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.checkIfCurrentUserSentFriendRequest(user);
         });
         this.users = data.content
-        this.totalRegistros = data.totalElements;
+        this.totalUsersRecord = data.totalElements;
         this.showLoading = false;
       },
       (erro) => {
         this.errorHandler.handle(erro);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  getTotalUsers() {
+    this.showLoading = true;
+    this.userService.getTotalUsers().subscribe(
+      (total) => {
+        this.totalUsers = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
     );
@@ -209,20 +236,20 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   changePageSize(event: any): void {
-    this.filtro.itemsPerPage = +event.target.value;
+    this.filtroUsers.itemsPerPage = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
     this.getUsersSearch();
   }
 
   
   changePageSizeFriends(event: any): void {
-    this.filtroAmigos.itemsPerPage = +event.target.value;
+    this.filtroFriends.itemsPerPage = +event.target.value;
     this.currentPageFriends = 1; // Resetar para a primeira página ao mudar o número de itens por página
     this.getUserFriends();
   }
 
   changePageSizeFriendRequests(event: any): void {
-    this.filtroPedidosDeAmizade.itemsPerPage = +event.target.value;
+    this.filtroFriendRequests.itemsPerPage = +event.target.value;
     this.currentPageFriendRequests = 1; // Resetar para a primeira página ao mudar o número de itens por página
     this.getCurrentUserFriendRequests();
   }
@@ -243,7 +270,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   totalPages(): number {
-    return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+    return Math.ceil(this.totalUsersRecord / this.filtroUsers.itemsPerPage);
   }
 
   // Friends
@@ -262,7 +289,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   totalPagesFriends(): number {
-    return Math.ceil(this.totalRegistrosAmigos / this.filtroAmigos.itemsPerPage);
+    return Math.ceil(this.totalFriendsRecord / this.filtroFriends.itemsPerPage);
   }
   
   // Friend Requests
@@ -281,7 +308,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   
   totalPagesFriendRequests(): number {
-    return Math.ceil(this.totalRegistrosPedidosAmizades / this.filtroPedidosDeAmizade.itemsPerPage);
+    return Math.ceil(this.totalFriendRequestRecord / this.filtroFriendRequests.itemsPerPage);
   }
 
   prepararNovoUser() {
@@ -343,19 +370,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     );
   }
 
-  sendFriendRequest(user: User) {
-    this.userService.sendFriendRequest(user).subscribe(
-      (user) => {
-      }
-    )
-  }
-
   getCurrentUserFriendRequests(): void {
-    this.filtroPedidosDeAmizade.page = this.currentPageFriendRequests - 1; // Ajuste para o padrão de paginação começando em 0
-    this.userService.getCurrentUserFriendRequests(this.filtroPedidosDeAmizade).subscribe(
+    this.filtroFriendRequests.page = this.currentPageFriendRequests - 1; // Ajuste para o padrão de paginação começando em 0
+    this.userService.getCurrentUserFriendRequests(this.filtroFriendRequests).subscribe(
       (dados: IApiResponse<User>) => {
         this.friendRequests = [...this.friendRequests, ...dados.content];
-        this.totalRegistrosPedidosAmizades = dados.totalElements;    
+        this.totalFriendRequestRecord = dados.totalElements;    
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -364,11 +384,11 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   getUserFriends(): void {
-    this.filtroAmigos.page = this.currentPageFriends - 1; // Ajuste para o padrão de paginação começando em 0
-    this.userService.getCurrentUserFriends(this.filtroAmigos).subscribe(
+    this.filtroFriends.page = this.currentPageFriends - 1; // Ajuste para o padrão de paginação começando em 0
+    this.userService.getCurrentUserFriends(this.filtroFriends).subscribe(
       (dados: IApiResponse<User>) => {
         this.friends = [...this.friends, ...dados.content];
-        this.totalRegistrosAmigos = dados.totalElements
+        this.totalFriendsRecord = dados.totalElements
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -376,39 +396,92 @@ export class UsersComponent implements OnInit, OnDestroy {
     );
   }
 
-  acceptFriendRequest(friend: User) {
-    this.userService.acceptFriendRequest(friend.id).subscribe(
+  countFriendsByUserId() {
+    this.showLoading = true;
+    this.userService.countFriendsByUserId(this.currentUser.id).subscribe(
+      (total) => {
+        this.totalFriends = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  countFriendRequestsByUserId() {
+    this.showLoading = true;
+    this.userService.countFriendRequestsByUserId(this.currentUser.id).subscribe(
+      (total) => {
+        this.totalFriendRequests = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  sendFriendRequest(user: User) {
+    this.userService.sendFriendRequest(user).subscribe(
+      () => {
+        user.currentUserSentFriendRequest = true;
+      }
+    )
+  }
+
+  acceptFriendRequest(user: User) {
+    this.userService.acceptFriendRequest(user.id).subscribe(
       (friendAcepted) => {
         // Remove a solicitação pendente da lista
-        this.friendRequests = this.friendRequests.filter(request => request.id !== friend.id);
+        this.friendRequests = this.friendRequests.filter(request => request.id !== user.id);
         // Adiciona o novo amigo à lista de amigos
-        this.friends.push(friend);
-        this.getUsersSearch();
+        this.friends.push(user);
+
+        user.isFriend = true;
+        user.sentFriendRequest = false;
+
       },
       erro => this.errorHandler.handle(erro)
     )
   }
 
-  rejectFriendRequest(friend: User) {
-    this.userService.rejectFriendRequest(friend.id).subscribe(
+  rejectFriendRequest(user: User) {
+    this.userService.rejectFriendRequest(user.id).subscribe(
       () => {
         // Remove a solicitação rejeitada da lista de pendentes
-        this.friendRequests = this.friendRequests.filter(request => request.id !== friend.id);
+        this.friendRequests = this.friendRequests.filter(request => request.id !== user.id);
+        user.sentFriendRequest = false;
       },
       error => this.errorHandler.handle(error)
     );
   }
-  
 
-  removeFriend(friend: User) {
-    this.userService.removeFriend(friend.id).subscribe(
+  removeFriend(user: User) {
+    this.userService.removeFriend(user.id).subscribe(
       () => {
         // Remove o amigo da lista de amigos
-        this.friends = this.friends.filter(existingFriend => existingFriend.id !== friend.id);
-        this.getUsersSearch();
+        this.friends = this.friends.filter(existingFriend => existingFriend.id !== user.id);
+        user.isFriend = false;
       },
       erro => this.errorHandler.handle(erro)
     )
+  }
+
+  onRemoveFriend(friend: User): void {
+    this.showConfirmDialog = true;
+    this.selectedFriendToBeRemoved = friend;
+  }
+
+  closeConfirmDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmDialog(friend: User) {
+    this.removeFriend(friend);
+    this.closeConfirmDialog();
   }
 
   checkFriendship(friend: User): void {

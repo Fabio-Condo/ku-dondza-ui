@@ -74,4 +74,10 @@ export class AuthenticationService {
       return false;
     }
   }
+
+  // Método para verificar se o usuário possui as funções necessárias
+  hasRequiredRoles(requiredRoles: string[]): boolean {
+    // Verifique se há alguma interseção entre as funções do usuário e as funções necessárias
+    return requiredRoles.some(role => this.getUserFromLocalCache().role.includes(role));
+  }
 }

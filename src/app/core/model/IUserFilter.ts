@@ -1,6 +1,5 @@
 export interface IUserFilter {
-  global?: string,
-  name?: string,
+  searchParam?: string,
   firstName?: string,
   lastName?: string,
   username?: string,

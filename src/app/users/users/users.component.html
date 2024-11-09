@@ -27,10 +27,10 @@
         </div>
 
         <div class="input-group">
-            <div class="input-container">
-                <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
+            <div class="input-container" *ngIf="activeTab === 3">
+                <i class="pi pi-search input-icon"></i>
 
-                <input type="text" [(ngModel)]="filtro.name" (ngModelChange)="getUsersSearch()" id="input"
+                <input type="text" [(ngModel)]="filtroUsers.searchParam" (ngModelChange)="getUsersSearch()" id="input"
                     class="transparent-input" placeholder="Pesquisa">
             </div>
 
@@ -54,7 +54,7 @@
                                 <p class="username text-muted">12 mutual friends</p>
                             </div>
                             <div class="button-container">
-                                <button (click)="removeFriend(friend)" class="btn">Remover amizade</button>
+                                <button (click)="onRemoveFriend(friend)" class="btn">Remover amizade</button>
                             </div>
                         </div>
                     </div>
@@ -73,12 +73,12 @@
                 Próximo <i class="pi pi-chevron-right"></i>
             </button>
             <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-                <option *ngFor="let option of opcoesItensPorPaginaAmigos" [value]="option"
-                    [selected]="option === filtroAmigos.itemsPerPage">
+                <option *ngFor="let option of itemsPerPageFriends" [value]="option"
+                    [selected]="option === filtroFriends.itemsPerPage">
                     {{ option }}
                 </option>
             </select>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistrosAmigos }} dos {{ 200 }}</span>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalFriendsRecord }} dos {{ totalFriends }}</span>
         </div>
 
     </div>
@@ -120,12 +120,12 @@
                 Próximo <i class="pi pi-chevron-right"></i>
             </button>
             <select class="select-itens-por-pagina" (change)="changePageSizeFriendRequests($event)">
-                <option *ngFor="let option of opcoesItensPorPaginaPedidosDeAmizade" [value]="option"
-                    [selected]="option === filtroPedidosDeAmizade.itemsPerPage">
+                <option *ngFor="let option of itemsPerPageFriendRequests" [value]="option"
+                    [selected]="option === filtroFriendRequests.itemsPerPage">
                     {{ option }}
                 </option>
             </select>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistrosPedidosAmizades }} dos {{ 200 }}</span>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalFriendRequestRecord }} dos {{ totalFriendRequests }}</span>
         </div>
 
     </div>
@@ -149,8 +149,8 @@
                                 <a (click)="confirmarExclusao(user)" class="delete-link">excluir</a>
                             </div>
                             <div class="button-container">
-                                <button (click)="sendFriendRequest(user)" *ngIf="!user.isFriend && !user.sentFriendRequest && !user.currentUserSentFriendRequest" class="btn btn-primary">Adicionar amigo</button>
-                                <button (click)="removeFriend(user)" *ngIf="user.isFriend" class="btn" style="margin-left: 10px;">Remover amizade</button>  
+                                <button (click)="sendFriendRequest(user)" *ngIf="!user.isFriend && !user.sentFriendRequest && !user.currentUserSentFriendRequest" [disabled]="currentUser.id == user.id" class="btn btn-primary">Adicionar amigo</button>
+                                <button (click)="onRemoveFriend(user)" *ngIf="user.isFriend" class="btn" style="margin-left: 10px;">Remover amizade</button>  
                                 <button *ngIf="user.currentUserSentFriendRequest" class="btn" style="margin-left: 10px;">Pedido enviado</button>  
                             </div>
                             <div class="button-container" *ngIf="user.sentFriendRequest">
@@ -174,12 +174,12 @@
                 Próximo <i class="pi pi-chevron-right"></i>
             </button>
             <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-                <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                    [selected]="option === filtro.itemsPerPage">
+                <option *ngFor="let option of itemsPerPageUsers" [value]="option"
+                    [selected]="option === filtroUsers.itemsPerPage">
                     {{ option }}
                 </option>
             </select>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalUsers }}</span>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalUsersRecord }} dos {{ totalUsers }}</span>
         </div>
 
     </div>
@@ -268,3 +268,20 @@
         </div>
     </form>
 </p-dialog>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover amizade ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmDialog(selectedFriendToBeRemoved)">Confirmar</button>
+            <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>

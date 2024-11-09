@@ -9,6 +9,9 @@
           <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
             Aulas
           </div>
+          <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+            Alunos
+          </div>
         </div>
 
         <!-- Conteúdo das Abas -->
@@ -24,9 +27,8 @@
                   <p class="course-description">{{ course.description }}</p>
                   
                   <div class="course-meta">
-                    <p><strong>Alunos Inscritos:</strong> {{ 10 }}</p>
-                    <p><strong>Duração:</strong> {{ 20 }} horas e 10 minutos</p>
-                    <p><strong>Instrutor:</strong> Fabio Enosse </p>
+                    <p><strong>Alunos Inscritos:</strong> {{ totalStudents }}</p>
+                    <p><strong>Instrutor:</strong> {{course.instrutor }} </p>
                   </div>
               
                   <button class="enroll-button" (click)="addCourseToSubscribedOnlineCourses(course)" *ngIf="!course.isSubscribed">Inscrever-se no Curso</button>
@@ -62,7 +64,7 @@
                             <div class="card">
                                 <div class="card-content" (click)="onSelectContent(content)" (click)="scrollToTop()">
                                     <div>
-                                        <video 
+                                        <video
                                             style="width: 70px; height: 40px; border-radius: 5px; border: 1px solid #ccc;">
                                             <source [src]="content.urlFile" type="video/mp4">
                                             Your browser does not support the video tag.
@@ -88,6 +90,39 @@
                 Carregando...
             </div>
 
+        </div>
+
+        <div *ngIf="activeTab === 3" class="active">
+            <table class="card-table">
+                <tbody>
+                    <tr *ngFor="let student of students">
+                        <td>
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="profile-pic">
+                                        <img src="{{student.profileImageUrl}}" alt="pic 1" />
+                                    </div>
+                                    <div class="content" style="margin-left: 20px;">
+                                        <p class="user-name user-name-hover" [routerLink]="['/user/profile', student.userId]">
+                                            {{ student.firstName }} {{ student.lastName }}
+                                        </p>
+                                        <p class="username text-muted">12 mutual friends</p>
+                                    </div>
+                                    <!--
+                                    <div class="button-container">
+                                        <button class="btn" style="margin-left: 10px;">Remover</button>                            
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <div (click)="onShowMoreStudents()" class="upload-loading-container"
+                        style="cursor: pointer; border: 1px solid #ccc;">
+                        <p class="upload-loading-text">carregar mais alunos</p>
+                    </div>
+                </tbody>
+            </table>
         </div>
         
     </div>
@@ -123,16 +158,16 @@
 </div>
 
 <!-- confirm dialog -->
-<div class="dialog-overlay" *ngIf="showConfirmDialog">
-    <div class="dialog">
-        <div class="dialog-header">
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
             <h4>Deseja sair do grupo ?</h4>
-            <button class="close-button" (click)="closeConfirmDialog()">x</button>
+            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
         </div>
-        <div class="dialog-content">
+        <div class="confirm-dialog-content">
             <ng-content></ng-content>
         </div>
-        <div class="dialog-footer">
+        <div class="confirm-dialog-footer">
             <button (click)="confirmDialog(selectedOnlineCourse)">Confirmar</button>
             <button (click)="closeConfirmDialog()">Cancelar</button>
         </div>

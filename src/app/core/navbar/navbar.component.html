@@ -4,33 +4,49 @@
   <div class="container">
     <div class="nav-left">
       <h2 class="logo" style="color: white;">Ku-DONDZA</h2>
-      <div class="search-bar">
+      <div class="search-bar" *ngIf="isUserLoggedIn">
         <i class="pi pi-search"></i>
         <input type="search" placeholder="Search" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" />
         <div class="search-results-popup" *ngIf="searchQuery.length > 2 && results.length > 0">
-          <ul>
-            <li *ngFor="let result of results">
+          <ul *ngFor="let result of results">
+
+            <li *ngIf="result.type == 'User'" [routerLink]="['/user/profile', result.id]">
               <div class="profile-pic">
-                <a (click)="goToProfile()">
                   <img src="{{result.urlFile}}" alt="Profile picture" />
-                </a>
               </div>
-              <span>{{ result.type }}: </span>
               <span>{{ result.content }}</span>
             </li>
+
+            <li *ngIf="result.type == 'Group'" [routerLink]="['/groups', result.id]">
+              <div class="group-pic">
+                  <img src="{{result.urlFile}}" alt="Institution picture" />
+              </div>
+              <span>{{ result.content }}</span>
+            </li>
+
+            <li *ngIf="result.type == 'Institution'" [routerLink]="['/instituicoes', result.id]">
+              <div class="group-pic">
+                <img src="{{result.urlFile}}" alt="Group picture" />
+              </div>
+              <span>{{ result.content }}</span>
+            </li>
+
           </ul>
         </div>
       </div>
     </div>
 
 
-    <div class="create" *ngIf="isUserLoggedIn">
+    <div class="create">
       <!-- Botão grande do menu -->
       <div class="menu-button">
-        <button (click)="toggleMenu()" class="menu-icon">
-          <!--<i class="pi pi-bars"></i>-->
+
+        <button *ngIf="isUserLoggedIn" (click)="toggleMenu()" class="menu-icon" >
           <i class="fas fa-th"></i>
         </button>
+
+        <button class="btn" *ngIf="!isUserLoggedIn" (click)="onLogIn()">Iniciar sessão</button>
+
 
         <!-- Menu dropdown grande -->
         <div class="menu-dropdown large" [class.active]="isMenuActive">
@@ -133,7 +149,7 @@
 
 
       </div>
-      <div class="profile-pic">
+      <div class="profile-pic" *ngIf="isUserLoggedIn">
         <a (click)="goToProfile()">
           <img src="{{loggedUser.profileImageUrl}}" alt="Profile picture" />
         </a>

@@ -1,5 +1,6 @@
 export class SearchResultDTO {
-    type!: number;
+    type!: string;
     content!: string;
     urlFile!: string;
+    id!: string;
 }

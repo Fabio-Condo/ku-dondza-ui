@@ -36,10 +36,16 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+    console.log(this.isUserLoggedIn);
   }
 
   goToProfile() {
     this.router.navigate(['/user/profile', this.loggedUser.userId]);
+  }
+
+  onLogIn(): void {
+    this.router.navigate(['/login']);
   }
 
   isActive(url: string): boolean {

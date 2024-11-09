@@ -18,7 +18,7 @@
         <div class="input-group">
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
-                <input type="text" id="input" class="transparent-input" (ngModelChange)="findAll()" placeholder="Pesquisa">
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"  (ngModelChange)="findAll()" placeholder="Pesquisa">
             </div>
         </div>
     </div>
@@ -31,9 +31,9 @@
                         <div class="card-content">
                             <div class="content">
                                 <p class="course-name">{{ question.text }}</p>
-                                <p class="details">Disciplina: {{ question.subject.name }}</p>
-                                <a (click)="onUpdateQuestion(question)" class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(question)" class="delete-link">excluir</a>
+                                <p class="details">Disciplina: <span class="text-muted">{{ question.subject.name }}</span></p>
+                                <a *ngIf="isAdmin" (click)="onUpdateQuestion(question)" class="edit-link">editar</a>
+                                <a *ngIf="isAdmin" (click)="confirmarExclusao(question)" class="delete-link">excluir</a>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary">Previsualizar</button>

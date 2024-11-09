@@ -24,12 +24,9 @@ export class UserService {
       .set('sort', filter.sort)
       ;
 
-    if (filter.name) {
-      params = params.set('name', filter.name);
+    if (filter.searchParam) {
+      params = params.set('searchParam', filter.searchParam);
     }
-
-    console.log(params);
-    console.log("Getting list");
 
     return this.http.get<IApiResponse<User>>(`${this.host}/user/list/pageable`, { params });
   }
@@ -86,6 +83,10 @@ export class UserService {
   //  return this.http.put<User>(`${this.host}/${user.id}`, user, {});
   //}
 
+  getTotalUsers(): Observable<number> {
+    return this.http.get<number>(`${this.host}/total`, {});
+  }
+
   public resetPassword(email: string): Observable<CustomHttpRespone> {
     return this.http.get<CustomHttpRespone>(`${this.host}/user/resetpassword/${email}`);
   }
@@ -139,7 +140,7 @@ export class UserService {
     return this.http.delete<User>(`${this.host}/user/${userId}/savedPosts/${postId}`);
   }
 
-  doesUserSavedPost(userId: number, postId: number): Observable<boolean> {
+  checkIfUserSavedPost(userId: number, postId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.host}/user/${userId}/savedPosts/contains/${postId}`);
   }
 
@@ -165,6 +166,10 @@ export class UserService {
     return this.http.get<User[]>(`${this.host}/user/friends`, {});
   }
 
+  countFriendsByUserId(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.host}/user/${userId}/friends/total`, {});
+  }
+
   getUserFriends(userId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
 
     let params = new HttpParams()
@@ -182,6 +187,10 @@ export class UserService {
       .set('sort', filtro.sort)
       .set('size', filtro.itemsPerPage);
 
+    if (filtro.searchParam) {
+      params = params.set('searchParam', filtro.searchParam);
+    }
+
     return this.http.get<IApiResponse<User>>(`${this.host}/user/current-user-friends`, { params });
   }
 
@@ -193,6 +202,10 @@ export class UserService {
       .set('size', filtro.itemsPerPage);
 
     return this.http.get<IApiResponse<User>>(`${this.host}/user/current-user-friend-requests`, { params });
+  }
+
+  countFriendRequestsByUserId(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.host}/user/${userId}/friend-requests/total`, {});
   }
 
   acceptFriendRequest(friendId: number): Observable<User> {

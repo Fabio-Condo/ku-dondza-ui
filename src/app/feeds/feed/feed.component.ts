@@ -98,6 +98,11 @@ export class FeedComponent implements OnInit {
     this.getFriendRequests();
     //this.getFriends();
     //this.loadMoreUsers();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   loadMoreCommentsByPostId(post: Post): void {
@@ -346,7 +351,7 @@ export class FeedComponent implements OnInit {
   }
 
   checkIfSaved(post: Post): void {
-    this.userService.doesUserSavedPost(this.loggedUser.id, post.id).subscribe(response => {
+    this.userService.checkIfUserSavedPost(this.loggedUser.id, post.id).subscribe(response => {
       post.isSaved = response;
     });
   }

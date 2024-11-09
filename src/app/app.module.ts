@@ -36,7 +36,7 @@ import { QuizRoutingModule } from './quiz/quiz-routing.module';
 import { CompetitionRoutingModule } from './competitions/competition-routing.module';
 import { CompetitionsModule } from './competitions/competitions.module';
 import { QuestionRoutingModule } from './questions/question-routing.module';
-import { QuestionsModule } from './questions/questions2.module';
+import { QuestionsModule } from './questions/questions.module';
 
 @NgModule({
   declarations: [

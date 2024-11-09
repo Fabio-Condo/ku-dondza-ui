@@ -23,7 +23,9 @@ export class QuizService {
       .set('sort', filter.sort)
       .set('size', filter.itemsPerPage);
 
-    console.log(params);
+    if (filter.searchParam) {
+        params = params.set('searchParam', filter.searchParam);
+    }
 
     return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}`, { params });
   }

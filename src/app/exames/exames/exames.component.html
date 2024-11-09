@@ -15,13 +15,13 @@
   <div class="flex">
     <div>
       <a *ngIf="isAdmin" (click)="onAddNewExame()" class="ml-left">Adicionar</a>
-      <a *ngIf="isAdmin" (click)="onFilter()">Filtrar</a>
+      <a (click)="onFilter()">Filtrar</a>
     </div>
 
     <div class="input-group">
       <div class="input-container">
         <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
-        <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.global" (ngModelChange)="findAll()" placeholder="Pesquisa">
+        <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()" placeholder="Pesquisa">
       </div>
     </div>
   </div>
@@ -38,11 +38,16 @@
                 <p class="details">Estado: <span class="text-muted">{{ getStatusValue(exam.status) }}</span></p>
                 <p class="details">instituição: <span class="text-muted">{{ exam.institution.name }}</span></p>
                 <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
-                <a (click)="onUpdate(exam.id, exam.description, exam.status, exam.date, exam.subject.id, exam.institution.id, file)" class="edit-link">editar</a>
-                <a (click)="confirmarExclusao(exam)" class="delete-link">excluir</a>
+                <a *ngIf="isAdmin" (click)="onUpdate(exam.id, exam.description, exam.status, exam.date, exam.subject.id, exam.institution.id, file)" class="edit-link">editar</a>
+                <a *ngIf="isAdmin" (click)="confirmarExclusao(exam)" class="delete-link">excluir</a>
               </div>
 
-              <button [disabled]="exam.showLoadingDownload" pButton (click)="download(exam, exam.fileName)" type="button" icon="pi pi-download" class="download-button"></button>
+              <button [disabled]="exam.showLoadingDownload" (click)="download(exam, exam.fileName)" class="btn btn-primary">
+                <i class="pi pi-download"></i>
+              </button>
+
+              <!--<button [disabled]="exam.showLoadingDownload" pButton (click)="download(exam, exam.fileName)" type="button" icon="pi pi-download" class="download-button"></button>-->
+
               <span *ngIf="!exam.showLoadingDownload" class="download-count">{{exam.totalDownloadNumber}} downloads</span>
               <span *ngIf="exam.showLoadingDownload" class="download-count" style="font-weight: bold;">
                 <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size: 0.6rem;"></i>
@@ -111,7 +116,7 @@
 
       <div class="form-group">
         <label>Ano</label>
-        <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '100%'}" [showIcon]="true"
+        <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '400px'}" [showIcon]="true"
           [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
           [required]="true" [(ngModel)]="exam.date"></p-calendar>
       </div>
@@ -172,7 +177,7 @@
       </div>
 
       <div class="form-group">
-        <button type="button" (click)="findAll()" class="btn">Aplicar</button>
+        <button type="button" (click)="limparCampos()" class="btn">Reset</button>
       </div>
 
     </form>

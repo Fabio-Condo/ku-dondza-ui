@@ -11,6 +11,7 @@ import { OnlineCoursesContentService } from '../OnlineCoursesContentService.serv
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { IUserFilter } from 'src/app/core/model/IUserFilter';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -38,6 +39,12 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   showConfirmDialog: boolean = false;
 
+  totalStudents: number = 0;
+
+  students: User[] = [];
+  totalRegistrosStudents: number = 0
+
+
   @ViewChild('tabela') grid: any;
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
 
@@ -46,6 +53,12 @@ export class OnlineCoursesContentComponent implements OnInit {
     itensPorPagina: 5,
     ordenamento: 'id,asc',
     name: ''
+  }
+
+  filtroStudents: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
   }
 
   activeTab: number = 1;
@@ -69,8 +82,11 @@ export class OnlineCoursesContentComponent implements OnInit {
     if (id) {
       this.getOnlineCourseById(id);
       this.findCourseContentByCourseById(0, id);
+      this.getStudentsByCourseId(id);
+      this.countOnlineCourseStudentsByCourseId(id);
     }
 
+    this.scrollToTop();
   }
 
   setActiveTab(tabIndex: number) {
@@ -180,6 +196,38 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  getStudentsByCourseId(onlineCourseId: number): void {
+    this.filtroStudents.page++;
+    this.onlineCoursesService.getStudentsByCourseId(onlineCourseId, this.filtroStudents).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.students = [...this.students, ...dados.content];
+        this.totalRegistrosStudents = dados.totalElements;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  onShowMoreStudents(): void {
+    //const id = this.route.snapshot.params['id'];
+    this.getStudentsByCourseId(this.course.id);
+  }
+
+  countOnlineCourseStudentsByCourseId(onlineCourseId: number) {
+    this.showLoading = true;
+    this.onlineCoursesService.countOnlineCourseStudentsByCourseId(onlineCourseId).subscribe(
+      (total) => {
+        this.totalStudents = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   confirmarExclusao(content: OnlineCourseContent): void {

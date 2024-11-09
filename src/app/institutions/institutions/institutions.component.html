@@ -21,7 +21,7 @@
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
 
-                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.global"
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"
                     (ngModelChange)="findAll()" placeholder="Pesquisa">
             </div>
 
@@ -48,9 +48,9 @@
                                         institution.type }}</span></p>
                                 <p class="details">tipo de administração: <span class="text-muted">{{
                                         getAdministrationTypeValue(institution.administrationType) }}</span></p>        
-                                <a (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
+                                <a *ngIf="isAdmin" (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file)"
                                     class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(institution)" class="delete-link">excluir</a>
+                                <a *ngIf="isAdmin" (click)="confirmarExclusao(institution)" class="delete-link">excluir</a>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary" [routerLink]="['/instituicoes', institution.id]">Ver</button>

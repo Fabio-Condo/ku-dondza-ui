@@ -25,7 +25,7 @@ export class OnlineCoursesComponent implements OnInit {
   file!: File;
   totalCourses: number = 0;
   displayModalFilter: boolean = false;
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -52,6 +52,11 @@ export class OnlineCoursesComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.buscarTotal();
     this.findAll();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {

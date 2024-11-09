@@ -15,12 +15,14 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { CompetitionQuestionsComponent } from './competition-questions/competition-questions.component';
 
 
 
 @NgModule({
   declarations: [
-    CompetitionsComponent
+    CompetitionsComponent,
+    CompetitionQuestionsComponent
   ],
   imports: [
     CommonModule,

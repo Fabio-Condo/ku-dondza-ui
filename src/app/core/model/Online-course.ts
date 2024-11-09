@@ -6,7 +6,8 @@ export class OnlineCourse {
     description!: string;
     fileName!: string;
     coverImageUrl!: string;
-    content: OnlineCourseContent[] = [];
+    instrutor!: string;
+    //content: OnlineCourseContent[] = [];
 
     isSubscribed: boolean = false;
     totalStudents: number = 0;

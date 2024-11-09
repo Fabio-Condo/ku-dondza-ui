@@ -1,5 +1,5 @@
 export interface CompetitionFilter {
-    title?: string;
+    searchParam?: string,
     page: number,
     itemsPerPage: number,
     sort: string,

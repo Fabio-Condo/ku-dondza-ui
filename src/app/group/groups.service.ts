@@ -22,8 +22,8 @@ export class GroupService {
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
       
-      if (filtro.description) {
-        params = params.set('description', filtro.description);
+      if (filtro.searchParam) {
+        params = params.set('searchParam', filtro.searchParam);
       }
 
     return this.http.get<IApiResponse<Group>>(`${this.baseUrl}/filter`, { params });
@@ -67,7 +67,7 @@ export class GroupService {
     return this.http.delete<Group>(`${this.baseUrl}/${groupId}/members/${userId}`);
   }
 
-  doesUserMemberOfGroup(groupId: number, userId: number): Observable<boolean> {
+  checkMembership(groupId: number, userId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}/${groupId}/members/contains/${userId}`);
   }
 

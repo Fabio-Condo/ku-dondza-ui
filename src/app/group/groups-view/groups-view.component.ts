@@ -34,6 +34,8 @@ export class GroupsViewComponent implements OnInit {
 
   members: User[] = [];
 
+  extension: any;
+
 
   constructor(
     private groupService: GroupService,
@@ -49,8 +51,12 @@ export class GroupsViewComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.getGroupById(id);
-      this.findFeedsByGroupId(0, id);
     }
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Variável para controlar a aba ativa
@@ -71,7 +77,7 @@ export class GroupsViewComponent implements OnInit {
 
   flitroGrupo: GroupFilter = {
     pagina: -1,
-    itensPorPagina: 5,
+    itensPorPagina: 2,
     ordenamento: 'id,desc',
   }
 
@@ -79,8 +85,9 @@ export class GroupsViewComponent implements OnInit {
     this.groupService.getGroupById(id).subscribe(
       (response) => {
         this.group = response;
-        this.getGroupMembers(response);
-        this.checkIfIsMember(this.group);
+        this.getGroupMembers(this.group);
+        this.getFeeds(this.group);
+        this.checkMembership(this.group);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -88,25 +95,21 @@ export class GroupsViewComponent implements OnInit {
     );
   }
 
-  findFeedsByGroupId(pagina: number = 0, groupId: number): void {
-    this.showLoading = true;
-    //this.filtro.pagina = pagina;
+  getFeeds(group: Group): void {
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.feedsService.findByGroupId(groupId, this.filtro).subscribe(
+    this.feedsService.findByGroupId(group.id, this.filtro).subscribe(
       (dados: IApiResponse<Post>) => {
         this.feeds = dados.content
         this.totalRegistros = dados.totalElements
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
 
   getGroupMembers(group: Group): void {
-    this.filtro.page++;
+    this.flitroGrupo.pagina++;
     this.groupService.getGroupMembers(group.id, this.flitroGrupo).subscribe(
       (dados: IApiResponse<User>) => {
         this.members = [...this.members, ...dados.content];
@@ -118,8 +121,17 @@ export class GroupsViewComponent implements OnInit {
     );
   }
 
-  checkIfIsMember(group: Group): void {
-    this.groupService.doesUserMemberOfGroup(group.id, this.loggedUser.id).subscribe(response => {
+  onShowMoreMembers(): void {
+    //const id = this.route.snapshot.params['id'];
+    this.getGroupMembers(this.group);
+  }
+
+  onShowMoreFeeds(): void {
+    this.getFeeds(this.group);
+  }
+
+  checkMembership(group: Group): void {
+    this.groupService.checkMembership(group.id, this.loggedUser.id).subscribe(response => {
       group.isMember = response;
     });
   }
@@ -153,25 +165,74 @@ export class GroupsViewComponent implements OnInit {
   changePageSize(event: any): void {
     this.filtro.itemsPerPage = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
-    this.findFeedsByGroupId(0, this.group.id);
+    this.getFeeds(this.group);
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.findFeedsByGroupId(0, this.group.id);
+      this.getFeeds(this.group);
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages()) {
       this.currentPage++;
-      this.findFeedsByGroupId(0, this.group.id);
+      this.getFeeds(this.group);
     }
   }
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  isImageUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    return imageExtensions.includes(this.extension);
+  }
+
+  isVideoUrl(url: string): boolean {
+    if (!url) return false; // Verifica se a URL é válida
+    const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'];
+    this.extension = url.split('.').pop()?.toLowerCase();
+    return videoExtensions.includes(this.extension);
+  }
+
+  timeElapsed(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+
+    if (years > 0) {
+      const remainingMonths = months % 12;
+      return `${years} ano${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` e ${remainingMonths} mês${remainingMonths > 1 ? 'es' : ''}` : ''}`;
+    } else if (months > 0) {
+      const remainingDays = days % 30;
+      return `${months} mês${months > 1 ? 'es' : ''}${remainingDays > 0 ? ` e ${remainingDays} dia${remainingDays > 1 ? 's' : ''}` : ''}`;
+    } else if (weeks > 0) {
+      const remainingDays = days % 7;
+      return `${weeks} semana${weeks > 1 ? 's' : ''}${remainingDays > 0 ? ` e ${remainingDays} dia${remainingDays > 1 ? 's' : ''}` : ''}`;
+    } else if (days > 0) {
+      return `${days} dia${days > 1 ? 's' : ''}`;
+    } else if (hours > 0) {
+      const remainingMinutes = minutes % 60;
+      return `${hours} hora${hours > 1 ? 's' : ''}${remainingMinutes > 0 ? ` e ${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}` : ''}`;
+    } else if (minutes > 0) {
+      const remainingSeconds = seconds % 60;
+      return `${minutes} minuto${minutes > 1 ? 's' : ''}${remainingSeconds > 0 ? ` e ${remainingSeconds} segundo${remainingSeconds > 1 ? 's' : ''}` : ''}`;
+    } else {
+      return `${seconds} segundo${seconds > 1 ? 's' : ''}`;
+    }
   }
 
   private sendErrorNotification(message: string): void {

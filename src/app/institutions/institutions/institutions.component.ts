@@ -23,7 +23,7 @@ export class InstitutionsComponent implements OnInit {
   totalInstitutions: number = 0;
   displayModalFilter: boolean = false;
 
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
@@ -54,6 +54,11 @@ export class InstitutionsComponent implements OnInit {
   ngOnInit(): void {
     this.buscarTotal();
     this.findAll();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {
@@ -235,7 +240,7 @@ export class InstitutionsComponent implements OnInit {
   }
 
   limparCampos() {
-    this.filtro.global = "";
+    this.filtro.searchParam = "";
     this.filtro.name = "";
     this.filtro.description = "";
     this.filtro.administrationType = "";

@@ -18,7 +18,7 @@
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
 
-                <input type="text" id="input" class="transparent-input" placeholder="Pesquisa">
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filter.searchParam" (ngModelChange)="getQuizzes()" placeholder="Pesquisa">
             </div>
         </div>
     </div>
@@ -34,8 +34,8 @@
                                 <p class="quiz-title">{{ quiz.title }}</p>
                                 <p class="details">Categoria: Matematica</p>
                                 <p class="details">{{ quiz.totalQuestions }} questoes</p>
-                                <a (click)="onUpdateQuiz(quiz)" class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(quiz)" class="delete-link">excluir</a>
+                                <a *ngIf="isAdmin" (click)="onUpdateQuiz(quiz)" class="edit-link">editar</a>
+                                <a *ngIf="isAdmin" (click)="confirmarExclusao(quiz)" class="delete-link">excluir</a>
                                 <a (click)="onAddQuestions(quiz)" class="delete-link">add questao</a>
                                 <a (click)="onShowSelectedQuiz(quiz)" class="delete-link">ver questoes</a>
                             </div>
@@ -89,7 +89,7 @@
                                 <p>{{question.text}}</p>
                             </div>
                             <div class="button-container">
-                                <button class="btn" style="margin-left: 10px;">Remover</button>                            
+                                <button class="btn" style="margin-left: 10px;" (click)="removeQuestionFromQuiz(question)">Remover</button>                            
                             </div>
                         </div>
                     </div>

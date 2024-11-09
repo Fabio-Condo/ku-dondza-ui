@@ -1,5 +1,5 @@
 export interface InstitutionFilter {
-    global?: string,
+    searchParam?: string,
     name?: string;
     description?: string;
     type?: string;

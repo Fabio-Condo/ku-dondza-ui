@@ -1,5 +1,5 @@
 export interface ExameFilter {
-    global?: string,
+    searchParam?: string,
     description?: string;
     institution?: number;
     subject?: number;

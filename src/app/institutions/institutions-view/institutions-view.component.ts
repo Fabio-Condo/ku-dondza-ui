@@ -50,6 +50,11 @@ export class InstitutionsViewComponent implements OnInit {
       this.getInstitutionById(id);
       this.findCoursesByInstitutionId(0, id);
     }
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Função para alterar a aba ativa

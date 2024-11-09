@@ -49,6 +49,9 @@ export class UserProfileViewComponent implements OnInit {
 
   selectedInterest: Interest = new Interest();
 
+  selectedFriendToBeRemoved = new User();
+  showConfirmDialog: boolean = false;
+
   activeTabPost: number = 1;
   activeTabInfo: number = 1;
 
@@ -91,6 +94,11 @@ export class UserProfileViewComponent implements OnInit {
       this.getUserByUserId(userId);
     }
     this.getInterests();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   setActiveTabPost(tabIndex: number) {
@@ -199,12 +207,28 @@ export class UserProfileViewComponent implements OnInit {
     );
   }
 
-  removeFriend(friendId: number) {
-    this.userService.removeFriend(friendId).subscribe(
+  removeFriend(friend: User) {
+    this.userService.removeFriend(friend.id).subscribe(
       () => {
-        this.getUserFriends(this.user);
-      }
+        // Remove o amigo da lista de amigos
+        this.friends = this.friends.filter(existingFriend => existingFriend.id !== friend.id);
+      },
+      erro => this.errorHandler.handle(erro)
     )
+  }
+
+  onRemoveFriend(friend: User): void {
+    this.showConfirmDialog = true;
+    this.selectedFriendToBeRemoved = friend;
+  }
+
+  closeConfirmDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmDialog(friend: User) {
+    this.removeFriend(friend);
+    this.closeConfirmDialog();
   }
 
   getInterests() {
@@ -240,6 +264,10 @@ export class UserProfileViewComponent implements OnInit {
 
   onShowMoreSavedPosts() {
     this.getUserSavedPosts(this.user);
+  }
+
+  onShowMoreFriends() {
+    this.getUserFriends(this.user);
   }
 
   isImageUrl(url: string): boolean {
@@ -293,7 +321,7 @@ export class UserProfileViewComponent implements OnInit {
 
   onLogOut(): void {
     this.authenticationService.logOut();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
   onShowInterests() {

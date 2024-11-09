@@ -6,7 +6,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
 import { Question } from 'src/app/core/model/Question';
-import { QuestionService } from '../question2.service';
+import { QuestionService } from '../question.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 
@@ -23,7 +23,7 @@ export class QuestionsComponent implements OnInit {
   showLoading: boolean = false;
   displayModalSave: boolean = false;
   question: Question = new Question();
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   answer?: Answer;
@@ -62,6 +62,11 @@ export class QuestionsComponent implements OnInit {
     this.buscarTotal();
     this.findAll(0);
     this.carregarDisciplinas();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   //public Editor = ClassicEditor;  // Associa o editor clássico ao componente

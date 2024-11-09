@@ -1,16 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuizzesComponent } from './quizzes/quizzes.component';
-import { QuestionsComponent } from './questions/questions.component';
+import { QuizzQuestionsComponent } from './questions/quizz-questions.component';
+import { AuthenticationGuard } from '../security/Guard/authentication.guard';
 
 const routes: Routes = [
   { 
     path: 'quizzes', 
     component: QuizzesComponent,
+    canActivate: [AuthenticationGuard], 
+    //data: { 
+    //  roles: ['ROLE_USER'], 
+    //  requiresRoleCheck: true
+    //} 
   },
   { 
     path: 'quizzes/:id/questions', 
-    component: QuestionsComponent
+    component: QuizzQuestionsComponent,
+    canActivate: [AuthenticationGuard], 
+    //data: { 
+    //  roles: ['ROLE_USER'], 
+    //  requiresRoleCheck: true
+    //} 
   }
 ];
 

@@ -20,8 +20,8 @@ export class InstitutionService {
             .set('sort', filtro.ordenamento)
             .set('size', filtro.itensPorPagina);
 
-        if (filtro.global) {
-            params = params.set('global', filtro.global);
+        if (filtro.searchParam) {
+            params = params.set('searchParam', filtro.searchParam);
         }
         if (filtro.name) {
             params = params.set('name', filtro.name);

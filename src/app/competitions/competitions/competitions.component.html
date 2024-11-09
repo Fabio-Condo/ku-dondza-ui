@@ -17,7 +17,7 @@
         <div class="input-group">
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
-                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.title" (ngModelChange)="findAll()" placeholder="Pesquisa">
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()" placeholder="Pesquisa">
             </div>
         </div>
     </div>
@@ -31,14 +31,21 @@
                             <div class="content">
                                 <p class="course-name">{{ competition.title }}</p>
                                 <p class="details">{{ competition.totalQuestions }} questoes</p>
-                                <p class="details">{{ competition.totalParticipants }} participantes</p>
-                                <a (click)="onUpdateCompetition(competition)" class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(competition)" class="delete-link">excluir</a>
+                                <p class="details" *ngIf="competition.totalParticipants == 0">0 participantes da competição</p>
+                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 1"> Apenas uma pessoa é participante desta competição</p>
+                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 1"> Apenas Tu és participante desta competição</p>
+                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 2">Tu e mais uma pessoa são participantes desta competição</p>
+                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 2">Duas pessoas são participantes desta competição</p>
+                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants > 2">Tu e mais {{ competition.totalParticipants - 1}} pessoas são participantes desta competição</p>
+                                <a *ngIf="isAdmin" (click)="onUpdateCompetition(competition)" class="edit-link">editar</a>
+                                <a *ngIf="isAdmin" (click)="confirmarExclusao(competition)" class="delete-link">excluir</a>
                                 <a (click)="onAddQuestions(competition)" class="delete-link">add questao</a>
                                 <a (click)="onShowSelectedCompetition(competition)" class="delete-link">previsualizar</a>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary" (click)="sendParticipationRequest(competition)">Subscrever</button>
+                                <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && competition.isParticipant" [routerLink]="['/competitions', competition.id, 'questions']">Iniciar</button>
+                                <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && !competition.isParticipant" (click)="sendParticipationRequest(competition)">Subscrever</button>
+                                <button class="btn" *ngIf="competition.requestedParticipation && !competition.isParticipant" (click)="cancelParticipationRequest(competition)">Cancelar pedido</button>
                             </div>
                         </div>
                     </div>

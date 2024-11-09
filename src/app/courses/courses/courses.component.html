@@ -33,8 +33,8 @@
                                 <p class="details">instituição: <span class="text-muted">{{ course.institution.name }}</span></p>
                                 <p class="details">duração: <span class="text-muted">{{ course.duration }}</span></p>
                                 <p class="details">requisitos: <span class="text-muted">{{ course.requirements }}</span></p>
-                                <a (click)="onUpdateCourse(course)" class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
+                                <a *ngIf="isAdmin" (click)="onUpdateCourse(course)" class="edit-link">editar</a>
+                                <a *ngIf="isAdmin" (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
                             </div>
                             <div>
                                 <img [src]="course.institution.urlFile" style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;" alt="">

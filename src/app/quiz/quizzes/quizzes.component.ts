@@ -9,7 +9,7 @@ import { QuizFilter } from 'src/app/core/interface/QuizFilter';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
-import { QuestionService } from 'src/app/questions/question2.service';
+import { QuestionService } from 'src/app/questions/question.service';
 
 @Component({
   selector: 'app-quizzes',
@@ -25,7 +25,7 @@ export class QuizzesComponent implements OnInit {
   quizzes: Quiz[] = [];
   quiz: Quiz = new Quiz;
   displayModalSave: boolean = false;
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   selectedQuiz: Quiz = new Quiz();
 
@@ -65,6 +65,11 @@ export class QuizzesComponent implements OnInit {
     this.getTotalQuizzes();
     this.getQuizzes();
     this.getQuestions();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get editing() {
@@ -169,6 +174,17 @@ export class QuizzesComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     )
+  }
+
+  removeQuestionFromQuiz(question: Question) {
+    this.quizService.removeQuestionFromQuiz(this.selectedQuiz.id, question.id).subscribe(
+      () => {
+        this.selectedQuiz.questions = this.selectedQuiz.questions.filter(quest => quest.id !== question.id);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
   }
 
   getQuestionsByQuizId(): void {
