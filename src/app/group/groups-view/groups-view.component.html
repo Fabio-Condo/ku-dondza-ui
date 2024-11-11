@@ -1,4 +1,4 @@
-<div class="container" style="margin-top: 70px;">
+<div class="container" style="margin-top: 70px; max-width: 900px;">
     <div class="group-page">
         <!-- Cabeçalho do Grupo -->
         <div class="group-header">
@@ -16,16 +16,20 @@
             <!-- Lista de Posts -->
             <div class="posts-list">
                 <div class="post" *ngFor="let feed of feeds">
-                    <div class="post-header" style="padding: 15px 0 0 15px;">
+                    <div class="post-header" style="padding: 0.7rem 0 0 0.7rem;">
                         <img src="{{ feed.user.profileImageUrl }}" alt="Avatar do usuário" class="user-avatar">
                         <div class="user-info">
                             <h3 class="user-name">{{ feed.user.firstName }} {{ feed.user.lastName }}</h3>
                             <p class="post-date">Publicado em {{ timeElapsed(feed.date.toString()) }}</p>
                         </div>
                     </div>
+
+                    <hr style="margin-top: 0.7rem;">
+
                     <div class="post-body">
-                        <h2 class="post-title" style="padding: 0 15px;">Como resolver equações quadráticas?</h2>
-                        <p class="post-content" style="padding: 0 15px;">Neste post, vamos explorar as soluções para equações quadráticas usando o método da fórmula de Bhaskara...</p>
+                        <!--<h2 class="post-title" style="padding: 0 15px;">Como resolver equações quadráticas?</h2>-->
+                        <p class="post-content" style="padding: 0 0.7rem;">{{ feed.text }}</p>
+                        <button class="expand-btn" style="padding: 0 0.7rem;">Ler mais</button>
 
                         <!-- Imagem ou Vídeo -->
                         <img *ngIf="isImageUrl(feed.urlFile)" [src]="feed.urlFile" alt="Imagem do post" class="post-image">
@@ -34,13 +38,47 @@
                             Seu navegador não suporta a tag de vídeo.
                         </video>
 
-                        <button class="expand-btn" style="padding: 0 15px;">Ler mais</button>
                     </div>
-                    <div class="post-interactions" style="padding: 15px">
-                        <button class="like-btn">Curtir</button>
-                        <button class="comment-btn">Comentar</button>
-                        <span class="like-count">12 Curtidas</span>
-                        <span class="comment-count">5 Comentários</span>
+
+                    <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
+                        <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
+                        <span style="cursor: pointer;" *ngIf="feed.numberOfLikes == 1">1
+                          gosto</span>
+                        <span style="cursor: pointer;" *ngIf="feed.numberOfLikes > 1">{{
+                          feed.numberOfLikes }} gostos</span>
+                    </a>
+            
+                    <span class="text-muted" style="font-size: 0.7rem;">|</span>
+            
+                    <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
+                        <span *ngIf="feed.numberOfComments == 0">Sem comentários</span>
+                        <span style="cursor: pointer;" *ngIf="feed.numberOfComments == 1" >1
+                          comentário</span>
+                        <span style="cursor: pointer;" *ngIf="feed.numberOfComments > 1" >{{
+                          feed.numberOfComments }} comentários</span>
+                    </a>
+
+                    <hr style="margin-top: 0.7rem;">
+
+                    <div class="post-interactions">
+                        <div class="interaction-button">
+                          <a style="cursor: pointer;" (click)="toggleLike(feed)">
+                            <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked" style="font-size: 1.1rem;"></i>
+                            <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
+                          </a>
+                          
+                          <a style="cursor: pointer; margin-left: 0.7rem;">
+                            <i class="pi pi-comment" style="font-size: 1.1rem;"></i>
+                          </a>
+            
+                          <!--<i class="uil uil-share"></i>-->
+                        </div>
+                        <div>
+                            <a *ngIf="feed.isSaved" (click)="onRemovePost(feed)" style="cursor: pointer;"><i
+                                class="pi pi-bookmark-fill"></i></a>
+                            <a *ngIf="!feed.isSaved" (click)="addPostToSavedPosts(feed)" style="cursor: pointer;"><i
+                                class="pi pi-bookmark"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,8 +92,42 @@
                         <span class="member-name">{{ member.firstName }} {{ member.lastName }}</span>
                     </a>
                 </div>
-                <button class="load-more" *ngIf="members.length < 1000">Ver mais</button>
+                <button class="load-more" (click)="onShowMoreMembers()" *ngIf="members.length < 1000">Ver mais</button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja sair do grupo ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmDialog(selectedGroup)">Confirmar</button>
+            <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialogRemovePost">
+    <div class="confirm-dialog">
+      <div class="confirm-dialog-header">
+        <h4>Deseja remover o post da sua lista ?</h4>
+        <button class="confirm-close-button" (click)="closeConfirmDialogRemovePost()">x</button>
+      </div>
+      <div class="confirm-dialog-content">
+        <ng-content></ng-content>
+      </div>
+      <div class="confirm-dialog-footer">
+        <button (click)="confirmDialogRemovePost(selectedPost)">Confirmar</button>
+        <button (click)="closeConfirmDialogRemovePost()">Cancelar</button>
+      </div>
     </div>
 </div>

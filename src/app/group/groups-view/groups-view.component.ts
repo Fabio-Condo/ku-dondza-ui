@@ -11,6 +11,10 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { GroupFilter } from 'src/app/core/interface/GroupFilter';
+import { CommentService } from 'src/app/core/commets/commentService .service';
+import { LikeService } from 'src/app/core/likes/like.service';
+import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
+import { UserService } from 'src/app/users/user.service';
 
 @Component({
   selector: 'app-groups-view',
@@ -34,15 +38,22 @@ export class GroupsViewComponent implements OnInit {
 
   members: User[] = [];
 
+  selectedPost = new Post();
+  showConfirmDialogRemovePost: boolean = false;
+
   extension: any;
 
 
   constructor(
     private groupService: GroupService,
     private feedsService: FeedsService,
+    private commentService: CommentService,
+    private likeService: LikeService,
+    private commentLikeService: CommentLikeService,
+    private userService: UserService,
     private messageService: MessageService,
     private authenticationService: AuthenticationService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
   ) { }
 
@@ -66,9 +77,9 @@ export class GroupsViewComponent implements OnInit {
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
   }
-    
+
   @ViewChild('tabela') grid: any;
-  
+
   filtro: IPostFilter = {
     page: -1,
     itemsPerPage: 5,
@@ -99,13 +110,94 @@ export class GroupsViewComponent implements OnInit {
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.feedsService.findByGroupId(group.id, this.filtro).subscribe(
       (dados: IApiResponse<Post>) => {
-        this.feeds = dados.content
+        this.feeds = dados.content;
+        dados.content.forEach(post => {
+          this.checkIfLiked(post);
+          this.checkIfSaved(post);
+          this.getNumberOfLikes(post);
+          this.getNumberOfComments(post);
+        });
         this.totalRegistros = dados.totalElements
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  getNumberOfLikes(post: Post): void {
+    this.likeService.countLikesByPostId(post.id).subscribe((response: number) => {
+      post.numberOfLikes = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getNumberOfComments(post: Post): void {
+    this.commentService.countCommentsByPostId(post.id).subscribe((response: number) => {
+      post.numberOfComments = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  toggleLike(post: Post): void {
+    this.likeService.toggleLike(post.id).subscribe(response => {
+      post.isLiked = !post.isLiked;
+      if (post.isLiked) {
+        post.numberOfLikes = post.numberOfLikes + 1;
+      } else {
+        post.numberOfLikes = post.numberOfLikes - 1;
+      }
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      });
+  }
+
+  checkIfLiked(post: Post): void {
+    this.likeService.checkIfLiked(post.id).subscribe(response => {
+      post.isLiked = response;
+      console.log(response)
+    }, error => {
+      console.error('Erro ao verificar se o post foi curtido:', error);
+    });
+  }
+
+  checkIfSaved(post: Post): void {
+    this.userService.checkIfUserSavedPost(this.loggedUser.id, post.id).subscribe(response => {
+      post.isSaved = response;
+    });
+  }
+
+  addPostToSavedPosts(post: Post): void {
+    this.userService.addPostToSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
+      post.isSaved = true;
+    });
+  }
+
+  onRemovePost(post: Post): void {
+    this.showConfirmDialogRemovePost = true;
+    this.selectedPost = post;
+  }
+
+  removePostFromSavedPosts(post: Post): void {
+    this.userService.removePostFromSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
+      post.isSaved = false;
+    });
+  }
+
+  closeConfirmDialogRemovePost() {
+    this.showConfirmDialogRemovePost = false;
+  }
+
+  confirmDialogRemovePost(post: Post) {
+    this.removePostFromSavedPosts(post);
+    this.closeConfirmDialogRemovePost();
   }
 
   getGroupMembers(group: Group): void {

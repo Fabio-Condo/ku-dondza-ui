@@ -21,7 +21,8 @@
     margin-bottom: 20px;
     position: relative; /* Necessário para o posicionamento da imagem de fundo */
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para o cabeçalho */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para o cabeçalho */
+    border-bottom: 1px solid #ccc;
 }
 
 /* Imagem de Banner */
@@ -48,9 +49,9 @@
 }
 
 .group-description {
-    font-size: 1rem; /* Diminui o tamanho da descrição */
+    font-size: 0.85rem;
     color: var(--color-gray);
-    margin-top: 10px; /* Adiciona espaçamento acima da descrição */
+    margin-top: 35px; /* Adiciona espaçamento acima da descrição */
     line-height: 1.4;
     text-align: center;
 }
@@ -86,15 +87,16 @@
 
 /* Lista de Posts */
 .posts-list {
-    flex: 3; /* Define que a lista de posts ocupa 3 partes da largura */
+    flex: 2; /* Define que a lista de posts ocupa 2 partes da largura */
 }
 
 /* Estilo do Post */
 .post {
     background-color: white;
+    border: 1px solid #ccc;
     margin-bottom: 20px;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
 }
 
 /* Cabeçalho do Post */
@@ -147,17 +149,14 @@
 .post-interactions {
     display: flex;
     justify-content: space-between;
-    margin-top: 15px;
+    align-items: center;
+    font-size: 1.4rem;
+    margin: 0.7rem;
 }
 
-.like-btn, .comment-btn {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.like-count, .comment-count {
-    color: var(--color-gray);
+.post-interactions a:hover {
+    opacity: 0.8;
+    transition: all 300ms ease;
 }
 
 /* Barra Lateral (Sidebar) com membros */
@@ -166,12 +165,15 @@
 /* Barra Lateral (Sidebar) com membros */
 .group-sidebar {
     flex: 1; /* Sidebar ocupa 1 parte da largura */
+    height: max-content;
+    position: sticky;
     background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    padding: 0.7rem;
+    border-radius: 5px;
     max-height: 40vh; /* Impede que a sidebar se estique além da altura da tela */
-    overflow-y: auto; /* Adiciona barra de rolagem vertical caso o conteúdo seja maior que o limite */
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+
 }
 
 /* Estilo para o título "Membros do Grupo" */
@@ -184,7 +186,7 @@
     display: flex;
     gap: 15px;  /* Espaçamento horizontal entre os itens */
     flex-wrap: wrap;
-    margin-bottom: 20px; /* Adicionando espaçamento abaixo da lista */
+    margin-bottom: 5px; /* Adicionando espaçamento abaixo da lista */
 }
 
 .member-item {
@@ -198,7 +200,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid var(--color-primary);  /* Borda ao redor do avatar */
+    border: 1px solid #ccc;
     margin-right: 10px;  /* Espaço entre o avatar e o nome */
 }
 
@@ -211,18 +213,17 @@
 
 /* Botão de Ver Mais Membros */
 .load-more {
-    background-color: var(--color-primary);
-    color: white;
-    border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border: none;
+    border-radius: var(--border-radius);
     cursor: pointer;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 5px;
+    transition: all 300ms ease;
 }
 
 .load-more:hover {
-    background-color: #0056b3;
+    opacity: 0.8;
 }
 
 /* Estilo para imagem e vídeo nos posts */
@@ -242,6 +243,19 @@
     padding: 0; /* Remove o padding */
     margin-left: 0; /* Remove a margem esquerda */
     margin-right: 0; /* Remove a margem direita */
+}
+
+hr {
+    border: none;
+    /* Remove a borda padrão */
+    height: 0.5px;
+    /* Define a altura da linha */
+    background-color: #ccc;
+    /* Define a cor da linha */
+}
+
+.icon-liked {
+    color: #ee0e21; /* Azul */
 }
 
 /* Responsividade para telas pequenas */
@@ -273,10 +287,6 @@
 
     .group-name {
         font-size: 1.5rem; /* Ajusta o tamanho do nome do grupo para telas pequenas */
-    }
-
-    .group-description {
-        font-size: 1rem; /* Ajusta o tamanho da descrição para telas pequenas */
     }
 
     /* Botões */
