@@ -10,7 +10,7 @@
         que correspondem aos seus interesses.
     <div class="flex">
         <div>
-            <a *ngIf="isAdmin" (click)="onAddNewGroup()" class="ml-left">Adicionar</a>
+            <a *ngIf="!isAdmin" (click)="onAddNewGroup()" class="ml-left">Adicionar</a>
         </div>
 
         <div class="input-group">
@@ -50,8 +50,8 @@
                                     style="margin-left: 10px;">excluir</a>
                             </div>
 
-                            <div class="menu-container">
-                                <button class="menu-btn" (click)="toggleDropdown(group)"><i class="pi pi-ellipsis-v"></i></button>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" (click)="toggleDropdown(group)"><i class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="group.isAdminMenuOpen">
                                     <a (click)="onUpdate(group.id, group.name, group.description, file); closeDropdown(group)">Editar</a>
                                     <a (click)="confirmarExclusao(group); closeDropdown(group)" >Eliminar</a>
