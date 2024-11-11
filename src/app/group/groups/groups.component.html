@@ -49,8 +49,18 @@
                                 <a *ngIf="isAdmin" (click)="confirmarExclusao(group)" class="delete-link"
                                     style="margin-left: 10px;">excluir</a>
                             </div>
+                            <!--
                             <div class="button-container">
                                 <button class="btn btn-primary" [routerLink]="['/groups', group.id]">Ver</button>
+                            </div>
+                            -->
+
+                            <div class="menu-container">
+                                <button class="menu-btn"><i class="pi pi-ellipsis-h"></i></button>
+                                <div class="dropdown">
+                                    <a (click)="onUpdate(group.id, group.name, group.description, file)">editar</a>
+                                    <a (click)="confirmarExclusao(group)">Eliminar</a>
+                                </div>
                             </div>
 
                         </div>

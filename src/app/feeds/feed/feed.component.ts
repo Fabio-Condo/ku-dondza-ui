@@ -96,8 +96,6 @@ export class FeedComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
     this.getFriendRequests();
-    //this.getFriends();
-    //this.loadMoreUsers();
     this.scrollToTop();
   }
 
@@ -180,7 +178,6 @@ export class FeedComponent implements OnInit {
           this.getNumberOfComments(post);
         });
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
-        console.log('carregando dados')
       },
       (erro) => {
         this.errorHandler.handle(erro)

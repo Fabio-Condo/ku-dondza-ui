@@ -232,3 +232,72 @@ a {
 .flex a {
     margin-right: 10px;
 }
+
+/* Contêiner do menu */
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Estilo do botão */
+.menu-btn {
+    background-color: transparent; /* Fundo transparente */
+    color: #007bff; /* Cor do texto azul */
+    padding: 10px 20px; /* Espaçamento interno */
+    font-size: 16px; /* Tamanho da fonte */
+    cursor: pointer; /* Indicador de clique */
+    border: none; /* Remover borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transições suaves para a cor de fundo e do texto */
+}
+
+/* Estilo do botão ao passar o mouse */
+.menu-btn:hover {
+    background-color: #007bff; /* Fundo azul ao passar o mouse */
+    color: white; /* Texto branco ao passar o mouse */
+}
+
+/* Estilos do dropdown */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 40px; /* Aparece logo abaixo do botão */
+    right: 0;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.dropdown a {
+    color: #333;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Mostrar o dropdown quando o botão for clicado */
+.menu-container:hover .dropdown {
+    display: block;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .menu-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .dropdown a {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}

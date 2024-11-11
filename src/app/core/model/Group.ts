@@ -7,4 +7,5 @@ export class Group {
 
     isMember: boolean = false
     totalMembers: number = 0;
+    showAdminSelect: boolean = false;
 }

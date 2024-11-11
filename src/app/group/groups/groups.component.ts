@@ -30,6 +30,8 @@ export class GroupsComponent implements OnInit {
 
   loggedUser: User = new User;
 
+  isDropdownVisible: boolean = false;
+
   @ViewChild('tabela') grid: any;
 
   filtro: GroupFilter = {
@@ -56,6 +58,11 @@ export class GroupsComponent implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  toggleDropdown() {
+    this.isDropdownVisible = !this.isDropdownVisible;
+  }
+
 
   get editing() {
     return Boolean(this.group.id)
