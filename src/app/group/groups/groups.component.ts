@@ -30,8 +30,6 @@ export class GroupsComponent implements OnInit {
 
   loggedUser: User = new User;
 
-  isDropdownVisible: boolean = false;
-
   @ViewChild('tabela') grid: any;
 
   filtro: GroupFilter = {
@@ -58,11 +56,6 @@ export class GroupsComponent implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  toggleDropdown() {
-    this.isDropdownVisible = !this.isDropdownVisible;
-  }
-
 
   get editing() {
     return Boolean(this.group.id)
@@ -155,6 +148,14 @@ export class GroupsComponent implements OnInit {
         this.excluir(group);
       }
     });
+  }
+
+  toggleDropdown(group: Group) {
+    group.isAdminMenuOpen = !group.isAdminMenuOpen
+  }
+
+  closeDropdown(group: Group) {
+    group.isAdminMenuOpen = false;
   }
 
   buscarTotal() {
