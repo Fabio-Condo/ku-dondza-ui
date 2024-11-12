@@ -162,36 +162,37 @@
 </div>
 
 <!-- Overlay -->
-<div id="overlay" class="overlay" ></div>
+<div id="dialog-overlay" class="dialog-overlay" *ngIf="showInputPost">
 
-<!-- Popout Container -->
-<div id="post-container" class="post-container" *ngIf="showInputPost">
-  <!-- Cabeçalho com título e botão de fechar -->
-  <div class="header">
-    <h3 class="post-title">Criar Post</h3>
-    <button class="close-btn" (click)="closeCreatePost()">×</button>
-  </div>
+    <!-- Popout Container -->
+    <div id="post-container" class="post-container" *ngIf="showInputPost">
+        <!-- Cabeçalho com título e botão de fechar -->
+        <div class="header">
+            <h3 class="post-title">Criar Post</h3>
+            <button class="close-btn" (click)="closeCreatePost()">×</button>
+        </div>
 
-  <!-- Caixa de postagem -->
-  <div class="content">
-    <div class="post-input">
-      <div class="avatar-container">
-        <img class="user-avatar" src="{{ loggedUser.profileImageUrl }}" alt="Avatar">
-      </div>
-      <textarea placeholder="Comece uma publicação" rows="4" id="post-text"></textarea>
+        <!-- Caixa de postagem -->
+        <div class="content">
+            <div class="post-input">
+                <div class="avatar-container">
+                    <img class="user-avatar" src="{{ loggedUser.profileImageUrl }}" alt="Avatar">
+                </div>
+                <textarea placeholder="Comece uma publicação" rows="4" id="post-text"></textarea>
+            </div>
+
+            <div class="media-upload">
+                <input type="file" id="file-upload" accept="image/*,video/*" multiple onchange="previewMedia()">
+                <label for="file-upload" class="upload-button">
+                    <i class="fas fa-camera"></i> Adicionar Foto/Vídeo
+                </label>
+            </div>
+
+            <div id="media-preview" class="media-preview"></div>
+
+            <div class="post-actions">
+                <button class="post-button">Postar</button>
+            </div>
+        </div>
     </div>
-
-    <div class="media-upload">
-      <input type="file" id="file-upload" accept="image/*,video/*" multiple onchange="previewMedia()">
-      <label for="file-upload" class="upload-button">
-        <i class="fas fa-camera"></i> Adicionar Foto/Vídeo
-      </label>
-    </div>
-
-    <div id="media-preview" class="media-preview"></div>
-
-    <div class="post-actions">
-      <button class="post-button">Postar</button>
-    </div>
-  </div>
 </div>
