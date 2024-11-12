@@ -11,10 +11,36 @@
             </div>
         </div>
 
+
+
         <!-- Conteúdo Principal -->
         <div class="main-content">
+            
             <!-- Lista de Posts -->
             <div class="posts-list">
+
+                <div class="create-post-container">
+                    <div class="create-post-header">
+                        <img src="{{ loggedUser.profileImageUrl }}" alt="User Profile" class="profile-picture">
+                        <div class="fake-input" onclick="openPostModal()">What's on your mind?</div>
+                    </div>
+                
+                    <div class="post-options">
+                        <div class="option" onclick="choosePostType('image')">
+                            <span class="icon">📷</span>
+                            <span>Photo/Video</span>
+                        </div>
+                        <div class="option" onclick="choosePostType('quiz')">
+                            <span class="icon">🧩</span>
+                            <span>Quiz</span>
+                        </div>
+                        <div class="option" onclick="choosePostType('file')">
+                            <span class="icon">📂</span>
+                            <span>File</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="post" *ngFor="let feed of feeds">
                     <div class="post-header" style="padding: 0.7rem 0 0 0.7rem;">
                         <img src="{{ feed.user.profileImageUrl }}" alt="Avatar do usuário" class="user-avatar">

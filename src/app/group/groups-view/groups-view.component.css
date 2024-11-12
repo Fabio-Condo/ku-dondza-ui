@@ -5,6 +5,21 @@
     gap: 20px; /* Adiciona espaçamento entre a lista de posts e a sidebar */
 }
 
+/* Conteúdo Principal */
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Contêiner principal da página */
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap; /* Permite que os elementos quebrem para a próxima linha em telas menores */
+}
+
 /* Página do Grupo */
 .group-page {
     display: flex;
@@ -21,7 +36,6 @@
     margin-bottom: 20px;
     position: relative; /* Necessário para o posicionamento da imagem de fundo */
     overflow: hidden;
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para o cabeçalho */
     border-bottom: 1px solid #ccc;
 }
 
@@ -78,16 +92,10 @@
     background-color: #e74c3c; /* Cor vermelha para o botão "Sair" */
 }
 
-/* Conteúdo Principal */
-.main-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
 /* Lista de Posts */
 .posts-list {
-    flex: 2; /* Define que a lista de posts ocupa 2 partes da largura */
+    flex: 2;
+    width: 100%; /* Aumenta a largura da lista de posts */
 }
 
 /* Estilo do Post */
@@ -96,7 +104,6 @@
     border: 1px solid #ccc;
     margin-bottom: 20px;
     border-radius: 5px;
-    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
 }
 
 /* Cabeçalho do Post */
@@ -159,21 +166,18 @@
     transition: all 300ms ease;
 }
 
-/* Barra Lateral (Sidebar) com membros */
-
-
-/* Barra Lateral (Sidebar) com membros */
+/* Sidebar de Membros */
 .group-sidebar {
-    flex: 1; /* Sidebar ocupa 1 parte da largura */
+    flex: 1;
     height: max-content;
+    width: 300px; /* Largura fixa para a sidebar */
     position: sticky;
+    top: 70px; /* Deixa a sidebar fixa enquanto rola a página */
     background-color: white;
     border: 1px solid #ccc;
     padding: 0.7rem;
     border-radius: 5px;
-    max-height: 40vh; /* Impede que a sidebar se estique além da altura da tela */
-    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
-
+    max-height: 40vh;
 }
 
 /* Estilo para o título "Membros do Grupo" */
@@ -231,79 +235,160 @@
     width: 100%; /* Faz a imagem preencher a largura do post */
     height: auto; /* Mantém a proporção da imagem */
     margin-top: 15px; /* Espaçamento acima da imagem */
-    padding: 0; /* Remove o padding */
-    margin-left: 0; /* Remove a margem esquerda */
-    margin-right: 0; /* Remove a margem direita */
 }
 
 .post-video {
     width: 100%; /* Faz o vídeo preencher a largura do post */
     height: auto; /* Ajusta a altura conforme a proporção do vídeo */
     margin-top: 15px; /* Espaçamento acima do vídeo */
-    padding: 0; /* Remove o padding */
-    margin-left: 0; /* Remove a margem esquerda */
-    margin-right: 0; /* Remove a margem direita */
 }
 
 hr {
     border: none;
-    /* Remove a borda padrão */
     height: 0.5px;
-    /* Define a altura da linha */
     background-color: #ccc;
-    /* Define a cor da linha */
 }
 
+/* Ícone de Curtida */
 .icon-liked {
-    color: #ee0e21; /* Azul */
+    color: #ee0e21; /* Cor vermelha */
+}
+
+/* Create Post */
+.create-post-container {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    padding: 16px;
+    flex: 1; /* Faz o container ocupar espaço dentro da coluna */
+}
+
+.create-post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.fake-input {
+    background-color: #f0f2f5;
+    border-radius: 20px;
+    padding: 12px 16px;
+    color: #65676b;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.fake-input:hover {
+    background-color: #e4e6eb;
+}
+
+.post-options {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid #dddfe2;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    color: #65676b;
+    font-weight: 500;
+    flex: 1;
+    justify-content: center;
+}
+
+.option:hover {
+    background-color: #f0f2f5;
+    border-radius: 8px;
+}
+
+.icon {
+    margin-right: 6px;
+}
+
+#feed {
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 /* Responsividade para telas pequenas */
 @media (max-width: 768px) {
     .main-content {
-        flex-direction: column; /* Faz o conteúdo principal ser exibido em coluna */
+        flex-direction: column;
     }
 
     .posts-list {
-        flex: none; /* Garante que a lista de posts ocupe toda a largura disponível */
-        width: 100%; /* Post ocupa toda a largura */
-        margin-right: 0; /* Remove margem direita para ocupar toda a largura */
-        margin-left: 0; /* Remove margem esquerda */
+        flex: none;
+        width: 100%;
     }
 
     .post {
-        width: 100%; /* Garante que o post ocupe 100% da largura da tela */
-        margin-bottom: 15px; /* Ajusta o espaçamento entre os posts */
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     .group-sidebar {
-        margin-top: 20px; /* Adiciona um pequeno espaçamento entre o conteúdo e a sidebar */
-        width: 100%; /* A sidebar também ocupa a largura total */
+        margin-top: 20px;
+        width: 100%;
     }
 
     .group-banner {
-        height: 150px; /* Reduz a altura da imagem de banner em telas pequenas */
+        height: 150px;
     }
 
     .group-name {
-        font-size: 1.5rem; /* Ajusta o tamanho do nome do grupo para telas pequenas */
+        font-size: 1.5rem;
     }
 
-    /* Botões */
     .join-button, .leave-button {
-        width: 100%; /* Faz com que os botões ocupem toda a largura disponível */
+        width: 100%;
         margin-top: 10px;
     }
 
+    .posts-list, .group-sidebar {
+        width: 100%;
+    }
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 768px) {
     .main-content {
-        flex-direction: column; /* Faz o conteúdo principal ser exibido em coluna */
+        flex-direction: column; /* Alinha os posts e a sidebar em uma coluna */
     }
 
-    .posts-list, .group-sidebar {
-        width: 100%; /* Ambos ocupam toda a largura em telas pequenas */
+    .posts-list, .create-post-container {
+        width: 100%; /* Faz com que a lista de posts e o container de criar post ocupem 100% da largura */
+    }
+
+    .group-sidebar {
+        width: 100%; /* Sidebar ocupa toda a largura em telas pequenas */
+        margin-top: 20px;
     }
 
     .group-banner {
-        height: 150px; /* Ajusta a altura do banner */
+        height: 150px;
+    }
+
+    .group-name {
+        font-size: 1.5rem;
+    }
+
+    .join-button, .leave-button {
+        width: 100%;
+        margin-top: 10px;
     }
 }
