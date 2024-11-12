@@ -40,6 +40,8 @@ export class GroupsViewComponent implements OnInit {
 
   selectedPost = new Post();
   showConfirmDialogRemovePost: boolean = false;
+  showInputPost: boolean = false;
+
 
   extension: any;
 
@@ -198,6 +200,14 @@ export class GroupsViewComponent implements OnInit {
   confirmDialogRemovePost(post: Post) {
     this.removePostFromSavedPosts(post);
     this.closeConfirmDialogRemovePost();
+  }
+
+  onCreatePost(){
+    this.showInputPost = true;
+  }
+
+  closeCreatePost(){
+    this.showInputPost = false;
   }
 
   getGroupMembers(group: Group): void {

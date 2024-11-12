@@ -1,4 +1,5 @@
 <div class="container" style="margin-top: 70px; max-width: 900px;">
+
     <div class="group-page">
         <!-- Cabeçalho do Grupo -->
         <div class="group-header">
@@ -6,16 +7,16 @@
             <div class="group-info">
                 <h1 class="group-name">{{ group.name }}</h1>
                 <p class="group-description">{{ group.description }}</p>
-                <button style="margin: 20px;" class="btn btn-primary" (click)="addMemberToGroup(group)" *ngIf="!group.isMember">Aderir ao Grupo</button>
-                <button style="margin: 20px;" class="btn" (click)="onRemoveMember(group)" *ngIf="group.isMember">Sair do Grupo</button>
+                <button style="margin: 20px;" class="btn btn-primary" (click)="addMemberToGroup(group)"
+                    *ngIf="!group.isMember">Aderir ao Grupo</button>
+                <button style="margin: 20px;" class="btn" (click)="onRemoveMember(group)" *ngIf="group.isMember">Sair do
+                    Grupo</button>
             </div>
         </div>
 
-
-
         <!-- Conteúdo Principal -->
         <div class="main-content">
-            
+
             <!-- Lista de Posts -->
             <div class="posts-list">
 
@@ -24,17 +25,17 @@
                         <img src="{{ loggedUser.profileImageUrl }}" alt="User Profile" class="profile-picture">
                         <div class="fake-input" onclick="openPostModal()">What's on your mind?</div>
                     </div>
-                
+
                     <div class="post-options">
-                        <div class="option" onclick="choosePostType('image')">
+                        <div class="option" (click)="onCreatePost()">
                             <span class="icon">📷</span>
                             <span>Photo/Video</span>
                         </div>
-                        <div class="option" onclick="choosePostType('quiz')">
+                        <div class="option" (click)="onCreatePost()">
                             <span class="icon">🧩</span>
                             <span>Quiz</span>
                         </div>
-                        <div class="option" onclick="choosePostType('file')">
+                        <div class="option" (click)="onCreatePost()">
                             <span class="icon">📂</span>
                             <span>File</span>
                         </div>
@@ -58,7 +59,8 @@
                         <button class="expand-btn" style="padding: 0 0.7rem;">Ler mais</button>
 
                         <!-- Imagem ou Vídeo -->
-                        <img *ngIf="isImageUrl(feed.urlFile)" [src]="feed.urlFile" alt="Imagem do post" class="post-image">
+                        <img *ngIf="isImageUrl(feed.urlFile)" [src]="feed.urlFile" alt="Imagem do post"
+                            class="post-image">
                         <video *ngIf="isVideoUrl(feed.urlFile)" controls class="post-video">
                             <source [src]="feed.urlFile" type="video/mp4">
                             Seu navegador não suporta a tag de vídeo.
@@ -69,41 +71,42 @@
                     <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
                         <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
                         <span style="cursor: pointer;" *ngIf="feed.numberOfLikes == 1">1
-                          gosto</span>
+                            gosto</span>
                         <span style="cursor: pointer;" *ngIf="feed.numberOfLikes > 1">{{
-                          feed.numberOfLikes }} gostos</span>
+                            feed.numberOfLikes }} gostos</span>
                     </a>
-            
+
                     <span class="text-muted" style="font-size: 0.7rem;">|</span>
-            
+
                     <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
                         <span *ngIf="feed.numberOfComments == 0">Sem comentários</span>
-                        <span style="cursor: pointer;" *ngIf="feed.numberOfComments == 1" >1
-                          comentário</span>
-                        <span style="cursor: pointer;" *ngIf="feed.numberOfComments > 1" >{{
-                          feed.numberOfComments }} comentários</span>
+                        <span style="cursor: pointer;" *ngIf="feed.numberOfComments == 1">1
+                            comentário</span>
+                        <span style="cursor: pointer;" *ngIf="feed.numberOfComments > 1">{{
+                            feed.numberOfComments }} comentários</span>
                     </a>
 
                     <hr style="margin-top: 0.7rem;">
 
                     <div class="post-interactions">
                         <div class="interaction-button">
-                          <a style="cursor: pointer;" (click)="toggleLike(feed)">
-                            <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked" style="font-size: 1.1rem;"></i>
-                            <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
-                          </a>
-                          
-                          <a style="cursor: pointer; margin-left: 0.7rem;">
-                            <i class="pi pi-comment" style="font-size: 1.1rem;"></i>
-                          </a>
-            
-                          <!--<i class="uil uil-share"></i>-->
+                            <a style="cursor: pointer;" (click)="toggleLike(feed)">
+                                <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked"
+                                    style="font-size: 1.1rem;"></i>
+                                <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
+                            </a>
+
+                            <a style="cursor: pointer; margin-left: 0.7rem;">
+                                <i class="pi pi-comment" style="font-size: 1.1rem;"></i>
+                            </a>
+
+                            <!--<i class="uil uil-share"></i>-->
                         </div>
                         <div>
                             <a *ngIf="feed.isSaved" (click)="onRemovePost(feed)" style="cursor: pointer;"><i
-                                class="pi pi-bookmark-fill"></i></a>
+                                    class="pi pi-bookmark-fill"></i></a>
                             <a *ngIf="!feed.isSaved" (click)="addPostToSavedPosts(feed)" style="cursor: pointer;"><i
-                                class="pi pi-bookmark"></i></a>
+                                    class="pi pi-bookmark"></i></a>
                         </div>
                     </div>
                 </div>
@@ -144,16 +147,51 @@
 <!-- confirm dialog -->
 <div class="confirm-dialog-overlay" *ngIf="showConfirmDialogRemovePost">
     <div class="confirm-dialog">
-      <div class="confirm-dialog-header">
-        <h4>Deseja remover o post da sua lista ?</h4>
-        <button class="confirm-close-button" (click)="closeConfirmDialogRemovePost()">x</button>
-      </div>
-      <div class="confirm-dialog-content">
-        <ng-content></ng-content>
-      </div>
-      <div class="confirm-dialog-footer">
-        <button (click)="confirmDialogRemovePost(selectedPost)">Confirmar</button>
-        <button (click)="closeConfirmDialogRemovePost()">Cancelar</button>
-      </div>
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover o post da sua lista ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmDialogRemovePost()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmDialogRemovePost(selectedPost)">Confirmar</button>
+            <button (click)="closeConfirmDialogRemovePost()">Cancelar</button>
+        </div>
     </div>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" ></div>
+
+<!-- Popout Container -->
+<div id="post-container" class="post-container" *ngIf="showInputPost">
+  <!-- Cabeçalho com título e botão de fechar -->
+  <div class="header">
+    <h3 class="post-title">Criar Post</h3>
+    <button class="close-btn" (click)="closeCreatePost()">×</button>
+  </div>
+
+  <!-- Caixa de postagem -->
+  <div class="content">
+    <div class="post-input">
+      <div class="avatar-container">
+        <img class="user-avatar" src="{{ loggedUser.profileImageUrl }}" alt="Avatar">
+      </div>
+      <textarea placeholder="O que você está pensando?" rows="4" id="post-text"></textarea>
+    </div>
+
+    <div class="media-upload">
+      <input type="file" id="file-upload" accept="image/*,video/*" multiple onchange="previewMedia()">
+      <label for="file-upload" class="upload-button">
+        <i class="fas fa-camera"></i> Adicionar Foto/Vídeo
+      </label>
+    </div>
+
+    <div id="media-preview" class="media-preview"></div>
+
+    <div class="post-actions">
+      <button class="post-button">Postar</button>
+    </div>
+  </div>
 </div>
