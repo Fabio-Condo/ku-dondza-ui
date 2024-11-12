@@ -31,8 +31,22 @@ export class FeedsService {
     return this.http.post<Post>(`${this.host}/add`, formData);  
   }
 
-  public createPostFormDate(post: Post, file: File): FormData {  
+  public createPostFormData(post: Post, file: File): FormData {  
     const formData = new FormData();
+    formData.append('text', post.text);
+    formData.append('type', post.type);
+    formData.append('file', file);
+    return formData;
+  }
+
+  public addPostFromGroup(formData: FormData): Observable<Post> {
+    return this.http.post<Post>(`${this.host}/add-from-group`, formData);  
+  }
+
+  public createPostFromGroupFormData(groupId: number, post: Post, file: File): FormData {  
+    const formData = new FormData();
+    
+    formData.append('groupId', groupId.toString());
     formData.append('text', post.text);
     formData.append('type', post.type);
     formData.append('file', file);

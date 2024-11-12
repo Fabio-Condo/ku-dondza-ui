@@ -188,7 +188,7 @@ export class FeedComponent implements OnInit {
 
   addPost(postForm: NgForm): void {
     this.showAddPostLoading = true;
-    const formData = this.feedsService.createPostFormDate(postForm.value, this.postImage);
+    const formData = this.feedsService.createPostFormData(postForm.value, this.postImage);
     this.subscriptions.push(
       this.feedsService.addPost(formData).subscribe(
         (response: Post) => {

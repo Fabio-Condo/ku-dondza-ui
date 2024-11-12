@@ -15,6 +15,8 @@ import { CommentService } from 'src/app/core/commets/commentService .service';
 import { LikeService } from 'src/app/core/likes/like.service';
 import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
 import { UserService } from 'src/app/users/user.service';
+import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-groups-view',
@@ -42,6 +44,11 @@ export class GroupsViewComponent implements OnInit {
   showConfirmDialogRemovePost: boolean = false;
   showInputPost: boolean = false;
 
+  newPost = new Post();
+  postImage: any;
+  fileName: any;
+  subscriptions: Subscription[] = [];
+  showAddPostLoading: boolean = false;
 
   extension: any;
 
@@ -125,6 +132,32 @@ export class GroupsViewComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  addPostFromGroup(postForm: NgForm): void {
+    this.showAddPostLoading = true;
+    const formData = this.feedsService.createPostFromGroupFormData(this.group.id, postForm.value, this.postImage);
+    this.subscriptions.push(
+      this.feedsService.addPostFromGroup(formData).subscribe(
+        (response: Post) => {
+          this.newPost = response;
+          this.fileName = null;
+          this.postImage = null;
+          this.messageService.add({ severity: 'success', detail: `Post added successfully` });
+          this.showAddPostLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendErrorNotification(errorResponse.error.message);
+          this.postImage = null;
+          this.showAddPostLoading = false;
+        }
+      )
+    );
+  }
+
+  onPostImageChange(fileName: any, postImage: any): void {
+    this.fileName = fileName.target.files[0].name;
+    this.postImage = postImage.target.files[0];
   }
 
   getNumberOfLikes(post: Post): void {
