@@ -4,37 +4,21 @@
   <div class="container">
     <div class="left">
 
-      <!--
-      <div class="sidebar">
-        <a class="menu-item active">
-          <span><i class="pi pi-home"></i></span>
-          <h3>Home</h3>
-        </a>
-
-        <a class="menu-item ">
-          <span><i class="pi pi-user"></i></span>
-          <h3>Explicadores</h3>
-        </a>
-
-        <a style="color: hsl(252, 30%, 17%);" class="menu-item " routerLink="/saved-feed">
-          <span><i class="pi pi-bookmark-fill"></i></span>
-          <h3>Guardados</h3>
-        </a>
-      </div>
-      -->
-
       <div class="profile-card" style="margin-top: -20px;">
+
         <div class="cover-photo">
           <img src="{{loggedUser.profileCoverImageUrl}}" alt="Cover Photo">
         </div>
+
         <div class="profile-info">
           <div class="profile-photo">
             <img src="{{loggedUser.profileImageUrl}}" alt="Profile Photo">
           </div>
-          <h2 class="user-name-hover" [routerLink]="['/user/profile', loggedUser.userId]">{{ loggedUser.firstName }} {{
-            loggedUser.lastName }}</h2>
-          <p class="text-muted" style="font-size: 0.7rem;">{{ loggedUser.bio }}</p>
+          <h2 class="user-name-hover" [routerLink]="['/user/profile', loggedUser.userId]">
+            {{ loggedUser.firstName }} {{loggedUser.lastName }}
+          </h2>
 
+          <p class="text-muted" style="font-size: 0.7rem;">{{ loggedUser.bio }}</p>
 
           <hr style="margin-top: 1rem; margin-bottom: 1rem;">
 
@@ -49,29 +33,35 @@
             </div>
           </div>
         </div>
+
       </div>
 
     </div>
 
     <div class="middle">
 
-      <form class="create-post" style="border: 1px solid #ccc" #newPostForm="ngForm"
-        (ngSubmit)="addPost(newPostForm)">
-        <div class="profile-pic" [routerLink]="['/user/profile', loggedUser.userId]">
-          <img src="{{loggedUser.profileImageUrl}}" alt="photo">
+      <div class="create-post-container">
+        <div class="create-post-header" (click)="onAddNewPost()">
+          <img src="{{ loggedUser.profileImageUrl }}" alt="User Profile" class="profile-picture">
+          <div class="fake-input" onclick="openPostModal()">Comece uma publicação</div>
         </div>
-        <input (click)="onAddNewPost()" style="margin-left: 10px; cursor: pointer;" type="text"
-          placeholder="Start the post" id="create-post" name="text" [(ngModel)]="post.text">
-        <!--
-        <div class="">
-          <input type="file" id="upload-button" multiple accept="/*" name="postImage"
-            (change)="onPostImageChange($event, $event)" />
-          <label for="upload-button">
-            <i></i>file
-          </label>
+
+        <div class="post-options">
+          <div class="option" (click)="onAddNewPost()">
+            <span class="icon">🖼️</span>
+            <span>Photo/Video</span>
+          </div>
+          <div class="option" (click)="onAddNewPost()">
+            <span class="icon">🧩</span>
+            <span>Quiz</span>
+          </div>
+          <div class="option" (click)="onAddNewPost()">
+            <span class="icon">📂</span>
+            <span>File</span>
+          </div>
         </div>
-        -->
-      </form>
+
+      </div>
 
       <div *ngIf="showAddPostLoading" class="upload-loading-container">
         <i class="pi pi-spin pi-spinner-dotted"></i>
@@ -97,11 +87,12 @@
               </a>
               <small class="text-muted">{{timeElapsed(feed.date.toString())}}</small>
             </div>
-            <span class="edit" (click)="closePost(feed)" aria-label="Fechar post" style="cursor: pointer; margin-left: auto;">
+            <span class="edit" (click)="closePost(feed)" aria-label="Fechar post"
+              style="cursor: pointer; margin-left: auto;">
               <i class="pi pi-times" style="font-size: 0.8rem"></i>
             </span>
           </div>
-          
+
           <!--Post feito apartir de um grupo-->
           <div class="group-user-info" *ngIf="feed.group" style="display: flex; align-items: center; margin: 0.7rem;">
             <div class="group-pic-wrapper">
@@ -115,16 +106,17 @@
                 <a class="join-group">Aderir</a>
               </div>
               <div class="post-author-info">
-                <a [routerLink]="['/user/profile', feed.user.userId]" class="user-name">{{feed.user.firstName}} {{feed.user.lastName}}</a>
+                <a [routerLink]="['/user/profile', feed.user.userId]" class="user-name">{{feed.user.firstName}}
+                  {{feed.user.lastName}}</a>
                 <span class="bullet">•</span>
                 <span class="post-time">{{timeElapsed(feed.date.toString())}}</span>
               </div>
             </div>
-            <span class="edit" (click)="closePost(feed)" aria-label="Fechar post" style="cursor: pointer; margin-left: auto;">
+            <span class="edit" (click)="closePost(feed)" aria-label="Fechar post"
+              style="cursor: pointer; margin-left: auto;">
               <i class="pi pi-times" style="font-size: 0.8rem"></i>
             </span>
           </div>
-
 
           <hr style="margin-top: 5px;">
 
@@ -164,12 +156,11 @@
                 <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked" style="font-size: 1.1rem;"></i>
                 <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
               </a>
-              
+
               <a style="cursor: pointer; margin-left: 0.7rem;" (click)="toggleShowInputComment(feed)">
                 <i class="pi pi-comment" style="font-size: 1.1rem;"></i>
               </a>
 
-              <!--<i class="uil uil-share"></i>-->
             </div>
             <div>
               <a *ngIf="feed.isSaved" (click)="onRemovePost(feed)" style="cursor: pointer;"><i
@@ -210,23 +201,18 @@
                       <img src="{{comment.user.profileImageUrl}}" alt="photo">
                       <span class="user-name user-name-hover">{{comment.user.firstName}}
                         {{comment.user.lastName}}</span>
-                        <!--
-                        <span *ngIf="verificarAutor(feed.user.id, comment.user.id)" class="autor-span">
-                        {{ verificarAutor(feed.user.id, comment.user.id) }}
-                        </span>
-                      -->
                     </div>
 
                     <p>
                       {{comment.content}}
                     </p>
                     <a (click)="toggleLikeComment(comment)"
-                      [ngStyle]="{'color': comment.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}" style="margin-left: 30px;">
+                      [ngStyle]="{'color': comment.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
+                      style="margin-left: 30px;">
                       Gostei
                     </a>
 
-                    <a *ngIf="comment.numberOfLikes > 0"
-                      >{{comment.numberOfLikes}}
+                    <a *ngIf="comment.numberOfLikes > 0">{{comment.numberOfLikes}}
                       gostos</a>
 
                     <a (click)="toggleReplyForm(comment)">Responder</a>
@@ -259,11 +245,6 @@
                             <img src="{{reply.user.profileImageUrl}}" alt="photo">
                             <span class="user-name user-name-hover">{{reply.user.firstName}}
                               {{reply.user.lastName}}</span>
-                            <!-- 
-                            <span *ngIf="verificarAutor(feed.user.id, reply.user.id)" class="autor-span">
-                              {{ verificarAutor(feed.user.id, reply.user.id) }}
-                            </span>
-                            -->
                           </div>
 
                           <p>
@@ -271,7 +252,8 @@
                           </p>
 
                           <a (click)="toggleLikeComment(reply)"
-                            [ngStyle]="{'color': reply.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}" style="margin-left: 30px;">
+                            [ngStyle]="{'color': reply.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
+                            style="margin-left: 30px;">
                             Gostei
                           </a>
 
@@ -310,11 +292,6 @@
                                   <img src="{{reply2.user.profileImageUrl}}" alt="photo">
                                   <span class="user-name user-name-hover">{{reply2.user.firstName}}
                                     {{reply2.user.lastName}}</span>
-                                  <!--
-                                  <span *ngIf="verificarAutor(feed.user.id, reply2.user.id)" class="autor-span">
-                                    {{ verificarAutor(feed.user.id, reply2.user.id) }}
-                                  </span>
-                                  -->
                                 </div>
 
                                 <p>
@@ -322,12 +299,14 @@
                                 </p>
 
                                 <a (click)="toggleLikeComment(reply2)"
-                                  [ngStyle]="{'color': reply2.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}" style="margin-left: 30px;">
+                                  [ngStyle]="{'color': reply2.isLiked ? '#3734ed' : 'hsl(252, 30%, 17%)'}"
+                                  style="margin-left: 30px;">
                                   Gostei
                                 </a>
 
                                 <a *ngIf="reply2.numberOfLikes > 0"
-                                  style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{reply2.numberOfLikes}} gostos</a>
+                                  style="text-decoration: none; margin-right: 10px; cursor: pointer; font-size: 0.7rem;">{{reply2.numberOfLikes}}
+                                  gostos</a>
                               </div>
                             </div>
 
@@ -372,10 +351,14 @@
         <div class="request" *ngFor="let friendReq of friendRequests">
           <div class="info">
             <div class="profile-pic" [routerLink]="['/friendReq/profile', friendReq.userId]">
-              <a href="javascript:;"><img src="{{friendReq.profileImageUrl}}" [routerLink]="['/user/profile', friendReq.userId]"></a>
+              <a href="javascript:;"><img src="{{friendReq.profileImageUrl}}"
+                  [routerLink]="['/user/profile', friendReq.userId]"></a>
             </div>
             <div>
-              <a><h5 [routerLink]="['/user/profile', friendReq.userId]">{{friendReq.firstName}} {{friendReq.lastName}}</h5></a>
+              <a>
+                <h5 [routerLink]="['/user/profile', friendReq.userId]">{{friendReq.firstName}} {{friendReq.lastName}}
+                </h5>
+              </a>
               <p class="text-muted">8 mutual friends</p>
             </div>
           </div>
@@ -436,55 +419,41 @@
   </div>
 </div>
 
+<!-- Overlay -->
+<div id="dialog-overlay" class="dialog-overlay" *ngIf="showNewPostDialog">
 
-<!-- like-dialog.component.html -->
-<div class="dialog-overlay" *ngIf="showPostLikesDialog">
-  <div class="dialog">
-    <div class="dialog-header">
-      <h4>Pessoas que reagiram</h4>
-      <button class="close-button" (click)="onClosePostLikes()">x</button>
+  <!-- Popout Container -->
+  <div id="post-container" class="post-container" *ngIf="showNewPostDialog">
+    <!-- Cabeçalho com título e botão de fechar -->
+    <div class="header">
+      <h3 class="post-title">Criar Post</h3>
+      <button class="close-btn" (click)="onCloseNewPost()">×</button>
     </div>
-    <div class="dialog-content">
-      <ul>
-        <li *ngFor="let like of likes">
-          <div class="user-info">
-            <img src="{{like.user.profileImageUrl}}" alt="photo">
-            <span class="user-name">{{like.user.firstName}} {{like.user.lastName}}</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <a style="cursor: pointer;" (click)="findLikesByPostId(selectedPost)">ver todos mais</a>
-  </div>
-</div>
 
-<!-- New Post Dialog -->
-<div class="overlay" *ngIf="showNewPostDialog">
-  <div class="post-dialog">
-    <button class="close-button-create-post" (click)="onCloseNewPost()">
-      <span>&times;</span>
-    </button>
-    <div class="post-form">
-      <h2>Criar Post</h2>
+    <!-- Caixa de postagem -->
+    <div class="content">
       <form action="#" #newPostForm="ngForm" (ngSubmit)="addPost(newPostForm)">
-
-        <div class="user-info">
-          <img src="{{loggedUser.profileImageUrl}}" alt="photo">
-          <span class="user-name">{{loggedUser.firstName}} {{loggedUser.lastName}}</span>
+        <div class="post-input">
+          <div class="avatar-container">
+            <img class="user-avatar" src="{{ loggedUser.profileImageUrl }}" alt="Avatar">
+          </div>
+          <textarea placeholder="Comece uma publicação" rows="4" id="post-text" name="text"
+            [(ngModel)]="post.text"></textarea>
         </div>
 
-        <textarea style="margin-top: 10px;" type="text" id="create-post" name="text" [(ngModel)]="post.text"
-          placeholder="Digite seu texto aqui..." required></textarea>
-
-        <input type="file" id="upload-button" multiple accept="/*" name="postImage"
-          (change)="onPostImageChange($event, $event)" />
-
-        <br>
-        <div *ngIf="showAddPostLoading" class="upload-loading-container">
-          <i class="pi pi-spin pi-spinner-dotted"></i>
-          <p class="upload-loading-text">Adicionando seu post...</p>
+        <div class="media-upload">
+          <input type="file" id="file-upload" accept="image/*,video/*" multiple
+            (change)="onPostImageChange($event, $event)" onchange="previewMedia()">
+          <label for="file-upload" class="upload-button">
+            <i class="fas fa-camera"></i> Adicionar Foto/Vídeo
+          </label>
         </div>
-        <button type="submit" class="btn btn-primary">Publicar</button>
+
+        <div id="media-preview" class="media-preview"></div>
+
+        <div class="post-actions">
+          <button type="submit" class="post-button">Postar</button>
+        </div>
       </form>
     </div>
   </div>

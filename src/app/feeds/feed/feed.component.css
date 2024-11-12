@@ -3,42 +3,20 @@ main {
   top: 5.4rem;
 }
 
-label {
-  display: block;
-  position: relative;
-  background-color: var(--color-light);
-  color: var(--color-black);
-  font-size: 0.9em;
-  text-align: center;
-  width: 3em;
-  padding: 1em 1;
-  border-radius: 0.1em;
-  margin: 0 auto 0em auto;
-  cursor: pointer;
-  margin-right: 1em;
-}
-
 .autor-span {
   font-size: 0.5rem;
   background-color: hsl(260, 3%, 40%);
   color: white;
   padding: 0.5px 8px;
-  /* Espaçamento interno de 4px na vertical e 8px na horizontal */
   border-radius: 2rem;
-  /* Borda arredondada */
   margin-left: 2px;
-  /* Margem à esquerda de 2px */
 }
 
 /* post.component.css */
 
 .comments .comment-box {
   background-color: #fff;
-  /* light gray f0f0f0 */
-  /*border: 1px solid #dcdcdc;*/
-  /* slightly darker gray border */
   border-radius: 5px;
-  /*padding: 3px;*/
   margin-bottom: 5px;
   margin: 0.7rem;
 }
@@ -50,8 +28,6 @@ label {
 }
 
 .comment-content p {
-  /*background-color: #e4e5e8;*/
-  /*border: 1px solid rgb(198, 197, 197); */
   padding: 0px 0px 0px 30px;
   border-radius: 10px;
   margin: 5px 0;
@@ -74,27 +50,7 @@ label {
 
 .comment-box.reply {
   background-color: #e0e0e0;
-  /* even lighter gray for replies */
 }
-
-/*Depois habilitar*/
-/*
-div {
-  margin-bottom: 20px;
-}
-
-textarea {
-  width: 100%;
-  height: 50px;
-  margin-bottom: 10px;
-}
-
-button {
-  display: block;
-  margin-top: 10px;
-}
-*/
-
 
 h4 {
   margin-top: 10px;
@@ -107,13 +63,9 @@ form {
 
 hr {
   border: none;
-  /* Remove a borda padrão */
   height: 0.5px;
-  /* Define a altura da linha */
   background-color: #ccc;
-  /* Define a cor da linha */
 }
-
 
 .user-info {
   display: flex;
@@ -141,36 +93,13 @@ hr {
   margin: 10px 0;
   display: flex;
   align-items: center;
-  /* alinha itens verticalmente */
   justify-content: center;
-  /* alinha itens horizontalmente */
   border: 1px solid #ccc;
 }
 
 .upload-loading-text {
   font-weight: bold;
   margin-left: 10px;
-  /* ajuste a margem conforme necessário */
-}
-
-/*.feeds .feed a:hover {
-  color: #3734ed;
-  text-decoration: underline;
-}*/
-
-
-/* like-dialog begin */
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
 }
 
 .dialog {
@@ -179,7 +108,6 @@ hr {
   border-radius: 8px;
   width: 300px;
   max-height: 80%;
-  /* Ajuste a altura conforme necessário */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -218,12 +146,6 @@ hr {
   border-bottom: none;
 }
 
-/* like-dialog end */
-
-
-/*Add post dialog*/
-
-
 /* Overlay */
 .overlay {
   position: fixed;
@@ -232,56 +154,9 @@ hr {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  /* cor do overlay com transparência */
   z-index: 1000;
-  /* z-index alto para estar acima de outros conteúdos */
 }
 
-/* Post Dialog */
-.post-dialog {
-  /* estilos anteriores mantidos */
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  width: 90%;
-  max-width: 450px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1001;
-}
-
-.post-dialog h2 {
-  margin-top: 0;
-}
-
-.post-dialog form {
-  margin-top: 10px;
-}
-
-.post-form input[type="file"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.post-dialog textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-  min-height: 150px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
 
 .close-button {
   background-color: transparent;
@@ -293,51 +168,17 @@ hr {
   font-size: 24px;
 }
 
-.post-dialog button:hover {
-  background-color: #eee9e9;
-}
-
-.close-button-create-post {
-  top: 20px;
-  right: 20px;
-  padding: 3px 8px;
-  position: absolute;
-  border-radius: 50%;
-  background-color: transparent;
-  border: none;
-  color: var(--color-black);
-  font-size: 24px;
-  /* Tamanho maior para o ícone */
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: var(--color-black);
-}
-
-.close-button span {
-  font-size: 24px;
-  /* Tamanho do ícone */
-}
-
-
 /*Card de perfil do user logado*/
 .profile-card {
   width: 100%;
-  /* Largura do card */
   border: 1px solid #dcdcdc;
-  /* Borda do card */
   border-radius: var(--card-border-radius);
-  /* Bordas arredondadas */
   overflow: hidden;
-  /* Evita que os elementos saiam do card */
-  /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra do card */
   background-color: #fff;
-  /* Cor de fundo do card */
   display: block;
-  /* Exibe o card por padrão */
   margin-bottom: 10rem;
 }
+
 
 /* Esconde o card em dispositivos com largura de tela menor que 768px */
 @media (max-width: 768px) {
@@ -348,82 +189,57 @@ hr {
 
 .cover-photo img {
   width: 100%;
-  /* Largura da foto de capa */
   height: 100px;
-  /* Altura da foto de capa */
   object-fit: cover;
-  /* Ajusta a imagem para cobrir a área sem distorcer */
 }
 
 .profile-info {
   padding: 10px;
-  /* Espaçamento interno do card */
   text-align: center;
-  /* Centraliza o texto e a foto de perfil */
   position: relative;
-  /* Necessário para a centralização da foto de perfil */
 }
 
 .profile-photo {
   position: absolute;
-  /* Permite posicionar a foto de perfil em relação ao seu contêiner */
   top: -40px;
-  /* Move a foto de perfil para cima, sobrepondo a área do cabeçalho */
   left: 50%;
-  /* Move a foto de perfil para o centro horizontalmente */
   transform: translateX(-50%);
-  /* Ajusta a foto de perfil para ficar centralizada */
 }
 
 .profile-photo img {
   width: 80px;
-  /* Largura da foto de perfil */
   height: 80px;
-  /* Altura da foto de perfil */
   border-radius: 50%;
-  /* Bordas arredondadas para a foto de perfil */
   border: 3px solid #fff;
-  /* Borda branca ao redor da foto de perfil */
   object-fit: cover;
-  /* Ajusta a imagem para cobrir a área sem distorcer */
 }
 
 h2 {
   margin: 60px 0 5px;
-  /* Margens do título, ajustadas para a nova posição da foto de perfil */
   font-size: 18px;
-  /* Tamanho da fonte do título */
 }
 
 p {
   color: #666;
-  /* Cor do texto da descrição */
   font-size: 14px;
-  /* Tamanho da fonte da descrição */
 }
 
 .info-section {
   margin-top: 10px;
-  /* Margem superior para separar do texto anterior */
 }
 
 .friends-info,
 .saved-items-info {
   display: flex;
-  /* Usa flexbox para layout dos itens */
   justify-content: space-between;
-  /* Espaça os itens ao longo da linha */
   margin-bottom: 5px;
-  /* Margem inferior para separar as seções */
   font-size: 14px;
-  /* Tamanho da fonte */
   color: var(--color-black);
-  /* Cor do texto */
   cursor: pointer;
 }
 
 .icon-liked {
-  color: #ee0e21; /* Azul */
+  color: #ee0e21;
 }
 
 /*Group post*/
@@ -435,7 +251,7 @@ p {
 
 .group-pic-wrapper {
   position: relative;
-  width: 35px; /* Largura da foto do grupo */
+  width: 35px;
   height: 35px;
   margin-right: 10px;
 }
@@ -443,18 +259,18 @@ p {
 .group-pic {
   width: 100%;
   height: 100%;
-  border-radius: 8px; /* Quadrada com bordas levemente arredondadas */
+  border-radius: 8px;
   object-fit: cover;
 }
 
 .user-pic {
-  width: 25px; /* Tamanho menor para a foto do usuário */
+  width: 25px;
   height: 25px;
-  border-radius: 50%; /* Foto redonda */
+  border-radius: 50%;
   position: absolute;
   bottom: -5px;
   right: -5px;
-  border: 2px solid #fff; /* Pequena borda branca para destacar a sobreposição */
+  border: 2px solid #fff;
 }
 
 .group-details {
@@ -492,20 +308,18 @@ p {
 }
 
 .edit {
-  margin-left: auto; /* Empurra o botão para o lado direito */
+  margin-left: auto;
   display: flex;
   align-items: center;
 }
 
 .join-group {
-  color: blue; /* Cor azul para o link */
-  font-size: 0.8rem; /* Tamanho de fonte ajustado */
+  color: blue;
+  font-size: 0.8rem;
   font-weight: bold;
-  text-decoration: none; /* Remove o sublinhado */
+  text-decoration: none;
 }
 
 .join-group:hover {
-  text-decoration: underline; /* Sublinha ao passar o mouse */
+  text-decoration: underline;
 }
-
-

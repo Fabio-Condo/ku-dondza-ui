@@ -21,8 +21,9 @@
     --color-primary: #3734ed;
     --color-success: hsl(120, 95%, 60%);
     --color-danger: hsl(0, 95%, 65%);
-    /*--color-black: hsl(252, 30%, 10%);*/ 
-    --color-black: #37334e;  /*#37334e;*/ 
+    /*--color-black: hsl(252, 30%, 10%);*/
+    --color-black: #37334e;
+    /*#37334e;*/
     --sticky-top-left: 5.4rem;
     --sticky-top-right: -18rem;
 }
@@ -254,34 +255,6 @@ main .container .left {
     border: 3px solid var(--color-primary);
 }
 
-
-.middle .create-post {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0rem;
-    /*margin-top: 1rem;*/
-    background: var(--color-white);
-    /*padding: 0.4rem var(--card-padding-feed);*/
-    padding: 0.4rem 0.7rem;
-    /*border-radius: var(--border-radius);*/
-    border-radius: var(--border-radius);
-    /*border: 1px solid #dcdcdc;*/
-}
-
-.middle .create-post input[type="text"] {
-    justify-self: flex-start;
-    width: 100%;
-    padding: 0.5rem;
-    background: transparent;
-    color: var(--color-dark);
-    background-color: var(--color-light);
-    border-radius: 4rem;
-    border: 1px solid #ccc;
-}
-
-
 .middle .feeds .feed {
     background: var(--color-white);
     border-radius: var(--card-border-radius);
@@ -314,8 +287,6 @@ main .container .left {
     overflow: hidden;
     margin: 0.7rem 0;
     width: 100%;
-    /*height: auto;
-        /*width: 640px; */
     height: 360px;
 }
 
@@ -478,25 +449,20 @@ main .container .left {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* Distribui os itens de forma mais uniforme */
 }
 
 .select-itens-por-pagina {
     font-size: 12px;
-    /* Aumenta um pouco o tamanho da fonte */
     padding: 6px 12px;
-    /* Aumenta o padding para uma melhor usabilidade */
     border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
     margin-left: 15px;
     transition: border-color 0.3s;
-    /* Efeito de transição suave */
 }
 
 .select-itens-por-pagina:hover {
     border-color: var(--color-primary);
-    /* Muda a borda ao passar o mouse */
 }
 
 .pagination-button {
@@ -527,9 +493,7 @@ main .container .left {
 .pagination-info {
     margin: 0 10px;
     font-size: 12px;
-    /* Aumenta o tamanho da fonte */
     color: #37334e;
-    /* Define uma cor mais escura para melhor contraste */
 }
 
 /* confirm dialog */
@@ -602,7 +566,7 @@ main .container .left {
 /* confirm dialog END*/
 
 
-/* Contêiner do menu - admin button options*/ 
+/* Contêiner do menu - admin button options*/
 .dropdown-container {
     position: relative;
     display: inline-block;
@@ -630,7 +594,8 @@ main .container .left {
 /* Estilos do dropdown */
 .dropdown {
     position: absolute;
-    top: 40px; /* Aparece logo abaixo do botão */
+    top: 40px;
+    /* Aparece logo abaixo do botão */
     right: 0;
     background-color: #ffffff;
     min-width: 160px;
@@ -656,6 +621,262 @@ main .container .left {
 
 /* End */
 
+/* Create Post */
+.create-post-container {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    padding: 16px;
+    flex: 1;
+    /* Faz o container ocupar espaço dentro da coluna */
+}
+
+.create-post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.fake-input {
+    background-color: #f0f2f5;
+    border-radius: 20px;
+    padding: 12px 16px;
+    color: #65676b;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.fake-input:hover {
+    background-color: #e4e6eb;
+}
+
+.post-options {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid #dddfe2;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    color: #65676b;
+    font-weight: 500;
+    flex: 1;
+    justify-content: center;
+}
+
+.option:hover {
+    background-color: #f0f2f5;
+    border-radius: 8px;
+}
+
+.icon {
+    margin-right: 6px;
+}
+
+#feed {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Overlay */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Container do popout */
+.post-container {
+    width: 550px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1000;
+    /* Fica acima do overlay */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-title {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ff4d4d;
+}
+
+/* Caixa de postagem */
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-input {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-avatar {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    outline: none;
+    resize: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+}
+
+textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px rgba(24, 119, 242, 0.3);
+}
+
+/* Upload de mídia */
+.media-upload {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.upload-button {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    display: inline-block;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-button:hover {
+    opacity: 0.8;
+    transition: all 300ms ease;
+}
+
+.upload-button i {
+    margin-right: 10px;
+}
+
+#file-upload {
+    display: none;
+}
+
+.media-preview {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.media-preview img,
+.media-preview video {
+    max-width: 110px;
+    max-height: 110px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.media-preview img:hover,
+.media-preview video:hover {
+    transform: scale(1.1);
+}
+
+/* Ações de post */
+.post-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.post-button {
+    padding: 12px 24px;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-button:hover {
+    opacity: 0.8;
+    transition: all 300ms ease;
+}
+
+/* Create Post End*/
+
 /* Efeitos responsivos */
 @media (max-width: 600px) {
 
@@ -663,9 +884,7 @@ main .container .left {
     .select-itens-por-pagina,
     .pagination-info {
         font-size: 10px;
-        /* Ajusta o tamanho da fonte em telas pequenas */
         padding: 4px 8px;
-        /* Ajusta o padding */
     }
 }
 
@@ -735,5 +954,3 @@ main .container .left {
         display: none;
     }
 }
-
-/*html { background-color: #F4F6F6; }*/
