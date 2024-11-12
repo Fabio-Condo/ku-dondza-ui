@@ -138,6 +138,14 @@ export class CoursesComponent implements OnInit {
     );
   }
 
+  toggleDropdown(course: Course) {
+    course.isAdminMenuOpen = !course.isAdminMenuOpen
+  }
+
+  closeDropdown(course: Course) {
+    course.isAdminMenuOpen = false;
+  }
+
   // Métodos de carregamento
   findAll(pagina: number = 0): void {
     this.showLoading = true;

@@ -39,6 +39,13 @@
                                 <a (click)="onAddQuestions(quiz)" class="delete-link">add questao</a>
                                 <a (click)="onShowSelectedQuiz(quiz)" class="delete-link">ver questoes</a>
                             </div>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-v"></i></button>
+                                <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
+                                    <a (click)="onUpdateQuiz(quiz); closeDropdown(quiz)">Editar</a>
+                                    <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)" >Eliminar</a>
+                                </div>
+                            </div>
                             <div class="button-container">
                                 <button class="btn btn-primary" [routerLink]="['/quizzes', quiz.id, 'questions']">Iniciar</button>
                             </div>

@@ -32,8 +32,13 @@
                             <div class="content">
                                 <p class="course-name">{{ question.text }}</p>
                                 <p class="details">Disciplina: <span class="text-muted">{{ question.subject.name }}</span></p>
-                                <a *ngIf="isAdmin" (click)="onUpdateQuestion(question)" class="edit-link">editar</a>
-                                <a *ngIf="isAdmin" (click)="confirmarExclusao(question)" class="delete-link">excluir</a>
+                            </div>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" (click)="toggleDropdown(question)"><i class="pi pi-ellipsis-v"></i></button>
+                                <div class="dropdown" *ngIf="question.isAdminMenuOpen">
+                                    <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
+                                    <a (click)="confirmarExclusao(question); closeDropdown(question)" >Eliminar</a>
+                                </div>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary">Ver</button>

@@ -140,6 +140,14 @@ export class InstitutionsComponent implements OnInit {
     );
   }
 
+  toggleDropdown(institution: Institution) {
+    institution.isAdminMenuOpen = !institution.isAdminMenuOpen
+  }
+
+  closeDropdown(institution: Institution) {
+    institution.isAdminMenuOpen = false;
+  }
+
   onFilter(): void {
     this.displayModalFilter = true;
   }

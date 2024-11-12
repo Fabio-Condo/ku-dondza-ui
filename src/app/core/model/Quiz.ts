@@ -6,4 +6,6 @@ export class Quiz {
     questions: Question[] = [];
 
     totalQuestions: number = 0;
+    isAdminMenuOpen: boolean = false;
+
 }

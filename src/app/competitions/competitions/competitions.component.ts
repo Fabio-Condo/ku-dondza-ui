@@ -178,6 +178,15 @@ export class CompetitionsComponent implements OnInit {
     );
   }
 
+  toggleDropdown(competition: Competition) {
+    competition.isAdminMenuOpen = !competition.isAdminMenuOpen
+  }
+
+  closeDropdown(competition: Competition) {
+    competition.isAdminMenuOpen = false;
+  }
+
+
   findAll(pagina: number = 0): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0

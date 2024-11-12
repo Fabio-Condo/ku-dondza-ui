@@ -44,10 +44,6 @@
                                 <p class="details" *ngIf="group.isMember && group.totalMembers == 2">Tu e mais uma pessoa são membros deste grupo</p>
                                 <p class="details" *ngIf="!group.isMember && group.totalMembers == 2">Duas pessoas são membros deste grupo</p>
                                 <p class="details" *ngIf="group.isMember && group.totalMembers > 2">Tu e mais {{ group.totalMembers - 1}} pessoas são membros deste grupo</p>
-                                <a *ngIf="isAdmin" (click)="onUpdate(group.id, group.name, group.description, file)"
-                                    class="edit-link">editar</a>
-                                <a *ngIf="isAdmin" (click)="confirmarExclusao(group)" class="delete-link"
-                                    style="margin-left: 10px;">excluir</a>
                             </div>
 
                             <div class="dropdown-container">

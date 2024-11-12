@@ -11,4 +11,6 @@ export class OnlineCourse {
 
     isSubscribed: boolean = false;
     totalStudents: number = 0;
+    isAdminMenuOpen: boolean = false;
+
 }

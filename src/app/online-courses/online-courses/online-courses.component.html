@@ -49,8 +49,13 @@
                                 <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2">Tu e mais uma(1) pessoa são estudantes deste curso</p>
                                 <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2">Duas pessoas são estudantes deste curso</p>
                                 <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2">Tu e mais {{ course.totalStudents - 1}} pessoas são estudantes deste curso</p>
-                                <a *ngIf="isAdmin" (click)="onUpdateOnlineCourse(course, file)" class="edit-link">editar</a>
-                                <a *ngIf="isAdmin" (click)="confirmarExclusao(course)" class="delete-link">excluir</a>
+                            </div>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+                                <div class="dropdown" *ngIf="course.isAdminMenuOpen">
+                                    <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
+                                    <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
+                                </div>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary" [routerLink]="['/coursos-online', course.id]">Ver</button>

@@ -149,6 +149,14 @@ export class QuizzesComponent implements OnInit {
     );
   }
 
+  toggleDropdown(quiz: Quiz) {
+    quiz.isAdminMenuOpen = !quiz.isAdminMenuOpen
+  }
+
+  closeDropdown(quiz: Quiz) {
+    quiz.isAdminMenuOpen = false;
+  }
+
   getQuestions() {
     return this.questionService.getAll().subscribe(
       dados => {

@@ -11,6 +11,9 @@ export class Exam {
     totalDownloadNumber!: string;
     institution = new Institution();
     subject = new Subject();
+
     showLoadingDownload: boolean = false;
+    isAdminMenuOpen: boolean = false;
+
 
 }

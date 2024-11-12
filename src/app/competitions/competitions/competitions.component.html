@@ -37,10 +37,15 @@
                                 <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 2">Tu e mais uma pessoa são participantes desta competição</p>
                                 <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 2">Duas pessoas são participantes desta competição</p>
                                 <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants > 2">Tu e mais {{ competition.totalParticipants - 1}} pessoas são participantes desta competição</p>
-                                <a *ngIf="isAdmin" (click)="onUpdateCompetition(competition)" class="edit-link">editar</a>
-                                <a *ngIf="isAdmin" (click)="confirmarExclusao(competition)" class="delete-link">excluir</a>
-                                <a (click)="onAddQuestions(competition)" class="delete-link">add questao</a>
-                                <a (click)="onShowSelectedCompetition(competition)" class="delete-link">previsualizar</a>
+                            </div>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" (click)="toggleDropdown(competition)"><i class="pi pi-ellipsis-v"></i></button>
+                                <div class="dropdown" *ngIf="competition.isAdminMenuOpen">
+                                    <a (click)="onUpdateCompetition(competition); closeDropdown(competition)">Editar</a>
+                                    <a (click)="confirmarExclusao(competition); closeDropdown(competition)" >Eliminar</a>
+                                    <a (click)="onAddQuestions(competition); closeDropdown(competition)" >Adicionar questão</a>
+                                    <a (click)="onShowSelectedCompetition(competition); closeDropdown(competition)" >Ver tudo</a>
+                                </div>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && competition.isParticipant" [routerLink]="['/competitions', competition.id, 'questions']">Iniciar</button>

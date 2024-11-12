@@ -209,6 +209,14 @@ export class ExamesComponent implements OnInit {
     );
   }
 
+  toggleDropdown(exam: Exam) {
+    exam.isAdminMenuOpen = !exam.isAdminMenuOpen
+  }
+
+  closeDropdown(exam: Exam) {
+    exam.isAdminMenuOpen = false;
+  }
+
   onAddNewExame(): void {
     this.exam = new Exam();
     this.displayModalSave = true;

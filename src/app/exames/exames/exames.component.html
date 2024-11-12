@@ -38,8 +38,14 @@
                 <p class="details">Estado: <span class="text-muted">{{ getStatusValue(exam.status) }}</span></p>
                 <p class="details">instituição: <span class="text-muted">{{ exam.institution.name }}</span></p>
                 <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
-                <a *ngIf="isAdmin" (click)="onUpdate(exam.id, exam.description, exam.status, exam.date, exam.subject.id, exam.institution.id, file)" class="edit-link">editar</a>
-                <a *ngIf="isAdmin" (click)="confirmarExclusao(exam)" class="delete-link">excluir</a>
+              </div>
+
+              <div class="dropdown-container">
+                <button class="dropdown-btn" (click)="toggleDropdown(exam)"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+                    <a (click)="onUpdate(exam.id, exam.description, exam.status, exam.date, exam.subject.id, exam.institution.id, file); closeDropdown(exam)">Editar</a>
+                    <a (click)="confirmarExclusao(exam); closeDropdown(exam)" >Eliminar</a>
+                </div>
               </div>
 
               <button [disabled]="exam.showLoadingDownload" (click)="download(exam, exam.fileName)" class="btn btn-primary">

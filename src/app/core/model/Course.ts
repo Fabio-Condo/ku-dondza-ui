@@ -6,4 +6,6 @@ export class Course {
     duration!: string;
     requirements!: string;
     institution = new Institution();
+
+    isAdminMenuOpen: boolean = false;
 }

@@ -189,6 +189,14 @@ export class UsersComponent implements OnInit, OnDestroy {
     );
   }
 
+  toggleDropdown(user: User) {
+    user.isAdminMenuOpen = !user.isAdminMenuOpen
+  }
+
+  closeDropdown(user: User) {
+    user.isAdminMenuOpen = false;
+  }
+
   onResetPassword(emailForm: NgForm): void {
     this.showLoading = true;
     const emailAddress = emailForm.value['reset-password-email'];

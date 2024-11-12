@@ -146,6 +146,14 @@ export class OnlineCoursesComponent implements OnInit {
     );
   }
 
+  toggleDropdown(course: OnlineCourse) {
+    course.isAdminMenuOpen = !course.isAdminMenuOpen
+  }
+
+  closeDropdown(course: OnlineCourse) {
+    course.isAdminMenuOpen = false;
+  }
+
   onUpdateOnlineCourse(course: OnlineCourse, file: File): void {
     this.course = course
     this.file = file;

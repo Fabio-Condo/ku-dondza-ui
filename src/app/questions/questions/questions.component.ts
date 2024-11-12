@@ -249,6 +249,14 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
+  toggleDropdown(question: Question) {
+    question.isAdminMenuOpen = !question.isAdminMenuOpen
+  }
+
+  closeDropdown(question: Question) {
+    question.isAdminMenuOpen = false;
+  }
+
   onUpdateQuestionImage(question: Question, event: any) {
     if (event.target.files.length > 0) {
       this.fileToUpload = event.target.files[0];

@@ -27,6 +27,7 @@ export class User {
   public currentUserSentFriendRequest: boolean = false;
   public sentFriendRequest: boolean = false;
 
+  public isAdminMenuOpen: boolean = false;
   
   constructor() {
 

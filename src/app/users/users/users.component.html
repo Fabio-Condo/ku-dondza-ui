@@ -145,8 +145,13 @@
                                     {{ user.firstName }} {{ user.lastName }}
                                 </p>
                                 <p class="username text-muted">12 mutual friends</p>
-                                <a (click)="onEditUser(user)" class="edit-link">editar</a>
-                                <a (click)="confirmarExclusao(user)" class="delete-link">excluir</a>
+                            </div>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" (click)="toggleDropdown(user)"><i class="pi pi-ellipsis-v"></i></button>
+                                <div class="dropdown" *ngIf="user.isAdminMenuOpen">
+                                    <a (click)="onEditUser(user); closeDropdown(user)">Editar</a>
+                                    <a (click)="confirmarExclusao(user); closeDropdown(user)" >Eliminar</a>
+                                </div>
                             </div>
                             <div class="button-container">
                                 <button (click)="sendFriendRequest(user)" *ngIf="!user.isFriend && !user.sentFriendRequest && !user.currentUserSentFriendRequest" [disabled]="currentUser.id == user.id" class="btn btn-primary">Adicionar amigo</button>

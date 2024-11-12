@@ -15,4 +15,6 @@ export class Competition {
 
     requestedParticipation: boolean = false;
     isParticipant: boolean = false;
+
+    isAdminMenuOpen: boolean = false;
 }

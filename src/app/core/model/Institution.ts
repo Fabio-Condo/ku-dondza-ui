@@ -9,4 +9,6 @@ export class Institution {
     description!: string;
     fileName!: string;
     urlFile!: string;
+
+    isAdminMenuOpen: boolean = false;
 }

@@ -8,4 +8,6 @@ export class Question {
     urlFile!: string;
     subject = new Subject();
     answers: Answer[] = [];
+
+    isAdminMenuOpen: boolean = false;
 }
