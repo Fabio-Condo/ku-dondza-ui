@@ -52,7 +52,6 @@ export class FeedComponent implements OnInit {
   //comments: Comment[] = [];
   friendRequests: User[] = []
   //friends: User[] = []
-  users: User[] = [];
   totalRecords: number = 0
 
   filter: IPostFilter = {
@@ -385,18 +384,6 @@ export class FeedComponent implements OnInit {
   confirmDialog(post: Post) {
     this.removePostFromSavedPosts(post);
     this.closeConfirmDialog();
-  }
-
-  loadMoreUsers() {
-    this.userfilter.page++;
-    this.userService.search(this.userfilter).subscribe(
-      (data: IApiResponse<User>) => {
-        this.users = [...this.users, ...data.content];
-      },
-      (erro) => {
-        this.errorHandler.handle(erro)
-      }
-    );
   }
 
   getFriendRequests() {

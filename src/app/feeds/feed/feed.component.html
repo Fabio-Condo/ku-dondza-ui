@@ -346,7 +346,7 @@
 
     <div class="right">
 
-      <div class="messages">
+      <div class="friend-requests" *ngIf="friendRequests.length > 0">
         <h4>Requests</h4>
         <div class="request" *ngFor="let friendReq of friendRequests">
           <div class="info">
@@ -370,31 +370,14 @@
 
       </div>
 
-      <br>
-
-      <div class="messages">
-        <div class="heading">
-          <h4>Usuários</h4>
-        </div>
-
-        <div class="message" *ngFor="let user of users">
-          <div class="profile-pic" *ngIf="user.id !== loggedUser.id"> <!--Dont show the current user in list-->
-            <a href="javascript:;" style="cursor: pointer;"><img src="{{user.profileImageUrl}}"
-                [routerLink]="['/user/profile', user.userId]"></a>
-            <div class="active"></div>
-          </div>
-          <div class="message-body" *ngIf="user.id !== loggedUser.id">
-            <h5 class="user-name-hover" [routerLink]="['/user/profile', user.userId]">{{user.firstName}}
-              {{user.lastName}}</h5>
-            <p>
-              <a class="text-muted" (click)="sendFriendRequest(user)" href="javascript:;"> 8 mutual friends</a>
-            </p>
-          </div>
-        </div>
-        <a style="font-size: 0.7rem; cursor: pointer;">
-          <span (click)="loadMoreUsers()">mostrar mais explicadores</span>
-        </a>
-
+      <div class="link-card">
+        <h3>Links Rápidos</h3>
+        <ul>
+          <li><a href="#"><span class="icon">🧩</span> Início</a></li>
+          <li><a href="#"><span class="icon">👤</span> Perfil</a></li>
+          <li><a href="#"><span class="icon">🔔</span> Notificações</a></li>
+          <li><a href="#"><span class="icon">⚙️</span> Configurações</a></li>
+        </ul>
       </div>
 
     </div>
