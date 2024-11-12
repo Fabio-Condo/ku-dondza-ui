@@ -21,14 +21,14 @@
             <div class="posts-list">
 
                 <div class="create-post-container">
-                    <div class="create-post-header">
+                    <div class="create-post-header" (click)="onCreatePost()">
                         <img src="{{ loggedUser.profileImageUrl }}" alt="User Profile" class="profile-picture">
-                        <div class="fake-input" onclick="openPostModal()">What's on your mind?</div>
+                        <div class="fake-input" onclick="openPostModal()">Comece uma publicação</div>
                     </div>
 
                     <div class="post-options">
                         <div class="option" (click)="onCreatePost()">
-                            <span class="icon">📷</span>
+                            <span class="icon">🖼️</span>
                             <span>Photo/Video</span>
                         </div>
                         <div class="option" (click)="onCreatePost()">
@@ -178,7 +178,7 @@
       <div class="avatar-container">
         <img class="user-avatar" src="{{ loggedUser.profileImageUrl }}" alt="Avatar">
       </div>
-      <textarea placeholder="O que você está pensando?" rows="4" id="post-text"></textarea>
+      <textarea placeholder="Comece uma publicação" rows="4" id="post-text"></textarea>
     </div>
 
     <div class="media-upload">
