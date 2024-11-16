@@ -21,6 +21,7 @@ import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
 import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
 import { PostOption } from 'src/app/core/model/PostOption';
+import { PostOptionService } from 'src/app/PostOption/post-option.service';
 
 @Component({
   selector: 'app-feed',
@@ -93,6 +94,7 @@ export class FeedComponent implements OnInit {
     private likeService: LikeService,
     private commentLikeService: CommentLikeService,
     private userService: UserService,
+    private postOptionService: PostOptionService,
     private authenticationService: AuthenticationService
   ) { }
 
@@ -436,6 +438,48 @@ export class FeedComponent implements OnInit {
       }
     )
   }
+
+  /* Para post do tipo quizz */
+  countPeopleWhoSelectedByOptionId(option: PostOption) {
+    this.showLoading = true;
+    this.postOptionService.countPeopleWhoSelectedByOptionId(option.id!).subscribe(
+      (total) => {
+        option.totalUsers = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  getPeopleWhoSelectedByOptionId(option: PostOption): void {
+    this.userfilter.page++;
+    this.postOptionService.getPeopleWhoSelectedByOptionId(option.id!, this.userfilter).subscribe(
+      (dados: IApiResponse<User>) => {
+        //this.members = [...this.members, ...dados.content];
+        //this.totalRegistros = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  checkIfSelected(option: PostOption): void {
+    this.postOptionService.checkIfSelected(option.id!, this.loggedUser.id).subscribe(response => {
+      option.selected = response;
+    });
+  }
+
+  addMemberToGroup(option: PostOption): void {
+    this.postOptionService.addUserToOption(option.id!, this.loggedUser.id).subscribe(() => {
+      option.selected = true;
+    });
+  }
+  /* Fim */
+
 
   isImageUrl(url: string): boolean {
     if (!url) return false; // Verifica se a URL é válida
