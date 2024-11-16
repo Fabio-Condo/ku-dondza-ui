@@ -14,8 +14,7 @@
 
   <div class="flex">
     <div>
-      <a *ngIf="isAdmin" (click)="onAddNewExame()" class="ml-left">Adicionar</a>
-      <a (click)="onFilter()">Filtrar</a>
+      <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalExames }}</span>
     </div>
 
     <div class="input-group">
@@ -23,7 +22,16 @@
         <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
         <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()" placeholder="Pesquisa">
       </div>
+
+      <div class="dropdown-container" style="margin-left: 4px;">
+        <button class="dropdown-btn" (click)="toggleDropdown(exam)"><i class="pi pi-ellipsis-v"></i></button>
+        <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+            <a (click)="onFilter(); closeDropdown(exam)">Filtrar</a>
+            <a (click)="onAddNewExame(); closeDropdown(exam)">Adicionar</a>
+        </div>
+      </div>
     </div>
+
   </div>
 
   <table class="card-table">
@@ -35,15 +43,20 @@
               <div class="content">
                 <p class="exame-name">{{exam.subject.name}}</p>
                 <p class="details">ano: <span class="text-muted">{{ exam.date | date:'yyyy' }}</span></p>
-                <p class="details">Estado: <span class="text-muted">{{ getStatusValue(exam.status) }}</span></p>
-                <p class="details">instituição: <span class="text-muted">{{ exam.institution.name }}</span></p>
+                <p class="details">Tipo: <span class="text-muted">{{ getTypeValue(exam.examType) }}</span></p>
+                <p class="details">instituição: <strong>{{ exam.institution.name }}</strong></p>
                 <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
+                <p *ngIf="!exam.showLoadingDownload && isAdmin" class="details"><strong>{{exam.totalDownloadNumber}}</strong> downloads</p>
+                <p *ngIf="exam.showLoadingDownload" class="details" style="font-weight: bold; color: var(--color-primary);">
+                  <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size: 0.6rem;"></i>
+                  Baixando...
+                </p>
               </div>
 
               <div class="dropdown-container">
                 <button class="dropdown-btn" (click)="toggleDropdown(exam)"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                    <a (click)="onUpdate(exam.id, exam.description, exam.status, exam.date, exam.subject.id, exam.institution.id, file); closeDropdown(exam)">Editar</a>
+                    <a (click)="onUpdate(exam.id, exam.description, exam.examType, exam.date, exam.subject.id, exam.institution.id, file); closeDropdown(exam)">Editar</a>
                     <a (click)="confirmarExclusao(exam); closeDropdown(exam)" >Eliminar</a>
                 </div>
               </div>
@@ -52,13 +65,6 @@
                 <i class="pi pi-download"></i>
               </button>
 
-              <!--<button [disabled]="exam.showLoadingDownload" pButton (click)="download(exam, exam.fileName)" type="button" icon="pi pi-download" class="download-button"></button>-->
-
-              <span *ngIf="!exam.showLoadingDownload" class="download-count">{{exam.totalDownloadNumber}} downloads</span>
-              <span *ngIf="exam.showLoadingDownload" class="download-count" style="font-weight: bold;">
-                <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size: 0.6rem;"></i>
-                Baixando...
-              </span>
             </div>
           </div>
         </td>
@@ -67,7 +73,9 @@
   </table>
 
   <!-- Paginação -->
-  <div class="pagination-controls">
+  <div class="pagination-controls ml-auto">
+    <span class="pagination-info mr-auto"></span>
+
     <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
       <i class="pi pi-chevron-left"></i> Anterior
     </button>
@@ -80,7 +88,6 @@
         {{ option }}
       </option>
     </select>
-    <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalExames }}</span>
   </div>
 
   <!-- Indicador de carregamento -->
@@ -113,10 +120,10 @@
       </div>
 
       <div class="form-group">
-        <label for="status">Estado</label>
-        <select id="status" [(ngModel)]="exam.status" name="status" required>
+        <label for="type">Tipo</label>
+        <select id="type" [(ngModel)]="exam.examType" name="type" required>
           <option value="" disabled selected>Selecione o estado</option>
-          <option *ngFor="let status of examStatus" [value]="status.value">{{ status.label }}</option>
+          <option *ngFor="let type of examType" [value]="type.value">{{ type.label }}</option>
         </select>
       </div>
 
@@ -163,6 +170,13 @@
         <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
           <option value="" disabled selected>Selecione a subject</option>
           <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="type">Tipo</label>
+        <select id="type" [(ngModel)]="filtro.examType" (change)="findAll()" name="type" required>
+          <option *ngFor="let type of examType" [value]="type.value">{{ type.label }}</option>
         </select>
       </div>
 

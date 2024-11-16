@@ -36,6 +36,10 @@ export class ExamesService {
       if (filtro.institution) {
         params = params.set('institution', filtro.institution);
       }
+
+      if (filtro.examType) {
+        params = params.set('examType', filtro.examType);
+      }
       
       if (filtro.description) {
         params = params.set('description', filtro.description);
@@ -53,10 +57,10 @@ export class ExamesService {
 
   }
 
-  save(description: string, status: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exam> {
+  save(description: string, examType: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('description', description);
-    formData.append('status', status)
+    formData.append('examType', examType)
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
     formData.append('institutionId', institutionId.toString());
@@ -64,11 +68,11 @@ export class ExamesService {
     return this.http.post<Exam>(`${this.host}`, formData);
   }
   
-  update(id: number, description: string, status: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exam> {
+  update(id: number, description: string, examType: string, date: Date, subjectId: number, institutionId: number, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('id', id.toString());
     formData.append('description', description);
-    formData.append('status', status)
+    formData.append('examType', examType)
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
     formData.append('institutionId', institutionId.toString());

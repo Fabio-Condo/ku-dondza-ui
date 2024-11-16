@@ -6,11 +6,26 @@
             <img [src]="group.urlFile" alt="Foto do grupo" class="group-banner">
             <div class="group-info">
                 <h1 class="group-name">{{ group.name }}</h1>
+
+                <div class="group-members">
+                    <span><img src="assets/images/profile-15.jpg"></span>
+                    <span><img src="assets/images/profile-16.jpg"></span>
+                    <span><img src="assets/images/profile-17.jpg"></span>,
+                    <p class="details" *ngIf="group.totalMembers == 0">Seja <strong>primeiro membro</strong> a aderir ao grupo</p>
+                    <p class="details" *ngIf="!group.isMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
+                    <p class="details" *ngIf="group.isMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
+                    <p class="details" *ngIf="group.isMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
+                    <p class="details" *ngIf="!group.isMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
+                    <p class="details" *ngIf="group.isMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
+                </div>
+                
                 <p class="group-description">{{ group.description }}</p>
+
                 <button style="margin: 20px;" class="btn btn-primary" (click)="addMemberToGroup(group)"
                     *ngIf="!group.isMember">Aderir ao Grupo</button>
                 <button style="margin: 20px;" class="btn" (click)="onRemoveMember(group)" *ngIf="group.isMember">Sair do
                     Grupo</button>
+
             </div>
         </div>
 
@@ -179,11 +194,13 @@
                     <div class="avatar-container">
                         <img class="user-avatar" src="{{ loggedUser.profileImageUrl }}" alt="Avatar">
                     </div>
-                    <textarea placeholder="Comece uma publicação" rows="4" id="post-text" name="text" [(ngModel)]="newPost.text"></textarea>
+                    <textarea placeholder="Comece uma publicação" rows="4" id="post-text" name="text"
+                        [(ngModel)]="newPost.text"></textarea>
                 </div>
 
                 <div class="media-upload">
-                    <input type="file" id="file-upload" accept="image/*,video/*" multiple (change)="onPostImageChange($event, $event)" onchange="previewMedia()">
+                    <input type="file" id="file-upload" accept="image/*,video/*" multiple
+                        (change)="onPostImageChange($event, $event)" onchange="previewMedia()">
                     <label for="file-upload" class="upload-button">
                         <i class="fas fa-camera"></i> Adicionar Foto/Vídeo
                     </label>

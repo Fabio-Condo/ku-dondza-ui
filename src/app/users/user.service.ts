@@ -12,7 +12,9 @@ import { IPostFilter } from '../core/interface/IPostFilter';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private host = environment.apiUrl;
+  private host = environment.apiUrl + '/user';
+  private baseUrl = environment.apiUrl + '/questions';
+
 
   constructor(private http: HttpClient) { }
 
@@ -28,11 +30,11 @@ export class UserService {
       params = params.set('searchParam', filter.searchParam);
     }
 
-    return this.http.get<IApiResponse<User>>(`${this.host}/user/list/pageable`, { params });
+    return this.http.get<IApiResponse<User>>(`${this.host}/list/pageable`, { params });
   }
 
   public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.host}/user/list`);
+    return this.http.get<User[]>(`${this.host}/list`);
   }
 
   save(user: User, profileImageFile: File): Observable<User> {
@@ -45,7 +47,7 @@ export class UserService {
     formData.append('isActive', JSON.stringify(user.active));
     formData.append('isNonLocked', JSON.stringify(user.notLocked));
     formData.append('profileImage', profileImageFile);
-    return this.http.post<User>(`${this.host}/user/add`, formData);
+    return this.http.post<User>(`${this.host}/add`, formData);
   }
 
   update(user: User, profileImageFile: File): Observable<User> {
@@ -59,7 +61,7 @@ export class UserService {
     formData.append('isActive', JSON.stringify(user.active));
     formData.append('isNonLocked', JSON.stringify(user.notLocked));
     formData.append('profileImage', profileImageFile);
-    return this.http.put<User>(`${this.host}/user/update`, formData);
+    return this.http.put<User>(`${this.host}/update`, formData);
   }
 
   
@@ -70,13 +72,11 @@ export class UserService {
     formData.append('lastName', user.lastName);
     formData.append('username', user.username);
     formData.append('email', user.email);
-    formData.append('institution', user.institution);
     formData.append('bio', user.bio);
-    formData.append('course', user.course);
     formData.append('role', user.role);
     formData.append('isActive', JSON.stringify(user.active));
     formData.append('isNonLocked', JSON.stringify(user.notLocked));
-    return this.http.put<User>(`${this.host}/user/update-user-profile`, formData);
+    return this.http.put<User>(`${this.host}/update-user-profile`, formData);
   }
 
   //updateUserProfile(user: User): Observable<User> {
@@ -88,7 +88,7 @@ export class UserService {
   }
 
   public resetPassword(email: string): Observable<CustomHttpRespone> {
-    return this.http.get<CustomHttpRespone>(`${this.host}/user/resetpassword/${email}`);
+    return this.http.get<CustomHttpRespone>(`${this.host}/resetpassword/${email}`);
   }
 
   public updateProfileImage(formData: FormData): Observable<HttpEvent<User>> {
@@ -100,11 +100,11 @@ export class UserService {
   }
 
   public deleteUser(username: string): Observable<CustomHttpRespone> {
-    return this.http.delete<CustomHttpRespone>(`${this.host}/user/delete/${username}`);
+    return this.http.delete<CustomHttpRespone>(`${this.host}/delete/${username}`);
   }
 
   getUserByUserId(userId: string): Observable<User> {
-    return this.http.get<User>(`${this.host}/user/find-by-user-id/${userId}`, {});
+    return this.http.get<User>(`${this.host}/find-by-user-id/${userId}`, {});
   }
 
   public addUsersToLocalCache(users: User[]): void {
@@ -127,21 +127,20 @@ export class UserService {
     return this.http.put<void>(`${this.host}/${username}/active-user`, active, {});
   }
 
-
   changeStatusNotLocked(username: string, notLocked: boolean): Observable<void> {
     return this.http.put<void>(`${this.host}/${username}/notLocked-user`, notLocked, {});
   }
 
   addPostToSavedPosts(userId: number, postId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/user/${userId}/savedPosts/${postId}`, {});
+    return this.http.post<User>(`${this.host}/${userId}/savedPosts/${postId}`, {});
   }
 
   removePostFromSavedPosts(userId: number, postId: number): Observable<User> {
-    return this.http.delete<User>(`${this.host}/user/${userId}/savedPosts/${postId}`);
+    return this.http.delete<User>(`${this.host}/${userId}/savedPosts/${postId}`);
   }
 
   checkIfUserSavedPost(userId: number, postId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/user/${userId}/savedPosts/contains/${postId}`);
+    return this.http.get<boolean>(`${this.host}/${userId}/savedPosts/contains/${postId}`);
   }
 
   getSavedPosts(userId: number, filtro: IPostFilter): Observable<IApiResponse<Post>> {
@@ -151,23 +150,23 @@ export class UserService {
       .set('sort', filtro.sort)
       .set('size', filtro.itemsPerPage);
 
-    return this.http.get<IApiResponse<Post>>(`${this.host}/user/${userId}/savedPosts`, { params });
+    return this.http.get<IApiResponse<Post>>(`${this.host}/${userId}/savedPosts`, { params });
   }
 
   countSavedPostsByUser(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.host}/user/${userId}/savedPosts/count`, {});
+    return this.http.get<number>(`${this.host}/${userId}/savedPosts/count`, {});
   }
 
   getFriendRequests(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.host}/user/friend-requests`, {});
+    return this.http.get<User[]>(`${this.host}/friend-requests`, {});
   }
 
   getFriends(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.host}/user/friends`, {});
+    return this.http.get<User[]>(`${this.host}/friends`, {});
   }
 
   countFriendsByUserId(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.host}/user/${userId}/friends/total`, {});
+    return this.http.get<number>(`${this.host}/${userId}/friends/total`, {});
   }
 
   getUserFriends(userId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
@@ -177,7 +176,7 @@ export class UserService {
       .set('sort', filtro.sort)
       .set('size', filtro.itemsPerPage);
 
-    return this.http.get<IApiResponse<User>>(`${this.host}/user/${userId}/friends`, { params });
+    return this.http.get<IApiResponse<User>>(`${this.host}/${userId}/friends`, { params });
   }
 
   getCurrentUserFriends(filtro: IUserFilter): Observable<IApiResponse<User>> {
@@ -191,7 +190,7 @@ export class UserService {
       params = params.set('searchParam', filtro.searchParam);
     }
 
-    return this.http.get<IApiResponse<User>>(`${this.host}/user/current-user-friends`, { params });
+    return this.http.get<IApiResponse<User>>(`${this.host}/current-user-friends`, { params });
   }
 
   getCurrentUserFriendRequests(filtro: IUserFilter): Observable<IApiResponse<User>> {
@@ -201,35 +200,35 @@ export class UserService {
       .set('sort', filtro.sort)
       .set('size', filtro.itemsPerPage);
 
-    return this.http.get<IApiResponse<User>>(`${this.host}/user/current-user-friend-requests`, { params });
+    return this.http.get<IApiResponse<User>>(`${this.host}/current-user-friend-requests`, { params });
   }
 
   countFriendRequestsByUserId(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.host}/user/${userId}/friend-requests/total`, {});
+    return this.http.get<number>(`${this.host}/${userId}/friend-requests/total`, {});
   }
 
   acceptFriendRequest(friendId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/user/accept-friend-requests/${friendId}`, {});
+    return this.http.post<User>(`${this.host}/accept-friend-requests/${friendId}`, {});
   }
 
   rejectFriendRequest(friendId: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/user/reject-friend-requests/${friendId}`, {});
+    return this.http.delete<void>(`${this.host}/reject-friend-requests/${friendId}`, {});
   }
 
   removeFriend(friendId: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/user/friends/${friendId}`, {});
+    return this.http.delete<void>(`${this.host}/friends/${friendId}`, {});
   }
 
   checkFriendship(friendId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/user/friends/${friendId}`, {});
+    return this.http.get<boolean>(`${this.host}/friends/${friendId}`, {});
   }
 
   checkIfSentFriendRequest(receptorUserId: number, emissorUserId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/user/${receptorUserId}/requests/${emissorUserId}`, {});
+    return this.http.get<boolean>(`${this.host}/${receptorUserId}/requests/${emissorUserId}`, {});
   }
 
   sendFriendRequest(user: User): Observable<User> {
-    return this.http.post<User>(`${this.host}/user/send-friend-request`, user, {});
+    return this.http.post<User>(`${this.host}/send-friend-request`, user, {});
   }
 
   addInterestToUserInterests(userId: number, interestId: number): Observable<User> {
@@ -237,27 +236,27 @@ export class UserService {
   }
 
   addCourseToSubscribedOnlineCourses(userId: number, onlineCourseId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/user/${userId}/subscribedOnlineCourses/${onlineCourseId}`, {});
+    return this.http.post<User>(`${this.host}/${userId}/subscribedOnlineCourses/${onlineCourseId}`, {});
   }
 
   removeCourseFromSubscribedOnlineCourses(userId: number, onlineCourseId: number): Observable<User> {
-    return this.http.delete<User>(`${this.host}/user/${userId}/subscribedOnlineCourses/${onlineCourseId}`);
+    return this.http.delete<User>(`${this.host}/${userId}/subscribedOnlineCourses/${onlineCourseId}`);
   }
 
   doesUserSubscribedOnlineCourse(userId: number, onlineCourseId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/user/${userId}/subscribedOnlineCourses/contains/${onlineCourseId}`);
+    return this.http.get<boolean>(`${this.host}/${userId}/subscribedOnlineCourses/contains/${onlineCourseId}`);
   }
 
   updateProfilePhoto(username: string, file: File): Observable<User> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-    return this.http.post<User>(`${this.host}/user/${username}/profile-photo`, formData);
+    return this.http.post<User>(`${this.host}/${username}/profile-photo`, formData);
   }
 
   updateProfileCoverPhoto(username: string, file: File): Observable<User> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-    return this.http.post<User>(`${this.host}/user/${username}/cover-photo`, formData);
+    return this.http.post<User>(`${this.host}/${username}/cover-photo`, formData);
   }
 
 }

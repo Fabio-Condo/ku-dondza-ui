@@ -4,7 +4,7 @@ import { Subject } from "./Subject";
 export class Exam {
     id!: number;
     description: string = '';
-    status!: string; // RESOLVED, UNRESOLVED
+    examType!: string; // ENUNCIADO, RESOLUCAO
     fileName!: string;
     urlFile!: string;
     date!: Date;

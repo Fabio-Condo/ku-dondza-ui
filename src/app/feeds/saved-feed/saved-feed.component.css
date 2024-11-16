@@ -1,141 +1,270 @@
-.texto-limitado {
-    width: 300px;
-    /* Largura máxima do contêiner de texto */
-    white-space: nowrap;
-    /* Impede a quebra de linha */
-    overflow: hidden;
-    /* Esconde o texto que ultrapassar os limites do contêiner */
-    text-overflow: ellipsis;
-    /* Adiciona reticências ao final do texto */
+.main-content {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 10px auto;
 }
 
-.user-info {
+.posts-list {
+    flex: 2;
+    width: 100%;
+}
+
+.post {
+    background-color: white;
+    border: 1px solid #dcdcdc;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.post-header {
     display: flex;
     align-items: center;
 }
 
-.user-info img {
+.user-avatar {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
     margin-right: 10px;
 }
 
-.user-info .user-name {
-    font-size: 10px;
+.user-name {
+    font-size: 1.1rem;
     font-weight: bold;
 }
 
-
-/*Table*/
-.card-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0px 5px;
+.post-date {
+    color: var(--color-gray);
+    font-size: 0.9rem;
 }
 
-.card {
+.post-body {
+    margin-top: 15px;
+}
+
+.post-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.post-content {
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+.expand-btn {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: none;
     cursor: pointer;
-    background-color: #fff;
-    border-radius: 0.4rem;
-    /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
-    padding: 20px;
-    width: 100%;
-    border: 1px solid #dcdcdc;
+    margin-top: 10px;
 }
 
-.card:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.card-content {
+.post-interactions {
     display: flex;
-    /* Para alinhar imagem e conteúdo lado a lado */
-}
-
-.post-info {
-    display: flex;
-    /* Para alinhar imagem e texto verticalmente */
+    justify-content: space-between;
     align-items: center;
-    /* Alinha verticalmente */
-    margin-right: 20px;
-    /* Espaço entre a imagem e o texto */
+    font-size: 1.4rem;
+    margin: 0.7rem;
 }
 
+.post-interactions a:hover {
+    opacity: 0.8;
+    transition: all 300ms ease;
+}
 
-.card-content .content {
+.load-more {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    width: 100%;
+    margin-top: 5px;
+    transition: all 300ms ease;
+}
+
+.load-more:hover {
+    opacity: 0.8;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+}
+
+.post-video {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+}
+
+hr {
+    border: none;
+    height: 0.5px;
+    background-color: #ccc;
+}
+
+.icon-liked {
+    color: #ee0e21;
+}
+
+/*Card de perfil do user logado*/
+.profile-card {
     flex: 1;
-    /* O conteúdo ocupa o espaço restante */
+    height: max-content;
+    width: 300px;
+    position: sticky;
+    top: 70px;
+    margin-bottom: 10rem;
+    background-color: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    max-height: 40vh;
 }
 
-.card-content p {
-    padding: 1px 0;
-    font-size: 0.7rem;
+.cover-photo img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
 }
 
-.card-content p strong {
-    color: #333;
+.profile-info {
+    padding: 10px;
+    text-align: center;
+    position: relative;
 }
 
-.delete-link {
-    font-size: 0.7rem;
-    color: #007bff;
-    text-decoration: underline;
+.profile-photo {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.profile-photo img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    object-fit: cover;
+}
+
+h2 {
+    margin: 60px 0 5px;
+    font-size: 18px;
+}
+
+p {
+    color: #666;
+    font-size: 14px;
+}
+
+.info-section {
+    margin-top: 10px;
+}
+
+.friends-info,
+.saved-items-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: var(--color-black);
     cursor: pointer;
 }
 
-@media (max-width: 600px) {
 
-    /*
-    .card {
-        padding: 15px;
+/* Animações e Centralização */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
     }
 
-    .card-content p {
-        font-size: 0.85rem;
+    100% {
+        opacity: 1;
     }
-        */
 }
 
-
-/* Estilos para os botões de paginação */
-
-.select-itens-por-pagina {
-    font-size: 10px;
-    /* Tamanho da fonte */
-    padding: 4px 8px;
-    /* Espaçamento interno */
-    border: 1px solid #ccc;
-    /* Borda */
-    border-radius: 4px;
-    /* Borda arredondada */
-    cursor: pointer;
-    /* Cursor ao passar o mouse */
+.overlay.show {
+    display: flex;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-.pagination-button {
-    background-color: #007bff;
-    color: #fff;
-    border: 1px solid #007bff;
-    padding: 4px 8px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 10px;
-    margin: 0 4px;
+#post-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.pagination-button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+.group-members {
+    display: flex;
+    margin-top: 1rem;
+
 }
 
-.pagination-button:disabled {
-    background-color: #e9ecef;
-    color: #6c757d;
-    cursor: not-allowed;
-    border-color: #adb5bd;
+.group-members span {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: block;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid var(--color-white);
+    margin-left: -0.6rem;
 }
 
-.pagination-button:not(:disabled) {
-    transition: background-color 0.3s ease;
+.group-members span:first-child {
+    margin: 0;
+}
+
+.group-members p {
+    margin-left: 0.5rem;
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .posts-list {
+        flex: none;
+        width: 100%;
+    }
+
+    .post {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .group-sidebar {
+        width: 100%;
+    }
+
+    .group-banner {
+        height: 150px;
+    }
+
+    .group-name {
+        font-size: 1.5rem;
+    }
+
+    .join-button,
+    .leave-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .posts-list,
+    .group-sidebar {
+        width: 100%;
+    }
+
+    .profile-card {
+        display: none;
+    }
 }

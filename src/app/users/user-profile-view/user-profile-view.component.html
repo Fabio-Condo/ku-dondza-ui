@@ -1,204 +1,129 @@
-<body>
-    <div class="profile-container">
-        <header class="profile-header">
-            <div class="profile-cover">
-                <img *ngIf="!user.profileCoverImageUrl" id="cover-photo" src="assets/images/books.jpg"
-                    alt="Foto de Capa">
-                <img *ngIf="user.profileCoverImageUrl" id="cover-photo" src="{{user.profileCoverImageUrl}}"
-                    alt="Foto de Capa">
-                <label *ngIf="currentUser.userId == user.userId" for="cover-upload" class="upload-button">Trocar
-                    Capa</label>
-                <input *ngIf="currentUser.userId == user.userId" (change)="onProfileCoverPhotoFileChange($event)"
-                    type="file" id="cover-upload" class="upload-input" accept="image/*">
-                <form action="">
-                </form>
+<div class="profile-container">
+    <header class="profile-header">
+        <div class="profile-cover">
+            <img *ngIf="!user.profileCoverImageUrl" id="cover-photo" src="assets/images/books.jpg" alt="Foto de Capa">
+            <img *ngIf="user.profileCoverImageUrl" id="cover-photo" src="{{user.profileCoverImageUrl}}"
+                alt="Foto de Capa">
+            <label *ngIf="currentUser.userId == user.userId" for="cover-upload" class="upload-button">Trocar
+                Capa</label>
+            <input *ngIf="currentUser.userId == user.userId" (change)="onProfileCoverPhotoFileChange($event)"
+                type="file" id="cover-upload" class="upload-input" accept="image/*">
+            <form action="">
+            </form>
+        </div>
+        <div class="profile-picture">
+            <img id="profile-photo" src="{{user.profileImageUrl}}" alt="Foto do Perfil">
+            <label *ngIf="currentUser.userId == user.userId" for="profile-upload" class="upload-button">Trocar
+                Foto</label>
+            <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)" type="file"
+                id="profile-upload" class="upload-input" accept="image/*">
+        </div>
+        <h2 class="profile-name">{{user.firstName}} {{user.lastName}}</h2>
+        <div class="profile-contact">
+            <p class="profile-bio"><strong>Bio:</strong> {{user.bio}}</p>
+            <p><strong>Email:</strong> {{user.email}}
+                <a (click)="onUpdateCurrentUser()" *ngIf="currentUser.userId == user.userId"
+                style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar perfil</a>
+            </p>
+            <p>
+                <strong>Interesses:</strong>
+                <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
+                <a (click)="onShowInterests()" *ngIf="currentUser.userId == user.userId"
+                    style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar</a>
+                <a (click)="onShowSelectInterests()" *ngIf="currentUser.userId == user.userId"
+                    style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">adicionar</a>
+            </p>   
+        </div>
+
+        <div>
+            <button *ngIf="currentUser.userId == user.userId" (click)="onLogOut()" id="edit-profile-button" class="btn"
+                style="margin: 20px;">Sair</button>
+        </div>
+    </header>
+</div>
+
+<!-- Conteúdo Principal -->
+<div class="main-content">
+
+    <!-- Lista de Posts -->
+    <div class="posts-list">
+
+        <div class="post" *ngFor="let feed of posts">
+            <div class="post-header" style="padding: 0.7rem 0 0 0.7rem;">
+                <img src="{{ feed.user.profileImageUrl }}" alt="Avatar do usuário" class="user-avatar">
+                <div class="user-info">
+                    <h3 class="user-name">{{ feed.user.firstName }} {{ feed.user.lastName }}</h3>
+                    <p class="post-date">Publicado em {{ timeElapsed(feed.date.toString()) }}</p>
+                </div>
             </div>
-            <div class="profile-picture">
-                <img id="profile-photo" src="{{user.profileImageUrl}}" alt="Foto do Perfil">
-                <label *ngIf="currentUser.userId == user.userId" for="profile-upload" class="upload-button">Trocar
-                    Foto</label>
-                <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)" type="file"
-                    id="profile-upload" class="upload-input" accept="image/*">
-            </div>
-            <h2 class="profile-name">{{user.firstName}} {{user.lastName}}</h2>
-            <p class="profile-bio">{{user.bio}}</p>
-            <div class="profile-contact">
-                <p><strong>Email:</strong> {{user.email}}</p>
-                <p><strong>Username:</strong> {{user.username}}</p>
-                <p><strong>Contato:</strong> 844505579 </p>
-            </div>
-            <button *ngIf="currentUser.userId == user.userId" (click)="onUpdateCurrentUser()" id="edit-profile-button"
-                class="btn btn-primary" style="margin-top: 10px;">Editar Perfil</button>
-            <div>
-                <button *ngIf="currentUser.userId == user.userId" (click)="onLogOut()" id="edit-profile-button"
-                    class="btn btn-primary" style="margin-top: 10px;">Logout</button>
+
+            <hr style="margin-top: 0.7rem;">
+
+            <div class="post-body">
+                <p class="post-content" style="padding: 0 0.7rem;">{{ feed.text }}</p>
+                <button class="expand-btn" style="padding: 0 0.7rem;">Ler mais</button>
+
+                <img *ngIf="isImageUrl(feed.urlFile)" [src]="feed.urlFile" alt="Imagem do post" class="post-image">
+                <video *ngIf="isVideoUrl(feed.urlFile)" controls class="post-video">
+                    <source [src]="feed.urlFile" type="video/mp4">
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
+
             </div>
 
-        </header>
-        <main class="profile-main">
-            <section class="profile-info">
-                <!-- <h2>Informações</h2> -->
-                <!-- Cabeçalho das Abas -->
-                <div class="tab-header">
-                    <div class="tab-link" [class.active]="activeTabInfo === 1" (click)="setActiveTabInfo(1)">
-                        Informações
-                    </div>
+            <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
+                <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
+                <span style="cursor: pointer;" *ngIf="feed.numberOfLikes == 1">1
+                    gosto</span>
+                <span style="cursor: pointer;" *ngIf="feed.numberOfLikes > 1">{{
+                    feed.numberOfLikes }} gostos</span>
+            </a>
+
+            <span class="text-muted" style="font-size: 0.7rem;">|</span>
+
+            <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
+                <span *ngIf="feed.numberOfComments == 0">Sem comentários</span>
+                <span style="cursor: pointer;" *ngIf="feed.numberOfComments == 1">1
+                    comentário</span>
+                <span style="cursor: pointer;" *ngIf="feed.numberOfComments > 1">{{
+                    feed.numberOfComments }} comentários</span>
+            </a>
+
+            <hr style="margin-top: 0.7rem;">
+
+            <div class="post-interactions">
+                <div class="interaction-button">
+                    <a style="cursor: pointer;" (click)="toggleLike(feed)">
+                        <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked" style="font-size: 1.1rem;"></i>
+                        <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
+                    </a>
+
+                    <a style="cursor: pointer; margin-left: 0.7rem;">
+                        <i class="pi pi-comment" style="font-size: 1.1rem;"></i>
+                    </a>
                 </div>
-                <!-- Conteúdo das Abas -->
-                <div *ngIf="activeTabInfo === 1" class="active">
-
-                    <p><strong>Instituição:</strong> {{ user.institution }}</p>
-                    <p><strong>Curso:</strong> {{ user.course }}</p>
-                    <p>
-                        <strong>Interesses:</strong>
-                        <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
-                        <a (click)="onShowInterests()" *ngIf="currentUser.userId == user.userId"
-                            style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar</a>
-                        <a (click)="onShowSelectInterests()" *ngIf="currentUser.userId == user.userId"
-                            style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">adicionar</a>
-                    </p>
+                <div>
+                    <a *ngIf="feed.isSaved" (click)="onRemovePost(feed)" style="cursor: pointer;"><i
+                            class="pi pi-bookmark-fill"></i></a>
+                    <a *ngIf="!feed.isSaved" (click)="addPostToSavedPosts(feed)" style="cursor: pointer;"><i
+                            class="pi pi-bookmark"></i></a>
                 </div>
-            </section>
-            <section class="profile-posts">
-                <!-- <h2>Publicações Recentes</h2> -->
-                <!-- Cabeçalho das Abas -->
-                <div class="tab-header">
-                    <div class="tab-link" [class.active]="activeTabPost === 1" (click)="setActiveTabPost(1)">
-                        Publicações Recentes
-                    </div>
-                    <div class="tab-link" [class.active]="activeTabPost === 2" (click)="setActiveTabPost(2)" *ngIf="currentUser.userId == user.userId">
-                        Publicações Gurdadas
-                    </div>
-                    <div class="tab-link" [class.active]="activeTabPost === 3" (click)="setActiveTabPost(3)">
-                        Amigos
-                    </div>
-                </div>
-
-                <!-- Conteúdo das Abas -->
-                <div *ngIf="activeTabPost === 1" class="active">
-                    <table class="card-table">
-                        <tbody>
-                            <tr *ngFor="let feed of posts">
-                                <td>
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="post-info">
-                                                <div *ngIf="isImageUrl(feed.urlFile)">
-                                                    <img [src]="feed.urlFile"
-                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;"
-                                                        alt="">
-                                                </div>
-                                                <div>
-                                                    <video *ngIf="isVideoUrl(feed.urlFile)"
-                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                                                        <source [src]="feed.urlFile" type="video/mp4"
-                                                            style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                                                        Your browser does not support the video tag.
-                                                    </video>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <p class="texto-limitado">{{ feed.text }}</p>
-                                                <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
-                                            </div>
-                                            <div class="button-container">
-                                                <button class="btn btn-primary" style="margin-left: 10px;">Ver</button>                            
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <div (click)="onShowMorePosts()" class="upload-loading-container"
-                                style="cursor: pointer; border: 1px solid #ccc;">
-                                <p class="upload-loading-text">carregar mais posts recentes</p>
-                            </div>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div *ngIf="activeTabPost === 2" class="active">
-                    <table class="card-table">
-                        <tbody>
-                            <tr *ngFor="let feed of savedPosts">
-                                <td>
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="post-info">
-                                                <div *ngIf="isImageUrl(feed.urlFile)">
-                                                    <img [src]="feed.urlFile"
-                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;"
-                                                        alt="">
-                                                </div>
-                                                <div>
-                                                    <video *ngIf="isVideoUrl(feed.urlFile)"
-                                                        style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                                                        <source [src]="feed.urlFile" type="video/mp4"
-                                                            style="width: 70px; height: 70px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                                                        Your browser does not support the video tag.
-                                                    </video>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <p class="texto-limitado">{{ feed.text }}</p>
-                                                <p>Publicação: há {{ timeElapsed(feed.date.toString()) }}</p>
-                                            </div>
-                                            <div class="button-container">
-                                                <button class="btn btn-primary" style="margin-left: 10px;">Ver</button>                            
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <div (click)="onShowMoreSavedPosts()" class="upload-loading-container"
-                                style="cursor: pointer; border: 1px solid #ccc;">
-                                <p class="upload-loading-text">carregar mais posts guardados</p>
-                            </div>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div *ngIf="activeTabPost === 3" class="active">
-                    <table class="card-table">
-                        <tbody>
-                            <tr *ngFor="let friend of friends">
-                                <td>
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="profile-pic">
-                                                <img src="{{friend.profileImageUrl}}" alt="pic 1" />
-                                            </div>
-                                            <div class="content" style="margin-left: 20px;">
-                                                <p class="user-name user-name-hover" [routerLink]="['/user/profile', friend.userId]">
-                                                    {{ friend.firstName }} {{ friend.lastName }}
-                                                </p>
-                                                <p class="username text-muted">12 mutual friends</p>
-                                            </div>
-                                            <div class="button-container">
-                                                <button class="btn" (click)="onRemoveFriend(friend)">Remover amizade</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <div (click)="onShowMoreFriends()" class="upload-loading-container"
-                                style="cursor: pointer; border: 1px solid #ccc;">
-                                <p class="upload-loading-text">carregar mais amigos</p>
-                            </div>
-
-                        </tbody>
-                    </table>
-                </div>
-
-
-            </section>
-        </main>
+            </div>
+        </div>
     </div>
-</body>
+
+    <!-- Membros do Grupo -->
+    <div class="profile-sidebar">
+        <h3>Amigos</h3>
+        <div class="members-list" *ngFor="let friend of friends">
+            <a [routerLink]="['/profile', friend.id]" class="member-item">
+                <img src="{{ friend.profileImageUrl }}" alt="Membro" class="member-avatar">
+                <span class="member-name">{{ friend.firstName }} {{ friend.lastName }}</span>
+            </a>
+        </div>
+        <button class="load-more" (click)="onShowMoreFriends()" *ngIf="friends.length < 1000">Ver mais</button>
+    </div>
+</div>
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
@@ -228,18 +153,6 @@
                 <label for="email">Email</label>
                 <input type="text" id="email" type="text" name="email" ngModel #email="ngModel" required minlength="1"
                     [(ngModel)]="user.email" required>
-            </div>
-
-            <div class="form-group">
-                <label for="institution">Instituição</label>
-                <input type="text" id="institution" type="text" name="institution" ngModel #institution="ngModel"
-                    required minlength="1" [(ngModel)]="user.institution" required>
-            </div>
-
-            <div class="form-group">
-                <label for="course">Curso</label>
-                <input type="text" id="course" type="text" name="course" ngModel #course="ngModel" required
-                    minlength="1" [(ngModel)]="user.course" required>
             </div>
 
             <div class="form-group">
@@ -287,8 +200,9 @@
         </div>
 
         <div class="form-group">
-            <button type="button" (click)="addInterestToUserInterests()" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-          </div>
+            <button type="button" (click)="addInterestToUserInterests()" class="btn btn-primary">{{ showLoading ?
+                'Loading...' : 'Salvar' }}</button>
+        </div>
     </div>
 </div>
 
@@ -305,6 +219,23 @@
         <div class="confirm-dialog-footer">
             <button (click)="confirmDialog(selectedFriendToBeRemoved)">Confirmar</button>
             <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover o post da sua lista ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmRemovePostDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmRemovePostDialog(selectedPost)">Confirmar</button>
+            <button (click)="closeConfirmRemovePostDialog()">Cancelar</button>
         </div>
     </div>
 </div>

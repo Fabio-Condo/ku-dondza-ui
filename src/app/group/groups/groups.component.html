@@ -38,12 +38,12 @@
 
                             <div class="content">
                                 <p class="group-name">{{ group.name }}</p>
-                                <p class="details" *ngIf="group.totalMembers == 0">Seja primeiro membro a aderir ao grupo</p>
-                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 1"> Apenas uma pessoa é membro deste grupo</p>
-                                <p class="details" *ngIf="group.isMember && group.totalMembers == 1"> Apenas Tu és membro deste grupo</p>
-                                <p class="details" *ngIf="group.isMember && group.totalMembers == 2">Tu e mais uma pessoa são membros deste grupo</p>
-                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 2">Duas pessoas são membros deste grupo</p>
-                                <p class="details" *ngIf="group.isMember && group.totalMembers > 2">Tu e mais {{ group.totalMembers - 1}} pessoas são membros deste grupo</p>
+                                <p class="details" *ngIf="group.totalMembers == 0">Seja <strong>primeiro membro</strong> a aderir ao grupo</p>
+                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
+                                <p class="details" *ngIf="group.isMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
+                                <p class="details" *ngIf="group.isMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
+                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
+                                <p class="details" *ngIf="group.isMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
                             </div>
 
                             <div class="dropdown-container">

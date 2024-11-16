@@ -51,7 +51,7 @@
             <span class="icon">🖼️</span>
             <span>Photo/Video</span>
           </div>
-          <div class="option" (click)="onAddNewPost()">
+          <div class="option" (click)="onAddNewQuizPost()">
             <span class="icon">🧩</span>
             <span>Quiz</span>
           </div>
@@ -129,6 +129,15 @@
             <source src="{{feed.urlFile}}" type="video/mp4">
             Your browser does not support the video tag.
           </video>
+
+          <div class="answer-options" style="margin: 0.7rem;">
+            <label *ngFor="let option of feed.postOptions">
+              <input type="radio"/>
+              <span>
+                {{ option.text }}
+              </span>
+            </label>
+          </div>
 
           <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
             <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
@@ -347,7 +356,11 @@
     <div class="right">
 
       <div class="friend-requests" *ngIf="friendRequests.length > 0">
-        <h4>Requests</h4>
+        <div style="display: flex; gap: 5rem;">
+          <h4>Pedidos de amizade</h4>
+          <h4 class="see-all-requests" [routerLink]="['/users']">Ver tudo</h4>
+        </div>
+
         <div class="request" *ngFor="let friendReq of friendRequests">
           <div class="info">
             <div class="profile-pic" [routerLink]="['/friendReq/profile', friendReq.userId]">
@@ -441,3 +454,80 @@
     </div>
   </div>
 </div>
+
+
+<!-- Overlay -->
+<div id="dialog-overlay" class="dialog-overlay" *ngIf="showNewQuizPostDialog">
+
+  <!-- Popout Container -->
+  <div id="post-container" class="post-container" *ngIf="showNewQuizPostDialog">
+    <!-- Cabeçalho com título e botão de fechar -->
+    <div class="header">
+      <h3 class="post-title">Criar Post</h3>
+      <button class="close-btn" (click)="onCloseNewQuizPost()">×</button>
+    </div>
+
+    <!-- Caixa de postagem -->
+    <div class="content">
+      <form action="#" #newQuizPostForm="ngForm" (ngSubmit)="addQuizPost(newQuizPostForm)">
+        <div class="post-input">
+          <div class="avatar-container">
+            <img class="user-avatar" src="{{ loggedUser.profileImageUrl }}" alt="Avatar">
+          </div>
+          <textarea placeholder="Comece uma publicação" rows="4" id="post-text" name="text"
+            [(ngModel)]="quizPost.text"></textarea>
+        </div>
+
+        <div class="options-container">
+          <div class="header-section">
+            <label>Respostas</label>
+            <a href="javascript:;" class="add-new" (click)="getReadyNewPostOption()">Adicionar novo</a>
+          </div>
+
+          <div class="table-container">
+            <table class="responsive-table">
+              <thead>
+                <tr>
+                  <th>Texto</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let option of quizPost.postOptions; let rowIndex = index">
+                  <td>{{ option.text }}</td>
+                  <td class="actions">
+                    <a href="javascript:;" (click)="getReadyPostOptionEdit(option, rowIndex)" class="edit-btn">E</a>
+                    <a href="javascript:;" (click)="removePostOption(rowIndex)" class="remove-btn">R</a>
+                  </td>
+                </tr>
+                <tr *ngIf="quizPost.postOptions.length === 0">
+                  <td colspan="3" class="text-center">Sem opções</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <div class="post-actions">
+          <button type="submit" class="post-button">Postar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<p-dialog [header]="editingPostOption ? 'Edição' : 'Novo'" [(visible)]="showPostOtionForm" [modal]="true"
+  *ngIf="postOption">
+  <form #frmOption="ngForm" (ngSubmit)="confirmPostOption(frmOption)">
+    <div class="col-12 p-fluid">
+      <label for="text">Texto</label>
+      <input pInputText type="text" id="text" name="text" required [(ngModel)]="postOption.text" #textModel="ngModel"
+        placeholder="Digite a resposta" />
+    </div>
+
+    <div class="col-12 p-fluid">
+      <button pButton type="submit" label="Confirmar" [disabled]="frmOption.invalid"
+        style="height: 30px; margin-top: 1%;"></button>
+    </div>
+  </form>
+</p-dialog>

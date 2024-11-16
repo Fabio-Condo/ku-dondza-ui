@@ -9,8 +9,6 @@ export class User {
   public username: string;
   public bio: string;
   public email: string;
-  public institution: string;
-  public course: string;
   public lastLoginDate: any;  // Date;
   public lastLoginDateDisplay: any; // Date;
   public joinDate: any;  // Date;
@@ -37,8 +35,6 @@ export class User {
     this.username = '';
     this.bio = '';
     this.email = '';
-    this.institution = '';
-    this.course = '';
     this.lastLoginDate = '';
     this.lastLoginDateDisplay = '';
     this.joinDate = '';

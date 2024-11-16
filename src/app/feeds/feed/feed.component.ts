@@ -20,6 +20,7 @@ import { LikeFilter } from 'src/app/core/interface/LikeFilter';
 import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
 import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
+import { PostOption } from 'src/app/core/model/PostOption';
 
 @Component({
   selector: 'app-feed',
@@ -34,10 +35,10 @@ export class FeedComponent implements OnInit {
   showLoading: boolean = false;
   showAddPostLoading: boolean = false;
 
+  showNewQuizPostDialog: boolean = false;
+
   selectedPost = new Post();
   subscriptions: Subscription[] = [];
-
-
 
   feeds: Post[] = [];
   post = new Post();
@@ -49,10 +50,14 @@ export class FeedComponent implements OnInit {
   loggedUser: User = new User;
   extension: any;
   likes: Like[] = [];
-  //comments: Comment[] = [];
   friendRequests: User[] = []
-  //friends: User[] = []
   totalRecords: number = 0
+
+  quizPost = new Post();
+  postOption?: PostOption;
+  postOptions: Array<PostOption> = [];
+  showPostOtionForm = false;
+  postOptionIndex?: number;
 
   filter: IPostFilter = {
     page: -1,
@@ -73,9 +78,9 @@ export class FeedComponent implements OnInit {
   }
 
   userfilter: IUserFilter = {
-    page: -1,
+    page: 0,
     itemsPerPage: 2,
-    sort: 'firstName,asc',
+    sort: 'id,desc',
   }
 
 
@@ -94,12 +99,19 @@ export class FeedComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
-    this.getFriendRequests();
+    this.getCurrentUserFriendRequests();
     this.scrollToTop();
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  @HostListener("window:scroll", [])
+  onScroll(): void {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      this.loadMore();
+    }
   }
 
   loadMoreCommentsByPostId(post: Post): void {
@@ -156,13 +168,6 @@ export class FeedComponent implements OnInit {
     this.showPostLikesDialog = false;
   }
 
-  @HostListener("window:scroll", [])
-  onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      this.loadMore();
-    }
-  }
-
   loadMore(): void {
     this.showLoading = true;
     this.filter.page++;
@@ -211,7 +216,7 @@ export class FeedComponent implements OnInit {
     this.postImage = postImage.target.files[0];
   }
 
-  onAddNewPost(): void { 
+  onAddNewPost(): void {
     this.showNewPostDialog = true;
   }
 
@@ -250,8 +255,6 @@ export class FeedComponent implements OnInit {
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendNotification(errorResponse.error.message);
-        this.postImage = null;
-        this.showLoading = false;
       });
   }
 
@@ -386,13 +389,15 @@ export class FeedComponent implements OnInit {
     this.closeConfirmDialog();
   }
 
-  getFriendRequests() {
-    return this.userService.getFriendRequests().subscribe(
-      (data: User[]) => {
-        this.friendRequests = data;
+  getCurrentUserFriendRequests(): void {
+    this.userService.getCurrentUserFriendRequests(this.userfilter).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.friendRequests = [...this.friendRequests, ...dados.content];
       },
-      erro => this.errorHandler.handle(erro)
-    )
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+      }
+    );
   }
 
   sendFriendRequest(user: User) {
@@ -407,8 +412,8 @@ export class FeedComponent implements OnInit {
   acceptFriendRequest(friendId: number) {
     this.userService.acceptFriendRequest(friendId).subscribe(
       (friendAcepted) => {
-        this.getFriendRequests();
-        this.messageService.add({ severity: 'success', detail: 'Friend accepted successfully' });
+        // Remove a solicitação pendente da lista
+        this.friendRequests = this.friendRequests.filter(request => request.id !== friendId);
       },
       erro => this.errorHandler.handle(erro)
     )
@@ -417,8 +422,8 @@ export class FeedComponent implements OnInit {
   rejectFriendRequest(friendId: number) {
     this.userService.rejectFriendRequest(friendId).subscribe(
       () => {
-        this.getFriendRequests();
-        this.messageService.add({ severity: 'success', detail: 'Friend rejected successfully' });
+        // Remove a solicitação rejeitada da lista de pendentes
+        this.friendRequests = this.friendRequests.filter(request => request.id !== friendId);
       },
       erro => this.errorHandler.handle(erro)
     )
@@ -445,19 +450,19 @@ export class FeedComponent implements OnInit {
     this.extension = url.split('.').pop()?.toLowerCase();
     return videoExtensions.includes(this.extension);
   }
-  
+
 
   getCommentLikeCount(comment: Comment): void {
     this.commentLikeService.countLikesByCommentId(comment.id).subscribe(response => {
       comment.numberOfLikes = response;
-      
+
       // Chama recursivamente para cada resposta
       if (comment.replies && comment.replies.length > 0) {
         comment.replies.forEach(reply => this.getCommentLikeCount(reply));
       }
     });
   }
-  
+
 
   checkIfCommentLikedByUser(comment: Comment): void {
     this.commentLikeService.checkIfLiked(comment.id).subscribe(isLiked => {
@@ -470,7 +475,7 @@ export class FeedComponent implements OnInit {
       }
     });
   }
-  
+
 
   toggleLikeComment(comment: Comment): void {
     this.commentLikeService.toggleLike(comment.id).subscribe(response => {
@@ -481,12 +486,69 @@ export class FeedComponent implements OnInit {
         comment.numberOfLikes = comment.numberOfLikes - 1;
       }
     },
-    (errorResponse: HttpErrorResponse) => {
-      this.sendNotification(errorResponse.error.message);
-      this.showLoading = false;
-    });
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.showLoading = false;
+      });
   }
-  
+
+  addQuizPost(postForm: NgForm) {
+    this.showAddPostLoading = true;
+    console.log(this.quizPost.text);
+    console.log(this.quizPost.postOptions.length);
+
+    console.log(this.quizPost.postOptions.forEach(option => {option.text}));
+    this.feedsService.addQuizPost(this.quizPost).subscribe(
+      (response) => {
+        this.quizPost = response;
+        this.showAddPostLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Post adicionado com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.showAddPostLoading = false;
+      }
+    );
+  }
+
+  onAddNewQuizPost(): void {
+    this.showNewQuizPostDialog = true;
+  }
+
+  onCloseNewQuizPost(): void {
+    this.showNewQuizPostDialog = false;
+  }
+
+  // Métodos de gerenciamento de opcoes do quiz do post
+  getReadyNewPostOption() {
+    this.showPostOtionForm = true;
+    this.postOption = new PostOption();
+    this.postOptionIndex = this.quizPost.postOptions.length;
+  }
+
+  getReadyPostOptionEdit(option: PostOption, index: number) {
+    this.postOption = this.clonePostOption(option);
+    this.showPostOtionForm = true;
+    this.postOptionIndex = index;
+  }
+
+  confirmPostOption(frm: NgForm) {
+    this.quizPost.postOptions[this.postOptionIndex!] = this.clonePostOption(this.postOption!);
+    this.showPostOtionForm = false;
+    frm.reset();
+  }
+
+  clonePostOption(postOption: PostOption): PostOption {
+    return new PostOption(postOption.id, postOption.text);
+  }
+
+  get editingPostOption() {
+    return this.postOption && this.postOption?.id;
+  }
+
+  removePostOption(index: number) {
+    this.quizPost.postOptions.splice(index, 1);
+  }
 
   timeElapsed(dateString: string): string {
     const date = new Date(dateString);

@@ -1,9 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
+import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
+import { CommentService } from 'src/app/core/commets/commentService .service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { UserFilter } from 'src/app/core/interface/UserFilter';
+import { LikeService } from 'src/app/core/likes/like.service';
 import { Post } from 'src/app/core/model/Post';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
@@ -22,6 +25,10 @@ export class SavedFeedComponent implements OnInit {
   totalRegistros: number = 9
   currentPage: number = 1;
 
+  showConfirmDialog: boolean = false;
+
+  selectedPost = new Post();
+
   // Opções de número de itens por página
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
@@ -31,6 +38,9 @@ export class SavedFeedComponent implements OnInit {
   constructor(
     private messageService: MessageService,
     private userService: UserService,
+    private commentService: CommentService,
+    private likeService: LikeService,
+    private commentLikeService: CommentLikeService,
     private authenticationService: AuthenticationService,
 
 
@@ -62,6 +72,12 @@ export class SavedFeedComponent implements OnInit {
 
     this.userService.getSavedPosts(this.loggedUser.id, this.filtro).subscribe(
       (dados: IApiResponse<Post>) => {
+        dados.content.forEach(post => {
+          this.checkIfLiked(post);
+          this.checkIfSaved(post);
+          this.getNumberOfLikes(post);
+          this.getNumberOfComments(post);
+        });
         this.posts = dados.content
         this.totalRegistros = dados.totalElements
         this.showLoading = false;
@@ -73,10 +89,79 @@ export class SavedFeedComponent implements OnInit {
     );
   }
 
+  toggleLike(post: Post): void {
+    this.likeService.toggleLike(post.id).subscribe(response => {
+      post.isLiked = !post.isLiked;
+      if (post.isLiked) {
+        post.numberOfLikes = post.numberOfLikes + 1;
+      } else {
+        post.numberOfLikes = post.numberOfLikes - 1;
+      }
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      });
+  }
+
+  checkIfLiked(post: Post): void {
+    this.likeService.checkIfLiked(post.id).subscribe(response => {
+      post.isLiked = response;
+      console.log(response)
+    }, error => {
+      console.error('Erro ao verificar se o post foi curtido:', error);
+    });
+  }
+
+  checkIfSaved(post: Post): void {
+    this.userService.checkIfUserSavedPost(this.loggedUser.id, post.id).subscribe(response => {
+      post.isSaved = response;
+    });
+  }
+
+  getNumberOfLikes(post: Post): void {
+    this.likeService.countLikesByPostId(post.id).subscribe((response: number) => {
+      post.numberOfLikes = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getNumberOfComments(post: Post): void {
+    this.commentService.countCommentsByPostId(post.id).subscribe((response: number) => {
+      post.numberOfComments = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  addPostToSavedPosts(post: Post): void {
+    this.userService.addPostToSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
+      post.isSaved = true;
+    });
+  }
+
+  onRemovePost(post: Post): void {
+    this.showConfirmDialog = true;
+    this.selectedPost = post;
+  }
+
   removePostFromSavedPosts(post: Post): void {
     this.userService.removePostFromSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
-      this.posts = this.posts.filter(p => p.id !== post.id);
+      post.isSaved = false;
     });
+  }
+
+  closeConfirmDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmDialog(post: Post) {
+    this.removePostFromSavedPosts(post);
+    this.closeConfirmDialog();
   }
 
   changePageSize(event: any): void {

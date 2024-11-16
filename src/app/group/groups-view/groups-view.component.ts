@@ -106,6 +106,7 @@ export class GroupsViewComponent implements OnInit {
       (response) => {
         this.group = response;
         this.getGroupMembers(this.group);
+        this.countMembersByGroupId(this.group);
         this.getFeeds(this.group);
         this.checkMembership(this.group);
       },
@@ -252,6 +253,20 @@ export class GroupsViewComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  countMembersByGroupId(group: Group) {
+    this.showLoading = true;
+    this.groupService.countMembersByGroupId(group.id,).subscribe(
+      (total) => {
+        group.totalMembers = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     );
   }

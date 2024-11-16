@@ -31,12 +31,12 @@
                             <div class="content">
                                 <p class="course-name">{{ competition.title }}</p>
                                 <p class="details">{{ competition.totalQuestions }} questoes</p>
-                                <p class="details" *ngIf="competition.totalParticipants == 0">0 participantes da competição</p>
-                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 1"> Apenas uma pessoa é participante desta competição</p>
-                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 1"> Apenas Tu és participante desta competição</p>
-                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 2">Tu e mais uma pessoa são participantes desta competição</p>
-                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 2">Duas pessoas são participantes desta competição</p>
-                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants > 2">Tu e mais {{ competition.totalParticipants - 1}} pessoas são participantes desta competição</p>
+                                <p class="details" *ngIf="competition.totalParticipants == 0"><strong>0</strong> participantes da competição</p>
+                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 1"> Apenas <strong>uma pessoa</strong> é participante desta competição</p>
+                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 1"> Apenas <strong>Tu</strong> és participante desta competição</p>
+                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são participantes desta competição</p>
+                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 2"><strong>Duas pessoas</strong> são participantes desta competição</p>
+                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants > 2"><strong>Tu</strong> e mais <strong>{{ competition.totalParticipants - 1}} pessoas</strong> são participantes desta competição</p>
                             </div>
                             <div class="dropdown-container">
                                 <button class="dropdown-btn" (click)="toggleDropdown(competition)"><i class="pi pi-ellipsis-v"></i></button>

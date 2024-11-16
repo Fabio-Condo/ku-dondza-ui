@@ -53,6 +53,12 @@ export class FeedsService {
     return formData;
   }
 
+  public addQuizPost(post: Post): Observable<Post> {
+    console.log(post.postOptions.length);
+
+    return this.http.post<Post>(`${this.host}/add_quiz_post`, post, {});  
+  }
+
   getUserPostsByUserId(userId: number, filter: IPostFilter): Observable<IApiResponse<Post>> {  
 
     let params = new HttpParams()  

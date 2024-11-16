@@ -43,12 +43,12 @@
                             <div class="content">
                                 <p class="course-name">{{ course.name }}</p>
                                 <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor }}</span></p>
-                                <p class="details" *ngIf="course.totalStudents == 0">Seja primeiro estudante a aderir ao curso</p>
-                                <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas uma(1) pessoa é estudante deste curso</p>
-                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas Tu és estudante deste curso</p>
-                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2">Tu e mais uma(1) pessoa são estudantes deste curso</p>
-                                <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2">Duas pessoas são estudantes deste curso</p>
-                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2">Tu e mais {{ course.totalStudents - 1}} pessoas são estudantes deste curso</p>
+                                <p class="details" *ngIf="course.totalStudents == 0">Seja <strong>primeiro estudante</strong> a aderir ao curso</p>
+                                <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas <strong>uma pessoa</strong> é estudante deste curso</p>
+                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas <strong>Tu</strong> és estudante deste curso</p>
+                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são estudantes deste curso</p>
+                                <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2"><strong>Duas pessoas</strong> são estudantes deste curso</p>
+                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2"><strong>Tu</strong> e mais <strong>{{ course.totalStudents - 1}} pessoas</strong> são estudantes deste curso</p>
                             </div>
                             <div class="dropdown-container">
                                 <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>

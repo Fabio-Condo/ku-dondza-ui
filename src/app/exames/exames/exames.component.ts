@@ -31,9 +31,10 @@ export class ExamesComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   
   filtro: ExameFilter = {
+    examType: '',
     pagina: 0,
     itensPorPagina: 5,
-    ordenamento: 'id,asc'
+    ordenamento: 'id,asc',
   };
   
   @ViewChild('tabela') grid: any;
@@ -44,11 +45,12 @@ export class ExamesComponent implements OnInit {
     { label: 'Ensino Geral', value: 'Ensino Geral' },
   ];
   
-  examStatus = [
-    { label: 'Resolvido', value: 'RESOLVED' },
-    { label: 'Não Resolvido', value: 'UNRESOLVED' }
+  examType = [
+    { label: 'Enunciado', value: 'ENUNCIADO' },
+    { label: 'Resolução', value: 'RESOLUCAO' },
+    { label: 'Todos tipos', value: '' },
   ];
-  
+
 
   constructor(
     private examesService: ExamesService,
@@ -84,7 +86,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exam.id, this.exam.description, this.exam.status, this.exam.date, this.exam.subject.id!, this.exam.institution.id, this.file).subscribe(
+    this.examesService.update(this.exam.id, this.exam.description, this.exam.examType, this.exam.date, this.exam.subject.id!, this.exam.institution.id, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -101,7 +103,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exam.description, this.exam.status, this.exam.date, this.exam.subject.id!, this.exam.institution.id, this.file).subscribe(
+    this.examesService.save(this.exam.description, this.exam.examType, this.exam.date, this.exam.subject.id!, this.exam.institution.id, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -226,12 +228,12 @@ export class ExamesComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  public onUpdate(id: number, description: string, status: string, date: Date, subjectId: number, institutionId: number, file: File): void {
+  public onUpdate(id: number, description: string, examType: string, date: Date, subjectId: number, institutionId: number, file: File): void {
     this.exam.id = id
     this.exam.subject.id = subjectId;
     this.exam.institution.id = institutionId;
     this.exam.description = description;
-    this.exam.status = status;
+    this.exam.examType = examType;
     this.file = file;
     this.exam.date = date;
     this.exam.date = new Date(this.exam.date);
@@ -258,12 +260,12 @@ export class ExamesComponent implements OnInit {
     return '';
   }
 
-  getStatusValue(type: string) {
+  getTypeValue(type: string) {
     switch (type) {
-      case 'RESOLVED':
-        return 'Resolvido';
-      case 'UNRESOLVED':
-        return 'Não resolvido';
+      case 'ENUNCIADO':
+        return 'Enunciado';
+      case 'RESOLUCAO':
+        return 'Resolução';
     }
     return '';
   }
@@ -295,6 +297,7 @@ export class ExamesComponent implements OnInit {
     this.filtro.subject = undefined;
     this.filtro.description = "";
     this.filtro.institution = undefined;
+    this.filtro.examType = "";
     this.filtro.beginDate = undefined;
     this.filtro.endDate = undefined;
     this.filtro.pagina = 0;

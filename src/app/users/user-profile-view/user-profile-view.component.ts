@@ -14,6 +14,9 @@ import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { InterestService } from 'src/app/interest/interest.service';
 import { Interest } from 'src/app/core/model/Interest';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
+import { CommentService } from 'src/app/core/commets/commentService .service';
+import { LikeService } from 'src/app/core/likes/like.service';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -33,9 +36,6 @@ export class UserProfileViewComponent implements OnInit {
   posts: Post[] = [];
   totalRegistros: number = 0
 
-  savedPosts: Post[] = [];
-  totalRegistrosPostsGuardados: number = 10000
-
   friends: User[] = [];
   totalRegistrosAmigos: number = 10000
 
@@ -49,6 +49,8 @@ export class UserProfileViewComponent implements OnInit {
 
   selectedInterest: Interest = new Interest();
 
+  selectedPost = new Post();
+
   selectedFriendToBeRemoved = new User();
   showConfirmDialog: boolean = false;
 
@@ -61,25 +63,19 @@ export class UserProfileViewComponent implements OnInit {
     sort: 'id,desc'
   }
 
-  filtroPostsGuardados: IPostFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'id,desc'
-  }
-
   filtroAmigos: IUserFilter = {
     page: -1,
     itemsPerPage: 5,
     sort: 'firstName,asc',
   }
 
-
-  //isProfilePhoto: boolean = true;
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
+    private commentService: CommentService,
+    private likeService: LikeService,
+    private commentLikeService: CommentLikeService,
     private errorHandler: ErrorHandlerService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -114,7 +110,6 @@ export class UserProfileViewComponent implements OnInit {
       (user: User) => {
         this.user = user;
         this.getUserPostsByUserId(user);
-        this.getUserSavedPosts(user);
         this.getUserFriends(user);
       },
       (erro) => this.errorHandler.handle(erro),
@@ -172,21 +167,14 @@ export class UserProfileViewComponent implements OnInit {
     this.filtro.page++;
     this.feedsService.getUserPostsByUserId(user.id, this.filtro).subscribe(
       (dados: IApiResponse<Post>) => {
+        dados.content.forEach(post => {
+          this.checkIfLiked(post);
+          this.checkIfSaved(post);
+          this.getNumberOfLikes(post);
+          this.getNumberOfComments(post);
+        });
         this.posts = [...this.posts, ...dados.content];
         this.totalRegistros = dados.totalElements
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  getUserSavedPosts(user: User): void {
-    this.filtroPostsGuardados.page++;
-    this.userService.getSavedPosts(user.id, this.filtroPostsGuardados).subscribe(
-      (dados: IApiResponse<Post>) => {
-        this.savedPosts = [...this.savedPosts, ...dados.content];
-        this.totalRegistrosPostsGuardados = dados.totalElements
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -262,12 +250,83 @@ export class UserProfileViewComponent implements OnInit {
     this.getUserPostsByUserId(this.user);
   }
 
-  onShowMoreSavedPosts() {
-    this.getUserSavedPosts(this.user);
-  }
-
   onShowMoreFriends() {
     this.getUserFriends(this.user);
+  }
+
+  toggleLike(post: Post): void {
+    this.likeService.toggleLike(post.id).subscribe(response => {
+      post.isLiked = !post.isLiked;
+      if (post.isLiked) {
+        post.numberOfLikes = post.numberOfLikes + 1;
+      } else {
+        post.numberOfLikes = post.numberOfLikes - 1;
+      }
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      });
+  }
+
+  checkIfLiked(post: Post): void {
+    this.likeService.checkIfLiked(post.id).subscribe(response => {
+      post.isLiked = response;
+      console.log(response)
+    }, error => {
+      console.error('Erro ao verificar se o post foi curtido:', error);
+    });
+  }
+
+  checkIfSaved(post: Post): void {
+    this.userService.checkIfUserSavedPost(this.currentUser.id, post.id).subscribe(response => {
+      post.isSaved = response;
+    });
+  }
+
+  getNumberOfLikes(post: Post): void {
+    this.likeService.countLikesByPostId(post.id).subscribe((response: number) => {
+      post.numberOfLikes = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getNumberOfComments(post: Post): void {
+    this.commentService.countCommentsByPostId(post.id).subscribe((response: number) => {
+      post.numberOfComments = response;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  addPostToSavedPosts(post: Post): void {
+    this.userService.addPostToSavedPosts(this.currentUser.id, post.id).subscribe(() => {
+      post.isSaved = true;
+    });
+  }
+
+  removePostFromSavedPosts(post: Post): void {
+    this.userService.removePostFromSavedPosts(this.currentUser.id, post.id).subscribe(() => {
+      post.isSaved = false;
+    });
+  }
+
+  onRemovePost(post: Post): void {
+    this.showConfirmDialog = true;
+    this.selectedPost = post;
+  }
+
+  closeConfirmRemovePostDialog() {
+    this.showConfirmDialog = false;
+  }
+
+  confirmRemovePostDialog(post: Post) {
+    this.removePostFromSavedPosts(post);
+    this.closeConfirmRemovePostDialog();
   }
 
   isImageUrl(url: string): boolean {
@@ -321,7 +380,7 @@ export class UserProfileViewComponent implements OnInit {
 
   onLogOut(): void {
     this.authenticationService.logOut();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
 
   onShowInterests() {
