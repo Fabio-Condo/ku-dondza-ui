@@ -1,38 +1,184 @@
+<div class="learning-container">
+    <!-- Capa do Curso -->
+    <div class="course-cover">
+        <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
+        
+        <!-- Texto e botão sobre a imagem -->
+        <div class="overlay-content">
+            <p class="overlay-text">Curso de Desenvolvimento Web</p>
+            <button class="overlay-button">Aderir ao Curso</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Detalhes do Curso -->
+        <div class="course-details">
+            <h1 class="course-title">Descrição do curso</h1>
+            <p class="course-description">Este curso oferece uma introdução completa ao desenvolvimento de websites,
+                abordando HTML, CSS, JavaScript e frameworks populares. Ideal para iniciantes que desejam aprender a
+                criar websites interativos e responsivos.</p>
+
+            <!-- Informações do Curso -->
+            <div class="course-info">
+                <div class="release-date">
+                    <i class="pi pi-calendar"></i><span>Data de Lançamento: 01/01/2024</span>
+                </div>
+                <button class="course-join">Aderir</button>
+            </div>
+
+            <div class="students">
+                <span><img src="assets/images/profile-15.jpg"></span>
+                <span><img src="assets/images/profile-16.jpg"></span>
+                <span><img src="assets/images/profile-17.jpg"></span>,
+                <p>tu e mais 30 pessoas gostaram disto</p>
+            </div>
+        </div>
+
+        <!-- Sidebar de Informações Adicionais -->
+        <div class="sidebar">
+            <ul class="course-menu">
+                <li>
+                    <i class="pi pi-bullseye"></i> <!-- Ícone de objetivo -->
+                    <div>
+                        <h3>Objetivos do Curso</h3>
+                        <p>Ao final do curso, você será capaz de criar websites responsivos utilizando HTML, CSS,
+                            JavaScript e frameworks como React e Angular.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="pi pi-check-circle"></i> <!-- Ícone de verificação -->
+                    <div>
+                        <h3>Pré-requisitos</h3>
+                        <p>Não é necessário conhecimento prévio em programação, mas uma compreensão básica de navegação
+                            na web será útil.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="pi pi-list"></i> <!-- Ícone de lista -->
+                    <div>
+                        <h3>Conteúdo</h3>
+                        <p>O curso abrange HTML, CSS, JavaScript, frameworks front-end e boas práticas de
+                            desenvolvimento web.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Seção do Instrutor -->
+    <div class="instructor-info">
+        <h2>Sobre o Instrutor</h2>
+        <div class="instructor-details">
+            <img class="instructor-img" [src]="course.coverImageUrl" alt="Instrutor">
+            <div class="instructor-text">
+                <h3>John Doe</h3>
+                <p>John Doe é um instrutor experiente com mais de 10 anos de ensino em tópicos relacionados à tecnologia
+                    e desenvolvimento de software. Ele tem uma paixão por compartilhar conhecimentos com seus alunos e
+                    guiá-los em sua jornada de aprendizado.</p>
+                <p><strong>Especialização:</strong> Desenvolvimento Web, Frontend, JavaScript, React, Angular.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Aulas -->
+    <div class="course-lessons">
+        <h2>Aulas do Curso</h2>
+        <ul class="lesson-list">
+            <li>
+                <a href="#lesson1">
+                    <i class="pi pi-play-circle"></i>
+                    <div>
+                        <h3>Aula 1: Introdução ao HTML</h3>
+                        <span class="lesson-duration">Duração: 45 minutos</span>
+                    </div>
+                </a>
+                <i class="pi pi-lock" title="Aula Bloqueada"></i> <!-- Ícone de bloqueio -->
+            </li>
+            <li>
+                <a href="#lesson2">
+                    <i class="pi pi-play-circle"></i>
+                    <div>
+                        <h3>Aula 2: Estilizando com CSS</h3>
+                        <span class="lesson-duration">Duração: 50 minutos</span>
+                    </div>
+                </a>
+                <i class="pi pi-unlock" title="Aula Desbloqueada"></i> <!-- Ícone de desbloqueio -->
+            </li>
+            <li>
+                <a href="#lesson3">
+                    <i class="pi pi-play-circle"></i>
+                    <div>
+                        <h3>Aula 3: Introdução ao JavaScript</h3>
+                        <span class="lesson-duration">Duração: 60 minutos</span>
+                    </div>
+                </a>
+                <i class="pi pi-lock" title="Aula Bloqueada"></i> <!-- Ícone de bloqueio -->
+            </li>
+            <li>
+                <a href="#lesson4">
+                    <i class="pi pi-play-circle"></i>
+                    <div>
+                        <h3>Aula 4: Usando React</h3>
+                        <span class="lesson-duration">Duração: 75 minutos</span>
+                    </div>
+                </a>
+                <i class="pi pi-unlock" title="Aula Desbloqueada"></i> <!-- Ícone de desbloqueio -->
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
 <div class="container" style="margin-top: 70px;">
 
     <div>
-        <!-- Cabeçalho das Abas -->
         <div class="tab-header">
-          <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
-            Descrição
-          </div>
-          <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
-            Aulas
-          </div>
-          <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
-            Alunos
-          </div>
+            <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+                Descrição
+            </div>
+            <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+                Aulas
+            </div>
+            <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+                Alunos
+            </div>
         </div>
 
-        <!-- Conteúdo das Abas -->
         <div *ngIf="activeTab === 1" class="active">
 
             <div class="course-container">
                 <div class="course-image-container">
-                  <img [src]="course.coverImageUrl" alt="{{ course.name }}" class="course-image" />
+                    <img [src]="course.coverImageUrl" alt="{{ course.name }}" class="course-image" />
                 </div>
-                
+
                 <div class="course-details">
-                  <h1 class="course-title">{{ course.name }}</h1>
-                  <p class="course-description">{{ course.description }}</p>
-                  
-                  <div class="course-meta">
-                    <p><strong>Alunos Inscritos:</strong> {{ totalStudents }}</p>
-                    <p><strong>Instrutor:</strong> {{course.instrutor }} </p>
-                  </div>
-              
-                  <button class="enroll-button" (click)="addCourseToSubscribedOnlineCourses(course)" *ngIf="!course.isSubscribed">Inscrever-se no Curso</button>
-                  <button class="enroll-button" (click)="onRemoveCourse(course)" *ngIf="course.isSubscribed">Anular inscrição</button>
+                    <h1 class="course-title">{{ course.name }}</h1>
+                    <p class="course-description">{{ course.description }}</p>
+
+                    <div class="course-meta">
+                        <p><strong>Alunos Inscritos:</strong> {{ totalStudents }}</p>
+                        <p><strong>Instrutor:</strong> {{course.instrutor }} </p>
+                    </div>
+
+                    <button class="enroll-button" (click)="addCourseToSubscribedOnlineCourses(course)"
+                        *ngIf="!course.isSubscribed">Inscrever-se no Curso</button>
+                    <button class="enroll-button" (click)="onRemoveCourse(course)" *ngIf="course.isSubscribed">Anular
+                        inscrição</button>
                 </div>
             </div>
 
@@ -42,11 +188,11 @@
 
             <div *ngIf="onlineSelectedCourseContent">
                 <video class="video" #videoPlayer controls>
-                    <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4"> 
+                    <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
-        
+
             <div class="flex">
                 <div>
                     <p class="course-name">{{ onlineSelectedCourseContent.description }}</p>
@@ -55,8 +201,8 @@
                     <a *ngIf="isAdmin" (click)="onAddNewOnlineCourseContent()" class="ml-left">Adicionar</a>
                 </div>
             </div>
-        
-        
+
+
             <table class="card-table">
                 <tbody>
                     <tr *ngFor="let content of onlineCourseContentList">
@@ -70,22 +216,22 @@
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
-                                    
+
                                     <div class="content">
                                         <p class="course-name">{{ content.description }}</p>
                                         <a (click)="onUpdateOnlineCourseContent(content, file)"
-                                        class="edit-link">editar</a>
+                                            class="edit-link">editar</a>
                                         <a (click)="confirmarExclusao(content)" class="delete-link">excluir</a>
                                     </div>
-                                    <p *ngIf="onlineSelectedCourseContent == content"><i class="pi pi-play" style="font-size: 1rem;"></i></p>
+                                    <p *ngIf="onlineSelectedCourseContent == content"><i class="pi pi-play"
+                                            style="font-size: 1rem;"></i></p>
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        
-            <!-- Indicador de carregamento -->
+
             <div *ngIf="showLoading" class="loading-indicator">
                 Carregando...
             </div>
@@ -103,16 +249,12 @@
                                         <img src="{{student.profileImageUrl}}" alt="pic 1" />
                                     </div>
                                     <div class="content" style="margin-left: 20px;">
-                                        <p class="user-name user-name-hover" [routerLink]="['/user/profile', student.userId]">
+                                        <p class="user-name user-name-hover"
+                                            [routerLink]="['/user/profile', student.userId]">
                                             {{ student.firstName }} {{ student.lastName }}
                                         </p>
                                         <p class="username text-muted">12 mutual friends</p>
                                     </div>
-                                    <!--
-                                    <div class="button-container">
-                                        <button class="btn" style="margin-left: 10px;">Remover</button>                            
-                                    </div>
-                                    -->
                                 </div>
                             </div>
                         </td>
@@ -124,10 +266,9 @@
                 </tbody>
             </table>
         </div>
-        
     </div>
-
 </div>
+-->
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
@@ -157,7 +298,6 @@
     </div>
 </div>
 
-<!-- confirm dialog -->
 <div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
     <div class="confirm-dialog">
         <div class="confirm-dialog-header">

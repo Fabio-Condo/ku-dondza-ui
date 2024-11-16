@@ -1,3 +1,4 @@
+/*
 .texto-limitado {
     width: 300px;
     white-space: nowrap;
@@ -13,7 +14,6 @@ hr {
     margin-bottom: 1rem;
 }
 
-/* Table */
 .card-table {
     width: 100%;
     border-collapse: separate;
@@ -84,7 +84,6 @@ video {
     margin-left: 10px;
 }
 
-/* Indicador de carregamento */
 .loading-indicator {
     margin-top: 20px;
     font-size: 0.85rem;
@@ -93,7 +92,6 @@ video {
     text-align: center;
 }
 
-/* Estilos para o diálogo de cadastro */
 .overlay {
     position: fixed;
     display: none;
@@ -165,7 +163,6 @@ video {
 }
 
 
-/*INPUT SEARCH*/
 .flex {
     display: flex;
     justify-content: space-between;
@@ -256,10 +253,8 @@ a {
 
 .tab-link:last-child {
     border-right: none;
-    /* Remove a borda direita na última aba */
 }
 
-/*course dtail*/
 .course-container {
     display: flex;
     flex-wrap: wrap;
@@ -349,7 +344,6 @@ a {
 }
 
 
-/* MEDIA QUERIES PARA RESPONSIVIDADE */
 @media (max-width: 768px) {
     .course-container {
         flex-direction: column;
@@ -387,5 +381,537 @@ a {
 
     .course-meta p {
         font-size: 1em;
+    }
+}
+*/
+
+
+/*********************/
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:host {
+    display: block;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+}
+
+/* Container Principal */
+.learning-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Capa do Curso */
+.course-cover {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    /* Ajuste conforme necessário */
+    overflow: hidden;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0.8) 40%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0) 80%);
+    -webkit-mask-image: linear-gradient(to left, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0.8) 40%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0) 80%);
+    mask-image: linear-gradient(to left, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0.8) 40%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0) 80%);
+}
+
+
+
+/* Conteúdo Principal */
+.main-content {
+    padding: 40px;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: space-between;
+}
+
+.course-details {
+    flex: 2;
+    margin-bottom: 20px;
+}
+
+.course-title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #222222;
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+.course-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    color: #555555;
+}
+
+/* Dados do Curso */
+.course-info {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.course-info .release-date,
+.course-info .likes {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.course-info .release-date span,
+.course-info .likes span {
+    margin-left: 5px;
+}
+
+.course-info .release-date i,
+.course-info .likes i {
+    color: var(--color-primary);
+    margin-right: 5px;
+}
+
+.course-info .course-join {
+    align-self: flex-start;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.course-info .course-join:hover {
+    background-color: #0069d9;
+}
+
+/* Sobre o Instrutor */
+.instructor-info {
+    flex: 1;
+    margin-top: 0;
+    border-left: 1px solid #ddd;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.instructor-info img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.instructor-info .instructor-details h3 {
+    font-size: 1.5rem;
+    color: #222222;
+    margin-bottom: 10px;
+}
+
+.instructor-info .instructor-details p {
+    font-size: 1rem;
+    color: #555555;
+    line-height: 1.8;
+}
+
+/* Seção de Informações Adicionais */
+.sidebar {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: #222222;
+    font-weight: 600;
+    text-align: center;
+}
+
+.course-menu {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+.course-menu li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.course-menu li i {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.course-menu li div {
+    flex-grow: 1;
+}
+
+.course-menu h3 {
+    font-size: 1.2rem;
+    color: #222222;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.course-menu p {
+    font-size: 1rem;
+    color: #555555;
+    line-height: 1.6;
+}
+
+/* Estilos para a Lista de Aulas */
+.course-lessons {
+    width: 100%;
+    /* Ocupa toda a linha */
+    background-color: #fff;
+    padding: 20px;
+    /* Menor espaçamento geral */
+    margin-top: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.course-lessons h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-align: center;
+}
+
+.lesson-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.lesson-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Espaçamento entre os itens */
+    margin-bottom: 15px;
+    /* Menor espaçamento entre as aulas */
+    padding: 10px 0;
+    /* Menor espaçamento interno */
+    border-bottom: 1px solid #ddd;
+}
+
+.lesson-list li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    /* Remove o sublinhado padrão do link */
+    color: inherit;
+    /* Mantém a cor do texto original */
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.lesson-list li a:hover {
+    background-color: #e6f7ff;
+    /* Efeito de fundo quando o link for hover (azul claro) */
+    border-radius: 8px;
+    /* Borda arredondada ao passar o mouse */
+}
+
+.lesson-list li i {
+    font-size: 2rem;
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.lesson-list li div {
+    flex-grow: 1;
+}
+
+.lesson-list li h3 {
+    font-size: 1.3rem;
+    color: #222222;
+    font-weight: 600;
+    margin-bottom: 5px;
+    /* Menor espaçamento entre o título e a descrição */
+}
+
+.lesson-list li p {
+    font-size: 1rem;
+    color: #555555;
+    line-height: 1.6;
+    margin-bottom: 5px;
+    /* Menor espaçamento entre a descrição e a duração */
+}
+
+.lesson-duration {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 3px;
+    /* Menor margem para a duração */
+    display: block;
+}
+
+/* Estilos para os ícones de bloqueio/desbloqueio */
+.lesson-list li .pi-lock,
+.lesson-list li .pi-unlock {
+    font-size: 1.8rem;
+    color: #888;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.lesson-list li .pi-lock:hover,
+.lesson-list li .pi-unlock:hover {
+    color: var(--color-primary);
+    /* Mudança de cor ao passar o mouse */
+}
+
+
+.instructor-info {
+    margin-top: 40px;
+    padding-right: 20px;
+    /* Adiciona padding à direita */
+}
+
+.instructor-info h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-align: center;
+}
+
+.instructor-details {
+    display: flex;
+    /* Usamos flexbox para alinhar os itens lado a lado */
+    align-items: center;
+    /* Alinha a imagem e o texto verticalmente */
+    gap: 20px;
+    /* Espaçamento entre a imagem e o texto */
+}
+
+.instructor-img {
+    width: 100px;
+    /* Defina o tamanho da imagem */
+    height: 100px;
+    border-radius: 50%;
+    /* Tornar a imagem redonda */
+    object-fit: cover;
+    /* Corta a imagem mantendo a proporção */
+}
+
+.instructor-text {
+    flex: 1;
+    /* O texto ocupa o restante do espaço disponível */
+}
+
+.instructor-text h3 {
+    margin-top: 0;
+    /* Remove a margem superior do nome */
+    text-align: left;
+    /* Alinha o nome à esquerda */
+}
+
+.instructor-text p {
+    text-align: left;
+    /* Alinha a descrição à esquerda */
+}
+
+.students {
+    display: flex;
+    margin-top: 1rem;
+
+}
+
+.students span {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: block;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid var(--color-white);
+    margin-left: -0.6rem;
+}
+
+.students span:first-child {
+    margin: 0;
+}
+
+.students p {
+    margin-left: 0.5rem;
+    color: #777;
+
+}
+
+.course-cover {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    /* Defina a altura que desejar */
+    overflow: hidden;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay-content {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    /* Posiciona o conteúdo à esquerda */
+    transform: translateY(-50%);
+    color: #222222;
+    font-weight: 700;
+    text-align: left;
+    /* Alinha o texto à esquerda */
+    font-size: 2.2rem;
+
+}
+
+.overlay-text {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.overlay-button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.overlay-button:hover {
+    opacity: 0.8;
+}
+
+/* Responsividade para dispositivos menores */
+@media (max-width: 768px) {
+    .lesson-list li {
+        padding: 10px;
+        /* Menos padding em telas pequenas */
+        gap: 10px;
+        /* Menos espaço entre os itens */
+    }
+
+    .lesson-list li h3 {
+        font-size: 1.1rem;
+        /* Reduz o tamanho da fonte do título */
+    }
+
+    .lesson-list li p {
+        font-size: 0.9rem;
+        /* Reduz o tamanho da fonte da descrição */
+    }
+
+    .lesson-list li .lesson-duration {
+        font-size: 0.9rem;
+        /* Reduz o tamanho da duração */
+    }
+
+    .lesson-list li .pi-lock,
+    .lesson-list li .pi-unlock {
+        font-size: 1.5rem;
+        /* Ajuste o tamanho do ícone */
+    }
+
+    .instructor-info {
+        padding-left: 20px;
+        /* Ajuste para espaçamento nas telas pequenas */
+    }
+
+    .instructor-info img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .instructor-info .instructor-details h3 {
+        font-size: 1.3rem;
+        /* Ajuste no tamanho do título em telas pequenas */
+    }
+
+    .instructor-info .instructor-details p {
+        font-size: 0.9rem;
+        /* Ajuste no tamanho da descrição em telas pequenas */
+    }
+}
+
+@media (max-width: 480px) {
+    .lesson-list li {
+        padding: 8px;
+        /* Menos padding em telas muito pequenas */
+    }
+
+    .lesson-list li h3 {
+        font-size: 1rem;
+        /* Diminui o tamanho do título */
+    }
+
+    .lesson-list li p {
+        font-size: 0.8rem;
+        /* Diminui o tamanho da descrição */
+    }
+
+    .lesson-list li .lesson-duration {
+        font-size: 0.7rem;
+        /* Diminui o tamanho da duração */
+    }
+
+    .lesson-list li .pi-lock,
+    .lesson-list li .pi-unlock {
+        font-size: 1.3rem;
+        /* Ajusta ainda mais o tamanho do ícone para dispositivos muito pequenos */
+    }
+}
+
+
+/* Responsivo */
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .instructor-info {
+        flex: 1;
+        padding-left: 0;
+        border-left: none;
     }
 }
