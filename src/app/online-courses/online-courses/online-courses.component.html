@@ -12,8 +12,7 @@
 
     <div class="flex">
         <div>
-            <a *ngIf="isAdmin" (click)="onAddNewOnlineCourse()" class="ml-left">Adicionar</a>
-            <a *ngIf="isAdmin" (click)="onFilter()">Filtrar</a>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalCourses }}</span>
         </div>
 
         <div class="input-group">
@@ -24,6 +23,13 @@
                     placeholder="Pesquisa">
             </div>
 
+            <div class="dropdown-container" style="margin-left: 4px;">
+                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="isDropdownOpen">
+                    <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
+                    <a (click)="onAddNewOnlineCourse(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -42,7 +48,7 @@
 
                             <div class="content">
                                 <p class="course-name">{{ course.name }}</p>
-                                <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor }}</span></p>
+                                <p class="details">Instrutor: <span class="text-muted">{{ course.instrutorName }}</span></p>
                                 <p class="details" *ngIf="course.totalStudents == 0">Seja <strong>primeiro estudante</strong> a aderir ao curso</p>
                                 <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas <strong>uma pessoa</strong> é estudante deste curso</p>
                                 <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas <strong>Tu</strong> és estudante deste curso</p>
@@ -70,6 +76,8 @@
 
     <!-- Paginação -->
     <div class="pagination-controls">
+        <span class="pagination-info mr-auto"></span>
+        
         <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
             <i class="pi pi-chevron-left"></i> Anterior
         </button>
@@ -83,7 +91,6 @@
                 {{ option }}
             </option>
         </select>
-        <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalCourses }}</span>
     </div>
 
     <!-- Indicador de carregamento -->
@@ -109,14 +116,38 @@
 
             <div class="form-group">
                 <label for="description">Descrição</label>
-                <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
-                    [(ngModel)]="course.description">
+                <textarea id="description" name="description" ngModel #description="ngModel" required minlength="1" 
+                    [(ngModel)]="course.description" rows="4"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="instrutor">Instrutor</label>
-                <input type="text" name="instrutor" ngModel #instrutor="ngModel" required minlength="1"
-                    [(ngModel)]="course.instrutor">
+                <label for="requirements">requirements</label>
+                <textarea id="requirements" name="requirements" ngModel #requirements="ngModel" required minlength="1" 
+                [(ngModel)]="course.requirements" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="lunchDate">Lunch Date</label>
+                <input type="text" name="lunchDate" ngModel #lunchDate="ngModel" required minlength="1"
+                    [(ngModel)]="course.lunchDate">
+            </div>
+
+            <div class="form-group">
+                <label for="instrutorName">Instrutor Name</label>
+                <input type="text" name="instrutorName" ngModel #instrutorName="ngModel" required minlength="1"
+                    [(ngModel)]="course.instrutorName">
+            </div>
+
+            <div class="form-group">
+                <label for="instrutorDescription">Instrutor Description</label>
+                <textarea id="instrutorDescription" name="instrutorDescription" ngModel #instrutorDescription="ngModel" required minlength="1" 
+                    [(ngModel)]="course.instrutorDescription" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="instrutorSpecialization">Instrutor Specialization</label>
+                <textarea id="instrutorSpecialization" name="instrutorSpecialization" ngModel #instrutorSpecialization="ngModel" required minlength="1" 
+                    [(ngModel)]="course.instrutorSpecialization" rows="4"></textarea>    
             </div>
 
             <div class="form-group">

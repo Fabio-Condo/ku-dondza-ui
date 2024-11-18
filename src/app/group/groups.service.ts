@@ -84,5 +84,31 @@ export class GroupService {
   countMembersByGroupId(groupId: number): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/${groupId}/members/total`, {});
   }
+
+  addMemberToGroupAdministrators(groupId: number, userId: number): Observable<Group> {
+    return this.http.post<Group>(`${this.baseUrl}/${groupId}/administrators/${userId}`, {});
+  }
+
+  removeMemberFromGroupAdministrators(groupId: number, userId: number): Observable<Group> {
+    return this.http.delete<Group>(`${this.baseUrl}/${groupId}/administrators/${userId}`);
+  }
+
+  checkIsAdmin(groupId: number, userId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}/${groupId}/administrators/contains/${userId}`);
+  }
+
+  getAdministratorsByGroupId(groupId: number, filtro: GroupFilter): Observable<IApiResponse<User>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.pagina)
+      .set('sort', filtro.ordenamento)
+      .set('size', filtro.itensPorPagina);
+
+    return this.http.get<IApiResponse<User>>(`${this.baseUrl}/${groupId}/administrators`, { params });
+  }
+
+  countAdministratorsByGroupId(groupId: number): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/${groupId}/administrators/total`, {});
+  }
    
 }

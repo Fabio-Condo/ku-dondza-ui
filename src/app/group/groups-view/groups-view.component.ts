@@ -109,6 +109,7 @@ export class GroupsViewComponent implements OnInit {
         this.countMembersByGroupId(this.group);
         this.getFeeds(this.group);
         this.checkMembership(this.group);
+        this.checkIsAdmin(this.loggedUser);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -248,6 +249,9 @@ export class GroupsViewComponent implements OnInit {
     this.flitroGrupo.pagina++;
     this.groupService.getGroupMembers(group.id, this.flitroGrupo).subscribe(
       (dados: IApiResponse<User>) => {
+        dados.content.forEach(user => {
+          this.checkIsAdmin(user);
+        });
         this.members = [...this.members, ...dados.content];
         this.totalRegistros = dados.totalElements
       },
@@ -282,19 +286,19 @@ export class GroupsViewComponent implements OnInit {
 
   checkMembership(group: Group): void {
     this.groupService.checkMembership(group.id, this.loggedUser.id).subscribe(response => {
-      group.isMember = response;
+      group.isCurrentUserMember = response;
     });
   }
 
   addMemberToGroup(group: Group): void {
     this.groupService.addMemberToGroup(group.id, this.loggedUser.id).subscribe(() => {
-      group.isMember = true;
+      group.isCurrentUserMember = true;
     });
   }
 
   removeMemberFromGroup(group: Group): void {
     this.groupService.removeMemberFromGroup(group.id, this.loggedUser.id).subscribe(() => {
-      group.isMember = false;
+      group.isCurrentUserMember = false;
     });
   }
 
@@ -310,6 +314,12 @@ export class GroupsViewComponent implements OnInit {
   confirmDialog(group: Group) {
     this.removeMemberFromGroup(group);
     this.closeConfirmDialog();
+  }
+
+  checkIsAdmin(user: User): void {
+    this.groupService.checkIsAdmin(this.group.id, user.id).subscribe(response => {
+      user.isGroupAdmin = response;
+    });
   }
 
   changePageSize(event: any): void {

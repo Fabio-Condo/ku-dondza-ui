@@ -6,19 +6,27 @@
     </div>
 
     <p style="margin-top: 20px; font-size: 0.85rem;">Participe de quizzes interativos e educativos.</p>
-    <p style="margin-bottom: 20px; font-size: 0.85rem;"> Os quizzes são uma maneira divertida de revisar o que você aprendeu e avaliar seu conhecimento em diferentes tópicos.
+    <p style="margin-bottom: 20px; font-size: 0.85rem;"> Os quizzes são uma maneira divertida de revisar o que você
+        aprendeu e avaliar seu conhecimento em diferentes tópicos.
     </p>
 
     <div class="flex">
         <div>
-            <a *ngIf="isAdmin" (click)="onAddNewQuiz()" class="ml-left">Adicionar</a>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalRecords }} dos {{ totalQuizzes }}</span>
         </div>
 
         <div class="input-group">
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
-
-                <input type="text" id="input" class="transparent-input" [(ngModel)]="filter.searchParam" (ngModelChange)="getQuizzes()" placeholder="Pesquisa">
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filter.searchParam"
+                    (ngModelChange)="getQuizzes()" placeholder="Pesquisa">
+            </div>
+            <div class="dropdown-container" style="margin-left: 4px;">
+                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="isDropdownOpen">
+                    <a>Filtrar</a>
+                    <a (click)="onAddNewQuiz(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                </div>
             </div>
         </div>
     </div>
@@ -36,16 +44,18 @@
                                 <p class="details"><strong>{{ quiz.totalQuestions }}</strong> questões</p>
                             </div>
                             <div class="dropdown-container">
-                                <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-v"></i></button>
+                                <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
+                                        class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
                                     <a (click)="onUpdateQuiz(quiz); closeDropdown(quiz)">Editar</a>
-                                    <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)" >Eliminar</a>
+                                    <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)">Eliminar</a>
                                     <a (click)="onAddQuestions(quiz); closeDropdown(quiz)">Adicionar questão</a>
                                     <a (click)="onShowSelectedQuiz(quiz); closeDropdown(quiz)">Ver questões</a>
                                 </div>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary" [routerLink]="['/quizzes', quiz.id, 'questions']">Iniciar</button>
+                                <button class="btn btn-primary"
+                                    [routerLink]="['/quizzes', quiz.id, 'questions']">Iniciar</button>
                             </div>
                         </div>
                     </div>
@@ -55,7 +65,9 @@
     </table>
 
     <!-- Paginação -->
-    <div class="pagination-controls">
+    <div class="pagination-controls ml-auto">
+        <span class="pagination-info mr-auto"></span>
+
         <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
             <i class="pi pi-chevron-left"></i> Anterior
         </button>
@@ -69,7 +81,6 @@
                 {{ option }}
             </option>
         </select>
-        <span class="pagination-info ml-auto"> Mostrando {{ totalRecords }} dos {{ totalQuizzes }}</span>
     </div>
 
     <!-- Indicador de carregamento -->
@@ -94,7 +105,8 @@
                                 <p>{{question.text}}</p>
                             </div>
                             <div class="button-container">
-                                <button class="btn" style="margin-left: 10px;" (click)="removeQuestionFromQuiz(question)">Remover</button>                            
+                                <button class="btn" style="margin-left: 10px;"
+                                    (click)="removeQuestionFromQuiz(question)">Remover</button>
                             </div>
                         </div>
                     </div>
@@ -143,8 +155,8 @@
         </div>
 
         <div class="form-group">
-            <button type="button" (click)="addQuestionToQuiz()" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-          </div>
+            <button type="button" (click)="addQuestionToQuiz()" class="btn btn-primary">{{ showLoading ? 'Loading...' :
+                'Salvar' }}</button>
+        </div>
     </div>
 </div>
-

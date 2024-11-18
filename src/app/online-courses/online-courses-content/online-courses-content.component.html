@@ -1,134 +1,134 @@
-<div class="learning-container">
+<div class="learning-container" style="margin-top: 70px;">
     <!-- Capa do Curso -->
     <div class="course-cover">
         <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
-        
+
         <!-- Texto e botão sobre a imagem -->
         <div class="overlay-content">
-            <p class="overlay-text">Curso de Desenvolvimento Web</p>
-            <button class="overlay-button">Aderir ao Curso</button>
+            <p class="overlay-text">{{ course.name }}</p>
+            <button class="overlay-button">Pré-visualizar</button>
         </div>
     </div>
 
     <div class="main-content">
         <!-- Detalhes do Curso -->
         <div class="course-details">
-            <h1 class="course-title">Descrição do curso</h1>
-            <p class="course-description">Este curso oferece uma introdução completa ao desenvolvimento de websites,
-                abordando HTML, CSS, JavaScript e frameworks populares. Ideal para iniciantes que desejam aprender a
-                criar websites interativos e responsivos.</p>
+            <h1 class="title">Descrição</h1>
+            <p class="course-description">{{ course.description }}</p>
 
             <!-- Informações do Curso -->
             <div class="course-info">
                 <div class="release-date">
-                    <i class="pi pi-calendar"></i><span>Data de Lançamento: 01/01/2024</span>
+                    <i class="pi pi-calendar"></i><span>Data de Lançamento: {{ course.lunchDate }}</span>
                 </div>
-                <button class="course-join">Aderir</button>
+
+                <div class="likes">
+                    <i class="pi pi-thumbs-up"></i><span>2,500 pessoas gostaram</span>
+                </div>
+
+                <button class="course-join" *ngIf="!course.isSubscribed"
+                    (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
+                <button class="course-join" disabled *ngIf="course.isSubscribed">Inscrito</button>
             </div>
 
-            <div class="students">
-                <span><img src="assets/images/profile-15.jpg"></span>
-                <span><img src="assets/images/profile-16.jpg"></span>
-                <span><img src="assets/images/profile-17.jpg"></span>,
-                <p>tu e mais 30 pessoas gostaram disto</p>
+            <h1 class="title">Pré-requisitos</h1>
+            <p class="course-description">{{ course.requirements }}</p>
+
+            <!-- Seção do Instrutor -->
+            <div class="instructor-info">
+                <h1 class="title">Instrutor</h1>
+                <div class="instructor-details">
+                    <img class="instructor-img" [src]="course.coverImageUrl" alt="Instrutor">
+                    <div class="instructor-text">
+                        <h3>{{ course.instrutorName }}</h3>
+                        <p>{{ course.instrutorDescription }}</p>
+                        <p><strong>Especialização:</strong> {{ course.instrutorSpecialization }}</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Sidebar de Informações Adicionais -->
-        <div class="sidebar">
-            <ul class="course-menu">
-                <li>
-                    <i class="pi pi-bullseye"></i> <!-- Ícone de objetivo -->
-                    <div>
-                        <h3>Objetivos do Curso</h3>
-                        <p>Ao final do curso, você será capaz de criar websites responsivos utilizando HTML, CSS,
-                            JavaScript e frameworks como React e Angular.</p>
-                    </div>
-                </li>
-                <li>
-                    <i class="pi pi-check-circle"></i> <!-- Ícone de verificação -->
-                    <div>
-                        <h3>Pré-requisitos</h3>
-                        <p>Não é necessário conhecimento prévio em programação, mas uma compreensão básica de navegação
-                            na web será útil.</p>
-                    </div>
-                </li>
-                <li>
-                    <i class="pi pi-list"></i> <!-- Ícone de lista -->
-                    <div>
-                        <h3>Conteúdo</h3>
-                        <p>O curso abrange HTML, CSS, JavaScript, frameworks front-end e boas práticas de
-                            desenvolvimento web.</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Seção do Instrutor -->
-    <div class="instructor-info">
-        <h2>Sobre o Instrutor</h2>
-        <div class="instructor-details">
-            <img class="instructor-img" [src]="course.coverImageUrl" alt="Instrutor">
-            <div class="instructor-text">
-                <h3>John Doe</h3>
-                <p>John Doe é um instrutor experiente com mais de 10 anos de ensino em tópicos relacionados à tecnologia
-                    e desenvolvimento de software. Ele tem uma paixão por compartilhar conhecimentos com seus alunos e
-                    guiá-los em sua jornada de aprendizado.</p>
-                <p><strong>Especialização:</strong> Desenvolvimento Web, Frontend, JavaScript, React, Angular.</p>
-            </div>
-        </div>
     </div>
 
     <!-- Lista de Aulas -->
     <div class="course-lessons">
-        <h2>Aulas do Curso</h2>
-        <ul class="lesson-list">
+        <h1 class="title">Aulas</h1>
+        <ul class="lesson-list" *ngFor="let content of onlineCourseContentList">
             <li>
-                <a href="#lesson1">
+                <a (click)="onSelectContent(content)">
                     <i class="pi pi-play-circle"></i>
                     <div>
-                        <h3>Aula 1: Introdução ao HTML</h3>
+                        <h3>{{ content.description }}</h3>
                         <span class="lesson-duration">Duração: 45 minutos</span>
                     </div>
                 </a>
-                <i class="pi pi-lock" title="Aula Bloqueada"></i> <!-- Ícone de bloqueio -->
-            </li>
-            <li>
-                <a href="#lesson2">
-                    <i class="pi pi-play-circle"></i>
-                    <div>
-                        <h3>Aula 2: Estilizando com CSS</h3>
-                        <span class="lesson-duration">Duração: 50 minutos</span>
-                    </div>
-                </a>
-                <i class="pi pi-unlock" title="Aula Desbloqueada"></i> <!-- Ícone de desbloqueio -->
-            </li>
-            <li>
-                <a href="#lesson3">
-                    <i class="pi pi-play-circle"></i>
-                    <div>
-                        <h3>Aula 3: Introdução ao JavaScript</h3>
-                        <span class="lesson-duration">Duração: 60 minutos</span>
-                    </div>
-                </a>
-                <i class="pi pi-lock" title="Aula Bloqueada"></i> <!-- Ícone de bloqueio -->
-            </li>
-            <li>
-                <a href="#lesson4">
-                    <i class="pi pi-play-circle"></i>
-                    <div>
-                        <h3>Aula 4: Usando React</h3>
-                        <span class="lesson-duration">Duração: 75 minutos</span>
-                    </div>
-                </a>
-                <i class="pi pi-unlock" title="Aula Desbloqueada"></i> <!-- Ícone de desbloqueio -->
+                <a *ngIf="!isAdmin" (click)="onUpdateOnlineCourseContent(content, file)" class="edit-link">editar</a>
+                <a *ngIf="!isAdmin" (click)="confirmarExclusao(content)" class="delete-link">excluir</a>
+                <i class="pi pi-unlock" title="Aula Bloqueada"></i> <!-- Ícone de bloqueio -->
             </li>
         </ul>
     </div>
 </div>
 
 
+<div class="overlay" *ngIf="showLesson">
+    <div class="vidio-dialog">
+        <h2 style="font-size: 1rem; margin-left: 0.7rem;">{{ onlineSelectedCourseContent.description }}</h2>
+        <button class="vidio-close-btn" (click)="showLesson = false">&times;</button>
+
+        <div *ngIf="onlineSelectedCourseContent">
+            <video class="video" #videoPlayer controls>
+                <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+    </div>
+</div>
+
+<div class="overlay" *ngIf="displayModalSave">
+    <div class="dialog">
+        <h2>{{ editing ? 'Editando Instituição' : 'Adicionando Nova Instituição' }}</h2>
+
+        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+
+        <hr>
+
+        <form autocomplete="off" #courseForm="ngForm">
+
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
+                    [(ngModel)]="onlineCourseContent.description">
+            </div>
+
+            <div class="form-group">
+                <input type="file" (change)="onFileSelected($event)" name="file" accept="application/**"
+                    class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja sair anular a subscrição ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmDialog(selectedOnlineCourse)">Confirmar</button>
+            <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 
 
@@ -269,47 +269,3 @@
     </div>
 </div>
 -->
-
-<div class="overlay" *ngIf="displayModalSave">
-    <div class="dialog">
-        <h2>{{ editing ? 'Editando Instituição' : 'Adicionando Nova Instituição' }}</h2>
-
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
-
-        <hr>
-
-        <form autocomplete="off" #courseForm="ngForm">
-
-            <div class="form-group">
-                <label for="description">Descrição</label>
-                <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
-                    [(ngModel)]="onlineCourseContent.description">
-            </div>
-
-            <div class="form-group">
-                <input type="file" (change)="onFileSelected($event)" name="file" accept="application/**"
-                    class="form-control" required />
-            </div>
-
-            <div class="form-group">
-                <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
-    <div class="confirm-dialog">
-        <div class="confirm-dialog-header">
-            <h4>Deseja sair anular a subscrição ?</h4>
-            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
-        </div>
-        <div class="confirm-dialog-content">
-            <ng-content></ng-content>
-        </div>
-        <div class="confirm-dialog-footer">
-            <button (click)="confirmDialog(selectedOnlineCourse)">Confirmar</button>
-            <button (click)="closeConfirmDialog()">Cancelar</button>
-        </div>
-    </div>
-</div>

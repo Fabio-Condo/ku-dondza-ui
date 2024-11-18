@@ -395,21 +395,22 @@ a {
     box-sizing: border-box;
 }
 
+/*
 :host {
     display: block;
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     color: #333;
-    padding: 20px;
 }
+*/
 
 /* Container Principal */
 .learning-container {
-    max-width: 1200px;
-    margin: 40px auto;
+    max-width: 1000px;
+    margin: 50px auto;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -437,7 +438,7 @@ a {
 
 /* Conteúdo Principal */
 .main-content {
-    padding: 40px;
+    padding: 0.7rem;
     display: flex;
     flex-direction: row;
     gap: 40px;
@@ -449,26 +450,26 @@ a {
     margin-bottom: 20px;
 }
 
-.course-title {
-    font-size: 1.8rem;
+.title {
+    font-size: 1.2rem;
     margin-bottom: 15px;
-    color: #222222;
+    color: var(--color-black);
     text-transform: capitalize;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .course-description {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     line-height: 1.8;
     margin-bottom: 25px;
-    color: #555555;
+    color: var(--color-gray);
 }
 
 /* Dados do Curso */
 .course-info {
     display: flex;
     justify-content: flex-start;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #777;
     margin-bottom: 30px;
 }
@@ -495,24 +496,22 @@ a {
     align-self: flex-start;
     background-color: var(--color-primary);
     color: white;
-    padding: 12px 25px;
+    padding: 10px 20px;
     border: none;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: all 300ms ease;
 }
 
 .course-info .course-join:hover {
-    background-color: #0069d9;
+    opacity: 0.8;
 }
 
 /* Sobre o Instrutor */
 .instructor-info {
     flex: 1;
     margin-top: 0;
-    border-left: 1px solid #ddd;
-    padding-left: 30px;
     padding-right: 30px;
     display: flex;
     flex-direction: column;
@@ -529,67 +528,14 @@ a {
 
 .instructor-info .instructor-details h3 {
     font-size: 1.5rem;
-    color: #222222;
+    color: var(--color-black);
     margin-bottom: 10px;
 }
 
 .instructor-info .instructor-details p {
-    font-size: 1rem;
-    color: #555555;
+    font-size: 0.9rem;
+    color: var(--color-gray);
     line-height: 1.8;
-}
-
-/* Seção de Informações Adicionais */
-.sidebar {
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar h2 {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-    color: #222222;
-    font-weight: 600;
-    text-align: center;
-}
-
-.course-menu {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 20px;
-}
-
-.course-menu li {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.course-menu li i {
-    font-size: 1.8rem;
-    color: var(--color-primary);
-    flex-shrink: 0;
-}
-
-.course-menu li div {
-    flex-grow: 1;
-}
-
-.course-menu h3 {
-    font-size: 1.2rem;
-    color: #222222;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.course-menu p {
-    font-size: 1rem;
-    color: #555555;
-    line-height: 1.6;
 }
 
 /* Estilos para a Lista de Aulas */
@@ -597,7 +543,7 @@ a {
     width: 100%;
     /* Ocupa toda a linha */
     background-color: #fff;
-    padding: 20px;
+    padding: 0.7rem;
     /* Menor espaçamento geral */
     margin-top: 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -605,11 +551,10 @@ a {
 }
 
 .course-lessons h2 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     margin-bottom: 20px;
-    color: var(--color-primary);
+    color: var(--color-black);
     font-weight: 600;
-    text-align: center;
 }
 
 .lesson-list {
@@ -636,15 +581,13 @@ a {
     /* Remove o sublinhado padrão do link */
     color: inherit;
     /* Mantém a cor do texto original */
+    cursor: pointer;
     width: 100%;
     transition: background-color 0.3s ease;
 }
 
 .lesson-list li a:hover {
-    background-color: #e6f7ff;
-    /* Efeito de fundo quando o link for hover (azul claro) */
-    border-radius: 8px;
-    /* Borda arredondada ao passar o mouse */
+    text-decoration: underline;
 }
 
 .lesson-list li i {
@@ -658,23 +601,23 @@ a {
 }
 
 .lesson-list li h3 {
-    font-size: 1.3rem;
-    color: #222222;
+    font-size: 1rem;
+    color: var(--color-black);
     font-weight: 600;
     margin-bottom: 5px;
     /* Menor espaçamento entre o título e a descrição */
 }
 
 .lesson-list li p {
-    font-size: 1rem;
-    color: #555555;
+    font-size: 0.7rem;
+    color: var(--color-gray);
     line-height: 1.6;
     margin-bottom: 5px;
     /* Menor espaçamento entre a descrição e a duração */
 }
 
 .lesson-duration {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: #777;
     margin-top: 3px;
     /* Menor margem para a duração */
@@ -684,8 +627,8 @@ a {
 /* Estilos para os ícones de bloqueio/desbloqueio */
 .lesson-list li .pi-lock,
 .lesson-list li .pi-unlock {
-    font-size: 1.8rem;
-    color: #888;
+    font-size: 1rem;
+    color: var(--color-gray);
     margin-left: auto;
     cursor: pointer;
 }
@@ -706,9 +649,9 @@ a {
 .instructor-info h2 {
     font-size: 1.8rem;
     margin-bottom: 20px;
-    color: var(--color-primary);
+    color: var(--color-black);
     font-weight: 600;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .instructor-details {
@@ -793,7 +736,7 @@ a {
     left: 10%;
     /* Posiciona o conteúdo à esquerda */
     transform: translateY(-50%);
-    color: #222222;
+    color: var(--color-black);
     font-weight: 700;
     text-align: left;
     /* Alinha o texto à esquerda */
@@ -808,53 +751,140 @@ a {
 }
 
 .overlay-button {
-    background-color: var(--color-primary);
-    color: white;
-    border: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
     padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
     border-radius: 5px;
-    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, opacity 0.3s;
+    opacity: 1.9;
 }
 
 .overlay-button:hover {
     opacity: 0.8;
 }
 
+.overlay {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vidio-dialog {
+    background-color: #fff;
+    padding-top: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 900px;
+    height: 500px;
+    position: relative;
+}
+
+.vidio-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 0.7rem;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--color-black);
+}
+
+video {
+    margin: 5px 0;
+    box-shadow: 0 10px 200px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    width: 100%;
+    height: 500px;
+}
+
+.dialog {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 100%;
+    position: relative;
+}
+
+.dialog h2 {
+    margin-top: 0;
+    color: var(--color-black);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group select {
+    appearance: none;
+    background: #fff url('data:image/svg+xml;utf8,<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>') no-repeat right 10px center;
+    background-size: 16px 12px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 25px;
+    right: 17px;
+    background: none;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    color: var(--color-black);
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 0px 20px 0px;
+}
+
+/* Responsivo */
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
+
 /* Responsividade para dispositivos menores */
 @media (max-width: 768px) {
     .lesson-list li {
-        padding: 10px;
         /* Menos padding em telas pequenas */
         gap: 10px;
         /* Menos espaço entre os itens */
-    }
-
-    .lesson-list li h3 {
-        font-size: 1.1rem;
-        /* Reduz o tamanho da fonte do título */
-    }
-
-    .lesson-list li p {
-        font-size: 0.9rem;
-        /* Reduz o tamanho da fonte da descrição */
-    }
-
-    .lesson-list li .lesson-duration {
-        font-size: 0.9rem;
-        /* Reduz o tamanho da duração */
-    }
-
-    .lesson-list li .pi-lock,
-    .lesson-list li .pi-unlock {
-        font-size: 1.5rem;
-        /* Ajuste o tamanho do ícone */
-    }
-
-    .instructor-info {
-        padding-left: 20px;
-        /* Ajuste para espaçamento nas telas pequenas */
     }
 
     .instructor-info img {
@@ -879,39 +909,4 @@ a {
         /* Menos padding em telas muito pequenas */
     }
 
-    .lesson-list li h3 {
-        font-size: 1rem;
-        /* Diminui o tamanho do título */
-    }
-
-    .lesson-list li p {
-        font-size: 0.8rem;
-        /* Diminui o tamanho da descrição */
-    }
-
-    .lesson-list li .lesson-duration {
-        font-size: 0.7rem;
-        /* Diminui o tamanho da duração */
-    }
-
-    .lesson-list li .pi-lock,
-    .lesson-list li .pi-unlock {
-        font-size: 1.3rem;
-        /* Ajusta ainda mais o tamanho do ícone para dispositivos muito pequenos */
-    }
-}
-
-
-/* Responsivo */
-@media (max-width: 1200px) {
-    .main-content {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .instructor-info {
-        flex: 1;
-        padding-left: 0;
-        border-left: none;
-    }
 }

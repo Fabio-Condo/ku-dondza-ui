@@ -6,8 +6,13 @@ export class OnlineCourse {
     description!: string;
     fileName!: string;
     coverImageUrl!: string;
-    instrutor!: string;
+    requirements!: string;
+    lunchDate!: string;
+    instrutorName!: string;
+    instrutorDescription!: string;
+    instrutorSpecialization!: string;
     //content: OnlineCourseContent[] = [];
+
 
     isSubscribed: boolean = false;
     totalStudents: number = 0;

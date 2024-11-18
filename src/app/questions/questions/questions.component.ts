@@ -22,6 +22,7 @@ export class QuestionsComponent implements OnInit {
   totalRegistros: number = 0;
   showLoading: boolean = false;
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   question: Question = new Question();
   isAdmin: boolean = false;
   currentPage: number = 1;

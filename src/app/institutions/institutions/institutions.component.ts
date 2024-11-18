@@ -19,6 +19,7 @@ export class InstitutionsComponent implements OnInit {
   instutions: Institution[] = [];
   institution: Institution = new Institution;
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   file!: File;
   totalInstitutions: number = 0;
   displayModalFilter: boolean = false;

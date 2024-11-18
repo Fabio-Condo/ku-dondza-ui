@@ -1,4 +1,4 @@
-<div class="container" style="margin-top: 70px; max-width: 900px;">
+<div class="container" style="margin-top: 70px; max-width: 1000px;">
 
     <div class="group-page">
         <!-- Cabeçalho do Grupo -->
@@ -12,18 +12,18 @@
                     <span><img src="assets/images/profile-16.jpg"></span>
                     <span><img src="assets/images/profile-17.jpg"></span>,
                     <p class="details" *ngIf="group.totalMembers == 0">Seja <strong>primeiro membro</strong> a aderir ao grupo</p>
-                    <p class="details" *ngIf="!group.isMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
-                    <p class="details" *ngIf="group.isMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
-                    <p class="details" *ngIf="group.isMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
-                    <p class="details" *ngIf="!group.isMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
-                    <p class="details" *ngIf="group.isMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
+                    <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
+                    <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
+                    <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
+                    <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
+                    <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
                 </div>
                 
                 <p class="group-description">{{ group.description }}</p>
 
                 <button style="margin: 20px;" class="btn btn-primary" (click)="addMemberToGroup(group)"
-                    *ngIf="!group.isMember">Aderir ao Grupo</button>
-                <button style="margin: 20px;" class="btn" (click)="onRemoveMember(group)" *ngIf="group.isMember">Sair do
+                    *ngIf="!group.isCurrentUserMember">Aderir ao Grupo</button>
+                <button style="margin: 20px;" class="btn" (click)="onRemoveMember(group)" *ngIf="group.isCurrentUserMember">Sair do
                     Grupo</button>
 
             </div>
@@ -38,7 +38,7 @@
                 <div class="create-post-container">
                     <div class="create-post-header" (click)="onCreatePost()">
                         <img src="{{ loggedUser.profileImageUrl }}" alt="User Profile" class="profile-picture">
-                        <div class="fake-input" onclick="openPostModal()">Comece uma publicação</div>
+                        <div class="fake-input">Comece uma publicação</div>
                     </div>
 
                     <div class="post-options">
@@ -134,7 +134,16 @@
                     <a [routerLink]="['/profile', member.id]" class="member-item">
                         <img src="{{ member.profileImageUrl }}" alt="Membro" class="member-avatar">
                         <span class="member-name">{{ member.firstName }} {{ member.lastName }}</span>
+                        <span *ngIf="member.isGroupAdmin" class="admin-span">admin</span>
                     </a>
+                    <div class="dropdown-container" *ngIf="loggedUser.isGroupAdmin">
+                        <button class="dropdown-btn" (click)="member.isAdminMenuOpen = !member.isAdminMenuOpen"><i class="pi pi-ellipsis-v"></i></button>
+                        <div class="dropdown" *ngIf="member.isAdminMenuOpen">
+                            <a >Remover privilegio</a>
+                            <a >Adicionar privilegio</a>
+                            <a >Remover do grupo</a>
+                        </div>
+                    </div>
                 </div>
                 <button class="load-more" (click)="onShowMoreMembers()" *ngIf="members.length < 1000">Ver mais</button>
             </div>

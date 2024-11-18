@@ -21,6 +21,7 @@ export class GroupsComponent implements OnInit {
   group: Group = new Group();
   file!: File;
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   showLoading: boolean = false;
   currentPage: number = 1;
   totalRegistros: number = 0
@@ -174,7 +175,7 @@ export class GroupsComponent implements OnInit {
 
   checkMembership(group: Group): void {
     this.groupService.checkMembership(group.id, this.loggedUser.id).subscribe(response => {
-      group.isMember = response;
+      group.isCurrentUserMember = response;
     });
   }
 

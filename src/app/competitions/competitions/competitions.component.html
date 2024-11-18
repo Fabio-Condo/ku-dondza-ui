@@ -12,12 +12,20 @@
 
     <div class="flex">
         <div>
-            <a *ngIf="isAdmin" (click)="onAddNewCompetition()" class="ml-left">Adicionar</a>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalCompetitions }}</span>
         </div>
         <div class="input-group">
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
                 <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()" placeholder="Pesquisa">
+            </div>
+
+            <div class="dropdown-container" style="margin-left: 4px;">
+                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="isDropdownOpen">
+                    <a>Filtrar</a>
+                    <a (click)="onAddNewCompetition(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                </div>
             </div>
         </div>
     </div>
@@ -61,6 +69,8 @@
 
     <!-- Paginação -->
     <div class="pagination-controls">
+        <span class="pagination-info mr-auto"></span>
+
         <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
             <i class="pi pi-chevron-left"></i> Anterior
         </button>
@@ -73,7 +83,6 @@
                 {{ option }}
             </option>
         </select>
-        <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalCompetitions }}</span>
     </div>
 
     <!-- Indicador de carregamento -->

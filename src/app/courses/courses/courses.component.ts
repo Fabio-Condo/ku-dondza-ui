@@ -21,6 +21,7 @@ export class CoursesComponent implements OnInit {
   totalRegistros: number = 0;
   totalCourses: number = 0;
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
 
   // Dados dos cursos

@@ -22,16 +22,25 @@
 
     <div class="flex">
         <div>
-            <a *ngIf="isAdmin" (click)="prepararNovoUser()" class="ml-left">Adicionar</a>
-            <a *ngIf="isAdmin" (click)="prepararUserSettings()">Reset password</a>
+            <span *ngIf="activeTab === 1" class="pagination-info ml-auto"> Mostrando {{ totalFriendsRecord }} dos {{ totalFriends }}</span>
+            <span *ngIf="activeTab === 2" class="pagination-info ml-auto"> Mostrando {{ totalFriendRequestRecord }} dos {{ totalFriendRequests }}</span>
+            <span *ngIf="activeTab === 3" class="pagination-info ml-auto"> Mostrando {{ totalUsersRecord }} dos {{ totalUsers }}</span>
         </div>
 
-        <div class="input-group">
-            <div class="input-container" *ngIf="activeTab === 3">
+        <div class="input-group" *ngIf="activeTab === 3">
+            <div class="input-container">
                 <i class="pi pi-search input-icon"></i>
 
                 <input type="text" [(ngModel)]="filtroUsers.searchParam" (ngModelChange)="getUsersSearch()" id="input"
                     class="transparent-input" placeholder="Pesquisa">
+            </div>
+            <div class="dropdown-container" style="margin-left: 4px;">
+                <button class="dropdown-btn" (click)=" isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="isDropdownOpen">
+                    <a>Filtrar</a>
+                    <a (click)="prepararNovoUser();  isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                    <a (click)="prepararUserSettings();  isDropdownOpen = !isDropdownOpen">Reset password</a>
+                </div>
             </div>
 
         </div>
@@ -65,6 +74,8 @@
 
         <!-- Paginação -->
         <div class="pagination-controls">
+            <span class="pagination-info mr-auto"></span>
+
             <button class="pagination-button" (click)="previousPageFriends()" [disabled]="currentPageFriends === 1">
                 <i class="pi pi-chevron-left"></i> Anterior
             </button>
@@ -78,7 +89,6 @@
                     {{ option }}
                 </option>
             </select>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalFriendsRecord }} dos {{ totalFriends }}</span>
         </div>
 
     </div>
@@ -112,6 +122,8 @@
 
         <!-- Paginação -->
         <div class="pagination-controls">
+            <span class="pagination-info mr-auto"></span>
+
             <button class="pagination-button" (click)="previousPageFriends()" [disabled]="currentPageFriendRequests === 1">
                 <i class="pi pi-chevron-left"></i> Anterior
             </button>
@@ -125,7 +137,6 @@
                     {{ option }}
                 </option>
             </select>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalFriendRequestRecord }} dos {{ totalFriendRequests }}</span>
         </div>
 
     </div>
@@ -171,6 +182,8 @@
 
         <!-- Paginação -->
         <div class="pagination-controls">
+            <span class="pagination-info mr-auto"></span>
+
             <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
                 <i class="pi pi-chevron-left"></i> Anterior
             </button>
@@ -184,7 +197,6 @@
                     {{ option }}
                 </option>
             </select>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalUsersRecord }} dos {{ totalUsers }}</span>
         </div>
 
     </div>

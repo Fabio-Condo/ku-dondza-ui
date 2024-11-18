@@ -22,6 +22,7 @@ export class OnlineCoursesComponent implements OnInit {
   courses: OnlineCourse[] = [];
   course: OnlineCourse = new OnlineCourse;
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   file!: File;
   totalCourses: number = 0;
   displayModalFilter: boolean = false;

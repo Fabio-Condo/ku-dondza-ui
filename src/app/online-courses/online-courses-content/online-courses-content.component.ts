@@ -24,6 +24,8 @@ export class OnlineCoursesContentComponent implements OnInit {
   onlineCourseContentList: OnlineCourseContent[] = [];
   onlineCourseContent: OnlineCourseContent = new OnlineCourseContent();
   onlineSelectedCourseContent: OnlineCourseContent = new OnlineCourseContent();
+  showLesson: boolean = false;
+
   displayModalSave: boolean = false;
   file!: File;
   totalRegistros: number = 0
@@ -181,6 +183,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   onSelectContent(content: OnlineCourseContent): void {
+    this.showLesson = true;
     this.onlineSelectedCourseContent = content;
 
     // Verifique se a referência ao vídeo foi inicializada corretamente

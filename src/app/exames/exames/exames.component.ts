@@ -20,6 +20,7 @@ export class ExamesComponent implements OnInit {
   exams: Exam[] = [];
   exam: Exam = new Exam();
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   file!: File;
   totalExames: number = 0;
   displayModalFilter: boolean = false;

@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   showLoading: boolean = true;
   subscriptions: Subscription[] = [];
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   profileImageFile!: File;
   
   users: User[] = [];

@@ -25,6 +25,7 @@ export class QuizzesComponent implements OnInit {
   quizzes: Quiz[] = [];
   quiz: Quiz = new Quiz;
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   selectedQuiz: Quiz = new Quiz();

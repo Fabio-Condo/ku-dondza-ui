@@ -27,6 +27,7 @@ export class CompetitionsComponent implements OnInit {
   totalRegistros: number = 0;
   totalCompetitions: number = 0;
   displayModalSave: boolean = false;
+  isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
 
   // Dados das competições

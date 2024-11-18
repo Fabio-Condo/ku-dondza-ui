@@ -20,14 +20,16 @@
     <div class="input-group">
       <div class="input-container">
         <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
-        <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()" placeholder="Pesquisa">
+        <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"
+          (ngModelChange)="findAll()" placeholder="Pesquisa">
       </div>
 
+
       <div class="dropdown-container" style="margin-left: 4px;">
-        <button class="dropdown-btn" (click)="toggleDropdown(exam)"><i class="pi pi-ellipsis-v"></i></button>
-        <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-            <a (click)="onFilter(); closeDropdown(exam)">Filtrar</a>
-            <a (click)="onAddNewExame(); closeDropdown(exam)">Adicionar</a>
+        <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+        <div class="dropdown" *ngIf="isDropdownOpen">
+          <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
+          <a (click)="onAddNewExame(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
         </div>
       </div>
     </div>
@@ -46,9 +48,12 @@
                 <p class="details">Tipo: <span class="text-muted">{{ getTypeValue(exam.examType) }}</span></p>
                 <p class="details">instituição: <strong>{{ exam.institution.name }}</strong></p>
                 <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
-                <p *ngIf="!exam.showLoadingDownload && isAdmin" class="details"><strong>{{exam.totalDownloadNumber}}</strong> downloads</p>
-                <p *ngIf="exam.showLoadingDownload" class="details" style="font-weight: bold; color: var(--color-primary);">
-                  <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size: 0.6rem;"></i>
+                <p *ngIf="!exam.showLoadingDownload && isAdmin" class="details">
+                  <strong>{{exam.totalDownloadNumber}}</strong> downloads</p>
+                <p *ngIf="exam.showLoadingDownload" class="details"
+                  style="font-weight: bold; color: var(--color-primary);">
+                  <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                    style="font-size: 0.6rem;"></i>
                   Baixando...
                 </p>
               </div>
@@ -56,12 +61,14 @@
               <div class="dropdown-container">
                 <button class="dropdown-btn" (click)="toggleDropdown(exam)"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                    <a (click)="onUpdate(exam.id, exam.description, exam.examType, exam.date, exam.subject.id, exam.institution.id, file); closeDropdown(exam)">Editar</a>
-                    <a (click)="confirmarExclusao(exam); closeDropdown(exam)" >Eliminar</a>
+                  <a
+                    (click)="onUpdate(exam.id, exam.description, exam.examType, exam.date, exam.subject.id, exam.institution.id, file); closeDropdown(exam)">Editar</a>
+                  <a (click)="confirmarExclusao(exam); closeDropdown(exam)">Eliminar</a>
                 </div>
               </div>
 
-              <button [disabled]="exam.showLoadingDownload" (click)="download(exam, exam.fileName)" class="btn btn-primary">
+              <button [disabled]="exam.showLoadingDownload" (click)="download(exam, exam.fileName)"
+                class="btn btn-primary">
                 <i class="pi pi-download"></i>
               </button>
 
@@ -84,7 +91,8 @@
       Próximo <i class="pi pi-chevron-right"></i>
     </button>
     <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-      <option *ngFor="let option of opcoesItensPorPagina" [value]="option" [selected]="option === filtro.itensPorPagina">
+      <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+        [selected]="option === filtro.itensPorPagina">
         {{ option }}
       </option>
     </select>
@@ -136,11 +144,13 @@
 
       <div class="form-group">
         <label for="description">Descrição</label>
-        <textarea id="description" type="text" name="description" ngModel #description="ngModel" required minlength="1" [(ngModel)]="exam.description" required></textarea>
+        <textarea id="description" type="text" name="description" ngModel #description="ngModel" required minlength="1"
+          [(ngModel)]="exam.description" required></textarea>
       </div>
 
       <div class="form-group">
-        <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf" class="form-control" required />
+        <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf" class="form-control"
+          required />
       </div>
 
       <div class="form-group">
@@ -182,18 +192,21 @@
 
       <div class="form-group">
         <label for="description">Descrição</label>
-        <input type="text" name="description" ngModel #description="ngModel" minlength="1" [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
+        <input type="text" name="description" ngModel #description="ngModel" minlength="1"
+          [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
       </div>
 
       <label for="description">Intervalo de datas</label>
       <div class="p-fluid" style="display: flex; justify-content: space-between;">
         <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="beginDate" [inline]="false"
-          [readonlyInput]="false" ngModel #beginDate="ngModel" [(ngModel)]="filtro.beginDate" (ngModelChange)="findAll()"></p-calendar>
+          [readonlyInput]="false" ngModel #beginDate="ngModel" [(ngModel)]="filtro.beginDate"
+          (ngModelChange)="findAll()"></p-calendar>
 
         <span>até</span>
 
         <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="endDate" [inline]="false"
-          [readonlyInput]="false" ngModel #endDate="ngModel" [(ngModel)]="filtro.endDate" (ngModelChange)="findAll()"></p-calendar>
+          [readonlyInput]="false" ngModel #endDate="ngModel" [(ngModel)]="filtro.endDate"
+          (ngModelChange)="findAll()"></p-calendar>
       </div>
 
       <div class="form-group">
@@ -203,4 +216,3 @@
     </form>
   </div>
 </div>
-

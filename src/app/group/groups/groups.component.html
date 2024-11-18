@@ -10,7 +10,7 @@
         que correspondem aos seus interesses.
     <div class="flex">
         <div>
-            <a *ngIf="!isAdmin" (click)="onAddNewGroup()" class="ml-left">Adicionar</a>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalGroups }}</span>
         </div>
 
         <div class="input-group">
@@ -19,6 +19,13 @@
 
                 <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"
                     (ngModelChange)="findAll()" placeholder="Pesquisa">
+            </div>
+            <div class="dropdown-container" style="margin-left: 4px;">
+                <button class="dropdown-btn" (click)=" isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="isDropdownOpen">
+                    <a>Filtrar</a>
+                    <a (click)="onAddNewGroup(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                </div>
             </div>
         </div>
     </div>
@@ -38,12 +45,13 @@
 
                             <div class="content">
                                 <p class="group-name">{{ group.name }}</p>
+                                <p class="details">Criado por {{ group.creator.firstName }} {{ group.creator.lastName }}</p>
                                 <p class="details" *ngIf="group.totalMembers == 0">Seja <strong>primeiro membro</strong> a aderir ao grupo</p>
-                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
-                                <p class="details" *ngIf="group.isMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
-                                <p class="details" *ngIf="group.isMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
-                                <p class="details" *ngIf="!group.isMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
-                                <p class="details" *ngIf="group.isMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
+                                <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
+                                <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
+                                <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
+                                <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
+                                <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
                             </div>
 
                             <div class="dropdown-container">
@@ -67,6 +75,8 @@
 
     <!-- Paginação -->
     <div class="pagination-controls">
+        <span class="pagination-info mr-auto"></span>
+
         <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
             <i class="pi pi-chevron-left"></i> Anterior
         </button>
@@ -80,7 +90,6 @@
                 {{ option }}
             </option>
         </select>
-        <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalGroups }}</span>
     </div>
 
     <!-- Indicador de carregamento -->

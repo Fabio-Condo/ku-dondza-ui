@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { InstitutionFilter } from '../core/interface/InstitutionFilter';
 import { OnlineCourse } from '../core/model/Online-course';
 import { IUserFilter } from '../core/model/IUserFilter';
 import { User } from '../core/model/User';
@@ -38,7 +37,11 @@ export class OnlineCoursesService {
         const formData = new FormData();
         formData.append('name', course.name);
         formData.append('description', course.description);
-        formData.append('instrutor', course.instrutor);
+        formData.append('requirements', course.requirements);
+        formData.append('lunchDate', course.lunchDate);
+        formData.append('instrutorName', course.instrutorName);
+        formData.append('instrutorDescription', course.instrutorDescription);
+        formData.append('instrutorSpecialization', course.instrutorSpecialization);
         formData.append('file', file);
         return this.http.post<OnlineCourse>(`${this.host}`, formData);
     }
@@ -48,7 +51,11 @@ export class OnlineCoursesService {
         formData.append('id', course.id.toString());
         formData.append('name', course.name);
         formData.append('description', course.description);
-        formData.append('instrutor', course.instrutor);
+        formData.append('requirements', course.requirements);
+        formData.append('lunchDate', course.lunchDate);
+        formData.append('instrutorName', course.instrutorName);
+        formData.append('instrutorDescription', course.instrutorDescription);
+        formData.append('instrutorSpecialization', course.instrutorSpecialization);
         formData.append('file', file);
         return this.http.put<OnlineCourse>(`${this.host}`, formData);
     }
