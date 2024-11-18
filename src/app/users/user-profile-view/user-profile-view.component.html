@@ -20,8 +20,8 @@
         </div>
         <h2 class="profile-name">{{user.firstName}} {{user.lastName}}</h2>
         <div class="profile-contact">
-            <p class="profile-bio"><strong>Bio:</strong> {{user.bio}}</p>
-            <p><strong>Email:</strong> {{user.email}}
+            <p class="profile-bio">{{user.bio}}</p>
+            <p>{{user.email}}
                 <a (click)="onUpdateCurrentUser()" *ngIf="currentUser.userId == user.userId"
                 style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar perfil</a>
             </p>
