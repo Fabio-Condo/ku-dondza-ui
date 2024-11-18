@@ -49,8 +49,9 @@
             <h3 class="section-title">Cursos Frequentados</h3>
             <button *ngIf="currentUser.userId == user.userId" (click)="onAddUserCourse()" pButton icon="pi pi-plus" label="Adicionar" class="btn-add-course"></button>
         </div>
-        <ul class="courses-list">
-            <li class="course-item" *ngFor="let userCourse of userCourses">
+        <ul class="courses-list" *ngFor="let userCourse of userCourses">
+            <hr>
+            <li class="course-item">
                 <div class="course-info">
                     <img [src]="userCourse.course.institution.urlFile" alt="{{ userCourse.course.institution.name }}" class="institution-img" />
                     <div class="course-details">
