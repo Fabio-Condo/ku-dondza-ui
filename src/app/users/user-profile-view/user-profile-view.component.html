@@ -40,7 +40,32 @@
                 style="margin: 20px;">Sair</button>
         </div>
     </header>
+    
 </div>
+
+<div class="profile-courses-container">
+    <div class="profile-courses" class="">
+        <div class="section-header">
+            <h3 class="section-title">Cursos Frequentados</h3>
+            <button *ngIf="currentUser.userId == user.userId" (click)="onAddUserCourse()" pButton icon="pi pi-plus" label="Adicionar" class="btn-add-course"></button>
+        </div>
+        <ul class="courses-list">
+            <li class="course-item" *ngFor="let userCourse of userCourses">
+                <div class="course-info">
+                    <img [src]="userCourse.course.institution.urlFile" alt="{{ userCourse.course.institution.name }}" class="institution-img" />
+                    <div class="course-details">
+                        <h4 class="course-name">{{ userCourse.course.name }}</h4>
+                        <p class="course-institution">{{ userCourse.course.institution.name }}</p>
+                        <p class="course-date">{{ userCourse.startDate  | date:'yyyy' }}</p>
+                    </div>
+                    <button *ngIf="currentUser.userId == user.userId" pButton icon="pi pi-ellipsis-v" class="btn-edit-course"></button>
+                </div>
+            </li>
+        </ul>
+        <!--<button *ngIf="courses.length < 5" class="btn-show-more">Ver mais</button>-->
+    </div>
+</div>
+
 
 <!-- Conteúdo Principal -->
 <div class="main-content">
@@ -125,6 +150,7 @@
     </div>
 </div>
 
+
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
         <h2>Editando Perfil</h2>
@@ -162,6 +188,31 @@
             </div>
 
             <button type="submit" [disabled]="userForm.invalid" class="btn">Salvar</button>
+
+        </form>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="displayModalUserCourseSave">
+    <div class="dialog">
+        <h2>Add course</h2>
+        <button class="close-btn" (click)="displayModalUserCourseSave = false">&times;</button>
+
+        <form autocomplete="off" #curseForm="ngForm" (ngSubmit)="savedUserCourse(curseForm)">
+            <div class="form-group">
+                <label for="firstName">Nome</label>
+                <input type="text" id="firstName" type="text" name="firstName" ngModel #firstName="ngModel" required
+                    minlength="1" [(ngModel)]="userCourse.course.id" required>
+            </div>
+
+            <div class="form-group">
+                <label>Ano</label>
+                <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '400px'}" [showIcon]="true"
+                  [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
+                  [required]="true" [(ngModel)]="userCourse.startDate"></p-calendar>
+              </div>
+
+            <button type="submit" [disabled]="curseForm.invalid" class="btn">Salvar</button>
 
         </form>
     </div>

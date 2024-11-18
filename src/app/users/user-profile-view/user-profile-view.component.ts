@@ -17,6 +17,10 @@ import { IUserFilter } from 'src/app/core/model/IUserFilter';
 import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
 import { CommentService } from 'src/app/core/commets/commentService .service';
 import { LikeService } from 'src/app/core/likes/like.service';
+import { Institution } from 'src/app/core/model/Institution';
+import { UserCourseService } from 'src/app/user-courses/user-curses.service';
+import { UserCourse } from 'src/app/core/model/UserCourse';
+import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -38,6 +42,11 @@ export class UserProfileViewComponent implements OnInit {
 
   friends: User[] = [];
   totalRegistrosAmigos: number = 10000
+
+  userCourse: UserCourse = new UserCourse();
+  displayModalUserCourseSave: boolean = false;
+  userCourses: UserCourse[] = [];
+  totalRegistrosUserCourses: number = 10000
 
   extension: any;
 
@@ -69,6 +78,12 @@ export class UserProfileViewComponent implements OnInit {
     sort: 'firstName,asc',
   }
 
+  filterUserCourses: UserCourseFilter = {
+    page: -1,
+    itemsPerPage: 5,
+    sort: 'id,asc',
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -81,6 +96,7 @@ export class UserProfileViewComponent implements OnInit {
     private messageService: MessageService,
     private feedsService: FeedsService,
     private interestService: InterestService,
+    private userCourseService: UserCourseService
   ) { }
 
   ngOnInit(): void {
@@ -92,6 +108,14 @@ export class UserProfileViewComponent implements OnInit {
     this.getInterests();
     this.scrollToTop();
   }
+
+  courses = [
+    { name: 'Curso de Programação em Java', date: 'Janeiro 2023', institution: 'Universidade Eduardo Mondlane' },
+    { name: 'Curso de Desenvolvimento Web', date: 'Fevereiro 2023', institution: 'Universidade Pedagogica' },
+    { name: 'Curso de Banco de Dados', date: 'Março 2023' , institution: 'Universidade Eduardo Mondlane'},
+    { name: 'Curso de Redes de Computadores', date: 'Abril 2023', institution: 'Universidade Pedagogica' }
+];
+
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -111,6 +135,7 @@ export class UserProfileViewComponent implements OnInit {
         this.user = user;
         this.getUserPostsByUserId(user);
         this.getUserFriends(user);
+        this.getCoursesByUser(user);
       },
       (erro) => this.errorHandler.handle(erro),
     );
@@ -327,6 +352,47 @@ export class UserProfileViewComponent implements OnInit {
   confirmRemovePostDialog(post: Post) {
     this.removePostFromSavedPosts(post);
     this.closeConfirmRemovePostDialog();
+  }
+  
+  onAddUserCourse(){
+    this.displayModalUserCourseSave = true;
+  }
+
+  get editingUserCourse() {
+    return Boolean(this.userCourse.id);
+  }
+
+  savedUserCourse(userForm: NgForm) {
+    if (this.editingUserCourse) {
+      //this.update(userForm);
+    } else {
+      this.addCourseToUser(userForm);
+    }
+  }
+
+  addCourseToUser(userForm: NgForm) {
+    this.userCourse.user = this.currentUser;
+    this.userCourseService.addCourseToUser(this.userCourse).subscribe(
+      (response) => {
+        this.userCourse = response;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  getCoursesByUser(user: User): void {
+    this.filterUserCourses.page++;
+    this.userCourseService.getCoursesByUser(user.id, this.filterUserCourses).subscribe(
+      (dados: IApiResponse<UserCourse>) => {
+        this.userCourses = [...this.userCourses, ...dados.content];
+        this.totalRegistrosUserCourses = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
   }
 
   isImageUrl(url: string): boolean {
