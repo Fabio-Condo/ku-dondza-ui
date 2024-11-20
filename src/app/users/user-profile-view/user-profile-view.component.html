@@ -59,9 +59,16 @@
                         <p class="course-institution">{{ userCourse.course.institution.name }}</p>
                         <p class="course-date">{{ userCourse.startDate  | date:'yyyy' }}</p>
                     </div>
-                    <button *ngIf="currentUser.userId == user.userId" pButton icon="pi pi-ellipsis-v" class="btn-edit-course"></button>
+                    <div class="dropdown-container"*ngIf="currentUser.userId == user.userId">
+                        <button class="dropdown-btn" (click)="toggleDropdown(userCourse)"><i class="pi pi-ellipsis-v"></i></button>
+                        <div class="dropdown" *ngIf="userCourse.isAdminMenuOpen">
+                            <a (click)="onRemoveUserCourse(userCourse); closeDropdown(userCourse)" >Eliminar</a>
+                            <a (click)="onEditUserCourse(userCourse); closeDropdown(userCourse)">Editar</a>
+                        </div>
+                    </div>
                 </div>
             </li>
+            
         </ul>
         <!--<button *ngIf="courses.length < 5" class="btn-show-more">Ver mais</button>-->
     </div>
@@ -200,10 +207,21 @@
         <button class="close-btn" (click)="displayModalUserCourseSave = false">&times;</button>
 
         <form autocomplete="off" #curseForm="ngForm" (ngSubmit)="savedUserCourse(curseForm)">
+
             <div class="form-group">
-                <label for="firstName">Nome</label>
-                <input type="text" id="firstName" type="text" name="firstName" ngModel #firstName="ngModel" required
-                    minlength="1" [(ngModel)]="userCourse.course.id" required>
+                <label for="institution">Instituição</label>
+                <select id="institution" name="institution" [(ngModel)]="selectedInstitution" [(ngModel)]="userCourse.course.institution.id" (change)="getCoursesByInstitutionId()" required>
+                  <option value="" disabled selected>Selecione a instituição</option>
+                  <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Curso</label>
+                <select id="course" name="course" [(ngModel)]="userCourse.course.id" [disabled]="!selectedInstitution" required>
+                  <option value="" disabled selected>Selecione o curso</option>
+                  <option *ngFor="let course of courses" [value]="course.value">{{ course.label }}</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -276,7 +294,7 @@
 </div>
 
 <!-- confirm dialog -->
-<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+<div class="confirm-dialog-overlay" *ngIf="showConfirmRemovePostDialog">
     <div class="confirm-dialog">
         <div class="confirm-dialog-header">
             <h4>Deseja remover o post da sua lista ?</h4>
@@ -288,6 +306,23 @@
         <div class="confirm-dialog-footer">
             <button (click)="confirmRemovePostDialog(selectedPost)">Confirmar</button>
             <button (click)="closeConfirmRemovePostDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmRemoveUserCourseDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover o post da sua lista ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmRemoveUserCourseDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmRemoveUserCourseDialog(selectedUserCourse)">Confirmar</button>
+            <button (click)="closeConfirmRemoveUserCourseDialog()">Cancelar</button>
         </div>
     </div>
 </div>

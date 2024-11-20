@@ -24,7 +24,7 @@ export class UserCourseService {
     }
 
     removeUserCourse(userCourseId: number): Observable<void> {
-        return this.http.delete<void>(`${this.host}/remove-course/${userCourseId}`);
+        return this.http.delete<void>(`${this.host}/${userCourseId}`);
     }
 
     getCoursesByUser(userId: number, filter: UserCourseFilter): Observable<IApiResponse<UserCourse>> {

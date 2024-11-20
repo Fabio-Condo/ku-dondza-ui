@@ -21,6 +21,9 @@ import { Institution } from 'src/app/core/model/Institution';
 import { UserCourseService } from 'src/app/user-courses/user-curses.service';
 import { UserCourse } from 'src/app/core/model/UserCourse';
 import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
+import { CourseService } from 'src/app/courses/courseService.service';
+import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
+import { Course } from 'src/app/core/model/Course';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -47,6 +50,8 @@ export class UserProfileViewComponent implements OnInit {
   displayModalUserCourseSave: boolean = false;
   userCourses: UserCourse[] = [];
   totalRegistrosUserCourses: number = 10000
+  selectedUserCourse = new UserCourse();
+  showConfirmRemoveUserCourseDialog: boolean = false;
 
   extension: any;
 
@@ -56,12 +61,19 @@ export class UserProfileViewComponent implements OnInit {
 
   showLoading: boolean = false;
 
+  showConfirmDialog: boolean = false;
+  showConfirmRemovePostDialog: boolean = false;
+
   selectedInterest: Interest = new Interest();
 
   selectedPost = new Post();
 
   selectedFriendToBeRemoved = new User();
-  showConfirmDialog: boolean = false;
+
+  selectedInstitution?: number;
+  courses: any[] = [];
+  institutions: any[] = [];
+  course = new Course();
 
   activeTabPost: number = 1;
   activeTabInfo: number = 1;
@@ -79,8 +91,8 @@ export class UserProfileViewComponent implements OnInit {
   }
 
   filterUserCourses: UserCourseFilter = {
-    page: -1,
-    itemsPerPage: 5,
+    page: 0,
+    itemsPerPage: 20,
     sort: 'id,asc',
   }
 
@@ -91,6 +103,8 @@ export class UserProfileViewComponent implements OnInit {
     private commentService: CommentService,
     private likeService: LikeService,
     private commentLikeService: CommentLikeService,
+    private courseService: CourseService,
+    private institutionService: InstitutionService,
     private errorHandler: ErrorHandlerService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -106,16 +120,9 @@ export class UserProfileViewComponent implements OnInit {
       this.getUserByUserId(userId);
     }
     this.getInterests();
+    this.getInstitutions();
     this.scrollToTop();
   }
-
-  courses = [
-    { name: 'Curso de Programação em Java', date: 'Janeiro 2023', institution: 'Universidade Eduardo Mondlane' },
-    { name: 'Curso de Desenvolvimento Web', date: 'Fevereiro 2023', institution: 'Universidade Pedagogica' },
-    { name: 'Curso de Banco de Dados', date: 'Março 2023' , institution: 'Universidade Eduardo Mondlane'},
-    { name: 'Curso de Redes de Computadores', date: 'Abril 2023', institution: 'Universidade Pedagogica' }
-];
-
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -135,7 +142,7 @@ export class UserProfileViewComponent implements OnInit {
         this.user = user;
         this.getUserPostsByUserId(user);
         this.getUserFriends(user);
-        this.getCoursesByUser(user);
+        this.getUserCoursesByUser(user);
       },
       (erro) => this.errorHandler.handle(erro),
     );
@@ -341,12 +348,12 @@ export class UserProfileViewComponent implements OnInit {
   }
 
   onRemovePost(post: Post): void {
-    this.showConfirmDialog = true;
+    this.showConfirmRemovePostDialog = true;
     this.selectedPost = post;
   }
 
   closeConfirmRemovePostDialog() {
-    this.showConfirmDialog = false;
+    this.showConfirmRemovePostDialog = false;
   }
 
   confirmRemovePostDialog(post: Post) {
@@ -355,6 +362,7 @@ export class UserProfileViewComponent implements OnInit {
   }
   
   onAddUserCourse(){
+    this.userCourse = new UserCourse();
     this.displayModalUserCourseSave = true;
   }
 
@@ -364,7 +372,7 @@ export class UserProfileViewComponent implements OnInit {
 
   savedUserCourse(userForm: NgForm) {
     if (this.editingUserCourse) {
-      //this.update(userForm);
+      this.updateUserCourse(userForm);
     } else {
       this.addCourseToUser(userForm);
     }
@@ -375,6 +383,9 @@ export class UserProfileViewComponent implements OnInit {
     this.userCourseService.addCourseToUser(this.userCourse).subscribe(
       (response) => {
         this.userCourse = response;
+        this.userCourse.startDate = new Date(this.userCourse.startDate);
+        this.userCourses.push(this.userCourse);
+        this.getUserCoursesByUser(this.currentUser);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -382,17 +393,99 @@ export class UserProfileViewComponent implements OnInit {
     )
   }
 
-  getCoursesByUser(user: User): void {
-    this.filterUserCourses.page++;
+  updateUserCourse(userForm: NgForm) {
+    this.userCourse.user = this.currentUser;
+    this.userCourseService.updateUserCourse(this.userCourse).subscribe(
+      (response) => {
+        this.userCourse = response;
+        this.userCourse.startDate = new Date(this.userCourse.startDate);
+        this.getUserCoursesByUser(this.userCourse.user);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  removeUserCourse(userCourse: UserCourse) {
+    this.userCourseService.removeUserCourse(userCourse.id).subscribe(() => {
+      this.userCourses = this.userCourses.filter(uc => uc.id !== userCourse.id);
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getUserCoursesByUser(user: User): void {
     this.userCourseService.getCoursesByUser(user.id, this.filterUserCourses).subscribe(
       (dados: IApiResponse<UserCourse>) => {
-        this.userCourses = [...this.userCourses, ...dados.content];
+        this.userCourses = dados.content;
         this.totalRegistrosUserCourses = dados.totalElements
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  getCoursesByInstitutionId() {
+    this.courseService.getByInstitutionId(this.selectedInstitution!).then(lista => {
+      this.courses = lista.map(course => ({
+        label: course.name,
+        value: course.id
+      }));
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  getInstitutions() {
+    return this.institutionService.listarTodos().subscribe(
+      dados => {
+        this.institutions = dados.content.map(dado => {
+          return {
+            label: dado.name,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
+  onEditUserCourse(userCourse: UserCourse): void {
+    this.userCourse = userCourse;
+    this.selectedInstitution = (this.userCourse.course.institution) ? this.userCourse.course.institution.id : undefined;
+    if (this.selectedInstitution) {
+      this.getCoursesByInstitutionId();
+    }
+    userCourse.startDate = new Date(userCourse.startDate);
+    this.displayModalUserCourseSave = true;
+  }
+
+  toggleDropdown(userCourse: UserCourse) {
+    userCourse.isAdminMenuOpen = !userCourse.isAdminMenuOpen
+  }
+
+  closeDropdown(userCourse: UserCourse) {
+    userCourse.isAdminMenuOpen = false;
+  }
+
+  onRemoveUserCourse(userCourse: UserCourse): void {
+    this.showConfirmRemoveUserCourseDialog = true;
+    this.selectedUserCourse = userCourse;
+  }
+
+  closeConfirmRemoveUserCourseDialog() {
+    this.showConfirmRemoveUserCourseDialog = false;
+  }
+
+  confirmRemoveUserCourseDialog(userCourse: UserCourse) {
+    this.removeUserCourse(userCourse);
+    this.closeConfirmRemoveUserCourseDialog();
   }
 
   isImageUrl(url: string): boolean {

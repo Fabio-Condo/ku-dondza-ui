@@ -6,4 +6,6 @@ export class UserCourse {
     user = new User();
     course = new Course();
     startDate!: Date;
+
+    isAdminMenuOpen: boolean = false;
 }

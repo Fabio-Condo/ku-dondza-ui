@@ -46,14 +46,13 @@
                 <p class="exame-name">{{exam.subject.name}}</p>
                 <p class="details">ano: <span class="text-muted">{{ exam.date | date:'yyyy' }}</span></p>
                 <p class="details">Tipo: <span class="text-muted">{{ getTypeValue(exam.examType) }}</span></p>
-                <p class="details">instituição: <strong>{{ exam.institution.name }}</strong></p>
+                <p class="details">instituição: {{ exam.institution.name }}</p>
                 <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
                 <p *ngIf="!exam.showLoadingDownload && isAdmin" class="details">
                   <strong>{{exam.totalDownloadNumber}}</strong> downloads</p>
                 <p *ngIf="exam.showLoadingDownload" class="details"
                   style="font-weight: bold; color: var(--color-primary);">
-                  <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                    style="font-size: 0.6rem;"></i>
+                  <i *ngIf="exam.showLoadingDownload" class="pi pi-download"></i>
                   Baixando...
                 </p>
               </div>

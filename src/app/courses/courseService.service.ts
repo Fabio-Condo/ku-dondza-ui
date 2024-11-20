@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { CourseFilter } from '../core/interface/CourseFilter';
 import { Course } from '../core/model/Course';
 import { IApiResponse } from '../core/interface/IApiResponse';
@@ -41,6 +41,16 @@ export class CourseService {
 
     getAll(): Observable<IApiResponse<Course>> {
         return this.http.get<IApiResponse<Course>>(`${this.host}/filter`, {});
+    }
+
+    getByInstitutionId(institutionId: number): Promise<Course[]> {
+        const params = new HttpParams()
+          .set('institutionId', institutionId);
+        return firstValueFrom(this.http.get<Course[]>(`${this.host}/institutions`, { params }));
+    }
+
+    findById(id: number): Observable<Course> {
+        return this.http.get<Course>(`${this.host}/${id}`, {});
     }
 
     add(course: Course): Observable<Course> {
