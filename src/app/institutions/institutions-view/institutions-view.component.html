@@ -1,63 +1,36 @@
 <div class="container" style="margin-top: 70px;">
 
-    <!-- Cabeçalho das Abas -->
-    <div class="tab-header">
-        <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
-            Descrição
-        </div>
-        <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
-            Cursos
-        </div>
-    </div>
-
-    <!-- Conteúdo das Abas -->
-    <div *ngIf="activeTab === 1" class="active">
-        <div class="institution-container">
-            <div class="institution-image-container">
-              <img [src]="institution.urlFile" alt="{{ institution.name }}" class="institution-image" />
-            </div>
-            
-            <div class="institution-details">
-                <h1 class="institution-title">{{ institution.name }}</h1>
-                <p class="institution-description">{{ institution.description }}</p>
-                
-                <div class="institution-meta">
-                    <p><strong>Tipo de instituição:</strong> {{ institution.type }} </p>
-                    <p><strong>Tipo de administração:</strong> {{ getAdministrationTypeValue(institution.administrationType) }} </p>
-                </div>
-
-                <br>
-                
-                <a class="goto-button" href="{{ institution.website }}" target="_blank">
-                    Saiba mais no website
-                <i class="pi pi-external-link" style="font-size: 0.85rem; margin-left: 5px; color: white;"></i>
-                </a>
+    <div class="institution-card">
+        <div class="institution-header">
+            <img [src]="institution.urlFile" alt="Emblema da Instituição" class="emblem" />
+            <div>
+                <h1>{{ institution.name }} <span class="acronym">({{ institution.acronym }})</span></h1>
+                <p class="type">{{ institution.type }}</p>
+                <p class="administration">{{ getAdministrationTypeValue(institution.administrationType) }}</p>
             </div>
         </div>
-    </div>
+        <div class="institution-body">
+            <p class="address">📍 {{ institution.website }}</p>
+            <p class="description">{{ institution.description }}</p>
 
-    <div *ngIf="activeTab === 2" class="active">
-        <table class="card-table">
-            <tbody>
-                <tr *ngFor="let course of courses">
-                    <td>
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="content">
-                                    <p class="subject-name">{{ course.name }}</p>
-                                    <p class="details">duração: {{ course.duration }}</p>
-                                    <p class="details">requisitos: {{ course.requirements }}</p>
-                                </div>
-                            </div>
+            <a class="website-button" href="{{ institution.website }}" target="_blank">
+                Saiba mais no website
+                <i class="pi pi-external-link"></i>
+            </a>
+
+            <!-- Nova seção de cursos -->
+            <div class="courses-list">
+                <h2>Cursos Oferecidos</h2>
+                <ul>
+                    <li *ngFor="let course of courses">
+                        <div class="course-item">
+                            <p class="subject-name">{{ course.name }}</p>
+                            <p class="details"><strong>Duração:</strong> {{ course.duration }}</p>
+                            <p class="details"><strong>Requisitos:</strong> {{ course.requirements }}</p>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    
-        <!-- Indicador de carregamento -->
-        <div *ngIf="showLoading" class="loading-indicator">
-            Carregando...
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
