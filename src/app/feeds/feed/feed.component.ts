@@ -20,7 +20,7 @@ import { LikeFilter } from 'src/app/core/interface/LikeFilter';
 import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
 import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
-import { PostOption } from 'src/app/core/model/PostOption';
+import { PollOption } from 'src/app/core/model/PollOption';
 import { PostOptionService } from 'src/app/PostOption/post-option.service';
 
 @Component({
@@ -54,9 +54,12 @@ export class FeedComponent implements OnInit {
   friendRequests: User[] = []
   totalRecords: number = 0
 
+  totalFriends: number = 0
+  totalUserSavadPosts: number = 0
+
   quizPost = new Post();
-  postOption?: PostOption;
-  postOptions: Array<PostOption> = [];
+  postOption?: PollOption;
+  postOptions: Array<PollOption> = [];
   showPostOtionForm = false;
   postOptionIndex?: number;
 
@@ -102,6 +105,8 @@ export class FeedComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
     this.getCurrentUserFriendRequests();
+    this.countFriendsByUserId();
+    this.countSavedPostsByUser();
     this.scrollToTop();
   }
 
@@ -361,10 +366,6 @@ export class FeedComponent implements OnInit {
     this.feeds = this.feeds.filter(p => p.id !== post.id);
   }
 
-  onClosePost(post: Post) {
-    this.showConfirmDialog = true;
-  }
-
   addPostToSavedPosts(post: Post): void {
     this.userService.addPostToSavedPosts(this.loggedUser.id, post.id).subscribe(() => {
       post.isSaved = true;
@@ -398,6 +399,20 @@ export class FeedComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  countFriendsByUserId() {
+    this.showLoading = true;
+    this.userService.countFriendsByUserId(this.loggedUser.id).subscribe(
+      (total) => {
+        this.totalFriends = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     );
   }
@@ -440,7 +455,7 @@ export class FeedComponent implements OnInit {
   }
 
   /* Para post do tipo quizz */
-  countPeopleWhoSelectedByOptionId(option: PostOption) {
+  countPeopleWhoSelectedByOptionId(option: PollOption) {
     this.showLoading = true;
     this.postOptionService.countPeopleWhoSelectedByOptionId(option.id!).subscribe(
       (total) => {
@@ -454,7 +469,7 @@ export class FeedComponent implements OnInit {
     );
   }
 
-  getPeopleWhoSelectedByOptionId(option: PostOption): void {
+  getPeopleWhoSelectedByOptionId(option: PollOption): void {
     this.userfilter.page++;
     this.postOptionService.getPeopleWhoSelectedByOptionId(option.id!, this.userfilter).subscribe(
       (dados: IApiResponse<User>) => {
@@ -467,19 +482,29 @@ export class FeedComponent implements OnInit {
     );
   }
 
-  checkIfSelected(option: PostOption): void {
+  checkIfSelected(option: PollOption): void {
     this.postOptionService.checkIfSelected(option.id!, this.loggedUser.id).subscribe(response => {
       option.selected = response;
     });
   }
 
-  addMemberToGroup(option: PostOption): void {
+  addMemberToGroup(option: PollOption): void {
     this.postOptionService.addUserToOption(option.id!, this.loggedUser.id).subscribe(() => {
       option.selected = true;
     });
   }
   /* Fim */
 
+  countSavedPostsByUser() {
+    this.userService.countSavedPostsByUser(this.loggedUser.id).subscribe(
+      (total) => {
+        this.totalUserSavadPosts = total;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(errorResponse.error.message);
+      }
+    );
+  }
 
   isImageUrl(url: string): boolean {
     if (!url) return false; // Verifica se a URL é válida
@@ -539,9 +564,9 @@ export class FeedComponent implements OnInit {
   addQuizPost(postForm: NgForm) {
     this.showAddPostLoading = true;
     console.log(this.quizPost.text);
-    console.log(this.quizPost.postOptions.length);
+    console.log(this.quizPost.pollOptions.length);
 
-    console.log(this.quizPost.postOptions.forEach(option => {option.text}));
+    console.log(this.quizPost.pollOptions.forEach(option => {option.text}));
     this.feedsService.addQuizPost(this.quizPost).subscribe(
       (response) => {
         this.quizPost = response;
@@ -566,24 +591,24 @@ export class FeedComponent implements OnInit {
   // Métodos de gerenciamento de opcoes do quiz do post
   getReadyNewPostOption() {
     this.showPostOtionForm = true;
-    this.postOption = new PostOption();
-    this.postOptionIndex = this.quizPost.postOptions.length;
+    this.postOption = new PollOption();
+    this.postOptionIndex = this.quizPost.pollOptions.length;
   }
 
-  getReadyPostOptionEdit(option: PostOption, index: number) {
+  getReadyPostOptionEdit(option: PollOption, index: number) {
     this.postOption = this.clonePostOption(option);
     this.showPostOtionForm = true;
     this.postOptionIndex = index;
   }
 
   confirmPostOption(frm: NgForm) {
-    this.quizPost.postOptions[this.postOptionIndex!] = this.clonePostOption(this.postOption!);
+    this.quizPost.pollOptions[this.postOptionIndex!] = this.clonePostOption(this.postOption!);
     this.showPostOtionForm = false;
     frm.reset();
   }
 
-  clonePostOption(postOption: PostOption): PostOption {
-    return new PostOption(postOption.id, postOption.text);
+  clonePostOption(postOption: PollOption): PollOption {
+    return new PollOption(postOption.id, postOption.text);
   }
 
   get editingPostOption() {
@@ -591,7 +616,7 @@ export class FeedComponent implements OnInit {
   }
 
   removePostOption(index: number) {
-    this.quizPost.postOptions.splice(index, 1);
+    this.quizPost.pollOptions.splice(index, 1);
   }
 
   timeElapsed(dateString: string): string {

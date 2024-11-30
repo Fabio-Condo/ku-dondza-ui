@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { IUserFilter } from '../core/model/IUserFilter';
 import { User } from '../core/model/User';
-import { PostOption } from '../core/model/PostOption';
+import { PollOption } from '../core/model/PollOption';
 
 
 @Injectable({ providedIn: 'root' })
 export class PostOptionService {
-    private host = environment.apiUrl + '/post_options';
+    private host = environment.apiUrl + '/poll_options';
 
     constructor(private http: HttpClient) { }
 
@@ -24,8 +24,8 @@ export class PostOptionService {
         return this.http.get<IApiResponse<User>>(`${this.host}/${optionId}/people`, { params });
     }
 
-    addUserToOption(optionId: number, userId: number): Observable<PostOption> {
-        return this.http.post<PostOption>(`${this.host}/${optionId}/people/${userId}`, {});
+    addUserToOption(optionId: number, userId: number): Observable<PollOption> {
+        return this.http.post<PollOption>(`${this.host}/${optionId}/people/${userId}`, {});
       }
 
     countPeopleWhoSelectedByOptionId(optionId: number): Observable<number> {

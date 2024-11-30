@@ -54,7 +54,7 @@ export class FeedsService {
   }
 
   public addQuizPost(post: Post): Observable<Post> {
-    console.log(post.postOptions.length);
+    console.log(post.pollOptions.length);
 
     return this.http.post<Post>(`${this.host}/add_quiz_post`, post, {});  
   }

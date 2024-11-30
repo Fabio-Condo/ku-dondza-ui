@@ -20,10 +20,11 @@
                 </div>
                 
                 <p class="group-description">{{ group.description }}</p>
+                <p class="details">Criado por <strong>{{ group.creator.firstName }} {{ group.creator.lastName }}</strong></p>
 
                 <button style="margin: 20px;" class="btn btn-primary" (click)="addMemberToGroup(group)"
                     *ngIf="!group.isCurrentUserMember">Aderir ao Grupo</button>
-                <button style="margin: 20px;" class="btn" (click)="onRemoveMember(group)" *ngIf="group.isCurrentUserMember">Sair do
+                <button style="margin: 20px;" class="btn" (click)="onRemoveMember(group)" *ngIf="group.isCurrentUserMember" [disabled]="loggedUser.id == group.creator.id">Sair do
                     Grupo</button>
 
             </div>
@@ -133,15 +134,19 @@
                 <div class="members-list" *ngFor="let member of members">
                     <a [routerLink]="['/profile', member.id]" class="member-item">
                         <img src="{{ member.profileImageUrl }}" alt="Membro" class="member-avatar">
-                        <span class="member-name">{{ member.firstName }} {{ member.lastName }}</span>
-                        <span *ngIf="member.isGroupAdmin" class="admin-span">admin</span>
+                        <div style="display: flex; flex-direction: column; ">
+                            <span class="member-name">{{ member.firstName }} {{ member.lastName }}</span>
+                            <span *ngIf="(member.isGroupAdmin) && (member.id != group.creator.id)" class="admin-span">admin</span>
+                            <span *ngIf="member.id == group.creator.id" class="admin-span">criador e admin</span>
+                        </div>
+
                     </a>
                     <div class="dropdown-container" *ngIf="loggedUser.isGroupAdmin">
                         <button class="dropdown-btn" (click)="member.isAdminMenuOpen = !member.isAdminMenuOpen"><i class="pi pi-ellipsis-v"></i></button>
                         <div class="dropdown" *ngIf="member.isAdminMenuOpen">
-                            <a >Remover privilegio</a>
-                            <a >Adicionar privilegio</a>
-                            <a >Remover do grupo</a>
+                            <a>Adicionar privilegio</a>
+                            <a>Remover privilegio</a>
+                            <a>Remover do grupo</a>
                         </div>
                     </div>
                 </div>

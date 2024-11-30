@@ -1,9 +1,9 @@
 import { User } from "./User";
 
-export class PostOption {
+export class PollOption {
     id?: number;
     text?: string;
-    peopleWhoSelected: User[] = [];
+    usersWhoVoted: User[] = [];
 
     selected: boolean = false;
     totalUsers: number = 0;

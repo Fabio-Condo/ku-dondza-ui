@@ -124,6 +124,16 @@ export class UserProfileViewComponent implements OnInit {
     this.scrollToTop();
   }
 
+  seeProfileByUserId(userId: string){
+    this.filtro.page = -1;
+    this.filtroAmigos.page = -1;
+    this.posts = [];
+    this.friends = [];
+    this.getUserByUserId(userId);
+    this.scrollToTop();
+    this.router.navigateByUrl('/user/profile/' + this.user.userId);
+  }
+
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -313,6 +323,10 @@ export class UserProfileViewComponent implements OnInit {
     this.userService.checkIfUserSavedPost(this.currentUser.id, post.id).subscribe(response => {
       post.isSaved = response;
     });
+  }
+
+  closePost(post: Post) {
+    this.posts = this.posts.filter(p => p.id !== post.id);
   }
 
   getNumberOfLikes(post: Post): void {

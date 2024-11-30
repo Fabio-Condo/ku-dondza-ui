@@ -1,7 +1,7 @@
 import { Comment } from "./Comment";
 import { Group } from "./Group";
 import { Like } from "./Like";
-import { PostOption } from "./PostOption";
+import { PollOption } from "./PollOption";
 import { User } from "./User";
 
 export class Post {
@@ -13,7 +13,7 @@ export class Post {
     public urlFile!: string;
     public user: User;
     public group: Group;
-    public postOptions: PostOption[] = [];
+    public pollOptions: PollOption[] = [];
     public comments: Comment[] = [];
     public likes: Like[] = [];
 

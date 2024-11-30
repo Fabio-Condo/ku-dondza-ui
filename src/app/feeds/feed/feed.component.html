@@ -19,21 +19,20 @@
           </h2>
 
           <p class="text-muted" style="font-size: 0.7rem;">{{ loggedUser.bio }}</p>
+        </div>  
 
-          <hr style="margin-top: 1rem; margin-bottom: 1rem;">
+        <hr>
 
-          <div class="info-section">
-            <div class="friends-info">
-              <span>Total</span>
-              <span class="friends-count">123</span>
-            </div>
-            <div class="saved-items-info" routerLink="/saved-feed">
-              <span>Itens Guardados</span>
-              <span class="saved-items-count">45</span>
-            </div>
+        <div class="info-section">
+          <div class="user-info-section" routerLink="/users">
+            <span>Amigos</span>
+            <span class="friends-count">{{ totalFriends }}</span>
+          </div>
+          <div class="user-info-section" routerLink="/saved-feed">
+            <span>Itens Guardados</span>
+            <span class="saved-items-count">{{ totalUserSavadPosts }}</span>
           </div>
         </div>
-
       </div>
 
     </div>
@@ -131,7 +130,7 @@
           </video>
 
           <div class="answer-options" style="margin: 0.7rem;">  <!--[disabled]="option.selected" -->
-            <label *ngFor="let option of feed.postOptions; let i = index">
+            <label *ngFor="let option of feed.pollOptions; let i = index">
               <input 
                 type="radio" 
                 [value]="option.text"
@@ -499,14 +498,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let option of quizPost.postOptions; let rowIndex = index">
+                <tr *ngFor="let option of quizPost.pollOptions; let rowIndex = index">
                   <td>{{ option.text }}</td>
                   <td class="actions">
                     <a href="javascript:;" (click)="getReadyPostOptionEdit(option, rowIndex)" class="edit-btn">E</a>
                     <a href="javascript:;" (click)="removePostOption(rowIndex)" class="remove-btn">R</a>
                   </td>
                 </tr>
-                <tr *ngIf="quizPost.postOptions.length === 0">
+                <tr *ngIf="quizPost.pollOptions.length === 0">
                   <td colspan="3" class="text-center">Sem opções</td>
                 </tr>
               </tbody>

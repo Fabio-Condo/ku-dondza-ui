@@ -118,6 +118,10 @@ export class SavedFeedComponent implements OnInit {
     });
   }
 
+  closePost(post: Post) {
+    this.posts = this.posts.filter(p => p.id !== post.id);
+  }
+
   getNumberOfLikes(post: Post): void {
     this.likeService.countLikesByPostId(post.id).subscribe((response: number) => {
       post.numberOfLikes = response;

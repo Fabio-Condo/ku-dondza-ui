@@ -23,7 +23,7 @@
             <p class="profile-bio">{{user.bio}}</p>
             <p>{{user.email}}
                 <a (click)="onUpdateCurrentUser()" *ngIf="currentUser.userId == user.userId"
-                style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar perfil</a>
+                    style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar perfil</a>
             </p>
             <p>
                 <strong>Interesses:</strong>
@@ -32,7 +32,7 @@
                     style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar</a>
                 <a (click)="onShowSelectInterests()" *ngIf="currentUser.userId == user.userId"
                     style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">adicionar</a>
-            </p>   
+            </p>
         </div>
 
         <div>
@@ -40,35 +40,38 @@
                 style="margin: 20px;">Sair</button>
         </div>
     </header>
-    
+
 </div>
 
 <div class="profile-courses-container">
     <div class="profile-courses" class="">
         <div class="section-header">
             <h3 class="section-title">Cursos Frequentados</h3>
-            <button *ngIf="currentUser.userId == user.userId" (click)="onAddUserCourse()" pButton icon="pi pi-plus" label="Adicionar" class="btn-add-course"></button>
+            <button *ngIf="currentUser.userId == user.userId" (click)="onAddUserCourse()" pButton icon="pi pi-plus"
+                label="Adicionar" class="btn-add-course"></button>
         </div>
         <ul class="courses-list" *ngFor="let userCourse of userCourses">
             <hr>
             <li class="course-item">
                 <div class="course-info">
-                    <img [src]="userCourse.course.institution.urlFile" alt="{{ userCourse.course.institution.name }}" class="institution-img" />
+                    <img [src]="userCourse.course.institution.urlFile" alt="{{ userCourse.course.institution.name }}"
+                        class="institution-img" />
                     <div class="course-details">
                         <h4 class="course-name">{{ userCourse.course.name }}</h4>
                         <p class="course-institution">{{ userCourse.course.institution.name }}</p>
-                        <p class="course-date">{{ userCourse.startDate  | date:'yyyy' }}</p>
+                        <p class="course-date">{{ userCourse.startDate | date:'yyyy' }}</p>
                     </div>
-                    <div class="dropdown-container"*ngIf="currentUser.userId == user.userId">
-                        <button class="dropdown-btn" (click)="toggleDropdown(userCourse)"><i class="pi pi-ellipsis-v"></i></button>
+                    <div class="dropdown-container" *ngIf="currentUser.userId == user.userId">
+                        <button class="dropdown-btn" (click)="toggleDropdown(userCourse)"><i
+                                class="pi pi-ellipsis-v"></i></button>
                         <div class="dropdown" *ngIf="userCourse.isAdminMenuOpen">
-                            <a (click)="onRemoveUserCourse(userCourse); closeDropdown(userCourse)" >Eliminar</a>
+                            <a (click)="onRemoveUserCourse(userCourse); closeDropdown(userCourse)">Eliminar</a>
                             <a (click)="onEditUserCourse(userCourse); closeDropdown(userCourse)">Editar</a>
                         </div>
                     </div>
                 </div>
             </li>
-            
+
         </ul>
         <!--<button *ngIf="courses.length < 5" class="btn-show-more">Ver mais</button>-->
     </div>
@@ -82,12 +85,46 @@
     <div class="posts-list">
 
         <div class="post" *ngFor="let feed of posts">
-            <div class="post-header" style="padding: 0.7rem 0 0 0.7rem;">
-                <img src="{{ feed.user.profileImageUrl }}" alt="Avatar do usuário" class="user-avatar">
-                <div class="user-info">
-                    <h3 class="user-name">{{ feed.user.firstName }} {{ feed.user.lastName }}</h3>
-                    <p class="post-date">Publicado em {{ timeElapsed(feed.date.toString()) }}</p>
+
+            <!--Post feito pelo user fora do grupo-->
+            <div class="user" *ngIf="!feed.group" style="display: flex; align-items: center; margin: 0.7rem;">
+                <div class="profile-pic" [routerLink]="['/user/profile', feed.user.userId]">
+                    <img src="{{feed.user.profileImageUrl}}" alt="photo">
                 </div>
+                <div class="info" style="flex: 1; margin-left: 10px;">
+                    <a style="color: hsl(252, 30%, 10%); cursor: pointer; font-size: 0.8rem;"
+                        [routerLink]="['/user/profile', feed.user.userId]">
+                        <h3 class="user-name-hover">{{feed.user.firstName}} {{feed.user.lastName}}</h3>
+                    </a>
+                    <small class="text-muted">{{timeElapsed(feed.date.toString())}}</small>
+                </div>
+                <span class="edit" (click)="closePost(feed)" aria-label="Fechar post" style="cursor: pointer; margin-left: auto;">
+                    <i class="pi pi-times" style="font-size: 0.8rem"></i>
+                </span>
+            </div>
+
+            <!--Post feito apartir de um grupo-->
+            <div class="group-user-info" *ngIf="feed.group" style="display: flex; align-items: center; margin: 0.7rem;">
+                <div class="group-pic-wrapper">
+                    <img class="group-pic" src="{{feed.group.urlFile}}" alt="Group Photo">
+                    <img class="user-pic" src="{{feed.user.profileImageUrl}}" alt="User Photo">
+                </div>
+                <div class="group-details">
+                    <div style="display: flex; align-items: center;">
+                        <a [routerLink]="['/group', feed.group.id]" class="group-name">{{feed.group.name}}</a>
+                        <span class="bullet">•</span>
+                        <a class="join-group">Aderir</a>
+                    </div>
+                    <div class="post-author-info">
+                        <a [routerLink]="['/user/profile', feed.user.userId]" class="user-name">{{feed.user.firstName}}
+                            {{feed.user.lastName}}</a>
+                        <span class="bullet">•</span>
+                        <span class="post-time">{{timeElapsed(feed.date.toString())}}</span>
+                    </div>
+                </div>
+                <span class="edit" (click)="closePost(feed)" aria-label="Fechar post" style="cursor: pointer; margin-left: auto;">
+                    <i class="pi pi-times" style="font-size: 0.8rem"></i>
+                </span>
             </div>
 
             <hr style="margin-top: 0.7rem;">
@@ -145,11 +182,11 @@
         </div>
     </div>
 
-    <!-- Membros do Grupo -->
+    <!-- Membros do Grupo [routerLink]="['/user/profile', friend.userId]"-->
     <div class="profile-sidebar">
         <h3>Amigos</h3>
         <div class="members-list" *ngFor="let friend of friends">
-            <a [routerLink]="['/profile', friend.id]" class="member-item">
+            <a (click)="seeProfileByUserId(friend.userId)" class="member-item">
                 <img src="{{ friend.profileImageUrl }}" alt="Membro" class="member-avatar">
                 <span class="member-name">{{ friend.firstName }} {{ friend.lastName }}</span>
             </a>
@@ -210,26 +247,29 @@
 
             <div class="form-group">
                 <label for="institution">Instituição</label>
-                <select id="institution" name="institution" [(ngModel)]="selectedInstitution" [(ngModel)]="userCourse.course.institution.id" (change)="getCoursesByInstitutionId()" required>
-                  <option value="" disabled selected>Selecione a instituição</option>
-                  <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}</option>
+                <select id="institution" name="institution" [(ngModel)]="selectedInstitution"
+                    [(ngModel)]="userCourse.course.institution.id" (change)="getCoursesByInstitutionId()" required>
+                    <option value="" disabled selected>Selecione a instituição</option>
+                    <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="course">Curso</label>
-                <select id="course" name="course" [(ngModel)]="userCourse.course.id" [disabled]="!selectedInstitution" required>
-                  <option value="" disabled selected>Selecione o curso</option>
-                  <option *ngFor="let course of courses" [value]="course.value">{{ course.label }}</option>
+                <select id="course" name="course" [(ngModel)]="userCourse.course.id" [disabled]="!selectedInstitution"
+                    required>
+                    <option value="" disabled selected>Selecione o curso</option>
+                    <option *ngFor="let course of courses" [value]="course.value">{{ course.label }}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Ano</label>
                 <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '400px'}" [showIcon]="true"
-                  [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
-                  [required]="true" [(ngModel)]="userCourse.startDate"></p-calendar>
-              </div>
+                    [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
+                    [required]="true" [(ngModel)]="userCourse.startDate"></p-calendar>
+            </div>
 
             <button type="submit" [disabled]="curseForm.invalid" class="btn">Salvar</button>
 

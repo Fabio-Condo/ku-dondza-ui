@@ -217,17 +217,21 @@ p {
 }
 
 .info-section {
-  margin-top: 10px;
+  margin-top: 0px;
 }
 
-.friends-info,
-.saved-items-info {
+.user-info-section {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
   font-size: 14px;
-  color: var(--color-black);
+  padding: 5px 0.7rem 5px 0.7rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-info-section:hover {
+  background-color: #f0f0f0;
+  color: #333;
 }
 
 .icon-liked {
@@ -318,54 +322,57 @@ p {
 
 /* Links */
 .link-card {
-    width: 100%; /* Ocupa toda a largura do container pai */
-    background-color: #fff;
-    border: 1px solid #dcdcdc;
-    border-radius: 5px;
-    padding: var(--card-padding);
-    position: sticky;
-    top: 67px;
+  width: 100%;
+  /* Ocupa toda a largura do container pai */
+  background-color: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  padding: var(--card-padding);
+  position: sticky;
+  top: 67px;
 }
 
 .link-card h3 {
-    margin-bottom: 15px;
-    font-size: 1.2em;
-    color: #333;
-    font-weight: bold;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: #333;
+  font-weight: bold;
 }
 
 .link-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .link-card li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .link-card a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    display: block;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
-    width: 100%;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  display: block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  /* Transição suave para a cor de fundo */
+  width: 100%;
 }
 
 .link-card a:hover {
-    background-color: #f0f0f0; /* Cor cinza no hover */
-    color: #333;
+  background-color: #f0f0f0;
+  /* Cor cinza no hover */
+  color: #333;
 }
 
 .link-card i {
-    font-size: 1.2em;
-    color: #4A90E2;
-    margin-right: 10px;
+  font-size: 1.2em;
+  color: #4A90E2;
+  margin-right: 10px;
 }
 
 /* Esconde o card em dispositivos com largura de tela menor que 768px */
@@ -452,7 +459,7 @@ p {
 
 /* Table */
 .table-container {
-  max-width: 100%; 
+  max-width: 100%;
   margin: 0 auto;
   overflow-x: auto;
 }
@@ -470,10 +477,13 @@ p {
   color: white;
 }
 
-.responsive-table th, .responsive-table td {
-  padding: 8px; /* Menor padding */
+.responsive-table th,
+.responsive-table td {
+  padding: 8px;
+  /* Menor padding */
   text-align: left;
-  font-size: 14px; /* Tamanho da fonte menor */
+  font-size: 14px;
+  /* Tamanho da fonte menor */
 }
 
 .responsive-table tbody tr {
@@ -491,22 +501,30 @@ p {
 
 .actions {
   display: flex;
-  justify-content: flex-end; /* Alinha os botões à direita */
-  gap: 5px; /* Menor espaço entre os botões */
+  justify-content: flex-end;
+  /* Alinha os botões à direita */
+  gap: 5px;
+  /* Menor espaço entre os botões */
 }
 
 .actions-header {
-  text-align: right; /* Alinha o cabeçalho de ações à direita */
+  text-align: right;
+  /* Alinha o cabeçalho de ações à direita */
 }
 
-.edit-btn, .remove-btn {
+.edit-btn,
+.remove-btn {
   text-decoration: none;
-  padding: 4px 8px; /* Botões menores */
+  padding: 4px 8px;
+  /* Botões menores */
   border-radius: 4px;
   color: #fff;
-  font-size: 12px; /* Tamanho da fonte dos botões menor */
-  border: none; /* Sem borda */
-  cursor: pointer; /* Cursor em forma de mão */
+  font-size: 12px;
+  /* Tamanho da fonte dos botões menor */
+  border: none;
+  /* Sem borda */
+  cursor: pointer;
+  /* Cursor em forma de mão */
 }
 
 .edit-btn {
@@ -529,7 +547,8 @@ p {
   text-align: center;
   font-weight: bold;
   color: #555;
-  font-size: 14px; /* Tamanho da fonte da mensagem menor */
+  font-size: 14px;
+  /* Tamanho da fonte da mensagem menor */
 }
 
 .answer-options {
