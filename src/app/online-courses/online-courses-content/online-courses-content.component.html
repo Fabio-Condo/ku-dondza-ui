@@ -10,6 +10,10 @@
         </div>
     </div>
 
+</div>
+
+<div class="learning-container">
+
     <div class="main-content">
         <!-- Detalhes do Curso -->
         <div class="course-details">
@@ -69,8 +73,10 @@
                     <h3>{{ tema.name }}</h3>
                     <div *ngFor="let content of tema.courseContents" class="section-header">
                         <div>
-                            <span class="lesson-content" (click)="onSelectContent(content)">{{ content.description }}</span>
-                            <span class="lesson-duration">Duração: 45 minutos</span>
+                            <span class="lesson-content" (click)="onSelectContent(content)">
+                                <i class="pi pi-video" style="font-size: 0.7rem;"></i>
+                                {{ content.description }}
+                            </span>
                         </div> 
 
                         <div class="dropdown-container">
@@ -79,13 +85,13 @@
                                 <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = !content.isAdminMenuOpen">Excluir</a>
                             </div>
                         </div>
-                        <button class="dropdown-btn" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i class="pi pi-ellipsis-v" style="font-size: 14px; color: black;"></i></button>
-                        <button class="dropdown-btn"><i class="pi pi-unlock" style="font-size: 14px; color: black;"></i></button>
+                        <button *ngIf="isAdmin" class="dropdown-btn" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i class="pi pi-ellipsis-v" style="font-size: 14px; color: black;"></i></button>
+                        <button class="dropdown-btn">1:42</button>
                     </div>
-                    <p class="download-file">
+                    <span class="lesson-content">
                         <i class="pi pi-file" style="font-size: 0.7rem;"></i>
                         ficha de exercicios
-                    </p>
+                    </span>
 
                 </div>
                 
