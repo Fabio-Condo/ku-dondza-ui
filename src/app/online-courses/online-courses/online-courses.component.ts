@@ -8,6 +8,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
+import { QuestionService } from 'src/app/questions/question.service';
+import { Question } from 'src/app/core/model/Question';
+import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 
 @Component({
   selector: 'app-online-courses',
@@ -27,6 +30,15 @@ export class OnlineCoursesComponent implements OnInit {
   totalCourses: number = 0;
   displayModalFilter: boolean = false;
   isAdmin: boolean = false;
+  
+  selectedCourse: OnlineCourse = new OnlineCourse();
+
+  selectedQuestion: Question = new Question();
+  showQuestionsDialog: boolean = false;
+  showSelectQuestionsDialog: boolean = false;
+
+  questionsList: any[] = [];
+  totalRegistrosQuestions: number = 10000
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -39,10 +51,17 @@ export class OnlineCoursesComponent implements OnInit {
     ordenamento: 'id,asc'
   }
 
+  filtroQuestions: QuestionFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
+
   loggedUser: User = new User;
 
   constructor(
     private onlineCoursesService: OnlineCoursesService,
+    private questionService: QuestionService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
@@ -53,6 +72,7 @@ export class OnlineCoursesComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.buscarTotal();
     this.findAll();
+    this.getQuestions();
     this.scrollToTop();
   }
 
@@ -181,6 +201,90 @@ export class OnlineCoursesComponent implements OnInit {
         this.showLoading = false;
       }
     )
+  }
+
+  getQuestions() {
+    return this.questionService.getAll().subscribe(
+      dados => {
+        this.questionsList = dados.map(dado => {
+          return {
+            label: dado.text,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  addQuestionToCourse() {
+    this.onlineCoursesService.addQuestionToCourse(this.course.id, this.selectedQuestion.id).subscribe(
+      (course) => {
+        this.course = course;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  removeQuestionFromCourse(question: Question) {
+    this.onlineCoursesService.removeQuestionFromCourse(this.selectedCourse.id, question.id).subscribe(
+      () => {
+        this.selectedCourse.questions = this.selectedCourse.questions.filter(quest => quest.id !== question.id);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getQuestionsByCourseId(): void {
+    this.onlineCoursesService.getQuestionsByCourseId(this.selectedCourse.id, this.filtroQuestions).subscribe(
+      (dados: IApiResponse<Question>) => {
+        this.selectedCourse.questions = [...this.selectedCourse.questions, ...dados.content];
+        this.totalRegistrosQuestions = dados.totalElements;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  countQuestionsByCourseId(course: OnlineCourse) {
+    this.showLoading = true;
+    this.onlineCoursesService.countQuestionsByCourseId(course.id,).subscribe(
+      (total) => {
+        course.totalQuestions = total;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onShowMoreQuestions(): void {
+    if (this.selectedCourse) {
+      this.filtroQuestions.page++;
+      this.getQuestionsByCourseId();
+    }
+  }
+
+  onShowSelectedCourse(course: OnlineCourse): void {
+    this.selectedCourse = course;
+    this.selectedCourse.questions = [];
+    this.filtroQuestions.page = 0; 
+    this.getQuestionsByCourseId();
+    this.showQuestionsDialog = true;
+  }
+
+  onAddQuestions(course: OnlineCourse) {
+    this.course = course;
+    this.showSelectQuestionsDialog = true;
   }
 
   changePageSize(event: any): void {

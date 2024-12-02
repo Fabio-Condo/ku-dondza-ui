@@ -1,4 +1,6 @@
 import { OnlineCourseContent } from "./Online-course-content";
+import { Question } from "./Question";
+import { Tema } from "./Tema";
 
 export class OnlineCourse {
     id!: number;
@@ -11,8 +13,10 @@ export class OnlineCourse {
     instrutorName!: string;
     instrutorDescription!: string;
     instrutorSpecialization!: string;
-    //content: OnlineCourseContent[] = [];
+    temas: Tema[] = [];
+    questions: Question[] = [];
 
+    totalQuestions: number = 0;
 
     isSubscribed: boolean = false;
     totalStudents: number = 0;

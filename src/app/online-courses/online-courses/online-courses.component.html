@@ -61,6 +61,8 @@
                                 <div class="dropdown" *ngIf="course.isAdminMenuOpen">
                                     <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
                                     <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
+                                    <a (click)="onAddQuestions(course); closeDropdown(course)">Adicionar questão</a>
+                                    <a (click)="onShowSelectedCourse(course); closeDropdown(course)">Ver questões</a>
                                 </div>
                             </div>
                             <div class="button-container">
@@ -159,5 +161,58 @@
                 <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="question-dialog-overlay" *ngIf="showQuestionsDialog">
+    <div class="question-dialog">
+        <div class="question-dialog-header">
+            <h4>{{selectedCourse.name}}</h4>
+            <button class="close-button" (click)="showQuestionsDialog = false">x</button>
+        </div>
+        <div class="question-dialog-content">
+            <ul>
+                <li *ngFor="let question of selectedCourse.questions">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content" style="margin-left: 20px;">
+                                <p>{{question.text}}</p>
+                            </div>
+                            <div class="button-container">
+                                <button class="btn" style="margin-left: 10px;"
+                                    (click)="removeQuestionFromCourse(question)">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div (click)="onShowMoreQuestions()" class="upload-loading-container"
+            style="cursor: pointer; border: 1px solid #ccc;">
+            <p class="upload-loading-text">carregar mais questões</p>
+        </div>
+    </div>
+</div>
+
+<div class="question-dialog-overlay" *ngIf="showSelectQuestionsDialog">
+    <div class="question-dialog">
+        <div class="question-dialog-header">
+            <h4>Questoes</h4>
+            <button class="close-button" (click)="showSelectQuestionsDialog = false">x</button>
+        </div>
+
+        <div class="form-group">
+            <label for="question">Selecione a questao</label>
+            <select id="question" name="question" [(ngModel)]="selectedQuestion.id" required>
+                <option value="" disabled selected>Selecione a questao</option>
+                <option *ngFor="let question of questionsList" [value]="question.value">{{ question.label }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="button" (click)="addQuestionToCourse()" class="btn btn-primary">{{ showLoading ? 'Loading...' :
+                'Salvar' }}</button>
+        </div>
     </div>
 </div>

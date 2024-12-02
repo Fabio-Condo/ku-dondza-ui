@@ -407,7 +407,7 @@ a {
 /* Container Principal */
 .learning-container {
     max-width: 900px;
-    margin: 50px auto;
+    margin: 20px auto;
     background: #fff;
     border-radius: 5px;
     border: 1px solid #dcdcdc;
@@ -545,7 +545,7 @@ a {
     background-color: #fff;
     padding: 0.7rem;
     /* Menor espaçamento geral */
-    margin-top: 40px;
+    margin-top: 0px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
@@ -565,30 +565,29 @@ a {
 .lesson-list li {
     display: flex;
     align-items: center;
-    gap: 15px;
-    /* Espaçamento entre os itens */
-    margin-bottom: 15px;
-    /* Menor espaçamento entre as aulas */
-    padding: 10px 0;
-    /* Menor espaçamento interno */
-    border-bottom: 1px solid #ddd;
+    /* gap: 5px;*/
+    margin-bottom: 5px;
+    padding: 5px 0;
+    /* border-bottom: 1px solid #ddd;*/
 }
 
+/*
 .lesson-list li a {
     display: flex;
     align-items: center;
     text-decoration: none;
-    /* Remove o sublinhado padrão do link */
     color: inherit;
-    /* Mantém a cor do texto original */
     cursor: pointer;
     width: 100%;
     transition: background-color 0.3s ease;
 }
+*/
 
+/*
 .lesson-list li a:hover {
     text-decoration: underline;
 }
+*/
 
 .lesson-list li i {
     font-size: 2rem;
@@ -616,10 +615,25 @@ a {
     /* Menor espaçamento entre a descrição e a duração */
 }
 
+.lesson-content {
+    font-size: 0.9rem;
+    color: var(--color-black);
+    margin-top: 8px;
+    margin-left: 0px;
+    display: block;
+    cursor: pointer;
+}
+
+.lesson-content:hover {
+    text-decoration: underline;
+}
+
 .lesson-duration {
     font-size: 0.7rem;
     color: #777;
     margin-top: 3px;
+    margin-left: 0px;
+    margin-bottom: 8px;
     /* Menor margem para a duração */
     display: block;
 }
@@ -638,7 +652,6 @@ a {
     color: var(--color-primary);
     /* Mudança de cor ao passar o mouse */
 }
-
 
 .instructor-info {
     margin-top: 40px;
@@ -910,3 +923,156 @@ video {
     }
 
 }
+
+.students-list {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+
+.student-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #dcdcdc;
+    margin-right: 10px;
+}
+
+.student-name {
+    font-size: 1rem;
+    color: var(--color-black);
+    font-weight: 600;
+    line-height: 40px;
+}
+
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.btn {
+    display: inline-block;
+    padding: var(--btn-padding);
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #adb5bd;
+}
+
+.test-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.test-button:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #adb5bd;
+}
+
+.test-button:hover {
+    opacity: 0.8;
+}
+
+.download-file {
+    font-size: 0.9rem;
+    color: var(--color-black);
+    margin-top: 8px;
+    display: block;
+    cursor: pointer;
+}
+
+.download-file:hover {
+    text-decoration: underline;
+}
+
+/* Contêiner do menu - admin button options*/
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Estilos do botão */
+.dropdown-btn {
+    background-color: transparent;
+    margin-right: 0.2rem;
+    color: black;
+    padding: 0.6rem 1rem;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilo do botão ao passar o mouse */
+.dropdown-btn:hover {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+/* Estilos do dropdown */
+.dropdown {
+    position: absolute;
+    top: 20px;
+    /* Aparece logo abaixo do botão */
+    right: 0;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.dropdown a {
+    color: #333;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+/* End */

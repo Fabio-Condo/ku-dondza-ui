@@ -39,19 +39,19 @@ export class OnlineCoursesContentService {
         return this.http.get<IApiResponse<OnlineCourseContent>>(`${this.host}/findByOnlineCourseId`, { params });
     }
 
-    save(content: OnlineCourseContent, onlineCourseId: number, file: File): Observable<OnlineCourseContent> {
+    save(content: OnlineCourseContent, temaId: number, file: File): Observable<OnlineCourseContent> {
         const formData = new FormData();
         formData.append('description', content.description);
-        formData.append('onlineCourseId', onlineCourseId.toString());
+        formData.append('temaId', temaId.toString());
         formData.append('file', file);
         return this.http.post<OnlineCourseContent>(`${this.host}`, formData);
     }
 
-    update(content: OnlineCourseContent, onlineCourseId: number, file: File): Observable<OnlineCourseContent> {
+    update(content: OnlineCourseContent, temaId: number, file: File): Observable<OnlineCourseContent> {
         const formData = new FormData();
         formData.append('id', content.id.toString());
         formData.append('description', content.description);
-        formData.append('onlineCourseId', onlineCourseId.toString());
+        formData.append('temaId', temaId.toString());
         formData.append('file', file);
         return this.http.put<OnlineCourseContent>(`${this.host}`, formData);
     }

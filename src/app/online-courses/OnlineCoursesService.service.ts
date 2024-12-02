@@ -7,6 +7,8 @@ import { OnlineCourse } from '../core/model/Online-course';
 import { IUserFilter } from '../core/model/IUserFilter';
 import { User } from '../core/model/User';
 import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
+import { QuestionFilter } from '../core/interface/QuestionFilter';
+import { Question } from '../core/model/Question';
 
 
 @Injectable({ providedIn: 'root' })
@@ -22,9 +24,9 @@ export class OnlineCoursesService {
             .set('sort', filtro.ordenamento)
             .set('size', filtro.itensPorPagina);
 
-            if (filtro.searchParam) {
-                params = params.set('searchParam', filtro.searchParam);
-            }
+        if (filtro.searchParam) {
+            params = params.set('searchParam', filtro.searchParam);
+        }
 
         return this.http.get<IApiResponse<OnlineCourse>>(`${this.host}/filter`, { params });
     }
@@ -72,17 +74,39 @@ export class OnlineCoursesService {
         return this.http.get<number>(`${this.host}/total`, {});
     }
 
-    getStudentsByCourseId(competitionId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
+    getStudentsByCourseId(courseId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
 
         let params = new HttpParams()
             .set('page', filtro.page)
             .set('sort', filtro.sort)
             .set('size', filtro.itemsPerPage);
 
-        return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/students`, { params });
+        return this.http.get<IApiResponse<User>>(`${this.host}/${courseId}/students`, { params });
     }
 
     countOnlineCourseStudentsByCourseId(courseId: number): Observable<number> {
         return this.http.get<number>(`${this.host}/${courseId}/students/total`, {});
+    }
+
+    addQuestionToCourse(courseId: number, questionId: number): Observable<OnlineCourse> {
+        return this.http.post<OnlineCourse>(`${this.host}/${courseId}/questions/${questionId}`, {});
+    }
+
+    removeQuestionFromCourse(courseId: number, questionId: number): Observable<OnlineCourse> {
+        return this.http.delete<OnlineCourse>(`${this.host}/${courseId}/questions/${questionId}`);
+    }
+
+    getQuestionsByCourseId(courseId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
+
+        let params = new HttpParams()
+            .set('page', filtro.page)
+            .set('sort', filtro.sort)
+            .set('size', filtro.itemsPerPage);
+
+        return this.http.get<IApiResponse<Question>>(`${this.host}/${courseId}/questions`, { params });
+    }
+
+    countQuestionsByCourseId(courseId: number): Observable<number> {
+        return this.http.get<number>(`${this.host}/${courseId}/questions/total`, {});
     }
 }

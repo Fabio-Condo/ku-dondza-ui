@@ -1,0 +1,58 @@
+<div class="container" style="margin-top: 70px;">
+      
+    <h1 class="quiz-title">Quiz: {{ course.name }}</h1>
+
+    <div>
+        <div class="question-card" *ngIf="currentQuestionIndex < questions.length">
+
+            <img *ngIf="questions[currentQuestionIndex].urlFile" 
+                 src="{{ questions[currentQuestionIndex].urlFile }}" 
+                 alt="Gráfico de funções" 
+                 class="question-graph">
+
+            <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
+
+            <div class="answer-options">
+                <label *ngFor="let answer of questions[currentQuestionIndex].answers" 
+                       [ngClass]="{
+                          'correct-answer': showCorrection && answer.correct,
+                          'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
+                       }">
+                    <input 
+                        type="radio" 
+                        name="question-{{ questions[currentQuestionIndex].id }}" 
+                        [value]="answer.id" 
+                        [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)" 
+                        (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)" 
+                        [disabled]="showCorrection" />
+                    <span>
+                        {{ answer.text }}
+                    </span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="navigation-buttons text-center">
+            <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
+                <i class="pi pi-chevron-left"></i> Anterior
+            </button>
+            <button class="pagination-button" (click)="goToNextQuestion()" 
+                    [disabled]="currentQuestionIndex === questions.length - 1">
+                Próxima <i class="pi pi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Botão para mostrar a correção -->
+    <div *ngIf="currentQuestionIndex === questions.length - 1" class="text-center">
+        <button class="submit-button" (click)="submitAnswers(); toggleCorrection()">Submeter Respostas</button>
+        <br>
+    </div>
+
+    <div *ngIf="showLoading" class="loading-indicator">
+        Carregando...
+    </div>
+</div>

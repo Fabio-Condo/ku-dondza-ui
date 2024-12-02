@@ -50,26 +50,66 @@
 
     </div>
 
-    <!-- Lista de Aulas -->
-    <div class="course-lessons">
-        <h1 class="title">Aulas</h1>
-        <ul class="lesson-list" *ngFor="let content of onlineCourseContentList">
-            <li>
-                <a (click)="onSelectContent(content)">
-                    <i class="pi pi-play-circle"></i>
-                    <div>
-                        <h3>{{ content.description }}</h3>
-                        <span class="lesson-duration">Duração: 45 minutos</span>
-                    </div>
-                </a>
-                <a *ngIf="!isAdmin" (click)="onUpdateOnlineCourseContent(content, file)" class="edit-link">editar</a>
-                <a *ngIf="!isAdmin" (click)="confirmarExclusao(content)" class="delete-link">excluir</a>
-                <i class="pi pi-unlock" title="Aula Bloqueada"></i> <!-- Ícone de bloqueio -->
-            </li>
-        </ul>
-    </div>
 </div>
 
+<div class="learning-container">
+    <!-- Lista de Aulas -->
+    <div class="course-lessons">
+        <div class="section-header">
+            <h1 class="title">Aulas</h1>
+            <div>
+                <button type="button" class="btn">Adicionar tema</button>
+                <button type="button" class="btn" style="margin-left: 0.5rem;" (click)="onAddNewOnlineCourseContent()">Adicionar aula</button>
+            </div>
+        </div>
+        <ul class="lesson-list" *ngFor="let tema of temas">
+            <li>
+                <i class="pi pi-play-circle"></i>
+                <div>
+                    <h3>{{ tema.name }}</h3>
+                    <div *ngFor="let content of tema.courseContents" class="section-header">
+                        <div>
+                            <span class="lesson-content" (click)="onSelectContent(content)">{{ content.description }}</span>
+                            <span class="lesson-duration">Duração: 45 minutos</span>
+                        </div> 
+
+                        <div class="dropdown-container">
+                            <div class="dropdown" *ngIf="content.isAdminMenuOpen">
+                                <a (click)="onUpdateOnlineCourseContent(content, file); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
+                                <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = !content.isAdminMenuOpen">Excluir</a>
+                            </div>
+                        </div>
+                        <button class="dropdown-btn" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i class="pi pi-ellipsis-v" style="font-size: 14px; color: black;"></i></button>
+                        <button class="dropdown-btn"><i class="pi pi-unlock" style="font-size: 14px; color: black;"></i></button>
+                    </div>
+                    <p class="download-file">
+                        <i class="pi pi-file" style="font-size: 0.7rem;"></i>
+                        ficha de exercicios
+                    </p>
+
+                </div>
+                
+                <!--<i class="pi pi-unlock" title="Aula Bloqueada"></i>--> <!-- Ícone de bloqueio -->
+            </li>
+        </ul>
+
+        <button class="test-button" [disabled]="!course.isSubscribed" [routerLink]="['/coursos-online', course.id, 'questions']">Iniciar o teste final</button>
+
+    </div>
+
+</div>
+
+<div class="learning-container" style="padding: 0.7rem;">
+    <h1 class="title">Alunos</h1>
+
+    <div class="students-list" *ngFor="let student of students">
+        <a class="student-item">
+            <img src="{{ student.profileImageUrl }}" alt="student" class="student-avatar">
+            <span class="student-name">{{ student.firstName }} {{ student.lastName }}</span>
+        </a>
+    </div>
+    <button class="test-button" (click)="onShowMoreStudents()" *ngIf="students.length < 1000">Ver mais</button>
+</div>
 
 <div class="overlay" *ngIf="showLesson">
     <div class="vidio-dialog">
@@ -82,13 +122,13 @@
                 Your browser does not support the video tag.
             </video>
         </div>
-        
+
     </div>
 </div>
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
-        <h2>{{ editing ? 'Editando Instituição' : 'Adicionando Nova Instituição' }}</h2>
+        <h2>{{ editing ? 'Editando aula' : 'Adicionando aula' }}</h2>
 
         <button class="close-btn" (click)="displayModalSave = false">&times;</button>
 

@@ -16,13 +16,15 @@ import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { OnlineCoursesContentComponent } from './online-courses-content/online-courses-content.component';
+import { OnlineCoursesQuestionsComponent } from './online-courses-questions/online-courses-questions.component';
 
 
 
 @NgModule({
   declarations: [
     OnlineCoursesComponent,
-    OnlineCoursesContentComponent
+    OnlineCoursesContentComponent,
+    OnlineCoursesQuestionsComponent
   ],
   imports: [
     CommonModule,

@@ -12,6 +12,10 @@ import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { Question } from 'src/app/core/model/Question';
+import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
+import { TemaService } from '../tema.service';
+import { Tema } from 'src/app/core/model/Tema';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -21,6 +25,7 @@ import { IUserFilter } from 'src/app/core/model/IUserFilter';
 export class OnlineCoursesContentComponent implements OnInit {
 
   course: OnlineCourse = new OnlineCourse();
+  temas: Tema[] = [];
   onlineCourseContentList: OnlineCourseContent[] = [];
   onlineCourseContent: OnlineCourseContent = new OnlineCourseContent();
   onlineSelectedCourseContent: OnlineCourseContent = new OnlineCourseContent();
@@ -46,6 +51,8 @@ export class OnlineCoursesContentComponent implements OnInit {
   students: User[] = [];
   totalRegistrosStudents: number = 0
 
+  isDropdownOpen: boolean = false;
+
 
   @ViewChild('tabela') grid: any;
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
@@ -69,6 +76,7 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   constructor(
     private onlineCoursesService: OnlineCoursesService,
+    private temaService: TemaService,
     private onlineCoursesContentService: OnlineCoursesContentService,
     private userService: UserService,
     private authenticationService: AuthenticationService,
@@ -83,7 +91,8 @@ export class OnlineCoursesContentComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.getOnlineCourseById(id);
-      this.findCourseContentByCourseById(0, id);
+      //this.findCourseContentByCourseById(0, id);
+      this.findTemasByCourseById(0, id);
       this.getStudentsByCourseId(id);
       this.countOnlineCourseStudentsByCourseId(id);
     }
@@ -114,7 +123,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso actualizada com sucesso!' });
         this.showLoading = false;
-        this.findCourseContentByCourseById(0, this.course.id);
+        //this.findCourseContentByCourseById(0, this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -130,7 +139,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso salva com sucesso!' });
         this.showLoading = false;
-        this.findCourseContentByCourseById(0, this.course.id);
+        //this.findCourseContentByCourseById(0, this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -155,12 +164,28 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  findCourseContentByCourseById(pagina: number = 0, onlineCourseId: number): void {
+  //findCourseContentByCourseById(pagina: number = 0, onlineCourseId: number): void {
+  //  this.showLoading = true;
+  //  this.filtro.pagina = this.currentPage - 1; 
+  //  this.onlineCoursesContentService.findByOnlineCourseId(onlineCourseId, this.filtro).subscribe(
+  //    (dados: IApiResponse<OnlineCourseContent>) => {
+  //      this.onlineCourseContentList = dados.content
+  //      this.totalRegistros = dados.totalElements
+  //      this.showLoading = false;
+  //    },
+  //    (errorResponse: HttpErrorResponse) => {
+  //      this.sendErrorNotification(errorResponse.error.message);
+  //      this.showLoading = false;
+  //    }
+  //  );
+  //}
+
+  findTemasByCourseById(pagina: number = 0, onlineCourseId: number): void {
     this.showLoading = true;
-    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.onlineCoursesContentService.findByOnlineCourseId(onlineCourseId, this.filtro).subscribe(
-      (dados: IApiResponse<OnlineCourseContent>) => {
-        this.onlineCourseContentList = dados.content
+    this.filtro.pagina = this.currentPage - 1; 
+    this.temaService.findByOnlineCourseId(onlineCourseId, this.filtro).subscribe(
+      (dados: IApiResponse<Tema>) => {
+        this.temas = dados.content
         this.totalRegistros = dados.totalElements
         this.showLoading = false;
       },
@@ -245,7 +270,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   excluir(content: OnlineCourseContent) {
     this.onlineCoursesContentService.excluir(content.id).subscribe(() => {
       if (this.grid.first === 0) {
-        this.findCourseContentByCourseById(0, this.course.id);
+        //this.findCourseContentByCourseById(0, this.course.id);
       } else {
         this.grid.reset();
       }
