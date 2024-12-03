@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { InstitutionFilter } from '../core/interface/InstitutionFilter';
 import { OnlineCourseContent } from '../core/model/Online-course-content';
@@ -25,8 +25,13 @@ export class TemaService {
         return this.http.get<IApiResponse<Tema>>(`${this.host}/filter`, { params });
     }
 
-    listarTodos(): Observable<IApiResponse<Tema>> {
-        return this.http.get<IApiResponse<Tema>>(`${this.host}/filter`, {});
+
+    getAll(courseId: number): Promise<any> {
+
+        let params = new HttpParams()
+            .set('courseId', courseId);
+
+        return firstValueFrom(this.http.get(this.host + '/getListByCourseId', {params}));
     }
 
     findByOnlineCourseId(courseId: number, filtro: CourseFilter): Observable<IApiResponse<Tema>> {

@@ -81,7 +81,7 @@
 
                         <div class="dropdown-container">
                             <div class="dropdown" *ngIf="content.isAdminMenuOpen">
-                                <a (click)="onUpdateOnlineCourseContent(content, file); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
+                                <a (click)="onUpdateOnlineCourseContent(content, tema, file); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
                                 <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = !content.isAdminMenuOpen">Excluir</a>
                             </div>
                         </div>
@@ -149,12 +149,20 @@
             </div>
 
             <div class="form-group">
+                <label for="tema">Tema</label>
+                <select id="tema" [(ngModel)]="onlineCourseContent.tema.id" name="tema" required>
+                  <option value="" disabled selected>Selecione a instituição</option>
+                  <option *ngFor="let tema of listTemas" [value]="tema.value">{{ tema.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <input type="file" (change)="onFileSelected($event)" name="file" accept="application/**"
                     class="form-control" required />
             </div>
 
             <div class="form-group">
-                <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+                <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
     </div>
