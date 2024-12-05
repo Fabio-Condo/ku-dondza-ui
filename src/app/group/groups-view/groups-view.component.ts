@@ -296,9 +296,15 @@ export class GroupsViewComponent implements OnInit {
     });
   }
 
-  removeMemberFromGroup(group: Group): void {
+  removeCurrentUserFromGroup(group: Group): void {
     this.groupService.removeMemberFromGroup(group.id, this.loggedUser.id).subscribe(() => {
       group.isCurrentUserMember = false;
+    });
+  }
+
+  removeMemberFromGroup(user: User): void {
+    this.groupService.removeMemberFromGroup(this.group.id, user.id).subscribe(() => {
+      this.members = this.members.filter(member => member.id !== user.id);
     });
   }
 
@@ -312,13 +318,25 @@ export class GroupsViewComponent implements OnInit {
   }
 
   confirmDialog(group: Group) {
-    this.removeMemberFromGroup(group);
+    this.removeCurrentUserFromGroup(group);
     this.closeConfirmDialog();
   }
 
   checkIsAdmin(user: User): void {
     this.groupService.checkIsAdmin(this.group.id, user.id).subscribe(response => {
       user.isGroupAdmin = response;
+    });
+  }
+
+  addMemberToGroupAdministrators(user: User): void {
+    this.groupService.addMemberToGroupAdministrators(this.group.id, user.id).subscribe(() => {
+      user.isGroupAdmin = true;
+    });
+  }
+
+  removeMemberFromGroupAdministrators(user: User): void {
+    this.groupService.removeMemberFromGroupAdministrators(this.group.id, user.id).subscribe(() => {
+      user.isGroupAdmin = false;
     });
   }
 

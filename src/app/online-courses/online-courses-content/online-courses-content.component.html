@@ -1,7 +1,8 @@
 <div class="learning-container" style="margin-top: 70px;">
     <!-- Capa do Curso -->
     <div class="course-cover">
-        <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
+        <!--<img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">-->
+        <img class="cover-image" [src]="imagePath" alt="Capa do Curso">
 
         <!-- Texto e botão sobre a imagem -->
         <div class="overlay-content">
@@ -62,7 +63,7 @@
         <div class="section-header">
             <h1 class="title">Aulas</h1>
             <div>
-                <button type="button" class="btn">Adicionar tema</button>
+                <button type="button" class="btn"  (click)="onAddNewTema()">Adicionar tema</button>
                 <button type="button" class="btn" style="margin-left: 0.5rem;" (click)="onAddNewOnlineCourseContent()">Adicionar aula</button>
             </div>
         </div>
@@ -70,7 +71,7 @@
             <li>
                 <i class="pi pi-play-circle"></i>
                 <div>
-                    <h3>{{ tema.name }}</h3>
+                    <h3>{{ tema.name }} <span (click)="onUpdateTema(tema, temaFile)"><i class="pi pi-pencil" style="font-size: 0.7rem; color: black;"></i></span></h3> 
                     <div *ngFor="let content of tema.courseContents" class="section-header">
                         <div>
                             <span class="lesson-content" (click)="onSelectContent(content)">
@@ -81,7 +82,7 @@
 
                         <div class="dropdown-container">
                             <div class="dropdown" *ngIf="content.isAdminMenuOpen">
-                                <a (click)="onUpdateOnlineCourseContent(content, tema, file); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
+                                <a (click)="onUpdateOnlineCourseContent(content, tema, courseContentFile); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
                                 <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = !content.isAdminMenuOpen">Excluir</a>
                             </div>
                         </div>
@@ -132,11 +133,11 @@
     </div>
 </div>
 
-<div class="overlay" *ngIf="displayModalSave">
+<div class="overlay" *ngIf="displayModalSaveContent">
     <div class="dialog">
-        <h2>{{ editing ? 'Editando aula' : 'Adicionando aula' }}</h2>
+        <h2>{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
 
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        <button class="close-btn" (click)="displayModalSaveContent = false">&times;</button>
 
         <hr>
 
@@ -157,12 +158,40 @@
             </div>
 
             <div class="form-group">
-                <input type="file" (change)="onFileSelected($event)" name="file" accept="application/**"
+                <input type="file" (change)="onCourseContenFileSelected($event)" name="file" accept="application/**"
                     class="form-control" required />
             </div>
 
             <div class="form-group">
                 <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="displayModalSaveTema">
+    <div class="dialog">
+        <h2>{{ editingTema ? 'Editando tema' : 'Adicionando tema' }}</h2>
+
+        <button class="close-btn" (click)="displayModalSaveTema = false">&times;</button>
+
+        <hr>
+
+        <form autocomplete="off" #courseForm="ngForm">
+
+            <div class="form-group">
+                <label for="name">Descrição</label>
+                <input type="text" name="name" ngModel #name="ngModel" required minlength="1"
+                    [(ngModel)]="tema.name">
+            </div>
+
+            <div class="form-group">
+                <input type="file" (change)="onTemaFileSelected($event)" name="file" accept="application/**"
+                    class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <button type="button" (click)="saveTema()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
     </div>

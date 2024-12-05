@@ -4,7 +4,6 @@ import { environment } from '../../environments/environment';
 import { firstValueFrom, Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { InstitutionFilter } from '../core/interface/InstitutionFilter';
-import { OnlineCourseContent } from '../core/model/Online-course-content';
 import { CourseFilter } from '../core/interface/CourseFilter';
 import { Tema } from '../core/model/Tema';
 
@@ -43,6 +42,23 @@ export class TemaService {
             .set('courseId', courseId);
 
         return this.http.get<IApiResponse<Tema>>(`${this.host}/findByCourseId`, { params });
+    }
+
+    save(tema: Tema, file: File): Observable<Tema> {
+        const formData = new FormData();
+        formData.append('name', tema.name);
+        formData.append('onlineCourseId', tema.onlineCourse.id.toString());
+        formData.append('file', file);
+        return this.http.post<Tema>(`${this.host}`, formData);
+    }
+
+    update(tema: Tema, file: File): Observable<Tema> {
+        const formData = new FormData();
+        formData.append('id', tema.id.toString());
+        formData.append('name', tema.name);
+        formData.append('onlineCourseId', tema.onlineCourse.id.toString());
+        formData.append('file', file);
+        return this.http.put<Tema>(`${this.host}`, formData);
     }
 
     excluir(id: number): Observable<void> {

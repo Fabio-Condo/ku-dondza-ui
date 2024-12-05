@@ -132,7 +132,7 @@
             <div class="group-sidebar">
                 <h3>Membros do Grupo</h3>
                 <div class="members-list" *ngFor="let member of members">
-                    <a [routerLink]="['/profile', member.id]" class="member-item">
+                    <a [routerLink]="['/user/profile', member.userId]" class="member-item">
                         <img src="{{ member.profileImageUrl }}" alt="Membro" class="member-avatar">
                         <div style="display: flex; flex-direction: column; ">
                             <span class="member-name">{{ member.firstName }} {{ member.lastName }}</span>
@@ -142,11 +142,11 @@
 
                     </a>
                     <div class="dropdown-container" *ngIf="loggedUser.isGroupAdmin">
-                        <button class="dropdown-btn" (click)="member.isAdminMenuOpen = !member.isAdminMenuOpen"><i class="pi pi-ellipsis-v"></i></button>
+                        <button class="dropdown-btn" (click)="member.isAdminMenuOpen = !member.isAdminMenuOpen" [disabled]="member.id == group.creator.id"><i class="pi pi-ellipsis-v"></i></button>
                         <div class="dropdown" *ngIf="member.isAdminMenuOpen">
-                            <a>Adicionar privilegio</a>
-                            <a>Remover privilegio</a>
-                            <a>Remover do grupo</a>
+                            <a (click)="addMemberToGroupAdministrators(member)">Adicionar privilegio</a>
+                            <a (click)="removeMemberFromGroupAdministrators(member)">Remover privilegio</a>
+                            <a (click)="removeMemberFromGroup(member)">Remover do grupo</a>
                         </div>
                     </div>
                 </div>

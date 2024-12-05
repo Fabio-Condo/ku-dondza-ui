@@ -25,15 +25,21 @@ import { Tema } from 'src/app/core/model/Tema';
 export class OnlineCoursesContentComponent implements OnInit {
 
   course: OnlineCourse = new OnlineCourse();
+  onlineCourseContentList: OnlineCourseContent[] = [];
+  courseContentFile!: File;
+  temaFile!: File;
+
+  tema: Tema = new Tema();
   temas: Tema[] = [];
   listTemas: any[] = [];
-  onlineCourseContentList: OnlineCourseContent[] = [];
+
   onlineCourseContent: OnlineCourseContent = new OnlineCourseContent();
   onlineSelectedCourseContent: OnlineCourseContent = new OnlineCourseContent();
   showLesson: boolean = false;
 
-  displayModalSave: boolean = false;
-  file!: File;
+  displayModalSaveContent: boolean = false;
+  displayModalSaveTema: boolean = false;
+
   totalRegistros: number = 0
   showLoading: boolean = false;
 
@@ -54,6 +60,8 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   isDropdownOpen: boolean = false;
 
+  imagePath = './assets/images/feed-5.jpg';
+
 
   @ViewChild('tabela') grid: any;
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
@@ -72,8 +80,6 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   activeTab: number = 1;
-
-  imagePath = './assets/test.mp4'
 
   constructor(
     private onlineCoursesService: OnlineCoursesService,
@@ -105,26 +111,37 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.activeTab = tabIndex;
   }
 
-  get editing() {
+  get editingContent() {
     return Boolean(this.onlineCourseContent.id)
   }
 
+  get editingTema() {
+    return Boolean(this.tema.id)
+  }
+
   saveContent() {
-    if (this.editing) {
+    if (this.editingContent) {
       this.updateContent()
     } else {
       this.addNewContent()
     }
   }
 
+  saveTema() {
+    if (this.editingTema) {
+      this.updateTema()
+    } else {
+      this.addNewTema()
+    }
+  }
+
   updateContent() {
     this.showLoading = true;
-    this.onlineCoursesContentService.update(this.onlineCourseContent, this.file).subscribe(
+    this.onlineCoursesContentService.update(this.onlineCourseContent, this.courseContentFile).subscribe(
       response => {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso actualizada com sucesso!' });
         this.showLoading = false;
-        //this.findCourseContentByCourseById(0, this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -135,7 +152,7 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   addNewContent() {
     this.showLoading = true;
-    this.onlineCoursesContentService.save(this.onlineCourseContent, this.file).subscribe(
+    this.onlineCoursesContentService.save(this.onlineCourseContent, this.courseContentFile).subscribe(
       response => {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso salva com sucesso!' });
@@ -149,8 +166,45 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  onFileSelected(event: any) {
-    this.file = event.target.files[0];
+  updateTema() {
+    this.showLoading = true;
+    this.tema.onlineCourse = this.course;
+    this.temaService.update(this.tema, this.temaFile).subscribe(
+      response => {
+        this.tema = response
+        this.messageService.add({ severity: 'success', detail: 'Tema actualizado com sucesso!' });
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  addNewTema() {
+    this.showLoading = true;
+    this.tema.onlineCourse = this.course;
+    this.temaService.save(this.tema, this.temaFile).subscribe(
+      response => {
+        this.tema = response
+        this.messageService.add({ severity: 'success', detail: 'Tema salvo com sucesso!' });
+        this.showLoading = false;
+        this.findTemasByCourseById(0, this.course.id);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onCourseContenFileSelected(event: any) {
+    this.courseContentFile = event.target.files[0];
+  }
+
+  onTemaFileSelected(event: any) {
+    this.temaFile = event.target.files[0];
   }
 
   getOnlineCourseById(id: number) {
@@ -194,16 +248,27 @@ export class OnlineCoursesContentComponent implements OnInit {
     }
   }
 
+  onUpdateTema(tema: Tema, file: File): void {
+    this.tema = tema;
+    this.temaFile = file;
+    this.displayModalSaveTema = true;
+  }
+
+  onAddNewTema(): void {
+    this.tema = new Tema();
+    this.displayModalSaveTema = true;
+  }
+
   onUpdateOnlineCourseContent(content: OnlineCourseContent, tema: Tema, file: File): void {
     this.onlineCourseContent = content;
     this.onlineCourseContent.tema = tema;
-    this.file = file;
-    this.displayModalSave = true;
+    this.courseContentFile = file;
+    this.displayModalSaveContent = true;
   }
 
   onAddNewOnlineCourseContent(): void {
     this.onlineCourseContent = new OnlineCourseContent();
-    this.displayModalSave = true;
+    this.displayModalSaveContent = true;
   }
 
   onSelectContent(content: OnlineCourseContent): void {
