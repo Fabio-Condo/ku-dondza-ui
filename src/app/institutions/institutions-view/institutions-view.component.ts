@@ -45,10 +45,9 @@ export class InstitutionsViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.getInstitutionById(id);
-      this.findCoursesByInstitutionId(0, id);
+    const institutionId = this.route.snapshot.params['id'];
+    if (institutionId) {
+      this.getInstitutionByInstitutionId(institutionId);
     }
     this.scrollToTop();
   }
@@ -79,13 +78,18 @@ export class InstitutionsViewComponent implements OnInit {
     window.open(this.instituicao.website, '_blank');
   }
   
-  getInstitutionById(id: number) {
-    this.institutionService.findById(id).subscribe(
+  getInstitutionByInstitutionId(id: string) {
+    this.institutionService.getInstitutionByInstitutionId(id).subscribe(
       (response) => {
         this.institution = response;
+        this.findCoursesByInstitutionId(0, this.institution.id);
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+        if(errorResponse.status == 400){ // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        }else{
+          this.sendErrorNotification(errorResponse.error.message);
+        } 
       }
     );
   }

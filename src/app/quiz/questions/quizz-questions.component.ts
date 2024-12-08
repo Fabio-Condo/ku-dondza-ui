@@ -49,10 +49,9 @@ export class QuizzQuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.getQuizById(id);
-      this.getQuestionsByQuizId(id);
+    const quizId = this.route.snapshot.params['id'];
+    if (quizId) {
+      this.getQuizByQuizId(quizId);
     }
     this.scrollToTop();
   }
@@ -61,13 +60,18 @@ export class QuizzQuestionsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  getQuizById(id: number) {
-    this.quizService.findById(id).subscribe(
+  getQuizByQuizId(quizId: string) {
+    this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
+        this.getQuestionsByQuizId(this.quiz.id);
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+        if(errorResponse.status == 400){ // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        }else{
+          this.sendErrorNotification(errorResponse.error.message);
+        } 
       }
     );
   }

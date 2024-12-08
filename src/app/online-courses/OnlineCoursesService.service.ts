@@ -70,6 +70,10 @@ export class OnlineCoursesService {
         return this.http.get<OnlineCourse>(`${this.host}/${id}`, {});
     }
 
+    getOnlineCourseByOnlineCourseId(onlineCourseId: string): Observable<OnlineCourse> {
+        return this.http.get<OnlineCourse>(`${this.host}/find-by-courseId/${onlineCourseId}`, {});
+    }
+
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});
     }

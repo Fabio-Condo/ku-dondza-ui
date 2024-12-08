@@ -49,10 +49,9 @@ export class CompetitionQuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.getByCompetitionById(id);
-      this.getQuestionsByCompetitionId(id);
+    const competitionId = this.route.snapshot.params['id'];
+    if (competitionId) {
+      this.getCompetitionByCompetitionId(competitionId);
     }
     this.scrollToTop();
   }
@@ -61,13 +60,18 @@ export class CompetitionQuestionsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  getByCompetitionById(id: number) {
-    this.competitionService.findById(id).subscribe(
+  getCompetitionByCompetitionId(competitionId: string) {
+    this.competitionService.getCompetitionByCompetitionId(competitionId).subscribe(
       (response) => {
         this.competition = response;
+        this.getQuestionsByCompetitionId(this.competition.id);
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+        if(errorResponse.status == 400){ // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        }else{
+          this.sendErrorNotification(errorResponse.error.message);
+        } 
       }
     );
   }

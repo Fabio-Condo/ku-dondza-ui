@@ -79,6 +79,10 @@ export class InstitutionService {
         return this.http.get<Institution>(`${this.host}/${id}`, {});
     }
 
+    getInstitutionByInstitutionId(institutionId: string): Observable<Institution> {
+        return this.http.get<Institution>(`${this.host}/find-by-institutionId/${institutionId}`, {});
+    }
+
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});
     }

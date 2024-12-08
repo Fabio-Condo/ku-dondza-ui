@@ -8,6 +8,7 @@ export class Comment {
     post = new Post();
     user!: User; 
     replies: Comment[] = [];
+    
     numberOfLikes: number = 0;
     isLiked: boolean = false; 
     showReplyForm!: boolean;  // Novo campo adicionado

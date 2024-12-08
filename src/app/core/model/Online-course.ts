@@ -4,6 +4,7 @@ import { Tema } from "./Tema";
 
 export class OnlineCourse {
     id!: number;
+    onlineCourseId!: string;
     name!: string;
     description!: string;
     fileName!: string;

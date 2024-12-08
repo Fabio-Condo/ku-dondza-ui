@@ -1,5 +1,6 @@
 export class Institution {
     id!: number;
+    institutionId!: string;
     name!: string;
     acronym!: string;
     type!: string;

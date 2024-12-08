@@ -36,6 +36,10 @@ export class CompetitionService {
         return this.http.get<Competition>(`${this.host}/${id}`, {});
     }
 
+    getCompetitionByCompetitionId(competitionId: string): Observable<Competition> {
+        return this.http.get<Competition>(`${this.host}/find-by-competitionId/${competitionId}`, {});
+    }
+
     add(competition: Competition): Observable<Competition> {
         return this.http.post<Competition>(this.host, competition, {});
     }

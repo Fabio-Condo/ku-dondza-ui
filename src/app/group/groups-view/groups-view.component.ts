@@ -68,9 +68,9 @@ export class GroupsViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.getGroupById(id);
+    const groupId = this.route.snapshot.params['id'];
+    if (groupId) {
+      this.getGroupByGroupId(groupId);
     }
     this.scrollToTop();
   }
@@ -101,8 +101,8 @@ export class GroupsViewComponent implements OnInit {
     ordenamento: 'id,desc',
   }
 
-  getGroupById(id: number) {
-    this.groupService.getGroupById(id).subscribe(
+  getGroupByGroupId(groupId: string) {
+    this.groupService.getGroupByGroupId(groupId).subscribe(
       (response) => {
         this.group = response;
         this.getGroupMembers(this.group);
@@ -112,7 +112,11 @@ export class GroupsViewComponent implements OnInit {
         this.checkIsAdmin(this.loggedUser);
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+        if(errorResponse.status == 400){ // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        }else{
+          this.sendErrorNotification(errorResponse.error.message);
+        }      
       }
     );
   }

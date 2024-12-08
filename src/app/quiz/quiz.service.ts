@@ -38,6 +38,10 @@ export class QuizService {
     return this.http.get<Quiz>(`${this.baseUrl}/${id}`, {});
   }
 
+  getQuizByQuizId(quizId: string): Observable<Quiz> {
+    return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, {});
+  }
+
   add(quiz: Quiz): Observable<Quiz> {
     return this.http.post<Quiz>(this.baseUrl, quiz, {});
   }

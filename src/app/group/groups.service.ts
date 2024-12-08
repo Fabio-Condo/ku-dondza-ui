@@ -55,6 +55,10 @@ export class GroupService {
     return this.http.get<Group>(`${this.baseUrl}/${id}`);
   }
 
+  getGroupByGroupId(groupId: string): Observable<Group> {
+    return this.http.get<Group>(`${this.baseUrl}/find-by-groupId/${groupId}`, {});
+  }
+
   buscarTotal(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/total`, {});
   }

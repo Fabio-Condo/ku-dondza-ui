@@ -4,6 +4,7 @@ import { User } from "./User";
 
 export class Competition {
     id!: number;
+    competitionId!: string;
     title!: string;
     participants: User[] = [];
     participationRequests: User[] = [];

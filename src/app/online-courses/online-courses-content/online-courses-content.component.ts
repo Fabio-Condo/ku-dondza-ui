@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { OnlineCourse } from 'src/app/core/model/Online-course';
 import { OnlineCourseContent } from 'src/app/core/model/Online-course-content';
@@ -12,8 +12,6 @@ import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
-import { Question } from 'src/app/core/model/Question';
-import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { TemaService } from '../tema.service';
 import { Tema } from 'src/app/core/model/Tema';
 
@@ -95,15 +93,10 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.getOnlineCourseById(id);
-      this.findTemasByCourseById(0, id);
-      this.getTemasByCourseById(id);
-      this.getStudentsByCourseId(id);
-      this.countOnlineCourseStudentsByCourseId(id);
+    const onlineCourseId = this.route.snapshot.params['id'];
+    if (onlineCourseId) {
+      this.getOnlineCourseByOnlineCourseId(onlineCourseId);
     }
-
     this.scrollToTop();
   }
 
@@ -207,14 +200,22 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.temaFile = event.target.files[0];
   }
 
-  getOnlineCourseById(id: number) {
-    this.onlineCoursesService.findById(id).subscribe(
+  getOnlineCourseByOnlineCourseId(onlineCourseId: string) {
+    this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
+        this.findTemasByCourseById(0, this.course.id);
+        this.getTemasByCourseById(this.course.id);
+        this.getStudentsByCourseId(this.course.id);
+        this.countOnlineCourseStudentsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+        if(errorResponse.status == 400){ // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        }else{
+          this.sendErrorNotification(errorResponse.error.message);
+        } 
       }
     );
   }
