@@ -50,10 +50,9 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.getCourseById(id);
-      this.getQuestionsByCourseId(id);
+    const onlineCourseId = this.route.snapshot.params['id'];
+    if (onlineCourseId) {
+      this.getOnlineCourseByOnlineCourseId(onlineCourseId);
     }
     this.scrollToTop();
   }
@@ -62,13 +61,18 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  getCourseById(id: number) {
-    this.onlineCoursesService.findById(id).subscribe(
+  getOnlineCourseByOnlineCourseId(onlineCourseId: string) {
+    this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
+        this.getQuestionsByCourseId(this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+        if(errorResponse.status == 400){ // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        }else{
+          this.sendErrorNotification(errorResponse.error.message);
+        } 
       }
     );
   }
