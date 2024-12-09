@@ -11,7 +11,6 @@ import { IApiResponse } from '../core/interface/IApiResponse';
 export class SearchService {
   private apiUrl  = environment.apiUrl + '/api/search';
 
-
   constructor(private http: HttpClient) { }
 
   search(query: string, page: number): Observable<IApiResponse<SearchResultDTO>> {

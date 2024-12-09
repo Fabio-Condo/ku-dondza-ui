@@ -20,6 +20,6 @@ export class AppComponent {
   }
 
   showFooter() {  
-    return this.router.url !== '/pagina-nao-encontrada';
+    return this.router.url !== '/pagina-nao-encontrada' && this.router.url !== '/pagina-nao-autorizada';
   }
 }

@@ -6,9 +6,6 @@ import { Title } from '@angular/platform-browser';
   <div class="container" style="position: absolute; top: 15%; width: 100%; text-align: center;  ">
     <h1 class="" style="font-size: 70px; color: #3734ed;">401</h1>
     <h1 class=""  >Acesso negado!</h1>
-    <p class="" >Oops! Não tem permissões suficientes para acessar a página.</p>
-    <p class="" >Código do erro: 401 Unauthorized</p>
-    <a routerLink="/menu" style="color: #3734ed;">Click aqui para voltar para a tela principal</a>
   <div>
   `,
 })

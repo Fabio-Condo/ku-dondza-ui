@@ -37,6 +37,8 @@ import { CompetitionRoutingModule } from './competitions/competition-routing.mod
 import { CompetitionsModule } from './competitions/competitions.module';
 import { QuestionRoutingModule } from './questions/question-routing.module';
 import { QuestionsModule } from './questions/questions.module';
+import { SearchModule } from './search/search.module';
+import { SearchRoutingModule } from './search/search-routing.module';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { QuestionsModule } from './questions/questions.module';
     QuizRoutingModule,
     CompetitionRoutingModule,
     QuestionRoutingModule,
+    SearchRoutingModule,
   
     FeedsModule,
     ExamesModule,
@@ -71,6 +74,7 @@ import { QuestionsModule } from './questions/questions.module';
     QuizModule,
     CompetitionsModule,
     QuestionsModule,
+    SearchModule,
 
     CoreRoutingModule,
     AppRoutingModule,

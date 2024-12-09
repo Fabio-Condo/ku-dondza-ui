@@ -5,7 +5,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from '../model/User';
 import { SearchResultDTO } from '../model/SearchResultDTO';
 import { IApiResponse } from '../interface/IApiResponse';
-import { SearchService } from 'src/app/SearchService/SearchService.service';
+import { SearchService } from 'src/app/search/search.service';
 
 @Component({
   selector: 'app-navbar',
@@ -36,8 +36,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-    console.log(this.isUserLoggedIn);
   }
 
   goToProfile() {

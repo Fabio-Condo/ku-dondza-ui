@@ -10,6 +10,9 @@ import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
 import { OnlineCourse } from 'src/app/core/model/Online-course';
 import { OnlineCoursesService } from '../OnlineCoursesService.service';
+import { UserService } from 'src/app/users/user.service';
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-online-courses-questions',
@@ -34,6 +37,8 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
 
   correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
 
+  loggedUser: User = new User;
+
   @ViewChild('tabela') grid: any;
 
   filtro: QuestionFilter = {
@@ -44,12 +49,16 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
 
   constructor(
     private onlineCoursesService: OnlineCoursesService,
+    private userService: UserService,
     private messageService: MessageService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
+
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const onlineCourseId = this.route.snapshot.params['id'];
     if (onlineCourseId) {
       this.getOnlineCourseByOnlineCourseId(onlineCourseId);
@@ -66,6 +75,10 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
       (response) => {
         this.course = response;
         this.getQuestionsByCourseId(this.course.id);
+        this.checkIfSubscribed(this.course);
+        if(!this.course.isSubscribed){
+          this.router.navigateByUrl('/pagina-nao-autorizada');
+        }
       },
       (errorResponse: HttpErrorResponse) => {
         if(errorResponse.status == 400){ // BAD_REQUEST
@@ -90,6 +103,13 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  checkIfSubscribed(course: OnlineCourse): void {
+    this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
+      //course.isSubscribed = response;
+      this.course.isSubscribed = response;
+    });
   }
 
   goToPreviousQuestion() {
