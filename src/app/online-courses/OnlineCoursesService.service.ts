@@ -41,9 +41,7 @@ export class OnlineCoursesService {
         formData.append('description', course.description);
         formData.append('requirements', course.requirements);
         formData.append('lunchDate', course.lunchDate);
-        formData.append('instrutorName', course.instrutorName);
-        formData.append('instrutorDescription', course.instrutorDescription);
-        formData.append('instrutorSpecialization', course.instrutorSpecialization);
+        formData.append('instrutorId', course.instrutor.id.toString());
         formData.append('file', file);
         return this.http.post<OnlineCourse>(`${this.host}`, formData);
     }
@@ -55,9 +53,7 @@ export class OnlineCoursesService {
         formData.append('description', course.description);
         formData.append('requirements', course.requirements);
         formData.append('lunchDate', course.lunchDate);
-        formData.append('instrutorName', course.instrutorName);
-        formData.append('instrutorDescription', course.instrutorDescription);
-        formData.append('instrutorSpecialization', course.instrutorSpecialization);
+        formData.append('instrutorId', course.instrutor.id.toString());
         formData.append('file', file);
         return this.http.put<OnlineCourse>(`${this.host}`, formData);
     }

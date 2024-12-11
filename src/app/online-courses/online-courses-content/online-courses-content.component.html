@@ -43,11 +43,11 @@
             <div class="instructor-info">
                 <h1 class="title">Instrutor</h1>
                 <div class="instructor-details">
-                    <img class="instructor-img" [src]="course.coverImageUrl" alt="Instrutor">
+                    <img class="instructor-img" [src]="course.instrutor.profileImageUrl" alt="Instrutor">
                     <div class="instructor-text">
-                        <h3>{{ course.instrutorName }}</h3>
-                        <p>{{ course.instrutorDescription }}</p>
-                        <p><strong>Especialização:</strong> {{ course.instrutorSpecialization }}</p>
+                        <h3>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</h3>
+                        <p>{{ course.instrutor.bio }}</p>
+                        <p><strong>Especialização:</strong> {{ course.name }}</p>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                     <div *ngFor="let content of tema.courseContents" class="section-header">
                         <div>
                             <span class="lesson-content" (click)="onSelectContent(content)">
-                                <i class="pi pi-video" style="font-size: 0.7rem;"></i>
+                                <i class="pi pi-video" style="font-size: 0.7rem; color: var(--color-black);"></i>
                                 {{ content.description }}
                             </span>
                         </div> 
@@ -90,7 +90,7 @@
                         <button class="dropdown-btn">1:42</button>
                     </div>
                     <span class="lesson-content">
-                        <i class="pi pi-file" style="font-size: 0.7rem;"></i>
+                        <i class="pi pi-file" style="font-size: 0.7rem; color: var(--color-black);"></i>
                         ficha de exercicios
                     </span>
 

@@ -26,7 +26,7 @@
             <div class="dropdown-container" style="margin-left: 4px;">
                 <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
-                    <a>Filtrar</a>
+                    <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
                     <a (click)="onAddNewInstitution(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
                 </div>
             </div>

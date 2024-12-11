@@ -16,6 +16,7 @@ export class User {
   public profileCoverImageUrl: string;
   public active: boolean;
   public notLocked: boolean;
+  public userType!: string;
   public role: string;
   public authorities: [];
   public interests: Interest[] = [];

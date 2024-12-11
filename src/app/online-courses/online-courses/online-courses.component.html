@@ -48,7 +48,7 @@
 
                             <div class="content">
                                 <p class="course-name">{{ course.name }}</p>
-                                <p class="details">Instrutor: <span class="text-muted">{{ course.instrutorName }}</span></p>
+                                <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span></p>
                                 <p class="details" *ngIf="course.totalStudents == 0">Seja <strong>primeiro estudante</strong> a aderir ao curso</p>
                                 <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas <strong>uma pessoa</strong> é estudante deste curso</p>
                                 <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas <strong>Tu</strong> és estudante deste curso</p>
@@ -135,21 +135,11 @@
             </div>
 
             <div class="form-group">
-                <label for="instrutorName">Instrutor Name</label>
-                <input type="text" name="instrutorName" ngModel #instrutorName="ngModel" required minlength="1"
-                    [(ngModel)]="course.instrutorName">
-            </div>
-
-            <div class="form-group">
-                <label for="instrutorDescription">Instrutor Description</label>
-                <textarea id="instrutorDescription" name="instrutorDescription" ngModel #instrutorDescription="ngModel" required minlength="1" 
-                    [(ngModel)]="course.instrutorDescription" rows="4"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="instrutorSpecialization">Instrutor Specialization</label>
-                <textarea id="instrutorSpecialization" name="instrutorSpecialization" ngModel #instrutorSpecialization="ngModel" required minlength="1" 
-                    [(ngModel)]="course.instrutorSpecialization" rows="4"></textarea>    
+                <label for="instrutor">Instrutor</label>
+                <select id="instrutor" [(ngModel)]="course.instrutor.id" name="institution" required>
+                  <option value="" disabled selected>Selecione o instrutor</option>
+                  <option *ngFor="let instrutor of users" [value]="instrutor.value">{{ instrutor.label }}</option>
+                </select>
             </div>
 
             <div class="form-group">

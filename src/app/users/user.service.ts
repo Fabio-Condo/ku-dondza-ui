@@ -37,12 +37,17 @@ export class UserService {
     return this.http.get<User[]>(`${this.host}/list`);
   }
 
+  getAllInstrutors(): Observable<IApiResponse<User>> {
+    return this.http.get<IApiResponse<User>>(`${this.host}/instrutores`, {});
+  }
+
   save(user: User, profileImageFile: File): Observable<User> {
     const formData = new FormData();
     formData.append('firstName', user.firstName);
     formData.append('lastName', user.lastName);
     formData.append('username', user.username);
     formData.append('email', user.email);
+    formData.append('userType', user.userType);
     formData.append('role', user.role);
     formData.append('isActive', JSON.stringify(user.active));
     formData.append('isNonLocked', JSON.stringify(user.notLocked));
@@ -57,6 +62,7 @@ export class UserService {
     formData.append('lastName', user.lastName);
     formData.append('username', user.username);
     formData.append('email', user.email);
+    formData.append('userType', user.userType);
     formData.append('role', user.role);
     formData.append('isActive', JSON.stringify(user.active));
     formData.append('isNonLocked', JSON.stringify(user.notLocked));

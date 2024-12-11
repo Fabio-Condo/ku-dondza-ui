@@ -76,6 +76,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     sort: 'firstName,asc',
   }
 
+  userType = [
+    { label: 'SIMPLE', value: 'SIMPLE' },
+    { label: 'INSTRUTOR', value: 'INSTRUTOR' },
+    { label: 'TEACHER', value: 'TEACHER' },
+  ];
+
   roles = [
     { label: 'USER', value: 'ROLE_USER' },
     { label: 'ADMIN', value: 'ROLE_ADMIN' },

@@ -20,8 +20,16 @@ export class CourseService {
             .set('sort', filtro.ordenamento)
             .set('size', filtro.itensPorPagina);
 
+        if (filtro.searchParam) {
+            params = params.set('searchParam', filtro.searchParam);
+        }
+
         if (filtro.name) {
             params = params.set('name', filtro.name);
+        }
+    
+        if (filtro.institution) {
+            params = params.set('institution', filtro.institution);
         }
 
         return this.http.get<IApiResponse<Course>>(`${this.host}/filter`, { params });

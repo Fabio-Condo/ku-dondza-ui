@@ -1,6 +1,7 @@
 import { OnlineCourseContent } from "./Online-course-content";
 import { Question } from "./Question";
 import { Tema } from "./Tema";
+import { User } from "./User";
 
 export class OnlineCourse {
     id!: number;
@@ -11,9 +12,7 @@ export class OnlineCourse {
     coverImageUrl!: string;
     requirements!: string;
     lunchDate!: string;
-    instrutorName!: string;
-    instrutorDescription!: string;
-    instrutorSpecialization!: string;
+    instrutor = new User();
     temas: Tema[] = [];
     questions: Question[] = [];
 

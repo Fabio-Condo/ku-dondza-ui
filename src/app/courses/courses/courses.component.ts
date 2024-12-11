@@ -21,6 +21,7 @@ export class CoursesComponent implements OnInit {
   totalRegistros: number = 0;
   totalCourses: number = 0;
   displayModalSave: boolean = false;
+  displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
 
@@ -208,11 +209,16 @@ export class CoursesComponent implements OnInit {
 
   // Método para limpar campos
   limparCampos() {
-    this.filtro.name = "";
+    this.filtro.searchParam = "";
+    this.filtro.institution = undefined;
     this.filtro.pagina = 0;
     this.filtro.itensPorPagina = 10;
-    this.filtro.ordenamento = "id,desc";
+    this.filtro.ordenamento = "id,desc"
     this.findAll();
+  }
+
+  onFilter(): void {
+    this.displayModalFilter = true;
   }
 
   // Métodos para abrir o modal

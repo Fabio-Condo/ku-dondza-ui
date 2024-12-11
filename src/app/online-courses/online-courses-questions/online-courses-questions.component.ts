@@ -76,9 +76,6 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
         this.course = response;
         this.getQuestionsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
-        if(!this.course.isSubscribed){
-          this.router.navigateByUrl('/pagina-nao-autorizada');
-        }
       },
       (errorResponse: HttpErrorResponse) => {
         if(errorResponse.status == 400){ // BAD_REQUEST
@@ -107,8 +104,11 @@ export class OnlineCoursesQuestionsComponent implements OnInit {
 
   checkIfSubscribed(course: OnlineCourse): void {
     this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
-      //course.isSubscribed = response;
+      course.isSubscribed = response;
       this.course.isSubscribed = response;
+      if(this.course.isSubscribed == false){
+        this.router.navigateByUrl('/pagina-nao-autorizada');
+      }
     });
   }
 
