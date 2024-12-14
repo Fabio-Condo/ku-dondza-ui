@@ -13,20 +13,28 @@
             <p class="address">📍 {{ institution.website }}</p>
             <p class="description">{{ institution.description }}</p>
 
+            <!--
             <a class="website-button" href="{{ institution.website }}" target="_blank">
                 Saiba mais no website
                 <i class="pi pi-external-link"></i>
             </a>
+            -->
+        </div>
+    </div>
 
+    <br>
+
+    <div class="institution-card">
+        <div class="institution-body">
             <!-- Nova seção de cursos -->
             <div class="courses-list">
-                <h2>Cursos Oferecidos</h2>
+                <h1 class="title">Cursos Oferecidos</h1>
                 <ul>
                     <li *ngFor="let course of courses">
                         <div class="course-item">
                             <p class="subject-name">{{ course.name }}</p>
-                            <p class="details"><strong>Duração:</strong> {{ course.duration }}</p>
-                            <p class="details"><strong>Requisitos:</strong> {{ course.requirements }}</p>
+                            <p class="details">Duração: {{ course.duration }}</p>
+                            <p class="details">Requisitos: {{ course.requirements }}</p>
                         </div>
                     </li>
                 </ul>
