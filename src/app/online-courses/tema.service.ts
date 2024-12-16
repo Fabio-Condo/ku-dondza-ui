@@ -44,20 +44,18 @@ export class TemaService {
         return this.http.get<IApiResponse<Tema>>(`${this.host}/findByCourseId`, { params });
     }
 
-    save(tema: Tema, file: File): Observable<Tema> {
+    save(tema: Tema): Observable<Tema> {
         const formData = new FormData();
         formData.append('name', tema.name);
         formData.append('onlineCourseId', tema.onlineCourse.id.toString());
-        formData.append('file', file);
         return this.http.post<Tema>(`${this.host}`, formData);
     }
 
-    update(tema: Tema, file: File): Observable<Tema> {
+    update(tema: Tema): Observable<Tema> {
         const formData = new FormData();
         formData.append('id', tema.id.toString());
         formData.append('name', tema.name);
         formData.append('onlineCourseId', tema.onlineCourse.id.toString());
-        formData.append('file', file);
         return this.http.put<Tema>(`${this.host}`, formData);
     }
 

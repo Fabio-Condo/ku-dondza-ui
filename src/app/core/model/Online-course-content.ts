@@ -5,8 +5,10 @@ export class OnlineCourseContent {
     description!: string;
     fileName!: string;
     urlFile!: string;
+    contentType!: string;
     tema = new Tema();
 
+    showLoadingDownload: boolean = false;
     isAdminMenuOpen: boolean = false;
 
 }

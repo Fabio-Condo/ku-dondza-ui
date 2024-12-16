@@ -8,6 +8,10 @@ import { IApiResponse } from '../core/interface/IApiResponse';
 import { Post } from '../core/model/Post';
 import { IUserFilter } from '../core/model/IUserFilter';
 import { IPostFilter } from '../core/interface/IPostFilter';
+import { OnlineCourse } from '../core/model/Online-course';
+import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
+import { Group } from '../core/model/Group';
+import { GroupFilter } from '../core/interface/GroupFilter';
 
 
 @Injectable({ providedIn: 'root' })
@@ -241,6 +245,20 @@ export class UserService {
     return this.http.post<User>(`${this.host}/${userId}/interests/${interestId}`, { });
   }
 
+  getSubscribedOnlineCoursesByUserId(userId: number, filtro: OnlineCourseFilter): Observable<IApiResponse<OnlineCourse>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.pagina)
+      .set('sort', filtro.ordenamento)
+      .set('size', filtro.itensPorPagina);
+
+    return this.http.get<IApiResponse<OnlineCourse>>(`${this.host}/${userId}/subscribedOnlineCourses`, { params });
+  }
+
+  countSubscribedOnlineCoursesByUserId(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.host}/${userId}/subscribedOnlineCourses/total`, {});
+  }
+
   addCourseToSubscribedOnlineCourses(userId: number, onlineCourseId: number): Observable<User> {
     return this.http.post<User>(`${this.host}/${userId}/subscribedOnlineCourses/${onlineCourseId}`, {});
   }
@@ -263,6 +281,20 @@ export class UserService {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     return this.http.post<User>(`${this.host}/${username}/cover-photo`, formData);
+  }
+
+  getGroupsByUserId(userId: number, filtro: GroupFilter): Observable<IApiResponse<Group>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.pagina)
+      .set('sort', filtro.ordenamento)
+      .set('size', filtro.itensPorPagina);
+
+    return this.http.get<IApiResponse<Group>>(`${this.host}/${userId}/groups`, { params });
+  }
+
+  countGroupsByUserId(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.host}/${userId}/groups/total`, {});
   }
 
 }

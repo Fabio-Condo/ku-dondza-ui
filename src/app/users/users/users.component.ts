@@ -56,7 +56,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   selectedFriendToBeRemoved = new User();
   showConfirmDialog: boolean = false;
 
-  activeTab: number = 1;
+  activeTab: number = 3;
 
   filtroUsers: IUserFilter = {
     page: -1,

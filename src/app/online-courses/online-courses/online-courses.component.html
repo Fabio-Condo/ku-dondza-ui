@@ -10,12 +10,22 @@
         informadas.
     </p>
 
+    <div class="tab-header">
+        <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+            Meus
+        </div>
+        <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+            Todos
+        </div>
+    </div>
+
     <div class="flex">
         <div>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalCourses }}</span>
+            <span *ngIf="activeTab === 1" class="pagination-info ml-auto"> Mostrando {{ totalRegistrosCurrentUserSubscribedCourses }} dos {{ totalCurrentUserSubscribedCourses }}</span>
+            <span *ngIf="activeTab === 2" class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalCourses }}</span>
         </div>
 
-        <div class="input-group">
+        <div class="input-group" *ngIf="activeTab === 2">
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
 
@@ -33,66 +43,134 @@
         </div>
     </div>
 
-    <table class="card-table">
-        <tbody>
-            <tr *ngFor="let course of courses">
-                <td>
-                    <div class="card">
-                        <div class="card-content">
+    <div *ngIf="activeTab === 1" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let course of currentUserSubscribedCourses">
+                    <td>
+                        <div class="card">
+                            <div class="card-content">
 
-                            <div>
-                                <img [src]="course.coverImageUrl"
-                                    style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
-                                    alt="">
-                            </div>
-
-                            <div class="content">
-                                <p class="course-name">{{ course.name }}</p>
-                                <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span></p>
-                                <p class="details" *ngIf="course.totalStudents == 0">Seja <strong>primeiro estudante</strong> a aderir ao curso</p>
-                                <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas <strong>uma pessoa</strong> é estudante deste curso</p>
-                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas <strong>Tu</strong> és estudante deste curso</p>
-                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são estudantes deste curso</p>
-                                <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2"><strong>Duas pessoas</strong> são estudantes deste curso</p>
-                                <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2"><strong>Tu</strong> e mais <strong>{{ course.totalStudents - 1}} pessoas</strong> são estudantes deste curso</p>
-                            </div>
-                            <div class="dropdown-container">
-                                <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
-                                <div class="dropdown" *ngIf="course.isAdminMenuOpen">
-                                    <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
-                                    <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
-                                    <a (click)="onAddQuestions(course); closeDropdown(course)">Adicionar questão</a>
-                                    <a (click)="onShowSelectedCourse(course); closeDropdown(course)">Ver questões</a>
+                                <div>
+                                    <img [src]="course.coverImageUrl"
+                                        style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
+                                        alt="">
                                 </div>
-                            </div>
-                            <div class="button-container">
-                                <button class="btn btn-primary" [routerLink]="['/coursos-online', course.onlineCourseId]">Ver</button>
-                            </div>
 
+                                <div class="content">
+                                    <p class="course-name">{{ course.name }}</p>
+                                    <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span></p>
+                                    <p class="details" *ngIf="course.totalStudents == 0">Seja <strong>primeiro estudante</strong> a aderir ao curso</p>
+                                    <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas <strong>uma pessoa</strong> é estudante deste curso</p>
+                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas <strong>Tu</strong> és estudante deste curso</p>
+                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são estudantes deste curso</p>
+                                    <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2"><strong>Duas pessoas</strong> são estudantes deste curso</p>
+                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2"><strong>Tu</strong> e mais <strong>{{ course.totalStudents - 1}} pessoas</strong> são estudantes deste curso</p>
+                                </div>
+                                <div class="dropdown-container">
+                                    <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+                                    <div class="dropdown" *ngIf="course.isAdminMenuOpen">
+                                        <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
+                                        <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
+                                        <a (click)="onAddQuestions(course); closeDropdown(course)">Adicionar questão</a>
+                                        <a (click)="onShowSelectedCourse(course); closeDropdown(course)">Ver questões</a>
+                                    </div>
+                                </div>
+                                <div class="button-container">
+                                    <button class="btn btn-primary" [routerLink]="['/coursos-online', course.onlineCourseId]">Ver</button>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <!-- Paginação -->
-    <div class="pagination-controls">
-        <span class="pagination-info mr-auto"></span>
-        
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
-            <i class="pi pi-chevron-left"></i> Anterior
-        </button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
-            Próximo <i class="pi pi-chevron-right"></i>
-        </button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itensPorPagina">
-                {{ option }}
-            </option>
-        </select>
+        <!-- Paginação -->
+        <div class="pagination-controls">
+            <span class="pagination-info mr-auto"></span>
+                
+            <button class="pagination-button" (click)="previousPageCurrentUserSubscribedCourses()" [disabled]="currentPageCurrentUserSubscribedCourses === 1">
+                <i class="pi pi-chevron-left"></i> Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPageCurrentUserSubscribedCourses }} de {{ totalPagesCurrentUserSubscribedCourses() }}</span>
+            <button class="pagination-button" (click)="nextPageCurrentUserSubscribedCourses()" [disabled]="currentPageCurrentUserSubscribedCourses === totalPagesCurrentUserSubscribedCourses()">
+                Próximo <i class="pi pi-chevron-right"></i>
+            </button>
+            <select class="select-itens-por-pagina" (change)="changePageSizeCurrentUserSubscribedCourses($event)">
+                <option *ngFor="let option of opcoesItensPorPaginaCurrentUserSubscribedCourses" [value]="option"
+                    [selected]="option === filtroCurrentUserSubscribedCourses.itensPorPagina">
+                    {{ option }}
+                </option>
+            </select>
+        </div>
+
+    </div>
+
+    <div *ngIf="activeTab === 2" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let course of courses">
+                    <td>
+                        <div class="card">
+                            <div class="card-content">
+
+                                <div>
+                                    <img [src]="course.coverImageUrl"
+                                        style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
+                                        alt="">
+                                </div>
+
+                                <div class="content">
+                                    <p class="course-name">{{ course.name }}</p>
+                                    <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span></p>
+                                    <p class="details" *ngIf="course.totalStudents == 0">Seja <strong>primeiro estudante</strong> a aderir ao curso</p>
+                                    <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas <strong>uma pessoa</strong> é estudante deste curso</p>
+                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas <strong>Tu</strong> és estudante deste curso</p>
+                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são estudantes deste curso</p>
+                                    <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2"><strong>Duas pessoas</strong> são estudantes deste curso</p>
+                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2"><strong>Tu</strong> e mais <strong>{{ course.totalStudents - 1}} pessoas</strong> são estudantes deste curso</p>
+                                </div>
+                                <div class="dropdown-container">
+                                    <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+                                    <div class="dropdown" *ngIf="course.isAdminMenuOpen">
+                                        <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
+                                        <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
+                                        <a (click)="onAddQuestions(course); closeDropdown(course)">Adicionar questão</a>
+                                        <a (click)="onShowSelectedCourse(course); closeDropdown(course)">Ver questões</a>
+                                    </div>
+                                </div>
+                                <div class="button-container">
+                                    <button class="btn btn-primary" [routerLink]="['/coursos-online', course.onlineCourseId]">Ver</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        <div class="pagination-controls">
+            <span class="pagination-info mr-auto"></span>
+            
+            <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
+                <i class="pi pi-chevron-left"></i> Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+                Próximo <i class="pi pi-chevron-right"></i>
+            </button>
+            <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+                <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                    [selected]="option === filtro.itensPorPagina">
+                    {{ option }}
+                </option>
+            </select>
+        </div>
+
     </div>
 
     <!-- Indicador de carregamento -->

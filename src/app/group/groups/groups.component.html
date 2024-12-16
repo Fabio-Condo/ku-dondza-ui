@@ -8,12 +8,23 @@
     <p style="margin-top: 20px; font-size: 0.85rem;">Crie grupos de estudo e colabore com colegas em tempo real.</p>
     <p style="margin-bottom: 20px; font-size: 0.85rem;">Na Ku-DONDZA, ajudamos você a encontrar e participar de grupos
         que correspondem aos seus interesses.
+     
+    <div class="tab-header">
+        <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+            Meus
+        </div>
+        <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+            Todos
+        </div>
+    </div>
+        
     <div class="flex">
         <div>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalGroups }}</span>
+            <span *ngIf="activeTab === 1" class="pagination-info ml-auto"> Mostrando {{ totalRegistrosCurrentUserGroups }} dos {{ totalGroupsCurrentUserGroups }}</span>
+            <span *ngIf="activeTab === 2" class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalGroups }}</span>
         </div>
 
-        <div class="input-group">
+        <div class="input-group" *ngIf="activeTab === 2">
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
 
@@ -30,66 +41,126 @@
         </div>
     </div>
 
-    <table class="card-table">
-        <tbody>
-            <tr *ngFor="let group of groups">
-                <td>
-                    <div class="card">
-                        <div class="card-content">
+    <div *ngIf="activeTab === 1" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let group of currentUserGroups">
+                    <td>
+                        <div class="card">
+                            <div class="card-content">
 
-                            <div>
-                                <img [src]="group.urlFile"
-                                    style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
-                                    alt="">
-                            </div>
-
-                            <div class="content">
-                                <p class="group-name">{{ group.name }}</p>
-                                <p class="details">Criado por {{ group.creator.firstName }} {{ group.creator.lastName }}</p>
-                                <p class="details" *ngIf="group.totalMembers == 0">Seja <strong>primeiro membro</strong> a aderir ao grupo</p>
-                                <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
-                                <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
-                                <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
-                                <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
-                                <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
-                            </div>
-
-                            <div class="dropdown-container">
-                                <button class="dropdown-btn" (click)="toggleDropdown(group)"><i class="pi pi-ellipsis-v"></i></button>
-                                <div class="dropdown" *ngIf="group.isAdminMenuOpen">
-                                    <a (click)="onUpdate(group.id, group.name, group.description, file); closeDropdown(group)">Editar</a>
-                                    <a (click)="confirmarExclusao(group); closeDropdown(group)" >Eliminar</a>
+                                <div>
+                                    <img [src]="group.urlFile"
+                                        style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
+                                        alt="">
                                 </div>
-                            </div>
-                            
-                            <div class="button-container">
-                                <button class="btn btn-primary" [routerLink]="['/groups', group.groupId]">Ver</button>
-                            </div>
 
+                                <div class="content">
+                                    <p class="group-name">{{ group.name }}</p>
+                                    <p class="details">Criado por {{ group.creator.firstName }} {{ group.creator.lastName }}</p>
+                                </div>
+
+                                <div class="dropdown-container">
+                                    <button class="dropdown-btn" (click)="toggleDropdown(group)"><i class="pi pi-ellipsis-v"></i></button>
+                                    <div class="dropdown" *ngIf="group.isAdminMenuOpen">
+                                        <a (click)="onUpdate(group.id, group.name, group.description, file); closeDropdown(group)">Editar</a>
+                                        <a (click)="confirmarExclusao(group); closeDropdown(group)" >Eliminar</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="button-container">
+                                    <button class="btn btn-primary" [routerLink]="['/groups', group.groupId]">Ver</button>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <!-- Paginação -->
-    <div class="pagination-controls">
-        <span class="pagination-info mr-auto"></span>
+        <!-- Paginação -->
+        <div class="pagination-controls">
+            <span class="pagination-info mr-auto"></span>
 
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
-            <i class="pi pi-chevron-left"></i> Anterior
-        </button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
-            Próximo <i class="pi pi-chevron-right"></i>
-        </button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itensPorPagina">
-                {{ option }}
-            </option>
-        </select>
+            <button class="pagination-button" (click)="previousPageCurrentUserGroups()" [disabled]="currentPageCurrentUserGroups === 1">
+                <i class="pi pi-chevron-left"></i> Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPageCurrentUserGroups }} de {{ totalPagesCurrentUserGroups() }}</span>
+            <button class="pagination-button" (click)="nextPageCurrentUserGroups()" [disabled]="currentPageCurrentUserGroups === totalPagesCurrentUserGroups()">
+                Próximo <i class="pi pi-chevron-right"></i>
+            </button>
+            <select class="select-itens-por-pagina" (change)="changePageSizeCurrentUserGroups($event)">
+                <option *ngFor="let option of opcoesItensPorPaginaCurrentUserGroups" [value]="option"
+                    [selected]="option === filtroCurrentUserGroups.itensPorPagina">
+                    {{ option }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div *ngIf="activeTab === 2" class="active">
+        <table class="card-table">
+            <tbody>
+                <tr *ngFor="let group of groups">
+                    <td>
+                        <div class="card">
+                            <div class="card-content">
+
+                                <div>
+                                    <img [src]="group.urlFile"
+                                        style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;"
+                                        alt="">
+                                </div>
+
+                                <div class="content">
+                                    <p class="group-name">{{ group.name }}</p>
+                                    <p class="details">Criado por {{ group.creator.firstName }} {{ group.creator.lastName }}</p>
+                                    <p class="details" *ngIf="group.totalMembers == 0">Seja <strong>primeiro membro</strong> a aderir ao grupo</p>
+                                    <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>uma pessoa</strong> é membro deste grupo</p>
+                                    <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 1"> Apenas <strong>Tu</strong> és membro deste grupo</p>
+                                    <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são membros deste grupo</p>
+                                    <p class="details" *ngIf="!group.isCurrentUserMember && group.totalMembers == 2"><strong>Duas pessoas</strong> são membros deste grupo</p>
+                                    <p class="details" *ngIf="group.isCurrentUserMember && group.totalMembers > 2"><strong>Tu</strong> e mais <strong>{{ group.totalMembers - 1}} pessoas</strong> são membros deste grupo</p>
+                                </div>
+
+                                <div class="dropdown-container">
+                                    <button class="dropdown-btn" (click)="toggleDropdown(group)"><i class="pi pi-ellipsis-v"></i></button>
+                                    <div class="dropdown" *ngIf="group.isAdminMenuOpen">
+                                        <a (click)="onUpdate(group.id, group.name, group.description, file); closeDropdown(group)">Editar</a>
+                                        <a (click)="confirmarExclusao(group); closeDropdown(group)" >Eliminar</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="button-container">
+                                    <button class="btn btn-primary" [routerLink]="['/groups', group.groupId]">Ver</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        <div class="pagination-controls">
+            <span class="pagination-info mr-auto"></span>
+
+            <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
+                <i class="pi pi-chevron-left"></i> Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+                Próximo <i class="pi pi-chevron-right"></i>
+            </button>
+            <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+                <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                    [selected]="option === filtro.itensPorPagina">
+                    {{ option }}
+                </option>
+            </select>
+        </div>
     </div>
 
     <!-- Indicador de carregamento -->

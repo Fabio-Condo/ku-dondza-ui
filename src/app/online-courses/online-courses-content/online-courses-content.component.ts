@@ -25,7 +25,6 @@ export class OnlineCoursesContentComponent implements OnInit {
   course: OnlineCourse = new OnlineCourse();
   onlineCourseContentList: OnlineCourseContent[] = [];
   courseContentFile!: File;
-  temaFile!: File;
 
   tema: Tema = new Tema();
   temas: Tema[] = [];
@@ -63,6 +62,11 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
+
+  contentType = [
+    { label: 'Video', value: 'VIDEO' },
+    { label: 'File', value: 'FILE' },
+  ];
 
   filtro: CourseFilter = {
     pagina: 0,
@@ -162,7 +166,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   updateTema() {
     this.showLoading = true;
     this.tema.onlineCourse = this.course;
-    this.temaService.update(this.tema, this.temaFile).subscribe(
+    this.temaService.update(this.tema).subscribe(
       response => {
         this.tema = response
         this.messageService.add({ severity: 'success', detail: 'Tema actualizado com sucesso!' });
@@ -178,7 +182,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   addNewTema() {
     this.showLoading = true;
     this.tema.onlineCourse = this.course;
-    this.temaService.save(this.tema, this.temaFile).subscribe(
+    this.temaService.save(this.tema).subscribe(
       response => {
         this.tema = response
         this.messageService.add({ severity: 'success', detail: 'Tema salvo com sucesso!' });
@@ -194,10 +198,6 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   onCourseContenFileSelected(event: any) {
     this.courseContentFile = event.target.files[0];
-  }
-
-  onTemaFileSelected(event: any) {
-    this.temaFile = event.target.files[0];
   }
 
   getOnlineCourseByOnlineCourseId(onlineCourseId: string) {
@@ -249,9 +249,8 @@ export class OnlineCoursesContentComponent implements OnInit {
     }
   }
 
-  onUpdateTema(tema: Tema, file: File): void {
+  onUpdateTema(tema: Tema): void {
     this.tema = tema;
-    this.temaFile = file;
     this.displayModalSaveTema = true;
   }
 
@@ -262,6 +261,7 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   onUpdateOnlineCourseContent(content: OnlineCourseContent, tema: Tema, file: File): void {
     this.onlineCourseContent = content;
+    this.onlineCourseContent.contentType = content.contentType;
     this.onlineCourseContent.tema = tema;
     this.courseContentFile = file;
     this.displayModalSaveContent = true;
@@ -378,6 +378,28 @@ export class OnlineCoursesContentComponent implements OnInit {
   confirmDialog(course: OnlineCourse) {
     this.removeCourseFromSubscribedOnlineCourses(course);
     this.closeConfirmDialog();
+  }
+
+  download(content: OnlineCourseContent, filename: string): void {
+    content.showLoadingDownload = true;
+    this.onlineCoursesContentService.download(content.id, filename).subscribe((data: Blob) => {
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+
+      // Criar um link temporário para o Blob
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+
+      // Definir o atributo "download" com o nome do arquivo
+      link.download = filename;
+
+      // Simular um clique no link para iniciar o download
+      link.click();
+
+      // Limpar o link após o download iniciar
+      window.URL.revokeObjectURL(link.href);
+      //this.findAll(this.paginaAtual)
+      content.showLoadingDownload = false;
+    });
   }
 
   private sendErrorNotification(message: string): void {

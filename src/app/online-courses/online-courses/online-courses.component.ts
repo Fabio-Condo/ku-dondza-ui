@@ -22,12 +22,15 @@ export class OnlineCoursesComponent implements OnInit {
   showLoadingDownload: boolean = false;
   showLoading: boolean = false;
   totalRegistros: number = 0
+  totalRegistrosCurrentUserSubscribedCourses: number = 0
   courses: OnlineCourse[] = [];
+  currentUserSubscribedCourses: OnlineCourse[] = [];
   course: OnlineCourse = new OnlineCourse;
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   file!: File;
   totalCourses: number = 0;
+  totalCurrentUserSubscribedCourses: number = 0;
   displayModalFilter: boolean = false;
   isAdmin: boolean = false;
   users: any[] = [];
@@ -44,9 +47,20 @@ export class OnlineCoursesComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  currentPageCurrentUserSubscribedCourses: number = 1;
+  opcoesItensPorPaginaCurrentUserSubscribedCourses: number[] = [5, 10, 20, 50];
+
+  activeTab: number = 2;
+
   @ViewChild('tabela') grid: any;
 
   filtro: OnlineCourseFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc'
+  }
+
+  filtroCurrentUserSubscribedCourses: OnlineCourseFilter = {
     pagina: 0,
     itensPorPagina: 5,
     ordenamento: 'id,asc'
@@ -73,6 +87,8 @@ export class OnlineCoursesComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.buscarTotal();
     this.findAll();
+    this.getCurrentUserSubscribedOnlineCoursesByUserId();
+    this.countCurrentUserSubscribedOnlineCoursesByUserId();
     this.getUsersInstrutors();
     this.getQuestions();
     this.scrollToTop();
@@ -142,6 +158,37 @@ export class OnlineCoursesComponent implements OnInit {
           this.countOnlineCourseStudentsByCourseId(course);
         });
         this.totalRegistros = dados.totalElements
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  getCurrentUserSubscribedOnlineCoursesByUserId(pagina: number = 0): void {
+    this.showLoading = true;
+    this.filtroCurrentUserSubscribedCourses.pagina = this.currentPageCurrentUserSubscribedCourses - 1; // Ajuste para o padrão de paginação começando em 0
+
+    this.userService.getSubscribedOnlineCoursesByUserId(this.loggedUser.id, this.filtroCurrentUserSubscribedCourses).subscribe(
+      (dados: IApiResponse<OnlineCourse>) => {
+        this.currentUserSubscribedCourses = dados.content
+        this.totalRegistrosCurrentUserSubscribedCourses = dados.totalElements
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  countCurrentUserSubscribedOnlineCoursesByUserId() {
+    this.showLoading = true;
+    this.userService.countSubscribedOnlineCoursesByUserId(this.loggedUser.id).subscribe(
+      (total) => {
+        this.totalCurrentUserSubscribedCourses = total;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -330,6 +377,31 @@ export class OnlineCoursesComponent implements OnInit {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
 
+  // Current User Subscribed Courses
+  changePageSizeCurrentUserSubscribedCourses(event: any): void {
+    this.filtroCurrentUserSubscribedCourses.itensPorPagina = +event.target.value;
+    this.currentPageCurrentUserSubscribedCourses = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.getCurrentUserSubscribedOnlineCoursesByUserId();
+  }
+
+  previousPageCurrentUserSubscribedCourses(): void {
+    if (this.currentPageCurrentUserSubscribedCourses > 1) {
+      this.currentPageCurrentUserSubscribedCourses--;
+      this.getCurrentUserSubscribedOnlineCoursesByUserId();
+    }
+  }
+
+  nextPageCurrentUserSubscribedCourses(): void {
+    if (this.currentPageCurrentUserSubscribedCourses < this.totalPagesCurrentUserSubscribedCourses()) {
+      this.currentPageCurrentUserSubscribedCourses++;
+      this.getCurrentUserSubscribedOnlineCoursesByUserId();
+    }
+  }
+
+  totalPagesCurrentUserSubscribedCourses(): number {
+    return Math.ceil(this.totalRegistrosCurrentUserSubscribedCourses / this.filtroCurrentUserSubscribedCourses.itensPorPagina);
+  }
+
   confirmarExclusao(course: OnlineCourse): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
@@ -363,6 +435,10 @@ export class OnlineCoursesComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
   }
 
   private sendErrorNotification(message: string): void {

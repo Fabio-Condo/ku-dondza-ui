@@ -7,6 +7,7 @@ import { GroupFilter } from "src/app/core/interface/GroupFilter";
 import { IApiResponse } from "src/app/core/interface/IApiResponse";
 import { User } from "src/app/core/model/User";
 import { AuthenticationService } from "src/app/users/authentication.service";
+import { UserService } from "src/app/users/user.service";
 
 
 @Component({
@@ -23,11 +24,20 @@ export class GroupsComponent implements OnInit {
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   showLoading: boolean = false;
+
   currentPage: number = 1;
   totalRegistros: number = 0
   totalGroups: number = 0;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
   isAdmin: boolean = false;
+  activeTab: number = 2;
+
+  currentUserGroups: Group[] = [];
+  currentPageCurrentUserGroups: number = 1;
+  totalRegistrosCurrentUserGroups: number = 0
+  totalGroupsCurrentUserGroups: number = 0;
+  opcoesItensPorPaginaCurrentUserGroups: number[] = [5, 10, 20, 50];
 
   loggedUser: User = new User;
 
@@ -39,9 +49,15 @@ export class GroupsComponent implements OnInit {
     ordenamento: 'id,asc'
   }
 
+  filtroCurrentUserGroups: GroupFilter = {
+    pagina: 0,
+    itensPorPagina: 5,
+    ordenamento: 'id,asc'
+  }
 
   constructor(
     private groupService: GroupService,
+    private userService: UserService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -50,6 +66,8 @@ export class GroupsComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
+    this.getCurrentUserGroupsByUserId(0);
+    this.countCurrentUserGroupsByUserId();
     this.buscarTotal();
     this.scrollToTop();
   }
@@ -117,6 +135,36 @@ export class GroupsComponent implements OnInit {
           this.countMembersByGroupId(group);
         });
         this.totalRegistros = dados.totalElements
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  getCurrentUserGroupsByUserId(pagina: number = 0): void {
+    this.showLoading = true;
+    this.filtroCurrentUserGroups.pagina = this.currentPageCurrentUserGroups - 1; // Ajuste para o padrão de paginação começando em 0
+    this.userService.getGroupsByUserId(this.loggedUser.id, this.filtroCurrentUserGroups).subscribe(
+      (dados: IApiResponse<Group>) => {
+        this.currentUserGroups = dados.content
+        this.totalRegistrosCurrentUserGroups = dados.totalElements
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  countCurrentUserGroupsByUserId() {
+    this.showLoading = true;
+    this.userService.countGroupsByUserId(this.loggedUser.id).subscribe(
+      (total) => {
+        this.totalGroupsCurrentUserGroups = total;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -201,7 +249,6 @@ export class GroupsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-
   onAddNewGroup(): void {
     this.group = new Group();
     this.displayModalSave = true;
@@ -229,6 +276,35 @@ export class GroupsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  // Current User Groups
+  changePageSizeCurrentUserGroups(event: any): void {
+    this.filtroCurrentUserGroups.itensPorPagina = +event.target.value;
+    this.currentPageCurrentUserGroups = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.getCurrentUserGroupsByUserId();
+  }
+
+  previousPageCurrentUserGroups(): void {
+    if (this.currentPageCurrentUserGroups > 1) {
+      this.currentPageCurrentUserGroups--;
+      this.getCurrentUserGroupsByUserId();
+    }
+  }
+
+  nextPageCurrentUserGroups(): void {
+    if (this.currentPageCurrentUserGroups < this.totalPagesCurrentUserGroups()) {
+      this.currentPageCurrentUserGroups++;
+      this.getCurrentUserGroupsByUserId();
+    }
+  }
+
+  totalPagesCurrentUserGroups(): number {
+    return Math.ceil(this.totalRegistrosCurrentUserGroups / this.filtroCurrentUserGroups.itensPorPagina);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
   }
 
   private sendErrorNotification(message: string): void {

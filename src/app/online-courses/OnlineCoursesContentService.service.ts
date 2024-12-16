@@ -42,6 +42,7 @@ export class OnlineCoursesContentService {
     save(content: OnlineCourseContent, file: File): Observable<OnlineCourseContent> {
         const formData = new FormData();
         formData.append('description', content.description);
+        formData.append('contentType', content.contentType);
         formData.append('temaId', content.tema.id.toString());
         formData.append('file', file);
         return this.http.post<OnlineCourseContent>(`${this.host}`, formData);
@@ -51,6 +52,7 @@ export class OnlineCoursesContentService {
         const formData = new FormData();
         formData.append('id', content.id.toString());
         formData.append('description', content.description);
+        formData.append('contentType', content.contentType);
         formData.append('temaId', content.tema.id.toString());
         formData.append('file', file);
         return this.http.put<OnlineCourseContent>(`${this.host}`, formData);
@@ -66,5 +68,9 @@ export class OnlineCoursesContentService {
 
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});
+    }
+
+    download(id: number, filename: string): Observable<Blob> {
+        return this.http.get(`${this.host}/download/${id}/${filename}`, { responseType: 'blob' });
     }
 }
