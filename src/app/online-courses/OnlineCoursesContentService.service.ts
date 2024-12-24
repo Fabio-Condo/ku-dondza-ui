@@ -44,6 +44,7 @@ export class OnlineCoursesContentService {
         formData.append('description', content.description);
         formData.append('contentType', content.contentType);
         formData.append('temaId', content.tema.id.toString());
+        formData.append('position', content.position.toString());
         formData.append('file', file);
         return this.http.post<OnlineCourseContent>(`${this.host}`, formData);
     }
@@ -54,6 +55,7 @@ export class OnlineCoursesContentService {
         formData.append('description', content.description);
         formData.append('contentType', content.contentType);
         formData.append('temaId', content.tema.id.toString());
+        formData.append('position', content.position.toString());
         formData.append('file', file);
         return this.http.put<OnlineCourseContent>(`${this.host}`, formData);
     }

@@ -7,7 +7,8 @@ export class OnlineCourseContent {
     urlFile!: string;
     contentType!: string;
     tema = new Tema();
-
+    position!: number;
+    
     showLoadingDownload: boolean = false;
     isAdminMenuOpen: boolean = false;
 

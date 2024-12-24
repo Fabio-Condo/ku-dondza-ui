@@ -5,7 +5,7 @@ import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   { 
-    path: 'search', 
+    path: 'search/:query',     
     component: SearchComponent,
     canActivate: [AuthenticationGuard], 
   }

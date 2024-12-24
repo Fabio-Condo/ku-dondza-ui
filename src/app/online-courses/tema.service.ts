@@ -48,6 +48,7 @@ export class TemaService {
         const formData = new FormData();
         formData.append('name', tema.name);
         formData.append('onlineCourseId', tema.onlineCourse.id.toString());
+        formData.append('position', tema.position.toString());
         return this.http.post<Tema>(`${this.host}`, formData);
     }
 
@@ -56,6 +57,7 @@ export class TemaService {
         formData.append('id', tema.id.toString());
         formData.append('name', tema.name);
         formData.append('onlineCourseId', tema.onlineCourse.id.toString());
+        formData.append('position', tema.position.toString());
         return this.http.put<Tema>(`${this.host}`, formData);
     }
 

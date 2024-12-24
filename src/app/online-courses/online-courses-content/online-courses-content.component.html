@@ -71,12 +71,14 @@
             <li>
                 <i class="pi pi-play-circle"></i>
                 <div>
-                    <h3>{{ tema.name }} <span (click)="onUpdateTema(tema)"><i class="pi pi-pencil" style="font-size: 0.7rem; color: black;"></i></span></h3> 
+                    <h3>{{ tema.position }}. {{ tema.name }} <span (click)="onUpdateTema(tema)"><i class="pi pi-pencil" style="font-size: 0.7rem; color: black;"></i></span></h3> 
                     <div *ngFor="let content of tema.courseContents" class="section-header">
                         <div>
                             <span class="lesson-content" (click)="onSelectContent(content)">
                                 <i *ngIf="content.contentType == 'VIDEO'" class="pi pi-video" style="font-size: 0.7rem; color: var(--color-black);"></i>
                                 <i *ngIf="content.contentType == 'FILE'" class="pi pi-file" style="font-size: 0.7rem; color: var(--color-black);"></i>
+                                
+                                {{ tema.position }}.{{ content.position }}.
                                 {{ content.description }}
                             </span>
                         </div> 
@@ -177,6 +179,12 @@
             </div>
 
             <div class="form-group">
+                <label for="position">Posição</label>
+                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                    [(ngModel)]="onlineCourseContent.position">
+            </div>
+
+            <div class="form-group">
                 <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
@@ -197,6 +205,12 @@
                 <label for="name">Descrição</label>
                 <input type="text" name="name" ngModel #name="ngModel" required minlength="1"
                     [(ngModel)]="tema.name">
+            </div>
+
+            <div class="form-group">
+                <label for="position">Posição</label>
+                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                    [(ngModel)]="tema.position">
             </div>
 
             <div class="form-group">
