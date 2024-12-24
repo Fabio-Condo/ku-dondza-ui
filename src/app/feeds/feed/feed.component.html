@@ -129,7 +129,7 @@
             Your browser does not support the video tag.
           </video>
 
-          <div class="answer-options" style="margin: 0.7rem;">
+          <div *ngIf="!feed.voted" class="answer-options" style="margin: 0.7rem;">
             <label *ngFor="let option of feed.pollOptions; let i = index">
               <input 
                 type="radio" 
@@ -145,6 +145,19 @@
             </label>
           </div>
           
+          <!-- Div para exibir os resultados após o voto   *ngIf="voted"  option.votes -->
+          <div *ngIf="feed.voted" class="voted-options">
+            <div *ngFor="let option of feed.pollOptions" class="voted-option">
+              <div class="option-text">
+                <span>{{ option.text }}</span>
+              </div>
+              <div class="vote-count">
+                <span>{{ 12 }} votos</span>
+              </div>
+            </div>
+            <!-- Botão para desfazer o voto -->
+            <button class="undo-button" (click)="removeUserVote(feed)">Desfazer Voto</button>
+          </div>
           
           <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
             <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>

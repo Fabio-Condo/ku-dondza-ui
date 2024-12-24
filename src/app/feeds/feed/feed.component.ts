@@ -63,7 +63,8 @@ export class FeedComponent implements OnInit {
   showPostOtionForm = false;
   postOptionIndex?: number;
 
-  //selectedOptionId: number | null = null;
+  // Armazena a opção selecionada
+  selectedOption: PollOption = new PollOption();
 
   filter: IPostFilter = {
     page: -1,
@@ -190,10 +191,11 @@ export class FeedComponent implements OnInit {
           this.getNumberOfLikes(post);
           this.getNumberOfComments(post);
 
+          this.checkIfhasUserVoted(post);
           post.pollOptions.forEach(option => {
             this.checkIfSelected(option);  // Verifica se a opção foi selecionada
           });
-          
+
         });
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
       },
@@ -495,9 +497,6 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  // Armazena a opção selecionada
-  selectedOption: PollOption = new PollOption();
-
   // Método chamado quando a opção de votação é alterada
   onOptionChange() {
     console.log('Selected Option ID:', this.selectedOption.id);
@@ -510,6 +509,20 @@ export class FeedComponent implements OnInit {
   toggleUserVote(option: PollOption): void {
     this.postOptionService.toggleUserVote(option.id!, this.loggedUser.id).subscribe(() => {
       option.selected = !option.selected;
+    });
+  }
+
+  removeUserVote(post: Post): void {
+    this.postOptionService.removeUserVote(post.id!, this.loggedUser.id).subscribe(() => {
+      post.voted = !post.voted;
+    });
+  }
+
+  checkIfhasUserVoted(post: Post): void {
+    this.postOptionService.hasUserVoted(post.id!, this.loggedUser.id).subscribe(response => {
+      post.voted = response;
+    }, error => {
+      console.error('Erro ao verificar se o post foi curtido:', error);
     });
   }
   /* Fim */

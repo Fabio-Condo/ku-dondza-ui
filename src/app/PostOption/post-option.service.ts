@@ -28,6 +28,14 @@ export class PostOptionService {
         return this.http.post<PollOption>(`${this.host}/${optionId}/people/${userId}/vote`, {});
     }
 
+    removeUserVote(postId: number, userId: number): Observable<PollOption> {
+        return this.http.post<PollOption>(`${this.host}/${postId}/people/${userId}/remove-vote`, {});
+    }
+
+    hasUserVoted(postId: number, userId: number): Observable<boolean> {
+        return this.http.get<boolean>(`${this.host}/${postId}/people/votes/contains/${userId}`);
+    }
+
     countPeopleWhoSelectedByOptionId(optionId: number): Observable<number> {
         return this.http.get<number>(`${this.host}/${optionId}/people/total`, {});
     }

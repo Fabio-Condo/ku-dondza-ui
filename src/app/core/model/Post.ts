@@ -21,6 +21,7 @@ export class Post {
     public showComments!: boolean;
     public isLiked: boolean;  // Adiciona a propriedade isLiked
     public isSaved: boolean;
+    public voted: boolean;
     public numberOfLikes: number;
     public numberOfComments: number;
 
@@ -36,6 +37,7 @@ export class Post {
         this.showComments = false;
         this.isLiked = false;
         this.isSaved = false;
+        this.voted = false;
         this.numberOfLikes = 0;
         this.numberOfComments = 0;
     }
