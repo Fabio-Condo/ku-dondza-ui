@@ -63,6 +63,8 @@ export class FeedComponent implements OnInit {
   showPostOtionForm = false;
   postOptionIndex?: number;
 
+  //selectedOptionId: number | null = null;
+
   filter: IPostFilter = {
     page: -1,
     itemsPerPage: 5,
@@ -187,6 +189,11 @@ export class FeedComponent implements OnInit {
           this.checkIfSaved(post);
           this.getNumberOfLikes(post);
           this.getNumberOfComments(post);
+
+          post.pollOptions.forEach(option => {
+            this.checkIfSelected(option);  // Verifica se a opção foi selecionada
+          });
+          
         });
         this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
       },
@@ -488,9 +495,21 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  addMemberToGroup(option: PollOption): void {
-    this.postOptionService.addUserToOption(option.id!, this.loggedUser.id).subscribe(() => {
-      option.selected = true;
+  // Armazena a opção selecionada
+  selectedOption: PollOption = new PollOption();
+
+  // Método chamado quando a opção de votação é alterada
+  onOptionChange() {
+    console.log('Selected Option ID:', this.selectedOption.id);
+    if (this.selectedOption.id) {
+      this.toggleUserVote(this.selectedOption);
+    }
+  }
+
+  // Método para alternar o voto do usuário
+  toggleUserVote(option: PollOption): void {
+    this.postOptionService.toggleUserVote(option.id!, this.loggedUser.id).subscribe(() => {
+      option.selected = !option.selected;
     });
   }
   /* Fim */

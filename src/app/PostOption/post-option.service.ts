@@ -24,9 +24,9 @@ export class PostOptionService {
         return this.http.get<IApiResponse<User>>(`${this.host}/${optionId}/people`, { params });
     }
 
-    addUserToOption(optionId: number, userId: number): Observable<PollOption> {
-        return this.http.post<PollOption>(`${this.host}/${optionId}/people/${userId}`, {});
-      }
+    toggleUserVote(optionId: number, userId: number): Observable<PollOption> {
+        return this.http.post<PollOption>(`${this.host}/${optionId}/people/${userId}/vote`, {});
+    }
 
     countPeopleWhoSelectedByOptionId(optionId: number): Observable<number> {
         return this.http.get<number>(`${this.host}/${optionId}/people/total`, {});

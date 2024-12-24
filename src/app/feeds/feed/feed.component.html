@@ -129,21 +129,23 @@
             Your browser does not support the video tag.
           </video>
 
-          <div class="answer-options" style="margin: 0.7rem;">  <!--[disabled]="option.selected" -->
+          <div class="answer-options" style="margin: 0.7rem;">
             <label *ngFor="let option of feed.pollOptions; let i = index">
               <input 
                 type="radio" 
-                [value]="option.text"
-                [(ngModel)]="option.id" 
-                [id]="'option' + i" />
-              <span [attr.for]="'option' + i">
+                [value]="option.id" 
+                name="pollOption" 
+                [(ngModel)]="selectedOption.id" 
+                [id]="'option' + i" 
+                [disabled]="option.selected" 
+                (change)="onOptionChange()" />
+              <span>
                 {{ option.text }}
               </span>
             </label>
           </div>
-
           
-
+          
           <a class="text-muted" style="font-size: 0.7rem; margin: 0.7rem;">
             <span *ngIf="feed.numberOfLikes == 0">Sem gostos</span>
             <span style="cursor: pointer;" (click)="onShowPostLikes(feed)" *ngIf="feed.numberOfLikes == 1">1
