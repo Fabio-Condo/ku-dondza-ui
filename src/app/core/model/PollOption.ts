@@ -4,6 +4,7 @@ export class PollOption {
     id?: number;
     text?: string;
     usersWhoVoted: User[] = [];
+    voteCount?: number;
 
     selected: boolean = false;
     totalUsers: number = 0;
