@@ -141,11 +141,7 @@ export class ExamesComponent implements OnInit {
 
   excluir(exam: Exam) {
     this.examesService.excluir(exam.id!).subscribe(() => {
-      if (this.grid.first === 0) {
-        this.findAll();
-      } else {
-        this.grid.reset();
-      }
+      this.findAll();
       this.messageService.add({ severity: 'success', detail: 'Exame excluído com sucesso!' })
     },
       (errorResponse: HttpErrorResponse) => {
