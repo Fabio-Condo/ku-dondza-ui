@@ -5,23 +5,23 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { InstitutionFilter } from '../core/interface/InstitutionFilter';
 import { CourseFilter } from '../core/interface/CourseFilter';
-import { Tema } from '../core/model/Tema';
+import { Module } from '../core/model/Module';
 
 
 @Injectable({ providedIn: 'root' })
-export class TemaService {
-    private host = environment.apiUrl + '/temas';
+export class ModuleService {
+    private host = environment.apiUrl + '/modules';
 
     constructor(private http: HttpClient) { }
 
-    findAll(filtro: InstitutionFilter): Observable<IApiResponse<Tema>> {
+    findAll(filtro: InstitutionFilter): Observable<IApiResponse<Module>> {
 
         let params = new HttpParams()
             .set('page', filtro.pagina)
             .set('sort', filtro.ordenamento)
             .set('size', filtro.itensPorPagina);
 
-        return this.http.get<IApiResponse<Tema>>(`${this.host}/filter`, { params });
+        return this.http.get<IApiResponse<Module>>(`${this.host}/filter`, { params });
     }
 
 
@@ -33,7 +33,7 @@ export class TemaService {
         return firstValueFrom(this.http.get(this.host + '/getListByCourseId', {params}));
     }
 
-    findByOnlineCourseId(courseId: number, filtro: CourseFilter): Observable<IApiResponse<Tema>> {
+    findByOnlineCourseId(courseId: number, filtro: CourseFilter): Observable<IApiResponse<Module>> {
         
         let params = new HttpParams()
             .set('page', filtro.pagina)
@@ -41,32 +41,32 @@ export class TemaService {
             .set('size', filtro.itensPorPagina)
             .set('courseId', courseId);
 
-        return this.http.get<IApiResponse<Tema>>(`${this.host}/findByCourseId`, { params });
+        return this.http.get<IApiResponse<Module>>(`${this.host}/findByCourseId`, { params });
     }
 
-    save(tema: Tema): Observable<Tema> {
+    save(module: Module): Observable<Module> {
         const formData = new FormData();
-        formData.append('name', tema.name);
-        formData.append('onlineCourseId', tema.onlineCourse.id.toString());
-        formData.append('position', tema.position.toString());
-        return this.http.post<Tema>(`${this.host}`, formData);
+        formData.append('name', module.name);
+        formData.append('onlineCourseId', module.onlineCourse.id.toString());
+        formData.append('position', module.position.toString());
+        return this.http.post<Module>(`${this.host}`, formData);
     }
 
-    update(tema: Tema): Observable<Tema> {
+    update(module: Module): Observable<Module> {
         const formData = new FormData();
-        formData.append('id', tema.id.toString());
-        formData.append('name', tema.name);
-        formData.append('onlineCourseId', tema.onlineCourse.id.toString());
-        formData.append('position', tema.position.toString());
-        return this.http.put<Tema>(`${this.host}`, formData);
+        formData.append('id', module.id.toString());
+        formData.append('name', module.name);
+        formData.append('onlineCourseId', module.onlineCourse.id.toString());
+        formData.append('position', module.position.toString());
+        return this.http.put<Module>(`${this.host}`, formData);
     }
 
     excluir(id: number): Observable<void> {
         return this.http.delete<void>(`${this.host}/${id}`, {});
     }
 
-    findById(id: number): Observable<Tema> {
-        return this.http.get<Tema>(`${this.host}/${id}`, {});
+    findById(id: number): Observable<Module> {
+        return this.http.get<Module>(`${this.host}/${id}`, {});
     }
 
     buscarTotal(): Observable<number> {

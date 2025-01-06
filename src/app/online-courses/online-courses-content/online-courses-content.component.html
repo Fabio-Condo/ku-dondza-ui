@@ -63,29 +63,29 @@
         <div class="section-header">
             <h1 class="title">Aulas</h1>
             <div>
-                <button type="button" class="btn"  (click)="onAddNewTema()">Adicionar tema</button>
+                <button type="button" class="btn"  (click)="onAddNewModule()">Adicionar modulo</button>
                 <button type="button" class="btn" style="margin-left: 0.5rem;" (click)="onAddNewOnlineCourseContent()">Adicionar aula</button>
             </div>
         </div>
-        <ul class="lesson-list" *ngFor="let tema of temas">
+        <ul class="lesson-list" *ngFor="let modulo of modulos">
             <li>
                 <i class="pi pi-play-circle"></i>
                 <div>
-                    <h3>{{ tema.position }}. {{ tema.name }} <span (click)="onUpdateTema(tema)"><i class="pi pi-pencil" style="font-size: 0.7rem; color: black;"></i></span></h3> 
-                    <div *ngFor="let content of tema.courseContents" class="section-header">
+                    <h3>{{ modulo.position }}. {{ modulo.name }} <span (click)="onUpdateModule(modulo)"><i class="pi pi-pencil" style="font-size: 0.7rem; color: black;"></i></span></h3> 
+                    <div *ngFor="let content of modulo.courseContents" class="section-header">
                         <div>
                             <span class="lesson-content" (click)="onSelectContent(content)">
                                 <i *ngIf="content.contentType == 'VIDEO'" class="pi pi-video" style="font-size: 0.7rem; color: var(--color-black);"></i>
                                 <i *ngIf="content.contentType == 'FILE'" class="pi pi-file" style="font-size: 0.7rem; color: var(--color-black);"></i>
                                 
-                                {{ tema.position }}.{{ content.position }}.
+                                {{ modulo.position }}.{{ content.position }}.
                                 {{ content.description }}
                             </span>
                         </div> 
 
                         <div class="dropdown-container">
                             <div class="dropdown" *ngIf="content.isAdminMenuOpen">
-                                <a (click)="onUpdateOnlineCourseContent(content, tema, courseContentFile); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
+                                <a (click)="onUpdateOnlineCourseContent(content, modulo, courseContentFile); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
                                 <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = !content.isAdminMenuOpen">Excluir</a>
                             </div>
                         </div>
@@ -166,10 +166,10 @@
             </div>
 
             <div class="form-group">
-                <label for="tema">Tema</label>
-                <select id="tema" [(ngModel)]="onlineCourseContent.tema.id" name="tema" required>
-                  <option value="" disabled selected>Selecione a instituição</option>
-                  <option *ngFor="let tema of listTemas" [value]="tema.value">{{ tema.label }}</option>
+                <label for="modulo">Módulo</label>
+                <select id="modulo" [(ngModel)]="onlineCourseContent.module.id" name="module" required>
+                  <option value="" disabled selected>Selecione o módulo</option>
+                  <option *ngFor="let module of listModulos" [value]="module.value">{{ module.label }}</option>
                 </select>
             </div>
 
@@ -191,11 +191,11 @@
     </div>
 </div>
 
-<div class="overlay" *ngIf="displayModalSaveTema">
+<div class="overlay" *ngIf="displayModalSaveModule">
     <div class="dialog">
-        <h2>{{ editingTema ? 'Editando tema' : 'Adicionando tema' }}</h2>
+        <h2>{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
 
-        <button class="close-btn" (click)="displayModalSaveTema = false">&times;</button>
+        <button class="close-btn" (click)="displayModalSaveModule = false">&times;</button>
 
         <hr>
 
@@ -204,17 +204,17 @@
             <div class="form-group">
                 <label for="name">Descrição</label>
                 <input type="text" name="name" ngModel #name="ngModel" required minlength="1"
-                    [(ngModel)]="tema.name">
+                    [(ngModel)]="modulo.name">
             </div>
 
             <div class="form-group">
                 <label for="position">Posição</label>
                 <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                    [(ngModel)]="tema.position">
+                    [(ngModel)]="modulo.position">
             </div>
 
             <div class="form-group">
-                <button type="button" (click)="saveTema()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+                <button type="button" (click)="saveModule()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
     </div>

@@ -9,6 +9,8 @@ import { Question } from 'src/app/core/model/Question';
 import { QuestionService } from '../question.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { TopicService } from 'src/app/core/topics/courseService.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 @Component({
   selector: 'app-questions',
@@ -35,6 +37,9 @@ export class QuestionsComponent implements OnInit {
   subjects: any[] = [];
   //currentQuestionIndex: number = 0;
 
+  selectedSubject?: number;
+  topics: any[] = [];
+
   // Armazenar as respostas do usuário
   userAnswers: { questionId: number; answerId: number }[] = [];
   result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
@@ -53,6 +58,8 @@ export class QuestionsComponent implements OnInit {
   constructor(
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
+    private topicService: TopicService,
+    private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
@@ -153,6 +160,11 @@ export class QuestionsComponent implements OnInit {
     this.question.id = question.id;
     this.displayModalSave = true;
 
+    this.selectedSubject = (this.question.topic.subject) ? this.question.topic.subject.id : undefined;
+    if (this.selectedSubject) {
+      this.getTopicsBySubjectId();
+    }
+
     // Captura a resposta correta (assumindo que a propriedade correta está na classe Question)
     const correctAnswerObj = this.question.answers.find(answer => answer.correct);
     this.correctAnswer = correctAnswerObj ? correctAnswerObj.text : undefined; // Armazena o texto da resposta correta
@@ -187,6 +199,15 @@ export class QuestionsComponent implements OnInit {
     });
   }
 
+  getTopicsBySubjectId() {
+    this.topicService.getBySubjectId(this.selectedSubject!).then(lista => {
+      this.topics = lista.map(course => ({
+        label: course.name,
+        value: course.id
+      }));
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
   
   carregarDisciplinas() {
     return this.subjectsService.findAll().subscribe(

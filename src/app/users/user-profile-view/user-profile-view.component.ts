@@ -14,10 +14,8 @@ import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { InterestService } from 'src/app/interest/interest.service';
 import { Interest } from 'src/app/core/model/Interest';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
-import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
 import { CommentService } from 'src/app/core/commets/commentService .service';
 import { LikeService } from 'src/app/core/likes/like.service';
-import { Institution } from 'src/app/core/model/Institution';
 import { UserCourseService } from 'src/app/user-courses/user-curses.service';
 import { UserCourse } from 'src/app/core/model/UserCourse';
 import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
@@ -102,7 +100,6 @@ export class UserProfileViewComponent implements OnInit {
     private userService: UserService,
     private commentService: CommentService,
     private likeService: LikeService,
-    private commentLikeService: CommentLikeService,
     private courseService: CourseService,
     private institutionService: InstitutionService,
     private errorHandler: ErrorHandlerService,

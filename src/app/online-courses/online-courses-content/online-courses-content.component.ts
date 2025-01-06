@@ -12,8 +12,8 @@ import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { IUserFilter } from 'src/app/core/model/IUserFilter';
-import { TemaService } from '../tema.service';
-import { Tema } from 'src/app/core/model/Tema';
+import { ModuleService } from '../module.service';
+import { Module } from 'src/app/core/model/Module';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -26,16 +26,16 @@ export class OnlineCoursesContentComponent implements OnInit {
   onlineCourseContentList: OnlineCourseContent[] = [];
   courseContentFile!: File;
 
-  tema: Tema = new Tema();
-  temas: Tema[] = [];
-  listTemas: any[] = [];
+  modulo: Module = new Module();
+  modulos: Module[] = [];
+  listModulos: any[] = [];
 
   onlineCourseContent: OnlineCourseContent = new OnlineCourseContent();
   onlineSelectedCourseContent: OnlineCourseContent = new OnlineCourseContent();
   showLesson: boolean = false;
 
   displayModalSaveContent: boolean = false;
-  displayModalSaveTema: boolean = false;
+  displayModalSaveModule: boolean = false;
 
   totalRegistros: number = 0
   showLoading: boolean = false;
@@ -85,7 +85,7 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   constructor(
     private onlineCoursesService: OnlineCoursesService,
-    private temaService: TemaService,
+    private moduleService: ModuleService,
     private onlineCoursesContentService: OnlineCoursesContentService,
     private userService: UserService,
     private authenticationService: AuthenticationService,
@@ -112,8 +112,8 @@ export class OnlineCoursesContentComponent implements OnInit {
     return Boolean(this.onlineCourseContent.id)
   }
 
-  get editingTema() {
-    return Boolean(this.tema.id)
+  get editingModule() {
+    return Boolean(this.modulo.id)
   }
 
   saveContent() {
@@ -124,11 +124,11 @@ export class OnlineCoursesContentComponent implements OnInit {
     }
   }
 
-  saveTema() {
-    if (this.editingTema) {
-      this.updateTema()
+  saveModule() {
+    if (this.editingModule) {
+      this.updateModule()
     } else {
-      this.addNewTema()
+      this.addNewModule()
     }
   }
 
@@ -154,7 +154,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso salva com sucesso!' });
         this.showLoading = false;
-        this.findTemasByCourseById(0, this.course.id);
+        this.findModulesByCourseById(0, this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -163,13 +163,13 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  updateTema() {
+  updateModule() {
     this.showLoading = true;
-    this.tema.onlineCourse = this.course;
-    this.temaService.update(this.tema).subscribe(
+    this.modulo.onlineCourse = this.course;
+    this.moduleService.update(this.modulo).subscribe(
       response => {
-        this.tema = response
-        this.messageService.add({ severity: 'success', detail: 'Tema actualizado com sucesso!' });
+        this.modulo = response
+        this.messageService.add({ severity: 'success', detail: 'Module actualizado com sucesso!' });
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -179,15 +179,15 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  addNewTema() {
+  addNewModule() {
     this.showLoading = true;
-    this.tema.onlineCourse = this.course;
-    this.temaService.save(this.tema).subscribe(
+    this.modulo.onlineCourse = this.course;
+    this.moduleService.save(this.modulo).subscribe(
       response => {
-        this.tema = response
-        this.messageService.add({ severity: 'success', detail: 'Tema salvo com sucesso!' });
+        this.modulo = response
+        this.messageService.add({ severity: 'success', detail: 'Module salvo com sucesso!' });
         this.showLoading = false;
-        this.findTemasByCourseById(0, this.course.id);
+        this.findModulesByCourseById(0, this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -204,8 +204,8 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
-        this.findTemasByCourseById(0, this.course.id);
-        this.getTemasByCourseById(this.course.id);
+        this.findModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(this.course.id);
         this.getStudentsByCourseId(this.course.id);
         this.countOnlineCourseStudentsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
@@ -220,12 +220,12 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  findTemasByCourseById(pagina: number = 0, onlineCourseId: number): void {
+  findModulesByCourseById(pagina: number = 0, onlineCourseId: number): void {
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; 
-    this.temaService.findByOnlineCourseId(onlineCourseId, this.filtro).subscribe(
-      (dados: IApiResponse<Tema>) => {
-        this.temas = dados.content
+    this.moduleService.findByOnlineCourseId(onlineCourseId, this.filtro).subscribe(
+      (dados: IApiResponse<Module>) => {
+        this.modulos = dados.content
         this.totalRegistros = dados.totalElements
         this.showLoading = false;
       },
@@ -236,9 +236,9 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  getTemasByCourseById(onlineCourseId: number) {
-    this.temaService.getAll(onlineCourseId).then(dados => { 
-      this.listTemas = dados.map((dado: any) => ({
+  getModulesByCourseById(onlineCourseId: number) {
+    this.moduleService.getAll(onlineCourseId).then(dados => { 
+      this.listModulos = dados.map((dado: any) => ({
         label: dado.name,
         value: dado.id
       }));
@@ -249,20 +249,20 @@ export class OnlineCoursesContentComponent implements OnInit {
     }
   }
 
-  onUpdateTema(tema: Tema): void {
-    this.tema = tema;
-    this.displayModalSaveTema = true;
+  onUpdateModule(modulo: Module): void {
+    this.modulo = modulo;
+    this.displayModalSaveModule = true;
   }
 
-  onAddNewTema(): void {
-    this.tema = new Tema();
-    this.displayModalSaveTema = true;
+  onAddNewModule(): void {
+    this.modulo = new Module();
+    this.displayModalSaveModule = true;
   }
 
-  onUpdateOnlineCourseContent(content: OnlineCourseContent, tema: Tema, file: File): void {
+  onUpdateOnlineCourseContent(content: OnlineCourseContent, module: Module, file: File): void {
     this.onlineCourseContent = content;
     this.onlineCourseContent.contentType = content.contentType;
-    this.onlineCourseContent.tema = tema;
+    this.onlineCourseContent.module = module;
     this.courseContentFile = file;
     this.displayModalSaveContent = true;
   }
@@ -334,7 +334,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   excluir(content: OnlineCourseContent) {
     this.onlineCoursesContentService.excluir(content.id).subscribe(() => {
       if (this.grid.first === 0) {
-        this.findTemasByCourseById(0, this.course.id);
+        this.findModulesByCourseById(0, this.course.id);
       } else {
         this.grid.reset();
       }

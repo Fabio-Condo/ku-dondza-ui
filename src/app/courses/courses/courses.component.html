@@ -40,8 +40,6 @@
                                 <p class="details">instituição: <span class="text-muted">{{ course.institution.name }}</span></p>
                                 <p class="details">duração: <span class="text-muted">{{ course.duration }}</span></p>
                                 <p class="details">requisitos: <span class="text-muted">{{ course.requirements }}</span></p>
-                                <p class="details"> Apenas <strong>Tu</strong> és estudante deste curso</p>
-
                             </div>
                             <div class="dropdown-container">
                                 <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
@@ -50,9 +48,7 @@
                                     <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
                                 </div>
                             </div>
-                            <div>
-                                <img [src]="course.institution.urlFile" style="width: 70px; height: 70px; border-radius: 5px; border: 1px solid #ccc;" alt="">
-                            </div>
+
                         </div>
                     </div>
                 </td>

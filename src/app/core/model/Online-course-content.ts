@@ -1,4 +1,4 @@
-import { Tema } from "./Tema";
+import { Module } from "./Module";
 
 export class OnlineCourseContent {
     id!: number;
@@ -6,7 +6,7 @@ export class OnlineCourseContent {
     fileName!: string;
     urlFile!: string;
     contentType!: string;
-    tema = new Tema();
+    module = new Module();
     position!: number;
     
     showLoadingDownload: boolean = false;

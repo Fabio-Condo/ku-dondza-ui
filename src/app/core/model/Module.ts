@@ -1,7 +1,7 @@
 import { OnlineCourse } from "./Online-course";
 import { OnlineCourseContent } from "./Online-course-content";
 
-export class Tema {
+export class Module {
     id!: number;
     name!: string;
     position!: number;

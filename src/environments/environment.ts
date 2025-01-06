@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080'
   //apiUrl: 'http://localhost:80'
+  //apiUrl: 'http://ku-dondza-lb-860372918.us-east-1.elb.amazonaws.com'
 
 };
 
