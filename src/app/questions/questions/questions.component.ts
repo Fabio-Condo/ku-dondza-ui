@@ -24,6 +24,7 @@ export class QuestionsComponent implements OnInit {
   totalRegistros: number = 0;
   showLoading: boolean = false;
   displayModalSave: boolean = false;
+  displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   question: Question = new Question();
   isAdmin: boolean = false;
@@ -153,6 +154,10 @@ export class QuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  onFilter(): void {
+    this.displayModalFilter = true;
   }
 
   onUpdateQuestion(question: Question): void {
@@ -317,6 +322,13 @@ export class QuestionsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  limparCampos() {
+    this.filtro.searchParam = "";
+    this.filtro.subject = undefined;
+    this.filtro.topic = undefined;
+    this.findAll();
   }
 
   private sendErrorNotification(message: string): void {

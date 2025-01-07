@@ -20,8 +20,16 @@ export class QuestionService {
       .set('sort', filter.sort)
       .set('size', filter.itemsPerPage);
 
-      if (filter.searchParam) {
-        params = params.set('searchParam', filter.searchParam);
+    if (filter.searchParam) {
+      params = params.set('searchParam', filter.searchParam);
+    }
+
+    if (filter.subject) {
+      params = params.set('subject', filter.subject);
+    }
+
+    if (filter.topic) {
+      params = params.set('topic', filter.topic);
     }
 
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/filter`, { params });
