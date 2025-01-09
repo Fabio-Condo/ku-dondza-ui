@@ -226,7 +226,6 @@ export class QuestionsComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     )
   }
@@ -263,15 +262,12 @@ export class QuestionsComponent implements OnInit {
   }
 
   buscarTotal() {
-    this.showLoading = true;
     this.questionService.getTotal().subscribe(
       (total) => {
         this.totalQuestions = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }

@@ -127,15 +127,12 @@ export class CoursesComponent implements OnInit {
   }
 
   buscarTotal() {
-    this.showLoading = true;
     this.courseService.buscarTotal().subscribe(
       (total) => {
         this.totalCourses = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -177,7 +174,6 @@ export class CoursesComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }

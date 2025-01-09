@@ -28,6 +28,18 @@ export class OnlineCoursesService {
             params = params.set('searchParam', filtro.searchParam);
         }
 
+        if (filtro.name) {
+            params = params.set('name', filtro.name);
+        }
+    
+        if (filtro.instrutor) {
+            params = params.set('instrutor', filtro.instrutor);
+        }
+
+        if (filtro.user) {
+            params = params.set('user', filtro.user);
+        }
+
         return this.http.get<IApiResponse<OnlineCourse>>(`${this.host}/filter`, { params });
     }
 

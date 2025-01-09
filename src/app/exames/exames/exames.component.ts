@@ -172,7 +172,6 @@ export class ExamesComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     )
   }
@@ -189,21 +188,17 @@ export class ExamesComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     )
   }
 
   buscarTotal() {
-    this.showLoading = true;
     this.examesService.buscarTotal().subscribe(
       (total) => {
         this.totalExames = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }

@@ -70,9 +70,28 @@
                 </td>
             </tr>
 
-            <div class="card" *ngIf="totalRegistros == 0">
-                <span>Nenhum item encontrado</span>
-            </div>
+            <!-- Indicador de carregamento -->
+            <tr *ngIf="showLoading">
+                <td>
+                    <div class="card">
+                        <div class="loading-indicator">
+                            <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
+                            Carregando...
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Mensagem "Nenhum item encontrado" -->
+            <tr *ngIf="!showLoading && instutions.length === 0">
+                <td>
+                    <div class="card">
+                        <span class="no-items-message">
+                            Nenhum item encontrado
+                        </span>
+                    </div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -81,11 +100,11 @@
     <div class="pagination-controls">
         <span class="pagination-info mr-auto"></span>
 
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
             <i class="pi pi-chevron-left"></i> Anterior
         </button>
         <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
             Próximo <i class="pi pi-chevron-right"></i>
         </button>
         <select class="select-itens-por-pagina" (change)="changePageSize($event)">
@@ -94,11 +113,6 @@
                 {{ option }}
             </option>
         </select>
-    </div>
-
-    <!-- Indicador de carregamento -->
-    <div *ngIf="showLoading" class="loading-indicator">
-        Carregando...
     </div>
 
 </div>

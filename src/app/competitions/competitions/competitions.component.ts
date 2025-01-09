@@ -166,15 +166,12 @@ export class CompetitionsComponent implements OnInit {
   }
 
   buscarTotal() {
-    this.showLoading = true;
     this.competitionService.buscarTotal().subscribe(
       (total) => {
         this.totalCompetitions = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }

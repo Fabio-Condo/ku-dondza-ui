@@ -145,31 +145,25 @@ export class GroupsComponent implements OnInit {
   }
 
   getCurrentUserGroupsByUserId(pagina: number = 0): void {
-    this.showLoading = true;
     this.filtroCurrentUserGroups.pagina = this.currentPageCurrentUserGroups - 1; // Ajuste para o padrão de paginação começando em 0
     this.userService.getGroupsByUserId(this.loggedUser.id, this.filtroCurrentUserGroups).subscribe(
       (dados: IApiResponse<Group>) => {
         this.currentUserGroups = dados.content
         this.totalRegistrosCurrentUserGroups = dados.totalElements
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
 
   countCurrentUserGroupsByUserId() {
-    this.showLoading = true;
     this.userService.countGroupsByUserId(this.loggedUser.id).subscribe(
       (total) => {
         this.totalGroupsCurrentUserGroups = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -208,15 +202,12 @@ export class GroupsComponent implements OnInit {
   }
 
   buscarTotal() {
-    this.showLoading = true;
     this.groupService.buscarTotal().subscribe(
       (total) => {
         this.totalGroups = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }

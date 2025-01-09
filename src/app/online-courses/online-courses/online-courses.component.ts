@@ -22,15 +22,12 @@ export class OnlineCoursesComponent implements OnInit {
   showLoadingDownload: boolean = false;
   showLoading: boolean = false;
   totalRegistros: number = 0
-  totalRegistrosCurrentUserSubscribedCourses: number = 0
   courses: OnlineCourse[] = [];
-  currentUserSubscribedCourses: OnlineCourse[] = [];
   course: OnlineCourse = new OnlineCourse;
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   file!: File;
   totalCourses: number = 0;
-  totalCurrentUserSubscribedCourses: number = 0;
   displayModalFilter: boolean = false;
   isAdmin: boolean = false;
   users: any[] = [];
@@ -47,23 +44,20 @@ export class OnlineCoursesComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
-  currentPageCurrentUserSubscribedCourses: number = 1;
-  opcoesItensPorPaginaCurrentUserSubscribedCourses: number[] = [5, 10, 20, 50];
+  selectCourseOption: string = 'ALL_COURSES';
 
-  activeTab: number = 2;
+  courseFilterOptions = [
+    { label: 'Mostrar todos cursos', value: 'ALL_COURSES' },
+    { label: 'Mostrar meus cursos', value: 'MY_COURSES' },
+  ];
 
   @ViewChild('tabela') grid: any;
 
   filtro: OnlineCourseFilter = {
     pagina: 0,
     itensPorPagina: 5,
-    ordenamento: 'id,asc'
-  }
-
-  filtroCurrentUserSubscribedCourses: OnlineCourseFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc'
+    ordenamento: 'id,asc',
+    user: 0
   }
 
   filtroQuestions: QuestionFilter = {
@@ -87,8 +81,6 @@ export class OnlineCoursesComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.buscarTotal();
     this.findAll();
-    this.getCurrentUserSubscribedOnlineCoursesByUserId();
-    this.countCurrentUserSubscribedOnlineCoursesByUserId();
     this.getUsersInstrutors();
     this.getQuestions();
     this.scrollToTop();
@@ -147,6 +139,15 @@ export class OnlineCoursesComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+
+    if(this.selectCourseOption == 'MY_COURSES'){
+      this.filtro.user = this.loggedUser.id;
+    }
+
+    if(this.selectCourseOption == 'ALL_COURSES'){
+      this.filtro.user = 0;
+    }
+
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
@@ -167,51 +168,13 @@ export class OnlineCoursesComponent implements OnInit {
     );
   }
 
-  getCurrentUserSubscribedOnlineCoursesByUserId(pagina: number = 0): void {
-    this.showLoading = true;
-    this.filtroCurrentUserSubscribedCourses.pagina = this.currentPageCurrentUserSubscribedCourses - 1; // Ajuste para o padrão de paginação começando em 0
-
-    this.userService.getSubscribedOnlineCoursesByUserId(this.loggedUser.id, this.filtroCurrentUserSubscribedCourses).subscribe(
-      (dados: IApiResponse<OnlineCourse>) => {
-        this.currentUserSubscribedCourses = dados.content
-        this.totalRegistrosCurrentUserSubscribedCourses = dados.totalElements
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  countCurrentUserSubscribedOnlineCoursesByUserId() {
-    this.showLoading = true;
-    this.userService.countSubscribedOnlineCoursesByUserId(this.loggedUser.id).subscribe(
-      (total) => {
-        this.totalCurrentUserSubscribedCourses = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onFilter(): void {
-    this.displayModalFilter = true;
-  }
-
   buscarTotal() {
-    this.showLoading = true;
     this.onlineCoursesService.buscarTotal().subscribe(
       (total) => {
         this.totalCourses = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -348,7 +311,6 @@ export class OnlineCoursesComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     )
   }
@@ -375,31 +337,6 @@ export class OnlineCoursesComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
-  }
-
-  // Current User Subscribed Courses
-  changePageSizeCurrentUserSubscribedCourses(event: any): void {
-    this.filtroCurrentUserSubscribedCourses.itensPorPagina = +event.target.value;
-    this.currentPageCurrentUserSubscribedCourses = 1; // Resetar para a primeira página ao mudar o número de itens por página
-    this.getCurrentUserSubscribedOnlineCoursesByUserId();
-  }
-
-  previousPageCurrentUserSubscribedCourses(): void {
-    if (this.currentPageCurrentUserSubscribedCourses > 1) {
-      this.currentPageCurrentUserSubscribedCourses--;
-      this.getCurrentUserSubscribedOnlineCoursesByUserId();
-    }
-  }
-
-  nextPageCurrentUserSubscribedCourses(): void {
-    if (this.currentPageCurrentUserSubscribedCourses < this.totalPagesCurrentUserSubscribedCourses()) {
-      this.currentPageCurrentUserSubscribedCourses++;
-      this.getCurrentUserSubscribedOnlineCoursesByUserId();
-    }
-  }
-
-  totalPagesCurrentUserSubscribedCourses(): number {
-    return Math.ceil(this.totalRegistrosCurrentUserSubscribedCourses / this.filtroCurrentUserSubscribedCourses.itensPorPagina);
   }
 
   confirmarExclusao(course: OnlineCourse): void {
@@ -437,8 +374,19 @@ export class OnlineCoursesComponent implements OnInit {
     );
   }
 
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
+  // Método para limpar campos
+  limparCampos() {
+    this.filtro.searchParam = "";
+    this.filtro.instrutor = undefined;
+    this.filtro.pagina = 0;
+    this.filtro.itensPorPagina = 10;
+    this.filtro.ordenamento = "id,desc"
+    this.selectCourseOption = 'ALL_COURSES';
+    this.findAll();
+  }
+
+  onFilter(): void {
+    this.displayModalFilter = true;
   }
 
   private sendErrorNotification(message: string): void {

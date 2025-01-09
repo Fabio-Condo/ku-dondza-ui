@@ -137,15 +137,12 @@ export class QuizzesComponent implements OnInit {
   }
 
   getTotalQuizzes(){
-    this.showLoading = true;
     this.quizService.getTotal().subscribe(
       (total) => {
         this.totalQuizzes =  total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }

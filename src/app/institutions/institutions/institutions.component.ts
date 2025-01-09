@@ -128,15 +128,12 @@ export class InstitutionsComponent implements OnInit {
   }
 
   buscarTotal() {
-    this.showLoading = true;
     this.institutionService.buscarTotal().subscribe(
       (total) => {
         this.totalInstitutions = total;
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
