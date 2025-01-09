@@ -39,6 +39,16 @@ export class QuestionService {
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/filter`, { params });
   }
 
+  getRandomQuestionsBySubjectId(subjectId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
+
+    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/random-by-subject/${subjectId}`, { params });
+  }
+
   findAll(): Observable<IApiResponse<Question>> {
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}`, {});
   }

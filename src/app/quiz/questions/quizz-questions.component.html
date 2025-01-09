@@ -1,6 +1,7 @@
 <div class="container" style="margin-top: 70px;">
       
     <h1 class="quiz-title">{{ quiz.title }}</h1>
+    <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
 
     <div>
         <div class="question-card" *ngIf="currentQuestionIndex < questions.length">
@@ -10,6 +11,7 @@
                  alt="Gráfico de funções" 
                  class="question-graph">
 
+            <span style="font-size: 0.8rem;">{{ questions[currentQuestionIndex].topic.subject.name }}</span>
             <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
 
             <div class="answer-options">

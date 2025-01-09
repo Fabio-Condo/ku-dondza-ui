@@ -10,6 +10,7 @@ import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { QuestionService } from 'src/app/questions/question.service';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 @Component({
   selector: 'app-quizzes',
@@ -29,6 +30,7 @@ export class QuizzesComponent implements OnInit {
   isAdmin: boolean = false;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   selectedQuiz: Quiz = new Quiz();
+  subjects: any[] = [];
 
   selectedQuestion: Question = new Question();
   showQuestionsDialog: boolean = false;
@@ -56,6 +58,7 @@ export class QuizzesComponent implements OnInit {
   constructor(
     private quizService: QuizService,
     private questionService: QuestionService,
+    private subjectsService: SubjectsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private title: Title,
@@ -66,6 +69,7 @@ export class QuizzesComponent implements OnInit {
     this.getTotalQuizzes();
     this.getQuizzes();
     this.getQuestions();
+    this.carregarDisciplinas();
     this.scrollToTop();
   }
 
@@ -134,6 +138,22 @@ export class QuizzesComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+  
+  carregarDisciplinas() {
+    return this.subjectsService.findAll().subscribe(
+      dados => {
+        this.subjects = dados.map(dado => {
+          return {
+            label: dado.name,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
   }
 
   getTotalQuizzes(){

@@ -8,6 +8,8 @@ import { Question } from 'src/app/core/model/Question';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
+import { QuestionService } from 'src/app/questions/question.service';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 
 
@@ -43,6 +45,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   constructor(
     private quizService: QuizService,
+    private questionService: QuestionService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
@@ -64,7 +67,8 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
-        this.getQuestionsByQuizId(this.quiz.id);
+        //this.getQuestionsByQuizId(this.quiz.id);
+        this.getQuestions(this.quiz.subject.id)
       },
       (errorResponse: HttpErrorResponse) => {
         if(errorResponse.status == 400){ // BAD_REQUEST
@@ -76,10 +80,25 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
-  getQuestionsByQuizId(quizId: number): void {
+  //getQuestionsByQuizId(quizId: number): void {
+  //  this.showLoading = true;
+  //  this.filtro.page = this.currentPage - 1; 
+  //  this.quizService.getQuestionsByQuizId(quizId, this.filtro).subscribe(
+  //    (dados: IApiResponse<Question>) => {
+  //      this.questions  = dados.content;
+  //      this.showLoading = false;
+  //    },
+  //    (errorResponse: HttpErrorResponse) => {
+  //      this.sendErrorNotification(errorResponse.error.message);
+  //      this.showLoading = false;
+  //    }
+  //  );
+  //}
+
+  getQuestions(subjectId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; 
-    this.quizService.getQuestionsByQuizId(quizId, this.filtro).subscribe(
+    this.questionService.getRandomQuestionsBySubjectId(subjectId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
         this.questions  = dados.content;
         this.showLoading = false;
