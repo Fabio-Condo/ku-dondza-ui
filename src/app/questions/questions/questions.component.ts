@@ -326,6 +326,7 @@ export class QuestionsComponent implements OnInit {
 
   limparCampos() {
     this.filtro.searchParam = "";
+    this.filtro.text = "";
     this.filtro.subject = undefined;
     this.filtro.topic = undefined;
     this.findAll();

@@ -32,6 +32,10 @@ export class QuestionService {
       params = params.set('topic', filter.topic);
     }
 
+    if (filter.text) {
+      params = params.set('text', filter.text);
+    }
+
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/filter`, { params });
   }
 
