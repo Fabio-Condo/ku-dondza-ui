@@ -26,6 +26,7 @@ export class QuizzesComponent implements OnInit {
   quizzes: Quiz[] = [];
   quiz: Quiz = new Quiz;
   displayModalSave: boolean = false;
+  displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -288,6 +289,10 @@ export class QuizzesComponent implements OnInit {
     )
   }
 
+  onFilter(): void {
+    this.displayModalFilter = true;
+  }
+
   confirmarExclusao(quiz: Quiz): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
@@ -319,6 +324,13 @@ export class QuizzesComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRecords / this.filter.itemsPerPage);
+  }
+
+  limparCampos() {
+    this.filter.searchParam = "";
+    this.filter.title = "";
+    this.filter.subject = undefined;
+    this.getQuizzes();
   }
 
   private sendErrorNotification(message: string): void {

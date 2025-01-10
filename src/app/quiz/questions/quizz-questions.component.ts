@@ -39,7 +39,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   filtro: QuestionFilter = {
     page: 0,
-    itemsPerPage: 105,
+    itemsPerPage: 5,
     sort: 'id,asc'
   };
 

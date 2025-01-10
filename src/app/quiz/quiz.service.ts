@@ -27,7 +27,15 @@ export class QuizService {
         params = params.set('searchParam', filter.searchParam);
     }
 
-    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}`, { params });
+    if (filter.title) {
+      params = params.set('title', filter.title);
+    }
+
+    if (filter.subject) {
+      params = params.set('subject', filter.subject);
+    }
+
+    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/filter`, { params });
   }
 
   findAll(): Observable<IApiResponse<Quiz>> {
