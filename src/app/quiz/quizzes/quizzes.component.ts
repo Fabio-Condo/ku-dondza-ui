@@ -214,18 +214,6 @@ export class QuizzesComponent implements OnInit {
     );
   }
 
-  getQuestionsByQuizId(): void {
-    this.quizService.getQuestionsByQuizId(this.selectedQuiz.id, this.filtroQuestions).subscribe(
-      (dados: IApiResponse<Question>) => {
-        this.selectedQuiz.questions = [...this.selectedQuiz.questions, ...dados.content];
-        this.totalRegistrosQuestions = dados.totalElements;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
   countQuestionsByQuizId(quiz: Quiz) {
     this.showLoading = true;
     this.quizService.countQuestionsByQuizId(quiz.id,).subscribe(
@@ -243,7 +231,6 @@ export class QuizzesComponent implements OnInit {
   onShowMoreQuestions(): void {
     if (this.selectedQuiz) {
       this.filtroQuestions.page++;
-      this.getQuestionsByQuizId();
     }
   }
 
@@ -251,7 +238,6 @@ export class QuizzesComponent implements OnInit {
     this.selectedQuiz = quiz;
     this.selectedQuiz.questions = [];
     this.filtroQuestions.page = 0; 
-    this.getQuestionsByQuizId();
     this.showQuestionsDialog = true;
   }
 

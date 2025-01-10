@@ -17,6 +17,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { QuizzQuestionsComponent } from './questions/quizz-questions.component';
+import { NewQuizzComponent } from './new-quizz/new-quizz.component';
 
 
 
@@ -24,7 +25,8 @@ import { QuizzQuestionsComponent } from './questions/quizz-questions.component';
 @NgModule({
   declarations: [
     QuizzesComponent,
-    QuizzQuestionsComponent
+    QuizzQuestionsComponent,
+    NewQuizzComponent
   ],
   imports: [
     CommonModule,

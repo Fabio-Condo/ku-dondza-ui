@@ -74,14 +74,14 @@ export class QuizService {
     return this.http.delete<Quiz>(`${this.baseUrl}/${quizId}/questions/${questionId}`);
   }
 
-  getQuestionsByQuizId(quizId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
+  getQuestionsByQuizId(quizId: number, userId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
 
     let params = new HttpParams()
       .set('page', filtro.page)
       .set('sort', filtro.sort)
       .set('size', filtro.itemsPerPage);
 
-    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/${quizId}/questions`, { params });
+    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/${quizId}/questions/users/${userId}`, { params });
   }
 
   countQuestionsByQuizId(quizId: number): Observable<number> {

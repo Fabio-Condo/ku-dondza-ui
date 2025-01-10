@@ -10,20 +10,18 @@ import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
 import { QuestionService } from 'src/app/questions/question.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
-import { User } from 'src/app/core/model/User';
-import { AuthenticationService } from 'src/app/users/authentication.service';
-
-
+import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
-  selector: 'app-quizz-questions',
-  templateUrl: './quizz-questions.component.html',
-  styleUrls: ['./quizz-questions.component.css']
+  selector: 'app-new-quizz',
+  templateUrl: './new-quizz.component.html',
+  styleUrls: ['./new-quizz.component.css']
 })
-export class QuizzQuestionsComponent implements OnInit {
+export class NewQuizzComponent implements OnInit {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
   showLoading: boolean = false;
+  showGetSubjectLoading: boolean = false;
   isAdmin: boolean = true;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -38,9 +36,10 @@ export class QuizzQuestionsComponent implements OnInit {
   correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
 
   showStartScreen: boolean = true;
-  //showFinalScreen: boolean = false;
+  showFinalScreen: boolean = false;
 
-  loggedUser: User = new User;
+  selectedSubject: Subject = new Subject();
+  subjects: any[] = [];
 
   @ViewChild('tabela') grid: any;
 
@@ -52,46 +51,68 @@ export class QuizzQuestionsComponent implements OnInit {
 
   constructor(
     private quizService: QuizService,
-    private authenticationService: AuthenticationService,
+    private questionService: QuestionService,
+    private subjectsService: SubjectsService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    const quizId = this.route.snapshot.params['id'];
-    if (quizId) {
-      this.getQuizByQuizId(quizId);
-    }
     this.scrollToTop();
-    this.showCorrection = true;
+    this.carregarDisciplinas();
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  getQuizByQuizId(quizId: string) {
-    this.quizService.getQuizByQuizId(quizId).subscribe(
-      (response) => {
-        this.quiz = response;
-        this.getQuestionsByQuizIdAndUserId(this.quiz.id);
+  // Novo método para iniciar o quiz
+  startQuiz() {
+    this.showStartScreen = false; // Oculta a tela inicial
+    this.currentQuestionIndex = 0; // Começa na primeira questão
+  }
+
+  set(){
+    this.selectedSubject.id
+    console.log(this.selectedSubject.id);
+  }
+
+  getById(id: number) {
+    this.showGetSubjectLoading = true;
+    this.subjectsService.getById(id).subscribe(
+      subject => {
+        this.selectedSubject = subject;
+        this.getQuestions(this.selectedSubject.id);
+        this.showGetSubjectLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
-        if(errorResponse.status == 400){ // BAD_REQUEST
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        }else{
-          this.sendErrorNotification(errorResponse.error.message);
-        } 
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showGetSubjectLoading = false;
       }
     );
   }
 
-  getQuestionsByQuizIdAndUserId(quizId: number): void {
+  carregarDisciplinas() {
+    return this.subjectsService.findAll().subscribe(
+      dados => {
+        this.subjects = dados.map(dado => {
+          return {
+            label: dado.name,
+            value: dado.id
+          }
+        })
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  getQuestions(subjectId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; 
-    this.quizService.getQuestionsByQuizId(quizId, this.loggedUser.id, this.filtro).subscribe(
+    this.questionService.getRandomQuestionsBySubjectId(subjectId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
         this.questions  = dados.content;
         this.showLoading = false;
@@ -130,13 +151,6 @@ export class QuizzQuestionsComponent implements OnInit {
         }
       }
     });
-
-    this.displayResults();
-  }
-
-  displayResults() {
-    const message = `Você acertou ${this.result.correctAnswers} resposta(s) e errou ${this.result.incorrectAnswers} resposta(s).`;
-    this.messageService.add({ severity: 'info', detail: message });
   }
 
   captureUserAnswer(questionId: number, answerId: number) {
@@ -153,18 +167,18 @@ export class QuizzQuestionsComponent implements OnInit {
     return userAnswer ? userAnswer.answerId === answerId : false;
   }
 
-  //showFinalResults() {
-  //  this.showFinalScreen = true; 
-  //  this.calculateFinalResults(); 
-  //}
+  showFinalResults() {
+    this.showFinalScreen = true; 
+    this.calculateFinalResults(); 
+  }
   
-  //reviewQuestions() {
-  //  this.showFinalScreen = false; 
-  //  this.currentQuestionIndex = 0; 
-  //}
+  reviewQuestions() {
+    this.showFinalScreen = false; 
+    this.currentQuestionIndex = 0; 
+  }
 
   restartQuiz() {
-    //this.showFinalScreen = false; 
+    this.showFinalScreen = false; 
     this.showStartScreen = true; 
     this.userAnswers = []; 
     this.currentQuestionIndex = 0; 
@@ -173,13 +187,7 @@ export class QuizzQuestionsComponent implements OnInit {
   toggleCorrection() {
     this.showCorrection = !this.showCorrection;
     this.currentQuestionIndex = 0; // Volta para a primeira questão
-    //this.showFinalScreen = false; // Oculta a tela final
-  }
-
-  // Novo método para iniciar o quiz
-  startQuiz() {
-    this.showStartScreen = false; // Oculta a tela inicial
-    this.currentQuestionIndex = 0; // Começa na primeira questão
+    this.showFinalScreen = false; // Oculta a tela final
   }
 
   // Método para calcular os resultados finais

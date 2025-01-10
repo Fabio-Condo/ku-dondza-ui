@@ -24,4 +24,8 @@ export class SubjectsService {
     return this.http.get<Subject[]>(this.host, {});
   }
 
+  getById(id: number): Observable<Subject> {
+    return this.http.get<Subject>(`${this.host}/${id}`, {});
+  }
+
 }

@@ -3,14 +3,21 @@
   <div *ngIf="showStartScreen" class="start-screen">
     <h1 class="quiz-title">{{ quiz.title }}</h1>
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-    <p class="quiz-description">
-      Este quiz contém {{ questions.length }} questões. Você terá a oportunidade de testar seus conhecimentos sobre o tema.
-    </p>
-    <button class="start-button" (click)="startQuiz()">Começar Quiz</button>
+
+    <div class="results-summary">
+      <p>Você respondeu {{ questions.length }} questões.</p>
+      <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
+      <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
+      <p>Sua pontuação: <span class="score">{{ (result.correctAnswers / questions.length) * 100 }}%</span></p>
+    </div>
+    <div>
+        <span style="font-weight: bold" *ngIf="showLoading">Carregando...</span>
+      </div>
+    <button class="start-button" [disabled]="showLoading" (click)="startQuiz()">Ver questões</button>
   </div>
 
   <!-- Tela do quiz (questões) -->
-  <div *ngIf="!showStartScreen && !showFinalScreen">
+  <div *ngIf="!showStartScreen">
     <h1 class="quiz-title">{{ quiz.title }}</h1>
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
 
@@ -44,6 +51,13 @@
       </div>
 
       <div class="navigation-buttons text-center">
+
+        <!-- Botão para submeter respostas -->
+        <button class="pagination-button" (click)="showStartScreen = true" 
+            *ngIf="currentQuestionIndex === questions.length - 1">
+            <i style="margin-right: 0.5rem;" class="pi pi-arrow-left"></i> Tela inicial
+        </button>
+
         <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
             <i class="pi pi-chevron-left"></i> Anterior
         </button>
@@ -52,13 +66,6 @@
             Próxima <i class="pi pi-chevron-right"></i>
         </button>
 
-        <!-- Botão para submeter respostas -->
-        <button class="pagination-button" (click)="submitAnswers(); showFinalResults()" 
-            *ngIf="currentQuestionIndex === questions.length - 1">
-            Submeter 
-            <i class="pi pi-chevron-right"></i> 
-            <i class="pi pi-chevron-right"></i>
-        </button>
       </div>
     </div>
 
@@ -67,22 +74,4 @@
     </div>
   </div>
 
-  <!-- Tela final de resultados -->
-  <div *ngIf="showFinalScreen" class="final-screen">
-    <h1 class="quiz-title">Resultados do Quiz</h1>
-    <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-
-    <div class="results-summary">
-      <p>Você respondeu {{ questions.length }} questões.</p>
-      <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
-      <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
-      <p>Sua pontuação: <span class="score">{{ (result.correctAnswers / questions.length) * 100 }}%</span></p>
-    </div>
-
-    <button class="restart-button" (click)="restartQuiz()">Reiniciar Quiz</button>
-    <br>
-    <br>
-    <button class="restart-button" (click)="toggleCorrection()">Ver Respostas</button>
-
-  </div>
 </div>
