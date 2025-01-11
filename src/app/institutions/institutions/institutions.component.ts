@@ -53,8 +53,8 @@ export class InstitutionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buscarTotal();
     this.findAll();
+    this.buscarTotal();
     this.scrollToTop();
   }
 

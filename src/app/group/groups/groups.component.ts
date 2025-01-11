@@ -66,9 +66,9 @@ export class GroupsComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
+    this.buscarTotal();
     this.getCurrentUserGroupsByUserId(0);
     this.countCurrentUserGroupsByUserId();
-    this.buscarTotal();
     this.scrollToTop();
   }
 

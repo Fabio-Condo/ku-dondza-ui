@@ -49,9 +49,9 @@ export class CoursesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.findAll(0);
     this.buscarTotal();
     this.carregarInstituicoes();
-    this.findAll(0);
     this.scrollToTop();
   }
 

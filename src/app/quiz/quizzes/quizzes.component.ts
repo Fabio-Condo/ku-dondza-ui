@@ -11,6 +11,8 @@ import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { QuestionService } from 'src/app/questions/question.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-quizzes',
@@ -40,6 +42,8 @@ export class QuizzesComponent implements OnInit {
   questionsList: any[] = [];
   totalRegistrosQuestions: number = 10000
 
+  loggedUser: User = new User;
+  
 
   @ViewChild('table') grid: any;
 
@@ -60,6 +64,7 @@ export class QuizzesComponent implements OnInit {
     private quizService: QuizService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private title: Title,
@@ -67,6 +72,7 @@ export class QuizzesComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Quiz page');
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.getTotalQuizzes();
     this.getQuizzes();
     this.getQuestions();
@@ -124,6 +130,7 @@ export class QuizzesComponent implements OnInit {
 
   getQuizzes(page: number = 0): void {
     this.showLoading = true;
+    this.filter.user = this.loggedUser.id;
     this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.quizService.getQuizzes(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {

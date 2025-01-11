@@ -79,8 +79,8 @@ export class OnlineCoursesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.buscarTotal();
     this.findAll();
+    this.buscarTotal();
     this.getUsersInstrutors();
     this.getQuestions();
     this.scrollToTop();

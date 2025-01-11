@@ -8,10 +8,6 @@ import { Question } from 'src/app/core/model/Question';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
-import { QuestionService } from 'src/app/questions/question.service';
-import { SubjectsService } from 'src/app/subjects/subjects.service';
-import { User } from 'src/app/core/model/User';
-import { AuthenticationService } from 'src/app/users/authentication.service';
 
 
 
@@ -40,7 +36,6 @@ export class QuizzQuestionsComponent implements OnInit {
   showStartScreen: boolean = true;
   //showFinalScreen: boolean = false;
 
-  loggedUser: User = new User;
 
   @ViewChild('tabela') grid: any;
 
@@ -52,14 +47,12 @@ export class QuizzQuestionsComponent implements OnInit {
 
   constructor(
     private quizService: QuizService,
-    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
     if (quizId) {
       this.getQuizByQuizId(quizId);
@@ -76,7 +69,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
-        this.getQuestionsByQuizIdAndUserId(this.quiz.id);
+        this.getQuestionsByQuizId(this.quiz.id);
       },
       (errorResponse: HttpErrorResponse) => {
         if(errorResponse.status == 400){ // BAD_REQUEST
@@ -88,10 +81,10 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
-  getQuestionsByQuizIdAndUserId(quizId: number): void {
+  getQuestionsByQuizId(quizId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; 
-    this.quizService.getQuestionsByQuizId(quizId, this.loggedUser.id, this.filtro).subscribe(
+    this.quizService.getQuestionsByQuizId(quizId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
         this.questions  = dados.content;
         this.showLoading = false;

@@ -1,409 +1,3 @@
-/*
-.texto-limitado {
-    width: 300px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-hr {
-    border: none;
-    height: 0.5px;
-    background-color: #dcdcdc;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-.card-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0px 5px;
-}
-
-.card {
-    cursor: pointer;
-    background-color: #fff;
-    border-radius: 0.4rem;
-    padding: 20px;
-    width: 100%;
-    border: 1px solid #dcdcdc;
-}
-
-.card:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.card-content {
-    display: flex;
-    align-items: center;
-}
-
-video {
-    border-radius: 5px;
-    margin: 5px 0;
-    box-shadow: 0 10px 200px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ccc;
-    width: 100%;
-    height: 600px;
-}
-
-.content {
-    flex: 1;
-    margin-left: 20px;
-}
-
-.course-name {
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.course-description {
-    font-size: 0.7rem;
-    margin: 5px 0;
-}
-
-.loading-indicator {
-    margin-left: 10px;
-    font-size: 0.85rem;
-    color: black;
-    font-weight: bold;
-    padding: 2px;
-    text-align: center;
-}
-
-.admin-actions {
-    margin-top: 10px;
-}
-
-.edit-link,
-.delete-link {
-    font-size: 0.7rem;
-    color: #007bff;
-    text-decoration: underline;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.loading-indicator {
-    margin-top: 20px;
-    font-size: 0.85rem;
-    color: black;
-    font-weight: bold;
-    text-align: center;
-}
-
-.overlay {
-    position: fixed;
-    display: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.dialog {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 450px;
-    width: 100%;
-    position: relative;
-}
-
-.dialog h2 {
-    margin-top: 0;
-    color: var(--color-black);
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.form-group textarea {
-    resize: vertical;
-}
-
-.form-group select {
-    appearance: none;
-    background: #fff url('data:image/svg+xml;utf8,<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>') no-repeat right 10px center;
-    background-size: 16px 12px;
-}
-
-.close-btn {
-    position: absolute;
-    top: 25px;
-    right: 17px;
-    background: none;
-    border: none;
-    font-size: 25px;
-    cursor: pointer;
-    color: var(--color-black);
-}
-
-
-.flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0px 0px 20px 0px;
-}
-
-.input-group {
-    display: flex;
-    align-items: center;
-}
-
-.input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.transparent-input {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid #ccc;
-    border-radius: 0.4rem;
-    padding: 10px 20px 10px 40px;
-    font-size: 16px;
-    color: rgb(67, 65, 65);
-    outline: none;
-    transition: background 0.3s, border 0.3s;
-    width: 300px;
-}
-
-.transparent-input::placeholder {
-    color: rgb(67, 65, 65);
-}
-
-.transparent-input:focus {
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px solid #ccc;
-}
-
-.input-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-}
-
-a {
-    font-size: 0.8rem;
-    color: #007bff;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.flex a {
-    margin-right: 10px;
-}
-
-.tab-header {
-    display: flex;
-    justify-content: flex-start;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-    background: transparent;
-}
-
-.tab-link {
-    text-align: center;
-    padding: 15px 20px;
-    text-decoration: none;
-    color: var(--color-black);
-    border-bottom: 1px solid transparent;
-    font-weight: bold;
-    min-width: 100px;
-}
-
-.tab-link:hover {
-    opacity: 0.8;
-}
-
-.tab-link.active {
-    border-bottom: 1px solid var(--color-primary);
-    color: var(--color-primary);
-}
-
-.tab-link:last-child {
-    border-right: none;
-}
-
-.course-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1200px;
-    overflow: hidden;
-}
-
-.course-image-container {
-    flex: 1;
-    max-width: 50%;
-    margin-right: 20px;
-}
-
-.course-image {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-}
-
-.course-details {
-    flex: 2;
-    padding: 20px;
-}
-
-.course-title {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: var(--color-black);
-}
-
-.course-description {
-    font-size: 1.1em;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    color: var(--color-black);
-}
-
-.course-meta {
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.course-meta p {
-    margin: 0 0 10px;
-    font-size: 1.1em;
-    color: var(--color-black);
-}
-
-.enroll-button {
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    background-color: var(--color-primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 300ms ease;
-}
-
-.enroll-button:hover {
-    opacity: 0.8;
-}
-
-.upload-loading-container {
-    background-color: #dcdcdc;
-    color: black;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc;
-}
-  
-.upload-loading-text {
-    font-weight: bold;
-    margin-left: 10px;
-}
-
-
-@media (max-width: 768px) {
-    .course-container {
-        flex-direction: column;
-        padding: 10px;
-    }
-
-    .course-image-container {
-        max-width: 100%;
-        margin-right: 0;
-        margin-bottom: 20px;
-    }
-
-    .course-details {
-        padding: 10px;
-    }
-
-    .course-meta {
-        flex-direction: column;
-    }
-
-    .enroll-button {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .course-title {
-        font-size: 1.5em;
-    }
-
-    .course-description {
-        font-size: 1em;
-    }
-
-    .course-meta p {
-        font-size: 1em;
-    }
-}
-*/
-
-
-/*********************/
-
-/* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/*
-:host {
-    display: block;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-}
-*/
-
 /* Container Principal */
 .learning-container {
     max-width: 900px;
@@ -459,10 +53,13 @@ a {
 }
 
 .course-description {
-    font-size: 0.9rem;
     line-height: 1.8;
-    margin-bottom: 25px;
-    color: var(--color-gray);
+    font-size: 14px;
+    color: black; 
+    text-decoration: none; 
+    font-weight: 300; 
+    display: block; 
+    transition: all 0.3s ease
 }
 
 /* Dados do Curso */
@@ -470,8 +67,9 @@ a {
     display: flex;
     justify-content: flex-start;
     font-size: 0.9rem;
-    color: #777;
     margin-bottom: 30px;
+    font-size: 13px;
+    font-weight: 300; 
 }
 
 .course-info .release-date,
@@ -619,12 +217,15 @@ a {
 }
 
 .lesson-content {
-    font-size: 0.9rem;
-    color: var(--color-black);
     margin-top: 8px;
     margin-left: 10px;
-    display: block;
     cursor: pointer;
+    font-size: 13px;
+    color: black; 
+    text-decoration: none; 
+    font-weight: 300; 
+    display: block; 
+    transition: all 0.3s ease
 }
 
 .lesson-content:hover {
@@ -691,6 +292,12 @@ a {
 
 .instructor-text {
     flex: 1;
+    font-size: 13px;
+    color: black; 
+    text-decoration: none; 
+    font-weight: 300; 
+    display: block; 
+    transition: all 0.3s ease
     /* O texto ocupa o restante do espaço disponível */
 }
 

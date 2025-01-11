@@ -4,11 +4,11 @@
     <h1 class="title">Exames</h1>
   </div>
 
-  <p style="margin-top: 20px; font-size: 0.85rem;">
+  <p style="margin-top: 10px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
     Explore a variedade de exames de admissão das instituições de ensino de Moçambique, abrangendo uma ampla
     gama de disciplinas e níveis educacionais.
   </p>
-  <p style="margin-bottom: 20px; font-size: 0.85rem;">
+  <p style="margin-bottom: 20px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
     Na Ku-DONDZA, trabalhamos duro para obter o melhor resultado.
   </p>
 
@@ -23,7 +23,6 @@
         <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"
           (ngModelChange)="findAll()" placeholder="Pesquisa">
       </div>
-
 
       <div class="dropdown-container" style="margin-left: 4px;">
         <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
@@ -44,10 +43,10 @@
             <div class="card-content">
               <div class="content">
                 <p class="exame-name">{{exam.subject.name}}</p>
-                <p class="details">ano: <span class="text-muted">{{ exam.date | date:'yyyy' }}</span></p>
+                <p class="details">Ano: <span class="text-muted">{{ exam.date | date:'yyyy' }}</span></p>
                 <p class="details">Tipo: <span class="text-muted">{{ getTypeValue(exam.examType) }}</span></p>
-                <p class="details">instituição: {{ exam.institution.name }}</p>
-                <p *ngIf="exam.description" class="details">descrição: {{ exam.description }}</p>
+                <p class="details">Instituição: <span class="text-muted">{{ exam.institution.name }}</span></p>
+                <p *ngIf="exam.description" class="details">descrição: <span class="text-muted">{{ exam.description }}</span></p>
                 <p *ngIf="!exam.showLoadingDownload && isAdmin" class="details">
                   <strong>{{exam.totalDownloadNumber}}</strong> downloads</p>
                 <p *ngIf="exam.showLoadingDownload" class="details"

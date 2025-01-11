@@ -62,10 +62,10 @@ export class ExamesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.findAll(0);
     this.buscarTotal();
     this.carregarInstituicoes();
     this.carregarDisciplinas();
-    this.findAll(0);
     this.scrollToTop();
   }
 

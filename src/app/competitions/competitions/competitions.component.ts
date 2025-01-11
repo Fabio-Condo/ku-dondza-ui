@@ -89,8 +89,8 @@ export class CompetitionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.buscarTotal();
     this.findAll(0);
+    this.buscarTotal();
     this.getQuestions();
     this.scrollToTop();
   }

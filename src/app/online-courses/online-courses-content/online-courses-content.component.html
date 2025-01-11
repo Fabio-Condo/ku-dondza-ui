@@ -24,11 +24,11 @@
             <!-- Informações do Curso -->
             <div class="course-info">
                 <div class="release-date">
-                    <i class="pi pi-calendar"></i><span>Data de Lançamento: {{ course.lunchDate }}</span>
+                    <i class="pi pi-calendar"></i><span class="text-muted">Data de Lançamento: {{ course.lunchDate }}</span>
                 </div>
 
                 <div class="likes">
-                    <i class="pi pi-thumbs-up"></i><span>2,500 pessoas gostaram</span>
+                    <i class="pi pi-thumbs-up"></i><span class="text-muted">2,500 pessoas gostaram</span>
                 </div>
 
                 <button class="course-join" *ngIf="!course.isSubscribed"
@@ -47,7 +47,8 @@
                     <div class="instructor-text">
                         <h3>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</h3>
                         <p>{{ course.instrutor.bio }}</p>
-                        <p><strong>Especialização:</strong> {{ course.name }}</p>
+                        <p> {{ course.name }}</p>
+
                     </div>
                 </div>
             </div>

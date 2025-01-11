@@ -4,9 +4,12 @@
         <h1 class="title">Cursos online</h1>
     </div>
 
-    <p style="margin-top: 20px; font-size: 0.85rem;">Descubra a diversidade de cursos disponíveis em Moçambique,
-        incluindo detalhes como título do curso, descrição e a instituição que oferece.</p>
-    <p style="margin-bottom: 20px; font-size: 0.85rem;"> Na Ku-DONDZA, ajudamos os estudantes a fazer escolhas
+    <p style="margin-top: 10px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
+        Descubra a diversidade de cursos disponíveis em Moçambique,
+        incluindo detalhes como título do curso, descrição e a instituição que oferece.
+    </p>
+    <p style="margin-bottom: 20px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
+        Na Ku-DONDZA, ajudamos os estudantes a fazer escolhas
         informadas.
     </p>
 
@@ -50,12 +53,8 @@
                                 <div class="content">
                                     <p class="course-name">{{ course.name }}</p>
                                     <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span></p>
-                                    <p class="details" *ngIf="course.totalStudents == 0">Seja <strong>primeiro estudante</strong> a aderir ao curso</p>
-                                    <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 1"> Apenas <strong>uma pessoa</strong> é estudante deste curso</p>
-                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 1"> Apenas <strong>Tu</strong> és estudante deste curso</p>
-                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são estudantes deste curso</p>
-                                    <p class="details" *ngIf="!course.isSubscribed && course.totalStudents == 2"><strong>Duas pessoas</strong> são estudantes deste curso</p>
-                                    <p class="details" *ngIf="course.isSubscribed && course.totalStudents > 2"><strong>Tu</strong> e mais <strong>{{ course.totalStudents - 1}} pessoas</strong> são estudantes deste curso</p>
+                                    <p class="details" *ngIf="!course.isSubscribed"> Não Inscrito</p>
+                                    <p class="details" *ngIf="course.isSubscribed"> Inscrito</p>
                                 </div>
                                 <div class="dropdown-container">
                                     <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
