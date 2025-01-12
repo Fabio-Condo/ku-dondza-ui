@@ -32,7 +32,11 @@
                         <div class="course-item">
                             <p class="subject-name">{{ course.name }}</p>
                             <p class="details">Duração: {{ course.duration }}</p>
-                            <p class="details">Requisitos: {{ course.requirements }}</p>
+                            <p class="details">Requisitos:</p>
+                            <p class="details" *ngFor="let req of course.requirements" style="margin-left: 10px;">
+                                <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
+                                {{ req.designation }}
+                            </p>
                         </div>
                     </li>
                 </ul>

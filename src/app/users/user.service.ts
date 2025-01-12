@@ -6,7 +6,7 @@ import { User } from '../core/model/User';
 import { CustomHttpRespone } from '../core/model/custom-http-response';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { Post } from '../core/model/Post';
-import { IUserFilter } from '../core/model/IUserFilter';
+import { IUserFilter } from '../core/interface/IUserFilter';
 import { IPostFilter } from '../core/interface/IPostFilter';
 import { OnlineCourse } from '../core/model/Online-course';
 import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';

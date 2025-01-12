@@ -38,7 +38,6 @@
                                 <p class="course-name">{{ course.name }}</p>
                                 <p class="details">Instituição: <span class="text-muted">{{ course.institution.name }}</span></p>
                                 <p class="details">Duração: <span class="text-muted">{{ course.duration }}</span></p>
-                                <p class="details">Requisitos: <span class="text-muted">{{ course.requirements }}</span></p>
                             </div>
                             <div class="dropdown-container">
                                 <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
@@ -48,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary" [routerLink]="['/instituicoes']">Ver</button>
+                                <button class="btn btn-primary" (click)="onView(course)">Ver</button>
                             </div>
 
                         </div>
@@ -120,20 +119,59 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="level">Nivel</label>
+                <select id="level" [(ngModel)]="course.level" name="level" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let nivel of niveis" [value]="nivel.value">{{ nivel.label }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="duration">Duração</label>
                 <input type="text" name="duration" ngModel #duration="ngModel" required minlength="1" [(ngModel)]="course.duration">
             </div>
-            <div class="form-group">
-                <label for="requirements">Requisitos</label>
-                <textarea id="requirements" name="requirements" ngModel #requirements="ngModel" required minlength="1" [(ngModel)]="course.requirements" rows="4"></textarea>
+
+            <!--Requirements-->
+            <div class="requirements-container">
+                <div class="header-section">
+                    <label>Respostas</label>
+                    <a href="javascript:;" class="add-btn" (click)="openAddNewRequirementModal()">
+                        <i class="pi pi-plus"></i> 
+                    </a>
+                </div>
+
+                <div class="table-container">
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Texto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let req of course.requirements; let rowIndex = index">
+                                <td>{{ req.designation }}</td>
+                                <td class="actions">
+                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)" class="edit-btn">E</a>
+                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)" class="remove-btn">R</a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="course.requirements.length === 0">
+                                <td colspan="3" class="text-center">Sem respostas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
+
             <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
         </form>
     </div>
 </div>
 
 <div class="overlay" *ngIf="displayModalFilter">
-    <div class="dialog">
+    <div class="dialog" style="width: 400px;">
       <h2>Filtros</h2>
       <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
   
@@ -152,6 +190,14 @@
             <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}</option>
           </select>
         </div>
+
+        <div class="form-group">
+            <label for="level">Nivel</label>
+            <select id="level" [(ngModel)]="filtro.level" name="level" #level="ngModel" (change)="findAll()" required>
+                <option value="" disabled selected>Selecione o tipo</option>
+                <option *ngFor="let nivel of niveis" [value]="nivel.value">{{ nivel.label }}</option>
+            </select>
+        </div>
   
         <div class="form-group">
           <button type="button" (click)="limparCampos()" class="btn">Reset</button>
@@ -159,4 +205,36 @@
   
       </form>
     </div>
-  </div>
+</div>
+
+<div class="overlay" *ngIf="displayModalView">
+    <div class="dialog" style="width: 600px;">
+        <h2>Ver</h2>
+        <button class="close-btn" (click)="displayModalView = false">&times;</button>
+        <p class="course-name">{{ selectedCourse.name }}</p>
+        <p class="details">Instituição: <span class="text-muted">{{ selectedCourse.institution.name }}</span></p>
+        <p class="details">Duração: <span class="text-muted">{{ selectedCourse.duration }}</span></p>
+        <p class="course-name">Requisitos</p>
+
+        <p class="details" *ngFor="let req of selectedCourse.requirements" style="margin-left: 10px;">
+            <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
+            {{ req.designation }}
+        </p>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="showRequirementForm && requirement">
+    <div class="dialog" style="width: 600px;">
+      <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
+      <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
+  
+      <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
+            <label>Designation</label>
+            <textarea pInputTextarea rows="3" ngModel #coordnates="ngModel" ngModel name="designation"
+              [(ngModel)]="requirement.designation"></textarea>
+
+          <button class="confirm-button confirm-button-primary" [disabled]="formRequirement.invalid">Confirmar</button>
+
+      </form>
+    </div>
+</div>

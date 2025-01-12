@@ -4,6 +4,7 @@ import { Topic } from "./Topic";
 
 export class Question {
     id!: number;
+    questionId!: string;
     text!: string;
     fileName!: string;
     urlFile!: string;

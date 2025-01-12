@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary">Ver</button>
+                                <button class="btn btn-primary" [routerLink]="['/questions', question.questionId]">Ver</button>
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,9 @@
             <div class="answers-container">
                 <div class="header-section">
                     <label>Respostas</label>
-                    <a href="javascript:;" class="add-new" (click)="getReadyNewAnswer()">Adicionar novo</a>
+                    <a href="javascript:;" class="add-btn" (click)="getReadyNewAnswer()">
+                        <i class="pi pi-plus"></i> 
+                    </a>
                 </div>
 
                 <div class="table-container">
@@ -195,28 +197,21 @@
     </div>
 </div>
 
+<div class="overlay" *ngIf="showAnswerForm && answer">
+    <div class="dialog" style="width: 600px;">
+      <h2>{{editingAnswer ? 'Editando' : 'Novo'}}</h2>
+      <button class="close-btn" (click)="showAnswerForm = false">&times;</button>
+  
+      <form autocomplete="off" #frmAnswer="ngForm" (ngSubmit)="confirmAnswer(frmAnswer)">
+            <label>Designation</label>
+            <textarea pInputTextarea rows="3" ngModel #coordnates="ngModel" ngModel name="designation"
+              [(ngModel)]="answer.text"></textarea>
 
-<p-dialog [header]="editingAnswer ? 'Edição' : 'Novo'" [(visible)]="showAnswerForm" [modal]="true" *ngIf="answer">
-    <form #frmAnswer="ngForm" (ngSubmit)="confirmAnswer(frmAnswer)">
-        <div class="col-12 p-fluid">
-            <label for="text">Texto</label>
-            <input pInputText 
-                   type="text" 
-                   id="text" 
-                   name="text" 
-                   required 
-                   [(ngModel)]="answer.text" 
-                   #textModel="ngModel" 
-                   placeholder="Digite a resposta" />
-        </div>
+          <button class="confirm-button confirm-button-primary" [disabled]="frmAnswer.invalid">Confirmar</button>
 
-        <div class="col-12 p-fluid">
-            <button pButton type="submit" label="Confirmar" 
-                    [disabled]="frmAnswer.invalid" 
-                    style="height: 30px; margin-top: 1%;"></button>
-        </div>
-    </form>
-</p-dialog>
+      </form>
+    </div>
+</div>
 
 <div class="overlay" *ngIf="displayModalFilter" >
     <div class="dialog" style="width: 400px">

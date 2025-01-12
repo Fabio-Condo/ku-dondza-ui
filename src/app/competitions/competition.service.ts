@@ -8,7 +8,7 @@ import { CompetitionFilter } from '../core/interface/CompetitionFilter';
 import { QuestionFilter } from '../core/interface/QuestionFilter';
 import { Question } from '../core/model/Question';
 import { User } from '../core/model/User';
-import { IUserFilter } from '../core/model/IUserFilter';
+import { IUserFilter } from '../core/interface/IUserFilter';
 
 
 @Injectable({ providedIn: 'root' })

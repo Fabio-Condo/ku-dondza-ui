@@ -13,7 +13,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { IPostFilter } from 'src/app/core/interface/IPostFilter';
 import { InterestService } from 'src/app/interest/interest.service';
 import { Interest } from 'src/app/core/model/Interest';
-import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { CommentService } from 'src/app/core/commets/commentService .service';
 import { LikeService } from 'src/app/core/likes/like.service';
 import { UserCourseService } from 'src/app/user-courses/user-curses.service';

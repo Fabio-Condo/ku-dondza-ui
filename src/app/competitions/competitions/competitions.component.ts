@@ -10,7 +10,7 @@ import { QuestionService } from 'src/app/questions/question.service';
 import { Question } from 'src/app/core/model/Question';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
-import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 

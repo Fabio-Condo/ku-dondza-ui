@@ -35,13 +35,6 @@ export class QuizzesComponent implements OnInit {
   selectedQuiz: Quiz = new Quiz();
   subjects: any[] = [];
 
-  selectedQuestion: Question = new Question();
-  showQuestionsDialog: boolean = false;
-  showSelectQuestionsDialog: boolean = false;
-
-  questionsList: any[] = [];
-  totalRegistrosQuestions: number = 10000
-
   loggedUser: User = new User;
   
 
@@ -51,12 +44,6 @@ export class QuizzesComponent implements OnInit {
     page: 0,
     itemsPerPage: 5,
     sort: 'id,asc'
-  }
-  
-  filtroQuestions: QuestionFilter = {
-    page: -1,
-    itemsPerPage: 2,
-    sort: 'id,asc',
   }
 
 
@@ -75,7 +62,6 @@ export class QuizzesComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.getTotalQuizzes();
     this.getQuizzes();
-    this.getQuestions();
     this.carregarDisciplinas();
     this.scrollToTop();
   }
@@ -183,33 +169,6 @@ export class QuizzesComponent implements OnInit {
     quiz.isAdminMenuOpen = false;
   }
 
-  getQuestions() {
-    return this.questionService.getAll().subscribe(
-      dados => {
-        this.questionsList = dados.map(dado => {
-          return {
-            label: dado.text,
-            value: dado.id
-          }
-        })
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    )
-  }
-
-  addQuestionToQuiz() {
-    this.quizService.addQuestionToQuiz(this.quiz.id, this.selectedQuestion.id).subscribe(
-      (quiz) => {
-        this.quiz = quiz;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    )
-  }
-
   removeQuestionFromQuiz(question: Question) {
     this.quizService.removeQuestionFromQuiz(this.selectedQuiz.id, question.id).subscribe(
       () => {
@@ -233,24 +192,6 @@ export class QuizzesComponent implements OnInit {
         this.showLoading = false;
       }
     );
-  }
-  
-  onShowMoreQuestions(): void {
-    if (this.selectedQuiz) {
-      this.filtroQuestions.page++;
-    }
-  }
-
-  onShowSelectedQuiz(quiz: Quiz): void {
-    this.selectedQuiz = quiz;
-    this.selectedQuiz.questions = [];
-    this.filtroQuestions.page = 0; 
-    this.showQuestionsDialog = true;
-  }
-
-  onAddQuestions(quiz: Quiz) {
-    this.quiz = quiz;
-    this.showSelectQuestionsDialog = true;
   }
 
   onUpdateQuiz(quiz: Quiz): void {

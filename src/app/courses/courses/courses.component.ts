@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MessageService, ConfirmationService, LazyLoadEvent } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { Course } from 'src/app/core/model/Course';
 import { CourseFilter } from 'src/app/core/interface/CourseFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
 import { CourseService } from '../courseService.service';
+import { CourseRequirement } from 'src/app/core/model/CourseRequirement';
 
 @Component({
   selector: 'app-courses',
@@ -22,13 +23,21 @@ export class CoursesComponent implements OnInit {
   totalCourses: number = 0;
   displayModalSave: boolean = false;
   displayModalFilter: boolean = false;
+  displayModalView: boolean = false;
   isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
 
   // Dados dos cursos
   courses: Course[] = [];
   course: Course = new Course();
+  selectedCourse: Course = new Course();
   institutions: any[] = [];
+
+  requirement?: CourseRequirement;
+  requirements: Array<CourseRequirement> = [];
+  requirementIndex?: number;
+  showRequirementForm = false;
+
 
   // Paginação
   currentPage: number = 1;
@@ -38,6 +47,13 @@ export class CoursesComponent implements OnInit {
     itensPorPagina: 5,
     ordenamento: 'id,asc'
   };
+
+  niveis = [
+    { label: 'Técnico', value: 'Técnico' },
+    { label: 'Licenciatura', value: 'Licenciatura' },
+    { label: 'Mestrado', value: 'Mestrado' },
+    { label: 'Doutorado', value: 'Doutorado' }
+  ];
 
   @ViewChild('tabela') grid: any;
 
@@ -63,7 +79,6 @@ export class CoursesComponent implements OnInit {
     return Boolean(this.course.id);
   }
 
-  // Métodos de CRUD
   save(courseForm: NgForm) {
     if (this.editing) {
       this.update(courseForm);
@@ -145,7 +160,6 @@ export class CoursesComponent implements OnInit {
     course.isAdminMenuOpen = false;
   }
 
-  // Métodos de carregamento
   findAll(pagina: number = 0): void {
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
@@ -178,7 +192,6 @@ export class CoursesComponent implements OnInit {
     );
   }
 
-  // Métodos de paginação
   changePageSize(event: any): void {
     this.filtro.itensPorPagina = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
@@ -203,7 +216,6 @@ export class CoursesComponent implements OnInit {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
 
-  // Método para limpar campos
   limparCampos() {
     this.filtro.searchParam = "";
     this.filtro.institution = undefined;
@@ -217,7 +229,11 @@ export class CoursesComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
-  // Métodos para abrir o modal
+  onView(course: Course): void {
+    this.selectedCourse = course;
+    this.displayModalView = true;
+  }
+
   onUpdateCourse(course: Course): void {
     this.course = course;
     this.displayModalSave = true;
@@ -226,6 +242,37 @@ export class CoursesComponent implements OnInit {
   onAddNewCourse(): void {
     this.course = new Course();
     this.displayModalSave = true;
+  }
+
+  //Requirements
+  openAddNewRequirementModal() {
+    this.showRequirementForm = true;
+    this.requirement = new CourseRequirement();
+    this.requirementIndex = this.course.requirements.length;
+  }
+
+  confirmRequirement(frm: NgForm) {
+    this.course.requirements[this.requirementIndex!] = this.cloneRequirement(this.requirement!);
+    this.showRequirementForm = false;
+    frm.reset();
+  }
+
+  cloneRequirement(requirement: CourseRequirement): CourseRequirement {
+    return new CourseRequirement(requirement.id, requirement.designation);
+  }
+
+  get editingRequirement() {  // show the title in modal
+    return this.requirement && this.requirement?.id;
+  }
+
+  removeRequirement(index: number) {
+    this.course.requirements.splice(index, 1);
+  }
+
+  getReadEditRequirement(requirement: CourseRequirement, index: number) {
+    this.requirement = this.cloneRequirement(requirement);
+    this.showRequirementForm = true;
+    this.requirementIndex = index;
   }
 
   private sendErrorNotification(message: string): void {

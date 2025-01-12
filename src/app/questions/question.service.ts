@@ -61,6 +61,10 @@ export class QuestionService {
     return this.http.get<Question>(`${this.baseUrl}/${id}`, {});
   }
 
+  getQuestionByQuestionId(questionId: string): Observable<Question> {
+    return this.http.get<Question>(`${this.baseUrl}/find-by-questionId/${questionId}`, {});
+  }
+
   add(question: Question): Observable<Question> {
     return this.http.post<Question>(this.baseUrl, question, {});
   }

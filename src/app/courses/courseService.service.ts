@@ -32,6 +32,10 @@ export class CourseService {
             params = params.set('institution', filtro.institution);
         }
 
+        if (filtro.level) {
+            params = params.set('level', filtro.level);
+        }
+
         return this.http.get<IApiResponse<Course>>(`${this.host}/filter`, { params });
 
     }

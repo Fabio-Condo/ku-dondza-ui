@@ -11,7 +11,7 @@ import { NgForm } from '@angular/forms';
 import { CustomHttpRespone } from 'src/app/core/model/custom-http-response';
 import { Role } from 'src/app/enum/role.enum';
 import { Subscription } from 'rxjs';
-import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 
 @Component({

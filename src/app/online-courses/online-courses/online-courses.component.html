@@ -138,18 +138,6 @@
             </div>
 
             <div class="form-group">
-                <label for="description">Descrição</label>
-                <textarea id="description" name="description" ngModel #description="ngModel" required minlength="1" 
-                    [(ngModel)]="course.description" rows="4"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="requirements">requirements</label>
-                <textarea id="requirements" name="requirements" ngModel #requirements="ngModel" required minlength="1" 
-                [(ngModel)]="course.requirements" rows="4"></textarea>
-            </div>
-
-            <div class="form-group">
                 <label for="lunchDate">Lunch Date</label>
                 <input type="text" name="lunchDate" ngModel #lunchDate="ngModel" required minlength="1"
                     [(ngModel)]="course.lunchDate">
@@ -166,6 +154,12 @@
             <div class="form-group">
                 <input type="file" (change)="onFileSelected($event)" name="file" accept="application/**"
                     class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <textarea id="description" name="description" ngModel #description="ngModel" required minlength="1" 
+                    [(ngModel)]="course.description" rows="4"></textarea>
             </div>
 
             <div class="form-group">
@@ -252,8 +246,8 @@
         <div class="form-group">
           <label for="instrutor">Instrutor</label>
           <select id="instrutor" [(ngModel)]="filtro.instrutor" (change)="findAll()" name="instrutor" required>
-            <option value="" disabled selected>Selecione a instituição</option>
-            <option *ngFor="let instrutor of institutions" [value]="institution.value">{{ instrutor.label }}</option>
+            <option value="" disabled selected>Selecione o instrutor</option>
+            <option *ngFor="let instrutor of instrutors" [value]="instrutor.value">{{ instrutor.label }}</option>
           </select>
         </div>
         -->

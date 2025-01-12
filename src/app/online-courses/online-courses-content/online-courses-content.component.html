@@ -36,8 +36,12 @@
                 <button class="course-join" disabled *ngIf="course.isSubscribed">Inscrito</button>
             </div>
 
-            <h1 class="title">Pré-requisitos</h1>
-            <p class="course-description">{{ course.requirements }}</p>
+            <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()"><i class="pi pi-pencil" style="font-size: 0.9rem; color: black;"></i></span></h1>
+
+            <p class="course-description" *ngFor="let req of course.requirements" style="margin-left: 10px;">
+                <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
+                {{ req.designation }}
+            </p>
 
             <!-- Seção do Instrutor -->
             <div class="instructor-info">
@@ -221,6 +225,65 @@
     </div>
 </div>
 
+<div class="overlay" *ngIf="displayModalUpateRequirements">
+    <div class="dialog">
+        <h2>Requisitos</h2>
+        <button class="close-btn" (click)="displayModalUpateRequirements = false">&times;</button>
+
+            <form autocomplete="off" #courseRequirementsForm="ngForm" (ngSubmit)="updateRequirements(courseRequirementsForm)">
+            <!--Requirements-->
+            <div class="requirements-container">
+                <div class="header-section">
+                    <label>Todos</label>
+                    <a href="javascript:;" class="add-btn" (click)="openAddNewRequirementModal()">
+                        <i class="pi pi-plus"></i> 
+                    </a>
+                </div>
+
+                <div class="table-container">
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Texto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let req of course.requirements; let rowIndex = index">
+                                <td>{{ req.designation }}</td>
+                                <td class="actions">
+                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)" class="edit-btn">E</a>
+                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)" class="remove-btn">R</a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="course.requirements.length === 0">
+                                <td colspan="3" class="text-center">Sem respostas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>       
+            </div>
+            <button type="submit" [disabled]="courseRequirementsForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+        </form>    
+    </div>
+</div>
+
+<div class="overlay" *ngIf="showRequirementForm && requirement">
+    <div class="dialog" style="width: 600px;">
+      <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
+      <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
+  
+      <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
+            <label>Designation</label>
+            <textarea pInputTextarea rows="3" ngModel #coordnates="ngModel" ngModel name="designation"
+              [(ngModel)]="requirement.designation"></textarea>
+
+          <button class="confirm-button confirm-button-primary" [disabled]="formRequirement.invalid">Confirmar</button>
+
+      </form>
+    </div>
+</div>
+
 <div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
     <div class="confirm-dialog">
         <div class="confirm-dialog-header">
@@ -236,143 +299,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-<div class="container" style="margin-top: 70px;">
-
-    <div>
-        <div class="tab-header">
-            <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
-                Descrição
-            </div>
-            <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
-                Aulas
-            </div>
-            <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
-                Alunos
-            </div>
-        </div>
-
-        <div *ngIf="activeTab === 1" class="active">
-
-            <div class="course-container">
-                <div class="course-image-container">
-                    <img [src]="course.coverImageUrl" alt="{{ course.name }}" class="course-image" />
-                </div>
-
-                <div class="course-details">
-                    <h1 class="course-title">{{ course.name }}</h1>
-                    <p class="course-description">{{ course.description }}</p>
-
-                    <div class="course-meta">
-                        <p><strong>Alunos Inscritos:</strong> {{ totalStudents }}</p>
-                        <p><strong>Instrutor:</strong> {{course.instrutor }} </p>
-                    </div>
-
-                    <button class="enroll-button" (click)="addCourseToSubscribedOnlineCourses(course)"
-                        *ngIf="!course.isSubscribed">Inscrever-se no Curso</button>
-                    <button class="enroll-button" (click)="onRemoveCourse(course)" *ngIf="course.isSubscribed">Anular
-                        inscrição</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div *ngIf="activeTab === 2" class="active">
-
-            <div *ngIf="onlineSelectedCourseContent">
-                <video class="video" #videoPlayer controls>
-                    <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-
-            <div class="flex">
-                <div>
-                    <p class="course-name">{{ onlineSelectedCourseContent.description }}</p>
-                </div>
-                <div>
-                    <a *ngIf="isAdmin" (click)="onAddNewOnlineCourseContent()" class="ml-left">Adicionar</a>
-                </div>
-            </div>
-
-
-            <table class="card-table">
-                <tbody>
-                    <tr *ngFor="let content of onlineCourseContentList">
-                        <td>
-                            <div class="card">
-                                <div class="card-content" (click)="onSelectContent(content)" (click)="scrollToTop()">
-                                    <div>
-                                        <video
-                                            style="width: 70px; height: 40px; border-radius: 5px; border: 1px solid #ccc;">
-                                            <source [src]="content.urlFile" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    </div>
-
-                                    <div class="content">
-                                        <p class="course-name">{{ content.description }}</p>
-                                        <a (click)="onUpdateOnlineCourseContent(content, file)"
-                                            class="edit-link">editar</a>
-                                        <a (click)="confirmarExclusao(content)" class="delete-link">excluir</a>
-                                    </div>
-                                    <p *ngIf="onlineSelectedCourseContent == content"><i class="pi pi-play"
-                                            style="font-size: 1rem;"></i></p>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div *ngIf="showLoading" class="loading-indicator">
-                Carregando...
-            </div>
-
-        </div>
-
-        <div *ngIf="activeTab === 3" class="active">
-            <table class="card-table">
-                <tbody>
-                    <tr *ngFor="let student of students">
-                        <td>
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="profile-pic">
-                                        <img src="{{student.profileImageUrl}}" alt="pic 1" />
-                                    </div>
-                                    <div class="content" style="margin-left: 20px;">
-                                        <p class="user-name user-name-hover"
-                                            [routerLink]="['/user/profile', student.userId]">
-                                            {{ student.firstName }} {{ student.lastName }}
-                                        </p>
-                                        <p class="username text-muted">12 mutual friends</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <div (click)="onShowMoreStudents()" class="upload-loading-container"
-                        style="cursor: pointer; border: 1px solid #ccc;">
-                        <p class="upload-loading-text">carregar mais alunos</p>
-                    </div>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
--->

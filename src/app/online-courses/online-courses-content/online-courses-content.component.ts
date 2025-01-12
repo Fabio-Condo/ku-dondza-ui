@@ -11,9 +11,11 @@ import { OnlineCoursesContentService } from '../OnlineCoursesContentService.serv
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
-import { IUserFilter } from 'src/app/core/model/IUserFilter';
+import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { ModuleService } from '../module.service';
 import { Module } from 'src/app/core/model/Module';
+import { OnlineCourseRequirement } from 'src/app/core/model/OnlineCourseRequirement';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -36,6 +38,12 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   displayModalSaveContent: boolean = false;
   displayModalSaveModule: boolean = false;
+  displayModalUpateRequirements: boolean = false;
+
+  requirement?: OnlineCourseRequirement;
+  requirements: Array<OnlineCourseRequirement> = [];
+  requirementIndex?: number;
+  showRequirementForm = false;
 
   totalRegistros: number = 0
   showLoading: boolean = false;
@@ -91,7 +99,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
   ) { }
 
@@ -211,18 +219,65 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.checkIfSubscribed(this.course);
       },
       (errorResponse: HttpErrorResponse) => {
-        if(errorResponse.status == 400){ // BAD_REQUEST
+        if (errorResponse.status == 400) { // BAD_REQUEST
           this.router.navigateByUrl('/pagina-nao-encontrada');
-        }else{
+        } else {
           this.sendErrorNotification(errorResponse.error.message);
-        } 
+        }
+      }
+    );
+  }
+
+  onUpdateRequirements(): void {
+    this.displayModalUpateRequirements = true;
+  }
+
+  //Requirements
+  openAddNewRequirementModal() {
+    this.showRequirementForm = true;
+    this.requirement = new OnlineCourseRequirement();
+    this.requirementIndex = this.course.requirements.length;
+  }
+
+  confirmRequirement(frm: NgForm) {
+    this.course.requirements[this.requirementIndex!] = this.cloneRequirement(this.requirement!);
+    this.showRequirementForm = false;
+    frm.reset();
+  }
+
+  cloneRequirement(requirement: OnlineCourseRequirement): OnlineCourseRequirement {
+    return new OnlineCourseRequirement(requirement.id, requirement.designation);
+  }
+
+  get editingRequirement() {  // show the title in modal
+    return this.requirement && this.requirement?.id;
+  }
+
+  removeRequirement(index: number) {
+    this.course.requirements.splice(index, 1);
+  }
+
+  getReadEditRequirement(requirement: OnlineCourseRequirement, index: number) {
+    this.requirement = this.cloneRequirement(requirement);
+    this.showRequirementForm = true;
+    this.requirementIndex = index;
+  }
+
+  updateRequirements(courseForm: NgForm) {
+    this.onlineCoursesService.updateRequirements(this.course).subscribe(
+      (response) => {
+        //this.course = response;
+        this.messageService.add({ severity: 'success', detail: 'Curso alterado com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
       }
     );
   }
 
   findModulesByCourseById(pagina: number = 0, onlineCourseId: number): void {
     this.showLoading = true;
-    this.filtro.pagina = this.currentPage - 1; 
+    this.filtro.pagina = this.currentPage - 1;
     this.moduleService.findByOnlineCourseId(onlineCourseId, this.filtro).subscribe(
       (dados: IApiResponse<Module>) => {
         this.modulos = dados.content
@@ -237,16 +292,16 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   getModulesByCourseById(onlineCourseId: number) {
-    this.moduleService.getAll(onlineCourseId).then(dados => { 
+    this.moduleService.getAll(onlineCourseId).then(dados => {
       this.listModulos = dados.map((dado: any) => ({
         label: dado.name,
         value: dado.id
       }));
     }),
-    (errorResponse: HttpErrorResponse) => {
-      this.sendErrorNotification(errorResponse.error.message);
-      this.showLoading = false;
-    }
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
   }
 
   onUpdateModule(modulo: Module): void {

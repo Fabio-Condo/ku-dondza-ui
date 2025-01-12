@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { OnlineCourse } from '../core/model/Online-course';
-import { IUserFilter } from '../core/model/IUserFilter';
+import { IUserFilter } from '../core/interface/IUserFilter';
 import { User } from '../core/model/User';
 import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
 import { QuestionFilter } from '../core/interface/QuestionFilter';
@@ -51,7 +51,6 @@ export class OnlineCoursesService {
         const formData = new FormData();
         formData.append('name', course.name);
         formData.append('description', course.description);
-        formData.append('requirements', course.requirements);
         formData.append('lunchDate', course.lunchDate);
         formData.append('instrutorId', course.instrutor.id.toString());
         formData.append('file', file);
@@ -63,7 +62,6 @@ export class OnlineCoursesService {
         formData.append('id', course.id.toString());
         formData.append('name', course.name);
         formData.append('description', course.description);
-        formData.append('requirements', course.requirements);
         formData.append('lunchDate', course.lunchDate);
         formData.append('instrutorId', course.instrutor.id.toString());
         formData.append('file', file);
@@ -84,6 +82,10 @@ export class OnlineCoursesService {
 
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});
+    }
+
+    updateRequirements(course: OnlineCourse): Observable<OnlineCourse> {
+        return this.http.put<OnlineCourse>(`${this.host}/${course.id}/requirements/update`, course, {});
     }
 
     getStudentsByCourseId(courseId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
