@@ -1,0 +1,164 @@
+:root {
+    --color-primary: #6c5ce7; /* Roxo vibrante */
+    --color-secondary: #00b894; /* Verde fresco */
+    --color-text: #2d3436; /* Texto escuro */
+    --color-background: #ffffff; /* Fundo branco */
+    --color-correct: #00b894; /* Verde para respostas corretas */
+    --color-border: #dfe6e9; /* Bordas suaves */
+    --color-shadow: rgba(0, 0, 0, 0.1); /* Sombra suave */
+    --font-primary: 'Inter', sans-serif; /* Fonte moderna */
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.question-card {
+    background-color: var(--color-background);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px var(--color-shadow);
+    padding: 32px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.question-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.subject-name {
+    font-size: 28px;
+    color: var(--color-primary);
+    margin: 0;
+    font-weight: 700;
+}
+
+.topic-name {
+    font-size: 16px;
+    color: var(--color-text);
+    margin: 8px 0 0;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.question-body {
+    margin-bottom: 24px;
+}
+
+.question-text {
+    font-size: 18px;
+    color: var(--color-text);
+    line-height: 1.6;
+    margin: 0 0 20px;
+}
+
+.question-image {
+    max-width: 80%; /* Limita a largura da imagem a 80% do contêiner */
+    height: auto; /* Mantém a proporção da imagem */
+    border-radius: 12px;
+    margin-top: 16px;
+    box-shadow: 0 4px 12px var(--color-shadow); /* Sombra fixa */
+    display: block; /* Garante que a imagem não tenha espaço extra abaixo */
+    margin-left: auto; /* Centraliza a imagem horizontalmente */
+    margin-right: auto;
+    transition: none; /* Remove transições */
+}
+
+/* Remove qualquer efeito de hover na imagem */
+.question-image:hover {
+    transform: none; /* Remove transformações */
+    box-shadow: 0 4px 12px var(--color-shadow); /* Mantém a sombra fixa */
+}
+
+.answer-options {
+    margin-top: 24px;
+}
+
+.options-title {
+    font-size: 20px;
+    color: var(--color-primary);
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+
+.answers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    counter-reset: answer-counter; /* Inicia o contador */
+}
+
+.answer-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-background);
+    padding: 16px;
+    border-radius: 12px;
+    border: 2px solid var(--color-border); /* Borda mais espessa */
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 10px; /* Espaçamento entre os botões */
+    position: relative;
+    padding-left: 50px; /* Espaço para o número */
+}
+
+.answer-item::before {
+    counter-increment: answer-counter; /* Incrementa o contador */
+    content: counter(answer-counter); /* Exibe o número */
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.answer-item:hover {
+    background-color: #f1f3f5; /* Cor de fundo ao passar o mouse */
+    border-color: var(--color-primary); /* Borda colorida ao passar o mouse */
+    transform: translateY(-2px); /* Efeito de levantar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.answer-text {
+    font-size: 16px;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.correct-tag {
+    font-size: 18px;
+    color: var(--color-correct);
+    font-weight: 700;
+    margin-left: 10px;
+}

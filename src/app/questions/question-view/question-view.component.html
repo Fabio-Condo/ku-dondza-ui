@@ -1,22 +1,24 @@
-<div class="container" style="margin-top: 70px;">
-    <h1 style=" font-size: 20px; color: var(--color-black); text-transform: capitalize; font-weight: 600; position: relative; margin-bottom: 1px;">
-        {{ question.topic.subject.name }}
-    </h1>
-    <p style="font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease; margin-bottom: 10px;">
-        {{question.topic.name}}
-    </p>
-    <p style="font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
-        {{question.text}}
-    </p>
-    <img *ngIf="question.urlFile" src="{{ question.urlFile }}" alt="Gráfico de funções" class="question-graph">
+<div class="question-card">
+    <!-- Cabeçalho da pergunta -->
+    <div class="question-header">
+        <h1 class="subject-name">{{ question.topic.subject.name }}</h1>
+        <p class="topic-name">{{ question.topic.name }}</p>
+    </div>
 
-    <h1 style=" font-size: 14px; color: var(--color-black); text-transform: capitalize; font-weight: 600; position: relative; margin-bottom: 5px;">
-        Opcoes de respostas
-    </h1>
-    <label *ngFor="let answer of question.answers">
-        <span>{{answer.text}}</span>
-        <span> {{answer.correct}}</span>
-        <br>
-    </label>
+    <!-- Corpo da pergunta -->
+    <div class="question-body">
+        <p class="question-text">{{ question.text }}</p>
+        <img *ngIf="question.urlFile" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">
+    </div>
 
+    <!-- Opções de resposta -->
+    <div class="answer-options">
+        <h2 class="options-title">Opções de Resposta</h2>
+        <div class="answers-grid">
+            <label *ngFor="let answer of question.answers" class="answer-item">
+                <span class="answer-text">{{ answer.text }}</span>
+                <span *ngIf="answer.correct" class="correct-tag">✓</span>
+            </label>
+        </div>
+    </div>
 </div>
