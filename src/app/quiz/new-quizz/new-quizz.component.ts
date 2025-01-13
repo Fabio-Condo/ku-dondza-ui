@@ -11,6 +11,8 @@ import { Answer } from 'src/app/core/model/Answer';
 import { QuestionService } from 'src/app/questions/question.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-new-quizz',
@@ -28,6 +30,8 @@ export class NewQuizzComponent implements OnInit {
   answers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
 
+  questionIds: number[] = []; // IDs das questões a serem associadas
+
   // Armazenar as respostas do usuário
   userAnswers: { questionId: number; answerId: number }[] = [];
   result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
@@ -41,6 +45,8 @@ export class NewQuizzComponent implements OnInit {
   selectedSubject: Subject = new Subject();
   subjects: any[] = [];
 
+  loggedUser: User = new User;
+
   @ViewChild('tabela') grid: any;
 
   filtro: QuestionFilter = {
@@ -53,18 +59,24 @@ export class NewQuizzComponent implements OnInit {
     private quizService: QuizService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.scrollToTop();
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.carregarDisciplinas();
+    this.scrollToTop();
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  get submited() {
+    return Boolean(this.quiz.id);
   }
 
   // Novo método para iniciar o quiz
@@ -106,11 +118,11 @@ export class NewQuizzComponent implements OnInit {
 
   getQuestions(subjectId: number): void {
     this.showLoading = true;
-    this.filtro.page = this.currentPage - 1; 
+    this.filtro.page = this.currentPage - 1;
     this.questionService.getRandomQuestionsBySubjectId(subjectId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
-        this.questions  = dados.content;
-        this.quiz.questions = dados.content;
+        this.questions = dados.content;
+        this.quiz.questions = this.questions;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -120,17 +132,16 @@ export class NewQuizzComponent implements OnInit {
     );
   }
 
-  saveQuiz(quiz: Quiz) {
-    this.showLoading = true;
-    this.quizService.add(this.quiz).subscribe(
-      (quiz) => {
-        //this.quiz = quiz;
-        this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Quiz added successfully' });
+  saveQuiz() {
+    this.questionIds = this.quiz.questions.map(question => question.id);
+    this.quiz.user = this.loggedUser;
+    this.quizService.saveQuiz(this.quiz, this.questionIds).subscribe(
+      (response) => {
+        this.quiz = response
+        this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!', });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -163,7 +174,9 @@ export class NewQuizzComponent implements OnInit {
       }
     });
 
-    this.saveQuiz(this.quiz);
+    if(!this.submited){
+      this.saveQuiz();
+    }
   }
 
   captureUserAnswer(questionId: number, answerId: number) {
@@ -180,21 +193,21 @@ export class NewQuizzComponent implements OnInit {
     return userAnswer ? userAnswer.answerId === answerId : false;
   }
 
-  showFinalResults() {
-    this.showFinalScreen = true; 
-    this.submitAnswers(); 
-  }
-  
+  //showFinalResults() {
+  //  this.showFinalScreen = true;
+  //  this.submitAnswers();
+  //}
+
   reviewQuestions() {
-    this.showFinalScreen = false; 
-    this.currentQuestionIndex = 0; 
+    this.showFinalScreen = false;
+    this.currentQuestionIndex = 0;
   }
 
   restartQuiz() {
-    this.showFinalScreen = false; 
-    this.showStartScreen = true; 
-    this.userAnswers = []; 
-    this.currentQuestionIndex = 0; 
+    this.showFinalScreen = false;
+    this.showStartScreen = true;
+    this.userAnswers = [];
+    this.currentQuestionIndex = 0;
   }
 
   toggleCorrection() {

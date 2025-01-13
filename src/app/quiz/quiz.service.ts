@@ -54,8 +54,8 @@ export class QuizService {
     return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, {});
   }
 
-  add(quiz: Quiz): Observable<Quiz> {
-    return this.http.post<Quiz>(this.baseUrl, quiz, {});
+  saveQuiz(quiz: Quiz, questionIds: number[]): Observable<Quiz> {
+    return this.http.post<Quiz>(`${this.baseUrl}?questionIds=${questionIds.join(',')}`, quiz, {});
   }
 
   delete(id: number): Observable<void> {

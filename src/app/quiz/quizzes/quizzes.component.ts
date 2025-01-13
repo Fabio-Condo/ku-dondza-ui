@@ -144,12 +144,7 @@ export class QuizzesComponent implements OnInit {
 
   excluir(quiz: Quiz) {
     this.quizService.delete(quiz.id).subscribe(() => {
-      if (this.grid.first === 0) {
-        this.getQuizzes()
-      } else {
-        //this.grid.reset();
-        //this.findAll(this.paginaAtual)
-      }
+      this.getQuizzes();
       this.messageService.add({ severity: 'success', detail: 'Quiz excluído com sucesso!' })
       this.getTotalQuizzes();
     },
