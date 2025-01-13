@@ -39,6 +39,8 @@ import { QuestionRoutingModule } from './questions/question-routing.module';
 import { QuestionsModule } from './questions/questions.module';
 import { SearchModule } from './search/search.module';
 import { SearchRoutingModule } from './search/search-routing.module';
+import { BooksRoutingModule } from './books/books-routing.module';
+import { BooksModule } from './books/books.module';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import { SearchRoutingModule } from './search/search-routing.module';
     
     FeedsRoutingModule,
     ExamesRoutingModule,
+    BooksRoutingModule,
     InstitutionsRoutingModule,
     CoursesRoutingModule,
     CoursesRoutingModule,
@@ -65,6 +68,7 @@ import { SearchRoutingModule } from './search/search-routing.module';
   
     FeedsModule,
     ExamesModule,
+    BooksModule,
     InstitutionsModule,
     CoursesModule,
     OnlineCoursesModule,

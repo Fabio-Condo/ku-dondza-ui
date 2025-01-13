@@ -20,10 +20,6 @@ export class ExamesService {
       .set('page', filtro.pagina)
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
-
-      //if (filtro.sort) {
-      //  params = params.set('employeeOrderBy', filter.sort);
-      //}
   
       if (filtro.searchParam) {
         params = params.set('searchParam', filtro.searchParam);

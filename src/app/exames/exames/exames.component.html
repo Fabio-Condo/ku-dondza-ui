@@ -46,7 +46,7 @@
                 <p class="details">Ano: <span class="text-muted">{{ exam.date | date:'yyyy' }}</span></p>
                 <p class="details">Tipo: <span class="text-muted">{{ getTypeValue(exam.examType) }}</span></p>
                 <p class="details">Instituição: <span class="text-muted">{{ exam.institution.name }}</span></p>
-                <p *ngIf="exam.description" class="details">descrição: <span class="text-muted">{{ exam.description }}</span></p>
+                <p *ngIf="exam.description" class="details">Descrição: <span class="text-muted">{{ exam.description }}</span></p>
                 <p *ngIf="!exam.showLoadingDownload && isAdmin" class="details">
                   <strong>{{exam.totalDownloadNumber}}</strong> downloads</p>
                 <p *ngIf="exam.showLoadingDownload" class="details"

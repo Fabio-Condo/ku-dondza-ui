@@ -58,24 +58,12 @@ export class QuizService {
     return this.http.post<Quiz>(this.baseUrl, quiz, {});
   }
 
-  update(quiz: Quiz): Observable<Quiz> {
-    return this.http.put<Quiz>(`${this.baseUrl}/${quiz.id}`, quiz, {});
-  }
-
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }
 
   getTotal(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/total`, {});
-  }
-
-  addQuestionToQuiz(quizId: number, questionId: number): Observable<Quiz> {
-    return this.http.post<Quiz>(`${this.baseUrl}/${quizId}/questions/${questionId}`, {});
-  }
-
-  removeQuestionFromQuiz(quizId: number, questionId: number): Observable<Quiz> {
-    return this.http.delete<Quiz>(`${this.baseUrl}/${quizId}/questions/${questionId}`);
   }
 
   getQuestionsByQuizId(quizId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {

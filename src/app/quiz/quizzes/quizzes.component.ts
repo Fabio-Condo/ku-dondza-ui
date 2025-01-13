@@ -27,7 +27,6 @@ export class QuizzesComponent implements OnInit {
   currentPage: number = 1;
   quizzes: Quiz[] = [];
   quiz: Quiz = new Quiz;
-  displayModalSave: boolean = false;
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
@@ -72,46 +71,6 @@ export class QuizzesComponent implements OnInit {
 
   get editing() {
     return Boolean(this.quiz.id);
-  }
-
-  save(quizForm: NgForm) {
-    if (this.editing) {
-      this.update(quizForm)
-    } else {
-      this.addNew(quizForm)
-    }
-  }
-
-  addNew(quizForm: NgForm) {
-    this.showLoading = true;
-    this.quizService.add(this.quiz).subscribe(
-      (quiz) => {
-        this.quiz = quiz;
-        this.showLoading = false;
-        this.getQuizzes();
-        this.messageService.add({ severity: 'success', detail: 'Quiz added successfully' });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  update(quizForm: NgForm) {
-    this.showLoading = true;
-    this.quizService.update(this.quiz).subscribe(
-      (quiz) => {
-        this.quiz = quiz;
-        this.showLoading = false;
-        this.getQuizzes();
-        this.messageService.add({ severity: 'success', detail: 'Quiz updated successfully!' });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    )
   }
 
   getQuizzes(page: number = 0): void {
@@ -169,17 +128,6 @@ export class QuizzesComponent implements OnInit {
     quiz.isAdminMenuOpen = false;
   }
 
-  removeQuestionFromQuiz(question: Question) {
-    this.quizService.removeQuestionFromQuiz(this.selectedQuiz.id, question.id).subscribe(
-      () => {
-        this.selectedQuiz.questions = this.selectedQuiz.questions.filter(quest => quest.id !== question.id);
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
   countQuestionsByQuizId(quiz: Quiz) {
     this.showLoading = true;
     this.quizService.countQuestionsByQuizId(quiz.id,).subscribe(
@@ -192,17 +140,6 @@ export class QuizzesComponent implements OnInit {
         this.showLoading = false;
       }
     );
-  }
-
-  onUpdateQuiz(quiz: Quiz): void {
-    this.quiz = quiz
-    this.quiz.id = quiz.id
-    this.displayModalSave = true;
-  }
-
-  onAddNewQuiz(): void {
-    this.quiz = new Quiz();
-    this.displayModalSave = true;
   }
 
   excluir(quiz: Quiz) {

@@ -175,24 +175,6 @@ export class QuizzQuestionsComponent implements OnInit {
     this.currentQuestionIndex = 0; // Começa na primeira questão
   }
 
-  // Método para calcular os resultados finais
-  calculateFinalResults() {
-    this.result.correctAnswers = 0;
-    this.result.incorrectAnswers = 0;
-
-    this.questions.forEach(question => {
-      const userAnswer = this.userAnswers.find(answer => answer.questionId === question.id);
-      if (userAnswer) {
-        const isCorrect = question.answers.some(answer => answer.id === userAnswer.answerId && answer.correct);
-        if (isCorrect) {
-          this.result.correctAnswers++;
-        } else {
-          this.result.incorrectAnswers++;
-        }
-      }
-    });
-  }
-
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

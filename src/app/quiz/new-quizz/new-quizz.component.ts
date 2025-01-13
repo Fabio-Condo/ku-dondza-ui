@@ -73,11 +73,6 @@ export class NewQuizzComponent implements OnInit {
     this.currentQuestionIndex = 0; // Começa na primeira questão
   }
 
-  set(){
-    this.selectedSubject.id
-    console.log(this.selectedSubject.id);
-  }
-
   getById(id: number) {
     this.showGetSubjectLoading = true;
     this.subjectsService.getById(id).subscribe(
@@ -115,7 +110,23 @@ export class NewQuizzComponent implements OnInit {
     this.questionService.getRandomQuestionsBySubjectId(subjectId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
         this.questions  = dados.content;
+        this.quiz.questions = dados.content;
         this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  saveQuiz(quiz: Quiz) {
+    this.showLoading = true;
+    this.quizService.add(this.quiz).subscribe(
+      (quiz) => {
+        //this.quiz = quiz;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Quiz added successfully' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -151,6 +162,8 @@ export class NewQuizzComponent implements OnInit {
         }
       }
     });
+
+    this.saveQuiz(this.quiz);
   }
 
   captureUserAnswer(questionId: number, answerId: number) {
@@ -169,7 +182,7 @@ export class NewQuizzComponent implements OnInit {
 
   showFinalResults() {
     this.showFinalScreen = true; 
-    this.calculateFinalResults(); 
+    this.submitAnswers(); 
   }
   
   reviewQuestions() {
@@ -188,24 +201,6 @@ export class NewQuizzComponent implements OnInit {
     this.showCorrection = !this.showCorrection;
     this.currentQuestionIndex = 0; // Volta para a primeira questão
     this.showFinalScreen = false; // Oculta a tela final
-  }
-
-  // Método para calcular os resultados finais
-  calculateFinalResults() {
-    this.result.correctAnswers = 0;
-    this.result.incorrectAnswers = 0;
-
-    this.questions.forEach(question => {
-      const userAnswer = this.userAnswers.find(answer => answer.questionId === question.id);
-      if (userAnswer) {
-        const isCorrect = question.answers.some(answer => answer.id === userAnswer.answerId && answer.correct);
-        if (isCorrect) {
-          this.result.correctAnswers++;
-        } else {
-          this.result.incorrectAnswers++;
-        }
-      }
-    });
   }
 
   private sendErrorNotification(message: string): void {

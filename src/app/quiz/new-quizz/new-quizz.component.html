@@ -15,11 +15,16 @@
         </select>
       </div>
 
+      <div class="form-group">
+        <label for="title">Descrição</label>
+        <input type="title" name="title" ngModel #title="ngModel" minlength="1" [(ngModel)]="quiz.title">
+      </div>
+
       <div>
         <span style="font-weight: bold" *ngIf="showLoading  || showGetSubjectLoading">Gerrando...</span>
       </div>
 
-      <button class="start-button" (click)="startQuiz()" [disabled]="!selectedSubject.id || questions.length === 0 || showLoading || showGetSubjectLoading">Começar Quiz</button>
+      <button class="start-button" (click)="startQuiz()" [disabled]="!selectedSubject.id || !quiz.title || questions.length === 0 || showLoading || showGetSubjectLoading">Começar Quiz</button>
     </div>
   
     <!-- Tela do quiz (questões) -->

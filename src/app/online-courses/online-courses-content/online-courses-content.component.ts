@@ -269,7 +269,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         //this.course = response;
         this.messageService.add({ severity: 'success', detail: 'Curso alterado com sucesso!' });
       },
-      (errorResponse: HttpErrorResponse) => {
+      (errorResponse: HttpErrorResponse) => { 
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
