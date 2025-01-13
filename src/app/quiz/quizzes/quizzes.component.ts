@@ -36,7 +36,6 @@ export class QuizzesComponent implements OnInit {
 
   loggedUser: User = new User;
   
-
   @ViewChild('table') grid: any;
 
   filter: QuizFilter = {

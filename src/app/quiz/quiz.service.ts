@@ -54,9 +54,14 @@ export class QuizService {
     return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, {});
   }
 
-  saveQuiz(quiz: Quiz, questionIds: number[]): Observable<Quiz> {
-    return this.http.post<Quiz>(`${this.baseUrl}?questionIds=${questionIds.join(',')}`, quiz, {});
-  }
+  saveQuiz(quiz: Quiz, questionIds: number[], userAnswerIds: number[]): Observable<Quiz> {
+
+    const params = new HttpParams()
+        .set('questionIds', questionIds.join(','))
+        .set('userAnswerIds', userAnswerIds.join(','));
+
+    return this.http.post<Quiz>(`${this.baseUrl}`, quiz, { params });
+}
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});

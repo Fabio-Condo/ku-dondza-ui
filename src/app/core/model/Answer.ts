@@ -4,7 +4,7 @@ export class Answer {
     id?: number;
     text?: string;
     correct?: boolean;
-    //question = new Question();
+    question = new Question();
 
     constructor(id?: number, text?: string, correct?: boolean) {
         this.id = id;

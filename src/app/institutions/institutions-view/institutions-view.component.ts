@@ -60,23 +60,6 @@ export class InstitutionsViewComponent implements OnInit {
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
   }
-
-  instituicao = {
-    nome: 'Universidade Exemplo',
-    descricao:
-      'Uma das melhores instituições do país, oferecendo uma ampla gama de cursos e oportunidades.',
-    website: 'https://www.universidadeexemplo.com',
-    emblema: 'assets/emblema-universidade.png', // Caminho local ou URL externa
-    cursos: [
-      { nome: 'Engenharia de Software', duracao: '4 anos' },
-      { nome: 'Ciência da Computação', duracao: '4 anos' },
-      { nome: 'Administração de Empresas', duracao: '3 anos' },
-    ],
-  };
-
-  abrirWebsite() {
-    window.open(this.instituicao.website, '_blank');
-  }
   
   getInstitutionByInstitutionId(id: string) {
     this.institutionService.getInstitutionByInstitutionId(id).subscribe(

@@ -36,6 +36,7 @@ export class QuizzQuestionsComponent implements OnInit {
   showStartScreen: boolean = true;
   //showFinalScreen: boolean = false;
 
+  imagePath = './assets/images/funcao do grau 2.png';
 
   @ViewChild('tabela') grid: any;
 

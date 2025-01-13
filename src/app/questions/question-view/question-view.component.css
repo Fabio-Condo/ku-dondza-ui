@@ -1,5 +1,4 @@
 :root {
-    --color-primary: #6c5ce7; /* Roxo vibrante */
     --color-secondary: #00b894; /* Verde fresco */
     --color-text: #2d3436; /* Texto escuro */
     --color-background: #ffffff; /* Fundo branco */
@@ -28,18 +27,21 @@ body {
 
 .question-card {
     background-color: var(--color-background);
-    border-radius: 16px;
-    box-shadow: 0 8px 24px var(--color-shadow);
+    border-radius: 7px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    border: 1px solid #dcdcdc;
     padding: 32px;
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
+    margin-top: 70px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .question-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    /*box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);*/
 }
 
 .question-header {
@@ -49,16 +51,15 @@ body {
 }
 
 .subject-name {
-    font-size: 28px;
+    font-size: 22px;
     color: var(--color-primary);
     margin: 0;
     font-weight: 700;
 }
 
 .topic-name {
-    font-size: 16px;
+    font-size: 13px;
     color: var(--color-text);
-    margin: 8px 0 0;
     font-weight: 400;
     opacity: 0.8;
 }
@@ -74,12 +75,19 @@ body {
     margin: 0 0 20px;
 }
 
+.question-title {
+    font-size: 20px;
+    color: var(--color-black);
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+
 .question-image {
-    max-width: 80%; /* Limita a largura da imagem a 80% do contêiner */
+    max-width: 60%; /* Limita a largura da imagem a 80% do contêiner */
     height: auto; /* Mantém a proporção da imagem */
-    border-radius: 12px;
+    border-radius: 7px;
     margin-top: 16px;
-    box-shadow: 0 4px 12px var(--color-shadow); /* Sombra fixa */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
     display: block; /* Garante que a imagem não tenha espaço extra abaixo */
     margin-left: auto; /* Centraliza a imagem horizontalmente */
     margin-right: auto;
@@ -89,7 +97,6 @@ body {
 /* Remove qualquer efeito de hover na imagem */
 .question-image:hover {
     transform: none; /* Remove transformações */
-    box-shadow: 0 4px 12px var(--color-shadow); /* Mantém a sombra fixa */
 }
 
 .answer-options {
@@ -98,7 +105,7 @@ body {
 
 .options-title {
     font-size: 20px;
-    color: var(--color-primary);
+    color: var(--color-black);
     margin: 0 0 20px;
     font-weight: 600;
 }

@@ -23,10 +23,17 @@
 
     <div *ngIf="currentQuestionIndex < questions.length">
       <div class="question-card">
+        <!--
         <img *ngIf="questions[currentQuestionIndex].urlFile" 
              src="{{ questions[currentQuestionIndex].urlFile }}" 
              alt="Gráfico de funções" 
              class="question-graph">
+        -->     
+        <img *ngIf="imagePath" 
+             src="{{ imagePath }}" 
+             alt="Gráfico de funções" 
+             class="question-graph">
+             imagePath
         <span style="font-size: 0.8rem;">{{ questions[currentQuestionIndex].topic.subject.name }}</span>
         <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
 

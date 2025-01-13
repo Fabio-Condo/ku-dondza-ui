@@ -27,7 +27,6 @@ export class NewQuizzComponent implements OnInit {
   isAdmin: boolean = true;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-  answers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
 
   questionIds: number[] = []; // IDs das questões a serem associadas
@@ -133,16 +132,24 @@ export class NewQuizzComponent implements OnInit {
   }
 
   saveQuiz() {
+    // 1. Mapear os IDs das questões
     this.questionIds = this.quiz.questions.map(question => question.id);
+
+    // 2. Mapear os IDs das respostas capturadas (apenas answerId)
+    const userAnswerIds = this.userAnswers.map(answer => answer.answerId);
+
+    // 3. Atribuir o usuário logado ao quiz
     this.quiz.user = this.loggedUser;
-    this.quizService.saveQuiz(this.quiz, this.questionIds).subscribe(
-      (response) => {
-        this.quiz = response
-        this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!', });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
+
+    // 4. Enviar o quiz, os IDs das questões e os IDs das respostas capturadas para o servidor
+    this.quizService.saveQuiz(this.quiz, this.questionIds, userAnswerIds).subscribe(
+        (response) => {
+            this.quiz = response;
+            this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!' });
+        },
+        (errorResponse: HttpErrorResponse) => {
+            this.sendErrorNotification(errorResponse.error.message);
+        }
     );
   }
 

@@ -13,6 +13,7 @@ import { Question } from 'src/app/core/model/Question';
 export class QuestionViewComponent implements OnInit {
 
   question: Question = new Question();
+  imagePath = './assets/images/funcao do grau 2.png';
 
   constructor(
     private questionService: QuestionService, 
