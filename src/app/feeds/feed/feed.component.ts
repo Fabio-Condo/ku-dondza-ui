@@ -21,7 +21,7 @@ import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { CommentLikeService } from 'src/app/core/comment-likes/comment-like-service.service';
 import { PollOption } from 'src/app/core/model/PollOption';
-import { PostOptionService } from 'src/app/PostOption/post-option.service';
+import { PostOptionService } from 'src/app/core/PostOption/post-option.service';
 
 @Component({
   selector: 'app-feed',

@@ -9,7 +9,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
 import { QuestionService } from 'src/app/questions/question.service';
-import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';

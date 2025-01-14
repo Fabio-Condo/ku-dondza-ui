@@ -12,6 +12,7 @@ import { OnlineCourse } from '../core/model/Online-course';
 import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
 import { Group } from '../core/model/Group';
 import { GroupFilter } from '../core/interface/GroupFilter';
+import { Blog } from '../core/model/Blog';
 
 
 @Injectable({ providedIn: 'root' })
@@ -139,6 +140,28 @@ export class UserService {
 
   changeStatusNotLocked(username: string, notLocked: boolean): Observable<void> {
     return this.http.put<void>(`${this.host}/${username}/notLocked-user`, notLocked, {});
+  }
+
+  getSavedBlogs(userId: number, filtro: IPostFilter): Observable<IApiResponse<Blog>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
+
+    return this.http.get<IApiResponse<Blog>>(`${this.host}/${userId}/savedBlogs`, { params });
+  }
+
+  addBlogToSavedBlogs(userId: number, blogId: number): Observable<User> {
+    return this.http.post<User>(`${this.host}/${userId}/savedBlogs/${blogId}`, {});
+  }
+
+  removeBlogFromSavedBlogs(userId: number, blogId: number): Observable<User> {
+    return this.http.delete<User>(`${this.host}/${userId}/savedBlogs/${blogId}`);
+  }
+
+  checkIfUserSavedBlog(userId: number, blogId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/${userId}/savedBlogs/contains/${blogId}`);
   }
 
   addPostToSavedPosts(userId: number, postId: number): Observable<User> {

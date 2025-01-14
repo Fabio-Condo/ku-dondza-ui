@@ -27,7 +27,7 @@
             </p>
             <p>
                 <strong>Interesses:</strong>
-                <span *ngFor="let interest of user.interests"> {{ interest.description }}, </span>
+                <span *ngFor="let interest of user.subjectsInterests"> {{ interest.name }}, </span>
                 <a (click)="onShowInterests()" *ngIf="currentUser.userId == user.userId"
                     style="margin-left: 10px; color: var(--color-primary); cursor: pointer;">editar</a>
                 <a (click)="onShowSelectInterests()" *ngIf="currentUser.userId == user.userId"
@@ -79,7 +79,7 @@
 
 
 <!-- Conteúdo Principal -->
-<div class="main-content">
+<div class="main-content" *ngIf="showing">
 
     <!-- Lista de Posts -->
     <div class="posts-list">
@@ -284,8 +284,8 @@
         </div>
         <div class="interest-dialog-content">
             <ul>
-                <li *ngFor="let interest of user.interests">
-                    <span>{{interest.description}}</span>
+                <li *ngFor="let interest of user.subjectsInterests">
+                    <span>{{interest.name}}</span>
                 </li>
             </ul>
         </div>
@@ -301,9 +301,9 @@
 
         <div class="form-group">
             <label for="subject">Selecione o interesse</label>
-            <select id="subject" name="interest" [(ngModel)]="selectedInterest.id" name="institution" required>
+            <select id="subject" name="interest" [(ngModel)]="selectedInterest.id" name="interest" required>
                 <option value="" disabled selected>Selecione o interesse</option>
-                <option *ngFor="let interest of interests" [value]="interest.value">{{ interest.label }}
+                <option *ngFor="let interest of subjectsInterests" [value]="interest.value">{{ interest.label }}
                 </option>
             </select>
         </div>

@@ -10,7 +10,7 @@ import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { QuestionService } from 'src/app/questions/question.service';
-import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 

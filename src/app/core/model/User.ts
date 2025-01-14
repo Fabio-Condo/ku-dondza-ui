@@ -1,5 +1,5 @@
-import { Interest } from "./Interest";
 import { Post } from "./Post";
+import { Subject } from "./Subject";
 
 export class User {
   public id!: number;
@@ -19,7 +19,7 @@ export class User {
   public userType!: string;
   public role: string;
   public authorities: [];
-  public interests: Interest[] = [];
+  public subjectsInterests: Subject[] = [];
   public savedPosts: Post[] = [];
 
   public isFriend: boolean = false;

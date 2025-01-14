@@ -6,7 +6,7 @@ import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
-import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 
 @Component({
   selector: 'app-exames',

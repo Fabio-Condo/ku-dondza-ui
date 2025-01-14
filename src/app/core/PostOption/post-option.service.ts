@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { IUserFilter } from '../core/interface/IUserFilter';
-import { User } from '../core/model/User';
-import { PollOption } from '../core/model/PollOption';
+import { IUserFilter } from '../interface/IUserFilter';
+import { User } from '../model/User';
+import { PollOption } from '../model/PollOption';
 
 
 @Injectable({ providedIn: 'root' })

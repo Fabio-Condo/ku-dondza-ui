@@ -11,8 +11,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Post } from 'src/app/core/model/Post';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { IPostFilter } from 'src/app/core/interface/IPostFilter';
-import { InterestService } from 'src/app/interest/interest.service';
-import { Interest } from 'src/app/core/model/Interest';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { CommentService } from 'src/app/core/commets/commentService .service';
 import { LikeService } from 'src/app/core/likes/like.service';
@@ -22,6 +20,8 @@ import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
 import { CourseService } from 'src/app/courses/courseService.service';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
 import { Course } from 'src/app/core/model/Course';
+import { SubjectsService } from 'src/app/core/subjects/subjects.service';
+import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -33,6 +33,8 @@ export class UserProfileViewComponent implements OnInit {
   user: User = new User();
   currentUser: User = new User();
   displayModalSave: boolean = false;
+
+  showing: boolean = false; // for tests only
 
   fileToUpload!: File;
   coverFileToUpload!: File;
@@ -53,7 +55,7 @@ export class UserProfileViewComponent implements OnInit {
 
   extension: any;
 
-  interests: any[] = [];
+  subjectsInterests: any[] = [];
   showInterestsDialog: boolean = false;
   showSelectInterestsDialog: boolean = false;
 
@@ -62,7 +64,7 @@ export class UserProfileViewComponent implements OnInit {
   showConfirmDialog: boolean = false;
   showConfirmRemovePostDialog: boolean = false;
 
-  selectedInterest: Interest = new Interest();
+  selectedInterest: Subject = new Subject();
 
   selectedPost = new Post();
 
@@ -106,7 +108,7 @@ export class UserProfileViewComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private feedsService: FeedsService,
-    private interestService: InterestService,
+    private subjectsService: SubjectsService,
     private userCourseService: UserCourseService
   ) { }
 
@@ -116,7 +118,7 @@ export class UserProfileViewComponent implements OnInit {
     if (userId) {
       this.getUserByUserId(userId);
     }
-    this.getInterests();
+    this.getSubjectsInterests();
     this.getInstitutions();
     this.scrollToTop();
   }
@@ -258,12 +260,12 @@ export class UserProfileViewComponent implements OnInit {
     this.closeConfirmDialog();
   }
 
-  getInterests() {
-    return this.interestService.getAll().subscribe(
+  getSubjectsInterests() {
+    return this.subjectsService.findAll().subscribe(
       dados => {
-        this.interests = dados.map(dado => {
+        this.subjectsInterests = dados.map(dado => {
           return {
-            label: dado.description,
+            label: dado.name,
             value: dado.id
           }
         })

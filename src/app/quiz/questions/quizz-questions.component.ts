@@ -8,6 +8,7 @@ import { Question } from 'src/app/core/model/Question';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
+import { AnswerService } from 'src/app/core/answers/answers.service';
 
 
 
@@ -23,11 +24,12 @@ export class QuizzQuestionsComponent implements OnInit {
   isAdmin: boolean = true;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-  answers: Array<Answer> = [];
+  selectedAnswers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
 
   // Armazenar as respostas do usuário
-  userAnswers: { questionId: number; answerId: number }[] = [];
+  //userAnswers: { questionId: number; answerId: number }[] = [];
+  userAnswers: { questionId: number; answerId: number | null | undefined }[] = [];
   result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
   showCorrection: boolean = false;
 
@@ -48,6 +50,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   constructor(
     private quizService: QuizService,
+    private answerService: AnswerService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
@@ -58,6 +61,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (quizId) {
       this.getQuizByQuizId(quizId);
     }
+    this.getAnswers();
     this.scrollToTop();
     this.showCorrection = true;
   }
@@ -73,21 +77,42 @@ export class QuizzQuestionsComponent implements OnInit {
         this.getQuestionsByQuizId(this.quiz.id);
       },
       (errorResponse: HttpErrorResponse) => {
-        if(errorResponse.status == 400){ // BAD_REQUEST
+        if (errorResponse.status == 400) { // BAD_REQUEST
           this.router.navigateByUrl('/pagina-nao-encontrada');
-        }else{
+        } else {
           this.sendErrorNotification(errorResponse.error.message);
-        } 
+        }
+      }
+    );
+  }
+
+  getAnswers() {
+    this.answerService.findAll().subscribe(
+      (response) => {
+        this.selectedAnswers = response;
+  
+        // Inicializa o userAnswers com as respostas já selecionadas (se houver)
+        this.userAnswers = this.questions.map(question => {
+          const selectedAnswer = this.selectedAnswers.find(answer => answer.id === question.id);
+          return {
+            questionId: question.id,
+            answerId: selectedAnswer ? selectedAnswer.id : null // Se não houver resposta selecionada, use null
+          };
+        });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     );
   }
 
   getQuestionsByQuizId(quizId: number): void {
     this.showLoading = true;
-    this.filtro.page = this.currentPage - 1; 
+    this.filtro.page = this.currentPage - 1;
     this.quizService.getQuestionsByQuizId(quizId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
-        this.questions  = dados.content;
+        this.questions = dados.content;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -109,29 +134,29 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
-  submitAnswers() {
-    this.result.correctAnswers = 0;
-    this.result.incorrectAnswers = 0;
+  //submitAnswers() {
+  //  this.result.correctAnswers = 0;
+  //  this.result.incorrectAnswers = 0;
 
-    this.questions.forEach(question => {
-      const userAnswer = this.userAnswers.find(answer => answer.questionId === question.id);
-      if (userAnswer) {
-        const isCorrect = question.answers.some(answer => answer.id === userAnswer.answerId && answer.correct);
-        if (isCorrect) {
-          this.result.correctAnswers++;
-        } else {
-          this.result.incorrectAnswers++;
-        }
-      }
-    });
+  //  this.questions.forEach(question => {
+  //    const userAnswer = this.userAnswers.find(answer => answer.questionId === question.id);
+  //    if (userAnswer) {
+  //      const isCorrect = question.answers.some(answer => answer.id === userAnswer.answerId && answer.correct);
+  //      if (isCorrect) {
+  //        this.result.correctAnswers++;
+  //      } else {
+  //        this.result.incorrectAnswers++;
+  //      }
+  //    }
+  //  });
 
-    this.displayResults();
-  }
+  //  this.displayResults();
+  //}
 
-  displayResults() {
-    const message = `Você acertou ${this.result.correctAnswers} resposta(s) e errou ${this.result.incorrectAnswers} resposta(s).`;
-    this.messageService.add({ severity: 'info', detail: message });
-  }
+  //displayResults() {
+  //  const message = `Você acertou ${this.result.correctAnswers} resposta(s) e errou ${this.result.incorrectAnswers} resposta(s).`;
+  //  this.messageService.add({ severity: 'info', detail: message });
+  //}
 
   captureUserAnswer(questionId: number, answerId: number) {
     const existingAnswerIndex = this.userAnswers.findIndex(answer => answer.questionId === questionId);
@@ -151,7 +176,7 @@ export class QuizzQuestionsComponent implements OnInit {
   //  this.showFinalScreen = true; 
   //  this.calculateFinalResults(); 
   //}
-  
+
   //reviewQuestions() {
   //  this.showFinalScreen = false; 
   //  this.currentQuestionIndex = 0; 
@@ -159,9 +184,9 @@ export class QuizzQuestionsComponent implements OnInit {
 
   restartQuiz() {
     //this.showFinalScreen = false; 
-    this.showStartScreen = true; 
-    this.userAnswers = []; 
-    this.currentQuestionIndex = 0; 
+    this.showStartScreen = true;
+    this.userAnswers = [];
+    this.currentQuestionIndex = 0;
   }
 
   toggleCorrection() {

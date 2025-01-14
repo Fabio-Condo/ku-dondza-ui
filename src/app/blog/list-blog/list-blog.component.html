@@ -1,0 +1,55 @@
+<div style="margin-top: 70px;">
+
+    <div>
+        <h1>Filtros</h1>
+        <div class="form-group">
+            <label for="subject">Disciplina</label>
+            <select id="subject" [(ngModel)]="filter.subject" name="subject" required>
+              <option value="" disabled selected>Selecione a disciplina</option>
+              <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+            </select>
+        </div>
+        <button>Filtrar</button>
+    </div>
+
+    <div *ngFor="let feed of feeds">
+        <img *ngIf="feed.urlFile" [src]="feed.urlFile" alt="Gráfico de funções" class="question-image">
+        <span>{{ feed.postDate }}</span>
+        <span>{{ feed.title }}</span>
+        <span>{{ feed.content }}</span>
+        <span>10 likes</span>
+
+        <a style="cursor: pointer;" (click)="toggleLike(feed)">
+            <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked" style="font-size: 1.1rem;"></i>
+            <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
+        </a>
+
+        <div>
+            <a *ngIf="feed.isSaved" (click)="onRemoveBlog(feed)" style="cursor: pointer;"><i
+                    class="pi pi-bookmark-fill"></i></a>
+            <a *ngIf="!feed.isSaved" (click)="addBlogToSavedBlogs(feed)" style="cursor: pointer;"><i
+                    class="pi pi-bookmark"></i></a>
+
+        </div>
+    </div>
+
+    <button (click)="loadMore()">buscar mais</button>
+
+</div>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover o post da sua lista ?</h4>
+            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="confirmDialog(selectedBlog)">Confirmar</button>
+            <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>
