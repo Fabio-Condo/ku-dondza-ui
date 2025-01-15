@@ -1,40 +1,60 @@
-<div style="margin-top: 70px;">
+<div class="blog-container">
+    <!-- Filtros -->
+    <!-- 
+    <div class="filters">
+      <h1>Filtros</h1>
+      <div class="form-group">
+        <label for="subject">Disciplina</label>
+        <select id="subject" [(ngModel)]="filter.subject" name="subject" required>
+          <option value="" disabled selected>Selecione a disciplina</option>
+          <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+        </select>
+      </div>
+      <button class="filter-button">Filtrar</button>
+    </div>
+    -->
 
-    <div>
-        <h1>Filtros</h1>
-        <div class="form-group">
-            <label for="subject">Disciplina</label>
-            <select id="subject" [(ngModel)]="filter.subject" name="subject" required>
-              <option value="" disabled selected>Selecione a disciplina</option>
-              <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
-            </select>
+    <!-- Lista de Posts -->
+    <div class="posts">
+        <div *ngFor="let feed of feeds" class="post-card">
+            <!-- Imagem no lado esquerdo -->
+            <div class="post-image">
+                <img *ngIf="imagePath" [src]="imagePath" alt="Gráfico de funções" />
+            </div>
+
+            <!-- Título e conteúdo no lado direito -->
+            <div class="post-content">
+                <span class="post-date">{{ feed.postDate }}</span>
+                <h2 class="post-title">{{ feed.title }}</h2>
+                <p class="post-text">{{ feed.content }} <a [routerLink]="['/blog', feed.blogId]">Saiba Mais</a></p>
+
+                <!-- Interações (like e salvar) -->
+                <div class="post-actions">
+                    <!-- Like Section -->
+                    <div class="like-section">
+                        <a (click)="toggleLike(feed)" class="like-button">
+                            <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked"></i>
+                            <i *ngIf="!feed.isLiked" class="pi pi-heart"></i>
+                            <span class="like-count">10</span>
+                        </a>
+                    </div>
+
+                    <!-- Save Section -->
+                    <div class="save-section">
+                        <a (click)="feed.isSaved ? onRemoveBlog(feed) : addBlogToSavedBlogs(feed)" class="save-button">
+                            <i *ngIf="feed.isSaved" class="pi pi-bookmark-fill"></i>
+                            <i *ngIf="!feed.isSaved" class="pi pi-bookmark"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button>Filtrar</button>
     </div>
 
-    <div *ngFor="let feed of feeds">
-        <img *ngIf="feed.urlFile" [src]="feed.urlFile" alt="Gráfico de funções" class="question-image">
-        <span>{{ feed.postDate }}</span>
-        <span>{{ feed.title }}</span>
-        <span>{{ feed.content }}</span>
-        <span>10 likes</span>
-
-        <a style="cursor: pointer;" (click)="toggleLike(feed)">
-            <i *ngIf="feed.isLiked" class="pi pi-heart-fill icon-liked" style="font-size: 1.1rem;"></i>
-            <i *ngIf="!feed.isLiked" class="pi pi-heart" style="font-size: 1.1rem;"></i>
-        </a>
-
-        <div>
-            <a *ngIf="feed.isSaved" (click)="onRemoveBlog(feed)" style="cursor: pointer;"><i
-                    class="pi pi-bookmark-fill"></i></a>
-            <a *ngIf="!feed.isSaved" (click)="addBlogToSavedBlogs(feed)" style="cursor: pointer;"><i
-                    class="pi pi-bookmark"></i></a>
-
-        </div>
+    <!-- Botão "Carregar mais" -->
+    <div class="load-more">
+        <button (click)="loadMore()" class="load-more-button">Carregar mais</button>
     </div>
-
-    <button (click)="loadMore()">buscar mais</button>
-
 </div>
 
 <!-- confirm dialog -->

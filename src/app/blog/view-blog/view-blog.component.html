@@ -1,1 +1,20 @@
-<p>view-blog works!</p>
+<div style="margin-top: 70px;">
+    <span>{{ blog.title }}</span>
+    <span>{{ blog.content }}</span>
+    <span>{{ blog.postDate }}</span>
+    <img *ngIf="blog.urlFile" [src]="blog.urlFile" alt="Gráfico de funções" />
+    <div class="like-section">
+        <a (click)="toggleLike(blog)" class="like-button">
+            <i *ngIf="blog.isLiked" class="pi pi-heart-fill icon-liked"></i>
+            <i *ngIf="!blog.isLiked" class="pi pi-heart"></i>
+            <span class="like-count">10</span>
+        </a>
+    </div>
+    <!-- Save Section -->
+    <div class="save-section">
+        <a (click)="blog.isSaved ? onRemoveBlog(blog) : addBlogToSavedBlogs(blog)" class="save-button">
+            <i *ngIf="blog.isSaved" class="pi pi-bookmark-fill"></i>
+            <i *ngIf="!blog.isSaved" class="pi pi-bookmark"></i>
+        </a>
+    </div>
+</div>

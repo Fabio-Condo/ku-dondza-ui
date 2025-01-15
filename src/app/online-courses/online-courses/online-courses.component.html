@@ -4,13 +4,9 @@
         <h1 class="title">Cursos online</h1>
     </div>
 
-    <p style="margin-top: 10px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
+    <p class="title-description">
         Descubra a diversidade de cursos disponíveis em Moçambique,
         incluindo detalhes como título do curso, descrição e a instituição que oferece.
-    </p>
-    <p style="margin-bottom: 20px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
-        Na Ku-DONDZA, ajudamos os estudantes a fazer escolhas
-        informadas.
     </p>
 
     <div class="flex">
@@ -51,7 +47,7 @@
                                 </div>
 
                                 <div class="content">
-                                    <p class="course-name">{{ course.name }}</p>
+                                    <p class="title">{{ course.name }}</p>
                                     <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span></p>
                                     <p class="details" *ngIf="!course.isSubscribed"> Não Inscrito</p>
                                     <p class="details" *ngIf="course.isSubscribed"> Inscrito</p>

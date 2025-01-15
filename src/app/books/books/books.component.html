@@ -4,12 +4,9 @@
       <h1 class="title">Livros</h1>
     </div>
   
-    <p style="margin-top: 10px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
+    <p class="title-description">
       Explore a variedade de livros de admissão das instituições de ensino de Moçambique, abrangendo uma ampla
       gama de disciplinas e níveis educacionais.
-    </p>
-    <p style="margin-bottom: 20px; font-size: 12px; color: black; text-decoration: none; font-weight: 300; display: block; transition: all 0.3s ease">
-      Na Ku-DONDZA, trabalhamos duro para obter o melhor resultado.
     </p>
   
     <div class="flex">
@@ -42,7 +39,7 @@
             <div class="card">
               <div class="card-content">
                 <div class="content">
-                  <p class="book-name">{{book.name}}</p>
+                  <p class="title">{{book.name}}</p>
                   <p *ngIf="book.subject.name" class="details">Disciplina: <span class="text-muted">{{ book.subject.name }}</span></p>
                   <p *ngIf="book.description" class="details">Descrição: <span class="text-muted">{{ book.description }}</span></p>
                   <p *ngIf="!book.showLoadingDownload && isAdmin" class="details">

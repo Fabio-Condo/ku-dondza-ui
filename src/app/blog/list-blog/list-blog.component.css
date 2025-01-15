@@ -1,0 +1,209 @@
+/* Estilos gerais */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.blog-container {
+    max-width: 1200px;
+    margin: 70px auto;
+    padding: 20px;
+}
+
+/* Filtros */
+.filters {
+    margin-bottom: 40px;
+}
+
+.filters h1 {
+    font-size: 24px;
+    color: var(--color-black);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.filter-button {
+    padding: 10px 20px;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 300ms ease;
+}
+
+.filter-button:hover {
+    opacity: 0.8;
+}
+
+/* Lista de Posts */
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-card {
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.post-image {
+    flex: 1;
+    max-width: 300px;
+}
+
+.post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-content {
+    flex: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.post-date {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.post-title {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.post-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Like Section */
+.like-section {
+    display: flex;
+    align-items: center;
+}
+
+.like-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--color-primary);
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.like-button:hover {
+    opacity: 0.8;
+}
+
+.like-button .pi {
+    margin-right: 5px;
+}
+
+.like-count {
+    font-size: 14px;
+    color: #555;
+}
+
+.icon-liked {
+    color: #ff4757;
+}
+
+/* Save Section */
+.save-section {
+    display: flex;
+    align-items: center;
+}
+
+.save-button {
+    cursor: pointer;
+    color: var(--color-black);
+    font-size: 16px;
+}
+
+.save-button:hover {
+    opacity: 0.8;
+}
+
+/* Botão "Carregar mais" */
+.load-more {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.load-more-button {
+    background-color: var(--color-primary);
+    color: #fff;
+    display: inline-block;
+    padding: var(--btn-padding);
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.load-more-button:hover {
+    opacity: 0.8;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .post-card {
+        flex-direction: column;
+    }
+
+    .post-image {
+        max-width: 100%;
+        height: 200px;
+    }
+
+    .post-content {
+        padding: 15px;
+    }
+}

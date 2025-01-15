@@ -2,6 +2,7 @@ import { Subject } from "./Subject";
 
 export class Blog {
     id!: number;
+    blogId!: string;
     title!: string;
     content!: string;
     postDate!: Date;

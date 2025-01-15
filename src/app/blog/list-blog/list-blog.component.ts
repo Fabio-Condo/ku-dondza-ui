@@ -7,7 +7,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { BlogLikeService } from 'src/app/core/blog-likes/blog-like.service';
+import { BlogLikeService } from 'src/app/core/likes copy/blog-like.service';
 import { UserService } from 'src/app/users/user.service';
 import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 
@@ -27,11 +27,12 @@ export class ListBlogComponent implements OnInit {
   loggedUser: User = new User;
 
   subjects: any[] = [];
+  imagePath = './assets/images/funcao do grau 2.png';
 
 
   filter: BlogFilter = {
     page: -1,
-    itemsPerPage: 5,
+    itemsPerPage: 10,
     sort: 'id,desc',
   }
 
@@ -48,6 +49,11 @@ export class ListBlogComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadMore();
     this.carregarDisciplinas();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   loadMore(): void {

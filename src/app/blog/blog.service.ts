@@ -60,7 +60,7 @@ export class BlogService {
     return this.http.get<Blog>(`${this.host}/${id}`, {});
   }
 
-  getInstitutionByInstitutionId(blogId: string): Observable<Blog> {
+  getBlogByBlogId(blogId: string): Observable<Blog> {
     return this.http.get<Blog>(`${this.host}/find-by-blogId/${blogId}`, {});
   }
 

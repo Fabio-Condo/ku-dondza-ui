@@ -16,8 +16,8 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'blog/:id', 
-    component: ViewBlogComponent,
+    path: 'blogs/new', 
+    component: CreateBlogComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
@@ -25,14 +25,14 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'blog/create-new', 
-    component: CreateBlogComponent,
+    path: 'blog/:id', 
+    component: ViewBlogComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
     //} 
-  }
+  },  
 ];
 
 @NgModule({
