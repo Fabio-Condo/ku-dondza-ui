@@ -29,8 +29,8 @@ export class InstitutionsViewComponent implements OnInit {
   @ViewChild('tabela') grid: any;
 
   filtro: CourseFilter = {
-    pagina: 0,
-    itensPorPagina: 10,
+    pagina: -1,
+    itensPorPagina: 2,
     ordenamento: 'id,asc',
     name: ''
   }
@@ -40,7 +40,7 @@ export class InstitutionsViewComponent implements OnInit {
     private institutionService: InstitutionService,
     private courseService: CourseService,
     private messageService: MessageService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
   ) { }
 
@@ -60,35 +60,34 @@ export class InstitutionsViewComponent implements OnInit {
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
   }
-  
+
   getInstitutionByInstitutionId(id: string) {
     this.institutionService.getInstitutionByInstitutionId(id).subscribe(
       (response) => {
         this.institution = response;
-        this.findCoursesByInstitutionId(0, this.institution.id);
+        this.loadMoreCourses(this.institution.id)
       },
       (errorResponse: HttpErrorResponse) => {
-        if(errorResponse.status == 400){ // BAD_REQUEST
+        if (errorResponse.status == 400) { // BAD_REQUEST
           this.router.navigateByUrl('/pagina-nao-encontrada');
-        }else{
+        } else {
           this.sendErrorNotification(errorResponse.error.message);
-        } 
+        }
       }
     );
   }
 
-  findCoursesByInstitutionId(pagina: number = 0, institutionId: number): void {
+  loadMoreCourses(institutionId: number): void {
     this.showLoading = true;
-    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.courseService.findByInstitutionId(institutionId, this.filtro).subscribe(
-      (dados: IApiResponse<Course>) => {
-        this.courses = dados.content
-        this.totalRegistros = dados.totalElements
+    this.filtro.pagina++;
+    this.courseService.findByInstitutionId(institutionId,this.filtro).subscribe(
+      (data: IApiResponse<Course>) => {
+        this.totalRegistros = data.totalElements;
         this.showLoading = false;
+        this.courses = [...this.courses, ...data.content]; // Adicionar cada vez que se faz o load
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -112,7 +111,7 @@ export class InstitutionsViewComponent implements OnInit {
     }
     return '';
   }
-  
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
