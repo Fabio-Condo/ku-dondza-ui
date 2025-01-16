@@ -1,104 +1,109 @@
 <div class="container" style="margin-top: 70px;">
-    <!-- Tela inicial -->
-    <div *ngIf="showStartScreen" class="start-screen">
-      <h1 class="quiz-title">{{ quiz.title }}</h1>
-      <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-      <p class="quiz-description">
-        Este quiz contém {{ questions.length }} questões. Você terá a oportunidade de testar seus conhecimentos sobre o tema.
-      </p>
+  <!-- Tela inicial -->
+  <div *ngIf="showStartScreen" class="start-screen">
+    <h1 class="quiz-title">{{ quiz.title }}</h1>
+    <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+    <p class="quiz-description">
+      Este quiz contém {{ questions.length }} questões. Você terá a oportunidade de testar seus conhecimentos sobre o tema.
+    </p>
 
-      <div class="form-group">
-        <label for="subject">Disciplina</label>
-        <select id="subject" [(ngModel)]="quiz.subject.id" (change)="getSubjectById(quiz.subject.id)" [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
-          <option value="" disabled selected>Selecione a disciplina</option>
-          <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="title">Descrição</label>
-        <input type="title" name="title" ngModel #title="ngModel" minlength="1" [(ngModel)]="quiz.title">
-      </div>
-
-      <div>
-        <span style="font-weight: bold" *ngIf="showLoading  || showGetSubjectLoading">Gerrando...</span>
-      </div>
-
-      <button class="start-button" (click)="startQuiz()" [disabled]="!selectedSubject.id || !quiz.title || questions.length === 0 || showLoading || showGetSubjectLoading">Começar Quiz</button>
+    <div class="form-group">
+      <label for="subject">Disciplina</label>
+      <select id="subject" [(ngModel)]="quiz.subject.id" (change)="getSubjectById(quiz.subject.id)" [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
+        <option value="" disabled selected>Selecione a disciplina</option>
+        <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+      </select>
     </div>
-  
-    <!-- Tela do quiz (questões) -->
-    <div *ngIf="!showStartScreen && !showFinalScreen">
-      <h1 class="quiz-title">{{ quiz.title }}</h1>
-      <p class="quiz-sub-title">{{ selectedSubject.name }}</p>
-  
-      <div *ngIf="currentQuestionIndex < questions.length">
-        <div class="question-card">
-          <img *ngIf="questions[currentQuestionIndex].urlFile" 
-               src="{{ questions[currentQuestionIndex].urlFile }}" 
-               alt="Gráfico de funções" 
-               class="question-graph">
-          <span style="font-size: 0.8rem;">{{ questions[currentQuestionIndex].topic.subject.name }}</span>
-          <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
-  
-          <div class="answer-options">
-            <label *ngFor="let answer of questions[currentQuestionIndex].answers" 
-                   [ngClass]="{
-                      'correct-answer': showCorrection && answer.correct,
-                      'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
-                   }">
-              <input 
-                  type="radio" 
-                  name="question-{{ questions[currentQuestionIndex].id }}" 
-                  [value]="answer.id" 
-                  [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)" 
-                  (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)" 
-                  [disabled]="showCorrection" />
-              <span>
-                  {{ answer.text }}
-              </span>
-            </label>
-          </div>
+
+    <div class="form-group">
+      <label for="title">Descrição</label>
+      <input type="title" name="title" ngModel #title="ngModel" minlength="1" [(ngModel)]="quiz.title">
+    </div>
+
+    <div>
+      <span style="font-weight: bold" *ngIf="showLoading || showGetSubjectLoading">Gerrando...</span>
+    </div>
+
+    <button class="start-button" (click)="startQuiz()" [disabled]="!selectedSubject.id || !quiz.title || questions.length === 0 || showLoading || showGetSubjectLoading">Começar Quiz</button>
+  </div>
+
+  <!-- Tela do quiz (questões) -->
+  <div *ngIf="!showStartScreen && !showFinalScreen">
+    <h1 class="quiz-title">{{ quiz.title }}</h1>
+    <p class="quiz-sub-title">{{ selectedSubject.name }}</p>
+
+    <div *ngIf="currentQuestionIndex < questions.length">
+      <div class="question-card">
+        <img *ngIf="questions[currentQuestionIndex].urlFile" 
+             src="{{ questions[currentQuestionIndex].urlFile }}" 
+             alt="Gráfico de funções" 
+             class="question-graph">
+        <span style="font-size: 0.8rem;">{{ questions[currentQuestionIndex].topic.subject.name }}</span>
+        <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
+
+        <div class="answer-options">
+          <label *ngFor="let answer of questions[currentQuestionIndex].answers" 
+                 [ngClass]="{
+                    'correct-answer': showCorrection && answer.correct,
+                    'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
+                 }">
+            <input 
+                type="radio" 
+                name="question-{{ questions[currentQuestionIndex].id }}" 
+                [value]="answer.id" 
+                [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)" 
+                (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)" 
+                [disabled]="showCorrection" />
+            <span>
+                {{ answer.text }}
+            </span>
+          </label>
         </div>
-  
-        <div class="navigation-buttons text-center">
-          <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
-              <i class="pi pi-chevron-left"></i> Anterior
-          </button>
-          <button class="pagination-button" (click)="goToNextQuestion()" 
-                  [disabled]="currentQuestionIndex === questions.length - 1">
-              Próxima <i class="pi pi-chevron-right"></i>
-          </button>
-  
-          <!-- Botão para submeter respostas -->
-          <button class="pagination-button" (click)="submitAnswers(); showFinalScreen = true" 
-              *ngIf="currentQuestionIndex === questions.length - 1">
-              Submeter <i style="margin-left: 0.5rem;" class="pi pi-arrow-up"></i>
-          </button>
-        </div>
+
+        <!-- Botão para marcar como não respondida -->
+        <button class="btn" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)" [disabled]="showCorrection">
+          Não Responder
+        </button>
       </div>
-  
-      <div *ngIf="showLoading" class="loading-indicator">
-        Carregando...
+
+      <div class="navigation-buttons text-center">
+        <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
+            <i class="pi pi-chevron-left"></i> Anterior
+        </button>
+        <button class="pagination-button" (click)="goToNextQuestion()" 
+                [disabled]="currentQuestionIndex === questions.length - 1">
+            Próxima <i class="pi pi-chevron-right"></i>
+        </button>
+
+        <!-- Botão para submeter respostas -->
+        <button class="pagination-button" (click)="submitAnswers(); showFinalScreen = true" 
+            *ngIf="currentQuestionIndex === questions.length - 1">
+            Submeter <i style="margin-left: 0.5rem;" class="pi pi-arrow-up"></i>
+        </button>
       </div>
     </div>
-  
-    <!-- Tela final de resultados -->
-    <div *ngIf="showFinalScreen" class="final-screen">
-      <h1 class="quiz-title">Resultados do Quiz</h1>
-      <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-  
-      <div class="results-summary">
-        <p>Você respondeu {{ questions.length }} questões.</p>
-        <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
-        <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
-        <p>Sua pontuação: <span class="score">{{ (result.correctAnswers / questions.length) * 100 }}%</span></p>
-      </div>
-  
-      <button class="restart-button" (click)="restartQuiz()">Reiniciar Quiz</button>
-      <br>
-      <br>
-      <button class="restart-button" (click)="toggleCorrection()">Ver Respostas</button>
-  
+
+    <div *ngIf="showLoading" class="loading-indicator">
+      Carregando...
     </div>
   </div>
+
+  <!-- Tela final de resultados -->
+  <div *ngIf="showFinalScreen" class="final-screen">
+    <h1 class="quiz-title">Resultados do Quiz</h1>
+    <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+
+    <div class="results-summary">
+      <p>Você respondeu {{ questions.length }} questões.</p>
+      <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
+      <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
+      <p>Não respondidas: <span class="incorrect">{{ result.unansweredQuestions }}</span></p>
+      <p>Sua pontuação: <span class="score">{{ (result.correctAnswers / questions.length) * 100 }}%</span></p>
+    </div>
+
+    <button class="restart-button" (click)="restartQuiz()">Reiniciar Quiz</button>
+    <br>
+    <br>
+    <button class="restart-button" (click)="toggleCorrection()">Ver Respostas</button>
+  </div>
+</div>

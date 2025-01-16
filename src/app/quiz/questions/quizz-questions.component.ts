@@ -5,10 +5,8 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
-import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
-import { AnswerService } from 'src/app/core/answers/answers.service';
+import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 
 @Component({
   selector: 'app-quizz-questions',
@@ -25,11 +23,16 @@ export class QuizzQuestionsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
 
-  result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
+  result: {
+    correctAnswers: number;
+    incorrectAnswers: number;
+    nullAnswers: number; // Nova propriedade para respostas nulas
+  } = { correctAnswers: 0, incorrectAnswers: 0, nullAnswers: 0 };
+
   showCorrection: boolean = false;
   showStartScreen: boolean = true;
 
-  imagePath = './assets/images/funcao do grau 2.png';
+  imagePath = './assets/images/funcao-do-grau-2.png';
 
   @ViewChild('tabela') grid: any;
 
@@ -41,7 +44,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
   constructor(
     private quizService: QuizService,
-    private answerService: AnswerService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
@@ -84,8 +86,13 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuestionsByQuizId(quizId).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
-        this.quiz.questions = this.questions;
+        this.quiz.questions = this.questions; // Atualiza as questões do quiz
         this.showLoading = false;
+
+        // Recalcula os resultados após carregar as questões
+        if (this.quiz.userSubmittedAnswers) {
+          this.calculateResults();
+        }
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -100,9 +107,13 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getUserSubmittedAnswersByQuizId(quizId).subscribe(
       (dados: Answer[]) => {
         this.submittedAnswers = dados;
-        this.quiz.userSubmittedAnswers = this.submittedAnswers;
-        this.calculateResults();
+        this.quiz.userSubmittedAnswers = this.submittedAnswers; // Atualiza as respostas do quiz
         this.showLoading = false;
+
+        // Recalcula os resultados após carregar as respostas
+        if (this.quiz.questions) {
+          this.calculateResults();
+        }
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -112,14 +123,30 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   calculateResults(): void {
+    console.log("Calculando resultados...");
+    console.log("Questions:", this.quiz.questions);
+    console.log("Submitted Answers:", this.quiz.userSubmittedAnswers);
+
     this.result.correctAnswers = 0;
     this.result.incorrectAnswers = 0;
+    this.result.nullAnswers = 0; // Reinicia a contagem de respostas nulas
 
-    this.quiz.userSubmittedAnswers.forEach((answer) => {
-      if (answer.correct) {
-        this.result.correctAnswers++;
+    // Itera sobre todas as questões do quiz
+    this.quiz.questions.forEach((question) => {
+      const submittedAnswer = this.quiz.userSubmittedAnswers.find(
+        (a) => a.question.id === question.id
+      );
+
+      if (submittedAnswer) {
+        // Se o usuário respondeu, verifica se a resposta está correta ou incorreta
+        if (submittedAnswer.correct) {
+          this.result.correctAnswers++;
+        } else {
+          this.result.incorrectAnswers++;
+        }
       } else {
-        this.result.incorrectAnswers++;
+        // Se não há resposta submetida, conta como nula
+        this.result.nullAnswers++;
       }
     });
   }
@@ -152,11 +179,16 @@ export class QuizzQuestionsComponent implements OnInit {
         // Adiciona uma nova resposta
         this.quiz.userSubmittedAnswers.push(selectedAnswer);
       }
+
+      // Recalcula os resultados após capturar a resposta
+      this.calculateResults();
     }
   }
 
   isSelected(questionId: number, answerId: number): boolean {
-    const submittedAnswer = this.quiz.userSubmittedAnswers.find((a) => a.question.id === questionId);
+    const submittedAnswer = this.quiz.userSubmittedAnswers.find(
+      (a) => a.question.id === questionId
+    );
     return submittedAnswer ? submittedAnswer.id === answerId : false;
   }
 
@@ -169,7 +201,10 @@ export class QuizzQuestionsComponent implements OnInit {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
     } else {
-      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Ocorreu um erro. Por favor, tente novamente.',
+      });
     }
   }
 }

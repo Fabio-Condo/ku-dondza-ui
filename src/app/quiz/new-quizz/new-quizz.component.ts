@@ -22,6 +22,7 @@ import { QuestionService } from 'src/app/questions/question.service';
 export class NewQuizzComponent implements OnInit {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
+  submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
   showGetSubjectLoading: boolean = false;
   isAdmin: boolean = true;
@@ -29,11 +30,12 @@ export class NewQuizzComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
 
-  submittedAnswers: Answer[] = []; // Lista de respostas do usuário
-  result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
+  result: { correctAnswers: number; incorrectAnswers: number; unansweredQuestions: number } = {
+    correctAnswers: 0,
+    incorrectAnswers: 0,
+    unansweredQuestions: 0
+  };
   showCorrection: boolean = false;
-
-  correctAnswer: string | undefined;
 
   showStartScreen: boolean = true;
   showFinalScreen: boolean = false;
@@ -145,32 +147,54 @@ export class NewQuizzComponent implements OnInit {
   }
 
   submitAnswers() {
+    const totalQuestions = this.questions.length;
+    const answeredQuestions = this.submittedAnswers.filter(answer => answer.id !== -1).length;
+    const unansweredQuestions = totalQuestions - answeredQuestions;
+
     this.result.correctAnswers = this.submittedAnswers.filter(answer => answer.correct).length;
-    this.result.incorrectAnswers = this.submittedAnswers.length - this.result.correctAnswers;
+    this.result.incorrectAnswers = answeredQuestions - this.result.correctAnswers;
+    this.result.unansweredQuestions = unansweredQuestions;
 
     if (!this.submited) {
       this.saveQuiz();
     }
+
+    this.showFinalScreen = true; // Mostra a tela final
   }
 
-  captureUserAnswer(questionId: number, answerId: number): void {
+  captureUserAnswer(questionId: number, answerId: number | null): void {
     const question = this.questions.find(q => q.id === questionId);
     if (question) {
-      const answer = question.answers.find(a => a.id === answerId);
-      if (answer) {
-        const userAnswer: Answer = {
-          id: answer.id,
-          text: answer.text,
-          correct: answer.correct,
+      let userAnswer: Answer;
+
+      if (answerId !== null) {
+        const answer = question.answers.find(a => a.id === answerId);
+        if (answer) {
+          userAnswer = {
+            id: answer.id,
+            text: answer.text,
+            correct: answer.correct,
+            question: question
+          };
+        } else {
+          return; // Resposta inválida
+        }
+      } else {
+        // Resposta nula (não respondida)
+        userAnswer = {
+          id: -1, // ID inválido para indicar resposta nula
+          text: 'Não respondida',
+          correct: false,
           question: question
         };
+      }
 
-        const existingAnswerIndex = this.submittedAnswers.findIndex(a => a.question?.id === questionId);
-        if (existingAnswerIndex !== -1) {
-          this.submittedAnswers[existingAnswerIndex] = userAnswer; // Atualiza a resposta existente
-        } else {
-          this.submittedAnswers.push(userAnswer); // Adiciona uma nova resposta
-        }
+      // Atualiza ou adiciona a resposta
+      const existingAnswerIndex = this.submittedAnswers.findIndex(a => a.question?.id === questionId);
+      if (existingAnswerIndex !== -1) {
+        this.submittedAnswers[existingAnswerIndex] = userAnswer;
+      } else {
+        this.submittedAnswers.push(userAnswer);
       }
     }
   }
@@ -190,6 +214,7 @@ export class NewQuizzComponent implements OnInit {
     this.showStartScreen = true;
     this.submittedAnswers = [];
     this.currentQuestionIndex = 0;
+    this.result = { correctAnswers: 0, incorrectAnswers: 0, unansweredQuestions: 0 };
   }
 
   toggleCorrection() {
