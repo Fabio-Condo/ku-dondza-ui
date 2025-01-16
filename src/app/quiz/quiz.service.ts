@@ -7,6 +7,7 @@ import { Quiz } from '../core/model/Quiz';
 import { QuizFilter } from '../core/interface/QuizFilter';
 import { Question } from '../core/model/Question';
 import { QuestionFilter } from '../core/interface/QuestionFilter';
+import { Answer } from '../core/model/Answer';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,17 @@ export class QuizService {
 
   countQuestionsByQuizId(quizId: number): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/${quizId}/questions/total`, {});
+  }
+
+  
+  getUserSubmittedAnswersByQuizId(quizId: number, filtro: QuestionFilter): Observable<IApiResponse<Answer>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
+
+    return this.http.get<IApiResponse<Answer>>(`${this.baseUrl}/${quizId}/submitted-answers`, { params });
   }
 
 }

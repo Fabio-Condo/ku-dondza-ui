@@ -10,33 +10,24 @@ import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Answer } from 'src/app/core/model/Answer';
 import { AnswerService } from 'src/app/core/answers/answers.service';
 
-
-
 @Component({
   selector: 'app-quizz-questions',
   templateUrl: './quizz-questions.component.html',
-  styleUrls: ['./quizz-questions.component.css']
+  styleUrls: ['./quizz-questions.component.css'],
 })
 export class QuizzQuestionsComponent implements OnInit {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
+  submittedAnswers: Answer[] = [];
   showLoading: boolean = false;
   isAdmin: boolean = true;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-  selectedAnswers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
 
-  // Armazenar as respostas do usuário
-  //userAnswers: { questionId: number; answerId: number }[] = [];
-  userAnswers: { questionId: number; answerId: number | null | undefined }[] = [];
   result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
   showCorrection: boolean = false;
-
-  correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
-
   showStartScreen: boolean = true;
-  //showFinalScreen: boolean = false;
 
   imagePath = './assets/images/funcao do grau 2.png';
 
@@ -45,7 +36,7 @@ export class QuizzQuestionsComponent implements OnInit {
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 5,
-    sort: 'id,asc'
+    sort: 'id,asc',
   };
 
   constructor(
@@ -54,16 +45,15 @@ export class QuizzQuestionsComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     const quizId = this.route.snapshot.params['id'];
     if (quizId) {
       this.getQuizByQuizId(quizId);
     }
-    this.getAnswers();
     this.scrollToTop();
-    this.showCorrection = true;
+    this.showCorrection = true; // Mostrar a correção ao carregar a página
   }
 
   scrollToTop() {
@@ -75,34 +65,16 @@ export class QuizzQuestionsComponent implements OnInit {
       (response) => {
         this.quiz = response;
         this.getQuestionsByQuizId(this.quiz.id);
+        this.getUserSubmittedAnswersByQuizId(this.quiz.id);
+        this.calculateResults();
       },
       (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 400) { // BAD_REQUEST
+        if (errorResponse.status == 400) {
+          // BAD_REQUEST
           this.router.navigateByUrl('/pagina-nao-encontrada');
         } else {
           this.sendErrorNotification(errorResponse.error.message);
         }
-      }
-    );
-  }
-
-  getAnswers() {
-    this.answerService.findAll().subscribe(
-      (response) => {
-        this.selectedAnswers = response;
-  
-        // Inicializa o userAnswers com as respostas já selecionadas (se houver)
-        this.userAnswers = this.questions.map(question => {
-          const selectedAnswer = this.selectedAnswers.find(answer => answer.id === question.id);
-          return {
-            questionId: question.id,
-            answerId: selectedAnswer ? selectedAnswer.id : null // Se não houver resposta selecionada, use null
-          };
-        });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -113,6 +85,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuestionsByQuizId(quizId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
         this.questions = dados.content;
+        this.quiz.questions = this.questions;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -122,6 +95,35 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
+  getUserSubmittedAnswersByQuizId(quizId: number): void {
+    this.showLoading = true;
+    this.filtro.page = this.currentPage - 1;
+    this.quizService.getUserSubmittedAnswersByQuizId(quizId, this.filtro).subscribe(
+      (dados: IApiResponse<Answer>) => {
+        this.submittedAnswers = dados.content;
+        this.quiz.userSubmittedAnswers = this.submittedAnswers;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  calculateResults(): void {
+    this.result.correctAnswers = 0;
+    this.result.incorrectAnswers = 0;
+
+    this.quiz.userSubmittedAnswers.forEach((answer) => {
+      if (answer.correct) {
+        this.result.correctAnswers++;
+      } else {
+        this.result.incorrectAnswers++;
+      }
+    });
+  }
+
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
@@ -129,73 +131,35 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   goToNextQuestion() {
-    if (this.currentQuestionIndex < this.questions.length - 1) {
+    if (this.currentQuestionIndex < this.quiz.questions.length - 1) {
       this.currentQuestionIndex++;
     }
   }
 
-  //submitAnswers() {
-  //  this.result.correctAnswers = 0;
-  //  this.result.incorrectAnswers = 0;
-
-  //  this.questions.forEach(question => {
-  //    const userAnswer = this.userAnswers.find(answer => answer.questionId === question.id);
-  //    if (userAnswer) {
-  //      const isCorrect = question.answers.some(answer => answer.id === userAnswer.answerId && answer.correct);
-  //      if (isCorrect) {
-  //        this.result.correctAnswers++;
-  //      } else {
-  //        this.result.incorrectAnswers++;
-  //      }
-  //    }
-  //  });
-
-  //  this.displayResults();
-  //}
-
-  //displayResults() {
-  //  const message = `Você acertou ${this.result.correctAnswers} resposta(s) e errou ${this.result.incorrectAnswers} resposta(s).`;
-  //  this.messageService.add({ severity: 'info', detail: message });
-  //}
-
   captureUserAnswer(questionId: number, answerId: number) {
-    const existingAnswerIndex = this.userAnswers.findIndex(answer => answer.questionId === questionId);
-    if (existingAnswerIndex !== -1) {
-      this.userAnswers[existingAnswerIndex].answerId = answerId;
-    } else {
-      this.userAnswers.push({ questionId, answerId });
+    const question = this.quiz.questions.find((q) => q.id === questionId);
+    const selectedAnswer = question?.answers.find((a) => a.id === answerId);
+
+    if (selectedAnswer) {
+      const existingSubmittedAnswerIndex = this.quiz.userSubmittedAnswers.findIndex(
+        (a) => a.question.id === questionId
+      );
+
+      if (existingSubmittedAnswerIndex !== -1) {
+        // Atualiza a resposta existente
+        this.quiz.userSubmittedAnswers[existingSubmittedAnswerIndex] = selectedAnswer;
+      } else {
+        // Adiciona uma nova resposta
+        this.quiz.userSubmittedAnswers.push(selectedAnswer);
+      }
     }
   }
 
   isSelected(questionId: number, answerId: number): boolean {
-    const userAnswer = this.userAnswers.find(answer => answer.questionId === questionId);
-    return userAnswer ? userAnswer.answerId === answerId : false;
+    const submittedAnswer = this.quiz.userSubmittedAnswers.find((a) => a.question.id === questionId);
+    return submittedAnswer ? submittedAnswer.id === answerId : false;
   }
 
-  //showFinalResults() {
-  //  this.showFinalScreen = true; 
-  //  this.calculateFinalResults(); 
-  //}
-
-  //reviewQuestions() {
-  //  this.showFinalScreen = false; 
-  //  this.currentQuestionIndex = 0; 
-  //}
-
-  restartQuiz() {
-    //this.showFinalScreen = false; 
-    this.showStartScreen = true;
-    this.userAnswers = [];
-    this.currentQuestionIndex = 0;
-  }
-
-  toggleCorrection() {
-    this.showCorrection = !this.showCorrection;
-    this.currentQuestionIndex = 0; // Volta para a primeira questão
-    //this.showFinalScreen = false; // Oculta a tela final
-  }
-
-  // Novo método para iniciar o quiz
   startQuiz() {
     this.showStartScreen = false; // Oculta a tela inicial
     this.currentQuestionIndex = 0; // Começa na primeira questão

@@ -5,14 +5,15 @@
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
 
     <div class="results-summary">
-      <p>Você respondeu {{ questions.length }} questões.</p>
+      <p>Você respondeu {{ quiz.questions.length }} questões.</p>
       <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
       <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
-      <p>Sua pontuação: <span class="score">{{ (result.correctAnswers / questions.length) * 100 }}%</span></p>
+      <p>Sua pontuação: <span class="score">{{ (result.correctAnswers / quiz.questions.length) * 100 }}%</span></p>
     </div>
+
     <div>
-        <span style="font-weight: bold" *ngIf="showLoading">Carregando...</span>
-      </div>
+      <span style="font-weight: bold" *ngIf="showLoading">Carregando...</span>
+    </div>
     <button class="start-button" [disabled]="showLoading" (click)="startQuiz()">Ver questões</button>
   </div>
 
@@ -21,64 +22,50 @@
     <h1 class="quiz-title">{{ quiz.title }}</h1>
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
 
-    <div *ngIf="currentQuestionIndex < questions.length">
+    <div *ngIf="currentQuestionIndex < quiz.questions.length">
       <div class="question-card">
-        <!--
-        <img *ngIf="questions[currentQuestionIndex].urlFile" 
-             src="{{ questions[currentQuestionIndex].urlFile }}" 
-             alt="Gráfico de funções" 
-             class="question-graph">
-        -->     
-        <img *ngIf="imagePath" 
-             src="{{ imagePath }}" 
-             alt="Gráfico de funções" 
-             class="question-graph">
-             imagePath
-        <span style="font-size: 0.8rem;">{{ questions[currentQuestionIndex].topic.subject.name }}</span>
-        <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
+        <img *ngIf="imagePath" src="{{ imagePath }}" alt="Gráfico de funções" class="question-graph" />
+        <span style="font-size: 0.8rem;">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</span>
+        <h2 class="question-text">{{ quiz.questions[currentQuestionIndex].text }}</h2>
 
         <div class="answer-options">
-          <label *ngFor="let answer of questions[currentQuestionIndex].answers" 
-                 [ngClass]="{
-                    'correct-answer': showCorrection && answer.correct,
-                    'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
-                 }">
-            <input 
-                type="radio" 
-                name="question-{{ questions[currentQuestionIndex].id }}" 
-                [value]="answer.id" 
-                [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)" 
-                (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)" 
-                [disabled]="showCorrection" />
-            <span>
-                {{ answer.text }}
-            </span>
+          <label
+            *ngFor="let answer of quiz.questions[currentQuestionIndex].answers"
+            [ngClass]="{
+              'correct-answer': showCorrection && answer.correct,
+              'incorrect-answer': showCorrection && !answer.correct && isSelected(quiz.questions[currentQuestionIndex].id, answer.id!),
+              'selected-answer': isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)
+            }"
+          >
+            <input
+              type="radio"
+              name="question-{{ quiz.questions[currentQuestionIndex].id }}"
+              [value]="answer.id"
+              [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
+              (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"
+              [disabled]="showCorrection"
+            />
+            <span>{{ answer.text }}</span>
           </label>
         </div>
       </div>
 
       <div class="navigation-buttons text-center">
-
-        <!-- Botão para submeter respostas -->
-        <button class="pagination-button" (click)="showStartScreen = true" 
-            *ngIf="currentQuestionIndex === questions.length - 1">
-            <i style="margin-right: 0.5rem;" class="pi pi-arrow-left"></i> Tela inicial
+        <!-- Botão para voltar à tela inicial -->
+        <button class="pagination-button" (click)="showStartScreen = true" *ngIf="currentQuestionIndex === quiz.questions.length - 1">
+          <i style="margin-right: 0.5rem;" class="pi pi-arrow-left"></i> Tela inicial
         </button>
 
         <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
-            <i class="pi pi-chevron-left"></i> Anterior
+          <i class="pi pi-chevron-left"></i> Anterior
         </button>
-        <button class="pagination-button" (click)="goToNextQuestion()" 
-                [disabled]="currentQuestionIndex === questions.length - 1">
-            Próxima <i class="pi pi-chevron-right"></i>
+        <button class="pagination-button" (click)="goToNextQuestion()" [disabled]="currentQuestionIndex === quiz.questions.length - 1">
+          Próxima <i class="pi pi-chevron-right"></i>
         </button>
-
       </div>
     </div>
 
-    <div *ngIf="showLoading" class="loading-indicator">
-      Carregando...
-    </div>
+    <div *ngIf="showLoading" class="loading-indicator">Carregando...</div>
   </div>
-
 </div>
+

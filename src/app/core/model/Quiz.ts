@@ -9,10 +9,8 @@ export class Quiz {
     title!: string;
     subject = new Subject();
     user = new User();
-    questions: Question[] = [];
-    submittedAnswers: Answer[] = [];
-
+    questions: Question[] = []; // Inicializado como array vazio
+    userSubmittedAnswers: Answer[] = [];
     totalQuestions: number = 0;
     isAdminMenuOpen: boolean = false;
-
 }
