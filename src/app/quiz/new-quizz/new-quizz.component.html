@@ -9,7 +9,7 @@
 
       <div class="form-group">
         <label for="subject">Disciplina</label>
-        <select id="subject" [(ngModel)]="quiz.subject.id" (change)="getById(quiz.subject.id)" [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
+        <select id="subject" [(ngModel)]="quiz.subject.id" (change)="getSubjectById(quiz.subject.id)" [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
           <option value="" disabled selected>Selecione a disciplina</option>
           <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
         </select>
