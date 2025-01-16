@@ -66,7 +66,6 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz = response;
         this.getQuestionsByQuizId(this.quiz.id);
         this.getUserSubmittedAnswersByQuizId(this.quiz.id);
-        this.calculateResults();
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {
@@ -82,9 +81,9 @@ export class QuizzQuestionsComponent implements OnInit {
   getQuestionsByQuizId(quizId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1;
-    this.quizService.getQuestionsByQuizId(quizId, this.filtro).subscribe(
-      (dados: IApiResponse<Question>) => {
-        this.questions = dados.content;
+    this.quizService.getQuestionsByQuizId(quizId).subscribe(
+      (dados: Question[]) => {
+        this.questions = dados;
         this.quiz.questions = this.questions;
         this.showLoading = false;
       },
@@ -98,10 +97,11 @@ export class QuizzQuestionsComponent implements OnInit {
   getUserSubmittedAnswersByQuizId(quizId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1;
-    this.quizService.getUserSubmittedAnswersByQuizId(quizId, this.filtro).subscribe(
-      (dados: IApiResponse<Answer>) => {
-        this.submittedAnswers = dados.content;
+    this.quizService.getUserSubmittedAnswersByQuizId(quizId).subscribe(
+      (dados: Answer[]) => {
+        this.submittedAnswers = dados;
         this.quiz.userSubmittedAnswers = this.submittedAnswers;
+        this.calculateResults();
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

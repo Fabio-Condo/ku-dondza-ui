@@ -11,6 +11,7 @@ export class Quiz {
     user = new User();
     questions: Question[] = []; // Inicializado como array vazio
     userSubmittedAnswers: Answer[] = [];
+    
     totalQuestions: number = 0;
     isAdminMenuOpen: boolean = false;
 }

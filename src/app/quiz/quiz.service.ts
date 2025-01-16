@@ -72,29 +72,16 @@ export class QuizService {
     return this.http.get<number>(`${this.baseUrl}/total`, {});
   }
 
-  getQuestionsByQuizId(quizId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
-
-    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/${quizId}/questions`, { params });
+  getQuestionsByQuizId(quizId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.baseUrl}/${quizId}/questions`);
   }
 
   countQuestionsByQuizId(quizId: number): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/${quizId}/questions/total`, {});
   }
 
-  
-  getUserSubmittedAnswersByQuizId(quizId: number, filtro: QuestionFilter): Observable<IApiResponse<Answer>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
-
-    return this.http.get<IApiResponse<Answer>>(`${this.baseUrl}/${quizId}/submitted-answers`, { params });
+  getUserSubmittedAnswersByQuizId(quizId: number): Observable<Answer[]> {
+    return this.http.get<Answer[]>(`${this.baseUrl}/${quizId}/submitted-answers`);
   }
 
 }
