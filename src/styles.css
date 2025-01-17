@@ -45,37 +45,47 @@ body {
 }
 
 .title {
-	font-size: 20px;
-    color: var(--color-black);
-    text-transform: capitalize;
-	font-weight: 600;
-	position: relative;
+    font-size: 24px; /* Tamanho maior para impacto visual */
+    color: #34495e; /* Azul escuro mais vibrante */
+    text-transform: capitalize; /* Primeira letra maiúscula */
+    font-weight: 700; /* Fonte mais grossa */
+    font-family: 'Poppins', sans-serif; /* Fonte moderna */
+    position: relative;
+    margin-bottom: 10px; /* Espaçamento abaixo do título */
+    line-height: 1.3; /* Melhora a legibilidade */
 }
 
 .title-description {
-    margin-top: 5px; 
-    margin-bottom: 20px; 
-    font-size: 12px; color: #888;
+    margin-top: 5px;
+    margin-bottom: 25px; /* Mais espaço abaixo da descrição */
+    font-size: 14px; /* Tamanho um pouco maior para melhor legibilidade */
+    color: #2c3e50; /* Azul escuro para contraste */
+    font-family: 'Open Sans', sans-serif; /* Fonte legível */
+    font-weight: 400;
+    line-height: 1.6; /* Espaçamento entre linhas para melhor leitura */
+    opacity: 0.9; /* Leve transparência para um visual mais suave */
 }
 
 /* Table */
 .card-table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0px 5px;
+    border-spacing: 0px 10px; /* Aumentei o espaçamento vertical */
 }
 
 .card {
     cursor: pointer;
     background-color: #fff;
-    border-radius: 0.4rem;
-    padding: 20px;
+    border-radius: 0.8rem; /* Bordas mais arredondadas */
+    padding: 25px; /* Mais espaço interno */
     width: 100%;
-    border: 1px solid #dcdcdc;
+    border: 1px solid #e0e0e0; /* Cor da borda mais suave */
+    transition: all 0.3s ease-in-out; /* Transição suave */
 }
 
 .card:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
+    transform: translateY(-2px); /* Efeito de levantar ao passar o mouse */
 }
 
 .card-content {
@@ -85,97 +95,113 @@ body {
 
 .content {
     flex: 1;
-    margin-left: 20px;
+    margin-left: 25px; /* Mais espaço entre os elementos */
 }
 
 .card-table .title {
-    font-size: 16px;
-    color: var(--color-black);
-	font-weight: 600;
-	position: relative;
+    font-size: 18px; /* Tamanho maior para o título */
+    color: #2c3e50; /* Cor mais escura e sofisticada */
+    font-weight: 700; /* Fonte mais grossa */
+    font-family: 'Poppins', sans-serif; /* Fonte moderna */
+    margin-bottom: 8px; /* Espaçamento abaixo do título */
 }
 
 .card-table .details {
-    font-size: 13px;
-    color: black;
+    font-size: 14px; /* Tamanho um pouco maior para os detalhes */
+    color: #7f8c8d; /* Cor mais suave e elegante */
     font-weight: 400;
-    opacity: 0.8;
+    font-family: 'Open Sans', sans-serif; /* Fonte legível e moderna */
+    line-height: 1.6; /* Melhora a legibilidade */
 }
 
 .loading-indicator {
-    font-size: 0.85rem;
-    color: var(--color-black);
-    font-weight: bold;
+    font-size: 0.9rem;
+    color: #2c3e50; /* Cor consistente com o tema */
+    font-weight: 600;
     text-align: center;
+    font-family: 'Poppins', sans-serif; /* Fonte moderna */
+    margin-top: 20px; /* Espaçamento acima do indicador */
 }
-/* END */
 
 /* Paginação */
 .pagination-controls {
-    margin-top: 20px;
+    margin-top: 30px; /* Mais espaço acima */
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px; /* Espaço entre os elementos */
+    flex-wrap: wrap; /* Para telas menores */
 }
 
 .select-itens-por-pagina {
-    font-size: 12px;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    font-size: 13px; /* Tamanho um pouco maior */
+    padding: 8px 16px; /* Mais conforto no clique */
+    border: 1px solid #dcdcdc; /* Borda mais suave */
+    border-radius: 6px; /* Bordas mais arredondadas */
     cursor: pointer;
-    margin-left: 15px;
-    transition: border-color 0.3s;
+    background-color: #fff; /* Fundo branco */
+    color: #333; /* Cor do texto mais escura */
+    transition: all 0.3s ease; /* Transição suave */
+    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
 
 .select-itens-por-pagina:hover {
-    border-color: var(--color-primary);
+    border-color: var(--color-primary); /* Cor primária ao passar o mouse */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
 .pagination-button {
-    background-color: var(--color-primary);
-    color: #fff;
+    background-color: var(--color-primary); /* Cor primária */
+    color: #fff; /* Texto branco */
     border: none;
-    padding: 6px 12px;
+    padding: 8px 16px; /* Mais confortável */
     cursor: pointer;
-    border-radius: 4px;
-    font-size: 12px;
-    margin: 0 4px;
+    border-radius: 6px; /* Bordas mais arredondadas */
+    font-size: 13px; /* Tamanho um pouco maior */
+    margin: 0 4px; /* Espaçamento entre botões */
     display: flex;
     align-items: center;
-    transition: all 300ms ease;
+    transition: all 0.3s ease; /* Transição suave */
+    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
 
 .pagination-button:hover {
-    opacity: 0.8;
+    background-color: darken(var(--color-primary), 10%); /* Escurece a cor ao passar o mouse */
+    transform: translateY(-1px); /* Efeito de levantar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
 }
 
 .pagination-button:disabled {
-    background-color: #e9ecef;
-    color: #6c757d;
+    background-color: #f1f3f5; /* Fundo mais suave */
+    color: #adb5bd; /* Texto cinza */
     cursor: not-allowed;
-    border-color: #adb5bd;
+    border-color: #dee2e6; /* Borda suave */
+    box-shadow: none; /* Remove sombra */
+    transform: none; /* Remove efeito de levantar */
 }
 
 .pagination-info {
-    font-size: 13px;
-    color: black;
+    font-size: 14px; /* Tamanho um pouco maior */
+    color: #555; /* Cor mais suave */
     font-weight: 400;
-    opacity: 0.8;
+    opacity: 0.9; /* Leve transparência */
+    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
-/* END */
 
-/*INPUT SEARCH*/
+/* INPUT SEARCH */
 .flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0px 0px 20px 0px;
+    margin: 0 0 30px 0; /* Mais espaço abaixo */
+    flex-wrap: wrap; /* Para telas menores */
+    gap: 15px; /* Espaço entre os elementos */
 }
 
 .input-group {
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .input-container {
@@ -185,24 +211,27 @@ body {
 }
 
 .transparent-input {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid #ccc;
-    border-radius: 0.4rem;
-    padding: 10px 20px 10px 40px;
+    background: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente */
+    border: 1px solid #dcdcdc; /* Borda mais suave */
+    border-radius: 8px; /* Bordas mais arredondadas */
+    padding: 12px 20px 12px 40px; /* Mais conforto no preenchimento */
     font-size: 14px;
-    color: rgb(67, 65, 65);
+    color: #333; /* Cor do texto mais escura */
     outline: none;
-    transition: background 0.3s, border 0.3s;
+    transition: all 0.3s ease; /* Transição suave */
     width: 300px;
+    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
 
 .transparent-input::placeholder {
-    color: #888;
+    color: #888; /* Cor do placeholder suave */
+    opacity: 0.8; /* Leve transparência */
 }
 
 .transparent-input:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 10px rgba(24, 119, 242, 0.3);
+    border-color: var(--color-primary); /* Cor primária ao focar */
+    box-shadow: 0 0 12px rgba(24, 119, 242, 0.25); /* Sombra sutil */
+    background: rgba(255, 255, 255, 0.3); /* Fundo um pouco mais claro ao focar */
 }
 
 .input-icon {
@@ -210,33 +239,54 @@ body {
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
-    font-size: 14px;
+    color: #888; /* Cor do ícone suave */
+    font-size: 16px; /* Tamanho um pouco maior */
+    transition: color 0.3s ease; /* Transição suave */
 }
 
+.transparent-input:focus + .input-icon {
+    color: var(--color-primary); /* Cor do ícone ao focar */
+}
+
+/* DIALOG FOOTER */
 .dialog-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 10px; /* Espaço entre os botões */
+    margin-top: 20px; /* Espaço acima do rodapé */
 }
 
 .dialog-footer button {
-    padding: 10px 20px;
+    padding: 12px 24px; /* Mais conforto no clique */
     border: none;
-    border-radius: 5px;
+    border-radius: 6px; /* Bordas mais arredondadas */
     cursor: pointer;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
+    transition: all 0.3s ease; /* Transição suave */
 }
 
 .dialog-footer button:first-child {
-    background-color: #007bff;
+    background-color: var(--color-primary); /* Cor primária */
     color: white;
 }
 
+.dialog-footer button:first-child:hover {
+    background-color: darken(var(--color-primary), 10%); /* Escurece ao passar o mouse */
+    transform: translateY(-1px); /* Efeito de levantar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
+
 .dialog-footer button:last-child {
-    background-color: #6c757d;
+    background-color: #6c757d; /* Cinza para o botão secundário */
     color: white;
 }
-/* END */
+
+.dialog-footer button:last-child:hover {
+    background-color: darken(#6c757d, 10%); /* Escurece ao passar o mouse */
+    transform: translateY(-1px); /* Efeito de levantar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
 
 /* confirm dialog */
 .confirm-dialog-overlay {
