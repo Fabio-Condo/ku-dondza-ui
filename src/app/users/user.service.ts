@@ -13,13 +13,12 @@ import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
 import { Group } from '../core/model/Group';
 import { GroupFilter } from '../core/interface/GroupFilter';
 import { Blog } from '../core/model/Blog';
+import { Subject } from '../core/model/Subject';
 
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private host = environment.apiUrl + '/user';
-  private baseUrl = environment.apiUrl + '/questions';
-
 
   constructor(private http: HttpClient) { }
 
@@ -75,7 +74,7 @@ export class UserService {
     return this.http.put<User>(`${this.host}/update`, formData);
   }
 
-  
+
   updateUserProfile(user: User): Observable<User> {
     const formData = new FormData();
     formData.append('currentUsername', user.username);
@@ -264,8 +263,12 @@ export class UserService {
     return this.http.post<User>(`${this.host}/send-friend-request`, user, {});
   }
 
+  getUserSubjectInterests(userId: number): Observable<Subject[]> {
+    return this.http.get<Subject[]>(`${this.host}/${userId}/interests`);
+  }
+
   addInterestToUserInterests(userId: number, interestId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/${userId}/interests/${interestId}`, { });
+    return this.http.post<User>(`${this.host}/${userId}/interests/${interestId}`, {});
   }
 
   getSubscribedOnlineCoursesByUserId(userId: number, filtro: OnlineCourseFilter): Observable<IApiResponse<OnlineCourse>> {

@@ -102,25 +102,4 @@ export class OnlineCoursesService {
         return this.http.get<number>(`${this.host}/${courseId}/students/total`, {});
     }
 
-    addQuestionToCourse(courseId: number, questionId: number): Observable<OnlineCourse> {
-        return this.http.post<OnlineCourse>(`${this.host}/${courseId}/questions/${questionId}`, {});
-    }
-
-    removeQuestionFromCourse(courseId: number, questionId: number): Observable<OnlineCourse> {
-        return this.http.delete<OnlineCourse>(`${this.host}/${courseId}/questions/${questionId}`);
-    }
-
-    getQuestionsByCourseId(courseId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
-
-        let params = new HttpParams()
-            .set('page', filtro.page)
-            .set('sort', filtro.sort)
-            .set('size', filtro.itemsPerPage);
-
-        return this.http.get<IApiResponse<Question>>(`${this.host}/${courseId}/questions`, { params });
-    }
-
-    countQuestionsByCourseId(courseId: number): Observable<number> {
-        return this.http.get<number>(`${this.host}/${courseId}/questions/total`, {});
-    }
 }

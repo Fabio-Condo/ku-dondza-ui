@@ -55,6 +55,9 @@ export class UserProfileViewComponent implements OnInit {
 
   extension: any;
 
+  currentPage: number = 1;
+
+  userSubjectsInterests: Subject[] = [];
   subjectsInterests: any[] = [];
   showInterestsDialog: boolean = false;
   showSelectInterestsDialog: boolean = false;
@@ -123,7 +126,7 @@ export class UserProfileViewComponent implements OnInit {
     this.scrollToTop();
   }
 
-  seeProfileByUserId(userId: string){
+  seeProfileByUserId(userId: string) {
     this.filtro.page = -1;
     this.filtroAmigos.page = -1;
     this.posts = [];
@@ -152,6 +155,7 @@ export class UserProfileViewComponent implements OnInit {
         this.getUserPostsByUserId(user);
         this.getUserFriends(user);
         this.getUserCoursesByUser(user);
+        this.getUserSubjectInterests(user);
       },
       (erro) => this.errorHandler.handle(erro),
     );
@@ -276,6 +280,21 @@ export class UserProfileViewComponent implements OnInit {
     )
   }
 
+  getUserSubjectInterests(user: User): void {
+    this.showLoading = true;
+    this.userService.getUserSubjectInterests(user.id).subscribe(
+      (dados: Subject[]) => {
+        this.userSubjectsInterests = dados;
+        this.user.subjectsInterests = this.userSubjectsInterests; // Atualiza as respostas do quiz
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   addInterestToUserInterests() {
     this.userService.addInterestToUserInterests(this.user.id, this.selectedInterest.id).subscribe(
       (user) => {
@@ -373,8 +392,8 @@ export class UserProfileViewComponent implements OnInit {
     this.removePostFromSavedPosts(post);
     this.closeConfirmRemovePostDialog();
   }
-  
-  onAddUserCourse(){
+
+  onAddUserCourse() {
     this.userCourse = new UserCourse();
     this.displayModalUserCourseSave = true;
   }
@@ -449,7 +468,7 @@ export class UserProfileViewComponent implements OnInit {
         value: course.id
       }));
     })
-    .catch(erro => this.errorHandler.handle(erro));
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   getInstitutions() {

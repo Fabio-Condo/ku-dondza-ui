@@ -82,7 +82,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
   getQuestionsByQuizId(quizId: number): void {
     this.showLoading = true;
-    this.filtro.page = this.currentPage - 1;
     this.quizService.getQuestionsByQuizId(quizId).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
@@ -103,7 +102,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
   getUserSubmittedAnswersByQuizId(quizId: number): void {
     this.showLoading = true;
-    this.filtro.page = this.currentPage - 1;
     this.quizService.getUserSubmittedAnswersByQuizId(quizId).subscribe(
       (dados: Answer[]) => {
         this.submittedAnswers = dados;

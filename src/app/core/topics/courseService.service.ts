@@ -12,9 +12,11 @@ export class TopicService {
     constructor(private http: HttpClient) { }
 
     getBySubjectId(subjectId: number): Promise<Topic[]> {
-        const params = new HttpParams()
-          .set('subjectId', subjectId);
-        return firstValueFrom(this.http.get<Topic[]>(`${this.host}/subjects`, { params }));
+        return firstValueFrom(this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`, ));
+    }
+
+    getSubjectsById(subjectId: number): Observable<Topic[]> {
+        return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
     }
 
     findById(id: number): Observable<Topic> {

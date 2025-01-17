@@ -1,7 +1,7 @@
 <div class="container" style="margin-top: 70px;">
   <!-- Tela inicial -->
   <div *ngIf="showStartScreen" class="start-screen">
-    <h1 class="quiz-title">{{ quiz.title }}</h1>
+    <h1 class="quiz-title">{{ quiz.description }}</h1>
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
 
     <div class="results-summary">
@@ -20,7 +20,7 @@
 
   <!-- Tela do quiz (questões) -->
   <div *ngIf="!showStartScreen">
-    <h1 class="quiz-title">{{ quiz.title }}</h1>
+    <h1 class="quiz-title">{{ quiz.description }}</h1>
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
 
     <div *ngIf="currentQuestionIndex < quiz.questions.length">

@@ -13,6 +13,9 @@ import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Answer } from 'src/app/core/model/Answer';
 import { QuestionService } from 'src/app/questions/question.service';
+import { TopicService } from 'src/app/core/topics/courseService.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { Topic } from 'src/app/core/model/Topic';
 
 @Component({
   selector: 'app-new-quizz',
@@ -42,6 +45,7 @@ export class NewQuizzComponent implements OnInit {
 
   selectedSubject: Subject = new Subject();
   subjects: any[] = [];
+  topics: Topic[] = [];
 
   loggedUser: User = new User();
 
@@ -57,8 +61,10 @@ export class NewQuizzComponent implements OnInit {
     private quizService: QuizService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
+    private topicService: TopicService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
+    private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -104,11 +110,24 @@ export class NewQuizzComponent implements OnInit {
       subject => {
         this.selectedSubject = subject;
         this.getQuestions(this.selectedSubject.id);
+        this.getTopicsBySubjectId(this.selectedSubject.id);
         this.showGetSubjectLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showGetSubjectLoading = false;
+      }
+    );
+  }
+
+  getTopicsBySubjectId(subjectId: number): void {
+    this.topicService.getSubjectsById(subjectId).subscribe(
+      (dados: Topic[]) => {
+        this.topics = dados;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     );
   }

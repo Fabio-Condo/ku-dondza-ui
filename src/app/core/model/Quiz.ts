@@ -6,7 +6,8 @@ import { User } from "./User";
 export class Quiz {
     id!: number;
     quizId!: string;
-    title!: string;
+    description!: string;
+    submittedAt!: Date;
     subject = new Subject();
     user = new User();
     questions: Question[] = []; // Inicializado como array vazio

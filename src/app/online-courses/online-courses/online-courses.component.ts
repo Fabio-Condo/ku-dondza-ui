@@ -82,7 +82,6 @@ export class OnlineCoursesComponent implements OnInit {
     this.findAll();
     this.buscarTotal();
     this.getUsersInstrutors();
-    this.getQuestions();
     this.scrollToTop();
   }
 
@@ -215,82 +214,12 @@ export class OnlineCoursesComponent implements OnInit {
     )
   }
 
-  getQuestions() {
-    return this.questionService.getAll().subscribe(
-      dados => {
-        this.questionsList = dados.map(dado => {
-          return {
-            label: dado.text,
-            value: dado.id
-          }
-        })
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    )
-  }
 
-  addQuestionToCourse() {
-    this.onlineCoursesService.addQuestionToCourse(this.course.id, this.selectedQuestion.id).subscribe(
-      (course) => {
-        this.course = course;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    )
-  }
-
-  removeQuestionFromCourse(question: Question) {
-    this.onlineCoursesService.removeQuestionFromCourse(this.selectedCourse.id, question.id).subscribe(
-      () => {
-        this.selectedCourse.questions = this.selectedCourse.questions.filter(quest => quest.id !== question.id);
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  getQuestionsByCourseId(): void {
-    this.onlineCoursesService.getQuestionsByCourseId(this.selectedCourse.id, this.filtroQuestions).subscribe(
-      (dados: IApiResponse<Question>) => {
-        this.selectedCourse.questions = [...this.selectedCourse.questions, ...dados.content];
-        this.totalRegistrosQuestions = dados.totalElements;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  countQuestionsByCourseId(course: OnlineCourse) {
-    this.showLoading = true;
-    this.onlineCoursesService.countQuestionsByCourseId(course.id,).subscribe(
-      (total) => {
-        course.totalQuestions = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onShowMoreQuestions(): void {
-    if (this.selectedCourse) {
-      this.filtroQuestions.page++;
-      this.getQuestionsByCourseId();
-    }
-  }
 
   onShowSelectedCourse(course: OnlineCourse): void {
     this.selectedCourse = course;
     this.selectedCourse.questions = [];
     this.filtroQuestions.page = 0; 
-    this.getQuestionsByCourseId();
     this.showQuestionsDialog = true;
   }
 
