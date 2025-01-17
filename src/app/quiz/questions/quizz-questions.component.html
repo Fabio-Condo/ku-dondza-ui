@@ -3,9 +3,12 @@
   <div *ngIf="showStartScreen" class="start-screen">
     <h1 class="quiz-title">{{ quiz.description }}</h1>
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+    <p *ngFor="let topic of quiz.selectedTopics">
+      {{ topic.name }}
+    </p>
 
     <div class="results-summary">
-      <p *ngIf="quiz && quiz.questions">Você respondeu {{ quiz.questions.length }} questões.</p>
+      <p *ngIf="quiz && quiz.questions">Número de questões: {{ quiz.questions.length }}</p>
       <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
       <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
       <p>Respostas nulas: <span class="incorrect">{{ result.nullAnswers }}</span></p>

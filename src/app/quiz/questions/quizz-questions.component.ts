@@ -7,6 +7,7 @@ import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { Answer } from 'src/app/core/model/Answer';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
+import { Topic } from 'src/app/core/model/Topic';
 
 @Component({
   selector: 'app-quizz-questions',
@@ -16,6 +17,7 @@ import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 export class QuizzQuestionsComponent implements OnInit {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
+  selectedTopics: Topic[] = [];
   submittedAnswers: Answer[] = [];
   showLoading: boolean = false;
   isAdmin: boolean = true;
@@ -66,6 +68,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
+        this.getTopicsByQuizId(this.quiz.id)
         this.getQuestionsByQuizId(this.quiz.id);
         this.getUserSubmittedAnswersByQuizId(this.quiz.id);
       },
@@ -80,12 +83,27 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
+  getTopicsByQuizId(quizId: number): void {
+    this.showLoading = true;
+    this.quizService.getSelectedTopicsByQuizId(quizId).subscribe(
+      (dados: Topic[]) => {
+        this.selectedTopics = dados;
+        this.quiz.selectedTopics = this.selectedTopics; 
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   getQuestionsByQuizId(quizId: number): void {
     this.showLoading = true;
     this.quizService.getQuestionsByQuizId(quizId).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
-        this.quiz.questions = this.questions; // Atualiza as questões do quiz
+        this.quiz.questions = this.questions;
         this.showLoading = false;
 
         // Recalcula os resultados após carregar as questões

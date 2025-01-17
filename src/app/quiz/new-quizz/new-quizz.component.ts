@@ -138,9 +138,7 @@ export class NewQuizzComponent implements OnInit {
   }
 
   getSelectedTopicIds(): number[] {
-    return this.topics
-      .filter(topic => topic.selected)
-      .map(topic => topic.id); 
+    return this.topics.filter(topic => topic.selected).map(topic => topic.id); 
   }
 
   submitSelectedTopics(): void {
@@ -148,12 +146,16 @@ export class NewQuizzComponent implements OnInit {
   }
 
   saveQuiz() {
+    
+    this.quiz.selectedTopics = this.getSelectedTopics();
+
+    const topicIds = this.quiz.selectedTopics.map(topic => topic.id);
     const questionIds = this.quiz.questions.map(question => question.id);
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
     this.quiz.user = this.loggedUser;
 
-    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds).subscribe(
+    this.quizService.saveQuiz(this.quiz, topicIds, questionIds, userAnswerIds).subscribe(
       (response) => {
         this.quiz = response;
         this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!' });

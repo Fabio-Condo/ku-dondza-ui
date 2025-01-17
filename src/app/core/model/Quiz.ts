@@ -1,6 +1,7 @@
 import { Answer } from "./Answer";
 import { Question } from "./Question";
 import { Subject } from "./Subject";
+import { Topic } from "./Topic";
 import { User } from "./User";
 
 export class Quiz {
@@ -10,7 +11,8 @@ export class Quiz {
     submittedAt!: Date;
     subject = new Subject();
     user = new User();
-    questions: Question[] = []; // Inicializado como array vazio
+    selectedTopics: Topic[] = []; 
+    questions: Question[] = []; 
     userSubmittedAnswers: Answer[] = [];
     
     totalQuestions: number = 0;
