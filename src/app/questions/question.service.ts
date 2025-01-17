@@ -9,7 +9,7 @@ import { QuestionFilter } from '../core/interface/QuestionFilter';
 
 @Injectable({ providedIn: 'root' })
 export class QuestionService {
-    private baseUrl = environment.apiUrl + '/questions';
+  private baseUrl = environment.apiUrl + '/questions';
 
   constructor(private http: HttpClient) { }
 
@@ -39,14 +39,16 @@ export class QuestionService {
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/filter`, { params });
   }
 
-  getRandomQuestionsBySubjectId(subjectId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {
+  //getQuestionsByTopics(questionIds: number[]): Observable<IApiResponse<Question>> {
+  //  return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/random-by-subject/${subjectId}`, {});
+  //}
 
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
+  getQuestionsByTopics(topicIds: number[]): Observable<Question[]> {
 
-    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/random-by-subject/${subjectId}`, { params });
+    const params = new HttpParams()
+      .set('topicIds', topicIds.join(','));
+
+    return this.http.get<Question[]>(`${this.baseUrl}/by-topics`, { params });
   }
 
   findAll(): Observable<IApiResponse<Question>> {

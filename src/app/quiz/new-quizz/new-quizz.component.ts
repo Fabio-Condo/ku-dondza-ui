@@ -43,8 +43,7 @@ export class NewQuizzComponent implements OnInit {
   showStartScreen: boolean = true;
   showFinalScreen: boolean = false;
 
-  selectedSubject: Subject = new Subject();
-  subjects: any[] = [];
+  subjects: Subject[] = [];
   topics: Topic[] = [];
 
   loggedUser: User = new User();
@@ -89,40 +88,21 @@ export class NewQuizzComponent implements OnInit {
   }
 
   carregarDisciplinas() {
-    return this.subjectsService.findAll().subscribe(
-      dados => {
-        this.subjects = dados.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          };
-        });
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    );
-  }
-
-  getSubjectById(id: number) {
-    this.showGetSubjectLoading = true;
-    this.subjectsService.getById(id).subscribe(
-      subject => {
-        this.selectedSubject = subject;
-        this.getQuestions(this.selectedSubject.id);
-        this.getTopicsBySubjectId(this.selectedSubject.id);
-        this.showGetSubjectLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showGetSubjectLoading = false;
-      }
-    );
+    });
   }
 
   getTopicsBySubjectId(subjectId: number): void {
     this.topicService.getSubjectsById(subjectId).subscribe(
       (dados: Topic[]) => {
+        this.quiz.questions = [];
+        this.topics = [];
         this.topics = dados;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -132,12 +112,13 @@ export class NewQuizzComponent implements OnInit {
     );
   }
 
-  getQuestions(subjectId: number): void {
+  getQuestions(): void {
+    const selectedTopicIds = this.getSelectedTopicIds();
+
     this.showLoading = true;
-    this.filtro.page = this.currentPage - 1;
-    this.questionService.getRandomQuestionsBySubjectId(subjectId, this.filtro).subscribe(
-      (dados: IApiResponse<Question>) => {
-        this.questions = dados.content;
+    this.questionService.getQuestionsByTopics(selectedTopicIds).subscribe(
+      (dados: Question[]) => {
+        this.questions = dados;
         this.quiz.questions = this.questions;
         this.showLoading = false;
       },
@@ -146,6 +127,24 @@ export class NewQuizzComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  toggleTopic(topic: Topic): void {
+    topic.selected = !topic.selected;
+  }
+
+  getSelectedTopics(): Topic[] {
+    return this.topics.filter(topic => topic.selected);
+  }
+
+  getSelectedTopicIds(): number[] {
+    return this.topics
+      .filter(topic => topic.selected)
+      .map(topic => topic.id); 
+  }
+
+  submitSelectedTopics(): void {
+    const selectedTopics = this.getSelectedTopics();
   }
 
   saveQuiz() {

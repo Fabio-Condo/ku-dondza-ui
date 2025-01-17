@@ -121,9 +121,6 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   calculateResults(): void {
-    console.log("Calculando resultados...");
-    console.log("Questions:", this.quiz.questions);
-    console.log("Submitted Answers:", this.quiz.userSubmittedAnswers);
 
     this.result.correctAnswers = 0;
     this.result.incorrectAnswers = 0;
