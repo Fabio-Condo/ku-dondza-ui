@@ -1,24 +1,32 @@
 <div class="container" style="margin-top: 70px;">
   <!-- Tela inicial -->
-  <div *ngIf="showStartScreen" class="start-screen">
+  <div *ngIf="showStartScreen"  class="start-screen">
     <h1 class="quiz-title">{{ quiz.description }}</h1>
     <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-    <p *ngFor="let topic of quiz.selectedTopics">
-      {{ topic.name }}
-    </p>
 
+    <!-- Texto explicativo sobre os tópicos -->
+    <p class="topics-label">Tópicos avaliados neste quiz:</p>
+
+    <!-- Lista de tópicos -->
+    <div class="topics-list">
+        <span *ngFor="let topic of quiz.selectedTopics" class="topic-item">
+            {{ topic.name }}
+        </span>
+    </div>
+
+    <!-- Resumo de resultados -->
     <div class="results-summary">
-      <p *ngIf="quiz && quiz.questions">Número de questões: {{ quiz.questions.length }}</p>
-      <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
-      <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
-      <p>Respostas nulas: <span class="incorrect">{{ result.nullAnswers }}</span></p>
-      <p *ngIf="quiz && quiz.questions">Sua pontuação: <span class="score">{{ (result.correctAnswers / quiz.questions.length) * 100 }}%</span></p>
+        <p *ngIf="quiz && quiz.questions">Número de questões: {{ quiz.questions.length }}</p>
+        <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
+        <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
+        <p>Respostas nulas: <span class="incorrect">{{ result.nullAnswers }}</span></p>
+        <p *ngIf="quiz && quiz.questions">Sua pontuação: <span class="score">{{ (result.correctAnswers / quiz.questions.length) * 100 }}%</span></p>
     </div>
 
-    <div>
-      <span style="font-weight: bold" *ngIf="showLoading">Carregando...</span>
-    </div>
-    <button class="start-button" [disabled]="showLoading" (click)="startQuiz()">Ver questões</button>
+    <!-- Botão de início -->
+    <button class="start-button" [disabled]="showLoading" (click)="startQuiz()">
+        <i class="pi pi-play" style="margin-right: 0.5rem;"></i> Ver questões
+    </button>
   </div>
 
   <!-- Tela do quiz (questões) -->
@@ -29,7 +37,7 @@
     <div *ngIf="currentQuestionIndex < quiz.questions.length">
       <div class="question-card">
         <img *ngIf="imagePath" src="{{ imagePath }}" alt="Gráfico de funções" class="question-graph" />
-        <span style="font-size: 0.8rem;">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</span>
+        <span class="question-topic">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</span>
         <h2 class="question-text">{{ quiz.questions[currentQuestionIndex].text }}</h2>
 
         <div class="answer-options">
@@ -57,7 +65,7 @@
       <div class="navigation-buttons text-center">
         <!-- Botão para voltar à tela inicial -->
         <button class="pagination-button" (click)="showStartScreen = true" *ngIf="currentQuestionIndex === quiz.questions.length - 1">
-          <i style="margin-right: 0.5rem;" class="pi pi-arrow-left"></i> Tela inicial
+          <i class="pi pi-home" style="margin-right: 0.5rem;"></i> Tela inicial
         </button>
 
         <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
@@ -72,4 +80,3 @@
     <div *ngIf="showLoading" class="loading-indicator">Carregando...</div>
   </div>
 </div>
-

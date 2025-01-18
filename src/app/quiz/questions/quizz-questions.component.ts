@@ -34,7 +34,7 @@ export class QuizzQuestionsComponent implements OnInit {
   showCorrection: boolean = false;
   showStartScreen: boolean = true;
 
-  imagePath = './assets/images/funcao-do-grau-2.png';
+  imagePath = './assets/images/funcao do grau 2.png';
 
   @ViewChild('tabela') grid: any;
 
