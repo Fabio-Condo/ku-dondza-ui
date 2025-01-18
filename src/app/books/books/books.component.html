@@ -5,8 +5,7 @@
     </div>
   
     <p class="title-description">
-      Explore a variedade de livros de admissão das instituições de ensino de Moçambique, abrangendo uma ampla
-      gama de disciplinas e níveis educacionais.
+      Explore a variedade de livros de admissão das instituições de ensino de Moçambique.
     </p>
   
     <div class="flex">
@@ -127,7 +126,7 @@
           <label for="subject">Disciplina</label>
           <select id="subject" [(ngModel)]="book.subject.id" name="subject" required>
             <option value="" disabled selected>Selecione a subject</option>
-            <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+            <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
           </select>
         </div>
 
@@ -167,7 +166,7 @@
           <label for="subject">Disciplina</label>
           <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
             <option value="" disabled selected>Selecione a subject</option>
-            <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+            <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
           </select>
         </div>
 

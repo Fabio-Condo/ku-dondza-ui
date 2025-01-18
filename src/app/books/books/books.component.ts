@@ -6,6 +6,7 @@ import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
   selector: 'app-books',
@@ -23,7 +24,7 @@ export class BooksComponent implements OnInit {
   file!: File;
   totalbooks: number = 0;
   displayModalFilter: boolean = false;
-  subjects: any[] = [];
+  subjects: Subject[] = [];
   isAdmin: boolean = false;
 
   currentPage: number = 1;
@@ -140,19 +141,14 @@ export class BooksComponent implements OnInit {
   }
 
   carregarDisciplinas() {
-    return this.subjectsService.findAll().subscribe(
-      dados => {
-        this.subjects = dados.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          }
-        })
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    )
+    });
   }
 
   buscarTotal() {

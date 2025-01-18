@@ -11,6 +11,8 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { TopicService } from 'src/app/core/topics/courseService.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { Subject } from 'src/app/core/model/Subject';
+import { Topic } from 'src/app/core/model/Topic';
 
 @Component({
   selector: 'app-questions',
@@ -35,11 +37,11 @@ export class QuestionsComponent implements OnInit {
   showAnswerForm = false;
   answerIndex?: number;
   fileToUpload!: File;
-  subjects: any[] = [];
+  subjects: Subject[] = [];
   //currentQuestionIndex: number = 0;
 
   selectedSubject?: number;
-  topics: any[] = [];
+  topics: Topic[] = [];
 
   // Armazenar as respostas do usuário
   userAnswers: { questionId: number; answerId: number }[] = [];
@@ -205,29 +207,25 @@ export class QuestionsComponent implements OnInit {
   }
 
   getTopicsBySubjectId() {
-    this.topicService.getBySubjectId(this.selectedSubject!).then(lista => {
-      this.topics = lista.map(course => ({
-        label: course.name,
-        value: course.id
-      }));
-    })
-    .catch(erro => this.errorHandler.handle(erro));
+    this.topicService.getBySubjectId(this.selectedSubject!).subscribe({
+      next: (dados) => {
+        this.topics = dados; 
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    });
   }
   
   carregarDisciplinas() {
-    return this.subjectsService.findAll().subscribe(
-      dados => {
-        this.subjects = dados.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          }
-        })
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    )
+    });
   }
 
   // Métodos de gerenciamento de respostas

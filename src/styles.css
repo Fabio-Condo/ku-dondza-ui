@@ -7,8 +7,9 @@
     --card-padding: 1rem;
     --card-padding-feed: 0rem;
     --color-white: hsl(252, 30%, 100%);
-    --color-gray: #555555;;
-    --color-light: #F4F6F6;
+    --color-gray: #555555;
+    /*--color-light: #F4F6F6;*/
+    --color-light: #ffffff;
     --color-dark: hsl(252, 30%, 17%);
     --color-primary: #3734ed;
     --color-success: hsl(120, 95%, 60%);
@@ -33,7 +34,9 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
+    /*font-family: 'Nunito Sans', sans-serif;*/
+    font-family: 'Poppins', sans-serif; 
     color: var(--color-dark);
     background: var(--color-light);
     overflow-x: hidden;
@@ -46,10 +49,9 @@ body {
 
 .title {
     font-size: 24px; /* Tamanho maior para impacto visual */
-    color: #34495e; /* Azul escuro mais vibrante */
+    color: #2c3e50; /* Azul escuro mais vibrante */
     text-transform: capitalize; /* Primeira letra maiúscula */
     font-weight: 700; /* Fonte mais grossa */
-    font-family: 'Poppins', sans-serif; /* Fonte moderna */
     position: relative;
     margin-bottom: 10px; /* Espaçamento abaixo do título */
     line-height: 1.3; /* Melhora a legibilidade */
@@ -59,18 +61,16 @@ body {
     margin-top: 5px;
     margin-bottom: 25px; /* Mais espaço abaixo da descrição */
     font-size: 14px; /* Tamanho um pouco maior para melhor legibilidade */
-    color: #2c3e50; /* Azul escuro para contraste */
-    font-family: 'Open Sans', sans-serif; /* Fonte legível */
+    color: #555; /* Azul escuro para contraste */
     font-weight: 400;
     line-height: 1.6; /* Espaçamento entre linhas para melhor leitura */
-    opacity: 0.9; /* Leve transparência para um visual mais suave */
 }
 
 /* Table */
 .card-table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0px 10px; /* Aumentei o espaçamento vertical */
+    border-spacing: 0px 20px; /* Aumentei o espaçamento vertical */
 }
 
 .card {
@@ -81,6 +81,11 @@ body {
     width: 100%;
     border: 1px solid #e0e0e0; /* Cor da borda mais suave */
     transition: all 0.3s ease-in-out; /* Transição suave */
+
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
@@ -102,15 +107,13 @@ body {
     font-size: 18px; /* Tamanho maior para o título */
     color: #2c3e50; /* Cor mais escura e sofisticada */
     font-weight: 700; /* Fonte mais grossa */
-    font-family: 'Poppins', sans-serif; /* Fonte moderna */
     margin-bottom: 8px; /* Espaçamento abaixo do título */
 }
 
 .card-table .details {
     font-size: 14px; /* Tamanho um pouco maior para os detalhes */
-    color: #7f8c8d; /* Cor mais suave e elegante */
+    color: #555; /* Cor mais suave e elegante */
     font-weight: 400;
-    font-family: 'Open Sans', sans-serif; /* Fonte legível e moderna */
     line-height: 1.6; /* Melhora a legibilidade */
 }
 
@@ -119,7 +122,6 @@ body {
     color: #2c3e50; /* Cor consistente com o tema */
     font-weight: 600;
     text-align: center;
-    font-family: 'Poppins', sans-serif; /* Fonte moderna */
     margin-top: 20px; /* Espaçamento acima do indicador */
 }
 
@@ -142,7 +144,6 @@ body {
     background-color: #fff; /* Fundo branco */
     color: #333; /* Cor do texto mais escura */
     transition: all 0.3s ease; /* Transição suave */
-    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
 
 .select-itens-por-pagina:hover {
@@ -162,13 +163,12 @@ body {
     display: flex;
     align-items: center;
     transition: all 0.3s ease; /* Transição suave */
-    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
 
 .pagination-button:hover {
-    background-color: darken(var(--color-primary), 10%); /* Escurece a cor ao passar o mouse */
     transform: translateY(-1px); /* Efeito de levantar */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+    opacity: 0.8; /* Leve transparência para um visual mais suave */
 }
 
 .pagination-button:disabled {
@@ -184,8 +184,6 @@ body {
     font-size: 14px; /* Tamanho um pouco maior */
     color: #555; /* Cor mais suave */
     font-weight: 400;
-    opacity: 0.9; /* Leve transparência */
-    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
 
 /* INPUT SEARCH */
@@ -193,7 +191,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 0 30px 0; /* Mais espaço abaixo */
+    margin: 0 0 5px 0; /* Mais espaço abaixo */
     flex-wrap: wrap; /* Para telas menores */
     gap: 15px; /* Espaço entre os elementos */
 }
@@ -212,7 +210,7 @@ body {
 
 .transparent-input {
     background: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente */
-    border: 1px solid #dcdcdc; /* Borda mais suave */
+    border: 1px solid #e0e0e0; /* Cor da borda mais suave */
     border-radius: 8px; /* Bordas mais arredondadas */
     padding: 12px 20px 12px 40px; /* Mais conforto no preenchimento */
     font-size: 14px;
@@ -220,7 +218,6 @@ body {
     outline: none;
     transition: all 0.3s ease; /* Transição suave */
     width: 300px;
-    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
 }
 
 .transparent-input::placeholder {
@@ -364,10 +361,19 @@ body {
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: all 300ms ease;
+
+    background-color: var(--color-primary); /* Cor primária */
+    color: #fff; /* Texto branco */
+    cursor: pointer;
+    border-radius: 6px; /* Bordas mais arredondadas */
+    align-items: center;
+    transition: all 0.3s ease; /* Transição suave */
 }
 
 .btn:hover {
-    opacity: 0.8;
+    transform: translateY(-1px); /* Efeito de levantar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+    opacity: 0.8; /* Leve transparência para um visual mais suave */
 }
 
 .btn-primary {

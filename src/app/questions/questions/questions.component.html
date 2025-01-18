@@ -5,7 +5,7 @@
     </div>
 
     <p class="title-description">
-        Descubra a diversidade de cursos disponíveis em Moçambique, incluindo detalhes como título do curso, descrição e a instituição que oferece.
+        Descubra a diversidade de cursos disponíveis em Moçambiques.
     </p>
 
     <div class="flex">
@@ -121,7 +121,7 @@
                 <label for="subject">Disciplina</label>
                 <select id="subject" name="subject" [(ngModel)]="question.topic.subject.id" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" required>
                   <option value="" disabled selected>Selecione a subject</option>
-                  <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+                  <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
                 </select>
             </div>
 
@@ -130,7 +130,7 @@
                 <select id="course" name="course" [(ngModel)]="question.topic.id" [disabled]="!selectedSubject"
                     required>
                     <option value="" disabled selected>Selecione o curso</option>
-                    <option *ngFor="let topic of topics" [value]="topic.value">{{ topic.label }}</option>
+                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
             </div>
 
@@ -221,7 +221,7 @@
             <label for="subject">Disciplina</label>
             <select id="subject" name="subject" [(ngModel)]="filtro.subject" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" (change)="findAll()" required>
               <option value="" disabled selected>Selecione a subject</option>
-              <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+              <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
             </select>
         </div>
 
@@ -229,7 +229,7 @@
             <label for="course">Tópico</label>
             <select id="course" name="course" [(ngModel)]="filtro.topic" [disabled]="!selectedSubject" (change)="findAll()" required>
                 <option value="" disabled selected>Selecione o curso</option>
-                <option *ngFor="let topic of topics" [value]="topic.value">{{ topic.label }}</option>
+                <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
             </select>
         </div>
 

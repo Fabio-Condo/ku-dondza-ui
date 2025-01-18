@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
 import { CourseService } from '../courseService.service';
 import { CourseRequirement } from 'src/app/core/model/CourseRequirement';
+import { Institution } from 'src/app/core/model/Institution';
 
 @Component({
   selector: 'app-courses',
@@ -31,7 +32,7 @@ export class CoursesComponent implements OnInit {
   courses: Course[] = [];
   course: Course = new Course();
   selectedCourse: Course = new Course();
-  institutions: any[] = [];
+  institutions: Institution[] = [];
 
   requirement?: CourseRequirement;
   requirements: Array<CourseRequirement> = [];
@@ -177,19 +178,14 @@ export class CoursesComponent implements OnInit {
   }
 
   carregarInstituicoes() {
-    return this.institutionService.listarTodos().subscribe(
-      dados => {
-        this.institutions = dados.content.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          };
-        });
+    this.institutionService.getAll().subscribe({
+      next: (dados) => {
+        this.institutions = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    );
+    });
   }
 
   changePageSize(event: any): void {

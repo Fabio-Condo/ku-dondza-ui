@@ -40,8 +40,8 @@ export class InstitutionService {
 
     }
 
-    listarTodos(): Observable<IApiResponse<Institution>> {
-        return this.http.get<IApiResponse<Institution>>(`${this.host}/filter`, {});
+    getAll(): Observable<Institution[]> {
+        return this.http.get<Institution[]>(`${this.host}/findAll`, {});
     }
 
     save(name: string, acronym: string, type: string, administrationType: string, address: string, description: string, website: string, file: File): Observable<Institution> {

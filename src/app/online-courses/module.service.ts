@@ -25,23 +25,12 @@ export class ModuleService {
     }
 
 
-    getAll(courseId: number): Promise<any> {
+    findByOnlineCourseId(courseId: number): Observable<Module[]> {
 
         let params = new HttpParams()
             .set('courseId', courseId);
 
-        return firstValueFrom(this.http.get(this.host + '/getListByCourseId', {params}));
-    }
-
-    findByOnlineCourseId(courseId: number, filtro: CourseFilter): Observable<IApiResponse<Module>> {
-        
-        let params = new HttpParams()
-            .set('page', filtro.pagina)
-            .set('sort', filtro.ordenamento)
-            .set('size', filtro.itensPorPagina)
-            .set('courseId', courseId);
-
-        return this.http.get<IApiResponse<Module>>(`${this.host}/findByCourseId`, { params });
+        return this.http.get<Module[]>(`${this.host}/findByCourseId`, { params });
     }
 
     save(module: Module): Observable<Module> {

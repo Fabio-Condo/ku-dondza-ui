@@ -41,8 +41,8 @@ export class UserService {
     return this.http.get<User[]>(`${this.host}/list`);
   }
 
-  getAllInstrutors(): Observable<IApiResponse<User>> {
-    return this.http.get<IApiResponse<User>>(`${this.host}/instrutores`, {});
+  getAllInstrutors(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.host}/instrutores`, {});
   }
 
   save(user: User, profileImageFile: File): Observable<User> {

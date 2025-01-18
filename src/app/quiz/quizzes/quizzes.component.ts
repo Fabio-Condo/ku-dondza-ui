@@ -13,6 +13,7 @@ import { QuestionService } from 'src/app/questions/question.service';
 import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
   selector: 'app-quizzes',
@@ -32,7 +33,7 @@ export class QuizzesComponent implements OnInit {
   isAdmin: boolean = false;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   selectedQuiz: Quiz = new Quiz();
-  subjects: any[] = [];
+  subjects: Subject[] = [];
 
   loggedUser: User = new User;
   
@@ -93,19 +94,14 @@ export class QuizzesComponent implements OnInit {
   }
   
   carregarDisciplinas() {
-    return this.subjectsService.findAll().subscribe(
-      dados => {
-        this.subjects = dados.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          }
-        })
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    )
+    });
   }
 
   getTotalQuizzes(){

@@ -30,7 +30,7 @@ export class OnlineCoursesComponent implements OnInit {
   totalCourses: number = 0;
   displayModalFilter: boolean = false;
   isAdmin: boolean = false;
-  users: any[] = [];
+  users: User[] = [];
   
   selectedCourse: OnlineCourse = new OnlineCourse();
 
@@ -229,19 +229,14 @@ export class OnlineCoursesComponent implements OnInit {
   }
 
   getUsersInstrutors() {
-    return this.userService.getAllInstrutors().subscribe(
-      dados => {
-        this.users = dados.content.map(dado => {
-          return {
-            label: dado.firstName + ' ' + dado.lastName,
-            value: dado.id
-          }
-        })
+    this.userService.getAllInstrutors().subscribe({
+      next: (dados) => {
+        this.users = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    )
+    });
   }
 
   changePageSize(event: any): void {

@@ -22,6 +22,7 @@ import { InstitutionService } from 'src/app/institutions/InstitutionService.serv
 import { Course } from 'src/app/core/model/Course';
 import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
+import { Institution } from 'src/app/core/model/Institution';
 
 @Component({
   selector: 'app-user-profile-view',
@@ -75,7 +76,7 @@ export class UserProfileViewComponent implements OnInit {
 
   selectedInstitution?: number;
   courses: any[] = [];
-  institutions: any[] = [];
+  institutions: Institution[] = [];
   course = new Course();
 
   activeTabPost: number = 1;
@@ -122,7 +123,7 @@ export class UserProfileViewComponent implements OnInit {
       this.getUserByUserId(userId);
     }
     this.getSubjectsInterests();
-    this.getInstitutions();
+    this.carregarInstituicoes();
     this.scrollToTop();
   }
 
@@ -471,21 +472,15 @@ export class UserProfileViewComponent implements OnInit {
       .catch(erro => this.errorHandler.handle(erro));
   }
 
-  getInstitutions() {
-    return this.institutionService.listarTodos().subscribe(
-      dados => {
-        this.institutions = dados.content.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          }
-        })
+  carregarInstituicoes() {
+    this.institutionService.getAll().subscribe({
+      next: (dados) => {
+        this.institutions = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
-    )
+    });
   }
 
   onEditUserCourse(userCourse: UserCourse): void {

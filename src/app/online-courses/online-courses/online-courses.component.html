@@ -5,8 +5,7 @@
     </div>
 
     <p class="title-description">
-        Descubra a diversidade de cursos disponíveis em Moçambique,
-        incluindo detalhes como título do curso, descrição e a instituição que oferece.
+        Descubra a diversidade de cursos disponíveis em Moçambique.
     </p>
 
     <div class="flex">
@@ -143,7 +142,7 @@
                 <label for="instrutor">Instrutor</label>
                 <select id="instrutor" [(ngModel)]="course.instrutor.id" name="institution" required>
                   <option value="" disabled selected>Selecione o instrutor</option>
-                  <option *ngFor="let instrutor of users" [value]="instrutor.value">{{ instrutor.label }}</option>
+                  <option *ngFor="let instrutor of users" [value]="instrutor.id">{{ instrutor.firstName }} {{ instrutor.lastName }}</option>
                 </select>
             </div>
 

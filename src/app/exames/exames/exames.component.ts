@@ -7,6 +7,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
 import { SubjectsService } from 'src/app/core/subjects/subjects.service';
+import { Subject } from 'src/app/core/model/Subject';
+import { Institution } from 'src/app/core/model/Institution';
 
 @Component({
   selector: 'app-exames',
@@ -24,8 +26,8 @@ export class ExamesComponent implements OnInit {
   file!: File;
   totalExames: number = 0;
   displayModalFilter: boolean = false;
-  institutions: any[] = [];
-  subjects: any[] = [];
+  institutions: Institution[] = [];
+  subjects: Subject[] = [];
   isAdmin: boolean = false;
   
   currentPage: number = 1;
@@ -159,37 +161,27 @@ export class ExamesComponent implements OnInit {
       }
     });
   }
-
+  
   carregarInstituicoes() {
-    return this.institutionService.listarTodos().subscribe(
-      dados => {
-        this.institutions = dados.content.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          }
-        })
+    this.institutionService.getAll().subscribe({
+      next: (dados) => {
+        this.institutions = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    )
+    });
   }
 
   carregarDisciplinas() {
-    return this.subjectsService.findAll().subscribe(
-      dados => {
-        this.subjects = dados.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          }
-        })
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    )
+    });
   }
 
   buscarTotal() {

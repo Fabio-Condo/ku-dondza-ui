@@ -30,7 +30,7 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   modulo: Module = new Module();
   modulos: Module[] = [];
-  listModulos: any[] = [];
+  //listModulos: Module[] = [];
 
   onlineCourseContent: OnlineCourseContent = new OnlineCourseContent();
   onlineSelectedCourseContent: OnlineCourseContent = new OnlineCourseContent();
@@ -76,12 +76,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     { label: 'File', value: 'FILE' },
   ];
 
-  filtro: CourseFilter = {
-    pagina: 0,
-    itensPorPagina: 5,
-    ordenamento: 'id,asc',
-    name: ''
-  }
+
 
   filtroStudents: IUserFilter = {
     page: -1,
@@ -162,7 +157,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso salva com sucesso!' });
         this.showLoading = false;
-        this.findModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(0, this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -195,7 +190,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.modulo = response
         this.messageService.add({ severity: 'success', detail: 'Module salvo com sucesso!' });
         this.showLoading = false;
-        this.findModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(0, this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -212,8 +207,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
-        this.findModulesByCourseById(0, this.course.id);
-        this.getModulesByCourseById(this.course.id);
+        this.getModulesByCourseById(0, this.course.id);
         this.getStudentsByCourseId(this.course.id);
         this.countOnlineCourseStudentsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
@@ -275,13 +269,11 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  findModulesByCourseById(pagina: number = 0, onlineCourseId: number): void {
+  getModulesByCourseById(pagina: number = 0, onlineCourseId: number): void {
     this.showLoading = true;
-    this.filtro.pagina = this.currentPage - 1;
-    this.moduleService.findByOnlineCourseId(onlineCourseId, this.filtro).subscribe(
-      (dados: IApiResponse<Module>) => {
-        this.modulos = dados.content
-        this.totalRegistros = dados.totalElements
+    this.moduleService.findByOnlineCourseId(onlineCourseId).subscribe(
+      (dados: Module[]) => {
+        this.modulos = dados
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -289,19 +281,6 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.showLoading = false;
       }
     );
-  }
-
-  getModulesByCourseById(onlineCourseId: number) {
-    this.moduleService.getAll(onlineCourseId).then(dados => {
-      this.listModulos = dados.map((dado: any) => ({
-        label: dado.name,
-        value: dado.id
-      }));
-    }),
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
   }
 
   onUpdateModule(modulo: Module): void {
@@ -389,7 +368,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   excluir(content: OnlineCourseContent) {
     this.onlineCoursesContentService.excluir(content.id).subscribe(() => {
       if (this.grid.first === 0) {
-        this.findModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(0, this.course.id);
       } else {
         this.grid.reset();
       }

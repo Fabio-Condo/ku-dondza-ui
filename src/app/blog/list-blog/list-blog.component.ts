@@ -10,6 +10,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { BlogLikeService } from 'src/app/core/likes copy/blog-like.service';
 import { UserService } from 'src/app/users/user.service';
 import { SubjectsService } from 'src/app/core/subjects/subjects.service';
+import { Subject } from 'src/app/core/model/Subject';
 
 @Component({
   selector: 'app-list-blog',
@@ -26,7 +27,7 @@ export class ListBlogComponent implements OnInit {
 
   loggedUser: User = new User;
 
-  subjects: any[] = [];
+  subjects: Subject[] = [];
   imagePath = './assets/images/funcao do grau 2.png';
 
 
@@ -137,19 +138,14 @@ export class ListBlogComponent implements OnInit {
 
     
   carregarDisciplinas() {
-    return this.subjectsService.findAll().subscribe(
-      dados => {
-        this.subjects = dados.map(dado => {
-          return {
-            label: dado.name,
-            value: dado.id
-          }
-        })
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados; 
       },
-      (errorResponse: HttpErrorResponse) => {
+      error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
-    )
+    });
   }
 
   private sendErrorNotification(message: string): void {

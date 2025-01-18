@@ -249,7 +249,7 @@
                 <select id="institution" name="institution" [(ngModel)]="selectedInstitution"
                     [(ngModel)]="userCourse.course.institution.id" (change)="getCoursesByInstitutionId()" required>
                     <option value="" disabled selected>Selecione a instituição</option>
-                    <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
+                    <option *ngFor="let institution of institutions" [value]="institution.id">{{ institution.name }}
                     </option>
                 </select>
             </div>

@@ -11,8 +11,8 @@ export class TopicService {
 
     constructor(private http: HttpClient) { }
 
-    getBySubjectId(subjectId: number): Promise<Topic[]> {
-        return firstValueFrom(this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`, ));
+    getBySubjectId(subjectId: number): Observable<Topic[]> {
+        return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
     }
 
     getSubjectsById(subjectId: number): Observable<Topic[]> {

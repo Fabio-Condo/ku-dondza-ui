@@ -119,7 +119,7 @@
             <label for="subject">Disciplina</label>
             <select id="subject" [(ngModel)]="filter.subject" (change)="getQuizzes()" name="subject" required>
               <option value="" disabled selected>Selecione a subject</option>
-              <option *ngFor="let subject of subjects" [value]="subject.value">{{ subject.label }}</option>
+              <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
             </select>
           </div>
 
