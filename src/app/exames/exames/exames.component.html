@@ -119,8 +119,13 @@
 
 <div class="overlay" *ngIf="displayModalSave">
   <div class="dialog">
-    <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
-    <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+
+    <div class="dialog-header">
+      <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
+      <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+    </div>
+
+    <hr class="header-divider">
 
     <form autocomplete="off" #exameForm="ngForm">
       <div class="form-group">
@@ -165,7 +170,9 @@
           required />
       </div>
 
-      <div class="form-group">
+      <hr class="header-divider">
+
+      <div class="dialog-footer">
         <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
       </div>
 
@@ -175,10 +182,16 @@
 
 <div class="overlay" *ngIf="displayModalFilter">
   <div class="dialog">
-    <h2>Filtros</h2>
-    <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+
+    <div class="dialog-header">
+      <h2>Filtros</h2>
+      <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+    </div>
+
+    <hr class="header-divider">
 
     <form autocomplete="off" #exameForm="ngForm">
+
       <div class="form-group">
         <label for="institution">Instituição</label>
         <select id="institution" [(ngModel)]="filtro.institution" (change)="findAll()" name="institution" required>
@@ -190,7 +203,7 @@
       <div class="form-group">
         <label for="subject">Disciplina</label>
         <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
-          <option value="" disabled selected>Selecione a subject</option>
+          <option value="" disabled selected>Selecione a disciplina</option>
           <option *ngFor="let subject of subjects" [ngValue]="subject">{{ subject.name }}</option>
         </select>
       </div>
@@ -204,27 +217,45 @@
 
       <div class="form-group">
         <label for="description">Descrição</label>
-        <input type="text" name="description" ngModel #description="ngModel" minlength="1"
-          [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
-      </div>
-
-      <label for="description">Intervalo de datas</label>
-      <div class="p-fluid" style="display: flex; justify-content: space-between;">
-        <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="beginDate" [inline]="false"
-          [readonlyInput]="false" ngModel #beginDate="ngModel" [(ngModel)]="filtro.beginDate"
-          (ngModelChange)="findAll()"></p-calendar>
-
-        <span>até</span>
-
-        <p-calendar view="year" dateFormat="yy" [showOnFocus]="false" name="endDate" [inline]="false"
-          [readonlyInput]="false" ngModel #endDate="ngModel" [(ngModel)]="filtro.endDate"
-          (ngModelChange)="findAll()"></p-calendar>
+        <input type="text" id="description" name="description" [(ngModel)]="filtro.description" (ngModelChange)="findAll()" minlength="1">
       </div>
 
       <div class="form-group">
-        <button type="button" (click)="limparCampos()" class="btn">Reset</button>
+        <label for="date-range">Intervalo de datas</label>
+        <div class="date-range-container">
+          <p-calendar 
+            id="beginDate" 
+            view="year" 
+            dateFormat="yy" 
+            [showOnFocus]="false" 
+            name="beginDate" 
+            [inline]="false" 
+            [readonlyInput]="false" 
+            [(ngModel)]="filtro.beginDate" 
+            (ngModelChange)="findAll()"
+            placeholder="Data inicial"
+          ></p-calendar>
+          <span class="date-separator">até</span>
+          <p-calendar 
+            id="endDate" 
+            view="year" 
+            dateFormat="yy" 
+            [showOnFocus]="false" 
+            name="endDate" 
+            [inline]="false" 
+            [readonlyInput]="false" 
+            [(ngModel)]="filtro.endDate" 
+            (ngModelChange)="findAll()"
+            placeholder="Data final"
+          ></p-calendar>
+        </div>
       </div>
 
+      <hr class="header-divider">
+
+      <div class="dialog-footer">
+        <button type="button" (click)="limparCampos()" class="btn">Reset</button>
+      </div>
     </form>
   </div>
 </div>

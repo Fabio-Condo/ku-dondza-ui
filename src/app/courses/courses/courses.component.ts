@@ -215,6 +215,7 @@ export class CoursesComponent implements OnInit {
   limparCampos() {
     this.filtro.searchParam = "";
     this.filtro.institution = undefined;
+    this.filtro.level = "";
     this.filtro.pagina = 0;
     this.filtro.itensPorPagina = 10;
     this.filtro.ordenamento = "id,desc"

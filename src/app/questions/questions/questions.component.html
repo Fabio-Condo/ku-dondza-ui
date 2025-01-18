@@ -102,8 +102,13 @@
 <!-- Modal para Adicionar ou Editar Perguntas -->
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
-        <h2>{{ editing ? 'Editando Question' : 'Adicionando Nova Question' }}</h2>
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+
+        <div class="dialog-header">
+            <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
 
         <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="save(questionForm)">
             <div class="form-group">
@@ -186,10 +191,15 @@
                     </option>
                 </select>
             </div>
+            
+            <hr class="header-divider">
 
-            <button type="submit" [disabled]="questionForm.invalid" class="btn">
-                {{ showLoading ? 'Loading...' :'Salvar' }}
-            </button>
+            <div class="dialog-footer">
+
+                <button type="submit" [disabled]="questionForm.invalid" class="btn">
+                    {{ showLoading ? 'Loading...' :'Salvar' }}
+                </button>      
+            </div>
         </form>
     </div>
 </div>
@@ -212,37 +222,44 @@
 
 <div class="overlay" *ngIf="displayModalFilter" >
     <div class="dialog" style="width: 400px">
-      <h2>Filtros</h2>
-      <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
-  
-      <form autocomplete="off" #exameForm="ngForm">
 
-        <div class="form-group">
-            <label for="subject">Disciplina</label>
-            <select id="subject" name="subject" [(ngModel)]="filtro.subject" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" (change)="findAll()" required>
-              <option value="" disabled selected>Selecione a subject</option>
-              <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
-            </select>
+        <div class="dialog-header">
+            <h2>Filtros</h2>
+            <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
         </div>
-
-        <div class="form-group">
-            <label for="course">Tópico</label>
-            <select id="course" name="course" [(ngModel)]="filtro.topic" [disabled]="!selectedSubject" (change)="findAll()" required>
-                <option value="" disabled selected>Selecione o curso</option>
-                <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="text">Descrição</label>
-            <input type="text" name="text" ngModel #text="ngModel" minlength="1"
-              [(ngModel)]="filtro.text" (ngModelChange)="findAll()">
-        </div>
+        
+        <hr class="header-divider">
   
-        <div class="form-group">
-          <button type="button" (click)="limparCampos()" class="btn">Reset</button>
-        </div>
+        <form autocomplete="off" #exameForm="ngForm">
+
+            <div class="form-group">
+                <label for="subject">Disciplina</label>
+                <select id="subject" name="subject" [(ngModel)]="filtro.subject" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" (change)="findAll()" required>
+                <option value="" disabled selected>Selecione a subject</option>
+                <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Tópico</label>
+                <select id="course" name="course" [(ngModel)]="filtro.topic" [disabled]="!selectedSubject" (change)="findAll()" required>
+                    <option value="" disabled selected>Selecione o curso</option>
+                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="text">Descrição</label>
+                <input type="text" name="text" ngModel #text="ngModel" minlength="1"
+                [(ngModel)]="filtro.text" (ngModelChange)="findAll()">
+            </div>
+    
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+              <button type="button" (click)="limparCampos()" class="btn">Reset</button>
+            </div>
   
-      </form>
+        </form>
     </div>
 </div>

@@ -117,8 +117,13 @@
   
   <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
-      <h2>{{ editing ? 'Editando Livro' : 'Adicionando Novo Livro' }}</h2>
-      <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+      
+      <div class="dialog-header">
+        <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
+        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+      </div>
+  
+      <hr class="header-divider">
   
       <form autocomplete="off" #bookForm="ngForm">
 
@@ -147,7 +152,10 @@
             required />
         </div>
   
-        <div class="form-group">
+
+        <hr class="header-divider">
+
+        <div class="dialog-footer">
           <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
         </div>
   
@@ -157,8 +165,13 @@
   
   <div class="overlay" *ngIf="displayModalFilter">
     <div class="dialog">
-      <h2>Filtros</h2>
-      <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+
+      <div class="dialog-header">
+        <h2>Filtros</h2>
+        <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+      </div>
+  
+      <hr class="header-divider">
   
       <form autocomplete="off" #bookForm="ngForm">
 
@@ -182,9 +195,11 @@
             [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
         </div>
   
-        <div class="form-group">
-          <button type="button" (click)="limparCampos()" class="btn">Reset</button>
-        </div>
+      <hr class="header-divider">
+
+      <div class="dialog-footer">
+        <button type="button" (click)="limparCampos()" class="btn">Reset</button>
+      </div>
   
       </form>
     </div>

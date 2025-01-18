@@ -116,11 +116,13 @@
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
-        <h2>{{ editing ? 'Editando Instituição' : 'Adicionando Nova Instituição' }}</h2>
-
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
-
-        <hr>
+        
+        <div class="dialog-header">
+            <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
@@ -171,18 +173,25 @@
                     class="form-control" required />
             </div>
 
-            <div class="form-group">
-                <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+              <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
+
         </form>
     </div>
 </div>
 
 <div class="overlay" *ngIf="displayModalFilter">
     <div class="dialog">
-        <h2>Filtros</h2>
 
-        <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+        <div class="dialog-header">
+            <h2>Filtros</h2>
+            <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
 
         <form autocomplete="off" #institutionForm="ngForm">
             <div class="form-group">
@@ -208,9 +217,12 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <button type="button" (click)="limparCampos()" class="btn">Reset</button>
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+              <button type="button" (click)="limparCampos()" class="btn">Reset</button>
             </div>
+
         </form>
     </div>
 </div>

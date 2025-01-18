@@ -101,8 +101,12 @@
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
-        <h2>{{ editing ? 'Editando Curso' : 'Adicionando Novo Curso' }}</h2>
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        <div class="dialog-header">
+            <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
             <div class="form-group">
@@ -163,45 +167,55 @@
                 
             </div>
 
-            <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+                <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            </div>
         </form>
     </div>
 </div>
 
 <div class="overlay" *ngIf="displayModalFilter">
     <div class="dialog" style="width: 400px;">
-      <h2>Filtros</h2>
-      <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+        <div class="dialog-header">
+            <h2>Filtros</h2>
+            <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
   
-      <form autocomplete="off" #exameForm="ngForm">
+        <form autocomplete="off" #exameForm="ngForm">
 
-        <div class="form-group">
-            <label for="name">Nome</label>
-            <input type="text" name="name" ngModel #name="ngModel" minlength="1"
-              [(ngModel)]="filtro.name" (ngModelChange)="findAll()">
-        </div>
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" name="name" ngModel #name="ngModel" minlength="1"
+                [(ngModel)]="filtro.name" (ngModelChange)="findAll()">
+            </div>
 
-        <div class="form-group">
-          <label for="institution">Instituição</label>
-          <select id="institution" [(ngModel)]="filtro.institution" (change)="findAll()" name="institution" required>
-            <option value="" disabled selected>Selecione a instituição</option>
-            <option *ngFor="let institution of institutions" [value]="institution.id">{{ institution.name }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-            <label for="level">Nivel</label>
-            <select id="level" [(ngModel)]="filtro.level" name="level" #level="ngModel" (change)="findAll()" required>
-                <option value="" disabled selected>Selecione o tipo</option>
-                <option *ngFor="let nivel of niveis" [value]="nivel.value">{{ nivel.label }}</option>
+            <div class="form-group">
+            <label for="institution">Instituição</label>
+            <select id="institution" [(ngModel)]="filtro.institution" (change)="findAll()" name="institution" required>
+                <option value="" disabled selected>Selecione a instituição</option>
+                <option *ngFor="let institution of institutions" [value]="institution.id">{{ institution.name }}</option>
             </select>
-        </div>
+            </div>
+
+            <div class="form-group">
+                <label for="level">Nivel</label>
+                <select id="level" [(ngModel)]="filtro.level" name="level" #level="ngModel" (change)="findAll()" required>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option *ngFor="let nivel of niveis" [value]="nivel.value">{{ nivel.label }}</option>
+                </select>
+            </div>
+    
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+              <button type="button" (click)="limparCampos()" class="btn">Reset</button>
+            </div>
   
-        <div class="form-group">
-          <button type="button" (click)="limparCampos()" class="btn">Reset</button>
-        </div>
-  
-      </form>
+        </form>
     </div>
 </div>
 

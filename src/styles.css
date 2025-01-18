@@ -245,46 +245,6 @@ body {
     color: var(--color-primary); /* Cor do ícone ao focar */
 }
 
-/* DIALOG FOOTER */
-.dialog-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px; /* Espaço entre os botões */
-    margin-top: 20px; /* Espaço acima do rodapé */
-}
-
-.dialog-footer button {
-    padding: 12px 24px; /* Mais conforto no clique */
-    border: none;
-    border-radius: 6px; /* Bordas mais arredondadas */
-    cursor: pointer;
-    font-size: 14px;
-    font-family: 'Open Sans', sans-serif; /* Fonte moderna */
-    transition: all 0.3s ease; /* Transição suave */
-}
-
-.dialog-footer button:first-child {
-    background-color: var(--color-primary); /* Cor primária */
-    color: white;
-}
-
-.dialog-footer button:first-child:hover {
-    background-color: darken(var(--color-primary), 10%); /* Escurece ao passar o mouse */
-    transform: translateY(-1px); /* Efeito de levantar */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
-}
-
-.dialog-footer button:last-child {
-    background-color: #6c757d; /* Cinza para o botão secundário */
-    color: white;
-}
-
-.dialog-footer button:last-child:hover {
-    background-color: darken(#6c757d, 10%); /* Escurece ao passar o mouse */
-    transform: translateY(-1px); /* Efeito de levantar */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
-}
-
 /* confirm dialog */
 .confirm-dialog-overlay {
     position: fixed;
@@ -475,6 +435,7 @@ body {
 /* End */
 
 /* Estilos para o diálogo de cadastro */
+/* Estilos para o diálogo de cadastro */
 .overlay {
     position: fixed;
     display: none;
@@ -482,74 +443,117 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6); /* Fundo mais escuro para melhor contraste */
     z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
 }
 
 .dialog {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 450px;
+    padding: 30px;
+    border-radius: 12px; /* Bordas mais arredondadas */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra mais suave e moderna */
+    max-width: 500px;
     width: 100%;
     position: relative;
-    width: 700px;
-    max-width: 700px;
-    max-height: 600px;
+    max-height: 80vh; /* Altura máxima relativa à tela */
     overflow-y: auto;
     transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Borda sutil para destacar */
+}
+
+/* Container para o título e botão de fechar */
+.dialog-header {
+    display: flex;
+    justify-content: space-between; /* Alinha o título à esquerda e o botão à direita */
+    align-items: center; /* Centraliza verticalmente */
+    margin-bottom: 20px; /* Espaçamento abaixo do cabeçalho */
 }
 
 .dialog h2 {
-    margin-top: 0;
-    color: var(--color-black);
+    margin: 0; /* Remove a margem padrão */
+    color: #333; /* Cor mais escura para melhor contraste */
+    font-size: 24px; /* Tamanho maior para o título */
+    font-weight: 600; /* Fonte mais grossa */
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666; /* Cor mais suave */
+    transition: color 0.3s ease; /* Transição suave */
+    padding: 5px; /* Espaçamento ao redor do ícone */
+    line-height: 1; /* Garante alinhamento vertical */
+}
+
+.close-btn:hover {
+    color: #333; /* Cor mais escura ao passar o mouse */
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* Mais espaço entre os campos */
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     color: #555;
+    font-weight: 500; /* Fonte mais grossa para labels */
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px;
+    border: 1px solid #ddd; /* Borda mais suave */
+    border-radius: 8px; /* Bordas mais arredondadas */
     box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #007bff; /* Cor azul ao focar */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2); /* Sombra ao focar */
+    outline: none;
 }
 
 .form-group textarea {
     resize: vertical;
+    min-height: 100px; /* Altura mínima para textarea */
 }
 
 .form-group select {
     appearance: none;
     background: #fff url('data:image/svg+xml;utf8,<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>') no-repeat right 10px center;
     background-size: 16px 12px;
+    cursor: pointer; /* Indicar que é clicável */
 }
 
-.close-btn {
-    position: absolute;
-    top: 25px;
-    right: 17px;
-    background: none;
-    border: none;
-    font-size: 25px;
-    cursor: pointer;
-    color: var(--color-black);
+/* Estilo para o footer do diálogo */
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end; /* Alinha o botão à direita */
+    padding: 10px 0 0; /* Espaçamento interno */
+    margin-top: 20px; /* Espaçamento acima do footer */
 }
-/* End */
+
+/* Estilo para a linha divisória */
+.header-divider {
+    border: 0; /* Remove a borda padrão */
+    height: 1px; /* Altura da linha */
+    background-color: #ddd; /* Cor da linha */
+    margin: 20px -30px; /* Espaçamento negativo para compensar o padding do .dialog */
+    width: calc(100% + 60px); /* Compensa o padding do .dialog */
+}
 
 
 
@@ -561,6 +565,7 @@ body {
     text-overflow: ellipsis;
 }
 
+/*
 hr {
     border: none;
     height: 0.5px;
@@ -568,6 +573,7 @@ hr {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+*/
 
 .profile-pic {
     width: 2.7rem;
@@ -669,3 +675,5 @@ img {
         display: none;
     }
 }
+
+
