@@ -2,133 +2,123 @@
     <!-- Capa do Curso -->
     <div class="course-cover">
         <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
-        <!--<img class="cover-image" [src]="imagePath" alt="Capa do Curso">-->
-
         <!-- Texto e botão sobre a imagem -->
         <div class="overlay-content">
             <p class="overlay-text">{{ course.name }}</p>
             <button class="overlay-button">Pré-visualizar</button>
         </div>
     </div>
-
 </div>
 
 <div class="learning-container">
+    <!-- Detalhes do Curso -->
+    <div class="course-details">
+        <h1 class="title">Descrição</h1>
+        <p class="course-description">{{ course.description }}</p>
 
-    <div class="main-content">
-        <!-- Detalhes do Curso -->
-        <div class="course-details">
-            <h1 class="title">Descrição</h1>
-            <p class="course-description">{{ course.description }}</p>
-
-            <!-- Informações do Curso -->
-            <div class="course-info">
-                <div class="release-date">
-                    <i class="pi pi-calendar"></i><span class="text-muted">Data de Lançamento: {{ course.lunchDate }}</span>
-                </div>
-
-                <div class="likes">
-                    <i class="pi pi-thumbs-up"></i><span class="text-muted">2,500 pessoas gostaram</span>
-                </div>
-
-                <button class="course-join" *ngIf="!course.isSubscribed"
-                    (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
-                <button class="course-join" disabled *ngIf="course.isSubscribed">Inscrito</button>
+        <!-- Informações do Curso -->
+        <div class="course-info">
+            <div class="release-date">
+                <i class="pi pi-calendar"></i><span class="text-muted">Data de Lançamento: {{ course.lunchDate }}</span>
             </div>
 
-            <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()"><i class="pi pi-pencil" style="font-size: 0.9rem; color: black;"></i></span></h1>
-
-            <p class="course-description" *ngFor="let req of course.requirements" style="margin-left: 10px;">
-                <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
-                {{ req.designation }}
-            </p>
-
-            <!-- Seção do Instrutor -->
-            <div class="instructor-info">
-                <h1 class="title">Instrutor</h1>
-                <div class="instructor-details">
-                    <img class="instructor-img" [src]="course.instrutor.profileImageUrl" alt="Instrutor">
-                    <div class="instructor-text">
-                        <h3>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</h3>
-                        <p>{{ course.instrutor.bio }}</p>
-                        <p> {{ course.name }}</p>
-
-                    </div>
-                </div>
+            <div class="likes">
+                <i class="pi pi-thumbs-up"></i><span class="text-muted">2,500 pessoas gostaram</span>
             </div>
+
+            <button class="course-join" *ngIf="!course.isSubscribed"
+                (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
+            <button class="course-join" disabled *ngIf="course.isSubscribed">Inscrito</button>
         </div>
 
-    </div>
+        <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()"><i class="pi pi-pencil" style="font-size: 0.9rem; color: black;"></i></span></h1>
 
+        <p class="course-description" *ngFor="let req of course.requirements" style="margin-left: 10px;">
+            <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
+            {{ req.designation }}
+        </p>
+    </div>
 </div>
 
 <div class="learning-container">
-    <!-- Lista de Aulas -->
-    <div class="course-lessons">
+    <!-- Seção do Instrutor -->
+    <div class="instructor-section">
+        <h1 class="title">Instrutor</h1>
+        <div class="instructor-card">
+            <img class="instructor-img" [src]="course.instrutor.profileImageUrl" alt="Instrutor">
+            <div class="instructor-details">
+                <h3>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</h3>
+                <p class="instructor-bio">{{ course.instrutor.bio }}</p>
+                <p class="instructor-course">{{ course.name }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="learning-container">
+    <!-- Seção de Aulas -->
+    <div class="lessons-section">
         <div class="section-header">
             <h1 class="title">Aulas</h1>
-            <div>
-                <button type="button" class="btn"  (click)="onAddNewModule()">Adicionar modulo</button>
-                <button type="button" class="btn" style="margin-left: 0.5rem;" (click)="onAddNewOnlineCourseContent()">Adicionar aula</button>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" (click)="onAddNewModule()">Adicionar Módulo</button>
+                <button type="button" class="btn btn-primary" (click)="onAddNewOnlineCourseContent()">Adicionar Aula</button>
             </div>
         </div>
-        <ul class="lesson-list" *ngFor="let modulo of modulos">
-            <li>
-                <i class="pi pi-play-circle"></i>
-                <div>
-                    <h3>{{ modulo.position }}. {{ modulo.name }} <span (click)="onUpdateModule(modulo)"><i class="pi pi-pencil" style="font-size: 0.7rem; color: black;"></i></span></h3> 
-                    <div *ngFor="let content of modulo.courseContents" class="section-header">
-                        <div>
-                            <span class="lesson-content" (click)="onSelectContent(content)">
-                                <i *ngIf="content.contentType == 'VIDEO'" class="pi pi-video" style="font-size: 0.7rem; color: var(--color-black);"></i>
-                                <i *ngIf="content.contentType == 'FILE'" class="pi pi-file" style="font-size: 0.7rem; color: var(--color-black);"></i>
-                                
-                                {{ modulo.position }}.{{ content.position }}.
-                                {{ content.description }}
+        <div class="modules-list">
+            <div *ngFor="let modulo of modulos" class="module-card">
+                <div class="module-header">
+                    <i class="pi pi-play-circle"></i>
+                    <h3>{{ modulo.position }}. {{ modulo.name }}</h3>
+                    <button class="edit-btn" (click)="onUpdateModule(modulo)">
+                        <i class="pi pi-pencil"></i>
+                    </button>
+                </div>
+                <div class="lessons-list">
+                    <div *ngFor="let content of modulo.courseContents" class="lesson-item">
+                        <div class="lesson-info">
+                            <i *ngIf="content.contentType == 'VIDEO'" class="pi pi-video"></i>
+                            <i *ngIf="content.contentType == 'FILE'" class="pi pi-file"></i>
+                            <span class="lesson-title" (click)="onSelectContent(content)">
+                                {{ modulo.position }}.{{ content.position }}. {{ content.description }}
                             </span>
-                        </div> 
-
-                        <div class="dropdown-container">
+                        </div>
+                        <div class="lesson-actions">
+                            <button *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload" (click)="download(content, content.fileName)" class="btn-icon">
+                                <i class="pi pi-download"></i>
+                            </button>
+                            <button *ngIf="isAdmin" class="btn-icon" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen">
+                                <i class="pi pi-ellipsis-v"></i>
+                            </button>
                             <div class="dropdown" *ngIf="content.isAdminMenuOpen">
                                 <a (click)="onUpdateOnlineCourseContent(content, modulo, courseContentFile); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
                                 <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = !content.isAdminMenuOpen">Excluir</a>
                             </div>
                         </div>
-
-                        <p *ngIf="content.showLoadingDownload" class="details"
-                            style="font-weight: bold; color: var(--color-primary);">
-                            Baixando...
-                        </p>
-
-                        <button *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload" (click)="download(content, content.fileName)" class="dropdown-btn"><i class="pi pi-download" style="font-size: 14px; color: black;"></i></button>
-
-                        <button *ngIf="isAdmin" class="dropdown-btn" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i class="pi pi-ellipsis-v" style="font-size: 14px; color: black;"></i></button>
-                        <button class="dropdown-btn" *ngIf="content.contentType == 'VIDEO'">1:42</button>
-                        <button class="dropdown-btn" *ngIf="content.contentType == 'FILE'">0:00</button>
                     </div>
-
                 </div>
-                
-                <!--<i class="pi pi-unlock" title="Aula Bloqueada"></i>--> <!-- Ícone de bloqueio -->
-            </li>
-        </ul>
-
+            </div>
+        </div>
     </div>
-
 </div>
 
-<div class="learning-container" style="padding: 0.7rem;">
-    <h1 class="title">Alunos</h1>
-
-    <div class="students-list" *ngFor="let student of students">
-        <a class="student-item">
-            <img src="{{ student.profileImageUrl }}" alt="student" class="student-avatar">
-            <span class="student-name">{{ student.firstName }} {{ student.lastName }}</span>
-        </a>
+<div class="learning-container">
+    <!-- Seção de Alunos -->
+    <div class="students-section">
+        <h1 class="title">Alunos</h1>
+        <div class="students-list">
+            <div *ngFor="let student of students" class="student-card">
+                <img class="student-avatar" [src]="student.profileImageUrl" alt="Aluno">
+                <div class="student-details">
+                    <h4>{{ student.firstName }} {{ student.lastName }}</h4>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-secondary" (click)="onShowMoreStudents()" *ngIf="students.length < 1000">Ver Mais</button>
     </div>
-    <button class="test-button" (click)="onShowMoreStudents()" *ngIf="students.length < 1000">Ver mais</button>
 </div>
 
+<!-- Modal de Vídeo -->
 <div class="overlay" *ngIf="showLesson">
     <div class="vidio-dialog">
         <h2 style="font-size: 1rem; margin-left: 0.7rem;">{{ onlineSelectedCourseContent.description }}</h2>
@@ -140,53 +130,44 @@
                 Your browser does not support the video tag.
             </video>
         </div>
-
     </div>
 </div>
 
+<!-- Modal de Adicionar/Editar Aula -->
 <div class="overlay" *ngIf="displayModalSaveContent">
     <div class="dialog">
         <h2>{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
-
         <button class="close-btn" (click)="displayModalSaveContent = false">&times;</button>
-
         <hr>
-
         <form autocomplete="off" #courseForm="ngForm">
-
             <div class="form-group">
                 <label for="type">Tipo</label>
                 <select id="type" [(ngModel)]="onlineCourseContent.contentType" name="type" required>
-                  <option value="" disabled selected>Selecione o tipo</option>
-                  <option *ngFor="let type of contentType" [value]="type.value">{{ type.label }}</option>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option *ngFor="let type of contentType" [value]="type.value">{{ type.label }}</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label for="description">Descrição</label>
                 <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
                     [(ngModel)]="onlineCourseContent.description">
             </div>
-
             <div class="form-group">
                 <label for="modulo">Módulo</label>
                 <select id="modulo" [(ngModel)]="onlineCourseContent.module.id" name="module" required>
-                  <option value="" disabled selected>Selecione o módulo</option>
-                  <option *ngFor="let module of modulos" [value]="module.id">{{ module.name }}</option>
+                    <option value="" disabled selected>Selecione o módulo</option>
+                    <option *ngFor="let module of modulos" [value]="module.id">{{ module.name }}</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <input type="file" (change)="onCourseContenFileSelected($event)" name="file" accept="application/**"
                     class="form-control" required />
             </div>
-
             <div class="form-group">
                 <label for="position">Posição</label>
                 <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
                     [(ngModel)]="onlineCourseContent.position">
             </div>
-
             <div class="form-group">
                 <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
@@ -194,28 +175,23 @@
     </div>
 </div>
 
+<!-- Modal de Adicionar/Editar Módulo -->
 <div class="overlay" *ngIf="displayModalSaveModule">
     <div class="dialog">
         <h2>{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
-
         <button class="close-btn" (click)="displayModalSaveModule = false">&times;</button>
-
         <hr>
-
         <form autocomplete="off" #courseForm="ngForm">
-
             <div class="form-group">
                 <label for="name">Descrição</label>
                 <input type="text" name="name" ngModel #name="ngModel" required minlength="1"
                     [(ngModel)]="modulo.name">
             </div>
-
             <div class="form-group">
                 <label for="position">Posição</label>
                 <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
                     [(ngModel)]="modulo.position">
             </div>
-
             <div class="form-group">
                 <button type="button" (click)="saveModule()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
@@ -223,21 +199,19 @@
     </div>
 </div>
 
+<!-- Modal de Requisitos -->
 <div class="overlay" *ngIf="displayModalUpateRequirements">
     <div class="dialog">
         <h2>Requisitos</h2>
         <button class="close-btn" (click)="displayModalUpateRequirements = false">&times;</button>
-
-            <form autocomplete="off" #courseRequirementsForm="ngForm" (ngSubmit)="updateRequirements(courseRequirementsForm)">
-            <!--Requirements-->
+        <form autocomplete="off" #courseRequirementsForm="ngForm" (ngSubmit)="updateRequirements(courseRequirementsForm)">
             <div class="requirements-container">
                 <div class="header-section">
                     <label>Todos</label>
                     <a href="javascript:;" class="add-btn" (click)="openAddNewRequirementModal()">
-                        <i class="pi pi-plus"></i> 
+                        <i class="pi pi-plus"></i>
                     </a>
                 </div>
-
                 <div class="table-container">
                     <table class="responsive-table">
                         <thead>
@@ -259,29 +233,28 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>       
+                </div>
             </div>
             <button type="submit" [disabled]="courseRequirementsForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-        </form>    
+        </form>
     </div>
 </div>
 
+<!-- Modal de Requisito (Adicionar/Editar) -->
 <div class="overlay" *ngIf="showRequirementForm && requirement">
     <div class="dialog" style="width: 600px;">
-      <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
-      <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
-  
-      <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
+        <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
+        <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
+        <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
             <label>Designation</label>
             <textarea pInputTextarea rows="3" ngModel #coordnates="ngModel" ngModel name="designation"
-              [(ngModel)]="requirement.designation"></textarea>
-
-          <button class="confirm-button confirm-button-primary" [disabled]="formRequirement.invalid">Confirmar</button>
-
-      </form>
+                [(ngModel)]="requirement.designation"></textarea>
+            <button class="confirm-button confirm-button-primary" [disabled]="formRequirement.invalid">Confirmar</button>
+        </form>
     </div>
 </div>
 
+<!-- Modal de Confirmação -->
 <div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
     <div class="confirm-dialog">
         <div class="confirm-dialog-header">
