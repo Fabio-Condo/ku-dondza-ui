@@ -13,6 +13,7 @@ import { TopicService } from 'src/app/core/topics/courseService.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { Topic } from 'src/app/core/model/Topic';
+declare const MathJax: any;
 
 @Component({
   selector: 'app-questions',
@@ -80,9 +81,6 @@ export class QuestionsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  //public Editor = ClassicEditor;  // Associa o editor clássico ao componente
-  //public postContent: string = ''; // Propriedade para armazenar o conteúdo do editor
-
   get editing() {
     return Boolean(this.question.id);
   }
@@ -132,6 +130,7 @@ export class QuestionsComponent implements OnInit {
       (question) => {
         this.question = question;
         this.showLoading = false;
+        this.findAll();
         this.messageService.add({ severity: 'success', detail: 'Question updated successfully!' });
       },
       (errorResponse: HttpErrorResponse) => {
@@ -141,15 +140,33 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
-  // Métodos de carregamento
+  // Método para renderizar expressões matemáticas
+  renderMathExpressions(): void {
+    setTimeout(() => {
+      MathJax.typesetPromise();
+    }, 0);
+  }
+
+  // Método de carregamento de questões
   findAll(pagina: number = 0): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+
     this.questionService.getQuestions(this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
-        this.questions = dados.content;
+        // Processa as questões para remover o escape das barras invertidas
+        //this.questions = dados.content.map((question) => ({
+        //  ...question,
+        //  mathExpression: question.mathExpression.replace(/\\\\/g, '\\'), // Substitui \\\\ por \\
+        //}));
+
+        this.questions = dados.content
+
         this.totalRegistros = dados.totalElements;
         this.showLoading = false;
+
+        // Renderiza as expressões matemáticas após carregar as questões
+        this.renderMathExpressions();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -209,18 +226,18 @@ export class QuestionsComponent implements OnInit {
   getTopicsBySubjectId() {
     this.topicService.getBySubjectId(this.selectedSubject!).subscribe({
       next: (dados) => {
-        this.topics = dados; 
+        this.topics = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
     });
   }
-  
+
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados; 
+        this.subjects = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -292,7 +309,7 @@ export class QuestionsComponent implements OnInit {
       );
     }
   }
-  
+
   // Métodos de paginação
   changePageSize(event: any): void {
     this.filtro.itemsPerPage = +event.target.value;

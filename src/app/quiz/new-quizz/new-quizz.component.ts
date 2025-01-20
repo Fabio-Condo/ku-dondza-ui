@@ -16,6 +16,8 @@ import { QuestionService } from 'src/app/questions/question.service';
 import { TopicService } from 'src/app/core/topics/courseService.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Topic } from 'src/app/core/model/Topic';
+declare const MathJax: any;
+
 
 @Component({
   selector: 'app-new-quizz',
@@ -87,12 +89,13 @@ export class NewQuizzComponent implements OnInit {
   startQuiz() {
     this.showStartScreen = false;
     this.currentQuestionIndex = 0;
+    this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
   }
 
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados; 
+        this.subjects = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -123,6 +126,7 @@ export class NewQuizzComponent implements OnInit {
         this.questions = dados;
         this.quiz.questions = this.questions;
         this.showLoading = false;
+        this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -140,7 +144,7 @@ export class NewQuizzComponent implements OnInit {
   }
 
   getSelectedTopicIds(): number[] {
-    return this.topics.filter(topic => topic.selected).map(topic => topic.id); 
+    return this.topics.filter(topic => topic.selected).map(topic => topic.id);
   }
 
   submitSelectedTopics(): void {
@@ -148,7 +152,7 @@ export class NewQuizzComponent implements OnInit {
   }
 
   saveQuiz() {
-    
+
     this.quiz.selectedTopics = this.getSelectedTopics();
 
     const topicIds = this.quiz.selectedTopics.map(topic => topic.id);
@@ -248,13 +252,33 @@ export class NewQuizzComponent implements OnInit {
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
+      this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
     }
   }
 
   goToNextQuestion() {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
+      this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
     }
+  }
+
+  // Método para renderizar expressões matemáticas
+  renderMathExpressions(): void {
+    setTimeout(() => {
+      const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
+      if (mathContainer && typeof MathJax !== 'undefined') {
+        // Força a recriação do conteúdo do contêiner
+        mathContainer.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].mathExpression}\\]`;
+
+        // Renderiza as expressões matemáticas
+        MathJax.typesetPromise().then(() => {
+          console.log('MathJax renderizado com sucesso!');
+        }).catch((err: any) => {
+          console.error('Erro ao renderizar MathJax:', err);
+        });
+      }
+    }, 0);
   }
 
   private sendErrorNotification(message: string): void {

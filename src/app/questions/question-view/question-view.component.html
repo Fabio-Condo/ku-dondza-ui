@@ -9,8 +9,12 @@
     <div class="question-body">
         <h2 class="question-title">Exercicio</h2>
         <p class="question-text">{{ question.text }}</p>
+        <p class="details" *ngIf="question.mathExpression">
+            \[{{ question.mathExpression }}\]
+        </p>   
+        
         <!--<img *ngIf="question.urlFile" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">-->
-        <img *ngIf="imagePath" [src]="imagePath" alt="Gráfico de funções" class="question-image">
+        <!--<img *ngIf="imagePath" [src]="imagePath" alt="Gráfico de funções" class="question-image">-->
     </div>
 
     <!-- Opções de resposta -->

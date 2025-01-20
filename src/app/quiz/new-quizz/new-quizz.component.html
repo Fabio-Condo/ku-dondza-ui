@@ -46,6 +46,10 @@
           alt="Gráfico de funções" class="question-graph">-->
         <img *ngIf="imagePath" src="{{ imagePath }}" alt="Gráfico de funções" class="question-graph" />
         <p class="question-text">{{ questions[currentQuestionIndex].text  }}</p>
+        <!-- Contêiner para expressões matemáticas -->
+        <div id="math-container-{{ currentQuestionIndex }}" class="details" *ngIf="questions[currentQuestionIndex].mathExpression">
+          \[{{ questions[currentQuestionIndex].mathExpression }}\]
+        </div>
   
         <div class="answer-options">
           <label *ngFor="let answer of questions[currentQuestionIndex].answers" [ngClass]="{

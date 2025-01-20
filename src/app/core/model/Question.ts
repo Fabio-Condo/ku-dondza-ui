@@ -6,6 +6,7 @@ export class Question {
     id!: number;
     questionId!: string;
     text!: string;
+    mathExpression!: string;
     fileName!: string;
     urlFile!: string;
     topic = new Topic();

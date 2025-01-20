@@ -4,6 +4,8 @@ import { QuestionService } from '../question.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
+declare const MathJax: any;
+
 
 @Component({
   selector: 'app-question-view',
@@ -16,9 +18,9 @@ export class QuestionViewComponent implements OnInit {
   imagePath = './assets/images/funcao do grau 2.png';
 
   constructor(
-    private questionService: QuestionService, 
+    private questionService: QuestionService,
     private messageService: MessageService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
   ) { }
 
@@ -38,15 +40,24 @@ export class QuestionViewComponent implements OnInit {
     this.questionService.getQuestionByQuestionId(id).subscribe(
       (response) => {
         this.question = response;
+        // Renderiza as expressões matemáticas após carregar as questões
+        this.renderMathExpressions();
       },
       (errorResponse: HttpErrorResponse) => {
-        if(errorResponse.status == 400){ 
+        if (errorResponse.status == 400) {
           this.router.navigateByUrl('/pagina-nao-encontrada');
-        }else{
+        } else {
           this.sendErrorNotification(errorResponse.error.message);
-        } 
+        }
       }
     );
+  }
+
+  // Método para renderizar expressões matemáticas
+  renderMathExpressions(): void {
+    setTimeout(() => {
+      MathJax.typesetPromise();
+    }, 0);
   }
 
   private sendErrorNotification(message: string): void {
