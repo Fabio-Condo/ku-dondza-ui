@@ -16,6 +16,7 @@ import { ModuleService } from '../module.service';
 import { Module } from 'src/app/core/model/Module';
 import { OnlineCourseRequirement } from 'src/app/core/model/OnlineCourseRequirement';
 import { NgForm } from '@angular/forms';
+import { OnlineCourseLikeService } from 'src/app/core/online-course-likes/online-course-like.service';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -91,6 +92,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     private moduleService: ModuleService,
     private onlineCoursesContentService: OnlineCoursesContentService,
     private userService: UserService,
+    private onlineCourseLikeService: OnlineCourseLikeService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -211,6 +213,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.getStudentsByCourseId(this.course.id);
         this.countOnlineCourseStudentsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
+        this.checkIfLiked(this.course);
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) { // BAD_REQUEST
@@ -263,7 +266,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         //this.course = response;
         this.messageService.add({ severity: 'success', detail: 'Curso alterado com sucesso!' });
       },
-      (errorResponse: HttpErrorResponse) => { 
+      (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
@@ -412,6 +415,34 @@ export class OnlineCoursesContentComponent implements OnInit {
   confirmDialog(course: OnlineCourse) {
     this.removeCourseFromSubscribedOnlineCourses(course);
     this.closeConfirmDialog();
+  }
+
+  toggleLike(course: OnlineCourse): void {
+    this.onlineCourseLikeService.toggleLike(course.id).subscribe(
+      response => {
+        course.isLiked = !course.isLiked;
+        if (course.isLiked) {
+          course.numberOfLikes = course.numberOfLikes + 1;
+        } else {
+          course.numberOfLikes = course.numberOfLikes - 1;
+        }
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  checkIfLiked(course: OnlineCourse): void {
+    this.onlineCourseLikeService.checkIfLiked(course.id).subscribe(
+      response => {
+        course.isLiked = response;
+        console.log(response)
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
   }
 
   download(content: OnlineCourseContent, filename: string): void {

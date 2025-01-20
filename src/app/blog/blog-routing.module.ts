@@ -16,16 +16,16 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'blogs/new', 
+    path: 'blog/:id', 
     component: CreateBlogComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
-    //  requiresRoleCheck: true
+    //  requiresRoleCheck: true-
     //} 
   },
   { 
-    path: 'blog/:id', 
+    path: 'blog/view/:id', 
     component: ViewBlogComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 

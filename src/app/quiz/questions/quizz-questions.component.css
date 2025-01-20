@@ -1,6 +1,6 @@
 /* Variáveis CSS */
 :root {
-  --color-primary: #4a90e2;
+  /*--color-primary: #4a90e2;*/
   --color-black: #000000;
   --color-white: #ffffff;
 }
@@ -41,7 +41,6 @@ body {
 
 /* Cartão de perguntas */
 .question-card {
-  border: 1px solid #ccc;
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
@@ -57,11 +56,10 @@ body {
 
 /* Texto da pergunta */
 .question-text {
-  font-size: 16px;
-  color: var(--color-black);
-  font-weight: 600;
-  line-height: 40px;
-  margin-bottom: 15px;
+  font-size: 18px;
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0 0 20px;
 }
 
 /* Opções de resposta */
@@ -232,15 +230,15 @@ body {
   display: inline-block;
   padding: 8px 16px;
   background-color: #e7f3ff;
-  border: 1px solid #4a90e2;
+  border: 1px solid var(--color-primary);
   border-radius: 20px;
   font-size: 12px;
-  color: #1e90ff;
+  color: var(--color-primary);
   transition: all 0.3s ease;
 }
 
 .topic-item:hover {
-  background-color: #4a90e2;
+  background-color: var(--color-primary);
   color: white;
   transform: translateY(-2px);
 }
@@ -248,11 +246,12 @@ body {
 .start-button {
   display: inline-block;
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--color-primary), #1e90ff);
+  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
   color: white;
   border: none;
   border-radius: 10px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -263,7 +262,7 @@ body {
 }
 
 .start-button:disabled {
-  background-color: #e9ecef;
+  background: #e9ecef;
   color: #6c757d;
   cursor: not-allowed;
   border-color: #adb5bd;

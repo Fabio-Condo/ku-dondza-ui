@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BlogLikeService } from 'src/app/core/likes copy/blog-like.service';
+import { BlogLikeService } from 'src/app/core/blog-likes/blog-like.service';
 import { Blog } from 'src/app/core/model/Blog';
 import { BlogService } from '../blog.service';
 import { ActivatedRoute, Router } from '@angular/router';

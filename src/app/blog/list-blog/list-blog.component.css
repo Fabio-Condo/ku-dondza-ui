@@ -7,7 +7,7 @@ body {
 }
 
 .blog-container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 70px auto;
     padding: 20px;
     display: flex;
@@ -204,18 +204,34 @@ body {
 }
 
 .load-more-button {
-    background-color: var(--color-primary);
-    color: #fff;
     display: inline-block;
     padding: var(--btn-padding);
-    font-weight: 500;
+    font-weight: 600;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: all 300ms ease;
+    cursor: pointer;
+    border-radius: 6px; /* Bordas mais arredondadas */
+    align-items: center;
+    transition: all 0.3s ease; /* Transição suave */
 }
 
 .load-more-button:hover {
-    opacity: 0.8;
+    transform: translateY(-1px); /* Efeito de levantar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+    opacity: 0.8; /* Leve transparência para um visual mais suave */
+}
+
+.load-more-button-primary {
+    background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
+    color: white;
+}
+
+.load-more-button:disabled {
+    background: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #adb5bd;
 }
 
 /* Responsividade */

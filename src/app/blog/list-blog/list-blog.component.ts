@@ -7,7 +7,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { BlogLikeService } from 'src/app/core/likes copy/blog-like.service';
+import { BlogLikeService } from 'src/app/core/blog-likes/blog-like.service';
 import { UserService } from 'src/app/users/user.service';
 import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
@@ -24,6 +24,8 @@ export class ListBlogComponent implements OnInit {
   showLoading: boolean = false;
   selectedBlog = new Blog();
   showConfirmDialog: boolean = false;
+  showDeleteConfirmDialog: boolean = false;
+
 
   loggedUser: User = new User;
 
@@ -136,16 +138,41 @@ export class ListBlogComponent implements OnInit {
     this.closeConfirmDialog();
   }
 
-    
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados; 
+        this.subjects = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
     });
+  }
+
+  deleteBlog(blog: Blog) {
+    this.blogService.excluir(blog.id!).subscribe(() => {
+      this.feeds = this.feeds.filter(b => b.id !== blog.id);
+      this.messageService.add({ severity: 'success', detail: 'Blog excluído com sucesso!' })
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
+  onDeleteBlog(blog: Blog): void {
+    this.showDeleteConfirmDialog = true;
+    this.selectedBlog = blog;
+  }
+
+  closeDeleteConfirmDialog() {
+    this.showDeleteConfirmDialog = false;
+  }
+
+  deleteConfirmDialog(blog: Blog) {
+    this.deleteBlog(blog);
+    this.closeDeleteConfirmDialog();
   }
 
   private sendErrorNotification(message: string): void {

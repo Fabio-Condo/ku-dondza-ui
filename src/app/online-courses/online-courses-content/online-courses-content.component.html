@@ -23,12 +23,14 @@
             </div>
 
             <div class="likes">
-                <i class="pi pi-thumbs-up"></i><span class="text-muted">2,500 pessoas gostaram</span>
+                <i (click)="toggleLike(course)" *ngIf="course.isLiked" class="pi pi-heart-fill icon-liked"></i>
+                <i (click)="toggleLike(course)" *ngIf="!course.isLiked" class="pi pi-heart"></i>
+                <span class="text-muted">2,500 pessoas gostaram</span>
             </div>
 
-            <button class="course-join" *ngIf="!course.isSubscribed"
+            <button class="btn btn-primary" *ngIf="!course.isSubscribed"
                 (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
-            <button class="course-join" disabled *ngIf="course.isSubscribed">Inscrito</button>
+            <button class="btn btn-primary" disabled *ngIf="course.isSubscribed">Inscrito</button>
         </div>
 
         <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()"><i class="pi pi-pencil" style="font-size: 0.9rem; color: black;"></i></span></h1>
@@ -114,7 +116,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn" (click)="onShowMoreStudents()" *ngIf="students.length < 1000">Ver Mais</button>
+        <button class="btn btn-primary" (click)="onShowMoreStudents()" *ngIf="students.length < 1000">Ver Mais</button>
     </div>
 </div>
 
@@ -136,9 +138,14 @@
 <!-- Modal de Adicionar/Editar Aula -->
 <div class="overlay" *ngIf="displayModalSaveContent">
     <div class="dialog">
-        <h2>{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
-        <button class="close-btn" (click)="displayModalSaveContent = false">&times;</button>
-        <hr>
+
+        <div class="dialog-header">
+            <h2>{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
+            <button class="close-btn" (click)="displayModalSaveContent = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
+
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
                 <label for="type">Tipo</label>
@@ -168,19 +175,27 @@
                 <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
                     [(ngModel)]="onlineCourseContent.position">
             </div>
-            <div class="form-group">
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
                 <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
-        </form>
+        </form>      
     </div>
 </div>
 
 <!-- Modal de Adicionar/Editar Módulo -->
 <div class="overlay" *ngIf="displayModalSaveModule">
     <div class="dialog">
-        <h2>{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
-        <button class="close-btn" (click)="displayModalSaveModule = false">&times;</button>
-        <hr>
+
+        <div class="dialog-header">
+            <h2>{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
+            <button class="close-btn" (click)="displayModalSaveModule = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
+
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
                 <label for="name">Descrição</label>
@@ -192,7 +207,10 @@
                 <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
                     [(ngModel)]="modulo.position">
             </div>
-            <div class="form-group">
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
                 <button type="button" (click)="saveModule()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
@@ -201,9 +219,15 @@
 
 <!-- Modal de Requisitos -->
 <div class="overlay" *ngIf="displayModalUpateRequirements">
-    <div class="dialog">
-        <h2>Requisitos</h2>
-        <button class="close-btn" (click)="displayModalUpateRequirements = false">&times;</button>
+    <div class="dialog" style="width: 1000px;">
+
+        <div class="dialog-header">
+            <h2>Requisitos</h2>
+            <button class="close-btn" (click)="displayModalUpateRequirements = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
+
         <form autocomplete="off" #courseRequirementsForm="ngForm" (ngSubmit)="updateRequirements(courseRequirementsForm)">
             <div class="requirements-container">
                 <div class="header-section">
@@ -224,8 +248,8 @@
                             <tr *ngFor="let req of course.requirements; let rowIndex = index">
                                 <td>{{ req.designation }}</td>
                                 <td class="actions">
-                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)" class="edit-btn">E</a>
-                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)" class="remove-btn">R</a>
+                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)" class="tb-edit-btn">E</a>
+                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)" class="tb-remove-btn">R</a>
                                 </td>
                             </tr>
                             <tr *ngIf="course.requirements.length === 0">
@@ -235,7 +259,12 @@
                     </table>
                 </div>
             </div>
-            <button type="submit" [disabled]="courseRequirementsForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+                <button type="submit" [disabled]="courseRequirementsForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            </div>
         </form>
     </div>
 </div>
@@ -243,13 +272,26 @@
 <!-- Modal de Requisito (Adicionar/Editar) -->
 <div class="overlay" *ngIf="showRequirementForm && requirement">
     <div class="dialog" style="width: 600px;">
-        <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
-        <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
+
+        <div class="dialog-header">
+            <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
+
         <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
-            <label>Designation</label>
-            <textarea pInputTextarea rows="3" ngModel #coordnates="ngModel" ngModel name="designation"
-                [(ngModel)]="requirement.designation"></textarea>
-            <button class="confirm-button confirm-button-primary" [disabled]="formRequirement.invalid">Confirmar</button>
+            <div class="form-group">
+                <label for="designation">Descrição</label>
+                <textarea id="designation" type="text" name="designation" ngModel #designation="ngModel" required minlength="1"
+                    [(ngModel)]="requirement.designation" required></textarea>
+            </div>    
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+                <button class="btn" [disabled]="formRequirement.invalid">Confirmar</button>
+            </div>
         </form>
     </div>
 </div>
@@ -258,7 +300,7 @@
 <div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
     <div class="confirm-dialog">
         <div class="confirm-dialog-header">
-            <h4>Deseja sair anular a subscrição ?</h4>
+            <h4>Deseja anular a subscrição ?</h4>
             <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
         </div>
         <div class="confirm-dialog-content">

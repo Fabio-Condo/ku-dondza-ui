@@ -22,7 +22,12 @@
             <div class="post-content">
                 <span class="post-date">{{ feed.postDate }}</span>
                 <h2 class="post-title">{{ feed.title }}</h2>
-                <p class="post-text">{{ feed.content }} <a [routerLink]="['/blog', feed.blogId]">Saiba Mais</a></p>
+                <p class="post-text">
+                    {{ feed.content }} 
+                    <a [routerLink]="['/blog/view', feed.blogId]">Saiba Mais</a> 
+                    <a [routerLink]="['/blog', feed.blogId]"> editar</a> 
+                    <a (click)="onDeleteBlog(feed)" style="cursor: pointer;"> delete</a>
+                </p>
 
                 <!-- Interações (like e salvar) -->
                 <div class="post-actions">
@@ -49,7 +54,7 @@
 
     <!-- Botão "Carregar mais" -->
     <div class="load-more">
-        <button (click)="loadMore()" class="load-more-button">Carregar mais</button>
+        <button (click)="loadMore()" class="load-more-button load-more-button-primary">Buscar mais</button>
     </div>
 </div>
 
@@ -66,6 +71,23 @@
         <div class="confirm-dialog-footer">
             <button (click)="confirmDialog(selectedBlog)">Confirmar</button>
             <button (click)="closeConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showDeleteConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover o post ?</h4>
+            <button class="confirm-close-button" (click)="closeDeleteConfirmDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="deleteConfirmDialog(selectedBlog)">Confirmar</button>
+            <button (click)="closeDeleteConfirmDialog()">Cancelar</button>
         </div>
     </div>
 </div>

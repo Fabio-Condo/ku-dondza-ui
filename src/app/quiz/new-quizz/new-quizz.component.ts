@@ -33,6 +33,8 @@ export class NewQuizzComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
 
+  imagePath = './assets/images/funcao do grau 2.png';
+
   result: { correctAnswers: number; incorrectAnswers: number; unansweredQuestions: number } = {
     correctAnswers: 0,
     incorrectAnswers: 0,
@@ -229,7 +231,7 @@ export class NewQuizzComponent implements OnInit {
     this.currentQuestionIndex = 0;
   }
 
-  restartQuiz() {
+  newQuiz() {
     this.showFinalScreen = false;
     this.showStartScreen = true;
     this.submittedAnswers = [];
@@ -238,7 +240,7 @@ export class NewQuizzComponent implements OnInit {
   }
 
   toggleCorrection() {
-    this.showCorrection = !this.showCorrection;
+    this.showCorrection = true;
     this.currentQuestionIndex = 0;
     this.showFinalScreen = false;
   }
