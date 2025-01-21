@@ -22,12 +22,16 @@
             <div class="post-content">
                 <span class="post-date">{{ feed.postDate }}</span>
                 <h2 class="post-title">{{ feed.title }}</h2>
+                <!--
                 <p class="post-text">
                     {{ feed.content }} 
                     <a [routerLink]="['/blog/view', feed.blogId]">Saiba Mais</a> 
                     <a [routerLink]="['/blog', feed.blogId]"> editar</a> 
                     <a (click)="onDeleteBlog(feed)" style="cursor: pointer;"> delete</a>
                 </p>
+                -->
+
+                <div [innerHTML]="feed.content"></div>
 
                 <!-- Interações (like e salvar) -->
                 <div class="post-actions">

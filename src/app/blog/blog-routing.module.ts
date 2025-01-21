@@ -19,6 +19,7 @@ const routes: Routes = [
     path: 'blog/:id', 
     component: CreateBlogComponent,
     canActivate: [AuthenticationGuard], 
+    runGuardsAndResolvers: 'always', // Força a recriação do componente
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true-
