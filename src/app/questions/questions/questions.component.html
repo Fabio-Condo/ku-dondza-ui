@@ -35,17 +35,14 @@
                         <div class="card-content">
                             <div class="content">
 
-                                <p class="title">{{ question.text }}</p>
+                                <p class="title">{{ question.topic.name }}</p>
+                                <p class="details">{{ question.topic.subject.name }}</p>
                                 
                                 <!-- Renderiza o texto da questão como expressão matemática -->
-                                <!--<p class="details" *ngIf="question.mathExpression">{{ question.mathExpression }} </p>-->
-                                <p class="details" *ngIf="question.mathExpression">
-                                    \[{{ question.mathExpression }}\]
+                                <p *ngIf="question.text">
+                                    \[{{ question.text }}\]
                                 </p>   
-                                
 
-                                <p class="details">Disciplina: <span class="text-muted">{{ question.topic.subject.name }}</span></p>
-                                <p class="details">Tópico: <span class="text-muted">{{ question.topic.name }}</span></p>
                             </div>
                             <div class="dropdown-container">
                                 <button class="dropdown-btn" (click)="toggleDropdown(question)"><i class="pi pi-ellipsis-v"></i></button>
@@ -139,7 +136,7 @@
                        ngModel 
                        required 
                        minlength="1" 
-                       [(ngModel)]="question.mathExpression" />
+                       [(ngModel)]="question.text" />
             </div>
 
             <div class="form-group">

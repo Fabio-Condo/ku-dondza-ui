@@ -224,7 +224,7 @@ export class QuizzQuestionsComponent implements OnInit {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
         // Força a recriação do conteúdo do contêiner
-        mathContainer.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].mathExpression}\\]`;
+        mathContainer.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].text}\\]`;
 
         // Renderiza as expressões matemáticas
         MathJax.typesetPromise().then(() => {

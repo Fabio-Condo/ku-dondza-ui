@@ -34,12 +34,10 @@
     <div *ngIf="currentQuestionIndex < quiz.questions.length">
       <div class="question-card">
         <img *ngIf="imagePath" src="{{ imagePath }}" alt="Gráfico de funções" class="question-graph" />
-        <span class="question-topic">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</span>
-        <h2 class="question-text">{{ quiz.questions[currentQuestionIndex].text }}</h2>
   
         <!-- Contêiner para expressões matemáticas -->
-        <div id="math-container-{{ currentQuestionIndex }}" class="details" *ngIf="quiz.questions[currentQuestionIndex].mathExpression">
-          \[{{ quiz.questions[currentQuestionIndex].mathExpression }}\]
+        <div id="math-container-{{ currentQuestionIndex }}" class="details" *ngIf="quiz.questions[currentQuestionIndex].text">
+          \[{{ quiz.questions[currentQuestionIndex].text }}\]
         </div>
   
         <div class="answer-options">
@@ -52,7 +50,8 @@
               [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
               (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"
               [disabled]="showCorrection" />
-            <span>{{ answer.text }}</span>
+            <span> \[{{ answer.text }}\] </span>
+
           </label>
         </div>
       </div>

@@ -52,6 +52,8 @@ export class NewQuizzComponent implements OnInit {
 
   loggedUser: User = new User();
 
+  submited: boolean = false;
+
   @ViewChild('tabela') grid: any;
 
   filtro: QuestionFilter = {
@@ -80,10 +82,6 @@ export class NewQuizzComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  get submited() {
-    return Boolean(this.quiz.id);
   }
 
   startQuiz() {
@@ -163,7 +161,7 @@ export class NewQuizzComponent implements OnInit {
 
     this.quizService.saveQuiz(this.quiz, topicIds, questionIds, userAnswerIds).subscribe(
       (response) => {
-        this.quiz = response;
+        this.submited = true;
         this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
@@ -247,6 +245,11 @@ export class NewQuizzComponent implements OnInit {
     this.showCorrection = true;
     this.currentQuestionIndex = 0;
     this.showFinalScreen = false;
+  
+    // Aguarda a atualização do DOM antes de renderizar MathJax
+    setTimeout(() => {
+      this.renderMathExpressions();
+    }, 0);
   }
 
   goToPreviousQuestion() {
@@ -269,7 +272,7 @@ export class NewQuizzComponent implements OnInit {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
         // Força a recriação do conteúdo do contêiner
-        mathContainer.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].mathExpression}\\]`;
+        mathContainer.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].text}\\]`;
 
         // Renderiza as expressões matemáticas
         MathJax.typesetPromise().then(() => {

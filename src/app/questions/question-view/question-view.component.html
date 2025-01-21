@@ -8,9 +8,8 @@
     <!-- Corpo da pergunta -->
     <div class="question-body">
         <h2 class="question-title">Exercicio</h2>
-        <p class="question-text">{{ question.text }}</p>
-        <p class="details" *ngIf="question.mathExpression">
-            \[{{ question.mathExpression }}\]
+        <p class="details" *ngIf="question.text">
+            \[{{ question.text }}\]
         </p>   
         
         <!--<img *ngIf="question.urlFile" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">-->
@@ -22,7 +21,8 @@
         <h2 class="options-title">Opções de Resposta</h2>
         <div class="answers-grid">
             <label *ngFor="let answer of question.answers" class="answer-item">
-                <span class="answer-text">{{ answer.text }}</span>
+                <!--<span class="answer-text">{{ answer.text }}</span>-->
+                <span> \[{{ answer.text }}\] </span> 
                 <span *ngIf="answer.correct" class="correct-tag">✓</span>
             </label>
         </div>
