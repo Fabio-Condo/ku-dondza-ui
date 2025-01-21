@@ -1,0 +1,121 @@
+:root {
+    --color-primary: #3734ed;
+    --color-primary-hover: #2a28c7;
+    --color-secondary: #6c757d;
+    --color-secondary-hover: #5a6268;
+    --color-background: #f9f9f9;
+    --color-text: #333;
+    --color-border: #ddd;
+    --color-white: #ffffff;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+  }
+  
+  /* Estilos gerais */
+  .form-container {
+    max-width: 900px;
+    margin: 70px auto;
+    padding: 20px;
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+  }
+  
+  .blog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Estilos para os grupos de formulário */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-file {
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    color: var(--color-text);
+    background-color: var(--color-background);
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+  }
+  
+  .form-textarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+  
+  .form-file {
+    padding: 8px;
+  }
+  
+  /* Estilos para os botões */
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-new {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+  }
+  
+  .btn-new:hover {
+    background-color: var(--color-secondary-hover);
+  }
+  
+  .btn-save {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+  
+  .btn-save:hover {
+    background-color: var(--color-primary-hover);
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .form-container {
+      margin: 20px;
+      padding: 15px;
+    }
+  
+    .form-actions {
+      flex-direction: column;
+    }
+  
+    .btn {
+      width: 100%;
+    }
+  }
