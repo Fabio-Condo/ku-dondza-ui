@@ -13,6 +13,19 @@
     <!-- Lista de Posts -->
     <div class="posts">
         <div *ngFor="let feed of feeds" class="post-card">
+
+            <!-- Dropdown Container no canto superior direito -->
+            <div class="dropdown-container">
+                <button class="dropdown-btn" (click)="feed.isAdminMenuOpen = !feed.isAdminMenuOpen">
+                    <i class="pi pi-ellipsis-v"></i>
+                </button>
+                <div class="dropdown" *ngIf="feed.isAdminMenuOpen">
+                    <a [routerLink]="['/blog/view', feed.blogId]">Saiba Mais</a> 
+                    <a [routerLink]="['/blog', feed.blogId]">Editar</a> 
+                    <a (click)="onDeleteBlog(feed)" style="cursor: pointer;">Delete</a>
+                </div>
+            </div>
+
             <!-- Imagem no lado esquerdo -->
             <div class="post-image">
                 <img *ngIf="imagePath" [src]="imagePath" alt="Gráfico de funções" />
@@ -31,7 +44,10 @@
                 </p>
                 -->
 
-                <div [innerHTML]="feed.content"></div>
+                <div class="post-text">
+                    <div class="text-content" [innerHTML]="feed.content"></div>
+                    <button class="read-more-button" [routerLink]="['/blog/view', feed.blogId]">Saiba mais</button>
+                </div>
 
                 <!-- Interações (like e salvar) -->
                 <div class="post-actions">

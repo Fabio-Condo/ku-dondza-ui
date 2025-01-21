@@ -92,6 +92,7 @@ body {
 }
 
 .post-card {
+    position: relative; /* Adicione isso */
     display: flex;
     background-color: #fff;
     border-radius: 10px;
@@ -136,11 +137,43 @@ body {
     margin-bottom: 10px;
 }
 
+/* Container do texto */
 .post-text {
-    font-size: 14px;
-    color: #555;
+    position: relative;
+    overflow: hidden;
+    max-height: 4.8em; /* Limita a 3 linhas (1.6 * 3) */
     line-height: 1.6;
     margin-bottom: 15px;
+}
+
+/* Efeito de transparência no final do texto */
+.post-text::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 1.6em; /* Altura de uma linha */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+}
+
+/* Botão "Saiba mais" */
+.read-more-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: var(--color-primary); /* Cor do botão */
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 4px;
+    z-index: 1; /* Garante que o botão fique acima do efeito de transparência */
+    transition: opacity 0.3s ease;
+}
+
+.read-more-button:hover {
+    opacity: 0.8;
 }
 
 .post-actions {
@@ -234,6 +267,63 @@ body {
     border-color: #adb5bd;
 }
 
+/* Dropdown Container */
+.dropdown-container {
+    position: absolute; /* Posicionamento absoluto em relação ao post-card */
+    top: 10px; /* Distância do topo */
+    right: 10px; /* Distância da direita */
+    z-index: 2; /* Garante que fique acima de outros elementos */
+}
+
+/* Botão do dropdown */
+.dropdown-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-btn:hover {
+    background: rgba(0, 0, 0, 0.05); /* Fundo sutil ao passar o mouse */
+}
+
+.dropdown-btn .pi {
+    font-size: 18px;
+    color: #555; /* Cor do ícone */
+}
+
+/* Dropdown Menu */
+.dropdown {
+    position: absolute;
+    top: 100%; /* Posiciona o dropdown abaixo do botão */
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 3; /* Garante que o dropdown fique acima de outros elementos */
+    padding: 8px 0;
+    min-width: 120px;
+}
+
+.dropdown a {
+    display: block;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.dropdown a:hover {
+    background-color: #f5f5f5;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .post-card {
@@ -249,3 +339,5 @@ body {
         padding: 15px;
     }
 }
+
+
