@@ -8,11 +8,11 @@ import { Answer } from 'src/app/core/model/Answer';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionService } from '../question.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { TopicService } from 'src/app/core/topics/courseService.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { Topic } from 'src/app/core/model/Topic';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 declare const MathJax: any;
 
 @Component({

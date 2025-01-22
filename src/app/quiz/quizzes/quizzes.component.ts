@@ -1,19 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
 import { Quiz } from 'src/app/core/model/Quiz';
-import { Question } from 'src/app/core/model/Question';
-import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { QuestionService } from 'src/app/questions/question.service';
-import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Subject } from 'src/app/core/model/Subject';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 @Component({
   selector: 'app-quizzes',

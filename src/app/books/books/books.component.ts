@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { BookFilter } from 'src/app/core/interface/BookFilter';
 import { Book } from 'src/app/core/model/Book';
 import { BooksService } from '../books.service';
-import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { Subject } from 'src/app/core/model/Subject';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 @Component({
   selector: 'app-books',

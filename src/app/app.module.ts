@@ -43,6 +43,8 @@ import { BooksRoutingModule } from './books/books-routing.module';
 import { BooksModule } from './books/books.module';
 import { BlogRoutingModule } from './blog/blog-routing.module';
 import { BlogModule } from './blog/blog.module';
+import { SubjectsModule } from './subjects/subjects.module';
+import { SubjectsRoutingModule } from './subjects/subjects-routing.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,7 @@ import { BlogModule } from './blog/blog.module';
     BooksRoutingModule,
     InstitutionsRoutingModule,
     CoursesRoutingModule,
-    CoursesRoutingModule,
+    SubjectsRoutingModule,
     OnlineCoursesRoutingModule,
     UsersRoutingModule,
     GroupsRoutingModule,
@@ -75,6 +77,7 @@ import { BlogModule } from './blog/blog.module';
     BooksModule,
     InstitutionsModule,
     CoursesModule,
+    SubjectsModule,
     OnlineCoursesModule,
     UsersModule,
     GroupModule,

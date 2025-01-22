@@ -20,9 +20,9 @@ import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
 import { CourseService } from 'src/app/courses/courseService.service';
 import { InstitutionService } from 'src/app/institutions/InstitutionService.service';
 import { Course } from 'src/app/core/model/Course';
-import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { Institution } from 'src/app/core/model/Institution';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 @Component({
   selector: 'app-user-profile-view',

@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BlogService } from '../blog.service';
 import { Blog } from 'src/app/core/model/Blog';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Editor } from 'tinymce'; // Importe o tipo Editor
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 declare const tinymce: any;
 
 @Component({

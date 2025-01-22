@@ -9,8 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { BlogLikeService } from 'src/app/core/blog-likes/blog-like.service';
 import { UserService } from 'src/app/users/user.service';
-import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 @Component({
   selector: 'app-list-blog',

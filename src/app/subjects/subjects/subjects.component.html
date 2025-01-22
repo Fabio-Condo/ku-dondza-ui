@@ -1,0 +1,115 @@
+<div class="container" style="margin-top: 70px;">
+    <div style="display:inline;">
+        <h1 class="title">Disciplinas e tópicos</h1>
+    </div>
+
+    <p class="title-description">
+        Descubra a diversidade de cursos disponíveis em Moçambique, incluindo detalhes da instituição que oferece.
+    </p>
+
+    <div class="flex">
+        <div>
+            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalSubjects }}</span>
+        </div>
+        <div class="input-group">
+            <div class="input-container">
+                <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
+                <input type="text" id="input" class="transparent-input" (ngModelChange)="findAll()" placeholder="Pesquisa">
+            </div>
+            <div class="dropdown-container" style="margin-left: 4px;">
+                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="isDropdownOpen">
+                    <a (click)="isDropdownOpen = !isDropdownOpen">Filtrar</a>
+                    <a (click)="isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="card-table">
+        <tbody>
+            <tr *ngFor="let subject of subjects">
+                <td>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content">
+                                <p class="title">{{ subject.name }}</p>
+                                <p class="details">12 tópicos</p>
+                            </div>
+
+                            <div class="button-container">
+                                <button class="btn btn-primary" (click)="onView(subject)">Ver</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Indicador de carregamento -->
+            <tr *ngIf="showLoading">
+                <td>
+                    <div class="card">
+                        <div class="loading-indicator">
+                            <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
+                            Carregando...
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Mensagem "Nenhum item encontrado" -->
+            <tr *ngIf="!showLoading && subjects.length === 0">
+                <td>
+                    <div class="card">
+                        <span class="no-items-message">
+                            Nenhum item encontrado
+                        </span>
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <!-- Paginação -->
+    <div class="pagination-controls">
+        <span class="pagination-info mr-auto"></span>
+
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+            <i class="pi pi-chevron-left"></i> Anterior
+        </button>
+        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+            Próximo <i class="pi pi-chevron-right"></i>
+        </button>
+        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+            <option *ngFor="let option of opcoesItensPorPagina" [value]="option" [selected]="option === filtro.itensPorPagina">
+                {{ option }}
+            </option>
+        </select>
+    </div>
+
+</div>
+
+<div class="overlay" *ngIf="displayModalView">
+    <div class="dialog" style="width: 600px;">
+
+        <div class="dialog-header">
+            <h2>Ver</h2>
+            <button class="close-btn" (click)="displayModalView = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
+
+        <p class="course-name">{{ subject.name }}</p>
+
+        <p class="course-name">Tópicos</p>
+
+        <p class="details" *ngFor="let topic of subject.topics" style="margin-left: 10px;">
+            <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
+            {{ topic.name }}
+        </p>
+
+    </div>
+</div>

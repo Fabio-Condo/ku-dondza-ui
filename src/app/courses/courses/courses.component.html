@@ -221,8 +221,14 @@
 
 <div class="overlay" *ngIf="displayModalView">
     <div class="dialog" style="width: 600px;">
-        <h2>Ver</h2>
-        <button class="close-btn" (click)="displayModalView = false">&times;</button>
+
+        <div class="dialog-header">
+            <h2>Ver</h2>
+            <button class="close-btn" (click)="displayModalView = false">&times;</button>
+        </div>
+
+        <hr class="header-divider">
+
         <p class="course-name">{{ selectedCourse.name }}</p>
         <p class="details">Instituição: <span class="text-muted">{{ selectedCourse.institution.name }}</span></p>
         <p class="details">Duração: <span class="text-muted">{{ selectedCourse.duration }}</span></p>

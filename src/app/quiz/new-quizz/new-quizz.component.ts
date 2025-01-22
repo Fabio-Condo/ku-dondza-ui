@@ -7,7 +7,6 @@ import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
-import { SubjectsService } from 'src/app/core/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
@@ -16,6 +15,7 @@ import { QuestionService } from 'src/app/questions/question.service';
 import { TopicService } from 'src/app/core/topics/courseService.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Topic } from 'src/app/core/model/Topic';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 declare const MathJax: any;
 
 
