@@ -18,26 +18,23 @@ import { Subject } from 'src/app/core/model/Subject';
   styleUrls: ['./list-blog.component.css']
 })
 export class ListBlogComponent implements OnInit {
-
   feeds: Blog[] = [];
-  totalRecords: number = 0
+  totalRecords: number = 0;
   showLoading: boolean = false;
   selectedBlog = new Blog();
   showConfirmDialog: boolean = false;
   showDeleteConfirmDialog: boolean = false;
 
-
-  loggedUser: User = new User;
-
+  loggedUser: User = new User();
   subjects: Subject[] = [];
   imagePath = './assets/images/funcao do grau 2.png';
-
 
   filter: BlogFilter = {
     page: -1,
     itemsPerPage: 10,
     sort: 'id,desc',
-  }
+    title: '', // Filtro por título
+  };
 
   constructor(
     private blogService: BlogService,
@@ -70,12 +67,19 @@ export class ListBlogComponent implements OnInit {
           this.checkIfLiked(blog);
           this.checkIfSaved(blog);
         });
-        this.feeds = [...this.feeds, ...data.content]; // Adicionar cada vez que se faz o load
+        this.feeds = [...this.feeds, ...data.content]; // Adiciona novos blogs à lista existente
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     );
+  }
+
+  applyFilters(): void {
+    this.filter.page = -1; // Reinicia a paginação
+    this.feeds = []; // Limpa a lista de blogs
+    this.loadMore(); // Carrega os blogs com os novos filtros
   }
 
   toggleLike(blog: Blog): void {
@@ -98,7 +102,6 @@ export class ListBlogComponent implements OnInit {
     this.blogLikeService.checkIfLiked(blog.id).subscribe(
       response => {
         blog.isLiked = response;
-        console.log(response)
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -152,13 +155,13 @@ export class ListBlogComponent implements OnInit {
   deleteBlog(blog: Blog) {
     this.blogService.excluir(blog.id!).subscribe(() => {
       this.feeds = this.feeds.filter(b => b.id !== blog.id);
-      this.messageService.add({ severity: 'success', detail: 'Blog excluído com sucesso!' })
+      this.messageService.add({ severity: 'success', detail: 'Blog excluído com sucesso!' });
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
-    )
+    );
   }
 
   onDeleteBlog(blog: Blog): void {
