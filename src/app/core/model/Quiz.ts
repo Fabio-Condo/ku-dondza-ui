@@ -11,10 +11,21 @@ export class Quiz {
     submittedAt!: Date;
     subject = new Subject();
     user = new User();
-    selectedTopics: Topic[] = []; 
-    questions: Question[] = []; 
+    selectedTopics: Topic[] = [];
+    questions: Question[] = [];
     userSubmittedAnswers: Answer[] = [];
-    
+
     totalQuestions: number = 0;
     isAdminMenuOpen: boolean = false;
+
+    // Adicionando a propriedade resultsByTopic
+    resultsByTopic: {
+        [key: string]: {
+            correct: number;
+            incorrect: number;
+            nullAnswers: number;
+            total: number;
+            percentage?: number; // Propriedade opcional
+        }
+    } = {};
 }

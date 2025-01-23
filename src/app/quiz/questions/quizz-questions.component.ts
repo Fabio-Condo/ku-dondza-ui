@@ -141,37 +141,92 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
-  calculateResults(): void {
+  /*
+  calculateResults2(): void {
 
     this.result.correctAnswers = 0;
     this.result.incorrectAnswers = 0;
-    this.result.nullAnswers = 0; // Reinicia a contagem de respostas nulas
+    this.result.nullAnswers = 0; 
 
-    // Itera sobre todas as questões do quiz
     this.quiz.questions.forEach((question) => {
       const submittedAnswer = this.quiz.userSubmittedAnswers.find(
         (a) => a.question.id === question.id
       );
 
       if (submittedAnswer) {
-        // Se o usuário respondeu, verifica se a resposta está correta ou incorreta
         if (submittedAnswer.correct) {
+
           this.result.correctAnswers++;
         } else {
           this.result.incorrectAnswers++;
         }
       } else {
-        // Se não há resposta submetida, conta como nula
+
         this.result.nullAnswers++;
       }
     });
+  }
+  */
+
+  calculateResults(): void {
+    this.result.correctAnswers = 0;
+    this.result.incorrectAnswers = 0;
+    this.result.nullAnswers = 0;
+  
+    // Reinicia o objeto de resultados por tópico
+    this.quiz.resultsByTopic = {};
+  
+    // Itera sobre todas as questões do quiz
+    this.quiz.questions.forEach((question) => {
+      const submittedAnswer = this.quiz.userSubmittedAnswers.find(
+        (a) => a.question.id === question.id
+      );
+  
+      // Obtém o tópico da questão
+      const questionTopic = question.topic?.name || 'Sem tópico';
+  
+      // Inicializa o tópico no objeto resultsByTopic, se necessário
+      if (!this.quiz.resultsByTopic[questionTopic]) {
+        this.quiz.resultsByTopic[questionTopic] = { 
+          correct: 0, 
+          incorrect: 0, 
+          nullAnswers: 0, // Adiciona contador de respostas nulas
+          total: 0, 
+          percentage: 0 
+        };
+      }
+  
+      // Incrementa o total de questões por tópico
+      this.quiz.resultsByTopic[questionTopic].total++;
+  
+      if (submittedAnswer) {
+        // Se o usuário respondeu, verifica se a resposta está correta ou incorreta
+        if (submittedAnswer.correct) {
+          this.result.correctAnswers++;
+          this.quiz.resultsByTopic[questionTopic].correct++;
+        } else {
+          this.result.incorrectAnswers++;
+          this.quiz.resultsByTopic[questionTopic].incorrect++;
+        }
+      } else {
+        // Se não há resposta submetida, conta como nula
+        this.result.nullAnswers++;
+        this.quiz.resultsByTopic[questionTopic].nullAnswers++;
+      }
+    });
+  
+    // Calcula a porcentagem de acertos por tópico
+    for (const topic in this.quiz.resultsByTopic) {
+      const { correct, total } = this.quiz.resultsByTopic[topic];
+      this.quiz.resultsByTopic[topic].percentage = (correct / total) * 100;
+    }
   }
 
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
       this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
-
+      this.scrollToTop();
     }
   }
 
@@ -179,7 +234,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (this.currentQuestionIndex < this.quiz.questions.length - 1) {
       this.currentQuestionIndex++;
       this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
-
+      this.scrollToTop();
     }
   }
 
@@ -216,6 +271,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showStartScreen = false; // Oculta a tela inicial
     this.currentQuestionIndex = 0; // Começa na primeira questão
     this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+    this.scrollToTop();
   }
 
   // Método para renderizar expressões matemáticas

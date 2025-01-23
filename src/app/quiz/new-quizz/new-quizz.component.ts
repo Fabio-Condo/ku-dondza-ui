@@ -88,6 +88,7 @@ export class NewQuizzComponent implements OnInit {
     this.showStartScreen = false;
     this.currentQuestionIndex = 0;
     this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+    this.scrollToTop();
   }
 
   carregarDisciplinas() {
@@ -231,6 +232,7 @@ export class NewQuizzComponent implements OnInit {
   reviewQuestions() {
     this.showFinalScreen = false;
     this.currentQuestionIndex = 0;
+    this.scrollToTop();
   }
 
   newQuiz() {
@@ -250,12 +252,15 @@ export class NewQuizzComponent implements OnInit {
     setTimeout(() => {
       this.renderMathExpressions();
     }, 0);
+
+    this.scrollToTop();
   }
 
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
       this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+      this.scrollToTop();
     }
   }
 
@@ -263,6 +268,7 @@ export class NewQuizzComponent implements OnInit {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
       this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+      this.scrollToTop();
     }
   }
 
