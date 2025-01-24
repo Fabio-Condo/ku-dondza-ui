@@ -1,4 +1,5 @@
 :root {
+    --color-primary: #00b894; /* Verde fresco */
     --color-secondary: #00b894; /* Verde fresco */
     --color-text: #2d3436; /* Texto escuro */
     --color-background: #ffffff; /* Fundo branco */
@@ -40,7 +41,6 @@ body {
 
 .question-card:hover {
     transform: translateY(-5px);
-    /*box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);*/
 }
 
 .question-header {
@@ -76,26 +76,21 @@ body {
 
 .question-title {
     font-size: 20px;
-    color: var(--color-black);
+    color: var(--color-text);
     margin: 0 0 20px;
     font-weight: 600;
 }
 
 .question-image {
-    max-width: 60%; /* Limita a largura da imagem a 80% do contêiner */
-    height: auto; /* Mantém a proporção da imagem */
+    max-width: 60%;
+    height: auto;
     border-radius: 7px;
     margin-top: 16px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-    display: block; /* Garante que a imagem não tenha espaço extra abaixo */
-    margin-left: auto; /* Centraliza a imagem horizontalmente */
+    display: block;
+    margin-left: auto;
     margin-right: auto;
-    transition: none; /* Remove transições */
-}
-
-/* Remove qualquer efeito de hover na imagem */
-.question-image:hover {
-    transform: none; /* Remove transformações */
+    transition: none;
 }
 
 .answer-options {
@@ -104,16 +99,16 @@ body {
 
 .options-title {
     font-size: 20px;
-    color: var(--color-black);
+    color: var(--color-text);
     margin: 0 0 20px;
     font-weight: 600;
 }
 
 .answers-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr; /* Uma coluna que ocupa toda a linha */
     gap: 16px;
-    counter-reset: answer-counter; /* Inicia o contador */
+    counter-reset: answer-counter;
 }
 
 .answer-item {
@@ -122,17 +117,17 @@ body {
     background-color: var(--color-background);
     padding: 16px;
     border-radius: 12px;
-    border: 2px solid var(--color-border); /* Borda mais espessa */
+    border: 2px solid var(--color-border);
     transition: all 0.3s ease;
     cursor: pointer;
-    margin-bottom: 10px; /* Espaçamento entre os botões */
+    margin-bottom: 10px;
     position: relative;
-    padding-left: 50px; /* Espaço para o número */
+    padding-left: 50px;
 }
 
 .answer-item::before {
-    counter-increment: answer-counter; /* Incrementa o contador */
-    content: counter(answer-counter); /* Exibe o número */
+    counter-increment: answer-counter;
+    content: counter(answer-counter);
     position: absolute;
     left: 16px;
     top: 50%;
@@ -150,10 +145,10 @@ body {
 }
 
 .answer-item:hover {
-    background-color: #f1f3f5; /* Cor de fundo ao passar o mouse */
-    border-color: var(--color-primary); /* Borda colorida ao passar o mouse */
-    transform: translateY(-2px); /* Efeito de levantar */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background-color: #f1f3f5;
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .answer-text {
@@ -167,4 +162,59 @@ body {
     color: var(--color-correct);
     font-weight: 700;
     margin-left: 10px;
+}
+
+/* Estilos para a seção de solução */
+.solution-toggle {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.toggle-button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: var(--color-secondary);
+}
+
+.solution-section {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 2px solid var(--color-border);
+}
+
+.solution-title {
+    font-size: 20px;
+    color: var(--color-text);
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.solution-content {
+    font-size: 16px;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.solution-text {
+    margin-bottom: 16px;
+}
+
+.solution-image {
+    max-width: 60%;
+    height: auto;
+    border-radius: 7px;
+    margin-top: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

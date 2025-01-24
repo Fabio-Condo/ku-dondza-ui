@@ -7,13 +7,13 @@
 
     <!-- Corpo da pergunta -->
     <div class="question-body">
-        <h2 class="question-title">Exercicio</h2>
+        <h2 class="question-title">Exercício</h2>
         <p class="details" *ngIf="question.text">
             \[{{ question.text }}\]
         </p>   
         
-        <!--<img *ngIf="question.urlFile" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">-->
-        <!--<img *ngIf="imagePath" [src]="imagePath" alt="Gráfico de funções" class="question-image">-->
+        <!-- Imagem da pergunta (se houver) -->
+        <img *ngIf="question.urlFile" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">
     </div>
 
     <!-- Opções de resposta -->
@@ -21,10 +21,26 @@
         <h2 class="options-title">Opções de Resposta</h2>
         <div class="answers-grid">
             <label *ngFor="let answer of question.answers" class="answer-item">
-                <!--<span class="answer-text">{{ answer.text }}</span>-->
                 <span> \[{{ answer.text }}\] </span> 
                 <span *ngIf="answer.correct" class="correct-tag">✓</span>
             </label>
+        </div>
+    </div>
+
+    <!-- Botão para mostrar/ocultar a solução -->
+    <div class="solution-toggle">
+        <button (click)="toggleSolution()" class="toggle-button">
+            {{ showSolution ? 'Ocultar Solução' : 'Mostrar Solução' }}
+        </button>
+    </div>
+
+    <!-- Explicação da resolução -->
+    <div class="solution-section" *ngIf="showSolution">
+        <h2 class="solution-title">Como Resolver</h2>
+        <div class="solution-content">
+            <p class="solution-text">
+                \[{{ question.text }}\]
+            </p>
         </div>
     </div>
 </div>
