@@ -11,9 +11,6 @@ label {
   cursor: pointer;
 }
 
-
-
-
 /* AAAAA */
 /* Variáveis CSS */
 :root {
@@ -225,58 +222,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* Lista de tópicos */
-.topics-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.topic-item {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #e7f3ff;
-  border: 1px solid var(--color-primary);
-  border-radius: 20px;
-  font-size: 12px;
-  color: var(--color-primary);
-  transition: all 0.3s ease;
-}
-
-.topic-item:hover {
-  background-color: var(--color-primary);
-  color: white;
-  transform: translateY(-2px);
-}
-
-.start-button {
-  display: inline-block;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.start-button:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-}
-
-.start-button:disabled {
-  background: #e9ecef;
-  color: #6c757d;
-  cursor: not-allowed;
-  border-color: #adb5bd;
-}
-
-/* Tela final de resultados */
 /* Estilos da Tela de Resultados */
 .results-screen {
   padding: 20px;
@@ -452,29 +397,211 @@ body {
   margin-top: 2rem; /* Espaçamento acima do botão */
 }
 
-/* Botão de Início */
+/* Estilo do Card */
+.quiz-form-card {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  margin: 20px auto; /* Centraliza o card na tela */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Cabeçalho do Card */
+.quiz-header {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.quiz-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.quiz-subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Campos de Formulário */
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px rgba(106, 17, 203, 0.3);
+  outline: none;
+}
+
+/* Lista de Tópicos */
+.topics-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.topic-item {
+  margin: 10px 0;
+  background-color: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.topic-item:hover {
+  background-color: #e7f3ff;
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+}
+
+.topic-item label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-primary);
+  border-radius: 4px;
+  margin-right: 10px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.topic-item input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.topic-item input[type="checkbox"]:checked + .custom-checkbox {
+  background-color: var(--color-primary);
+}
+
+.topic-item input[type="checkbox"]:checked + .custom-checkbox::after {
+  content: '✔';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+}
+
+.topic-name {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Botões */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #2575fc;
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  background: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.generate-questions-btn {
+  margin-top: 15px;
+  width: 100%;
+}
+
 .start-button {
   display: inline-block;
   padding: 12px 24px;
   background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .start-button:hover {
   opacity: 0.9;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
 .start-button:disabled {
   background: #e9ecef;
   color: #6c757d;
   cursor: not-allowed;
+}
+
+/* Indicador de Carregamento */
+.loading-indicator {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--color-primary);
+  border-top-color: transparent;
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Responsividade */
@@ -497,46 +624,33 @@ body {
   } 
 }
 
-/* Tema escuro */
-@media (prefers-color-scheme: dark) {
-  body {
-      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-      color: #f0f0f0;
+/* Responsividade */
+@media (max-width: 768px) {
+  .quiz-form-card {
+    padding: 20px;
   }
 
-  .quiz-title, .quiz-sub-title {
-      color: #f0f0f0;
+  .quiz-title {
+    font-size: 1.8rem;
   }
 
-  .question-card {
-      background-color: #2d2d2d;
-      border-color: #444;
-      color: #f0f0f0;
+  .quiz-subtitle {
+    font-size: 0.9rem;
   }
 
-  .answer-options label {
-      background-color: #444;
-      border-color: #666;
-      color: #f0f0f0;
+  .form-group input,
+  .form-group select {
+    padding: 10px;
+    font-size: 0.9rem;
   }
 
-  .answer-options label:hover {
-      background: linear-gradient(135deg, #555, #444);
-      border-color: #4a90e2;
+  .topic-name {
+    font-size: 0.9rem;
   }
 
-  .start-screen, .final-screen {
-      background-color: #2d2d2d;
-      color: #f0f0f0;
-  }
-
-  .results-summary {
-      background-color: #444;
-      border-color: #666;
-      color: #f0f0f0;
-  }
-
-  .results-summary p {
-      color: #f0f0f0;
+  .btn,
+  .start-button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
   }
 }

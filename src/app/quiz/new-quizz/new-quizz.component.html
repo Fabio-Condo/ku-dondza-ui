@@ -1,41 +1,89 @@
 <div class="container" style="margin-top: 70px; max-width: 900px;">
   <!-- Tela inicial -->
   <div *ngIf="showStartScreen" class="start-screen">
-    <h1 class="quiz-title">Novo quizz</h1>
-
-    <div class="form-group">
-      <label for="title">Descrição</label>
-      <input type="title" name="title" ngModel #title="ngModel" minlength="1" [(ngModel)]="quiz.description">
+    <div class="start-screen-content">
+      <div class="quiz-header">
+        <h1 class="quiz-title">Crie seu Quiz</h1>
+        <p class="quiz-subtitle">Personalize seu quiz e comece a testar seus conhecimentos!</p>
+      </div>
+  
+      <!-- Campo de Descrição -->
+      <div class="form-group">
+        <label for="title">Descrição do Quiz</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          [(ngModel)]="quiz.description"
+          placeholder="Ex: Quiz sobre funções quadráticas"
+          required
+        />
+      </div>
+  
+      <!-- Seleção de Disciplina -->
+      <div class="form-group">
+        <label for="subject">Disciplina</label>
+        <select
+          id="subject"
+          [(ngModel)]="quiz.subject"
+          (change)="getTopicsBySubjectId(quiz.subject.id)"
+          [disabled]="showLoading || showGetSubjectLoading"
+          name="subject"
+          required
+        >
+          <option value="" disabled selected>Selecione a disciplina</option>
+          <option *ngFor="let subject of subjects" [ngValue]="subject">
+            {{ subject.name }}
+          </option>
+        </select>
+      </div>
+  
+      <!-- Seleção de Tópicos -->
+      <div class="form-group">
+        <label>Selecione os Tópicos</label>
+        <ul class="topics-list">
+          <li *ngFor="let topic of topics" class="topic-item">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="topic.selected"
+                (change)="toggleTopic(topic)"
+              />
+              <span class="custom-checkbox"></span>
+              <span class="topic-name">{{ topic.name }}</span>
+            </label>
+          </li>
+        </ul>
+        <button
+          class="start-button"
+          (click)="getQuestions()"
+          [disabled]="topics.length == 0" *ngIf="quiz.subject.id"
+        >
+          Gerar Questões
+        </button>
+      </div>
+  
+      <!-- Indicador de Carregamento -->
+      <div class="loading-indicator" *ngIf="showLoading || showGetSubjectLoading">
+        <span>Gerando questões...</span>
+        <div class="spinner"></div>
+      </div>
+  
+      <!-- Botão de Iniciar Quiz -->
+      <button
+        class="start-button"
+        (click)="startQuiz()"
+        [disabled]="
+          !quiz.description ||
+          quiz.questions.length === 0 ||
+          questions.length === 0 ||
+          showLoading ||
+          showGetSubjectLoading
+        "
+      >
+        Começar Quiz
+      </button>
     </div>
-
-    <div class="form-group">
-      <label for="subject">Disciplina</label>
-      <select id="subject" [(ngModel)]="quiz.subject" (change)="getTopicsBySubjectId(quiz.subject.id)" [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
-        <option value="" disabled selected>Selecione a disciplina</option>
-        <option *ngFor="let subject of subjects" [ngValue]="subject">{{ subject.name }}</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Selecione os Tópicos</label>
-      <ul>
-        <li *ngFor="let topic of topics">
-          <label>
-            <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)">
-            {{ topic.name }}
-          </label>
-        </li>
-      </ul>
-      <button class="btn" style="margin-bottom: 10px;" (click)="getQuestions()" [disabled]="topics.length === 0">Gerar questões</button>
-    </div>
-
-    <div>
-      <span style="font-weight: bold" *ngIf="showLoading || showGetSubjectLoading">Gerrando...</span>
-    </div>
-
-    <button class="start-button" (click)="startQuiz()"
-      [disabled]="!quiz.description || quiz.questions.length === 0 || questions.length === 0 || showLoading || showGetSubjectLoading">Começar
-      Quiz</button>
   </div>
 
   <!-- Tela do quiz (questões) -->
