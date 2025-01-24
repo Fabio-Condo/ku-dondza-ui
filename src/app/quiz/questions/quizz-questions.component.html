@@ -1,24 +1,12 @@
 <div class="container" style="margin-top: 70px; max-width: 900px;">
   <!-- Tela inicial -->
-  <div *ngIf="showStartScreen" class="">
-
+  <div *ngIf="showStartScreen" class="results-screen2">
     <div class="results-summary">
-
-      <h2 class="results-title">📊 Resultados do Quiz</h2>
-
+      <h2 class="results-title">Resultados do Quiz</h2>
       <p class="quiz-title">{{ quiz.description }}</p>
       <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-
-      <h3 class="section-title">📚Tópicos avaliados</h3>
-
-      <!-- Lista de tópicos -->
-      <div class="topics-list">
-        <span *ngFor="let topic of quiz.selectedTopics" class="topic-item">
-          {{ topic.name }}
-        </span>
-      </div>
-
-
+  
+      <!-- Estatísticas Gerais -->
       <div class="stats-container">
         <div class="stat-card">
           <p class="stat-label">Número de questões</p>
@@ -41,44 +29,40 @@
           <p class="stat-value">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(2) }}%</p>
         </div>
       </div>
-    
-      <!-- Resultados por tópico -->
+  
+      <!-- Resultados por Tópico -->
       <div class="results-by-topic" *ngIf="quiz.resultsByTopic">
-        <h3 class="section-title">📚 Resultados por Tópico</h3>
+        <h3 class="section-title">Resultados por Tópico</h3>
         <div class="topic-grid">
           <div *ngFor="let topic of quiz.selectedTopics" class="topic-card">
             <h4 class="topic-name">{{ topic.name }}</h4>
             <div class="topic-stats">
-              <p>✅ Acertos: <span class="correct">{{ quiz.resultsByTopic[topic.name]?.correct || 0 }}</span></p>
-              <p>❌ Erros: <span class="incorrect">{{ quiz.resultsByTopic[topic.name]?.incorrect || 0 }}</span></p>
-              <p>⏭️ Nulas: <span class="incorrect">{{ quiz.resultsByTopic[topic.name]?.nullAnswers || 0 }}</span></p>
-              <p>📈 Porcentagem: <span class="percentage">{{ quiz.resultsByTopic[topic.name]?.percentage?.toFixed(2) || 0 }}%</span></p>
+              <p>✅ Acertos: <span class="correct">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span></p>
+              <p>❌ Erros: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</span></p>
+              <p>⏭️ Nulas: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span></p>
+  
+              <!-- Mensagem de Melhoria -->
+              <div *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! < 70" class="improvement-card low-score">
+                <p class="improvement-percentage">📉 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
+                <p class="improvement-message">💡 Dica: Revise este tópico para melhorar seu desempenho!</p>
+              </div>
+  
+              <div *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! >= 70" class="improvement-card high-score">
+                <p class="improvement-percentage">📈 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
+                <p class="improvement-message">💡 Dica: Continue assim e nunca pare de aumentar os teus conhecimentos!</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    
-      <!-- Tópicos que precisam de melhoria -->
-      <div class="improvement-topics" *ngIf="quiz.resultsByTopic">
-        <h3 class="section-title">🚨 Tópicos para Melhorar</h3>
-        <div class="improvement-grid">
-          <div *ngFor="let topic of quiz.selectedTopics">
-            <div *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! < 70" class="improvement-card">
-              <h4 class="topic-name">{{ topic.name }}</h4>
-              <p class="improvement-percentage">📉 {{ quiz.resultsByTopic[topic.name]?.percentage?.toFixed(2) || 0 }}% de acerto</p>
-              <p class="improvement-message">💡 Dica: Revise este tópico para melhorar seu desempenho!</p>
-            </div>
-          </div>
-        </div>
+  
+      <!-- Botão de Início -->
+      <div class="button-container">
+        <button class="start-button" [disabled]="showLoading" (click)="startQuiz()">
+          <i class="pi pi-play"></i> Ver questões
+        </button>
       </div>
-
-      <!-- Botão de início -->
-      <button class="start-button" [disabled]="showLoading" (click)="startQuiz()">
-        <i class="pi pi-play" style="margin-right: 0.5rem;"></i> Ver questões
-      </button>
     </div>
-
-
   </div>
 
   <div *ngIf="!showStartScreen">

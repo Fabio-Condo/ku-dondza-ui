@@ -93,30 +93,68 @@
       Carregando...
     </div>
   </div>
-
-  <!-- Tela final de resultados -->
-  <div *ngIf="showFinalScreen" class="final-screen">
-    <h1 class="quiz-title">Resultados do Quiz</h1>
-    <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-
-    <!-- Texto explicativo sobre os tópicos -->
-    <p class="topics-label">Tópicos avaliados neste quiz:</p>
-
-    <!-- Lista de tópicos -->
-    <div class="topics-list">
-      <span *ngFor="let topic of quiz.selectedTopics" class="topic-item">
-        {{ topic.name }}
-      </span>
-    </div>
-
+  
+  <div *ngIf="showFinalScreen" class="results-screen2">
     <div class="results-summary">
-      <p>Você respondeu {{ questions.length }} questões.</p>
-      <p>Respostas corretas: <span class="correct">{{ result.correctAnswers }}</span></p>
-      <p>Respostas incorretas: <span class="incorrect">{{ result.incorrectAnswers }}</span></p>
-      <p>Não respondidas: <span class="incorrect">{{ result.unansweredQuestions }}</span></p>
-      <p>Sua pontuação: <span class="score">{{ (result.correctAnswers / questions.length) * 100 }}%</span></p>
+      <h2 class="results-title">Resultados do Quiz</h2>
+      <p class="quiz-title">{{ quiz.description }}</p>
+      <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+  
+      <!-- Estatísticas Gerais -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <p class="stat-label">Número de questões</p>
+          <p class="stat-value">{{ quiz.questions.length }}</p>
+        </div>
+        <div class="stat-card correct">
+          <p class="stat-label">Respostas corretas</p>
+          <p class="stat-value">{{ result.correctAnswers }}</p>
+        </div>
+        <div class="stat-card incorrect">
+          <p class="stat-label">Respostas incorretas</p>
+          <p class="stat-value">{{ result.incorrectAnswers }}</p>
+        </div>
+        <div class="stat-card incorrect">
+          <p class="stat-label">Respostas nulas</p>
+          <p class="stat-value">{{ result.nullAnswers }}</p>
+        </div>
+        <div class="stat-card score">
+          <p class="stat-label">Sua pontuação</p>
+          <p class="stat-value">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(2) }}%</p>
+        </div>
+      </div>
+  
+      <!-- Resultados por Tópico -->
+      <div class="results-by-topic" *ngIf="quiz.resultsByTopic">
+        <h3 class="section-title">Resultados por Tópico</h3>
+        <div class="topic-grid">
+          <div *ngFor="let topic of quiz.selectedTopics" class="topic-card">
+            <h4 class="topic-name">{{ topic.name }}</h4>
+            <div class="topic-stats">
+              <p>✅ Acertos: <span class="correct">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span></p>
+              <p>❌ Erros: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</span></p>
+              <p>⏭️ Nulas: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span></p>
+  
+              <!-- Mensagem de Melhoria -->
+              <div *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! < 70" class="improvement-card low-score">
+                <p class="improvement-percentage">📉 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
+                <p class="improvement-message">💡 Dica: Revise este tópico para melhorar seu desempenho!</p>
+              </div>
+  
+              <div *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! >= 70" class="improvement-card high-score">
+                <p class="improvement-percentage">📈 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
+                <p class="improvement-message">💡 Dica: Continue assim e nunca pare de aumentar os teus conhecimentos!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Botão de Início -->
+      <div class="button-container">
+        <button class="start-button" (click)="toggleCorrection()">Ver Correção</button>
+      </div>
     </div>
-
-    <button class="start-button" (click)="toggleCorrection()">Ver Correção</button>
   </div>
+
 </div>
