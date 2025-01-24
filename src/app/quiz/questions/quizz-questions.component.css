@@ -447,3 +447,64 @@ body {
     font-size: 0.9rem; /* Reduz o tamanho da fonte */
   }
 }
+/* Container da solução com efeito glassmorphism */
+.solution-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil */
+  backdrop-filter: blur(10px); /* Efeito de desfoque */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: all 0.3s ease;
+}
+
+.solution-container:hover {
+  background: rgba(255, 255, 255, 0.9); /* Fundo mais opaco no hover */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Sombra mais intensa no hover */
+}
+
+/* Textarea ou div da solução */
+.solution-text {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  resize: none; /* Impede o redimensionamento manual */
+  min-height: 100px; /* Altura mínima inicial */
+  overflow-y: auto; /* Adiciona scroll se necessário */
+  transition: border-color 0.3s ease;
+}
+
+.solution-text.scrollable {
+  max-height: 200px; /* Altura máxima com scroll */
+  overflow-y: auto; /* Scroll vertical */
+}
+
+.solution-text:focus {
+  outline: none;
+  border-color: var(--color-primary); /* Cor primária ao focar */
+}
+
+/* Botão de solução */
+.solution-button {
+  margin-top: 10px;
+  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px); /* Efeito de desfoque */
+}
+
+.solution-button:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra no hover */
+}

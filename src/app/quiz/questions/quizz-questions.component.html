@@ -89,6 +89,21 @@
 
           </label>
         </div>
+
+        <button class="base-button solution-button" *ngIf="!showStartScreen" (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution">
+          {{ quiz.questions[currentQuestionIndex].showSolution ? 'Ocultar Explicação' : 'Mostrar Explicação' }}
+        </button>
+      </div>
+
+      <!-- Input para mostrar a solução -->
+      <div class="solution-container" *ngIf="!showStartScreen  && quiz.questions[currentQuestionIndex].showSolution">
+        <div class="solution-input">
+          <label for="solution">Explicação:</label>
+          <!-- Usando div com scroll para textos longos -->
+          <div class="solution-text scrollable">
+            {{ quiz.questions[currentQuestionIndex].solution }}
+          </div>
+        </div>
       </div>
   
       <div class="navigation-buttons text-center">
@@ -109,5 +124,8 @@
     </div>
   
     <div *ngIf="showLoading" class="loading-indicator">Carregando...</div>
+
   </div>
+
+
 </div>
