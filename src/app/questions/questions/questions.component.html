@@ -177,7 +177,7 @@
                                 <td>{{ answer.correct ? 'Sim' : 'Não' }}</td>
                                 <td class="actions">
                                     <a href="javascript:;" (click)="getReadyAnswerEdit(answer, rowIndex)" class="edit-btn">E</a>
-                                    <a href="javascript:;" (click)="removeAnswer(rowIndex)" class="remove-btn">R</a>
+                                    <a href="javascript:;" (click)="onRemoveAnswer(rowIndex)" class="remove-btn">R</a>
                                 </td>
                             </tr>
                             <tr *ngIf="question.answers.length === 0">
@@ -197,6 +197,12 @@
                     </option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="solution">Solução</label>
+                <textarea id="solution" name="solution" ngModel #solution="ngModel" required minlength="1" 
+                    [(ngModel)]="question.solution" rows="4"></textarea>
+            </div>
             
             <hr class="header-divider">
 
@@ -212,17 +218,27 @@
 
 <div class="overlay" *ngIf="showAnswerForm && answer">
     <div class="dialog" style="width: 600px;">
-      <h2>{{editingAnswer ? 'Editando' : 'Novo'}}</h2>
-      <button class="close-btn" (click)="showAnswerForm = false">&times;</button>
+        <div class="dialog-header">
+            <h2>{{editingAnswer ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-btn" (click)="showAnswerForm = false">&times;</button>
+        </div>
+    
+        <hr class="header-divider">
   
-      <form autocomplete="off" #frmAnswer="ngForm" (ngSubmit)="confirmAnswer(frmAnswer)">
-            <label>Designation</label>
-            <textarea pInputTextarea rows="3" ngModel #coordnates="ngModel" ngModel name="designation"
-              [(ngModel)]="answer.text"></textarea>
+        <form autocomplete="off" #frmAnswer="ngForm" (ngSubmit)="confirmAnswer(frmAnswer)">
+            <div class="form-group">
+                <label>Designation</label>
+                <textarea id="designation" name="designation" ngModel #designation="ngModel" required minlength="1" 
+                    [(ngModel)]="answer.text" rows="4"></textarea> 
+            </div>     
 
-          <button class="confirm-button confirm-button-primary" [disabled]="frmAnswer.invalid">Confirmar</button>
+            <hr class="header-divider">
 
-      </form>
+            <div class="dialog-footer">
+                <button class="btn" [disabled]="frmAnswer.invalid">Confirmar</button>
+            </div>
+
+        </form>
     </div>
 </div>
 

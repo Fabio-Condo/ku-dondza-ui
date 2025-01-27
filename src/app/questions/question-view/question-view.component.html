@@ -8,22 +8,33 @@
     <!-- Corpo da pergunta -->
     <div class="question-body">
         <h2 class="question-title">Exercício</h2>
+        <img *ngIf="question.urlFile" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">
         <p class="details" *ngIf="question.text">
             \[{{ question.text }}\]
         </p>   
-        
-        <!-- Imagem da pergunta (se houver) -->
-        <img *ngIf="question.urlFile" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">
     </div>
 
     <!-- Opções de resposta -->
-    <div class="answer-options">
-        <h2 class="options-title">Opções de Resposta</h2>
-        <div class="answers-grid">
-            <label *ngFor="let answer of question.answers" class="answer-item">
-                <span> \[{{ answer.text }}\] </span> 
-                <span *ngIf="answer.correct" class="correct-tag">✓</span>
-            </label>
+    <h2 class="options-title">Opções de Resposta</h2>
+ 
+    <div class="answers-card">
+        <div class="answer-options">
+            <div class="answers-grid">
+                <label *ngFor="let answer of question.answers" class="answer-item">
+                    <span> \[{{ answer.text }}\] </span> 
+                    <span *ngIf="answer.correct" class="correct-tag">✓</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explicação da resolução -->
+    <div class="solution-section" *ngIf="showSolution">
+        <h2 class="solution-title">Como Resolver</h2>
+        <div class="solution-content">
+            <p class="solution-text">
+                \[{{ question.solution }}\]
+            </p>
         </div>
     </div>
 
@@ -32,15 +43,5 @@
         <button (click)="toggleSolution()" class="toggle-button">
             {{ showSolution ? 'Ocultar Solução' : 'Mostrar Solução' }}
         </button>
-    </div>
-
-    <!-- Explicação da resolução -->
-    <div class="solution-section" *ngIf="showSolution">
-        <h2 class="solution-title">Como Resolver</h2>
-        <div class="solution-content">
-            <p class="solution-text">
-                \[{{ question.text }}\]
-            </p>
-        </div>
     </div>
 </div>

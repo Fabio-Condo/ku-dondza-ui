@@ -5,8 +5,9 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { SubjectFilter } from 'src/app/core/interface/SubjectFilter';
-import { TopicService } from 'src/app/core/topics/courseService.service';
+import { TopicService } from 'src/app/topics/topicsService.service';
 import { Topic } from 'src/app/core/model/Topic';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-subjects',
@@ -42,11 +43,81 @@ export class SubjectsComponent implements OnInit {
     private subjectsService: SubjectsService,
     private topicService: TopicService,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
     this.findAll();
     this.buscarTotal();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  get editing() {
+    return Boolean(this.subject.id);
+  }
+
+  save(subjectForm: NgForm) {
+    if (this.editing) {
+      this.update(subjectForm);
+    } else {
+      this.addNew(subjectForm);
+    }
+  }
+
+  addNew(subjectForm: NgForm) {
+    this.showLoading = true;
+    this.subjectsService.add(this.subject).subscribe(
+      (response) => {
+        this.subject = response;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  update(subjectForm: NgForm) {
+    this.showLoading = true;
+    this.subjectsService.update(this.subject).subscribe(
+      (response) => {
+        this.subject = response;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Disciplina alterada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  excluir(subject: Subject) {
+    this.subjectsService.excluir(subject.id).subscribe(() => {
+      this.findAll();
+      this.buscarTotal();
+      this.messageService.add({ severity: 'success', detail: 'Disciplina excluída com sucesso!' });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  confirmarExclusao(subject: Subject): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.excluir(subject);
+      }
+    });
   }
 
   findAll(pagina: number = 0): void {
@@ -91,11 +162,29 @@ export class SubjectsComponent implements OnInit {
     );
   }
 
+  onUpdateSubject(subject: Subject): void {
+    this.subject = subject;
+    this.displayModalSave = true;
+  }
+
+  onAddNewSubject(): void {
+    this.subject = new Subject();
+    this.displayModalSave = true;
+  }
+
   onView(subject: Subject): void {
     this.getTopicsBySubjectId(subject.id);
     this.selectedSubject = subject;
     this.selectedSubject.topics = this.topics;
     this.displayModalView = true;
+  }
+
+  toggleDropdown(subject: Subject) {
+    subject.isAdminMenuOpen = !subject.isAdminMenuOpen
+  }
+
+  closeDropdown(subject: Subject) {
+    subject.isAdminMenuOpen = false;
   }
 
   changePageSize(event: any): void {

@@ -7,4 +7,5 @@ export class Topic {
     subject = new Subject();
 
     selected: boolean = false; // Adicionamos uma propriedade para controle de seleção
+    isAdminMenuOpen: boolean = false;
 }

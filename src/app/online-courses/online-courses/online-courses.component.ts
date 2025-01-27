@@ -34,12 +34,6 @@ export class OnlineCoursesComponent implements OnInit {
   
   selectedCourse: OnlineCourse = new OnlineCourse();
 
-  selectedQuestion: Question = new Question();
-  showQuestionsDialog: boolean = false;
-  showSelectQuestionsDialog: boolean = false;
-
-  questionsList: any[] = [];
-  totalRegistrosQuestions: number = 10000
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -212,20 +206,6 @@ export class OnlineCoursesComponent implements OnInit {
         this.showLoading = false;
       }
     )
-  }
-
-
-
-  onShowSelectedCourse(course: OnlineCourse): void {
-    this.selectedCourse = course;
-    this.selectedCourse.questions = [];
-    this.filtroQuestions.page = 0; 
-    this.showQuestionsDialog = true;
-  }
-
-  onAddQuestions(course: OnlineCourse) {
-    this.course = course;
-    this.showSelectQuestionsDialog = true;
   }
 
   getUsersInstrutors() {

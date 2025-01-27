@@ -20,7 +20,7 @@
                 <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
                     <a (click)="isDropdownOpen = !isDropdownOpen">Filtrar</a>
-                    <a (click)="isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                    <a (click)="onAddNewSubject(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
                 </div>
             </div>
         </div>
@@ -36,7 +36,13 @@
                                 <p class="title">{{ subject.name }}</p>
                                 <p class="details">12 tópicos</p>
                             </div>
-
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i class="pi pi-ellipsis-v"></i></button>
+                                <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
+                                    <a (click)="onUpdateSubject(subject); closeDropdown(subject)">Editar</a>
+                                    <a (click)="confirmarExclusao(subject); closeDropdown(subject)" >Eliminar</a>
+                                </div>
+                            </div>
                             <div class="button-container">
                                 <button class="btn btn-primary" (click)="onView(subject)">Ver</button>
                             </div>
@@ -111,5 +117,29 @@
             {{ topic.name }}
         </p>
 
+    </div>
+</div>
+
+<div class="overlay" *ngIf="displayModalSave">
+    <div class="dialog">
+        <div class="dialog-header">
+            <h2>{{ editing ? 'Editando' : 'Adicionando Nova' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        </div>
+      
+        <hr class="header-divider">
+
+        <form autocomplete="off" #subjectForm="ngForm" (ngSubmit)="save(subjectForm)">
+            <div class="form-group">
+                <label for="courseName">Nome</label>
+                <input type="text" id="courseName" name="name" ngModel #name="ngModel" required minlength="1" [(ngModel)]="subject.name">
+            </div>
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+                <button type="submit" [disabled]="subjectForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            </div>
+        </form>
     </div>
 </div>

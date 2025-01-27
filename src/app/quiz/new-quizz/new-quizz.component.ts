@@ -12,7 +12,7 @@ import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Answer } from 'src/app/core/model/Answer';
 import { QuestionService } from 'src/app/questions/question.service';
-import { TopicService } from 'src/app/core/topics/courseService.service';
+import { TopicService } from 'src/app/topics/topicsService.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { SubjectsService } from 'src/app/subjects/subjects.service';

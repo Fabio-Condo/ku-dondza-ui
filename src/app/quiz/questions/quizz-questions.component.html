@@ -2,15 +2,16 @@
   <!-- Tela inicial -->
   <div *ngIf="showStartScreen" class="results-screen2">
     <div class="results-summary">
-      <h2 class="results-title">Resultados do Quiz</h2>
       <p class="quiz-title">{{ quiz.description }}</p>
       <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-  
+
+      <h2 class="section-title">Resultados</h2>
+
       <!-- Estatísticas Gerais -->
       <div class="stats-container">
         <div class="stat-card">
           <p class="stat-label">Número de questões</p>
-          <p class="stat-value">{{ quiz.questions.length }}</p>
+          <p class="stat-value">{{ questions.length }}</p>
         </div>
         <div class="stat-card correct">
           <p class="stat-label">Respostas corretas</p>
@@ -26,7 +27,7 @@
         </div>
         <div class="stat-card score">
           <p class="stat-label">Sua pontuação</p>
-          <p class="stat-value">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(2) }}%</p>
+          <p class="stat-value">{{ ((result.correctAnswers / questions.length) * 100).toFixed(2) }}%</p>
         </div>
       </div>
   
@@ -90,7 +91,7 @@
           </label>
         </div>
 
-        <button class="base-button solution-button" *ngIf="!showStartScreen" (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution">
+        <button class="base-button solution-button" style="background: transparent; color: black;" *ngIf="!showStartScreen" (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution">
           {{ quiz.questions[currentQuestionIndex].showSolution ? 'Ocultar Explicação' : 'Mostrar Explicação' }}
         </button>
       </div>

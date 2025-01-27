@@ -43,6 +43,18 @@ export class SubjectsService {
     return this.http.get<Subject>(`${this.host}/${id}`, {});
   }
 
+  add(subject: Subject): Observable<Subject> {
+    return this.http.post<Subject>(this.host, subject, {});
+  }
+
+  update(subject: Subject): Observable<Subject> {
+    return this.http.put<Subject>(`${this.host}/${subject.id}`, subject, {});
+  }
+
+  excluir(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.host}/${id}`, {});
+  }
+
   buscarTotal(): Observable<number> {
     return this.http.get<number>(`${this.host}/total`, {});
   }

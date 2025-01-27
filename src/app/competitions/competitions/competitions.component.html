@@ -3,11 +3,8 @@
         <h1 class="title">Competições</h1>
     </div>
 
-    <p style="margin-top: 20px; font-size: 0.85rem;">
-        Descubra a diversidade de cursos disponíveis em Moçambique, incluindo detalhes como título do curso, descrição e a instituição que oferece.
-    </p>
-    <p style="margin-bottom: 20px; font-size: 0.85rem;">
-        Na Ku-DONDZA, ajudamos os estudantes a fazer escolhas informadas.
+    <p class="title-description">
+        Descubra a diversidade de cursos disponíveis em Moçambique.
     </p>
 
     <div class="flex">
@@ -37,7 +34,7 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="content">
-                                <p class="competition-name">{{ competition.title }}</p>
+                                <p class="title">{{ competition.title }}</p>
                                 <p class="details">{{ competition.totalQuestions }} questoes</p>
                                 <p class="details" *ngIf="competition.totalParticipants == 0"><strong>0</strong> participantes da competição</p>
                                 <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 1"> Apenas <strong>uma pessoa</strong> é participante desta competição</p>
@@ -126,8 +123,8 @@
     </div>
 </div>
 
-<div class="question-dialog-overlay" *ngIf="showCompetitionDialog">
-    <div class="question-dialog">
+<div class="overlay" *ngIf="showCompetitionDialog">
+    <div class="dialog">
         <div class="question-dialog-header">
             <h4>{{selectedCompetition.title}}</h4>
             <button class="close-button" (click)="showCompetitionDialog = false">x</button>
@@ -225,8 +222,8 @@
     </div>
 </div>
 
-<div class="question-dialog-overlay" *ngIf="showAddQuestionsDialog">
-    <div class="question-dialog">
+<div class="overlay" *ngIf="showAddQuestionsDialog">
+    <div class="dialog">
         <div class="question-dialog-header">
             <h4>Questoes</h4>
             <button class="close-button" (click)="showAddQuestionsDialog = false">x</button>

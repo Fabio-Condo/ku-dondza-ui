@@ -15,7 +15,7 @@ declare const MathJax: any;
 export class QuestionViewComponent implements OnInit {
 
   question: Question = new Question();
-  showSolution: boolean = true;
+  showSolution: boolean = false;
   imagePath = './assets/images/funcao do grau 2.png';
 
   constructor(
@@ -61,10 +61,11 @@ export class QuestionViewComponent implements OnInit {
     }, 0);
   }
 
-    // Método para alternar a visibilidade da solução
-    toggleSolution() {
-      this.showSolution = !this.showSolution;
-    }
+  // Método para alternar a visibilidade da solução
+  toggleSolution() {
+    this.showSolution = !this.showSolution;
+    this.renderMathExpressions();
+  }
 
   private sendErrorNotification(message: string): void {
     if (message) {

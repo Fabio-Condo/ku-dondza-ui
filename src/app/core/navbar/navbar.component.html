@@ -60,6 +60,97 @@
         <div class="menu-dropdown large" [class.active]="isMenuActive">
           <div class="menu-title">Menu</div>
           <ul (click)="toggleMenu()">
+
+            <li [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">
+              <div class="menu-content">
+                <span class="menu-icon-item">💻</span>
+                <a class="menu-item">
+                  <span>Cursos online</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/books')" routerLink="/books">
+              <div class="menu-content">
+                <span class="menu-icon-item">📄</span>
+                <a class="menu-item">
+                  <span>Livros</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/questions')" routerLink="/questions">
+              <div class="menu-content">
+                <span class="menu-icon-item">📚</span>
+                <a class="menu-item">
+                  <span>Banco de questões</span>
+                </a>
+              </div>
+            </li>
+            
+            <li [class.active]="isActive('/exames')" routerLink="/exames">
+              <div class="menu-content">
+                <span class="menu-icon-item">📄</span>
+                <a class="menu-item">
+                  <span>Exames</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/quizzes')" routerLink="/quizzes">
+              <div class="menu-content">
+                <span class="menu-icon-item">❓</span> 
+                <a class="menu-item">
+                  <span>Quizzes</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/disciplinas')" routerLink="/disciplinas">
+              <div class="menu-content">
+                <span class="menu-icon-item">🏫</span>
+                <a class="menu-item">
+                  <span>Disciplinas e tópicos</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/competitions')" routerLink="/competitions">
+              <div class="menu-content">
+                <span class="menu-icon-item">🏆</span>
+                <a class="menu-item">
+                  <span>Competições de quizzes</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/topics')" routerLink="/topics">
+              <div class="menu-content">
+                <span class="menu-icon-item">🏫</span>
+                <a class="menu-item">
+                  <span>Tópicos</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
+              <div class="menu-content">
+                <span class="menu-icon-item">🏫</span>
+                <a class="menu-item">
+                  <span>Instituições</span>
+                </a>
+              </div>
+            </li>
+
+            <li [class.active]="isActive('/cursos')" routerLink="/cursos">
+              <div class="menu-content">
+                <span class="menu-icon-item">👨‍🏫</span>
+                <a class="menu-item">
+                  <span>Cursos</span>
+                </a>
+              </div>
+            </li>
+
             <!--
             <li [class.active]="isActive('/feed')" routerLink="/feed">
               <div class="menu-content">
@@ -73,62 +164,6 @@
               </div>
             </li>
             -->
-
-            <li [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">
-              <div class="menu-content">
-                <span class="menu-icon-item">💻</span>
-                <a class="menu-item">
-                  <span>Cursos online</span>
-                </a>
-              </div>
-            </li>
-            <li [class.active]="isActive('/books')" routerLink="/books">
-              <div class="menu-content">
-                <span class="menu-icon-item">📄</span>
-                <a class="menu-item">
-                  <span>Livros</span>
-
-                </a>
-              </div>
-            </li>
-            <li [class.active]="isActive('/exames')" routerLink="/exames">
-              <div class="menu-content">
-                <span class="menu-icon-item">📄</span>
-                <a class="menu-item">
-                  <span>Exames</span>
-                </a>
-              </div>
-            </li>
-            <li [class.active]="isActive('/quizzes')" routerLink="/quizzes">
-              <div class="menu-content">
-                <span class="menu-icon-item">❓</span> 
-                <a class="menu-item">
-                  <span>Quizzes</span>
-                </a>
-              </div>
-            </li>
-            
-            <!--
-            <li [class.active]="isActive('/competitions')" routerLink="/competitions">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏆</span>
-                <a class="menu-item">
-                  <span>Competições de quizzes</span>
-                  <span class="description">Participe de quizzes interativos e educativos. Os quizzes são uma maneira
-                    divertida de revisar o que você aprendeu e avaliar seu conhecimento em diferentes tópicos.</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <li [class.active]="isActive('/questions')" routerLink="/questions">
-              <div class="menu-content">
-                <span class="menu-icon-item">📚</span>
-                <a class="menu-item">
-                  <span>Banco de questões</span>
-                </a>
-              </div>
-            </li>
 
             <!--
             <li [class.active]="isActive('/grupos')" routerLink="/grupos">
@@ -157,31 +192,6 @@
               </div>
             </li>
             -->
-
-            <li [class.active]="isActive('/disciplinas')" routerLink="/disciplinas">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏫</span>
-                <a class="menu-item">
-                  <span>Disciplinas</span>
-                </a>
-              </div>
-            </li>
-            <li [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏫</span>
-                <a class="menu-item">
-                  <span>Instituições</span>
-                </a>
-              </div>
-            </li>
-            <li [class.active]="isActive('/cursos')" routerLink="/cursos">
-              <div class="menu-content">
-                <span class="menu-icon-item">👨‍🏫</span>
-                <a class="menu-item">
-                  <span>Cursos</span>
-                </a>
-              </div>
-            </li>
           </ul>
         </div>
 

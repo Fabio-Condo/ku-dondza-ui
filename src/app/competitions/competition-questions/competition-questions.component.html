@@ -1,46 +1,63 @@
-<div class="container" style="margin-top: 70px;">
-      
-    <h1 class="quiz-title">Competition: {{ competition.title }}</h1>
+<div class="container" style="margin-top: 70px; max-width: 900px;">
 
+
+    <!-- Tela do quiz (questões) -->
     <div>
-        <div class="question-card" *ngIf="currentQuestionIndex < questions.length">
+        <div *ngIf="currentQuestionIndex < questions.length">
+            <div class="question-card">
 
-            <img *ngIf="questions[currentQuestionIndex].urlFile" 
-                 src="{{ questions[currentQuestionIndex].urlFile }}" 
-                 alt="Gráfico de funções" 
-                 class="question-graph">
+                <img *ngIf="questions[currentQuestionIndex].urlFile" src="{{ questions[currentQuestionIndex].urlFile }}"
+                    alt="Gráfico de funções" class="question-graph">
 
-            <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
+                <!-- Contêiner para expressões matemáticas -->
+                <div id="math-container-{{ currentQuestionIndex }}" class="details"
+                    *ngIf="questions[currentQuestionIndex].text">
+                    \[{{ questions[currentQuestionIndex].text }}\]
+                </div>
 
-            <div class="answer-options">
-                <label *ngFor="let answer of questions[currentQuestionIndex].answers" 
-                       [ngClass]="{
-                          'correct-answer': showCorrection && answer.correct,
-                          'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
-                       }">
-                    <input 
-                        type="radio" 
-                        name="question-{{ questions[currentQuestionIndex].id }}" 
-                        [value]="answer.id" 
-                        [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)" 
-                        (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)" 
-                        [disabled]="showCorrection" />
-                    <span>
-                        {{ answer.text }}
-                    </span>
-                </label>
+                <div class="answer-options">
+                    <label *ngFor="let answer of questions[currentQuestionIndex].answers" [ngClass]="{
+                        'correct-answer': showCorrection && answer.correct,
+                        'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
+                    }">
+                        <input type="radio" name="question-{{ questions[currentQuestionIndex].id }}" [value]="answer.id"
+                            [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)"
+                            (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)"
+                            [disabled]="showCorrection" />
+
+                        <span> \[{{ answer.text }}\] </span>
+                    </label>
+                </div>
+
+                <!-- Botão para marcar como não respondida -->
+                <button class="btn" style="background: transparent; color: black;"
+                    (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)" [disabled]="showCorrection">
+                    Não Responder
+                </button>
             </div>
 
+            <div class="navigation-buttons text-center">
+                <button class="pagination-button" (click)="goToPreviousQuestion()"
+                    [disabled]="currentQuestionIndex === 0">
+                    <i class="pi pi-chevron-left"></i> Anterior
+                </button>
+                <button class="pagination-button" (click)="goToNextQuestion()"
+                    [disabled]="currentQuestionIndex === questions.length - 1">
+                    Próxima <i class="pi pi-chevron-right"></i>
+                </button>
+
+                <!-- Botão para submeter respostas -->
+                <button class="pagination-button" (click)="submitAnswers(); showFinalScreen = true; scrollToTop()"
+                    *ngIf="currentQuestionIndex === questions.length - 1">
+                    <span *ngIf="!submited">Submeter</span>
+                    <span *ngIf="submited">Resultados</span>
+                    <i style="margin-left: 0.5rem;" class="pi pi-arrow-up"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="navigation-buttons text-center">
-            <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
-                <i class="pi pi-chevron-left"></i> Anterior
-            </button>
-            <button class="pagination-button" (click)="goToNextQuestion()" 
-                    [disabled]="currentQuestionIndex === questions.length - 1">
-                Próxima <i class="pi pi-chevron-right"></i>
-            </button>
+        <div *ngIf="showLoading" class="loading-indicator">
+            Carregando...
         </div>
     </div>
 

@@ -8,7 +8,7 @@ import { Answer } from 'src/app/core/model/Answer';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionService } from '../question.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { TopicService } from 'src/app/core/topics/courseService.service';
+import { TopicService } from 'src/app/topics/topicsService.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { Topic } from 'src/app/core/model/Topic';
@@ -274,6 +274,15 @@ export class QuestionsComponent implements OnInit {
 
   removeAnswer(index: number) {
     this.question.answers.splice(index, 1);
+  }
+
+  onRemoveAnswer(index: number): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja remover da lista?',
+      accept: () => {
+        this.removeAnswer(index);
+      }
+    });
   }
 
   buscarTotal() {

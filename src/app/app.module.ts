@@ -45,6 +45,8 @@ import { BlogRoutingModule } from './blog/blog-routing.module';
 import { BlogModule } from './blog/blog.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SubjectsRoutingModule } from './subjects/subjects-routing.module';
+import { TopicsModule } from './topics/topics.module';
+import { TopicsRoutingModule } from './topics/topics-routing.module';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { SubjectsRoutingModule } from './subjects/subjects-routing.module';
     InstitutionsRoutingModule,
     CoursesRoutingModule,
     SubjectsRoutingModule,
+    TopicsRoutingModule,
     OnlineCoursesRoutingModule,
     UsersRoutingModule,
     GroupsRoutingModule,
@@ -78,6 +81,7 @@ import { SubjectsRoutingModule } from './subjects/subjects-routing.module';
     InstitutionsModule,
     CoursesModule,
     SubjectsModule,
+    TopicsModule,
     OnlineCoursesModule,
     UsersModule,
     GroupModule,
