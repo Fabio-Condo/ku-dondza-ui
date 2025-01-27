@@ -1,8 +1,113 @@
 <div class="container" style="margin-top: 70px; max-width: 900px;">
 
+    <!-- Página de Detalhes da Competição -->
+    <div *ngIf="showStartScreen" class="competition-details" aria-labelledby="competition-title">
+        <!-- Nome da Competição -->
+        <header>
+            <h1 class="competition-title" id="competition-title">Competição de Conhecimento Acadêmico</h1>
+            <!-- Descrição da Competição -->
+            <p class="competition-description">
+                Participe da nossa competição e teste seus conhecimentos em diversas áreas. As questões foram preparadas
+                para desafiar sua mente!
+            </p>
+        </header>
+
+        <div class="button-container">
+            <button class="btn-start" (click)="start()" aria-label="Iniciar Competição">Começar</button>
+        </div>
+
+        <!-- Informações da Competição -->
+        <div class="competition-info">
+            <div class="info-card">
+                <div class="info-content">
+                    <p class="info-label">Duração</p>
+                    <p class="info-value"><time datetime="PT30M">30 minutos</time></p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-content">
+                    <p class="info-label">Questões</p>
+                    <p class="info-value">5 questões</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-content">
+                    <p class="info-label">Participantes</p>
+                    <p class="info-value">20</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participantes Confirmados -->
+        <div class="participants" aria-labelledby="participants-heading">
+            <h3 id="participants-heading">Participantes Confirmados</h3>
+            <div class="participants-list" role="list">
+                <!-- Card de Participante -->
+                <div class="participant-card" role="listitem">
+                    <img src="https://via.placeholder.com/50" alt="Avatar do João Silva" class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">João Silva</p>
+                        <p class="participant-status">Confirmado</p>
+                    </div>
+                    <button class="btn-details" aria-label="Ver detalhes de João Silva">Detalhes</button>
+                </div>
+
+                <div class="participant-card" role="listitem">
+                    <img src="https://via.placeholder.com/50" alt="Avatar da Maria Oliveira" class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">Maria Oliveira</p>
+                        <p class="participant-status">Confirmado</p>
+                    </div>
+                    <button class="btn-details" aria-label="Ver detalhes de Maria Oliveira">Detalhes</button>
+                </div>
+
+                <div class="participant-card" role="listitem">
+                    <img src="https://via.placeholder.com/50" alt="Avatar do Pedro Souza" class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">Pedro Souza</p>
+                        <p class="participant-status">Confirmado</p>
+                    </div>
+                    <button class="btn-details" aria-label="Ver detalhes de Pedro Souza">Detalhes</button>
+                </div>
+
+                <div class="participant-card" role="listitem">
+                    <img src="https://via.placeholder.com/50" alt="Avatar da Ana Costa" class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">Ana Costa</p>
+                        <p class="participant-status">Confirmado</p>
+                    </div>
+                    <button class="btn-details" aria-label="Ver detalhes de Ana Costa">Detalhes</button>
+                </div>
+
+                <div class="participant-card" role="listitem">
+                    <img src="https://via.placeholder.com/50" alt="Avatar do Carlos Mendes" class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">Carlos Mendes</p>
+                        <p class="participant-status">Confirmado</p>
+                    </div>
+                    <button class="btn-details" aria-label="Ver detalhes de Carlos Mendes">Detalhes</button>
+                </div>
+
+                <div class="participant-card" role="listitem">
+                    <img src="https://via.placeholder.com/50" alt="Avatar da Juliana Almeida"
+                        class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">Juliana Almeida</p>
+                        <p class="participant-status">Confirmado</p>
+                    </div>
+                    <button class="btn-details" aria-label="Ver detalhes de Juliana Almeida">Detalhes</button>
+                </div>
+                <!-- Adicione mais participantes conforme necessário -->
+            </div>
+
+            <!-- Botão "Buscar Mais Participantes" -->
+            <button class="btn-load-more" aria-label="Buscar mais participantes">Buscar Mais Participantes</button>
+
+        </div>
+    </div>
 
     <!-- Tela do quiz (questões) -->
-    <div>
+    <div *ngIf="!showStartScreen && !showFinalScreen">
         <div *ngIf="currentQuestionIndex < questions.length">
             <div class="question-card">
 

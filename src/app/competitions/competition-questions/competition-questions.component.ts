@@ -73,6 +73,12 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
+  start(){
+    this.showStartScreen = false;
+    this.showFinalScreen = false;
+    this.renderMathExpressions();
+  }
+
   getCompetitionByCompetitionId(competitionId: string) {
     this.competitionService.getCompetitionByCompetitionId(competitionId).subscribe(
       (response) => {
