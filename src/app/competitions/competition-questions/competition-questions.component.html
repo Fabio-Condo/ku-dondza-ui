@@ -152,7 +152,8 @@
                 </button>
 
                 <!-- Botão para submeter respostas -->
-                <button class="pagination-button" (click)="submitAnswers(); ; toggleCorrection(); showFinalScreen = true; scrollToTop()"
+                <button class="pagination-button"
+                    (click)="submitAnswers(); ; toggleCorrection(); showFinalScreen = true; scrollToTop()"
                     *ngIf="currentQuestionIndex === questions.length - 1">
                     <span *ngIf="!submited">Submeter</span>
                     <span *ngIf="submited">Resultados</span>
@@ -163,6 +164,78 @@
 
         <div *ngIf="showLoading" class="loading-indicator">
             Carregando...
+        </div>
+    </div>
+
+    <div *ngIf="showFinalScreen" class="results-screen2">
+        <div class="results-summary">
+            <p class="title">{{ competition.title }}</p>
+            <p class="quiz-sub-title">{{ competition.startedAt }}</p>
+
+            <div class="button-container">
+                <button class="btn-start" (click)="toggleCorrection()" aria-label="Iniciar Competição">Correção</button>
+            </div>
+
+            <h2 class="section-title">Resultados</h2>
+
+            <!-- Estatísticas Gerais -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <p class="stat-label">Número de questões</p>
+                    <p class="stat-value">{{ competition.questions.length }}</p>
+                </div>
+                <div class="stat-card correct">
+                    <p class="stat-label">Respostas corretas</p>
+                    <p class="stat-value">{{ result.correctAnswers }}</p>
+                </div>
+                <div class="stat-card incorrect">
+                    <p class="stat-label">Respostas incorretas</p>
+                    <p class="stat-value">{{ result.incorrectAnswers }}</p>
+                </div>
+                <div class="stat-card incorrect">
+                    <p class="stat-label">Respostas nulas</p>
+                    <p class="stat-value">{{ result.nullAnswers }}</p>
+                </div>
+                <div class="stat-card score">
+                    <p class="stat-label">Sua pontuação</p>
+                    <p class="stat-value">{{ ((result.correctAnswers / competition.questions.length) * 100).toFixed(2) }}%</p>
+                </div>
+            </div>
+
+            <!-- Resultados por Tópico -->
+            <div class="results-by-topic" *ngIf="competition.resultsByTopic">
+                <h3 class="section-title">Resultados por Tópico</h3>
+                <div class="topic-grid">
+                    <div *ngFor="let topic of topics" class="topic-card">
+                        <h4 class="topic-name">{{ topic.name }}</h4>
+                        <div class="topic-stats">
+                            <p>✅ Acertos: <span class="correct">{{ competition.resultsByTopic[topic.name].correct || 0
+                                    }}</span></p>
+                            <p>❌ Erros: <span class="incorrect">{{ competition.resultsByTopic[topic.name].incorrect || 0
+                                    }}</span></p>
+                            <p>⏭️ Nulas: <span class="incorrect">{{ competition.resultsByTopic[topic.name].nullAnswers || 0
+                                    }}</span></p>
+
+                            <div *ngIf="competition.resultsByTopic[topic.name]?.percentage !== undefined && competition.resultsByTopic[topic.name].percentage! < 70"
+                                class="improvement-card low-score">
+                                <p class="improvement-percentage">📉 {{
+                                    competition.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
+                                <p class="improvement-message">💡 Dica: Revise este tópico para melhorar seu desempenho!
+                                </p>
+                            </div>
+
+                            <div *ngIf="competition.resultsByTopic[topic.name]?.percentage !== undefined && competition.resultsByTopic[topic.name].percentage! >= 70"
+                                class="improvement-card high-score">
+                                <p class="improvement-percentage">📈 {{
+                                    competition.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
+                                <p class="improvement-message">💡 Dica: Continue assim e nunca pare de aumentar os teus
+                                    conhecimentos!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

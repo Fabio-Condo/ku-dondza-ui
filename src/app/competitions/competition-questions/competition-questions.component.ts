@@ -10,6 +10,7 @@ import { CompetitionService } from '../competition.service';
 import { Competition } from 'src/app/core/model/Competition';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Topic } from 'src/app/core/model/Topic';
 declare const MathJax: any;
 
 
@@ -22,6 +23,8 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   competition: Competition = new Competition();
   questions: Question[] = [];
+  topics: Topic[] = [];
+
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
   isAdmin: boolean = true;
@@ -79,6 +82,28 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.renderMathExpressions();
   }
 
+  getTopicosFromQuestoes(questoes: Question[]): Topic[] {
+    if (!questoes || questoes.length === 0) {
+      console.error('Nenhuma questão recebida ou questões vazias');
+      return [];
+    }
+  
+    const topicosMap = new Map<number, Topic>();
+  
+    questoes.forEach((questao) => {
+      if (questao.topic) {
+        console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
+        if (!topicosMap.has(questao.topic.id)) {
+          topicosMap.set(questao.topic.id, questao.topic);
+        }
+      } else {
+        console.error(`Questão ${questao.id} sem tópico`);
+      }
+    });
+  
+    return Array.from(topicosMap.values());
+  }
+
   getCompetitionByCompetitionId(competitionId: string) {
     this.competitionService.getCompetitionByCompetitionId(competitionId).subscribe(
       (response) => {
@@ -102,6 +127,7 @@ export class CompetitionQuestionsComponent implements OnInit {
       (dados: IApiResponse<Question>) => {
         this.questions = dados.content;
         this.competition.questions = dados.content;
+        this.topics = this.getTopicosFromQuestoes(dados.content);
         this.showLoading = false;
         this.renderMathExpressions();
       },
