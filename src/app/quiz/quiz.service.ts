@@ -89,10 +89,6 @@ export class QuizService {
     return this.http.get<number>(`${this.baseUrl}/total`, {});
   }
 
-  getSelectedTopicsByQuizId(quizId: number): Observable<Topic[]> {
-    return this.http.get<Topic[]>(`${this.baseUrl}/${quizId}/selected-topics`);
-  }
-
   getQuestionsByQuizId(quizId: number): Observable<Question[]> {
     return this.http.get<Question[]>(`${this.baseUrl}/${quizId}/questions`);
   }

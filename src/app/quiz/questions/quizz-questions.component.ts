@@ -18,7 +18,9 @@ declare const MathJax: any;
 export class QuizzQuestionsComponent implements OnInit {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
-  selectedTopics: Topic[] = [];
+  topics: Topic[] = [];
+
+  //selectedTopics: Topic[] = [];
   submittedAnswers: Answer[] = [];
   showLoading: boolean = false;
   isAdmin: boolean = true;
@@ -70,7 +72,6 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
-        this.getTopicsByQuizId(this.quiz.id)
         this.getQuestionsByQuizId(this.quiz.id);
         this.getUserSubmittedAnswersByQuizId(this.quiz.id);
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
@@ -86,21 +87,6 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
-  getTopicsByQuizId(quizId: number): void {
-    this.showLoading = true;
-    this.quizService.getSelectedTopicsByQuizId(quizId).subscribe(
-      (dados: Topic[]) => {
-        this.selectedTopics = dados;
-        this.quiz.selectedTopics = this.selectedTopics;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
   getQuestionsByQuizId(quizId: number): void {
     this.showLoading = true;
     this.quizService.getQuestionsByQuizId(quizId).subscribe(
@@ -108,7 +94,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.questions = dados;
         this.quiz.questions = this.questions;
         this.showLoading = false;
-
+        this.topics = this.getTopicosFromQuestoes(dados);
         // Recalcula os resultados após carregar as questões
         if (this.quiz.userSubmittedAnswers) {
           this.calculateResults();
@@ -119,6 +105,28 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  getTopicosFromQuestoes(questoes: Question[]): Topic[] {
+    if (!questoes || questoes.length === 0) {
+      console.error('Nenhuma questão recebida ou questões vazias');
+      return [];
+    }
+  
+    const topicosMap = new Map<number, Topic>();
+  
+    questoes.forEach((questao) => {
+      if (questao.topic) {
+        console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
+        if (!topicosMap.has(questao.topic.id)) {
+          topicosMap.set(questao.topic.id, questao.topic);
+        }
+      } else {
+        console.error(`Questão ${questao.id} sem tópico`);
+      }
+    });
+  
+    return Array.from(topicosMap.values());
   }
 
   getUserSubmittedAnswersByQuizId(quizId: number): void {

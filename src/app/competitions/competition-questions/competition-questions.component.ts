@@ -82,28 +82,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.renderMathExpressions();
   }
 
-  getTopicosFromQuestoes(questoes: Question[]): Topic[] {
-    if (!questoes || questoes.length === 0) {
-      console.error('Nenhuma questão recebida ou questões vazias');
-      return [];
-    }
-  
-    const topicosMap = new Map<number, Topic>();
-  
-    questoes.forEach((questao) => {
-      if (questao.topic) {
-        console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
-        if (!topicosMap.has(questao.topic.id)) {
-          topicosMap.set(questao.topic.id, questao.topic);
-        }
-      } else {
-        console.error(`Questão ${questao.id} sem tópico`);
-      }
-    });
-  
-    return Array.from(topicosMap.values());
-  }
-
   getCompetitionByCompetitionId(competitionId: string) {
     this.competitionService.getCompetitionByCompetitionId(competitionId).subscribe(
       (response) => {
@@ -136,6 +114,28 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  getTopicosFromQuestoes(questoes: Question[]): Topic[] {
+    if (!questoes || questoes.length === 0) {
+      console.error('Nenhuma questão recebida ou questões vazias');
+      return [];
+    }
+  
+    const topicosMap = new Map<number, Topic>();
+  
+    questoes.forEach((questao) => {
+      if (questao.topic) {
+        console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
+        if (!topicosMap.has(questao.topic.id)) {
+          topicosMap.set(questao.topic.id, questao.topic);
+        }
+      } else {
+        console.error(`Questão ${questao.id} sem tópico`);
+      }
+    });
+  
+    return Array.from(topicosMap.values());
   }
 
   displayResults() {

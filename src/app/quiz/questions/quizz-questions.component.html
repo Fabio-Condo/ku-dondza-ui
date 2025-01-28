@@ -39,7 +39,7 @@
       <div class="results-by-topic" *ngIf="quiz.resultsByTopic">
         <h3 class="section-title">Resultados por Tópico</h3>
         <div class="topic-grid">
-          <div *ngFor="let topic of quiz.selectedTopics" class="topic-card">
+          <div *ngFor="let topic of topics" class="topic-card">
             <h4 class="topic-name">{{ topic.name }}</h4>
             <div class="topic-stats">
               <p>✅ Acertos: <span class="correct">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span></p>

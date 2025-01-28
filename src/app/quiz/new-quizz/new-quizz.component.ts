@@ -26,6 +26,10 @@ declare const MathJax: any;
 export class NewQuizzComponent implements OnInit {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
+  topics: Topic[] = [];
+
+  subjects: Subject[] = [];
+
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
   showGetSubjectLoading: boolean = false;
@@ -46,9 +50,6 @@ export class NewQuizzComponent implements OnInit {
 
   showStartScreen: boolean = true;
   showFinalScreen: boolean = false;
-
-  subjects: Subject[] = [];
-  topics: Topic[] = [];
 
   loggedUser: User = new User();
 
