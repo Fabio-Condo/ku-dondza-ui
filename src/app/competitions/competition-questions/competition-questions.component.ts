@@ -11,6 +11,7 @@ import { Competition } from 'src/app/core/model/Competition';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Topic } from 'src/app/core/model/Topic';
+import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 declare const MathJax: any;
 
 
@@ -24,6 +25,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   competition: Competition = new Competition();
   questions: Question[] = [];
   topics: Topic[] = [];
+  participants: User[] = [];
 
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
@@ -53,11 +55,19 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   submited: boolean = false;
 
+  totalRegistrosParticipants: number = 0
+
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 105,
     sort: 'id,asc'
   };
+  
+  filtroParticipants: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
 
   constructor(
     private competitionService: CompetitionService,
@@ -87,6 +97,7 @@ export class CompetitionQuestionsComponent implements OnInit {
       (response) => {
         this.competition = response;
         this.getQuestionsByCompetitionId(this.competition.id);
+        this.onShowMoreParticipantes();
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) { // BAD_REQUEST
@@ -98,6 +109,30 @@ export class CompetitionQuestionsComponent implements OnInit {
     );
   }
 
+  onShowMoreParticipantes(): void {
+    if (this.competition) {
+      this.filtroParticipants.page++;
+      this.getParticipantsByCompetitionId();
+    }
+  }
+
+  getParticipantsByCompetitionId(): void {
+    this.competitionService.getParticipantsByCompetitionId(this.competition.id, this.filtroParticipants).subscribe(
+      (dados: IApiResponse<User>) => {
+        // Garante que this.competition.participants seja um array
+        if (!Array.isArray(this.competition.participants)) {
+          this.competition.participants = [];
+        }
+  
+        // Concatena os novos participantes
+        this.competition.participants = [...this.competition.participants, ...dados.content];
+        this.totalRegistrosParticipants = dados.totalElements;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
   getQuestionsByCompetitionId(competitionId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1;

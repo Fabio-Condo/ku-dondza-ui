@@ -41,67 +41,25 @@
         <!-- Participantes Confirmados -->
         <div class="participants" aria-labelledby="participants-heading">
             <h3 id="participants-heading">Participantes</h3>
-            <div class="participants-list" role="list">
+            
+            <div class="participants-list" role="list" *ngFor="let participant of competition.participants">
                 <!-- Card de Participante -->
                 <div class="participant-card" role="listitem">
-                    <img src="https://via.placeholder.com/50" alt="Avatar do João Silva" class="participant-avatar">
+                    <img src="{{participant.profileImageUrl}}" alt="Avatar do João Silva" class="participant-avatar">
                     <div class="participant-info">
-                        <p class="participant-name">João Silva</p>
+                        <p class="participant-name">{{ participant.firstName }} {{ participant.lastName }}</p>
                         <p class="participant-status">Confirmado</p>
                     </div>
                     <button class="btn-details" aria-label="Ver detalhes de João Silva">Detalhes</button>
                 </div>
-
-                <div class="participant-card" role="listitem">
-                    <img src="https://via.placeholder.com/50" alt="Avatar da Maria Oliveira" class="participant-avatar">
-                    <div class="participant-info">
-                        <p class="participant-name">Maria Oliveira</p>
-                        <p class="participant-status">Confirmado</p>
-                    </div>
-                    <button class="btn-details" aria-label="Ver detalhes de Maria Oliveira">Detalhes</button>
-                </div>
-
-                <div class="participant-card" role="listitem">
-                    <img src="https://via.placeholder.com/50" alt="Avatar do Pedro Souza" class="participant-avatar">
-                    <div class="participant-info">
-                        <p class="participant-name">Pedro Souza</p>
-                        <p class="participant-status">Confirmado</p>
-                    </div>
-                    <button class="btn-details" aria-label="Ver detalhes de Pedro Souza">Detalhes</button>
-                </div>
-
-                <div class="participant-card" role="listitem">
-                    <img src="https://via.placeholder.com/50" alt="Avatar da Ana Costa" class="participant-avatar">
-                    <div class="participant-info">
-                        <p class="participant-name">Ana Costa</p>
-                        <p class="participant-status">Confirmado</p>
-                    </div>
-                    <button class="btn-details" aria-label="Ver detalhes de Ana Costa">Detalhes</button>
-                </div>
-
-                <div class="participant-card" role="listitem">
-                    <img src="https://via.placeholder.com/50" alt="Avatar do Carlos Mendes" class="participant-avatar">
-                    <div class="participant-info">
-                        <p class="participant-name">Carlos Mendes</p>
-                        <p class="participant-status">Confirmado</p>
-                    </div>
-                    <button class="btn-details" aria-label="Ver detalhes de Carlos Mendes">Detalhes</button>
-                </div>
-
-                <div class="participant-card" role="listitem">
-                    <img src="https://via.placeholder.com/50" alt="Avatar da Juliana Almeida"
-                        class="participant-avatar">
-                    <div class="participant-info">
-                        <p class="participant-name">Juliana Almeida</p>
-                        <p class="participant-status">Confirmado</p>
-                    </div>
-                    <button class="btn-details" aria-label="Ver detalhes de Juliana Almeida">Detalhes</button>
-                </div>
-                <!-- Adicione mais participantes conforme necessário -->
             </div>
 
             <!-- Botão "Buscar Mais Participantes" -->
-            <button class="btn-load-more" aria-label="Buscar mais participantes">Buscar Mais</button>
+            <button *ngIf="competition.participants.length < totalRegistrosParticipants" (click)="onShowMoreParticipantes()" class="btn-load-more" aria-label="Buscar mais participantes">Buscar Mais</button>
+
+            <div *ngIf="competition.participants.length === totalRegistrosParticipants && totalRegistrosParticipants > 0">
+                <p class="competition-description">Todos os participantes foram carregados.</p>
+            </div>
 
         </div>
     </div>
