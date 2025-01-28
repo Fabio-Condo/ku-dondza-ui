@@ -4,7 +4,7 @@
     <div *ngIf="showStartScreen" class="competition-details" aria-labelledby="competition-title">
         <!-- Nome da Competição -->
         <header>
-            <h1 class="competition-title" id="competition-title">Competição de Conhecimento Acadêmico</h1>
+            <h1 class="title" id="competition-title">Competição de Conhecimento Acadêmico</h1>
             <!-- Descrição da Competição -->
             <p class="competition-description">
                 Participe da nossa competição e teste seus conhecimentos em diversas áreas. As questões foram preparadas
@@ -40,7 +40,7 @@
 
         <!-- Participantes Confirmados -->
         <div class="participants" aria-labelledby="participants-heading">
-            <h3 id="participants-heading">Participantes Confirmados</h3>
+            <h3 id="participants-heading">Participantes</h3>
             <div class="participants-list" role="list">
                 <!-- Card de Participante -->
                 <div class="participant-card" role="listitem">
@@ -101,7 +101,7 @@
             </div>
 
             <!-- Botão "Buscar Mais Participantes" -->
-            <button class="btn-load-more" aria-label="Buscar mais participantes">Buscar Mais Participantes</button>
+            <button class="btn-load-more" aria-label="Buscar mais participantes">Buscar Mais</button>
 
         </div>
     </div>
@@ -152,7 +152,7 @@
                 </button>
 
                 <!-- Botão para submeter respostas -->
-                <button class="pagination-button" (click)="submitAnswers(); showFinalScreen = true; scrollToTop()"
+                <button class="pagination-button" (click)="submitAnswers(); ; toggleCorrection(); showFinalScreen = true; scrollToTop()"
                     *ngIf="currentQuestionIndex === questions.length - 1">
                     <span *ngIf="!submited">Submeter</span>
                     <span *ngIf="submited">Resultados</span>
@@ -166,15 +166,4 @@
         </div>
     </div>
 
-    <br>
-
-    <!-- Botão para mostrar a correção -->
-    <div *ngIf="currentQuestionIndex === questions.length - 1" class="text-center">
-        <button class="submit-button" (click)="submitAnswers(); toggleCorrection()">Submeter Respostas</button>
-        <br>
-    </div>
-
-    <div *ngIf="showLoading" class="loading-indicator">
-        Carregando...
-    </div>
 </div>

@@ -144,8 +144,12 @@
   
   <div *ngIf="showFinalScreen" class="results-screen2">
     <div class="results-summary">
-      <p class="quiz-title">{{ quiz.description }}</p>
+      <p class="title">{{ quiz.description }}</p>
       <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+
+      <div class="button-container">
+        <button class="btn-start" (click)="toggleCorrection()" aria-label="Iniciar Competição">Correção</button>
+      </div>
 
       <h2 class="section-title">Resultados</h2>
   
@@ -199,12 +203,6 @@
         </div>
       </div>
   
-      <!-- Botão de Início -->
-      <div class="button-container">
-        <button class="correction-button" [disabled]="showLoading" (click)="toggleCorrection()">
-          <i class="pi pi-play"></i> Ver Correção
-        </button>
-      </div>
     </div>
   </div>
 

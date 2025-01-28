@@ -252,9 +252,9 @@ body {
 
 .stat-card {
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   text-align: center;
-  background-color: #f0f4f8;
+  background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -265,9 +265,12 @@ body {
 }
 
 .stat-label {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 0.875rem;
+  color: var(--color-black);
   margin-bottom: 0.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .stat-value {
@@ -302,14 +305,15 @@ body {
 
 .topic-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+  /*grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));*/
+  grid-template-columns: 1fr; /* Sempre uma coluna */
+  gap: 1.5rem; /* Espaçamento entre os cards */
 }
 
 .topic-card {
   padding: 1.5rem;
-  border-radius: 12px;
-  background-color: #f9f9f9;
+  border-radius: var(--border-radius);
+  background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -374,11 +378,66 @@ body {
   color: #666;
 }
 
-/* Botão de Início */
+/* Botão de Iniciar */
 .button-container {
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  margin-top: 2rem; /* Espaçamento acima do botão */
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0; /* Espaçamento conforme necessário */
+}
+
+.btn-start {
+  position: relative; /* Adicionado */
+  padding: 12px 30px;
+  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
+  color: var(--color-white); /* Texto branco */
+  font-size: 1.1rem;
+  font-weight: bold; /* Texto em negrito para destacar */
+  border: none;
+  border-radius: 30px; /* Bordas arredondadas */
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.btn-start:hover {
+  background: linear-gradient(135deg, var(--color-hover), #5f5cfc);
+  color: var(--color-black); /* Texto preto no hover */
+  transform: scale(1.05); /* Efeito de zoom */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada no hover */
+}
+
+.btn-start:active {
+  transform: scale(0.95); /* Efeito de clique */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Sombra reduzida no clique */
+  transition: transform 0.1s; /* Transição mais rápida */
+}
+
+.btn-start:focus {
+  outline: 2px solid var(--color-primary); /* Estilo para foco */
+  outline-offset: 2px;
+}
+
+/* Efeito de brilho (opcional) */
+.btn-start::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%); /* Opacidade reduzida */
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s, opacity 0.5s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-start:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
 }
 
 /* Botão de Início */
@@ -512,11 +571,6 @@ body {
   transform: translate(-50%, -50%);
   color: white;
   font-size: 12px;
-}
-
-.topic-name {
-  font-size: 1rem;
-  color: #333;
 }
 
 /* Botões */
@@ -672,9 +726,8 @@ body {
   }
 
   /* Botão de Início */
-  .start-button {
-    width: 100%; /* Ocupa toda a largura */
-    padding: 10px; /* Ajusta o padding */
-    font-size: 0.9rem; /* Reduz o tamanho da fonte */
+  .btn-start {
+    font-size: 1rem;
+    padding: 10px 20px;
   }
 }

@@ -2,8 +2,12 @@
   <!-- Tela inicial -->
   <div *ngIf="showStartScreen" class="results-screen2">
     <div class="results-summary">
-      <p class="quiz-title">{{ quiz.description }}</p>
+      <p class="title">{{ quiz.description }}</p>
       <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+
+      <div class="button-container">
+        <button class="btn-start" (click)="startQuiz()" aria-label="Iniciar Competição">Correção</button>
+      </div>
 
       <h2 class="section-title">Resultados</h2>
 
@@ -30,7 +34,7 @@
           <p class="stat-value">{{ ((result.correctAnswers / questions.length) * 100).toFixed(2) }}%</p>
         </div>
       </div>
-  
+
       <!-- Resultados por Tópico -->
       <div class="results-by-topic" *ngIf="quiz.resultsByTopic">
         <h3 class="section-title">Resultados por Tópico</h3>
@@ -41,27 +45,27 @@
               <p>✅ Acertos: <span class="correct">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span></p>
               <p>❌ Erros: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</span></p>
               <p>⏭️ Nulas: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span></p>
-  
+
               <!-- Mensagem de Melhoria -->
-              <div *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! < 70" class="improvement-card low-score">
-                <p class="improvement-percentage">📉 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
+              <div
+                *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! < 70"
+                class="improvement-card low-score">
+                <p class="improvement-percentage">📉 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}%
+                  de acerto</p>
                 <p class="improvement-message">💡 Dica: Revise este tópico para melhorar seu desempenho!</p>
               </div>
-  
-              <div *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! >= 70" class="improvement-card high-score">
-                <p class="improvement-percentage">📈 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}% de acerto</p>
-                <p class="improvement-message">💡 Dica: Continue assim e nunca pare de aumentar os teus conhecimentos!</p>
+
+              <div
+                *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! >= 70"
+                class="improvement-card high-score">
+                <p class="improvement-percentage">📈 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}%
+                  de acerto</p>
+                <p class="improvement-message">💡 Dica: Continue assim e nunca pare de aumentar os teus conhecimentos!
+                </p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-  
-      <!-- Botão de Início -->
-      <div class="button-container">
-        <button class="start-button" [disabled]="showLoading" (click)="startQuiz()">
-          <i class="pi pi-play"></i> Ver questões
-        </button>
       </div>
     </div>
   </div>
@@ -70,12 +74,13 @@
     <div *ngIf="currentQuestionIndex < quiz.questions.length">
       <div class="question-card">
         <img *ngIf="imagePath" src="{{ imagePath }}" alt="Gráfico de funções" class="question-graph" />
-  
+
         <!-- Contêiner para expressões matemáticas -->
-        <div id="math-container-{{ currentQuestionIndex }}" class="details" *ngIf="quiz.questions[currentQuestionIndex].text">
+        <div id="math-container-{{ currentQuestionIndex }}" class="details"
+          *ngIf="quiz.questions[currentQuestionIndex].text">
           \[{{ quiz.questions[currentQuestionIndex].text }}\]
         </div>
-  
+
         <div class="answer-options">
           <label *ngFor="let answer of quiz.questions[currentQuestionIndex].answers" [ngClass]="{
               'correct-answer': showCorrection && answer.correct,
@@ -91,7 +96,9 @@
           </label>
         </div>
 
-        <button class="base-button solution-button" style="background: transparent; color: black;" *ngIf="!showStartScreen" (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution">
+        <button class="base-button solution-button" style="background: transparent; color: black;"
+          *ngIf="!showStartScreen"
+          (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution">
           {{ quiz.questions[currentQuestionIndex].showSolution ? 'Ocultar Explicação' : 'Mostrar Explicação' }}
         </button>
       </div>
@@ -106,14 +113,14 @@
           </div>
         </div>
       </div>
-  
+
       <div class="navigation-buttons text-center">
         <!-- Botão para voltar à tela inicial -->
         <button class="pagination-button" (click)="showStartScreen = true; scrollToTop();"
           *ngIf="currentQuestionIndex === quiz.questions.length - 1">
           <i class="pi pi-arrow-left" style="margin-right: 0.5rem;"></i> Tela inicial
         </button>
-  
+
         <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
           <i class="pi pi-chevron-left"></i> Anterior
         </button>
@@ -123,7 +130,7 @@
         </button>
       </div>
     </div>
-  
+
     <div *ngIf="showLoading" class="loading-indicator">Carregando...</div>
 
   </div>

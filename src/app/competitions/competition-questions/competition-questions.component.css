@@ -11,26 +11,8 @@ label {
   cursor: pointer;
 }
 
-/* AAAAA */
-/* Variáveis CSS */
-:root {
-  /*--color-primary: #4a90e2;*/
-  --color-black: #000000;
-  --color-white: #ffffff;
-}
-
 /* Variáveis */
 :root {
-  --color-primary: #3734ed;
-  --color-secondary: #ffffff;
-  --color-accent: #f39c12;
-  --color-text-primary: #2c3e50;
-  --color-text-secondary: #7f8c8d;
-  --color-success: #27ae60;
-  --color-danger: #e74c3c;
-  --color-text: #555555;
-  --color-border: #e0e0e0;
-  --color-hover: #0056b3;
   --border-radius: 0.5rem;
   --box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
@@ -393,13 +375,6 @@ body {
 }
 
 /* Botão de Início */
-.button-container {
-  display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  margin-top: 2rem; /* Espaçamento acima do botão */
-}
-
-/* Botão de Início */
 .correction-button {
   display: inline-block;
   padding: 12px 24px;
@@ -624,13 +599,6 @@ body {
   margin: 20px auto;
 }
 
-.competition-title {
-  font-size: 1.375rem; /* 22px */
-  color: var(--color-primary);
-  margin: 0;
-  font-weight: 700;
-}
-
 .competition-description {
   font-size: 0.8125rem; /* 13px */
   color: var(--color-text);
@@ -691,7 +659,7 @@ body {
 .btn-start {
   position: relative; /* Adicionado */
   padding: 12px 30px;
-  background-color: var(--color-primary); /* Cor primária */
+  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
   color: var(--color-white); /* Texto branco */
   font-size: 1.1rem;
   font-weight: bold; /* Texto em negrito para destacar */
@@ -705,7 +673,7 @@ body {
 }
 
 .btn-start:hover {
-  background-color: var(--color-hover); /* Cor de hover */
+  background: linear-gradient(135deg, var(--color-hover), #5f5cfc);
   color: var(--color-black); /* Texto preto no hover */
   transform: scale(1.05); /* Efeito de zoom */
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada no hover */
@@ -804,14 +772,14 @@ body {
 
 .participant-status {
   font-size: 0.9rem;
-  color: var(--color-success);
+  color: var(--color-text);
   font-weight: 400;
 }
 
 /* Botão "Mais Detalhes" */
 .btn-details {
   padding: 8px 16px;
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
   color: var(--color-white);
   font-size: 0.9rem;
   border: none;
@@ -821,9 +789,10 @@ body {
 }
 
 .btn-details:hover {
-  background-color: var(--color-hover);
+  background: var(--color-hover);
   color: var(--color-black);
   transform: scale(1.05);
+  transition: all 0.3s ease; /* Transição suave */
 }
 
 .btn-details:active {
@@ -837,7 +806,7 @@ body {
   color: var(--color-secondary);
   font-size: 1rem;
   border: none;
-  border-radius: 30px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   margin-top: 20px;
@@ -845,6 +814,7 @@ body {
   width: fit-content; /* Ajusta a largura ao conteúdo */
   margin-left: auto; /* Centraliza horizontalmente */
   margin-right: auto;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .btn-load-more:hover {
@@ -945,10 +915,6 @@ body {
 @media screen and (max-width: 768px) {
   .competition-details {
     padding: 20px;
-  }
-
-  .competition-title {
-    font-size: 1.5rem;
   }
 
   .competition-description {
