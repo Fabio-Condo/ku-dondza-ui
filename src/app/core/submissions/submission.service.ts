@@ -15,15 +15,15 @@ export class SubmissionService {
         return this.http.get<Submission>(`${this.host}/${id}`, {});
     }
 
-    //add(submission: Submission): Observable<Submission> {
-    //    return this.http.post<Submission>(this.host, submission, {});
-    //}
-
     add(submission: Submission, userAnswerIds: any[]): Observable<Submission> {
 
         const params = new HttpParams()
             .set('userAnswerIds', userAnswerIds.join(','));
 
         return this.http.post<Submission>(`${this.host}`, submission, { params });
+    }
+
+    getSubmissionByUserAndCompetition(userId: number, competitionId: number): Observable<Submission> {
+        return this.http.get<Submission>(`${this.host}/user/${userId}/competition/${competitionId}`);
     }
 }

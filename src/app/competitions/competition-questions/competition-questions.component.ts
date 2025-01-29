@@ -122,6 +122,19 @@ export class CompetitionQuestionsComponent implements OnInit {
     )
   }
 
+  getSubmissionByUserAndCompetition(userId: number) {
+    this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
+      (response) => {
+        this.submission = response
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+
   getCompetitionByCompetitionId(competitionId: string) {
     this.competitionService.getCompetitionByCompetitionId(competitionId).subscribe(
       (response) => {
