@@ -36,7 +36,8 @@ export class CompetitionQuestionsComponent implements OnInit {
   currentQuestionIndex: number = 0;
 
   // Armazenar as respostas do usuário
-  userAnswers: { questionId: number; answerId: number }[] = [];
+  //userAnswers: { questionId: number; answerId: number }[] = [];
+  //correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
 
   result: {
     correctAnswers: number;
@@ -45,25 +46,30 @@ export class CompetitionQuestionsComponent implements OnInit {
   } = { correctAnswers: 0, incorrectAnswers: 0, nullAnswers: 0 };
 
   showCorrection: boolean = false;
-
   showStartScreen: boolean = true;
   showFinalScreen: boolean = false;
 
-  correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
-
   loggedUser: User = new User();
-
   submited: boolean = false;
 
   totalRegistrosParticipants: number = 0
+  totalRegistrosParticipantRequests: number = 0
+
+  activeTab: number = 1;
 
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 105,
     sort: 'id,asc'
   };
-  
+
   filtroParticipants: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
+
+  filtroParticipantRequests: IUserFilter = {
     page: -1,
     itemsPerPage: 2,
     sort: 'id,asc',
@@ -86,7 +92,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
-  start(){
+  start() {
     this.showStartScreen = false;
     this.showFinalScreen = false;
     this.renderMathExpressions();
@@ -96,8 +102,11 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.competitionService.getCompetitionByCompetitionId(competitionId).subscribe(
       (response) => {
         this.competition = response;
+        this.checkIfRequestedParticipation(this.competition);
+        this.checkIfIsParticipant(this.competition);
         this.getQuestionsByCompetitionId(this.competition.id);
         this.onShowMoreParticipantes();
+        this.onShowMoreParticipanteRequests();
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) { // BAD_REQUEST
@@ -109,30 +118,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     );
   }
 
-  onShowMoreParticipantes(): void {
-    if (this.competition) {
-      this.filtroParticipants.page++;
-      this.getParticipantsByCompetitionId();
-    }
-  }
-
-  getParticipantsByCompetitionId(): void {
-    this.competitionService.getParticipantsByCompetitionId(this.competition.id, this.filtroParticipants).subscribe(
-      (dados: IApiResponse<User>) => {
-        // Garante que this.competition.participants seja um array
-        if (!Array.isArray(this.competition.participants)) {
-          this.competition.participants = [];
-        }
-  
-        // Concatena os novos participantes
-        this.competition.participants = [...this.competition.participants, ...dados.content];
-        this.totalRegistrosParticipants = dados.totalElements;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
   getQuestionsByCompetitionId(competitionId: number): void {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1;
@@ -156,9 +141,9 @@ export class CompetitionQuestionsComponent implements OnInit {
       console.error('Nenhuma questão recebida ou questões vazias');
       return [];
     }
-  
+
     const topicosMap = new Map<number, Topic>();
-  
+
     questoes.forEach((questao) => {
       if (questao.topic) {
         console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
@@ -169,8 +154,142 @@ export class CompetitionQuestionsComponent implements OnInit {
         console.error(`Questão ${questao.id} sem tópico`);
       }
     });
-  
+
     return Array.from(topicosMap.values());
+  }
+
+  checkIfIsParticipant(competition: Competition): void {
+    this.competitionService.checkIfIsParticipant(competition.id, this.loggedUser.id).subscribe(response => {
+      competition.isParticipant = response;
+    });
+  }
+
+  checkIfRequestedParticipation(competition: Competition): void {
+    this.competitionService.checkIfRequestedParticipation(competition.id, this.loggedUser.id).subscribe(response => {
+      competition.requestedParticipation = response;
+    });
+  }
+
+  addParticipantToCompetition(competition: Competition) {
+    this.competitionService.addParticipantToCompetition(competition.id, this.loggedUser.id).subscribe(
+      (competition) => {
+        this.competition = competition;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  removeParticipantFromCompetition(user: User) {
+    this.competitionService.removeParticipantFromCompetition(this.competition.id, user.id).subscribe(
+      () => {
+        this.competition.participants = this.competition.participants.filter(request => request.id !== user.id);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  sendParticipationRequest(competition: Competition) {
+    this.competitionService.sendParticipationRequest(competition.id, this.loggedUser.id).subscribe(
+      (response) => {
+        competition.requestedParticipation = true;
+        // Adiciona o novo user à lista de pedidos de participação
+        this.competition.participationRequests.push(this.loggedUser);
+        //this.selectedCompetition.requestedParticipation = true;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  acceptParticipationRequest(user: User) {
+    this.competitionService.acceptParticipationRequest(this.competition.id, user.id).subscribe(
+      (competition) => {
+        // Remove a solicitação pendente da lista
+        this.competition.participationRequests = this.competition.participationRequests.filter(request => request.id !== user.id);
+        // Adiciona o novo participante à lista de participantes
+        this.competition.participants.push(user);
+        this.totalRegistrosParticipants++;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  rejectParticipationRequest(user: User) {
+    this.competitionService.rejectParticipationRequest(this.competition.id, user.id).subscribe(
+      () => {
+        // Remove a solicitação rejeitada da lista de pendentes
+        this.competition.participationRequests = this.competition.participationRequests.filter(request => request.id !== user.id);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  cancelParticipationRequest(competition: Competition) {
+    this.competitionService.rejectParticipationRequest(competition.id, this.loggedUser.id).subscribe(
+      () => {
+        competition.requestedParticipation = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  onShowMoreParticipantes(): void {
+    if (this.competition) {
+      this.filtroParticipants.page++;
+      this.getParticipantsByCompetitionId();
+    }
+  }
+
+  getParticipantsByCompetitionId(): void {
+    this.competitionService.getParticipantsByCompetitionId(this.competition.id, this.filtroParticipants).subscribe(
+      (dados: IApiResponse<User>) => {
+        // Garante que this.competition.participants seja um array
+        if (!Array.isArray(this.competition.participants)) {
+          this.competition.participants = [];
+        }
+
+        this.competition.participants = [...this.competition.participants, ...dados.content];
+        this.totalRegistrosParticipants = dados.totalElements;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getParticipantRequestsByCompetitionId(): void {
+    this.competitionService.findParticipationRequestsByCompetitionId(this.competition.id, this.filtroParticipantRequests).subscribe(
+      (dados: IApiResponse<User>) => {
+        // Garante que this.competition.participants seja um array
+        if (!Array.isArray(this.competition.participationRequests)) {
+          this.competition.participationRequests = [];
+        }
+
+        this.competition.participationRequests = [...this.competition.participationRequests, ...dados.content];
+        this.totalRegistrosParticipantRequests = dados.totalElements;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  onShowMoreParticipanteRequests(): void {
+    if (this.competition) {
+      this.filtroParticipantRequests.page++;
+      this.getParticipantRequestsByCompetitionId();
+    }
   }
 
   displayResults() {
@@ -340,6 +459,10 @@ export class CompetitionQuestionsComponent implements OnInit {
         });
       }
     }, 0);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
   }
 
   // Método para rolar a página para o topo

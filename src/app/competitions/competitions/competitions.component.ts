@@ -194,8 +194,6 @@ export class CompetitionsComponent implements OnInit {
         dados.content.forEach(competition => {
           this.countQuestionsByCompetitionId(competition);
           this.countParticipantsByCompetitionId(competition);
-          this.checkIfRequestedParticipation(competition);
-          this.checkIfIsParticipant(competition);
         });
         this.totalRegistros = dados.totalElements;
         this.showLoading = false;
@@ -205,29 +203,6 @@ export class CompetitionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
-  }
-
-  checkIfIsParticipant(competition: Competition): void {
-    this.competitionService.checkIfIsParticipant(competition.id, this.loggedUser.id).subscribe(response => {
-      competition.isParticipant = response;
-    });
-  }
-
-  checkIfRequestedParticipation(competition: Competition): void {
-    this.competitionService.checkIfRequestedParticipation(competition.id, this.loggedUser.id).subscribe(response => {
-      competition.requestedParticipation = response;
-    });
-  }
-
-  addParticipantToCompetition(competition: Competition) {
-    this.competitionService.addParticipantToCompetition(competition.id, this.loggedUser.id).subscribe(
-      (competition) => {
-        this.competition = competition;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    )
   }
 
   countParticipantsByCompetitionId(competition: Competition) {
@@ -313,63 +288,8 @@ export class CompetitionsComponent implements OnInit {
     }
   }
 
-  removeParticipantFromCompetition(user: User) {
-    this.competitionService.removeParticipantFromCompetition(this.selectedCompetition.id, user.id).subscribe(
-      () => {
-        this.selectedCompetition.participants = this.selectedCompetition.participants.filter(request => request.id !== user.id);
-      },
-      error => this.errorHandler.handle(error)
-    );
-  }
-
-  getParticipantsByCompetitionId(): void {
-    this.competitionService.getParticipantsByCompetitionId(this.selectedCompetition.id, this.filtroParticipants).subscribe(
-      (dados: IApiResponse<User>) => {
-        this.selectedCompetition.participants = [...this.selectedCompetition.participants, ...dados.content];
-        this.totalRegistrosParticipants = dados.totalElements;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-  
-  onShowMoreParticipantes(): void {
-    if (this.selectedCompetition) {
-      this.filtroParticipants.page++;
-      this.getParticipantsByCompetitionId();
-    }
-  }
-
-  getParticipantRequestsByCompetitionId(): void {
-    this.competitionService.findParticipationRequestsByCompetitionId(this.selectedCompetition.id, this.filtroParticipantRequests).subscribe(
-      (dados: IApiResponse<User>) => {
-        this.selectedCompetition.participationRequests = [...this.selectedCompetition.participationRequests, ...dados.content];
-        this.totalRegistrosParticipantRequests = dados.totalElements;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-  
-  onShowMoreParticipanteRequests(): void {
-    if (this.selectedCompetition) {
-      this.filtroParticipantRequests.page++;
-      this.getParticipantRequestsByCompetitionId();
-    }
-  }
-
   onShowSelectedCompetition(competition: Competition): void {
     this.selectedCompetition = competition;
-
-    this.selectedCompetition.participants = []; 
-    this.filtroParticipants.page = 0; 
-    this.getParticipantsByCompetitionId();
-
-    this.selectedCompetition.participationRequests = []; 
-    this.filtroParticipantRequests.page = 0; 
-    this.getParticipantRequestsByCompetitionId();
 
     this.selectedCompetition.questions = [];
     this.filtroQuestions.page = 0; 
@@ -377,50 +297,6 @@ export class CompetitionsComponent implements OnInit {
 
     this.showCompetitionDialog = true;
   } 
-
-  sendParticipationRequest(competition: Competition) {
-    this.competitionService.sendParticipationRequest(competition.id, this.loggedUser.id).subscribe(
-      (response) => {
-        competition.requestedParticipation = true;
-        // Adiciona o novo user à lista de pedidos de participação
-        this.selectedCompetition.participationRequests.push(this.loggedUser);
-        //this.selectedCompetition.requestedParticipation = true;
-      },
-      erro => this.errorHandler.handle(erro)
-    )
-  }
-
-  acceptParticipationRequest(user: User) {
-    this.competitionService.acceptParticipationRequest(this.selectedCompetition.id, user.id).subscribe(
-      (competition) => {
-        // Remove a solicitação pendente da lista
-        this.selectedCompetition.participationRequests = this.selectedCompetition.participationRequests.filter(request => request.id !== user.id);
-        // Adiciona o novo participante à lista de participantes
-        this.selectedCompetition.participants.push(user);
-        //this.getUsersSearch();
-      },
-      erro => this.errorHandler.handle(erro)
-    )
-  }
-
-  rejectParticipationRequest(user: User) {
-    this.competitionService.rejectParticipationRequest(this.selectedCompetition.id, user.id).subscribe(
-      () => {
-        // Remove a solicitação rejeitada da lista de pendentes
-        this.selectedCompetition.participationRequests = this.selectedCompetition.participationRequests.filter(request => request.id !== user.id);
-      },
-      error => this.errorHandler.handle(error)
-    );
-  }
-
-  cancelParticipationRequest(competition: Competition) {
-    this.competitionService.rejectParticipationRequest(competition.id, this.loggedUser.id).subscribe(
-      () => {
-        competition.requestedParticipation = false;
-      },
-      error => this.errorHandler.handle(error)
-    );
-  }
 
   onAddQuestions(competition: Competition) {
     this.competition = competition;

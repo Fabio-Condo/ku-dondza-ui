@@ -13,7 +13,9 @@
         </header>
 
         <div class="button-container">
-            <button class="btn-start" (click)="start()" aria-label="Iniciar Competição">Começar</button>
+            <button class="btn-start" (click)="start()" *ngIf="!competition.requestedParticipation && competition.isParticipant" aria-label="Iniciar Competição">Começar</button>
+            <button class="btn-start" (click)="sendParticipationRequest(competition)" *ngIf="!competition.requestedParticipation && !competition.isParticipant">Subscrever</button>
+            <button class="btn-start" (click)="cancelParticipationRequest(competition)" *ngIf="competition.requestedParticipation && !competition.isParticipant" >Cancelar pedido</button>
         </div>
 
         <!-- Informações da Competição -->
@@ -27,7 +29,7 @@
             <div class="info-card">
                 <div class="info-content">
                     <p class="info-label">Questões</p>
-                    <p class="info-value">{{ questions.length }} questões</p>
+                    <p class="info-value">{{ questions.length }}</p>
                 </div>
             </div>
             <div class="info-card">
@@ -38,9 +40,18 @@
             </div>
         </div>
 
+        <div class="tab-header" style="margin-top: 50px; margin-bottom: 40px;">
+            <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+                Participantes
+            </div>
+            <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+                Lista de espera
+            </div>
+        </div>
+
         <!-- Participantes Confirmados -->
-        <div class="participants" aria-labelledby="participants-heading">
-            <h3 id="participants-heading">Participantes</h3>
+        <div class="participants" aria-labelledby="participants-heading" *ngIf="activeTab === 1">
+            <!--<h3 id="participants-heading">Participantes</h3>-->
             
             <div class="participants-list" role="list" *ngFor="let participant of competition.participants">
                 <!-- Card de Participante -->
@@ -50,7 +61,8 @@
                         <p class="participant-name">{{ participant.firstName }} {{ participant.lastName }}</p>
                         <p class="participant-status">Confirmado</p>
                     </div>
-                    <button class="btn-details" aria-label="Ver detalhes de João Silva">Detalhes</button>
+                    <button class="btn-details" (click)="removeParticipantFromCompetition(participant)">Remover</button>
+                    <button class="btn-details" style="margin-left: 10px;">Detalhes</button>                
                 </div>
             </div>
 
@@ -62,6 +74,34 @@
             </div>
 
         </div>
+
+        <!-- Participantes Na Espera -->
+        <div class="participants" aria-labelledby="participants-heading" *ngIf="activeTab === 2">
+            <!--<h3 id="participants-heading">Participantes</h3>-->
+            
+            <div class="participants-list" role="list" *ngFor="let participantReq of competition.participationRequests">
+                <!-- Card de Participante -->
+                <div class="participant-card" role="listitem">
+                    <img src="{{participantReq.profileImageUrl}}" alt="Avatar do João Silva" class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">{{ participantReq.firstName }} {{ participantReq.lastName }}</p>
+                        <p class="participant-status">Não Confirmado</p>
+                    </div>
+                    <button class="btn-details" (click)="acceptParticipationRequest(participantReq)">Confirmar</button>
+                    <button class="btn-details" style="margin-left: 10px;">Detalhes</button>
+                    <!-- <button class="btn-details" (click)="rejectParticipationRequest(participantReq)" style="margin-left: 10px;">Rejeitar</button> -->
+                </div>
+            </div>
+
+            <!-- Botão "Buscar Mais Participantes" -->
+            <button *ngIf="competition.participationRequests.length < totalRegistrosParticipantRequests" (click)="onShowMoreParticipanteRequests()" class="btn-load-more" aria-label="Buscar mais participantes">Buscar Mais</button>
+
+            <div *ngIf="competition.participationRequests.length === totalRegistrosParticipantRequests && totalRegistrosParticipantRequests > 0">
+                <p class="competition-description">Todos os pedidos foram carregados.</p>
+            </div>
+
+        </div>
+
     </div>
 
     <!-- Tela do quiz (questões) -->

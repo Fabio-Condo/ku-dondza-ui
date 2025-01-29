@@ -53,9 +53,12 @@
                                 </div>
                             </div>
                             <div class="button-container">
+                                <button class="btn btn-primary" [routerLink]="['/competitions', competition.competitionId, 'questions']">Iniciar</button>
+                                <!--
                                 <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && competition.isParticipant" [routerLink]="['/competitions', competition.competitionId, 'questions']">Iniciar</button>
                                 <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && !competition.isParticipant" (click)="sendParticipationRequest(competition)">Subscrever</button>
                                 <button class="btn" *ngIf="competition.requestedParticipation && !competition.isParticipant" (click)="cancelParticipationRequest(competition)">Cancelar pedido</button>
+                                -->
                             </div>
                         </div>
                     </div>
@@ -133,12 +136,6 @@
             <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
                 Questoes
             </div>
-            <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
-                Participantes
-            </div>
-            <div class="tab-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
-                Pedidos de Participação
-            </div>
         </div>
         <div *ngIf="activeTab === 1" class="active">
             <div class="question-dialog-content">
@@ -160,63 +157,6 @@
             <div (click)="onShowMoreQuestions()" class="upload-loading-container"
                 style="cursor: pointer; border: 1px solid #ccc;">
                 <p class="upload-loading-text">carregar mais questões</p>
-            </div>
-        </div>
-        <div *ngIf="activeTab === 2" class="active">
-            <div class="question-dialog-content">
-                <ul>
-                    <li *ngFor="let participant of selectedCompetition.participants">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="profile-pic">
-                                    <img src="{{participant.profileImageUrl}}" alt="pic 1" />
-                                </div>
-                                <div class="content" style="margin-left: 20px;">
-                                    <p class="user-name user-name-hover" [routerLink]="['/user/profile', participant.userId]">
-                                        {{ participant.firstName }} {{ participant.lastName }}
-                                    </p>
-                                    <p class="username text-muted">12 mutual friends</p>
-                                </div>
-                                <div class="button-container">
-                                    <button class="btn" style="margin-left: 10px;" (click)="removeParticipantFromCompetition(participant)">Remover</button>                            
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div (click)="onShowMoreParticipantes()" class="upload-loading-container"
-                style="cursor: pointer; border: 1px solid #ccc;">
-                <p class="upload-loading-text">carregar mais participantes</p>
-            </div>
-        </div>
-        <div *ngIf="activeTab === 3" class="active">
-            <div class="question-dialog-content">
-                <ul>
-                    <li *ngFor="let participantReq of selectedCompetition.participationRequests">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="profile-pic">
-                                    <img src="{{participantReq.profileImageUrl}}" alt="pic 1" />
-                                </div>
-                                <div class="content" style="margin-left: 20px;">
-                                    <p class="user-name user-name-hover" [routerLink]="['/user/profile', participantReq.userId]">
-                                        {{ participantReq.firstName }} {{ participantReq.lastName }}
-                                    </p>
-                                    <p class="username text-muted">12 mutual friends</p>
-                                </div>
-                                <div class="button-container">
-                                    <button class="btn btn-primary" (click)="acceptParticipationRequest(participantReq)" >Confirmar</button>
-                                    <button class="btn" style="margin-left: 10px;" (click)="rejectParticipationRequest(participantReq)">Eliminar</button>                            
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div (click)="onShowMoreParticipanteRequests()" class="upload-loading-container"
-                style="cursor: pointer; border: 1px solid #ccc;">
-                <p class="upload-loading-text">carregar mais pedidos</p>
             </div>
         </div>
     </div>
