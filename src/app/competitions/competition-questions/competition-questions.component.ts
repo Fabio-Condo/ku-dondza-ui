@@ -12,6 +12,8 @@ import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
+import { SubmissionService } from 'src/app/core/submissions/submission.service';
+import { Submission } from 'src/app/core/model/Submission';
 declare const MathJax: any;
 
 
@@ -26,6 +28,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   questions: Question[] = [];
   topics: Topic[] = [];
   participants: User[] = [];
+  submission: Submission = new Submission();
 
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
@@ -77,6 +80,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   constructor(
     private competitionService: CompetitionService,
+    private submissionService: SubmissionService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -96,6 +100,24 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showStartScreen = false;
     this.showFinalScreen = false;
     this.renderMathExpressions();
+  }
+
+  submite() {
+
+    this.submission.user = this.loggedUser;
+    this.submission.competition = this.competition;
+    this.submission.userSubmittedAnswers = this.submittedAnswers;
+
+    this.submissionService.add(this.submission).subscribe(
+      (response) => {
+        this.submission = response
+        this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
   }
 
   getCompetitionByCompetitionId(competitionId: string) {
@@ -307,7 +329,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
     // Salva o quiz, se ainda não foi submetido
     if (!this.submited) {
-      //this.saveQuiz();
+      this.submite();
     }
   }
 

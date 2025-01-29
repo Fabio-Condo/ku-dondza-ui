@@ -14,11 +14,13 @@
         <div class="input-group">
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
-                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()" placeholder="Pesquisa">
+                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"
+                    (ngModelChange)="findAll()" placeholder="Pesquisa">
             </div>
 
             <div class="dropdown-container" style="margin-left: 4px;">
-                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
+                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i
+                        class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
                     <a>Filtrar</a>
                     <a (click)="onAddNewCompetition(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
@@ -36,24 +38,41 @@
                             <div class="content">
                                 <p class="title">{{ competition.title }}</p>
                                 <p class="details">{{ competition.totalQuestions }} questoes</p>
-                                <p class="details" *ngIf="competition.totalParticipants == 0"><strong>0</strong> participantes da competição</p>
-                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 1"> Apenas <strong>uma pessoa</strong> é participante desta competição</p>
-                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 1"> Apenas <strong>Tu</strong> és participante desta competição</p>
-                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants == 2"><strong>Tu</strong> e mais <strong>uma pessoa</strong> são participantes desta competição</p>
-                                <p class="details" *ngIf="!competition.isParticipant && competition.totalParticipants == 2"><strong>Duas pessoas</strong> são participantes desta competição</p>
-                                <p class="details" *ngIf="competition.isParticipant && competition.totalParticipants > 2"><strong>Tu</strong> e mais <strong>{{ competition.totalParticipants - 1}} pessoas</strong> são participantes desta competição</p>
+                                <p class="details" *ngIf="competition.totalParticipants == 0"><strong>0</strong>
+                                    participantes da competição</p>
+                                <p class="details"
+                                    *ngIf="!competition.isParticipant && competition.totalParticipants == 1"> Apenas
+                                    <strong>uma pessoa</strong> é participante desta competição</p>
+                                <p class="details"
+                                    *ngIf="competition.isParticipant && competition.totalParticipants == 1"> Apenas
+                                    <strong>Tu</strong> és participante desta competição</p>
+                                <p class="details"
+                                    *ngIf="competition.isParticipant && competition.totalParticipants == 2">
+                                    <strong>Tu</strong> e mais <strong>uma pessoa</strong> são participantes desta
+                                    competição</p>
+                                <p class="details"
+                                    *ngIf="!competition.isParticipant && competition.totalParticipants == 2">
+                                    <strong>Duas pessoas</strong> são participantes desta competição</p>
+                                <p class="details"
+                                    *ngIf="competition.isParticipant && competition.totalParticipants > 2">
+                                    <strong>Tu</strong> e mais <strong>{{ competition.totalParticipants - 1}}
+                                        pessoas</strong> são participantes desta competição</p>
                             </div>
                             <div class="dropdown-container">
-                                <button class="dropdown-btn" (click)="toggleDropdown(competition)"><i class="pi pi-ellipsis-v"></i></button>
+                                <button class="dropdown-btn" (click)="toggleDropdown(competition)"><i
+                                        class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="competition.isAdminMenuOpen">
                                     <a (click)="onUpdateCompetition(competition); closeDropdown(competition)">Editar</a>
-                                    <a (click)="confirmarExclusao(competition); closeDropdown(competition)" >Eliminar</a>
-                                    <a (click)="onAddQuestions(competition); closeDropdown(competition)" >Adicionar questão</a>
-                                    <a (click)="onShowSelectedCompetition(competition); closeDropdown(competition)" >Ver tudo</a>
+                                    <a (click)="confirmarExclusao(competition); closeDropdown(competition)">Eliminar</a>
+                                    <a (click)="onAddQuestions(competition); closeDropdown(competition)">Adicionar
+                                        questão</a>
+                                    <a (click)="onShowSelectedCompetition(competition); closeDropdown(competition)">Ver
+                                        tudo</a>
                                 </div>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary" [routerLink]="['/competitions', competition.competitionId, 'questions']">Iniciar</button>
+                                <button class="btn btn-primary"
+                                    [routerLink]="['/competitions', competition.competitionId, 'questions']">Iniciar</button>
                                 <!--
                                 <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && competition.isParticipant" [routerLink]="['/competitions', competition.competitionId, 'questions']">Iniciar</button>
                                 <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && !competition.isParticipant" (click)="sendParticipationRequest(competition)">Subscrever</button>
@@ -103,7 +122,8 @@
             Próximo <i class="pi pi-chevron-right"></i>
         </button>
         <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option" [selected]="option === filtro.itemsPerPage">
+            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                [selected]="option === filtro.itemsPerPage">
                 {{ option }}
             </option>
         </select>
@@ -113,25 +133,41 @@
 
 <div class="overlay" *ngIf="displayModalSave">
     <div class="dialog">
-        <h2>{{ editing ? 'Editando Curso' : 'Adicionando Novo Curso' }}</h2>
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+
+        <div class="dialog-header">
+            <h2>{{ editing ? 'Editando Curso' : 'Adicionando Novo Curso' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        </div>
+
+        <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
             <div class="form-group">
                 <label for="title">Title</label>
-                <input type="text" id="title" name="title" ngModel #title="ngModel" required minlength="1" [(ngModel)]="competition.title">
+                <input type="text" id="title" name="title" ngModel #title="ngModel" required minlength="1"
+                    [(ngModel)]="competition.title">
             </div>
-            <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+                <button type="submit" [disabled]="courseForm.invalid" class="btn">{{ showLoading ? 'Loading...' :
+                    'Salvar' }}</button>
+            </div>
         </form>
     </div>
 </div>
 
 <div class="overlay" *ngIf="showCompetitionDialog">
     <div class="dialog">
-        <div class="question-dialog-header">
+
+        <div class="dialog-header">
             <h4>{{selectedCompetition.title}}</h4>
-            <button class="close-button" (click)="showCompetitionDialog = false">x</button>
+            <button class="close-btn" (click)="showCompetitionDialog = false">x</button>
         </div>
+
+        <hr class="header-divider">
+
         <div class="tab-header">
             <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
                 Questoes
@@ -147,7 +183,8 @@
                                     <p>{{question.text}}</p>
                                 </div>
                                 <div class="button-container">
-                                    <button class="btn" style="margin-left: 10px;" (click)="removeQuestionFromCompetition(question)">Remover</button>                            
+                                    <button class="btn" style="margin-left: 10px;"
+                                        (click)="removeQuestionFromCompetition(question)">Remover</button>
                                 </div>
                             </div>
                         </div>
@@ -164,10 +201,13 @@
 
 <div class="overlay" *ngIf="showAddQuestionsDialog">
     <div class="dialog">
-        <div class="question-dialog-header">
+
+        <div class="dialog-header">
             <h4>Questoes</h4>
-            <button class="close-button" (click)="showAddQuestionsDialog = false">x</button>
+            <button class="close-btn" (click)="showAddQuestionsDialog = false">x</button>
         </div>
+
+        <hr class="header-divider">
 
         <div class="form-group">
             <label for="question">Selecione a questao</label>
@@ -179,7 +219,8 @@
         </div>
 
         <div class="form-group">
-            <button type="button" (click)="addQuestionToCompetition()" class="btn btn-primary">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-          </div>
+            <button type="button" (click)="addQuestionToCompetition()" class="btn btn-primary">{{ showLoading ?
+                'Loading...' : 'Salvar' }}</button>
+        </div>
     </div>
 </div>
