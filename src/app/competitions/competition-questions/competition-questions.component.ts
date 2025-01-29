@@ -107,9 +107,11 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.submission.user = this.loggedUser;
     this.submission.competition = this.competition;
     this.submission.userSubmittedAnswers = this.submittedAnswers;
+    const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
-    this.submissionService.add(this.submission).subscribe(
+    this.submissionService.add(this.submission, userAnswerIds).subscribe(
       (response) => {
+        this.submited = true;
         this.submission = response
         this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
       },
