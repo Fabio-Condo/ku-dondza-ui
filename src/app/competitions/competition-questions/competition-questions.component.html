@@ -10,16 +10,18 @@
                 Participe da nossa competição e teste seus conhecimentos em diversas áreas. As questões foram preparadas
                 para desafiar sua mente!
             </p>
-
+            
             <div class="competition-status">
                 <p class="status-item">
-                    <strong>status:</strong> {{ getStatus(competition.status) }}
+                    <strong>Status: </strong>
+                    <span class="status-label {{ competition.status | lowercase }}">
+                        {{ getStatus(competition.status) }}
+                    </span>
                 </p>
-            
                 <p class="status-item">
-                    <strong>started at:</strong> {{ competition.startedAt | date: 'short' }}
+                    <strong>Started at: </strong> {{ competition.startedAt | date: 'short' }}
                 </p>
-            </div>            
+            </div>
 
             <!-- Lista de Prêmios -->
             <div class="prizes-section">
