@@ -96,6 +96,34 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
+  getPosition(prize: string): string {
+    switch (prize) {
+        case 'FIRST_PLACE':
+            return '1º lugar';
+        case 'SECOND_PLACE':
+            return '2º lugar';
+        case 'THIRD_PLACE':
+            return '3º lugar';
+        default:
+            return `${prize}º lugar`;
+    }
+  }
+
+  getStatus(status: string): string {
+    switch (status) {
+        case 'PLANNING':
+            return 'PLANEANDO';
+        case 'ONGOING':
+            return 'EM ANDAMENTO';
+        case 'FINISHED':
+            return 'FINALIZADO';
+        case 'CANCELED':
+          return 'CANCELADO';
+        default:
+            return `PLANNING`;
+    }
+  }
+
   start() {
     this.showStartScreen = false;
     this.showFinalScreen = false;
@@ -122,10 +150,19 @@ export class CompetitionQuestionsComponent implements OnInit {
     )
   }
 
-  getSubmissionByUserAndCompetition(userId: number) {
-    this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
+  onShowUserSubmission(participante: User){
+    this.getSubmissionByUserAndCompetition(participante);
+    this.toggleCorrection(); 
+    this.scrollToTop();
+    this.showStartScreen = false;
+    this.showFinalScreen = false;
+  }
+
+  getSubmissionByUserAndCompetition(participante: User) {
+    this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
       (response) => {
-        this.submission = response
+        this.submission = response;
+        this.submittedAnswers = this.submission.userSubmittedAnswers; 
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

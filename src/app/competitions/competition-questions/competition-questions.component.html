@@ -10,6 +10,27 @@
                 Participe da nossa competição e teste seus conhecimentos em diversas áreas. As questões foram preparadas
                 para desafiar sua mente!
             </p>
+
+            <div class="competition-status">
+                <p class="status-item">
+                    <strong>status:</strong> {{ getStatus(competition.status) }}
+                </p>
+            
+                <p class="status-item">
+                    <strong>started at:</strong> {{ competition.startedAt | date: 'short' }}
+                </p>
+            </div>            
+
+            <!-- Lista de Prêmios -->
+            <div class="prizes-section">
+                <h3>Prêmios</h3>
+                <div class="prizes-list">
+                    <div *ngFor="let prize of competition.prizes;" class="prize-item">
+                        <p><strong>{{ getPosition(prize.position) }}:</strong> {{ prize.description }}</p>
+                    </div>
+                </div>
+            </div>
+            
         </header>
 
         <div class="button-container">
@@ -62,7 +83,7 @@
                         <p class="participant-status">Confirmado</p>
                     </div>
                     <button class="btn-details" (click)="removeParticipantFromCompetition(participant)">Remover</button>
-                    <button class="btn-details" style="margin-left: 10px;">Detalhes</button>                
+                    <button class="btn-details" (click)="onShowUserSubmission(participant)" style="margin-left: 10px;">Detalhes</button>                
                 </div>
             </div>
 

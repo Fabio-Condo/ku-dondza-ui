@@ -1,3 +1,5 @@
+import { CompetitionWinner } from "./CompetitionWinner";
+import { Prize } from "./Prize";
 import { Question } from "./Question";
 import { Submission } from "./Submission";
 import { User } from "./User";
@@ -6,12 +8,15 @@ export class Competition {
     id!: number;
     competitionId!: string;
     title!: string;
+    status!: string;  // PLANNING, ONGOING, FINISHED, CANCELED
     startedAt!: Date;
     participants: User[] = [];
     administrators: User[] = [];
     participationRequests: User[] = [];
     questions: Question[] = [];
     submissions: Submission[] = [];
+    prizes: Prize[] = [];
+    winners: CompetitionWinner[] = [];
 
     // Adicionando a propriedade resultsByTopic
     resultsByTopic: {

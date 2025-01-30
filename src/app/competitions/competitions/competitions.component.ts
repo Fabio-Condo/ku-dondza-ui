@@ -76,6 +76,13 @@ export class CompetitionsComponent implements OnInit {
     sort: 'id,asc',
   }
 
+  competitionStatuses = [
+    { label: 'PLANNING', value: 'PLANNING' },
+    { label: 'ONGOING', value: 'ONGOING' },
+    { label: 'FINISHED', value: 'FINISHED' },
+    { label: 'CANCELED', value: 'CANCELED' }
+  ];
+
   @ViewChild('tabela') grid: any;
 
   constructor(
@@ -280,7 +287,7 @@ export class CompetitionsComponent implements OnInit {
       }
     );
   }
-  
+
   onShowMoreQuestions(): void {
     if (this.selectedCompetition) {
       this.filtroQuestions.page++;
@@ -292,11 +299,11 @@ export class CompetitionsComponent implements OnInit {
     this.selectedCompetition = competition;
 
     this.selectedCompetition.questions = [];
-    this.filtroQuestions.page = 0; 
+    this.filtroQuestions.page = 0;
     this.getQuestionsByCompetitionId();
 
     this.showCompetitionDialog = true;
-  } 
+  }
 
   onAddQuestions(competition: Competition) {
     this.competition = competition;
