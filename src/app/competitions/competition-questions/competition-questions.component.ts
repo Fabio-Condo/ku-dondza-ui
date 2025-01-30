@@ -124,6 +124,40 @@ export class CompetitionQuestionsComponent implements OnInit {
     }
   }
 
+  get isPlanned(): boolean {
+    return this.competition.status === 'PLANNING';
+  }
+
+  get isOngoing(): boolean {
+    return this.competition.status === 'ONGOING';
+  }
+
+  get isFinished(): boolean {
+    return this.competition.status === 'FINISHED';
+  }
+
+  get canStart(): boolean {
+    return (this.isOngoing && 
+           this.competition.isParticipant);
+  }
+
+  get canSubscribe(): boolean {
+    return this.isPlanned && 
+           !this.competition.isParticipant && 
+           !this.competition.requestedParticipation;
+  }
+
+  get canCancelRequest(): boolean {
+    return this.isPlanned && 
+           this.competition.requestedParticipation && 
+           !this.competition.isParticipant;
+  }
+
+  get canViewSubmission(): boolean {
+    return this.isFinished && 
+           this.competition.isParticipant;
+  }
+
   start() {
     this.showStartScreen = false;
     this.showFinalScreen = false;
@@ -181,6 +215,11 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.getQuestionsByCompetitionId(this.competition.id);
         this.onShowMoreParticipantes();
         this.onShowMoreParticipanteRequests();
+
+        if(this.competition.isParticipant && this.competition.status == 'FINISHED'){
+          this.getSubmissionByUserAndCompetition(this.loggedUser);
+
+        }
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) { // BAD_REQUEST

@@ -8,6 +8,7 @@ export class Submission {
     competition = new Competition();
     user = new User();
     userSubmittedAnswers: Answer[] = [];
+    totalCorrectAnswers!: number;
 
     isAdminMenuOpen: boolean = false;
 }

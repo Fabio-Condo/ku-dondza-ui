@@ -23,23 +23,26 @@
                 </p>
             </div>
 
-            <!-- Lista de Prêmios -->
-            <div class="prizes-section">
-                <h3>Prêmios</h3>
-                <div class="prizes-list">
-                    <div *ngFor="let prize of competition.prizes;" class="prize-item">
-                        <p><strong>{{ getPosition(prize.position) }}:</strong> {{ prize.description }}</p>
-                    </div>
-                </div>
-            </div>
             
-        </header>
+            <div class="button-container">
+                <button class="btn-start" (click)="start()" *ngIf="canStart" aria-label="Iniciar Competição">
+                    Começar
+                </button>
+            
+                <button class="btn-start" (click)="sendParticipationRequest(competition)" *ngIf="canSubscribe" aria-label="Solicitar participação">
+                    Subscrever
+                </button>
+            
+                <button class="btn-start" (click)="cancelParticipationRequest(competition)" *ngIf="canCancelRequest" aria-label="Cancelar pedido">
+                    Cancelar pedido
+                </button>
 
-        <div class="button-container">
-            <button class="btn-start" (click)="start()" *ngIf="!competition.requestedParticipation && competition.isParticipant" aria-label="Iniciar Competição">Começar</button>
-            <button class="btn-start" (click)="sendParticipationRequest(competition)" *ngIf="!competition.requestedParticipation && !competition.isParticipant">Subscrever</button>
-            <button class="btn-start" (click)="cancelParticipationRequest(competition)" *ngIf="competition.requestedParticipation && !competition.isParticipant" >Cancelar pedido</button>
-        </div>
+                <button class="btn-start" (click)="onShowUserSubmission(loggedUser)" *ngIf="canViewSubmission" aria-label="Submissão do user actual">
+                    Minha submissão
+                </button>
+            </div>
+                        
+        </header>
 
         <!-- Informações da Competição -->
         <div class="competition-info">
@@ -63,6 +66,22 @@
             </div>
         </div>
 
+        <br>
+        <br>
+
+        <!-- Lista de Prêmios -->
+        <div class="prizes-section">
+            <h3>Prêmios</h3>
+            <div class="prizes-list">
+                <div *ngFor="let prize of competition.prizes;" class="prize-item">
+                    <p><strong>{{ getPosition(prize.position) }}:</strong> {{ prize.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
         <div class="tab-header" style="margin-top: 50px; margin-bottom: 40px;">
             <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
                 Participantes
@@ -84,8 +103,8 @@
                         <p class="participant-name">{{ participant.firstName }} {{ participant.lastName }}</p>
                         <p class="participant-status">Confirmado</p>
                     </div>
-                    <button class="btn-details" (click)="removeParticipantFromCompetition(participant)">Remover</button>
-                    <button class="btn-details" (click)="onShowUserSubmission(participant)" style="margin-left: 10px;">Detalhes</button>                
+                    <button class="btn-details" *ngIf="isPlanned" (click)="removeParticipantFromCompetition(participant)">Remover</button>
+                    <button class="btn-details" *ngIf="isFinished" (click)="onShowUserSubmission(participant)" style="margin-left: 10px;">Ver submissão</button>                
                 </div>
             </div>
 
