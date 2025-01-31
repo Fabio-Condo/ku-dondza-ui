@@ -96,67 +96,17 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
-  getPosition(prize: string): string {
-    switch (prize) {
-        case 'FIRST_PLACE':
-            return '1º lugar';
-        case 'SECOND_PLACE':
-            return '2º lugar';
-        case 'THIRD_PLACE':
-            return '3º lugar';
-        default:
-            return `${prize}º lugar`;
-    }
-  }
-
-  getStatus(status: string): string {
-    switch (status) {
-        case 'PLANNING':
-            return 'PLANEANDO';
-        case 'ONGOING':
-            return 'EM ANDAMENTO';
-        case 'FINISHED':
-            return 'FINALIZADO';
-        case 'CANCELED':
-          return 'CANCELADO';
-        default:
-            return `PLANNING`;
-    }
-  }
-
-  get isPlanned(): boolean {
-    return this.competition.status === 'PLANNING';
-  }
-
-  get isOngoing(): boolean {
-    return this.competition.status === 'ONGOING';
-  }
-
-  get isFinished(): boolean {
-    return this.competition.status === 'FINISHED';
-  }
-
-  get canStart(): boolean {
-    return (this.isOngoing && 
-           this.competition.isParticipant);
-  }
-
-  get canSubscribe(): boolean {
-    return this.isPlanned && 
-           !this.competition.isParticipant && 
-           !this.competition.requestedParticipation;
-  }
-
-  get canCancelRequest(): boolean {
-    return this.isPlanned && 
-           this.competition.requestedParticipation && 
-           !this.competition.isParticipant;
-  }
-
-  get canViewSubmission(): boolean {
-    return this.isFinished && 
-           this.competition.isParticipant;
-  }
+  //finishCompetition() {
+  //  this.competitionService.finishCompetition(this.competition.id).subscribe(
+  //    (response) => {
+  //      console.log('Competition finished:', response);
+  //    },
+  //    (errorResponse: HttpErrorResponse) => {
+  //      this.sendErrorNotification(errorResponse.error.message);
+  //      this.showLoading = false;
+  //    }
+  //  );
+  //}
 
   start() {
     this.showStartScreen = false;
@@ -184,9 +134,9 @@ export class CompetitionQuestionsComponent implements OnInit {
     )
   }
 
-  onShowUserSubmission(participante: User){
+  onShowUserSubmission(participante: User) {
     this.getSubmissionByUserAndCompetition(participante);
-    this.toggleCorrection(); 
+    this.toggleCorrection();
     this.scrollToTop();
     this.showStartScreen = false;
     this.showFinalScreen = false;
@@ -196,7 +146,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
-        this.submittedAnswers = this.submission.userSubmittedAnswers; 
+        this.submittedAnswers = this.submission.userSubmittedAnswers;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -216,7 +166,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.onShowMoreParticipantes();
         this.onShowMoreParticipanteRequests();
 
-        if(this.competition.isParticipant && this.competition.status == 'FINISHED'){
+        if (this.competition.isParticipant && this.competition.status == 'FINISHED') {
           this.getSubmissionByUserAndCompetition(this.loggedUser);
 
         }
@@ -582,6 +532,80 @@ export class CompetitionQuestionsComponent implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  getPosition(prize: string): string {
+    switch (prize) {
+      case 'FIRST_PLACE':
+        return '1º lugar';
+      case 'SECOND_PLACE':
+        return '2º lugar';
+      case 'THIRD_PLACE':
+        return '3º lugar';
+      default:
+        return `${prize}º lugar`;
+    }
+  }
+
+  getStatus(status: string): string {
+    switch (status) {
+      case 'PLANNING':
+        return 'PLANEANDO';
+      case 'ONGOING':
+        return 'EM ANDAMENTO';
+      case 'FINISHED':
+        return 'FINALIZADO';
+      case 'CANCELED':
+        return 'CANCELADO';
+      default:
+        return `PLANNING`;
+    }
+  }
+
+  get isPlanned(): boolean {
+    return this.competition.status === 'PLANNING';
+  }
+
+  get isOngoing(): boolean {
+    return this.competition.status === 'ONGOING';
+  }
+
+  get isFinished(): boolean {
+    return this.competition.status === 'FINISHED';
+  }
+
+  get canStart(): boolean {
+    return (this.isOngoing &&
+      this.competition.isParticipant);
+  }
+
+  get canSubscribe(): boolean {
+    return this.isPlanned &&
+      !this.competition.isParticipant &&
+      !this.competition.requestedParticipation;
+  }
+
+  get canCancelRequest(): boolean {
+    return this.isPlanned &&
+      this.competition.requestedParticipation &&
+      !this.competition.isParticipant;
+  }
+
+  get canViewSubmission(): boolean {
+    return this.isFinished &&
+      this.competition.isParticipant;
+  }
+
+  //finishCompetition() {
+  //  this.competitionService.finishCompetition(this.competition.id).subscribe(
+  //    (response) => {
+  //      console.log('Competition finished:', response);
+  //    },
+  //    (errorResponse: HttpErrorResponse) => {
+  //      this.sendErrorNotification(errorResponse.error.message);
+  //      this.showLoading = false;
+  //    }
+  //  );
+  //}
 
   private sendErrorNotification(message: string): void {
     if (message) {

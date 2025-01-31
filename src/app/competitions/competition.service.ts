@@ -130,4 +130,9 @@ export class CompetitionService {
         return this.http.delete<void>(`${this.host}/${competitionId}/reject-participation-requests/${userId}`);
     }
 
+    // Método para finalizar a competição
+    //finishCompetition(competitionId: number): Observable<void> {
+    //    return this.http.put<void>(`${this.host}/${competitionId}/finish`, null);
+    //}
+
 }
