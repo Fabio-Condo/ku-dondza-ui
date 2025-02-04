@@ -224,6 +224,22 @@ export class CompetitionsComponent implements OnInit {
     );
   }
 
+  getTopicsByCompetitionId(competitionId: number): void {
+    this.competitionService.getTopicsByCompetitionId(competitionId).subscribe(
+      (data: Topic[]) => {
+        // Mapear os tópicos e adicionar o estado 'selected'
+        this.topics = data.map(topic => ({
+          ...topic,
+          selected: topic.selected = true
+        }));
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   // Método para carregar as disciplinas
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
@@ -317,6 +333,7 @@ export class CompetitionsComponent implements OnInit {
   // Métodos para abrir o modal
   onUpdateCompetition(competition: Competition): void {
     this.competition = competition;
+    this.getTopicsByCompetitionId(competition.id);
     this.displayModalSave = true;
   }
 

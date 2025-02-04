@@ -9,6 +9,7 @@ import { QuestionFilter } from '../core/interface/QuestionFilter';
 import { Question } from '../core/model/Question';
 import { User } from '../core/model/User';
 import { IUserFilter } from '../core/interface/IUserFilter';
+import { Topic } from '../core/model/Topic';
 
 
 @Injectable({ providedIn: 'root' })
@@ -97,6 +98,10 @@ export class CompetitionService {
 
     removeQuestionFromCompetition(competitionId: number, questionId: number): Observable<Competition> {
         return this.http.delete<Competition>(`${this.host}/${competitionId}/questions/${questionId}`);
+    }
+
+    getTopicsByCompetitionId(competitionId: number): Observable<Topic[]> {
+        return this.http.get<Topic[]>(`${this.host}/${competitionId}/topics`);
     }
 
     getQuestionsByCompetitionId(competitionId: number, filtro: QuestionFilter): Observable<IApiResponse<Question>> {

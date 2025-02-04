@@ -146,17 +146,19 @@
                 </select>
             </div>
 
-            <div>
-                <label for="type">Status</label>
+            <div class="toggle-container">
+                <label for="generateQuestions">Modificar tópicos e questões</label>
                 <input
+                    id="generateQuestions"
                     type="checkbox"
                     [checked]="generateQuestions"
-                    (change)="toggleGenerateQuesions()
-                "/>
+                    (change)="toggleGenerateQuesions()"
+                />
             </div>
+            
 
             <!-- Seleção de Disciplina -->
-            <div class="form-group">
+            <div class="form-group" *ngIf="generateQuestions">
                 <label for="subject">Disciplina</label>
                 <select
                 id="subject"
@@ -174,7 +176,7 @@
             </div>
         
             <!-- Seleção de Tópicos -->
-            <div class="form-group" >
+            <div class="form-group" *ngIf="generateQuestions">
                 <label>Selecione os Tópicos</label>
                 <ul class="topics-list">
                 <li *ngFor="let topic of topics" class="topic-item">
