@@ -81,25 +81,46 @@
                         <div class="lesson-info">
                             <i *ngIf="content.contentType == 'VIDEO'" class="pi pi-video"></i>
                             <i *ngIf="content.contentType == 'FILE'" class="pi pi-file"></i>
+                
                             <span class="lesson-title" (click)="onSelectContent(content)">
                                 {{ modulo.position }}.{{ content.position }}. {{ content.description }}
                             </span>
-                            <span (click)="addContentToMarkedCourseContents(content)">{{ content.isMarked }}</span>
                         </div>
+                
                         <div class="lesson-actions">
-                            <button *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload" (click)="download(content, content.fileName)" class="btn-icon">
+                            <!-- Exibir status de vídeo assistido -->
+                            <div *ngIf="content.contentType == 'VIDEO' && content.isMarked" class="lesson-marked">
+                                <i class="pi pi-check-circle"></i> Assistido
+                            </div>
+                
+                            <!-- Botões para marcar/desmarcar -->
+                            <div class="marked-actions" *ngIf="content.contentType == 'VIDEO'">
+                                <button *ngIf="!content.isMarked" class="btn-small" (click)="addContentToMarkedCourseContents(content)" title="Marcar como assistido">
+                                    <i class="pi pi-eye"></i>
+                                </button>
+                                <button *ngIf="content.isMarked" class="btn-small" (click)="removeContentFromMarkedCourseContents(content)" title="Desmarcar como assistido">
+                                    <i class="pi pi-eye-slash"></i>
+                                </button>
+                            </div>
+                            
+                
+                            <button *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload"
+                                (click)="download(content, content.fileName)" class="btn-icon">
                                 <i class="pi pi-download"></i>
                             </button>
+                
                             <button *ngIf="isAdmin" class="btn-icon" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen">
                                 <i class="pi pi-ellipsis-v"></i>
                             </button>
+                
                             <div class="dropdown" *ngIf="content.isAdminMenuOpen">
-                                <a (click)="onUpdateOnlineCourseContent(content, modulo, courseContentFile); content.isAdminMenuOpen = !content.isAdminMenuOpen">Editar</a>
-                                <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = !content.isAdminMenuOpen">Excluir</a>
+                                <a (click)="onUpdateOnlineCourseContent(content, modulo, courseContentFile); content.isAdminMenuOpen = false">Editar</a>
+                                <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = false">Excluir</a>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

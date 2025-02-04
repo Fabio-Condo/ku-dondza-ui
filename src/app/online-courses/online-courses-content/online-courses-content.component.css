@@ -131,7 +131,27 @@
     font-size: 0.9rem;
     color: var(--color-text);
     cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
 }
+
+/* Ícone de like */
+.course-info .likes i {
+    font-size: 1.2rem; /* Tamanho do ícone */
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover somente no botão */
+.course-info .likes:hover {
+    color: var(--color-accent); /* Cor ao passar o mouse */
+    transform: scale(1.05); /* Leve aumento no botão */
+}
+
+/* Hover no ícone do like */
+.course-info .likes:hover i {
+    color: var(--color-accent); /* Mudança de cor no ícone */
+    transform: scale(1.2); /* Aumento no ícone */
+}
+
 
 .course-info i {
     color: var(--color-primary);
@@ -249,16 +269,15 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.8rem;
+    transition: all 300ms ease;
 }
 
 .lesson-item:hover {
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius);
-    transform: translateY(-5px); /* Efeito de levitar fixo */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra fixa */
-    transition: all 300ms ease;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
-
 
 .lesson-info {
     display: flex;
@@ -282,6 +301,53 @@
     align-items: center;
     gap: 10px;
 }
+
+.lesson-marked {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    color: var(--color-success);
+    font-weight: bold;
+}
+
+.lesson-marked i {
+    color: var(--color-success);
+}
+
+.marked-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-small {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--color-black);
+    transition: color 0.3s ease;
+}
+
+.btn-small:hover {
+    color: var(--color-primary);
+}
+
+.lesson-marked {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.lesson-marked i {
+    color: var(--color-primary);
+}
+
+
 
 .btn-icon {
     background: none;
