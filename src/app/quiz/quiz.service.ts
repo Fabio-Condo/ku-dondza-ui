@@ -56,28 +56,12 @@ export class QuizService {
     return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, {});
   }
 
-  saveQuiz(quiz: Quiz, topicIds: number[], questionIds: number[], userAnswerIds: any[]): Observable<Quiz> {
+  saveQuiz(quiz: Quiz, questionIds: number[], userAnswerIds: any[]): Observable<Quiz> {
 
     const params = new HttpParams()
-      .set('topicIds', topicIds.join(','))
       .set('questionIds', questionIds.join(','))
       .set('userAnswerIds', userAnswerIds.join(','));
 
-    return this.http.post<Quiz>(`${this.baseUrl}`, quiz, { params });
-  }
-
-  saveQuiz2(quiz: Quiz, questionIds: number[], userAnswerIds: (number | null)[]): Observable<Quiz> {
-    
-    const filteredUserAnswerIds = userAnswerIds.filter((id): id is number => id !== null);
-
-    let params = new HttpParams()
-      .set('questionIds', questionIds.join(','));
-
-    if (filteredUserAnswerIds.length > 0) {
-      params = params.set('userAnswerIds', filteredUserAnswerIds.join(','));
-    }
-
-    // Faz a requisição POST
     return this.http.post<Quiz>(`${this.baseUrl}`, quiz, { params });
   }
 
@@ -85,8 +69,11 @@ export class QuizService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }
 
-  getTotal(): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/total`, {});
+  getTotal(userId: number): Observable<number> {
+    const params = new HttpParams()
+    .set('userId', userId);
+
+    return this.http.get<number>(`${this.baseUrl}/total`, {params});
   }
 
   getQuestionsByQuizId(quizId: number): Observable<Question[]> {

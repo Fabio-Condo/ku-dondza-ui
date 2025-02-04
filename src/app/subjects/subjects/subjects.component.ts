@@ -148,7 +148,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   getTopicsBySubjectId(subjectId: number): void {
-    this.topicService.getSubjectsById(subjectId).subscribe(
+    this.topicService.getBySubjectId(subjectId).subscribe(
       (dados: Topic[]) => {
         this.subject.topics = [];
         this.topics = [];

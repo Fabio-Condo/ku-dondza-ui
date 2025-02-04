@@ -84,6 +84,7 @@
                             <span class="lesson-title" (click)="onSelectContent(content)">
                                 {{ modulo.position }}.{{ content.position }}. {{ content.description }}
                             </span>
+                            <span (click)="addContentToMarkedCourseContents(content)">{{ content.isMarked }}</span>
                         </div>
                         <div class="lesson-actions">
                             <button *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload" (click)="download(content, content.fileName)" class="btn-icon">

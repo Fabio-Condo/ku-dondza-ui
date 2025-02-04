@@ -40,12 +40,21 @@ export class CompetitionService {
         return this.http.get<Competition>(`${this.host}/find-by-competitionId/${competitionId}`, {});
     }
 
-    add(competition: Competition): Observable<Competition> {
-        return this.http.post<Competition>(this.host, competition, {});
+    add(competition: Competition, topicIds: number[]): Observable<Competition> {
+
+        const params = new HttpParams()
+        .set('topicIds', topicIds.join(','));
+
+        return this.http.post<Competition>(this.host, competition, {params});
     }
 
-    update(competition: Competition): Observable<Competition> {
-        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, {});
+    update(competition: Competition, topicIds: number[], generateQuestions: boolean): Observable<Competition> {
+
+        const params = new HttpParams()
+        .set('generateQuestions', generateQuestions)
+        .set('topicIds', topicIds.join(','));
+
+        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, {params});
     }
 
     excluir(id: number): Observable<void> {
@@ -128,6 +137,11 @@ export class CompetitionService {
 
     rejectParticipationRequest(competitionId: number, userId: number): Observable<void> {
         return this.http.delete<void>(`${this.host}/${competitionId}/reject-participation-requests/${userId}`);
+    }
+
+    // Método para inicializar a competição
+    initCompetition(competitionId: number): Observable<void> {
+        return this.http.put<void>(`${this.host}/${competitionId}/init`, null);
     }
 
     // Método para finalizar a competição

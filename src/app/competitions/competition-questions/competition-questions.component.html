@@ -4,18 +4,12 @@
     <div *ngIf="showStartScreen" class="competition-details" aria-labelledby="competition-title">
         <!-- Nome da Competição -->
         <header>
-            <h1 class="title" id="competition-title">Competição de Conhecimento Acadêmico</h1>
+            <h1 class="title" id="competition-title">{{ competition.title }}</h1>
             <!-- Descrição da Competição -->
             <p class="competition-description">
                 Participe da nossa competição e teste seus conhecimentos em diversas áreas. As questões foram preparadas
                 para desafiar sua mente!
             </p>
-
-            <!--
-            <button class="btn-start" (click)="finishCompetition()" *ngIf="isOngoing" aria-label="Solicitar participação">
-                Finalizar
-            </button>
-            -->
             
             <div class="competition-status">
                 <p class="status-item">
@@ -29,8 +23,13 @@
                 </p>
             </div>
 
+            <br>
+            <br>
 
             <div class="button-container">
+                <button class="btn-start" (click)="initCompetition()" *ngIf="isPlanned" aria-label="Solicitar participação">
+                    Iniciar
+                </button>
                 <button class="btn-start" (click)="start()" *ngIf="canStart" aria-label="Iniciar Competição">
                     Começar
                 </button>
@@ -49,6 +48,8 @@
             </div>
                         
         </header>
+
+        <br>
 
         <!-- Informações da Competição -->
         <div class="competition-info">
@@ -74,17 +75,33 @@
 
         <br>
         <br>
+        <br>
 
         <!-- Lista de Prêmios -->
         <div class="prizes-section">
             <h3>Prêmios</h3>
             <div class="prizes-list">
                 <div *ngFor="let prize of competition.prizes;" class="prize-item">
-                    <p><strong>{{ getPosition(prize.position) }}:</strong> {{ prize.description }}</p>
+                    <p><strong>{{ getPosition(prize.position!) }}:</strong> {{ prize.description }}</p>
                 </div>
             </div>
         </div>
 
+        <br>
+        <br>
+        <br>
+
+        <!-- Lista de Prêmios -->
+        <div class="subject-topics-section">
+            <h3>Tópicos avaliados</h3>
+            <div class="subject-topics-list">
+                <div *ngFor="let topic of topics;" class="subject-topic-item">
+                    <p>{{ topic.name }}</p>
+                </div>
+            </div>
+        </div>
+
+        <br>
         <br>
         <br>
 
@@ -92,8 +109,11 @@
             <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
                 Participantes
             </div>
-            <div class="tab-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+            <div class="tab-link" *ngIf="isPlanned" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
                 Lista de espera
+            </div>
+            <div class="tab-link" *ngIf="isFinished" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+                Vencedores
             </div>
         </div>
 
@@ -124,7 +144,7 @@
         </div>
 
         <!-- Participantes Na Espera -->
-        <div class="participants" aria-labelledby="participants-heading" *ngIf="activeTab === 2">
+        <div class="participants" aria-labelledby="participants-heading" *ngIf="activeTab === 2 && isPlanned">
             <!--<h3 id="participants-heading">Participantes</h3>-->
             
             <div class="participants-list" role="list" *ngFor="let participantReq of competition.participationRequests">
@@ -138,6 +158,31 @@
                     <button class="btn-details" (click)="acceptParticipationRequest(participantReq)">Confirmar</button>
                     <button class="btn-details" style="margin-left: 10px;">Detalhes</button>
                     <!-- <button class="btn-details" (click)="rejectParticipationRequest(participantReq)" style="margin-left: 10px;">Rejeitar</button> -->
+                </div>
+            </div>
+
+            <!-- Botão "Buscar Mais Participantes" -->
+            <button *ngIf="competition.participationRequests.length < totalRegistrosParticipantRequests" (click)="onShowMoreParticipanteRequests()" class="btn-load-more" aria-label="Buscar mais participantes">Buscar Mais</button>
+
+            <div *ngIf="competition.participationRequests.length === totalRegistrosParticipantRequests && totalRegistrosParticipantRequests > 0">
+                <p class="competition-description">Todos os pedidos foram carregados.</p>
+            </div>
+
+        </div>
+
+        <!-- Vencedores -->
+        <div class="participants" aria-labelledby="participants-heading" *ngIf="activeTab === 3 && isFinished">
+            <!--<h3 id="participants-heading">Participantes</h3>-->
+            
+            <div class="participants-list" role="list" *ngFor="let winner of competition.winners">
+                <!-- Card de Participante -->
+                <div class="participant-card" role="listitem">
+                    <img src="{{winner.user.profileImageUrl}}" alt="Avatar do João Silva" class="participant-avatar">
+                    <div class="participant-info">
+                        <p class="participant-name">{{ winner.user.firstName }} {{ winner.user.lastName }}</p>
+                        <p class="participant-status">{{ getPosition(winner.position) }}</p>
+                    </div>
+                    <button class="btn-details" *ngIf="isFinished" (click)="onShowUserSubmission(winner.user)" style="margin-left: 10px;">Ver submissão</button>                
                 </div>
             </div>
 

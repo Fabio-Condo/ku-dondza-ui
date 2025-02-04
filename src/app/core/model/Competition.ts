@@ -1,7 +1,9 @@
 import { CompetitionWinner } from "./CompetitionWinner";
 import { Prize } from "./Prize";
 import { Question } from "./Question";
+import { Subject } from "./Subject";
 import { Submission } from "./Submission";
+import { Topic } from "./Topic";
 import { User } from "./User";
 
 export class Competition {
@@ -13,6 +15,10 @@ export class Competition {
     participants: User[] = [];
     administrators: User[] = [];
     participationRequests: User[] = [];
+
+    subject = new Subject();
+    selectedTopics: Topic[] = [];
+    
     questions: Question[] = [];
     submissions: Submission[] = [];
     prizes: Prize[] = [];

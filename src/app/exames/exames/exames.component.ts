@@ -29,25 +29,25 @@ export class ExamesComponent implements OnInit {
   institutions: Institution[] = [];
   subjects: Subject[] = [];
   isAdmin: boolean = false;
-  
+
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-  
+
   filtro: ExameFilter = {
     examType: '',
     pagina: 0,
     itensPorPagina: 5,
     ordenamento: 'id,asc',
   };
-  
+
   @ViewChild('tabela') grid: any;
-  
+
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },
     { label: 'Ensino Técnico', value: 'Ensino Técnico' },
     { label: 'Ensino Geral', value: 'Ensino Geral' },
   ];
-  
+
   examType = [
     { label: 'Enunciado', value: 'ENUNCIADO' },
     { label: 'Resolução', value: 'RESOLUCAO' },
@@ -161,11 +161,11 @@ export class ExamesComponent implements OnInit {
       }
     });
   }
-  
+
   carregarInstituicoes() {
     this.institutionService.getAll().subscribe({
       next: (dados) => {
-        this.institutions = dados; 
+        this.institutions = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -176,7 +176,7 @@ export class ExamesComponent implements OnInit {
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados; 
+        this.subjects = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -273,7 +273,12 @@ export class ExamesComponent implements OnInit {
       window.URL.revokeObjectURL(link.href);
       //this.findAll(this.paginaAtual)
       exam.showLoadingDownload = false;
-    });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        exam.showLoadingDownload = false;
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
   }
 
   limparCampos() {

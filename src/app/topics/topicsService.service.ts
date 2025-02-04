@@ -30,9 +30,9 @@ export class TopicService {
         return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
     }
 
-    getSubjectsById(subjectId: number): Observable<Topic[]> {
-        return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
-    }
+    //getSubjectsById(subjectId: number): Observable<Topic[]> {
+    //    return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
+    //}
 
     findById(id: number): Observable<Topic> {
         return this.http.get<Topic>(`${this.host}/${id}`, {});

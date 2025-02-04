@@ -42,7 +42,7 @@
                             <div class="content">
                                 <p class="title">{{ quiz.description }}</p>
                                 <p class="details">Disciplina: <span class="text-muted">{{ quiz.subject.name }}</span></p>
-                                <p class="details">Submissao: <span class="text-muted">{{ quiz.submittedAt }}</span></p>
+                                <p class="details">Submissao: <span class="text-muted">{{ quiz.submittedAt | date: 'short' }}</span></p>
                                 <p class="details">{{ quiz.totalQuestions }} questões</p>
                             </div>
                             <div class="dropdown-container">
@@ -86,6 +86,11 @@
 
         </tbody>
     </table>
+
+    <!-- Botão "Carregar mais" -->
+    <div class="load-more">
+        <button (click)="loadMore()" class="btn-load-more">Buscar mais</button>
+    </div>
 
     <!-- Paginação -->
     <div class="pagination-controls ml-auto">

@@ -9,6 +9,8 @@ export class OnlineCourseContent {
     module = new Module();
     position!: number;
     
+    isMarked: boolean = false; // Marcado como assistido
+
     showLoadingDownload: boolean = false;
     isAdminMenuOpen: boolean = false;
 

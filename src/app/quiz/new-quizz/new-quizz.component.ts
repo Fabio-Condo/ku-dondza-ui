@@ -5,7 +5,6 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
-import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Subject } from 'src/app/core/model/Subject';
 import { User } from 'src/app/core/model/User';
@@ -136,21 +135,16 @@ export class NewQuizzComponent implements OnInit {
     }
   }
 
-  // Método para submeter as respostas
   submitAnswers() {
-    // Calcula os resultados
     this.calculateResults();
 
-    // Exibe a tela final
     this.showFinalScreen = true;
 
-    // Salva o quiz, se ainda não foi submetido
     if (!this.submited) {
       this.saveQuiz();
     }
   }
 
-  // Método para iniciar o quiz
   startQuiz() {
     this.showStartScreen = false;
     this.currentQuestionIndex = 0;
@@ -158,7 +152,6 @@ export class NewQuizzComponent implements OnInit {
     this.scrollToTop();
   }
 
-  // Método para carregar as disciplinas
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
@@ -170,9 +163,8 @@ export class NewQuizzComponent implements OnInit {
     });
   }
 
-  // Método para carregar os tópicos de uma disciplina
   getTopicsBySubjectId(subjectId: number): void {
-    this.topicService.getSubjectsById(subjectId).subscribe(
+    this.topicService.getBySubjectId(subjectId).subscribe(
       (dados: Topic[]) => {
         this.quiz.questions = [];
         this.topics = [];
@@ -185,7 +177,6 @@ export class NewQuizzComponent implements OnInit {
     );
   }
 
-  // Método para carregar as questões
   getQuestions(): void {
     const selectedTopicIds = this.getSelectedTopicIds();
 
@@ -209,27 +200,23 @@ export class NewQuizzComponent implements OnInit {
     topic.selected = !topic.selected;
   }
 
-  // Método para obter os tópicos selecionados
   getSelectedTopics(): Topic[] {
     return this.topics.filter(topic => topic.selected);
   }
 
-  // Método para obter os IDs dos tópicos selecionados
   getSelectedTopicIds(): number[] {
     return this.topics.filter(topic => topic.selected).map(topic => topic.id);
   }
 
-  // Método para salvar o quiz
   saveQuiz() {
     this.quiz.selectedTopics = this.getSelectedTopics();
 
-    const topicIds = this.quiz.selectedTopics.map(topic => topic.id);
     const questionIds = this.quiz.questions.map(question => question.id);
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
     this.quiz.user = this.loggedUser;
 
-    this.quizService.saveQuiz(this.quiz, topicIds, questionIds, userAnswerIds).subscribe(
+    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds).subscribe(
       (response) => {
         this.submited = true;
         this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!' });
@@ -284,14 +271,12 @@ export class NewQuizzComponent implements OnInit {
     return userAnswer ? userAnswer.id === answerId : false;
   }
 
-  // Método para revisar as questões
   reviewQuestions() {
     this.showFinalScreen = false;
     this.currentQuestionIndex = 0;
     this.scrollToTop();
   }
 
-  // Método para iniciar um novo quiz
   newQuiz() {
     this.showFinalScreen = false;
     this.showStartScreen = true;
@@ -300,7 +285,6 @@ export class NewQuizzComponent implements OnInit {
     this.result = { correctAnswers: 0, incorrectAnswers: 0, nullAnswers: 0 };
   }
 
-  // Método para alternar a exibição da correção
   toggleCorrection() {
     this.showCorrection = true;
     this.currentQuestionIndex = 0;
@@ -314,7 +298,6 @@ export class NewQuizzComponent implements OnInit {
     this.scrollToTop();
   }
 
-  // Método para ir para a questão anterior
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
@@ -323,7 +306,6 @@ export class NewQuizzComponent implements OnInit {
     }
   }
 
-  // Método para ir para a próxima questão
   goToNextQuestion() {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
@@ -350,12 +332,10 @@ export class NewQuizzComponent implements OnInit {
     }, 0);
   }
 
-  // Método para rolar a página para o topo
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Método para enviar notificações de erro
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

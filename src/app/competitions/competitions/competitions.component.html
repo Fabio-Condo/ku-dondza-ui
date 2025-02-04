@@ -64,20 +64,11 @@
                                 <div class="dropdown" *ngIf="competition.isAdminMenuOpen">
                                     <a (click)="onUpdateCompetition(competition); closeDropdown(competition)">Editar</a>
                                     <a (click)="confirmarExclusao(competition); closeDropdown(competition)">Eliminar</a>
-                                    <a (click)="onAddQuestions(competition); closeDropdown(competition)">Adicionar
-                                        questão</a>
-                                    <a (click)="onShowSelectedCompetition(competition); closeDropdown(competition)">Ver
-                                        tudo</a>
                                 </div>
                             </div>
                             <div class="button-container">
                                 <button class="btn btn-primary"
-                                    [routerLink]="['/competitions', competition.competitionId, 'questions']">Iniciar</button>
-                                <!--
-                                <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && competition.isParticipant" [routerLink]="['/competitions', competition.competitionId, 'questions']">Iniciar</button>
-                                <button class="btn btn-primary" *ngIf="!competition.requestedParticipation && !competition.isParticipant" (click)="sendParticipationRequest(competition)">Subscrever</button>
-                                <button class="btn" *ngIf="competition.requestedParticipation && !competition.isParticipant" (click)="cancelParticipationRequest(competition)">Cancelar pedido</button>
-                                -->
+                                    [routerLink]="['/competitions', competition.competitionId, 'questions']">Ver</button>
                             </div>
                         </div>
                     </div>
@@ -135,7 +126,7 @@
     <div class="dialog">
 
         <div class="dialog-header">
-            <h2>{{ editing ? 'Editando Curso' : 'Adicionando Novo Curso' }}</h2>
+            <h2>{{ editing ? 'Editando' : 'Adicionando Nova' }}</h2>
             <button class="close-btn" (click)="displayModalSave = false">&times;</button>
         </div>
 
@@ -149,10 +140,90 @@
             </div>
 
             <div class="form-group">
-                <label for="type">Tipo</label>
+                <label for="type">Status</label>
                 <select id="type" [(ngModel)]="competition.status" name="type" required>
                   <option *ngFor="let status of competitionStatuses" [value]="status.value">{{ status.label }}</option>
                 </select>
+            </div>
+
+            <div>
+                <label for="type">Status</label>
+                <input
+                    type="checkbox"
+                    [checked]="generateQuestions"
+                    (change)="toggleGenerateQuesions()
+                "/>
+            </div>
+
+            <!-- Seleção de Disciplina -->
+            <div class="form-group">
+                <label for="subject">Disciplina</label>
+                <select
+                id="subject"
+                [(ngModel)]="competition.subject.id"
+                (change)="getTopicsBySubjectId(competition.subject.id)"
+                [disabled]="showLoading && generateQuestions"
+                name="subject"
+                required
+                >
+                <option value="" disabled selected>Selecione a disciplina</option>
+                <option *ngFor="let subject of subjects" [ngValue]="subject.id">
+                    {{ subject.name }}
+                </option>
+                </select>
+            </div>
+        
+            <!-- Seleção de Tópicos -->
+            <div class="form-group" >
+                <label>Selecione os Tópicos</label>
+                <ul class="topics-list">
+                <li *ngFor="let topic of topics" class="topic-item">
+                    <label>
+                    <input
+                        type="checkbox"
+                        [checked]="topic.selected"
+                        (change)="toggleTopic(topic)"
+                    />
+                    <span class="custom-checkbox"></span>
+                    <span class="topic-name">{{ topic.name }}</span>
+                    </label>
+                </li>
+                </ul>
+            </div>
+
+            <div class="prizes-container">
+                <div class="header-section">
+                    <label>Prémios</label>
+                    <a href="javascript:;" class="add-btn" (click)="getReadyNewPrize()">
+                        <i class="pi pi-plus"></i> 
+                    </a>
+                </div>
+
+                <div class="table-container">
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Posição</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let prize of competition.prizes; let rowIndex = index">
+                                <td>{{ prize.description }}</td>
+                                <td>{{ getPosition(prize.position!) }}</td>
+                                <td class="actions">
+                                    <a href="javascript:;" (click)="getReadEditPrize(prize, rowIndex)" class="edit-btn">E</a>
+                                    <a href="javascript:;" (click)="removePrize(rowIndex)" class="remove-btn">R</a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="competition.prizes.length === 0">
+                                <td colspan="3" class="text-center">Sem prémios</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
 
             <hr class="header-divider">
@@ -165,69 +236,36 @@
     </div>
 </div>
 
-<div class="overlay" *ngIf="showCompetitionDialog">
-    <div class="dialog">
 
+<div class="overlay" *ngIf="showPrizeForm && prize">
+    <div class="dialog" style="width: 600px;">
         <div class="dialog-header">
-            <h4>{{selectedCompetition.title}}</h4>
-            <button class="close-btn" (click)="showCompetitionDialog = false">x</button>
+            <h2>{{editingPrize ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-btn" (click)="showPrizeForm = false">&times;</button>
         </div>
-
+    
         <hr class="header-divider">
-
-        <div class="tab-header">
-            <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
-                Questoes
+  
+        <form autocomplete="off" #frmPrize="ngForm" (ngSubmit)="confirmPrize(frmPrize)">
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="description" name="description" ngModel #description="ngModel" required minlength="1" 
+                    [(ngModel)]="prize.description" rows="4"></textarea> 
+            </div> 
+            
+            <div class="form-group">
+                <label for="type">Position</label>
+                <select id="type" [(ngModel)]="prize.position" name="type" required>
+                  <option *ngFor="let position of positions" [value]="position.value">{{ position.label }}</option>
+                </select>
             </div>
-        </div>
-        <div *ngIf="activeTab === 1" class="active">
-            <div class="question-dialog-content">
-                <ul>
-                    <li *ngFor="let question of selectedCompetition.questions">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="content" style="margin-left: 20px;">
-                                    <p>{{question.text}}</p>
-                                </div>
-                                <div class="button-container">
-                                    <button class="btn" style="margin-left: 10px;"
-                                        (click)="removeQuestionFromCompetition(question)">Remover</button>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+                <button class="btn" [disabled]="frmPrize.invalid">Confirmar</button>
             </div>
-            <div (click)="onShowMoreQuestions()" class="upload-loading-container"
-                style="cursor: pointer; border: 1px solid #ccc;">
-                <p class="upload-loading-text">carregar mais questões</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="overlay" *ngIf="showAddQuestionsDialog">
-    <div class="dialog">
-
-        <div class="dialog-header">
-            <h4>Questoes</h4>
-            <button class="close-btn" (click)="showAddQuestionsDialog = false">x</button>
-        </div>
-
-        <hr class="header-divider">
-
-        <div class="form-group">
-            <label for="question">Selecione a questao</label>
-            <select id="question" name="question" [(ngModel)]="selectedQuestion.id" required>
-                <option value="" disabled selected>Selecione a questao</option>
-                <option *ngFor="let question of questionsList" [value]="question.value">{{ question.label }}
-                </option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <button type="button" (click)="addQuestionToCompetition()" class="btn btn-primary">{{ showLoading ?
-                'Loading...' : 'Salvar' }}</button>
-        </div>
+        </form>
     </div>
 </div>

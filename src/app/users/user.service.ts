@@ -74,7 +74,6 @@ export class UserService {
     return this.http.put<User>(`${this.host}/update`, formData);
   }
 
-
   updateUserProfile(user: User): Observable<User> {
     const formData = new FormData();
     formData.append('currentUsername', user.username);
@@ -321,6 +320,18 @@ export class UserService {
 
   countGroupsByUserId(userId: number): Observable<number> {
     return this.http.get<number>(`${this.host}/${userId}/groups/total`, {});
+  }
+
+  addContentToMarkedCourseContents(userId: number, onlineCourseContentId: number): Observable<User> {
+    return this.http.post<User>(`${this.host}/${userId}/marked-course-content/${onlineCourseContentId}`, {});
+  }
+
+  removeContentFromMarkedCourseContents(userId: number, onlineCourseContentId: number): Observable<User> {
+    return this.http.delete<User>(`${this.host}/${userId}/marked-course-content/${onlineCourseContentId}`);
+  }
+
+  checkIfMarkedCourseContent(userId: number, onlineCourseContentId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.host}/${userId}/marked-course-content/contains/${onlineCourseContentId}`);
   }
 
 }

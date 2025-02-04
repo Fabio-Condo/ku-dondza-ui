@@ -6,13 +6,15 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { QuestionService } from 'src/app/questions/question.service';
-import { Question } from 'src/app/core/model/Question';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
-import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { Prize } from 'src/app/core/model/Prize';
+import { Topic } from 'src/app/core/model/Topic';
+import { TopicService } from 'src/app/topics/topicsService.service';
+import { Subject } from 'src/app/core/model/Subject';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
 
 @Component({
   selector: 'app-competitions',
@@ -30,24 +32,26 @@ export class CompetitionsComponent implements OnInit {
   isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
 
+  generateQuestions: boolean = false;
+
   // Dados das competições
   competitions: Competition[] = [];
   competition: Competition = new Competition();
-  selectedCompetition: Competition = new Competition();
-  selectedQuestion: Question = new Question();
-  showCompetitionDialog: boolean = false;
-  showAddQuestionsDialog: boolean = false;
+
+  topics: Topic[] = [];
+  subjects: Subject[] = [];
 
   loggedUser: User = new User;
 
   activeTab: number = 1;
 
-  //participants: User[] = [];
   totalRegistrosParticipants: number = 0
   totalRegistrosParticipantRequests: number = 0
 
-  questionsList: any[] = [];
-  totalRegistrosQuestions: number = 10000
+  prize?: Prize;
+  prizes: Array<Prize> = [];
+  prizeIndex?: number;
+  showPrizeForm = false;
 
   // Paginação
   currentPage: number = 1;
@@ -70,24 +74,25 @@ export class CompetitionsComponent implements OnInit {
     sort: 'id,asc',
   }
 
-  filtroQuestions: QuestionFilter = {
-    page: -1,
-    itemsPerPage: 2,
-    sort: 'id,asc',
-  }
-
   competitionStatuses = [
-    { label: 'PLANNING', value: 'PLANNING' },
-    { label: 'ONGOING', value: 'ONGOING' },
-    { label: 'FINISHED', value: 'FINISHED' },
-    { label: 'CANCELED', value: 'CANCELED' }
+    { label: 'PLANEANDO', value: 'PLANNING' },
+    { label: 'EM ANDAMENTO', value: 'ONGOING' },
+    { label: 'FINALIZADO', value: 'FINISHED' },
+    { label: 'CANCELEDO', value: 'CANCELED' }
+  ];
+
+  positions = [
+    { label: '1º lugar', value: 'FIRST_PLACE' },
+    { label: '2º lugar', value: 'SECOND_PLACE' },
+    { label: '3º lugar', value: 'THIRD_PLACE' }
   ];
 
   @ViewChild('tabela') grid: any;
 
   constructor(
     private competitionService: CompetitionService,
-    private questionService: QuestionService,
+    private subjectsService: SubjectsService,
+    private topicService: TopicService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -98,12 +103,17 @@ export class CompetitionsComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.buscarTotal();
-    this.getQuestions();
+    //this.getQuestions();
+    this.carregarDisciplinas();
     this.scrollToTop();
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  toggleGenerateQuesions(): void {
+    this.generateQuestions = !this.generateQuestions;
   }
 
   get editing() {
@@ -120,7 +130,8 @@ export class CompetitionsComponent implements OnInit {
 
   addNew(competitionForm: NgForm) {
     this.showLoading = true;
-    this.competitionService.add(this.competition).subscribe(
+    const selectedTopicIds = this.getSelectedTopicIds();
+    this.competitionService.add(this.competition, selectedTopicIds).subscribe(
       (response) => {
         this.competition = response;
         this.showLoading = false;
@@ -135,7 +146,8 @@ export class CompetitionsComponent implements OnInit {
 
   update(competitionForm: NgForm) {
     this.showLoading = true;
-    this.competitionService.update(this.competition).subscribe(
+    const selectedTopicIds = this.getSelectedTopicIds();
+    this.competitionService.update(this.competition, selectedTopicIds, this.generateQuestions).subscribe(
       (response) => {
         this.competition = response;
         this.showLoading = false;
@@ -199,7 +211,7 @@ export class CompetitionsComponent implements OnInit {
       (dados: IApiResponse<Competition>) => {
         this.competitions = dados.content;
         dados.content.forEach(competition => {
-          this.countQuestionsByCompetitionId(competition);
+          //this.countQuestionsByCompetitionId(competition);
           this.countParticipantsByCompetitionId(competition);
         });
         this.totalRegistros = dados.totalElements;
@@ -210,6 +222,48 @@ export class CompetitionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  // Método para carregar as disciplinas
+  carregarDisciplinas() {
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    });
+  }
+
+  // Método para carregar os tópicos de uma disciplina
+  getTopicsBySubjectId(subjectId: number): void {
+    this.topicService.getBySubjectId(subjectId).subscribe(
+      (dados: Topic[]) => {
+        this.competition.questions = [];
+        this.topics = [];
+        this.topics = dados;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  // Método para alternar a seleção de um tópico
+  toggleTopic(topic: Topic): void {
+    topic.selected = !topic.selected;
+  }
+
+  // Método para obter os tópicos selecionados
+  getSelectedTopics(): Topic[] {
+    return this.topics.filter(topic => topic.selected);
+  }
+
+  // Método para obter os IDs dos tópicos selecionados
+  getSelectedTopicIds(): number[] {
+    return this.topics.filter(topic => topic.selected).map(topic => topic.id);
   }
 
   countParticipantsByCompetitionId(competition: Competition) {
@@ -224,90 +278,6 @@ export class CompetitionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
-  }
-
-  getQuestions() {
-    return this.questionService.getAll().subscribe(
-      dados => {
-        this.questionsList = dados.map(dado => {
-          return {
-            label: dado.text,
-            value: dado.id
-          }
-        })
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    )
-  }
-
-  addQuestionToCompetition() {
-    this.competitionService.addQuestionToCompetition(this.competition.id, this.selectedQuestion.id).subscribe(
-      (competition) => {
-        this.competition = competition;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    )
-  }
-
-  removeQuestionFromCompetition(question: Question) {
-    this.competitionService.removeQuestionFromCompetition(this.selectedCompetition.id, question.id).subscribe(
-      () => {
-        this.selectedCompetition.questions = this.selectedCompetition.questions.filter(quest => quest.id !== question.id);
-      },
-      error => this.errorHandler.handle(error)
-    );
-  }
-
-  getQuestionsByCompetitionId(): void {
-    this.competitionService.getQuestionsByCompetitionId(this.selectedCompetition.id, this.filtroQuestions).subscribe(
-      (dados: IApiResponse<Question>) => {
-        this.selectedCompetition.questions = [...this.selectedCompetition.questions, ...dados.content];
-        this.totalRegistrosQuestions = dados.totalElements;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  countQuestionsByCompetitionId(competition: Competition) {
-    this.showLoading = true;
-    this.competitionService.countQuestionsByCompetitionId(competition.id,).subscribe(
-      (total) => {
-        competition.totalQuestions = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onShowMoreQuestions(): void {
-    if (this.selectedCompetition) {
-      this.filtroQuestions.page++;
-      this.getQuestionsByCompetitionId();
-    }
-  }
-
-  onShowSelectedCompetition(competition: Competition): void {
-    this.selectedCompetition = competition;
-
-    this.selectedCompetition.questions = [];
-    this.filtroQuestions.page = 0;
-    this.getQuestionsByCompetitionId();
-
-    this.showCompetitionDialog = true;
-  }
-
-  onAddQuestions(competition: Competition) {
-    this.competition = competition;
-    this.showAddQuestionsDialog = true;
   }
 
   // Métodos de paginação
@@ -353,6 +323,50 @@ export class CompetitionsComponent implements OnInit {
   onAddNewCompetition(): void {
     this.competition = new Competition();
     this.displayModalSave = true;
+  }
+
+  //Prizes
+  getReadyNewPrize() {
+    this.showPrizeForm = true;
+    this.prize = new Prize();
+    this.prizeIndex = this.competition.prizes.length;
+  }
+
+  confirmPrize(frm: NgForm) {
+    this.competition.prizes[this.prizeIndex!] = this.clonePrize(this.prize!);
+    this.showPrizeForm = false;
+    frm.reset();
+  }
+
+  clonePrize(prize: Prize): Prize {
+    return new Prize(prize.id, prize.description, prize.position);
+  }
+
+  get editingPrize() {  // show the title in modal
+    return this.prize && this.prize?.id;
+  }
+
+  removePrize(index: number) {
+    this.competition.prizes.splice(index, 1);
+  }
+
+  getReadEditPrize(prize: Prize, index: number) {
+    this.prize = this.clonePrize(prize);
+    this.showPrizeForm = true;
+    this.prizeIndex = index;
+  }
+
+  getPosition(prize: string): string {
+    switch (prize) {
+      case 'FIRST_PLACE':
+        return '1º lugar';
+      case 'SECOND_PLACE':
+        return '2º lugar';
+      case 'THIRD_PLACE':
+        return '3º lugar';
+      default:
+        return `${prize}º lugar`;
+    }
   }
 
   setActiveTab(tabIndex: number) {

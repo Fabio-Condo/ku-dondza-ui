@@ -14,6 +14,7 @@ import { Topic } from 'src/app/core/model/Topic';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { SubmissionService } from 'src/app/core/submissions/submission.service';
 import { Submission } from 'src/app/core/model/Submission';
+import { UserService } from 'src/app/users/user.service';
 declare const MathJax: any;
 
 
@@ -369,7 +370,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showFinalScreen = true;
 
     // Salva o quiz, se ainda não foi submetido
-    if (!this.submited) {
+    if (!this.submited && !this.submission) {
       this.submite();
     }
   }
@@ -595,17 +596,17 @@ export class CompetitionQuestionsComponent implements OnInit {
       this.competition.isParticipant;
   }
 
-  //finishCompetition() {
-  //  this.competitionService.finishCompetition(this.competition.id).subscribe(
-  //    (response) => {
-  //      console.log('Competition finished:', response);
-  //    },
-  //    (errorResponse: HttpErrorResponse) => {
-  //      this.sendErrorNotification(errorResponse.error.message);
-  //      this.showLoading = false;
-  //    }
-  //  );
-  //}
+  initCompetition() {
+    this.competitionService.initCompetition(this.competition.id).subscribe(
+      (response) => {
+        this.competition.status = 'ONGOING'
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
 
   private sendErrorNotification(message: string): void {
     if (message) {

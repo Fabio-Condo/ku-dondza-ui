@@ -5,7 +5,6 @@ import { OnlineCourse } from 'src/app/core/model/Online-course';
 import { OnlineCourseContent } from 'src/app/core/model/Online-course-content';
 import { OnlineCoursesService } from '../OnlineCoursesService.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseFilter } from 'src/app/core/interface/CourseFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { OnlineCoursesContentService } from '../OnlineCoursesContentService.service';
 import { UserService } from 'src/app/users/user.service';
@@ -276,7 +275,12 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.showLoading = true;
     this.moduleService.findByOnlineCourseId(onlineCourseId).subscribe(
       (dados: Module[]) => {
-        this.modulos = dados
+        this.modulos = dados;
+        this.modulos.forEach((modulo) => {
+          modulo.courseContents.forEach((content) => {
+            this.checkIfMarkedCourseContent(content);
+          });
+        });
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -445,6 +449,37 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
+  addContentToMarkedCourseContents(content: OnlineCourseContent): void {
+    this.userService.addContentToMarkedCourseContents(this.loggedUser.id, content.id).subscribe(() => {
+      content.isMarked = true;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  removeContentFromMarkedCourseContents(content: OnlineCourseContent): void {
+    this.userService.removeContentFromMarkedCourseContents(this.loggedUser.id, content.id).subscribe(() => {
+      content.isMarked = false;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  checkIfMarkedCourseContent(content: OnlineCourseContent): void {
+    this.userService.checkIfMarkedCourseContent(this.loggedUser.id, content.id).subscribe(
+      response => {
+        content.isMarked = response;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
   download(content: OnlineCourseContent, filename: string): void {
     content.showLoadingDownload = true;
     this.onlineCoursesContentService.download(content.id, filename).subscribe((data: Blob) => {
@@ -464,7 +499,12 @@ export class OnlineCoursesContentComponent implements OnInit {
       window.URL.revokeObjectURL(link.href);
       //this.findAll(this.paginaAtual)
       content.showLoadingDownload = false;
-    });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        content.showLoadingDownload = false;
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
   }
 
   private sendErrorNotification(message: string): void {

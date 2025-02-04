@@ -89,6 +89,28 @@ export class QuizzesComponent implements OnInit {
       }
     );
   }
+
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filter.user = this.loggedUser.id;
+    this.filter.page++;
+
+    this.quizService.getQuizzes(this.filter).subscribe(
+      (data: IApiResponse<Quiz>) => {
+        this.quizzes = [...this.quizzes, ...data.content]; 
+
+        data.content.forEach(quiz => {
+          this.countQuestionsByQuizId(quiz);
+        });
+        this.totalRecords = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
   
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
@@ -102,7 +124,7 @@ export class QuizzesComponent implements OnInit {
   }
 
   getTotalQuizzes(){
-    this.quizService.getTotal().subscribe(
+    this.quizService.getTotal(this.loggedUser.id).subscribe(
       (total) => {
         this.totalQuizzes =  total;
       },

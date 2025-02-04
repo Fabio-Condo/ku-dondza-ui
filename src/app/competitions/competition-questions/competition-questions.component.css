@@ -625,12 +625,11 @@ body {
 
 .competition-status {
   margin-top: 20px;
-  padding: 10px 16px;
+  /*padding: 10px 16px;*/
   background: transparent;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: 'Roboto', sans-serif;
   max-width: 350px; /* Largura otimizada para design moderno */
   color: #333;
 }
@@ -642,7 +641,7 @@ body {
 }
 
 .status-item strong {
-  color: #555;
+  color: var(--color-black);
   font-weight: 600;
 }
 
@@ -705,7 +704,7 @@ body {
   padding: 16px;
   background: #fff;
   border-radius: 0.2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -727,7 +726,7 @@ body {
   border-left: 4px solid #5f5cfc; /* Azul discreto para destacar */
   background: #fff;
   border-radius: 4px;
-  transition: background 0.2s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .prize-item:hover {
@@ -745,6 +744,46 @@ body {
   color: var(--color-black); /* Destaque no título */
 }
 
+.subject-topics-section {
+  margin-top: 24px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 0.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subject-topics-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333; /* Cor neutra e elegante */
+  margin-bottom: 12px;
+}
+
+.subject-topics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subject-topic-item {
+  padding: 5px;
+  background: #fff;
+  border-radius: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subject-topic-item:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
+  transform: translateY(-2px); /* Efeito de levantar ao passar o mouse */
+}
+
+.subject-topic-item p {
+  margin: 0;
+  font-size: 15px;
+  color: #444;
+}
+
 .info-card {
   background: var(--color-secondary);
   border: 1px solid var(--color-border);
@@ -752,15 +791,14 @@ body {
   padding: 1.5rem;
   text-align: center;
   flex: 1;
-  transition: var(--transition);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   /* Sombra suave */
 }
 
 .info-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  /* Sombra mais pronunciada no hover */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .info-label {
@@ -790,21 +828,20 @@ body {
 
 .btn-start {
   position: relative;
-  /* Adicionado */
   padding: 12px 30px;
+  font-family: 'Poppins', sans-serif; 
+
   background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
   color: var(--color-white);
-  /* Texto branco */
   font-size: 1.1rem;
   font-weight: bold;
-  /* Texto em negrito para destacar */
   border: none;
   border-radius: 30px;
-  /* Bordas arredondadas */
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
   margin-top: 20px;
+  margin-bottom: 40px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   /* Sombra sutil */
 }
@@ -825,7 +862,6 @@ body {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   /* Sombra reduzida no clique */
   transition: transform 0.1s;
-  /* Transição mais rápida */
 }
 
 .btn-start:focus {
@@ -885,7 +921,7 @@ body {
   padding: 1rem;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  transition: var(--transition);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.1);
   width: 100%;
   /* Ocupa 100% da largura */

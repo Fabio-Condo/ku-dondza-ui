@@ -143,7 +143,7 @@ export class BooksComponent implements OnInit {
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados; 
+        this.subjects = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -205,7 +205,12 @@ export class BooksComponent implements OnInit {
       window.URL.revokeObjectURL(link.href);
       //this.findAll(this.paginaAtual)
       book.showLoadingDownload = false;
-    });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        book.showLoadingDownload = false;
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
   }
 
   limparCampos() {
