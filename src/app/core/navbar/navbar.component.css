@@ -30,7 +30,7 @@ nav .logo {
 
 /* Barra de pesquisa */
 .search-bar {
-  display: flex;
+  display: none;
   align-items: center;
   background: var(--color-light);
   border-radius: var(--border-radius);
@@ -279,3 +279,12 @@ nav .create {
 .show-all-button:active {
   transform: translateY(0); /* Remove o efeito ao clicar */
 }
+
+/* Em telas maiores que 768px, esconda o botão "Carregar mais" e mostre a paginação */
+@media (min-width: 768px) {
+  .search-bar {
+      display: flex;
+  }
+}
+
+

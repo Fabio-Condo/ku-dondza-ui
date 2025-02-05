@@ -127,7 +127,7 @@ body {
 /* Paginação */
 .pagination-controls {
     margin-top: 30px; /* Mais espaço acima */
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
     gap: 10px; /* Espaço entre os elementos */
@@ -679,4 +679,20 @@ img {
     }
 }
 
+/* Exibe o botão 'Carregar mais' apenas em dispositivos pequenos */
+.load-more {
+    display: block;
+}
+
+
+/* Em telas maiores que 768px, esconda o botão "Carregar mais" e mostre a paginação */
+@media (min-width: 768px) {
+    .load-more {
+        display: none;
+    }
+
+    .pagination-controls {
+        display: flex;
+    }
+}
 
