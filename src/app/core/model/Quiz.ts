@@ -13,7 +13,7 @@ export class Quiz {
     user = new User();
     selectedTopics: Topic[] = [];
     questions: Question[] = [];
-    userSubmittedAnswers: Answer[] = [];
+    answers: Answer[] = [];
 
     totalQuestions: number = 0;
     isAdminMenuOpen: boolean = false;

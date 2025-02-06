@@ -119,7 +119,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
     this.submission.user = this.loggedUser;
     this.submission.competition = this.competition;
-    this.submission.userSubmittedAnswers = this.submittedAnswers;
+    this.submission.answers = this.submittedAnswers;
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
     this.submissionService.add(this.submission, userAnswerIds).subscribe(
@@ -147,7 +147,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
-        this.submittedAnswers = this.submission.userSubmittedAnswers;
+        this.submittedAnswers = this.submission.answers;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -370,7 +370,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showFinalScreen = true;
 
     // Salva o quiz, se ainda não foi submetido
-    if (!this.submited && !this.submission) {
+    if (!this.submited) {
       this.submite();
     }
   }

@@ -96,7 +96,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showLoading = false;
         this.topics = this.getTopicosFromQuestoes(dados);
         // Recalcula os resultados após carregar as questões
-        if (this.quiz.userSubmittedAnswers) {
+        if (this.quiz.answers) {
           this.calculateResults();
         }
       },
@@ -134,7 +134,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getUserSubmittedAnswersByQuizId(quizId).subscribe(
       (dados: Answer[]) => {
         this.submittedAnswers = dados;
-        this.quiz.userSubmittedAnswers = this.submittedAnswers; // Atualiza as respostas do quiz
+        this.quiz.answers = this.submittedAnswers; // Atualiza as respostas do quiz
         this.showLoading = false;
 
         // Recalcula os resultados após carregar as respostas
@@ -186,7 +186,7 @@ export class QuizzQuestionsComponent implements OnInit {
   
     // Itera sobre todas as questões do quiz
     this.quiz.questions.forEach((question) => {
-      const submittedAnswer = this.quiz.userSubmittedAnswers.find(
+      const submittedAnswer = this.quiz.answers.find(
         (a) => a.question.id === question.id
       );
   
@@ -251,16 +251,16 @@ export class QuizzQuestionsComponent implements OnInit {
     const selectedAnswer = question?.answers.find((a) => a.id === answerId);
 
     if (selectedAnswer) {
-      const existingSubmittedAnswerIndex = this.quiz.userSubmittedAnswers.findIndex(
+      const existingSubmittedAnswerIndex = this.quiz.answers.findIndex(
         (a) => a.question.id === questionId
       );
 
       if (existingSubmittedAnswerIndex !== -1) {
         // Atualiza a resposta existente
-        this.quiz.userSubmittedAnswers[existingSubmittedAnswerIndex] = selectedAnswer;
+        this.quiz.answers[existingSubmittedAnswerIndex] = selectedAnswer;
       } else {
         // Adiciona uma nova resposta
-        this.quiz.userSubmittedAnswers.push(selectedAnswer);
+        this.quiz.answers.push(selectedAnswer);
       }
 
       // Recalcula os resultados após capturar a resposta
@@ -269,7 +269,7 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   isSelected(questionId: number, answerId: number): boolean {
-    const submittedAnswer = this.quiz.userSubmittedAnswers.find(
+    const submittedAnswer = this.quiz.answers.find(
       (a) => a.question.id === questionId
     );
     return submittedAnswer ? submittedAnswer.id === answerId : false;

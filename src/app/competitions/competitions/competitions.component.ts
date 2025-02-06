@@ -162,9 +162,10 @@ export class CompetitionsComponent implements OnInit {
 
   excluir(competition: Competition) {
     this.competitionService.excluir(competition.id).subscribe(() => {
-      if (this.grid.first === 0) {
-        this.findAll();
-      }
+      //if (this.grid.first === 0) {
+      //  this.findAll();
+      //}
+      this.findAll();
       this.messageService.add({ severity: 'success', detail: 'Competição excluída com sucesso!' });
       this.buscarTotal();
     },
