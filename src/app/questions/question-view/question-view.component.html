@@ -31,21 +31,24 @@
     <h2 class="options-title">Estatísticas</h2>
 
     <div class="statistics-container">
+        <!-- Cabeçalho -->
         <div class="statistics-header">
             <h2>Nos Quizzes</h2>
             <p class="description">
-                Visão abrangente sobre o desempenho da questão ao longo de diversos quizzes.
+                Visão abrangente sobre o desempenho da questão ao longo de diversos quizzes. 
+                <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{ quizQuestionStatistics.quizzesCount }} quizzes</a>
             </p>
         </div>
     
+        <!-- Corpo das Estatísticas -->
         <div class="statistics-body">
             <!-- Gráfico de Barras -->
-            <div class="graph" >
+            <div class="graph">
                 <div class="bar acertos" *ngIf="quizQuestionStatistics.accuracyRate > 0" [style.width.%]="quizQuestionStatistics.accuracyRate">
                     {{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %
                 </div>
                 <div class="bar erros" *ngIf="quizQuestionStatistics.errorRate > 0" [style.width.%]="quizQuestionStatistics.errorRate">
-                    {{ quizQuestionStatistics.errorRate.toFixed(1) }} %%
+                    {{ quizQuestionStatistics.errorRate.toFixed(1) }} %
                 </div>
             </div>
     
@@ -60,7 +63,7 @@
                     <span>{{ quizQuestionStatistics.totalCorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
-                    Respostas Incorretas (incluíndo nulas):
+                    Respostas Incorretas (incluindo nulas):
                     <span>{{ quizQuestionStatistics.totalIncorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
@@ -68,12 +71,11 @@
                     <span>{{ quizQuestionStatistics.accuracyRate.toFixed(1) }}%</span>
                 </div>
                 <div class="detail-item">
-                    Taxa de Erro (incluíndo nulas):
+                    Taxa de Erro (incluindo nulas):
                     <span>{{ quizQuestionStatistics.errorRate.toFixed(1) }}%</span>
                 </div>
                 <div class="detail-item">
                     Total de quizzes em que esta questão foi incluída:
-                    <a (click)="onViewQuizzesByQuestion()">Ver quizzes associados</a>
                     <span>{{ quizQuestionStatistics.quizzesCount }}</span>
                 </div>
             </div>

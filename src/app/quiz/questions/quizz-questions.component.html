@@ -9,64 +9,126 @@
         <button class="btn-start" (click)="startQuiz()" aria-label="Iniciar Competição">Correção</button>
       </div>
 
-      <h2 class="section-title">Resultados</h2>
+      <br>
+      <br>
 
-      <!-- Estatísticas Gerais -->
-      <div class="stats-container">
-        <div class="stat-card">
-          <p class="stat-label">Número de questões</p>
-          <p class="stat-value">{{ questions.length }}</p>
-        </div>
-        <div class="stat-card correct">
-          <p class="stat-label">Respostas corretas</p>
-          <p class="stat-value">{{ result.correctAnswers }}</p>
-        </div>
-        <div class="stat-card incorrect">
-          <p class="stat-label">Respostas incorretas</p>
-          <p class="stat-value">{{ result.incorrectAnswers }}</p>
-        </div>
-        <div class="stat-card incorrect">
-          <p class="stat-label">Respostas nulas</p>
-          <p class="stat-value">{{ result.nullAnswers }}</p>
-        </div>
-        <div class="stat-card score">
-          <p class="stat-label">Sua pontuação</p>
-          <p class="stat-value">{{ ((result.correctAnswers / questions.length) * 100).toFixed(2) }}%</p>
-        </div>
-      </div>
+      <h2 class="section-title">Resultado Geral</h2>
 
-      <!-- Resultados por Tópico -->
-      <div class="results-by-topic" *ngIf="quiz.resultsByTopic">
-        <h3 class="section-title">Resultados por Tópico</h3>
-        <div class="topic-grid">
-          <div *ngFor="let topic of topics" class="topic-card">
-            <h4 class="topic-name">{{ topic.name }}</h4>
-            <div class="topic-stats">
-              <p>✅ Acertos: <span class="correct">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span></p>
-              <p>❌ Erros: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</span></p>
-              <p>⏭️ Nulas: <span class="incorrect">{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span></p>
+      <div class="statistics-container">
+        <!-- Cabeçalho -->
+        <div class="statistics-header">
+          <h2>Resultado Geral</h2>
+          <!--
+            <p class="description">
+              Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
+            </p>
+            -->
+        </div>
 
-              <!-- Mensagem de Melhoria -->
-              <div
-                *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! < 70"
-                class="improvement-card low-score">
-                <p class="improvement-percentage">📉 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}%
-                  de acerto</p>
-                <p class="improvement-message">💡 Dica: Revise este tópico para melhorar seu desempenho!</p>
-              </div>
+        <!-- Corpo das Estatísticas -->
+        <div class="statistics-body">
+          <!-- Gráfico de Barras -->
+          <div class="graph">
+            <div class="bar acertos" *ngIf="result.correctAnswers / questions.length > 0"
+              [style.width.%]="((result.correctAnswers / questions.length) * 100).toFixed(1)">
+              {{ ((result.correctAnswers / questions.length) * 100).toFixed(1) }}%
+            </div>
+            <div class="bar erros" *ngIf="100 - (result.correctAnswers / questions.length) > 0"
+              [style.width.%]="(100 - (result.correctAnswers / questions.length) * 100).toFixed(1)">
+              {{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1) }}%
+            </div>
+          </div>
 
-              <div
-                *ngIf="quiz.resultsByTopic[topic.name]?.percentage !== undefined && quiz.resultsByTopic[topic.name].percentage! >= 70"
-                class="improvement-card high-score">
-                <p class="improvement-percentage">📈 {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(2) || 0 }}%
-                  de acerto</p>
-                <p class="improvement-message">💡 Dica: Continue assim e nunca pare de aumentar os teus conhecimentos!
-                </p>
-              </div>
+          <!-- Detalhes -->
+          <div class="details">
+            <div class="detail-item">
+              Número de questões:
+              <span>{{ questions.length }}</span>
+            </div>
+            <div class="detail-item">
+              Acertos:
+              <span>{{ result.correctAnswers }}</span>
+            </div>
+            <div class="detail-item">
+              Erros:
+              <span>{{ result.incorrectAnswers }}</span>
+            </div>
+            <div class="detail-item">
+              Nulas:
+              <span>{{ result.nullAnswers }}</span>
+            </div>
+            <div class="detail-item">
+              Taxa de Acerto:
+              <span>{{ ((result.correctAnswers / questions.length) * 100).toFixed(1) }}%</span>
+            </div>
+            <div class="detail-item">
+              Taxa de Erro (incluindo nulas):
+              <span>{{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1) }}%</span>
             </div>
           </div>
         </div>
       </div>
+
+      <br>
+      <br>
+
+      <h2 class="section-title">Estatísticas Por Tópicos</h2>
+
+      <div class="statistics-container" *ngFor="let topic of topics">
+        <!-- Cabeçalho -->
+        <div class="statistics-header">
+          <h2>{{ topic.name }}</h2>
+          <!--
+              <p class="description">
+                Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
+              </p>
+              -->
+        </div>
+
+        <!-- Corpo das Estatísticas -->
+        <div class="statistics-body">
+          <!-- Gráfico de Barras -->
+          <div class="graph">
+            <div class="bar acertos" *ngIf="quiz.resultsByTopic[topic.name].percentage! > 0"
+              [style.width.%]="quiz.resultsByTopic[topic.name].percentage!.toFixed(1)">
+              {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(1) }}%
+            </div>
+            <div class="bar erros" *ngIf="100 - (quiz.resultsByTopic[topic.name].percentage!) > 0"
+              [style.width.%]="(100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1)">
+              {{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) }}%
+            </div>
+          </div>
+
+          <!-- Detalhes -->
+          <div class="details">
+            <div class="detail-item">
+              Número de questões:
+              <span>{{ quiz.resultsByTopic[topic.name].total || 0 }}</span>
+            </div>
+            <div class="detail-item">
+              Acertos:
+              <span>{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span>
+            </div>
+            <div class="detail-item">
+              Erros:
+              <span>{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</span>
+            </div>
+            <div class="detail-item">
+              Nulas:
+              <span>{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span>
+            </div>
+            <div class="detail-item">
+              Taxa de Acerto:
+              <span>{{ quiz.resultsByTopic[topic.name].percentage!.toFixed(1) || 0 }}%</span>
+            </div>
+            <div class="detail-item">
+              Taxa de Erro (incluindo nulas):
+              <span>{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0 }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
