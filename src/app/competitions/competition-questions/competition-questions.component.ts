@@ -210,7 +210,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
     questoes.forEach((questao) => {
       if (questao.topic) {
-        console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
+        //console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
         if (!topicosMap.has(questao.topic.id)) {
           topicosMap.set(questao.topic.id, questao.topic);
         }
