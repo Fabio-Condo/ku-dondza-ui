@@ -9,6 +9,7 @@ export class Question {
     solution!: string;
     fileName!: string;
     urlFile!: string;
+    difficultyLevel!: string;
     topic = new Topic();
     answers: Answer[] = [];
 

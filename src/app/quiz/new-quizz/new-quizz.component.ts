@@ -56,6 +56,14 @@ export class NewQuizzComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
+  difficultyLevels = [
+    { label: 'EASY', value: 'EASY' },
+    { label: 'MEDIUM', value: 'MEDIUM' },
+    { label: 'HARD', value: 'HARD' },
+    { label: 'VERY_HARD', value: 'VERY_HARD' },
+    { label: 'EXPERT', value: 'EXPERT' },
+  ];
+
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 5,
@@ -181,7 +189,7 @@ export class NewQuizzComponent implements OnInit {
     const selectedTopicIds = this.getSelectedTopicIds();
 
     this.showLoading = true;
-    this.questionService.getQuestionsByTopics(selectedTopicIds).subscribe(
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
         this.quiz.questions = this.questions;

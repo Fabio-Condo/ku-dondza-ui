@@ -9,6 +9,7 @@ export class Quiz {
     quizId!: string;
     description!: string;
     submittedAt!: Date;
+    difficultyLevel!: string;
     subject = new Subject();
     user = new User();
     selectedTopics: Topic[] = [];

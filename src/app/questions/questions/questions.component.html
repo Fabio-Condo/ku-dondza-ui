@@ -129,6 +129,14 @@
             </div>
 
             <div class="form-group">
+                <label for="difficultyLevel">Nivel de dificuldade</label>
+                <select id="difficultyLevel" [(ngModel)]="question.difficultyLevel" name="difficultyLevel" required>
+                  <option value="" disabled selected>Selecione o tipo</option>
+                  <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="subject">Disciplina</label>
                 <select id="subject" name="subject" [(ngModel)]="question.topic.subject.id" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" required>
                   <option value="" disabled selected>Selecione a subject</option>

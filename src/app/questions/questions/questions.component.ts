@@ -53,6 +53,14 @@ export class QuestionsComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
+  difficultyLevels = [
+    { label: 'EASY', value: 'EASY' },
+    { label: 'MEDIUM', value: 'MEDIUM' },
+    { label: 'HARD', value: 'HARD' },
+    { label: 'VERY_HARD', value: 'VERY_HARD' },
+    { label: 'EXPERT', value: 'EXPERT' },
+  ];
+
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 5,

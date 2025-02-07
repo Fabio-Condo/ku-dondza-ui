@@ -19,6 +19,14 @@
           required
         />
       </div>
+
+      <div class="form-group">
+        <label for="difficultyLevel">Nivel de dificuldade</label>
+        <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
+          <option value="" disabled selected>Selecione o nivel</option>
+          <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+        </select>
+      </div>
   
       <!-- Seleção de Disciplina -->
       <div class="form-group">

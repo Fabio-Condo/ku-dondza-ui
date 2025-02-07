@@ -43,10 +43,11 @@ export class QuestionService {
   //  return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/random-by-subject/${subjectId}`, {});
   //}
 
-  getQuestionsByTopics(topicIds: number[]): Observable<Question[]> {
+  getQuestionsByTopics(topicIds: number[], difficultyLevel: string): Observable<Question[]> {
 
     const params = new HttpParams()
-      .set('topicIds', topicIds.join(','));
+      .set('topicIds', topicIds.join(','))
+      .set('difficultyLevel', difficultyLevel);
 
     return this.http.get<Question[]>(`${this.baseUrl}/by-topics`, { params });
   }
