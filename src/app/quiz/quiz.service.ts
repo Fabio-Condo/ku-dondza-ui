@@ -48,6 +48,16 @@ export class QuizService {
     return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}`, {});
   }
 
+  getQuizzesByQuestionId(questionId: number, filter: QuizFilter): Observable<IApiResponse<Quiz>> {
+    
+    let params = new HttpParams()
+    .set('page', filter.page)
+    .set('sort', filter.sort)
+    .set('size', filter.itemsPerPage);
+
+    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/by-question/${questionId}`, { params });
+  }
+
   findById(id: number): Observable<Quiz> {
     return this.http.get<Quiz>(`${this.baseUrl}/${id}`, {});
   }

@@ -5,7 +5,12 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionStatisticsService } from '../question-statistics.service';
-import { QuestionStatisticsDTO } from 'src/app/core/model/QuestionStatisticsDTO';
+import { CompetitionQuestionStatisticsDTO } from 'src/app/core/model/CompetitionQuestionStatisticsDTO';
+import { QuizQuestionStatisticsDTO } from 'src/app/core/model/QuizQuestionStatisticsDTO';
+import { QuizService } from 'src/app/quiz/quiz.service';
+import { Quiz } from 'src/app/core/model/Quiz';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { QuizFilter } from 'src/app/core/interface/QuizFilter';
 declare const MathJax: any;
 
 
@@ -17,13 +22,30 @@ declare const MathJax: any;
 export class QuestionViewComponent implements OnInit {
 
   question: Question = new Question();
-  statistics: QuestionStatisticsDTO = new QuestionStatisticsDTO();
+  competitionQuestionStatistics: CompetitionQuestionStatisticsDTO = new CompetitionQuestionStatisticsDTO();
+  quizQuestionStatistics: QuizQuestionStatisticsDTO = new QuizQuestionStatisticsDTO();
+
+  showLoading: boolean = false;
+  totalQuizzes: number = 0;
+  totalRecords: number = 0
+  currentPage: number = 1;
+  quizzes: Quiz[] = [];
+  displayModalViewQuizzes: boolean = false;
+
+
   showSolution: boolean = false;
   imagePath = './assets/images/funcao do grau 2.png';
+
+  quizFilter: QuizFilter = {
+    page: 0,
+    itemsPerPage: 5,
+    sort: 'id,asc'
+  }
 
   constructor(
     private questionService: QuestionService,
     private questionStatisticsService: QuestionStatisticsService,
+    private quizService: QuizService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
@@ -45,8 +67,8 @@ export class QuestionViewComponent implements OnInit {
     this.questionService.getQuestionByQuestionId(id).subscribe(
       (response) => {
         this.question = response;
-        this.getStatisticsByQuestionId(this.question.id);
-        // Renderiza as expressões matemáticas após carregar as questões
+        this.getCompetitionStatisticsByQuestionId(this.question.id);
+        this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
       },
       (errorResponse: HttpErrorResponse) => {
@@ -59,10 +81,10 @@ export class QuestionViewComponent implements OnInit {
     );
   }
 
-  getStatisticsByQuestionId(id: number) {
-    this.questionStatisticsService.getStatisticsByQuestionId(id).subscribe(
+  getQuizStatisticsByQuestionId(id: number) {
+    this.questionStatisticsService.getQuizStatisticsByQuestionId(id).subscribe(
       (response) => {
-        this.statistics = response;
+        this.quizQuestionStatistics = response;
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {
@@ -72,6 +94,42 @@ export class QuestionViewComponent implements OnInit {
         }
       }
     );
+  }
+
+  getCompetitionStatisticsByQuestionId(id: number) {
+    this.questionStatisticsService.getCompetitionStatisticsByQuestionId(id).subscribe(
+      (response) => {
+        this.competitionQuestionStatistics = response;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        if (errorResponse.status == 400) {
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      }
+    );
+  }
+
+  getQuizzesByQuestionId(page: number = 0): void {
+    this.showLoading = true;
+    this.quizFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.quizService.getQuizzesByQuestionId(this.question.id, this.quizFilter).subscribe(
+      (data: IApiResponse<Quiz>) => {
+        this.quizzes = data.content;
+        this.totalRecords = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onViewQuizzesByQuestion(): void {
+    this.getQuizzesByQuestionId();
+    this.displayModalViewQuizzes = true;
   }
 
   // Método para renderizar expressões matemáticas

@@ -180,7 +180,7 @@
                     <img src="{{winner.user.profileImageUrl}}" alt="Avatar do João Silva" class="participant-avatar">
                     <div class="participant-info">
                         <p class="participant-name">{{ winner.user.firstName }} {{ winner.user.lastName }}</p>
-                        <p class="participant-status">{{ getPosition(winner.position) }}</p>
+                        <p class="participant-status">{{ getPosition(winner.prize.position!) }}</p>
                     </div>
                     <button class="btn-details" *ngIf="isFinished" (click)="onShowUserSubmission(winner.user)" style="margin-left: 10px;">Ver submissão</button>                
                 </div>

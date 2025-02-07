@@ -1,4 +1,4 @@
-export class QuestionStatisticsDTO {
+export class CompetitionQuestionStatisticsDTO {
     questionId!: number;
     questionText!: string;
     accuracyRate: number = 0;

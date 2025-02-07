@@ -32,6 +32,59 @@
 
     <div class="statistics-container">
         <div class="statistics-header">
+            <h2>Nos Quizzes</h2>
+            <p class="description">
+                Visão abrangente sobre o desempenho da questão ao longo de diversos quizzes.
+            </p>
+        </div>
+    
+        <div class="statistics-body">
+            <!-- Gráfico de Barras -->
+            <div class="graph" >
+                <div class="bar acertos" *ngIf="quizQuestionStatistics.accuracyRate > 0" [style.width.%]="quizQuestionStatistics.accuracyRate">
+                    {{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %
+                </div>
+                <div class="bar erros" *ngIf="quizQuestionStatistics.errorRate > 0" [style.width.%]="quizQuestionStatistics.errorRate">
+                    {{ quizQuestionStatistics.errorRate.toFixed(1) }} %%
+                </div>
+            </div>
+    
+            <!-- Detalhes -->
+            <div class="details">
+                <div class="detail-item">
+                    Total de Respostas:
+                    <span>{{ quizQuestionStatistics.totalAnswers }}</span>
+                </div>
+                <div class="detail-item">
+                    Respostas Corretas:
+                    <span>{{ quizQuestionStatistics.totalCorrectAnswers }}</span>
+                </div>
+                <div class="detail-item">
+                    Respostas Incorretas (incluíndo nulas):
+                    <span>{{ quizQuestionStatistics.totalIncorrectAnswers }}</span>
+                </div>
+                <div class="detail-item">
+                    Taxa de Acerto:
+                    <span>{{ quizQuestionStatistics.accuracyRate.toFixed(1) }}%</span>
+                </div>
+                <div class="detail-item">
+                    Taxa de Erro (incluíndo nulas):
+                    <span>{{ quizQuestionStatistics.errorRate.toFixed(1) }}%</span>
+                </div>
+                <div class="detail-item">
+                    Total de quizzes em que esta questão foi incluída:
+                    <a (click)="onViewQuizzesByQuestion()">Ver quizzes associados</a>
+                    <span>{{ quizQuestionStatistics.quizzesCount }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="statistics-container">
+        <div class="statistics-header">
             <h2>Nas Competições</h2>
             <p class="description">
                 Visão abrangente sobre o desempenho da questão ao longo de diversas competições.
@@ -41,11 +94,11 @@
         <div class="statistics-body">
             <!-- Gráfico de Barras -->
             <div class="graph" >
-                <div class="bar acertos" *ngIf="statistics.accuracyRate > 0" [style.width.%]="statistics.accuracyRate">
-                    {{ statistics.accuracyRate.toFixed(1) }} %
+                <div class="bar acertos" *ngIf="competitionQuestionStatistics.accuracyRate > 0" [style.width.%]="competitionQuestionStatistics.accuracyRate">
+                    {{ competitionQuestionStatistics.accuracyRate.toFixed(1) }} %
                 </div>
-                <div class="bar erros" *ngIf="statistics.errorRate > 0" [style.width.%]="statistics.errorRate">
-                    {{ statistics.errorRate.toFixed(1) }} %%
+                <div class="bar erros" *ngIf="competitionQuestionStatistics.errorRate > 0" [style.width.%]="competitionQuestionStatistics.errorRate">
+                    {{ competitionQuestionStatistics.errorRate.toFixed(1) }} %%
                 </div>
             </div>
     
@@ -53,27 +106,27 @@
             <div class="details">
                 <div class="detail-item">
                     Total de Respostas:
-                    <span>{{ statistics.totalAnswers }}</span>
+                    <span>{{ competitionQuestionStatistics.totalAnswers }}</span>
                 </div>
                 <div class="detail-item">
                     Respostas Corretas:
-                    <span>{{ statistics.totalCorrectAnswers }}</span>
+                    <span>{{ competitionQuestionStatistics.totalCorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
                     Respostas Incorretas (incluíndo nulas):
-                    <span>{{ statistics.totalIncorrectAnswers }}</span>
+                    <span>{{ competitionQuestionStatistics.totalIncorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
                     Taxa de Acerto:
-                    <span>{{ statistics.accuracyRate.toFixed(1) }}%</span>
+                    <span>{{ competitionQuestionStatistics.accuracyRate.toFixed(1) }}%</span>
                 </div>
                 <div class="detail-item">
                     Taxa de Erro (incluíndo nulas):
-                    <span>{{ statistics.errorRate.toFixed(1) }}%</span>
+                    <span>{{ competitionQuestionStatistics.errorRate.toFixed(1) }}%</span>
                 </div>
                 <div class="detail-item">
                     Total de competições em que esta questão foi incluída:
-                    <span>{{ statistics.competitionsCount }}</span>
+                    <span>{{ competitionQuestionStatistics.competitionsCount }}</span>
                 </div>
             </div>
         </div>
@@ -96,4 +149,22 @@
         </button>
     </div>
     
+</div>
+
+<div class="overlay" *ngIf="displayModalViewQuizzes">
+    <div class="dialog" style="width: 600px;">
+
+        <div class="dialog-header">
+            <h2>Ver</h2>
+            <button class="close-btn" (click)="displayModalViewQuizzes = false">&times;</button>
+        </div>
+
+        <hr class="header-divider">
+
+        <p class="details" *ngFor="let quiz of quizzes" style="margin-left: 10px;">
+            <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
+            {{ quiz.description }}
+            {{ quiz.user.firstName }}
+        </p>
+    </div>
 </div>
