@@ -47,6 +47,8 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { SubjectsRoutingModule } from './subjects/subjects-routing.module';
 import { TopicsModule } from './topics/topics.module';
 import { TopicsRoutingModule } from './topics/topics-routing.module';
+import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
+import { UserDashboardRoutingModule } from './user-dashboard/user-dashboard-routing.module';
 
 @NgModule({
   declarations: [
@@ -73,6 +75,7 @@ import { TopicsRoutingModule } from './topics/topics-routing.module';
     CompetitionRoutingModule,
     QuestionRoutingModule,
     SearchRoutingModule,
+    UserDashboardRoutingModule,
   
     FeedsModule,
     BlogModule,
@@ -90,6 +93,7 @@ import { TopicsRoutingModule } from './topics/topics-routing.module';
     CompetitionsModule,
     QuestionsModule,
     SearchModule,
+    UserDashboardModule,
 
     CoreRoutingModule,
     AppRoutingModule,

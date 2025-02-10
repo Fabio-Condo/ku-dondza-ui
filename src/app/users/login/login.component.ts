@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           const token = response.headers.get(HeaderType.JWT_TOKEN);
           this.authenticationService.saveToken(token);
           this.authenticationService.addUserToLocalCache(response.body);
-            this.router.navigateByUrl('/feed');
+            this.router.navigateByUrl('/dashboard');
         },
         (errorResponse: HttpErrorResponse) => {
           this.sendErrorNotification(errorResponse.error.message);  // Recebendo a reesposta do backend
