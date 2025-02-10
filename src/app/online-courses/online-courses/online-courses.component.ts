@@ -31,7 +31,7 @@ export class OnlineCoursesComponent implements OnInit {
   displayModalFilter: boolean = false;
   isAdmin: boolean = false;
   users: User[] = [];
-  
+
   selectedCourse: OnlineCourse = new OnlineCourse();
 
 
@@ -133,11 +133,11 @@ export class OnlineCoursesComponent implements OnInit {
 
   findAll(pagina: number = 0): void {
 
-    if(this.selectCourseOption == 'MY_COURSES'){
+    if (this.selectCourseOption == 'MY_COURSES') {
       this.filtro.user = this.loggedUser.id;
     }
 
-    if(this.selectCourseOption == 'ALL_COURSES'){
+    if (this.selectCourseOption == 'ALL_COURSES') {
       this.filtro.user = 0;
     }
 
@@ -152,6 +152,37 @@ export class OnlineCoursesComponent implements OnInit {
           this.countOnlineCourseStudentsByCourseId(course);
         });
         this.totalRegistros = dados.totalElements
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  loadMore(page: number = 0): void {
+
+    if (this.selectCourseOption == 'MY_COURSES') {
+      this.filtro.user = this.loggedUser.id;
+    }
+
+    if (this.selectCourseOption == 'ALL_COURSES') {
+      this.filtro.user = 0;
+    }
+
+    this.showLoading = true;
+    this.filtro.pagina++;
+
+    this.onlineCoursesService.findAll(this.filtro).subscribe(
+      (data: IApiResponse<OnlineCourse>) => {
+        this.courses = [...this.courses, ...data.content];
+
+        data.content.forEach(course => {
+          this.checkIfSubscribed(course);
+          this.countOnlineCourseStudentsByCourseId(course);
+        });
+        this.totalRegistros = data.totalElements;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -211,7 +242,7 @@ export class OnlineCoursesComponent implements OnInit {
   getUsersInstrutors() {
     this.userService.getAllInstrutors().subscribe({
       next: (dados) => {
-        this.users = dados; 
+        this.users = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

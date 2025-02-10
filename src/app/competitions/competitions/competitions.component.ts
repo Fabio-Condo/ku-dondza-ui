@@ -31,6 +31,7 @@ export class CompetitionsComponent implements OnInit {
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   isAdmin: boolean = false;
+  displayModalFilter: boolean = false;
 
   generateQuestions: boolean = false;
 
@@ -73,6 +74,14 @@ export class CompetitionsComponent implements OnInit {
     itemsPerPage: 2,
     sort: 'id,asc',
   }
+
+  difficultyLevels = [
+    { label: 'EASY', value: 'EASY' },
+    { label: 'MEDIUM', value: 'MEDIUM' },
+    { label: 'HARD', value: 'HARD' },
+    { label: 'VERY_HARD', value: 'VERY_HARD' },
+    { label: 'EXPERT', value: 'EXPERT' },
+  ];
 
   competitionStatuses = [
     { label: 'PLANEANDO', value: 'PLANNING' },
@@ -204,6 +213,9 @@ export class CompetitionsComponent implements OnInit {
     competition.isAdminMenuOpen = false;
   }
 
+  onFilter(): void {
+    this.displayModalFilter = true;
+  }
 
   findAll(pagina: number = 0): void {
     this.showLoading = true;
@@ -213,9 +225,31 @@ export class CompetitionsComponent implements OnInit {
         this.competitions = dados.content;
         dados.content.forEach(competition => {
           //this.countQuestionsByCompetitionId(competition);
-          this.countParticipantsByCompetitionId(competition);
+          //this.countParticipantsByCompetitionId(competition);
         });
         this.totalRegistros = dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.page++;
+
+    this.competitionService.findAll(this.filtro).subscribe(
+      (data: IApiResponse<Competition>) => {
+        this.competitions = [...this.competitions, ...data.content];
+
+        data.content.forEach(competition => {
+          //this.countQuestionsByCompetitionId(competition);
+          //this.countParticipantsByCompetitionId(competition);
+        });
+        this.totalRegistros = data.totalElements;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -325,6 +359,9 @@ export class CompetitionsComponent implements OnInit {
   // Método para limpar campos
   limparCampos() {
     this.filtro.searchParam = "";
+    this.filtro.title = "";
+    this.filtro.subject = undefined;
+    this.filtro.difficultyLevel = undefined;
     this.filtro.page = 0;
     this.filtro.itemsPerPage = 10;
     this.filtro.sort = "id,desc";

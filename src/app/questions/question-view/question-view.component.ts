@@ -11,6 +11,9 @@ import { QuizService } from 'src/app/quiz/quiz.service';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
+import { Competition } from 'src/app/core/model/Competition';
+import { CompetitionService } from 'src/app/competitions/competition.service';
+import { CompetitionFilter } from 'src/app/core/interface/CompetitionFilter';
 declare const MathJax: any;
 
 
@@ -26,11 +29,18 @@ export class QuestionViewComponent implements OnInit {
   quizQuestionStatistics: QuizQuestionStatisticsDTO = new QuizQuestionStatisticsDTO();
 
   showLoading: boolean = false;
-  totalQuizzes: number = 0;
-  totalRecords: number = 0
-  currentPage: number = 1;
+
   quizzes: Quiz[] = [];
   displayModalViewQuizzes: boolean = false;
+  totalQuizzes: number = 0;
+  totalRecordsQuizzes: number = 0
+  currentPageQuizzes: number = 1;
+
+  competitions: Competition[] = [];
+  displayModalViewCompetitions: boolean = false;
+  totalCompetitions: number = 0;
+  totalRecordsCompetitions: number = 0
+  currentPageCompetitions: number = 1;
 
 
   showSolution: boolean = false;
@@ -42,9 +52,16 @@ export class QuestionViewComponent implements OnInit {
     sort: 'id,asc'
   }
 
+  competitionFilter: CompetitionFilter = {
+    page: 0,
+    itemsPerPage: 5,
+    sort: 'id,asc'
+  }
+
   constructor(
     private questionService: QuestionService,
     private questionStatisticsService: QuestionStatisticsService,
+    private competitionService: CompetitionService,
     private quizService: QuizService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -113,11 +130,27 @@ export class QuestionViewComponent implements OnInit {
 
   getQuizzesByQuestionId(page: number = 0): void {
     this.showLoading = true;
-    this.quizFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.quizFilter.page = this.currentPageQuizzes - 1; // Ajuste para o padrão de paginação começando em 0
     this.quizService.getQuizzesByQuestionId(this.question.id, this.quizFilter).subscribe(
       (data: IApiResponse<Quiz>) => {
         this.quizzes = data.content;
-        this.totalRecords = data.totalElements;
+        this.totalRecordsQuizzes = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  getCompetitionsByQuestionId(page: number = 0): void {
+    this.showLoading = true;
+    this.competitionFilter.page = this.currentPageCompetitions - 1; // Ajuste para o padrão de paginação começando em 0
+    this.competitionService.getCompetitionsByQuestionId(this.question.id, this.competitionFilter).subscribe(
+      (data: IApiResponse<Competition>) => {
+        this.competitions = data.content;
+        this.totalRecordsCompetitions = data.totalElements;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -130,6 +163,11 @@ export class QuestionViewComponent implements OnInit {
   onViewQuizzesByQuestion(): void {
     this.getQuizzesByQuestionId();
     this.displayModalViewQuizzes = true;
+  }
+
+  onViewCompetitionsByQuestion(): void {
+    this.getCompetitionsByQuestionId();
+    this.displayModalViewCompetitions = true;
   }
 
   // Método para renderizar expressões matemáticas

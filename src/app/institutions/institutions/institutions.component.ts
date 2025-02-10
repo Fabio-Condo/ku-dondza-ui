@@ -127,6 +127,24 @@ export class InstitutionsComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.pagina++;
+
+    this.institutionService.findAll(this.filtro).subscribe(
+      (data: IApiResponse<Institution>) => {
+        this.instutions = [...this.instutions, ...data.content];
+
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   buscarTotal() {
     this.institutionService.buscarTotal().subscribe(
       (total) => {

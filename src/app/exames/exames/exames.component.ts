@@ -141,6 +141,24 @@ export class ExamesComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.pagina++;
+
+    this.examesService.findAll(this.filtro).subscribe(
+      (data: IApiResponse<Exam>) => {
+        this.exams = [...this.exams, ...data.content];
+
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   excluir(exam: Exam) {
     this.examesService.excluir(exam.id!).subscribe(() => {
       this.findAll();

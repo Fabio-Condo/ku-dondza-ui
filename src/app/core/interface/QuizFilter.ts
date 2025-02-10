@@ -3,6 +3,7 @@ export interface QuizFilter {
     title?: string;
     subject?: number;
     user?: number;
+    difficultyLevel?: string;
 
     page: number,
     itemsPerPage: number,

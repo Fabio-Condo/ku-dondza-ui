@@ -7,7 +7,7 @@ import { User } from "./User";
 export class Quiz {
     id!: number;
     quizId!: string;
-    description!: string;
+    title!: string;
     submittedAt!: Date;
     difficultyLevel!: string;
     subject = new Subject();

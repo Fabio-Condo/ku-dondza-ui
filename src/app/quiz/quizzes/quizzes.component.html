@@ -40,7 +40,7 @@
                         <div class="card-content">
 
                             <div class="content">
-                                <p class="title">{{ quiz.description }}</p>
+                                <p class="title">{{ quiz.title }}</p>
                                 <p class="details">Disciplina: <span class="text-muted">{{ quiz.subject.name }}</span></p>
                                 <p class="details">Dificuldade: <span class="text-muted">{{ quiz.difficultyLevel }}</span></p>
                                 <p class="details">Submissao: <span class="text-muted">{{ quiz.submittedAt | date: 'short' }}</span></p>
@@ -126,6 +126,14 @@
         <form autocomplete="off" #exameForm="ngForm">
 
             <div class="form-group">
+                <label for="difficultyLevel">Nivel de dificuldade</label>
+                <select id="difficultyLevel" [(ngModel)]="filter.difficultyLevel" (change)="getQuizzes()" name="difficultyLevel" required>
+                  <option value="" disabled selected>Selecione o nivel</option>
+                  <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="subject">Disciplina</label>
                 <select id="subject" [(ngModel)]="filter.subject" (change)="getQuizzes()" name="subject" required>
                 <option value="" disabled selected>Selecione a subject</option>
@@ -134,7 +142,7 @@
             </div>
 
             <div class="form-group">
-                <label for="title">Descrição</label>
+                <label for="title">Titulo</label>
                 <input type="title" name="title" ngModel #title="ngModel" minlength="1"
                 [(ngModel)]="filter.title" (ngModelChange)="getQuizzes()">
             </div>

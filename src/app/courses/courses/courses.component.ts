@@ -177,10 +177,28 @@ export class CoursesComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.pagina++;
+
+    this.courseService.findAll(this.filtro).subscribe(
+      (data: IApiResponse<Course>) => {
+        this.courses = [...this.courses, ...data.content];
+
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   carregarInstituicoes() {
     this.institutionService.getAll().subscribe({
       next: (dados) => {
-        this.institutions = dados; 
+        this.institutions = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

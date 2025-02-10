@@ -119,6 +119,24 @@ export class BooksComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.pagina++;
+
+    this.booksService.findAll(this.filtro).subscribe(
+      (data: IApiResponse<Book>) => {
+        this.books = [...this.books, ...data.content];
+
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   excluir(book: Book) {
     this.booksService.excluir(book.id!).subscribe(() => {
       this.findAll();

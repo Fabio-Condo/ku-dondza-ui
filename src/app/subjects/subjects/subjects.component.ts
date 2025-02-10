@@ -136,6 +136,24 @@ export class SubjectsComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.pagina++;
+
+    this.subjectsService.filter(this.filtro).subscribe(
+      (data: IApiResponse<Subject>) => {
+        this.subjects = [...this.subjects, ...data.content];
+
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   buscarTotal() {
     this.subjectsService.buscarTotal().subscribe(
       (total) => {

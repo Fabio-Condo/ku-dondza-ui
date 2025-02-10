@@ -137,6 +137,24 @@ export class TopicsComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.pagina++;
+
+    this.topicService.filter(this.filtro).subscribe(
+      (data: IApiResponse<Topic>) => {
+        this.topics = [...this.topics, ...data.content];
+
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   buscarTotal() {
     this.topicService.buscarTotal().subscribe(
       (total) => {
@@ -151,7 +169,7 @@ export class TopicsComponent implements OnInit {
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados; 
+        this.subjects = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

@@ -18,19 +18,41 @@ export class CompetitionService {
 
     constructor(private http: HttpClient) { }
 
-    findAll(filtro: CompetitionFilter): Observable<IApiResponse<Competition>> {
+    findAll(filter: CompetitionFilter): Observable<IApiResponse<Competition>> {
 
         let params = new HttpParams()
-            .set('page', filtro.page)
-            .set('sort', filtro.sort)
-            .set('size', filtro.itemsPerPage);
+            .set('page', filter.page)
+            .set('sort', filter.sort)
+            .set('size', filter.itemsPerPage);
 
-        if (filtro.searchParam) {
-            params = params.set('searchParam', filtro.searchParam);
+        if (filter.searchParam) {
+            params = params.set('searchParam', filter.searchParam);
+        }
+
+        if (filter.title) {
+            params = params.set('title', filter.title);
+        }
+
+        if (filter.subject) {
+            params = params.set('subject', filter.subject);
+        }
+
+        if (filter.difficultyLevel) {
+            params = params.set('difficultyLevel', filter.difficultyLevel);
         }
 
         return this.http.get<IApiResponse<Competition>>(`${this.host}/filter`, { params });
 
+    }
+
+    getCompetitionsByQuestionId(questionId: number, filter: CompetitionFilter): Observable<IApiResponse<Competition>> {
+
+        let params = new HttpParams()
+            .set('page', filter.page)
+            .set('sort', filter.sort)
+            .set('size', filter.itemsPerPage);
+
+        return this.http.get<IApiResponse<Competition>>(`${this.host}/by-question/${questionId}`, { params });
     }
 
     findById(id: number): Observable<Competition> {
@@ -44,18 +66,18 @@ export class CompetitionService {
     add(competition: Competition, topicIds: number[]): Observable<Competition> {
 
         const params = new HttpParams()
-        .set('topicIds', topicIds.join(','));
+            .set('topicIds', topicIds.join(','));
 
-        return this.http.post<Competition>(this.host, competition, {params});
+        return this.http.post<Competition>(this.host, competition, { params });
     }
 
     update(competition: Competition, topicIds: number[], generateQuestions: boolean): Observable<Competition> {
 
         const params = new HttpParams()
-        .set('generateQuestions', generateQuestions)
-        .set('topicIds', topicIds.join(','));
+            .set('generateQuestions', generateQuestions)
+            .set('topicIds', topicIds.join(','));
 
-        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, {params});
+        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, { params });
     }
 
     excluir(id: number): Observable<void> {

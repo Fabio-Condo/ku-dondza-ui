@@ -183,6 +183,27 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.page++;
+
+    this.questionService.getQuestions(this.filtro).subscribe(
+      (data: IApiResponse<Question>) => {
+        this.questions = [...this.questions, ...data.content];
+
+        this.totalRegistros = data.totalElements;
+        this.showLoading = false;
+
+        this.renderMathExpressions();
+
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   onFilter(): void {
     this.displayModalFilter = true;
   }

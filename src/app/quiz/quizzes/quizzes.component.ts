@@ -36,12 +36,19 @@ export class QuizzesComponent implements OnInit {
   
   @ViewChild('table') grid: any;
 
+  difficultyLevels = [
+    { label: 'EASY', value: 'EASY' },
+    { label: 'MEDIUM', value: 'MEDIUM' },
+    { label: 'HARD', value: 'HARD' },
+    { label: 'VERY_HARD', value: 'VERY_HARD' },
+    { label: 'EXPERT', value: 'EXPERT' },
+  ];
+
   filter: QuizFilter = {
     page: 0,
     itemsPerPage: 5,
     sort: 'id,asc'
   }
-
 
   constructor(
     private quizService: QuizService,
@@ -102,6 +109,7 @@ export class QuizzesComponent implements OnInit {
         data.content.forEach(quiz => {
           this.countQuestionsByQuizId(quiz);
         });
+        
         this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
@@ -210,6 +218,7 @@ export class QuizzesComponent implements OnInit {
     this.filter.searchParam = "";
     this.filter.title = "";
     this.filter.subject = undefined;
+    this.filter.difficultyLevel = undefined;
     this.getQuizzes();
   }
 

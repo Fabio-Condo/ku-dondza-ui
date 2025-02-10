@@ -51,7 +51,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   showCorrection: boolean = false;
   showStartScreen: boolean = true;
-  showFinalScreen: boolean = false;
+  showResultsScreen: boolean = false;
 
   loggedUser: User = new User();
   submited: boolean = false;
@@ -111,7 +111,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   start() {
     this.showStartScreen = false;
-    this.showFinalScreen = false;
+    this.showResultsScreen = false;
     this.renderMathExpressions();
   }
 
@@ -136,11 +136,22 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   onShowUserSubmission(participante: User) {
-    this.getSubmissionByUserAndCompetition(participante);
-    this.toggleCorrection();
-    this.scrollToTop();
-    this.showStartScreen = false;
-    this.showFinalScreen = false;
+    this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
+      (response) => {
+        this.submission = response;
+        this.submittedAnswers = this.submission.answers;
+        this.toggleCorrection();
+        this.calculateResults();
+        this.scrollToTop();
+        this.showStartScreen = false;
+        this.showResultsScreen = true;
+        this.submited = true;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   getSubmissionByUserAndCompetition(participante: User) {
@@ -148,6 +159,9 @@ export class CompetitionQuestionsComponent implements OnInit {
       (response) => {
         this.submission = response;
         this.submittedAnswers = this.submission.answers;
+        //this.submittedAnswers.forEach(submission => {
+        //  console.log(submission.text);
+        //});
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -367,7 +381,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.calculateResults();
 
     // Exibe a tela final
-    this.showFinalScreen = true;
+    this.showResultsScreen = true;
 
     // Salva o quiz, se ainda não foi submetido
     if (!this.submited) {
@@ -479,7 +493,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   toggleCorrection() {
     this.showCorrection = true;
     this.currentQuestionIndex = 0;
-    this.showFinalScreen = false;
+    this.showResultsScreen = false;
 
     // Aguarda a atualização do DOM antes de renderizar MathJax
     setTimeout(() => {

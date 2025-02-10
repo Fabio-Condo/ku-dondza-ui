@@ -2,7 +2,7 @@
   <!-- Tela inicial -->
   <div *ngIf="showStartScreen" class="results-screen2">
     <div class="results-summary">
-      <p class="title">{{ quiz.description }}</p>
+      <p class="title">{{ quiz.title }}</p>
       <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
 
       <div class="button-container">
@@ -29,11 +29,11 @@
         <div class="statistics-body"> 
           <!-- Gráfico de Barras -->
           <div class="graph">
-            <div class="bar acertos" *ngIf="result.correctAnswers / questions.length > 0"
+            <div class="bar acertos" *ngIf="((result.correctAnswers / questions.length) * 100) > 0"
               [style.width.%]="((result.correctAnswers / questions.length) * 100).toFixed(1)">
               {{ ((result.correctAnswers / questions.length) * 100).toFixed(1) }}%
             </div>
-            <div class="bar erros" *ngIf="100 - (result.correctAnswers / questions.length) > 0"
+            <div class="bar erros" *ngIf="(100 - (result.correctAnswers / questions.length) * 100) > 0"
               [style.width.%]="(100 - (result.correctAnswers / questions.length) * 100).toFixed(1)">
               {{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1) }}%
             </div>
@@ -46,23 +46,25 @@
               <span>{{ questions.length }}</span>
             </div>
             <div class="detail-item">
-              Acertos:
+              Total de Acertos:
               <span>{{ result.correctAnswers }}</span>
             </div>
             <div class="detail-item">
-              Erros:
-              <span>{{ result.incorrectAnswers }}</span>
+              Total de Erros (incluíndo nulas):
+              <span>{{ result.incorrectAnswers + result.nullAnswers }}</span>
             </div>
+            <!--
             <div class="detail-item">
-              Nulas:
+              Total de Nulas:
               <span>{{ result.nullAnswers }}</span>
             </div>
+            -->
             <div class="detail-item">
               Taxa de Acerto:
               <span>{{ ((result.correctAnswers / questions.length) * 100).toFixed(1) }}%</span>
             </div>
             <div class="detail-item">
-              Taxa de Erro (incluindo nulas):
+              Taxa de Erro (incluíndo nulas):
               <span>{{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1) }}%</span>
             </div>
           </div>
@@ -107,23 +109,25 @@
                 <span>{{ quiz.resultsByTopic[topic.name].total || 0 }}</span>
               </div>
               <div class="detail-item">
-                Acertos:
+                Total de Acertos:
                 <span>{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span>
               </div>
               <div class="detail-item">
-                Erros:
-                <span>{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</span>
+                Total de Erros (incluíndo respostas nulas):
+                <span>{{ quiz.resultsByTopic[topic.name].incorrect + quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span>
               </div>
+              <!--
               <div class="detail-item">
-                Nulas:
+                Total de Nulas:
                 <span>{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span>
               </div>
+              -->
               <div class="detail-item">
                 Taxa de Acerto:
                 <span>{{ quiz.resultsByTopic[topic.name].percentage!.toFixed(1) || 0 }}%</span>
               </div>
               <div class="detail-item">
-                Taxa de Erro (incluindo nulas):
+                Taxa de Erro (incluíndo respostas nulas):
                 <span>{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0 }}%</span>
               </div>
             </div>
@@ -180,11 +184,6 @@
       </div>
 
       <div class="navigation-buttons text-center">
-        <!-- Botão para voltar à tela inicial -->
-        <button class="pagination-button" (click)="showStartScreen = true; scrollToTop();"
-          *ngIf="currentQuestionIndex === quiz.questions.length - 1">
-          <i class="pi pi-arrow-left" style="margin-right: 0.5rem;"></i> Tela inicial
-        </button>
 
         <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
           <i class="pi pi-chevron-left"></i> Anterior
@@ -193,6 +192,12 @@
           [disabled]="currentQuestionIndex === quiz.questions.length - 1">
           Próxima <i class="pi pi-chevron-right"></i>
         </button>
+        <!-- Botão para voltar à tela inicial -->
+        <button class="pagination-button" (click)="showStartScreen = true; scrollToTop();"
+          *ngIf="currentQuestionIndex === quiz.questions.length - 1">
+          <i class="pi pi-arrow-up" style="margin-right: 0.5rem;"></i> Resultados
+        </button>
+        
       </div>
     </div>
 

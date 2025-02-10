@@ -55,6 +55,10 @@
             <!-- Detalhes -->
             <div class="details">
                 <div class="detail-item">
+                    Total de quizzes em que esta questão foi incluída:
+                    <span>{{ quizQuestionStatistics.quizzesCount }}</span>
+                </div>
+                <div class="detail-item">
                     Total de Respostas:
                     <span>{{ quizQuestionStatistics.totalAnswers }}</span>
                 </div>
@@ -63,7 +67,7 @@
                     <span>{{ quizQuestionStatistics.totalCorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
-                    Respostas Incorretas (incluindo nulas):
+                    Respostas Incorretas (incluíndo respostas nulas):
                     <span>{{ quizQuestionStatistics.totalIncorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
@@ -71,12 +75,8 @@
                     <span>{{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %</span>
                 </div>
                 <div class="detail-item">
-                    Taxa de Erro (incluindo nulas):
+                    Taxa de Erro (incluíndo nulas):
                     <span>{{ quizQuestionStatistics.errorRate.toFixed(1) }} %</span>
-                </div>
-                <div class="detail-item">
-                    Total de quizzes em que esta questão foi incluída:
-                    <span>{{ quizQuestionStatistics.quizzesCount }}</span>
                 </div>
             </div>
         </div>
@@ -90,6 +90,7 @@
             <h2>Nas Competições</h2>
             <p class="description">
                 Visão abrangente sobre o desempenho da questão ao longo de diversas competições.
+                <a (click)="onViewCompetitionsByQuestion()" class="view-button">Ver os {{ competitionQuestionStatistics.competitionsCount }} competições</a>
             </p>
         </div>
     
@@ -107,6 +108,10 @@
             <!-- Detalhes -->
             <div class="details">
                 <div class="detail-item">
+                    Total de competições em que esta questão foi incluída:
+                    <span>{{ competitionQuestionStatistics.competitionsCount }}</span>
+                </div>
+                <div class="detail-item">
                     Total de Respostas:
                     <span>{{ competitionQuestionStatistics.totalAnswers }}</span>
                 </div>
@@ -115,7 +120,7 @@
                     <span>{{ competitionQuestionStatistics.totalCorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
-                    Respostas Incorretas (incluíndo nulas):
+                    Respostas Incorretas (incluíndo respostas nulas):
                     <span>{{ competitionQuestionStatistics.totalIncorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
@@ -125,10 +130,6 @@
                 <div class="detail-item">
                     Taxa de Erro (incluíndo nulas):
                     <span>{{ competitionQuestionStatistics.errorRate.toFixed(1) }} %</span>
-                </div>
-                <div class="detail-item">
-                    Total de competições em que esta questão foi incluída:
-                    <span>{{ competitionQuestionStatistics.competitionsCount }}</span>
                 </div>
             </div>
         </div>
@@ -164,9 +165,24 @@
         <hr class="header-divider">
 
         <p class="details" *ngFor="let quiz of quizzes" style="margin-left: 10px;">
-            <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
-            {{ quiz.description }}
+            {{ quiz.title }}
             {{ quiz.user.firstName }}
+        </p>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="displayModalViewCompetitions">
+    <div class="dialog" style="width: 600px;">
+
+        <div class="dialog-header">
+            <h2>Ver</h2>
+            <button class="close-btn" (click)="displayModalViewCompetitions = false">&times;</button>
+        </div>
+
+        <hr class="header-divider">
+
+        <p class="details" *ngFor="let competition of competitions" style="margin-left: 10px;">
+            {{ competition.title }}
         </p>
     </div>
 </div>

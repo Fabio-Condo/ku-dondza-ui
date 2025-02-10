@@ -12,6 +12,8 @@ export class Competition {
     title!: string;
     status!: string;  // PLANNING, ONGOING, FINISHED, CANCELED
     startedAt!: Date;
+    difficultyLevel!: string;
+
     participants: User[] = [];
     administrators: User[] = [];
     participationRequests: User[] = [];
