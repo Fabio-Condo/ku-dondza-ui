@@ -49,6 +49,8 @@ import { TopicsModule } from './topics/topics.module';
 import { TopicsRoutingModule } from './topics/topics-routing.module';
 import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
 import { UserDashboardRoutingModule } from './user-dashboard/user-dashboard-routing.module';
+import { NotificationsRoutingModule } from './notifications/notifications-routing.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,7 @@ import { UserDashboardRoutingModule } from './user-dashboard/user-dashboard-rout
     QuestionRoutingModule,
     SearchRoutingModule,
     UserDashboardRoutingModule,
+    NotificationsRoutingModule,
   
     FeedsModule,
     BlogModule,
@@ -94,6 +97,7 @@ import { UserDashboardRoutingModule } from './user-dashboard/user-dashboard-rout
     QuestionsModule,
     SearchModule,
     UserDashboardModule,
+    NotificationsModule,
 
     CoreRoutingModule,
     AppRoutingModule,

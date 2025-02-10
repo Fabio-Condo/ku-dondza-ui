@@ -1,0 +1,8 @@
+<div class="notification-list" style="margin-top: 70px;">
+    <div *ngFor="let notification of notifications" class="notification-item">
+      <p>{{ notification.message }}</p>
+      <small>{{ notification.createdAt | date:'short' }}</small>
+      <button (click)="markAsRead(notification.id)">Marcar como lida</button>
+    </div>
+  </div>
+  
