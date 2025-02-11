@@ -40,16 +40,123 @@
 
     </div>
 
-
     <div class="create">
-      <!-- Botão grande do menu -->
       <div class="menu-button">
 
-        <!--
-        <button *ngIf="isUserLoggedIn" [class.active]="isActive('/blog')" routerLink="/blog" class="menu-icon">
-          <i class="fas fa-home"></i>
+        <div class="notification-popout">
+          <div class="notifications-list" *ngIf="isPopoutVisible">
+            <!-- Notificação de Pedido de Amizade -->
+            <div class="notification-item">
+              <img class="user-avatar" src="path/to/john-profile.jpg" alt="João Silva">
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="user-name">João Silva</span> enviou um pedido de amizade.
+                </div>
+                <div class="notification-actions">
+                  <button class="accept-button" title="Aceitar">
+                    <i class="fas fa-check"></i>
+                  </button>
+                  <button class="decline-button" title="Recusar">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Notificação de Pedido de Amizade Aceito -->
+            <div class="notification-item">
+              <img class="user-avatar" src="path/to/maria-profile.jpg" alt="Maria Oliveira">
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="user-name">Maria Oliveira</span> aceitou seu pedido de amizade!
+                </div>
+              </div>
+            </div>
+        
+            <!-- Notificação de Like -->
+            <div class="notification-item">
+              <img class="user-avatar" src="path/to/carlos-profile.jpg" alt="Carlos Oliveira">
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="user-name">Carlos Oliveira</span> curtiu sua publicação.
+                </div>
+              </div>
+            </div>
+        
+            <!-- Notificação de Comentário -->
+            <div class="notification-item">
+              <img class="user-avatar" src="path/to/ana-profile.jpg" alt="Ana Costa">
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="user-name">Ana Costa</span> comentou na sua publicação:
+                  <span class="comment-text">"Ótimo trabalho!"</span>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Notificação de Início de Competição -->
+            <div class="notification-item">
+              <div class="notification-icon">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="notification-title">Competição de Programação</span> começou! Prepare-se para codar.
+                </div>
+              </div>
+            </div>
+        
+            <!-- Notificação de Término de Competição -->
+            <div class="notification-item">
+              <div class="notification-icon">
+                <i class="fas fa-flag-checkered"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="notification-title">Competição de Programação</span> terminou. Confira os resultados!
+                </div>
+              </div>
+            </div>
+        
+            <!-- Notificação de Convite para Competição -->
+            <div class="notification-item">
+              <img class="user-avatar" src="path/to/ana-profile.jpg" alt="Ana Costa">
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="user-name">Ana Costa</span> convidou você para participar da competição
+                  <span class="notification-title">Hackathon 2023</span>.
+                </div>
+                <div class="notification-actions">
+                  <button class="accept-button" title="Aceitar">
+                    <i class="fas fa-check"></i>
+                  </button>
+                  <button class="decline-button" title="Recusar">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Notificação de Vencedor da Competição -->
+            <div class="notification-item">
+              <div class="notification-icon">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-text">
+                  <span class="user-name">Carlos Oliveira</span> venceu a competição
+                  <span class="notification-title">Hackathon 2023</span>. Parabéns!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <button *ngIf="isUserLoggedIn" (click)="togglePopout()" class="menu-icon">
+          <i class="fas fa-bell"></i>
+          <span class="notification-count">3</span>
         </button>
-        -->
 
         <button *ngIf="isUserLoggedIn" (click)="toggleMenu()" class="menu-icon">
           <i class="fas fa-th"></i>
@@ -58,7 +165,6 @@
         <button class="btn" *ngIf="!isUserLoggedIn" (click)="onLogIn()">Iniciar sessão</button>
 
 
-        <!-- Menu dropdown grande -->
         <div class="menu-dropdown large" [class.active]="isMenuActive">
           <div class="menu-title">Menu</div>
           <ul (click)="toggleMenu()">
@@ -92,124 +198,16 @@
 
             <li [class.active]="isActive('/quizzes')" routerLink="/quizzes">
               <div class="menu-content">
-                <span class="menu-icon-item">❓</span> 
+                <span class="menu-icon-item">❓</span>
                 <a class="menu-item">
                   <span>Quizzes</span>
                 </a>
               </div>
             </li>
-
-            <!--
-            <li [class.active]="isActive('/books')" routerLink="/books">
-              <div class="menu-content">
-                <span class="menu-icon-item">📄</span>
-                <a class="menu-item">
-                  <span>Livros</span>
-                </a>
-              </div>
-            </li>
-            -->
-            
-            <!--
-            <li [class.active]="isActive('/exames')" routerLink="/exames">
-              <div class="menu-content">
-                <span class="menu-icon-item">📄</span>
-                <a class="menu-item">
-                  <span>Exames</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <!--
-            <li [class.active]="isActive('/disciplinas')" routerLink="/disciplinas">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏫</span>
-                <a class="menu-item">
-                  <span>Disciplinas e tópicos</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <!--
-            <li [class.active]="isActive('/topics')" routerLink="/topics">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏫</span>
-                <a class="menu-item">
-                  <span>Tópicos</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <!--
-            <li [class.active]="isActive('/instituicoes')" routerLink="/instituicoes">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏫</span>
-                <a class="menu-item">
-                  <span>Instituições</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <!--
-            <li [class.active]="isActive('/cursos')" routerLink="/cursos">
-              <div class="menu-content">
-                <span class="menu-icon-item">👨‍🏫</span>
-                <a class="menu-item">
-                  <span>Cursos</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <!--
-            <li [class.active]="isActive('/feed')" routerLink="/feed">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏠</span>
-                <a class="menu-item">
-                  <span>Feed</span>
-                  <span class="description">Veja as atualizações mais recentes de seus amigos e instituições.
-                    Mantenha-se informado sobre atividades, postagens e eventos importantes que estão acontecendo na sua
-                    rede.</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <!--
-            <li [class.active]="isActive('/grupos')" routerLink="/grupos">
-              <div class="menu-content">
-                <span class="menu-icon-item">👥</span>
-                <a class="menu-item">
-                  <span>Grupos</span>
-                  <span class="description">Junte-se a grupos de discussão e colabore com outros usuários. Participe de
-                    debates, troque ideias e trabalhe em projetos em equipe para um aprendizado mais
-                    enriquecedor.</span>
-                </a>
-              </div>
-            </li>
-            -->
-
-            <!--
-            <li [class.active]="isActive('/users')" routerLink="/users">
-              <div class="menu-content">
-                <span class="menu-icon-item">👫</span>
-                <a class="menu-item">
-                  <span>Amigos</span>
-                  <span class="description">Conecte-se e interaja com outros usuários na plataforma. Descubra novos
-                    amigos, colabore em projetos e participe de atividades sociais que promovem a troca de
-                    conhecimento.</span>
-                </a>
-              </div>
-            </li>
-            -->
           </ul>
         </div>
-
       </div>
+
       <div class="profile-pic" *ngIf="isUserLoggedIn">
         <a (click)="goToProfile()">
           <img src="{{loggedUser.profileImageUrl}}" alt="Profile picture" />

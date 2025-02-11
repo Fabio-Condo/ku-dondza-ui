@@ -6,6 +6,9 @@ import { User } from '../model/User';
 import { SearchResultDTO } from '../model/SearchResultDTO';
 import { IApiResponse } from '../interface/IApiResponse';
 import { SearchService } from 'src/app/search/search.service';
+import { NotificationService } from 'src/app/notifications/notification-service.service';
+import { Notification } from 'src/app/core/model/Notification';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -19,9 +22,13 @@ export class NavbarComponent implements OnInit {
   loggedUser: User = new User();
   searchQuery: string = '';
   results: SearchResultDTO[] = [];// Defina o tipo mais específico para os resultados
+  notifications: Notification[] = [];
+  
+  
 
   constructor(
     private router: Router,
+    private notificationService: NotificationService,
     private searchService: SearchService,  // Injete o serviço
     private messageService: MessageService,
     private authenticationService: AuthenticationService,
@@ -32,6 +39,7 @@ export class NavbarComponent implements OnInit {
   toggleMenu() {
     this.isMenuActive = !this.isMenuActive;
   }
+  
 
   ngOnInit(): void {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
@@ -66,5 +74,43 @@ export class NavbarComponent implements OnInit {
         console.error('Erro ao realizar a busca', error);
       }
     );
+  }
+
+  loadNotifications(): void {
+    this.notificationService.getNotifications(this.loggedUser.id).subscribe(
+      (data: IApiResponse<Notification>) => {
+        this.notifications = data.content;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  markAsRead(notificationId: number): void {
+    this.notificationService.markAsRead(notificationId).subscribe(() => {
+      this.notifications = this.notifications.filter(n => n.id !== notificationId);
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  isPopoutVisible = false;
+
+  togglePopout() {
+    this.isPopoutVisible = !this.isPopoutVisible;
+  }
+
+  private sendErrorNotification(message: string): void {
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Ocorreu um erro. Por favor, tente novamente.',
+      });
+    }
   }
 }

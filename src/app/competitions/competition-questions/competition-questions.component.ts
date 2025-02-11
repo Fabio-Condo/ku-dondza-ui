@@ -97,18 +97,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
-  //finishCompetition() {
-  //  this.competitionService.finishCompetition(this.competition.id).subscribe(
-  //    (response) => {
-  //      console.log('Competition finished:', response);
-  //    },
-  //    (errorResponse: HttpErrorResponse) => {
-  //      this.sendErrorNotification(errorResponse.error.message);
-  //      this.showLoading = false;
-  //    }
-  //  );
-  //}
-
   start() {
     this.showStartScreen = false;
     this.showResultsScreen = false;
@@ -614,6 +602,18 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.competitionService.initCompetition(this.competition.id).subscribe(
       (response) => {
         this.competition.status = 'ONGOING'
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  finishCompetition() {
+    this.competitionService.finishCompetition(this.competition.id).subscribe(
+      (response) => {
+        this.competition.status = 'FINISHED'
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

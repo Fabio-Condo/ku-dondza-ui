@@ -172,8 +172,8 @@ export class CompetitionService {
     }
 
     // Método para finalizar a competição
-    //finishCompetition(competitionId: number): Observable<void> {
-    //    return this.http.put<void>(`${this.host}/${competitionId}/finish`, null);
-    //}
+    finishCompetition(competitionId: number): Observable<void> {
+        return this.http.put<void>(`${this.host}/${competitionId}/finish`, null);
+    }
 
 }
