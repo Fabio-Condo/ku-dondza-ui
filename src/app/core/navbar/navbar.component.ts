@@ -23,7 +23,8 @@ export class NavbarComponent implements OnInit {
   searchQuery: string = '';
   results: SearchResultDTO[] = [];// Defina o tipo mais específico para os resultados
   notifications: Notification[] = [];
-  
+  isPopoutVisible = false;
+  isMenuActive = false; // Controla a exibição do menu
   
 
   constructor(
@@ -34,12 +35,6 @@ export class NavbarComponent implements OnInit {
     private authenticationService: AuthenticationService,
   ) { }
 
-  isMenuActive = false; // Controla a exibição do menu
-
-  toggleMenu() {
-    this.isMenuActive = !this.isMenuActive;
-  }
-  
 
   ngOnInit(): void {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
@@ -97,10 +92,14 @@ export class NavbarComponent implements OnInit {
     );
   }
 
-  isPopoutVisible = false;
+  toggleMenu() {
+    this.isMenuActive = !this.isMenuActive;
+    this.isPopoutVisible = false;
+  }
 
   togglePopout() {
     this.isPopoutVisible = !this.isPopoutVisible;
+    this.isMenuActive = false;
   }
 
   private sendErrorNotification(message: string): void {
