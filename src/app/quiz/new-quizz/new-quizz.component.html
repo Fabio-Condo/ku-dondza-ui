@@ -100,6 +100,9 @@
       <div class="question-card">
         <img *ngIf="imagePath" src="{{ imagePath }}" alt="Gráfico de funções" class="question-graph" />
         
+        <p>{{ questions[currentQuestionIndex].topic.name }}</p>        
+        <p>{{ questions[currentQuestionIndex].difficultyLevel }}</p>
+
         <!-- Contêiner para expressões matemáticas -->
         <div id="math-container-{{ currentQuestionIndex }}" class="details" *ngIf="questions[currentQuestionIndex].text">
           \[{{ questions[currentQuestionIndex].text }}\]
