@@ -11,6 +11,8 @@ export interface Notification {
     //type: NotificationType;
     type: string;
     referenceId: number;
-    isRead: boolean;
+    read: boolean;
     createdAt: string;
+
+    isAdminMenuOpen: boolean;
 }

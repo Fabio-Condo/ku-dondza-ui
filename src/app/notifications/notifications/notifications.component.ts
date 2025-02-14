@@ -17,6 +17,8 @@ export class NotificationsComponent implements OnInit {
 
   notifications: Notification[] = [];
   loggedUser: User = new User();
+  isPopoutVisible = false;
+  activeTab: number = 1;
 
   constructor(
     private notificationService: NotificationService,
@@ -27,6 +29,7 @@ export class NotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadNotifications();
+    this.scrollToTop();
   }
 
   loadNotifications(): void {
@@ -40,14 +43,23 @@ export class NotificationsComponent implements OnInit {
     );
   }
 
-  markAsRead(notificationId: number): void {
-    this.notificationService.markAsRead(notificationId).subscribe(() => {
-      this.notifications = this.notifications.filter(n => n.id !== notificationId);
+  markAsRead(notification: Notification): void {
+    this.notificationService.markAsRead(notification.id).subscribe(() => {
+      notification.read = true;
+      //this.notifications = this.notifications.filter(n => n.id !== notification.id);
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private sendErrorNotification(message: string): void {

@@ -76,27 +76,6 @@
                 </div>
               </div>
 
-              <!-- Notificação de Like -->
-              <div class="notification-item" *ngIf="notification.type === 'POST_LIKE'">
-                <img class="user-avatar" src="path/to/carlos-profile.jpg" alt="Carlos Oliveira">
-                <div class="notification-content">
-                  <div class="notification-text">
-                    <span class="user-name">Carlos Oliveira</span> curtiu sua publicação.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Notificação de Comentário -->
-              <div class="notification-item" *ngIf="notification.type === 'COMMENT_LIKE'">
-                <img class="user-avatar" src="path/to/ana-profile.jpg" alt="Ana Costa">
-                <div class="notification-content">
-                  <div class="notification-text">
-                    <span class="user-name">Ana Costa</span> comentou na sua publicação:
-                    <span class="comment-text">"Ótimo trabalho!"</span>
-                  </div>
-                </div>
-              </div>
-
               <!-- Notificação de Início de Competição -->
               <div class="notification-item" *ngIf="notification.type === 'COMPETITION_STARTED'">
                 <div class="notification-icon">
@@ -155,6 +134,51 @@
                     <button class="decline-button" title="Recusar">
                       <i class="fas fa-times"></i>
                     </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notificação de Remoção de Participante da Competição -->
+              <div class="notification-item" *ngIf="notification.type === 'COMPETITION_PARTICIPANT_REMOVED'">
+                <div class="notification-icon">
+                  <i class="fas fa-user-minus"></i>
+                </div>
+                <div class="notification-content">
+                  <div class="notification-text">
+                    Você foi removido da competição <span class="notification-title">{{ notification.competition.title }}</span>.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notificação de Desclassificação da Competição -->
+              <div class="notification-item" *ngIf="notification.type === 'COMPETITION_DISQUALIFIED'">
+                <div class="notification-icon">
+                  <i class="fas fa-ban"></i>
+                </div>
+                <div class="notification-content">
+                  <div class="notification-text">
+                    Você foi desclassificado da competição <span class="notification-title">{{ notification.competition.title }}</span>.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notificação de Like -->
+              <div class="notification-item" *ngIf="notification.type === 'POST_LIKE'">
+                <img class="user-avatar" src="path/to/carlos-profile.jpg" alt="Carlos Oliveira">
+                <div class="notification-content">
+                  <div class="notification-text">
+                    <span class="user-name">Carlos Oliveira</span> curtiu sua publicação.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notificação de Comentário -->
+              <div class="notification-item" *ngIf="notification.type === 'COMMENT_LIKE'">
+                <img class="user-avatar" src="path/to/ana-profile.jpg" alt="Ana Costa">
+                <div class="notification-content">
+                  <div class="notification-text">
+                    <span class="user-name">Ana Costa</span> comentou na sua publicação:
+                    <span class="comment-text">"Ótimo trabalho!"</span>
                   </div>
                 </div>
               </div>
