@@ -21,8 +21,8 @@
                 </button>
                 <div class="dropdown" *ngIf="feed.isAdminMenuOpen">
                     <a [routerLink]="['/blog/view', feed.blogId]">Saiba Mais</a> 
-                    <a [routerLink]="['/blog', feed.blogId]">Editar</a> 
-                    <a (click)="onDeleteBlog(feed)" style="cursor: pointer;">Delete</a>
+                    <a [routerLink]="['/blog', feed.blogId]" *ngIf="isSuperAdmin">Editar</a> 
+                    <a (click)="onDeleteBlog(feed)" style="cursor: pointer;" *ngIf="isSuperAdmin">Delete</a>
                 </div>
             </div>
 

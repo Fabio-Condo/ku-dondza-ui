@@ -23,7 +23,7 @@
                         class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
                     <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
-                    <a (click)="onAddNewCompetition(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                    <a (click)="onAddNewCompetition(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
                                 <p class="details">Disciplina: <span class="text-muted">{{ competition.subject.name }}</span></p>
                                 <p class="details">Dificuldade: <span class="text-muted">{{ competition.difficultyLevel }}</span></p>
                             </div>
-                            <div class="dropdown-container">
+                            <div class="dropdown-container" *ngIf="isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(competition)"><i
                                         class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="competition.isAdminMenuOpen">

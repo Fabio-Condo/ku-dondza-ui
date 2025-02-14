@@ -11,6 +11,7 @@ import { BlogLikeService } from 'src/app/core/blog-likes/blog-like.service';
 import { UserService } from 'src/app/users/user.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-list-blog',
@@ -176,6 +177,18 @@ export class ListBlogComponent implements OnInit {
   deleteConfirmDialog(blog: Blog) {
     this.deleteBlog(blog);
     this.closeDeleteConfirmDialog();
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

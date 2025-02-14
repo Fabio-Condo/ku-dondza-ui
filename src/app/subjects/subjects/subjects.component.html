@@ -20,7 +20,7 @@
                 <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
                     <a (click)="isDropdownOpen = !isDropdownOpen">Filtrar</a>
-                    <a (click)="onAddNewSubject(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                    <a (click)="onAddNewSubject(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                                 <p class="title">{{ subject.name }}</p>
                                 <p class="details">12 tópicos</p>
                             </div>
-                            <div class="dropdown-container">
+                            <div class="dropdown-container" *ngIf="isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
                                     <a (click)="onUpdateSubject(subject); closeDropdown(subject)">Editar</a>

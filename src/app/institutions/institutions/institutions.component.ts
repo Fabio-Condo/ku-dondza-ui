@@ -5,6 +5,8 @@ import { Institution } from 'src/app/core/model/Institution';
 import { InstitutionService } from '../InstitutionService.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-institutions',
@@ -24,7 +26,6 @@ export class InstitutionsComponent implements OnInit {
   totalInstitutions: number = 0;
   displayModalFilter: boolean = false;
 
-  isAdmin: boolean = false;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
@@ -48,6 +49,7 @@ export class InstitutionsComponent implements OnInit {
 
   constructor(
     private institutionService: InstitutionService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
@@ -274,6 +276,18 @@ export class InstitutionsComponent implements OnInit {
     this.filtro.itensPorPagina = 10;
     this.filtro.ordenamento = "id,desc"
     this.findAll();
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

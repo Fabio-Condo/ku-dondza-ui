@@ -24,7 +24,7 @@
                 <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
                     <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
-                    <a (click)="onAddNewInstitution(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                    <a (click)="onAddNewInstitution(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
                                 <p class="details">Tipo de administração: <span class="text-muted">{{
                                         getAdministrationTypeValue(institution.administrationType) }}</span></p>        
                             </div>
-                            <div class="dropdown-container">
+                            <div class="dropdown-container" *ngIf="isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(institution)"><i class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="institution.isAdminMenuOpen">
                                     <a (click)="onUpdateInstitution(institution.id, institution.name, institution.acronym, institution.type, institution.administrationType, institution.address, institution.description, institution.website, file); closeDropdown(institution)">Editar</a>

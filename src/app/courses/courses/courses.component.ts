@@ -9,6 +9,8 @@ import { InstitutionService } from 'src/app/institutions/InstitutionService.serv
 import { CourseService } from '../courseService.service';
 import { CourseRequirement } from 'src/app/core/model/CourseRequirement';
 import { Institution } from 'src/app/core/model/Institution';
+import { Role } from 'src/app/enum/role.enum';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-courses',
@@ -26,7 +28,6 @@ export class CoursesComponent implements OnInit {
   displayModalFilter: boolean = false;
   displayModalView: boolean = false;
   isDropdownOpen: boolean = false;
-  isAdmin: boolean = false;
 
   // Dados dos cursos
   courses: Course[] = [];
@@ -61,6 +62,7 @@ export class CoursesComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private institutionService: InstitutionService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
@@ -288,6 +290,18 @@ export class CoursesComponent implements OnInit {
     this.requirement = this.cloneRequirement(requirement);
     this.showRequirementForm = true;
     this.requirementIndex = index;
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

@@ -24,7 +24,7 @@
         <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
         <div class="dropdown" *ngIf="isDropdownOpen">
           <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
-          <a (click)="onAddNewExame(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+          <a (click)="onAddNewExame(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
                 </p>
               </div>
 
-              <div class="dropdown-container">
+              <div class="dropdown-container"  *ngIf="isSuperAdmin">
                 <button class="dropdown-btn" (click)="toggleDropdown(exam)"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
                   <a

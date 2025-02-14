@@ -8,6 +8,8 @@ import { SubjectFilter } from 'src/app/core/interface/SubjectFilter';
 import { TopicService } from 'src/app/topics/topicsService.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { NgForm } from '@angular/forms';
+import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-subjects',
@@ -28,7 +30,6 @@ export class SubjectsComponent implements OnInit {
   displayModalFilter: boolean = false;
   displayModalView: boolean = false;
   isDropdownOpen: boolean = false;
-  isAdmin: boolean = false;
 
   // Paginação
   currentPage: number = 1;
@@ -42,6 +43,7 @@ export class SubjectsComponent implements OnInit {
   constructor(
     private subjectsService: SubjectsService,
     private topicService: TopicService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
@@ -227,6 +229,18 @@ export class SubjectsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

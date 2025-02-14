@@ -34,7 +34,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   profileImageFile!: File;
-  
+
   users: User[] = [];
   currentPage: number = 1;
   totalUsersRecord: number = 0
@@ -161,7 +161,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.profileImageFile = event.target.files[0];
   }
 
-  getUsersSearch(pagina: number = 0){
+  getUsersSearch(pagina: number = 0) {
     this.showLoading = true;
     this.filtroUsers.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.userService.search(this.filtroUsers).subscribe(
@@ -256,7 +256,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getUsersSearch();
   }
 
-  
+
   changePageSizeFriends(event: any): void {
     this.filtroFriends.itemsPerPage = +event.target.value;
     this.currentPageFriends = 1; // Resetar para a primeira página ao mudar o número de itens por página
@@ -306,7 +306,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   totalPagesFriends(): number {
     return Math.ceil(this.totalFriendsRecord / this.filtroFriends.itemsPerPage);
   }
-  
+
   // Friend Requests
   previousPageFriendRequests(): void {
     if (this.currentPageFriendRequests > 1) {
@@ -314,14 +314,14 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.getCurrentUserFriendRequests();
     }
   }
-  
+
   nextPageFriendRequests(): void {
     if (this.currentPageFriendRequests < this.totalPages()) {
       this.currentPageFriendRequests++;
       this.getCurrentUserFriendRequests();
     }
   }
-  
+
   totalPagesFriendRequests(): number {
     return Math.ceil(this.totalFriendRequestRecord / this.filtroFriendRequests.itemsPerPage);
   }
@@ -335,32 +335,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.exbindoFormularioSettingsUser = true;
   }
 
-  get isAdmin(): boolean {
-    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  get isSuperAdmin(): boolean {
-    return this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  private getUserRole(): string {
-    return this.authenticationService.getUserFromLocalCache().role;
-  }
-
-  private sendNotification(message: string): void {
-    if (message) {
-      this.messageService.add({ severity: 'error', detail: message });
-    } else {
-      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
-    }
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   changeStatusActive(user: User): void {
-    const newStatus = !user.active;3
+    const newStatus = !user.active; 3
 
     this.userService.changeStatusActive(user.username, newStatus).subscribe(
       () => {
@@ -390,7 +370,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.getCurrentUserFriendRequests(this.filtroFriendRequests).subscribe(
       (dados: IApiResponse<User>) => {
         this.friendRequests = [...this.friendRequests, ...dados.content];
-        this.totalFriendRequestRecord = dados.totalElements;    
+        this.totalFriendRequestRecord = dados.totalElements;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -598,6 +578,26 @@ export class UsersComponent implements OnInit, OnDestroy {
         return 'info';
     }
     return '';
+  }
+
+  get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  private sendNotification(message: string): void {
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
   }
 
   private sendErrorNotification(message: string): void {

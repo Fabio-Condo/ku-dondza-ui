@@ -15,6 +15,7 @@ import { Topic } from 'src/app/core/model/Topic';
 import { TopicService } from 'src/app/topics/topicsService.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-competitions',
@@ -30,7 +31,6 @@ export class CompetitionsComponent implements OnInit {
   totalCompetitions: number = 0;
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
-  isAdmin: boolean = false;
   displayModalFilter: boolean = false;
 
   generateQuestions: boolean = false;
@@ -426,6 +426,18 @@ export class CompetitionsComponent implements OnInit {
 
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

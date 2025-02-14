@@ -11,6 +11,7 @@ import { User } from 'src/app/core/model/User';
 import { QuestionService } from 'src/app/questions/question.service';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-online-courses',
@@ -29,7 +30,6 @@ export class OnlineCoursesComponent implements OnInit {
   file!: File;
   totalCourses: number = 0;
   displayModalFilter: boolean = false;
-  isAdmin: boolean = false;
   users: User[] = [];
 
   selectedCourse: OnlineCourse = new OnlineCourse();
@@ -322,6 +322,18 @@ export class OnlineCoursesComponent implements OnInit {
 
   onFilter(): void {
     this.displayModalFilter = true;
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

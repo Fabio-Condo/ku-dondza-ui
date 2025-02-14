@@ -6,8 +6,10 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { TopicFilter } from 'src/app/core/interface/TopicFilter';
 import { Subject } from 'src/app/core/model/Subject';
 import { Topic } from 'src/app/core/model/Topic';
+import { Role } from 'src/app/enum/role.enum';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { TopicService } from 'src/app/topics/topicsService.service';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-topics',
@@ -28,7 +30,6 @@ export class TopicsComponent implements OnInit {
   displayModalFilter: boolean = false;
   displayModalView: boolean = false;
   isDropdownOpen: boolean = false;
-  isAdmin: boolean = false;
 
   // Paginação
   currentPage: number = 1;
@@ -42,6 +43,7 @@ export class TopicsComponent implements OnInit {
   constructor(
     private topicService: TopicService,
     private subjectsService: SubjectsService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
@@ -222,6 +224,18 @@ export class TopicsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

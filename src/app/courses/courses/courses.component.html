@@ -20,7 +20,7 @@
                 <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
                     <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
-                    <a (click)="onAddNewCourse(); isDropdownOpen = !isDropdownOpen">Adicionar</a>
+                    <a (click)="onAddNewCourse(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
                 </div>
             </div>
         </div>
@@ -37,11 +37,11 @@
                                 <p class="details">Instituição: <span class="text-muted">{{ course.institution.name }}</span></p>
                                 <p class="details">Duração: <span class="text-muted">{{ course.duration }}</span></p>
                             </div>
-                            <div class="dropdown-container">
+                            <div class="dropdown-container" *ngIf="isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="course.isAdminMenuOpen">
                                     <a (click)="onUpdateCourse(course); closeDropdown(course)">Editar</a>
-                                    <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
+                                    <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
                                 </div>
                             </div>
                             <div class="button-container">

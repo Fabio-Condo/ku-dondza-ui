@@ -40,8 +40,8 @@
                 <button class="dropdown-btn" (click)=" isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
                 <div class="dropdown" *ngIf="isDropdownOpen">
                     <a>Filtrar</a>
-                    <a (click)="prepararNovoUser();  isDropdownOpen = !isDropdownOpen">Adicionar</a>
-                    <a (click)="prepararUserSettings();  isDropdownOpen = !isDropdownOpen">Reset password</a>
+                    <a (click)="prepararNovoUser(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
+                    <a (click)="prepararUserSettings(); isDropdownOpen = !isDropdownOpen"  *ngIf="isAdmin">Reset password</a>
                 </div>
             </div>
 
@@ -159,7 +159,7 @@
                                 </p>
                                 <p class="username text-muted">12 mutual friends</p>
                             </div>
-                            <div class="dropdown-container">
+                            <div class="dropdown-container" *ngIf="isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(user)"><i class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="user.isAdminMenuOpen">
                                     <a (click)="onEditUser(user); closeDropdown(user)">Editar</a>

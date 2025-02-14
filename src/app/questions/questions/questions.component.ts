@@ -13,6 +13,8 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { Topic } from 'src/app/core/model/Topic';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Role } from 'src/app/enum/role.enum';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 declare const MathJax: any;
 
 @Component({
@@ -30,7 +32,6 @@ export class QuestionsComponent implements OnInit {
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   question: Question = new Question();
-  isAdmin: boolean = false;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   answer?: Answer;
@@ -71,6 +72,7 @@ export class QuestionsComponent implements OnInit {
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
     private topicService: TopicService,
+    private authenticationService: AuthenticationService,
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -379,6 +381,18 @@ export class QuestionsComponent implements OnInit {
     this.filtro.subject = undefined;
     this.filtro.topic = undefined;
     this.findAll();
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

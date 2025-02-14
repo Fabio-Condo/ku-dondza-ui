@@ -9,6 +9,8 @@ import { InstitutionService } from 'src/app/institutions/InstitutionService.serv
 import { Subject } from 'src/app/core/model/Subject';
 import { Institution } from 'src/app/core/model/Institution';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-exames',
@@ -28,7 +30,6 @@ export class ExamesComponent implements OnInit {
   displayModalFilter: boolean = false;
   institutions: Institution[] = [];
   subjects: Subject[] = [];
-  isAdmin: boolean = false;
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -59,6 +60,7 @@ export class ExamesComponent implements OnInit {
     private examesService: ExamesService,
     private institutionService: InstitutionService,
     private subjectsService: SubjectsService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
@@ -337,6 +339,18 @@ export class ExamesComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

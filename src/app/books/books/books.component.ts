@@ -7,6 +7,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Role } from 'src/app/enum/role.enum';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-books',
@@ -25,7 +27,6 @@ export class BooksComponent implements OnInit {
   totalbooks: number = 0;
   displayModalFilter: boolean = false;
   subjects: Subject[] = [];
-  isAdmin: boolean = false;
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -40,6 +41,7 @@ export class BooksComponent implements OnInit {
   constructor(
     private booksService: BooksService,
     private subjectsService: SubjectsService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) { }
@@ -266,6 +268,19 @@ export class BooksComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {
