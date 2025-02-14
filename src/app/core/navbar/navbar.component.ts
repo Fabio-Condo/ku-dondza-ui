@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
   notifications: Notification[] = [];
   isPopoutVisible = false;
   isMenuActive = false; // Controla a exibição do menu
+  unreadNotificationsCount: number = 0;
   
 
   constructor(
@@ -40,6 +41,7 @@ export class NavbarComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.loadNotifications();
+    this.loadUnreadNotificationsCount();
   }
 
   goToProfile() {
@@ -65,9 +67,8 @@ export class NavbarComponent implements OnInit {
       (results: IApiResponse<SearchResultDTO>) => {
         this.results = results.content;
       },
-      error => {
-        this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Erro ao realizar a busca'});
-        console.error('Erro ao realizar a busca', error);
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
       }
     );
   }
@@ -83,12 +84,34 @@ export class NavbarComponent implements OnInit {
     );
   }
 
+  loadUnreadNotificationsCount(): void {
+    this.notificationService.getUnreadNotificationsCount(this.loggedUser.id).subscribe(
+      (count) => {
+        this.unreadNotificationsCount = count;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
   markAsRead(notificationId: number): void {
     this.notificationService.markAsRead(notificationId).subscribe(() => {
       this.notifications = this.notifications.filter(n => n.id !== notificationId);
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  markAllAsRead(): void {
+    this.notificationService.markAllNotificationsAsRead(this.loggedUser.id).subscribe(
+      () => {
+        this.unreadNotificationsCount = 0;
+      },
+      (error) => {
+        console.error('Erro ao marcar todas as notificações como lidas', error);
       }
     );
   }

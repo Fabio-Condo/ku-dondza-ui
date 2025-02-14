@@ -188,9 +188,9 @@
         </div>
 
 
-        <button *ngIf="isUserLoggedIn" (click)="togglePopout()" class="menu-icon">
+        <button *ngIf="isUserLoggedIn" (click)="togglePopout(); markAllAsRead()" class="menu-icon">
           <i class="fas fa-bell"></i>
-          <span class="notification-count">3</span>
+          <span class="notification-count" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
         </button>
 
         <button *ngIf="isUserLoggedIn" (click)="toggleMenu()" class="menu-icon">
