@@ -39,6 +39,12 @@ export class CompetitionQuestionsComponent implements OnInit {
   answers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
 
+  friends: User[] = [];
+  currentPageFriends: number = 1;
+  totalFriendsRecord: number = 0
+  showFriendsDialog: boolean = false;
+
+
   // Armazenar as respostas do usuário
   //userAnswers: { questionId: number; answerId: number }[] = [];
   //correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
@@ -79,9 +85,16 @@ export class CompetitionQuestionsComponent implements OnInit {
     sort: 'id,asc',
   }
 
+  filtroFriends: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'firstName,asc',
+  }
+
   constructor(
     private competitionService: CompetitionService,
     private submissionService: SubmissionService,
+    private userService: UserService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -358,6 +371,38 @@ export class CompetitionQuestionsComponent implements OnInit {
     }
   }
 
+  sendParticipationInvite(friend: User) {
+    this.competitionService.sendParticipationInvite(this.competition.id, friend.id).subscribe(
+      (response) => {
+        //competition.requestedParticipation = true;
+        // Adiciona o novo user à lista de pedidos de participação
+        //this.competition.participationRequests.push(this.loggedUser);
+        //this.selectedCompetition.requestedParticipation = true;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
+  }
+
+  getUserFriends(): void {
+    this.filtroFriends.page++;
+    this.userService.getCurrentUserFriends(this.filtroFriends).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.friends = [...this.friends, ...dados.content];
+        this.totalFriendsRecord = dados.totalElements
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  onShowFriends() {
+    this.getUserFriends();
+    this.showFriendsDialog = true;
+  }
+
   displayResults() {
     const message = `Você acertou ${this.result.correctAnswers} resposta(s) e errou ${this.result.incorrectAnswers} resposta(s).`;
     this.messageService.add({ severity: 'info', detail: message });
@@ -516,6 +561,19 @@ export class CompetitionQuestionsComponent implements OnInit {
       if (mathContainer && typeof MathJax !== 'undefined') {
         // Força a recriação do conteúdo do contêiner
         mathContainer.innerHTML = `\\[${this.competition.questions[this.currentQuestionIndex].text}\\]`;
+
+        // Renderiza as expressões matemáticas
+        MathJax.typesetPromise().then(() => {
+          console.log('MathJax renderizado com sucesso!');
+        }).catch((err: any) => {
+          console.error('Erro ao renderizar MathJax:', err);
+        });
+      }
+
+      const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
+      if (mathContainerSolution && typeof MathJax !== 'undefined') {
+        // Força a recriação do conteúdo do contêiner
+        mathContainerSolution.innerHTML = `\\[${this.competition.questions[this.currentQuestionIndex].solution}\\]`;
 
         // Renderiza as expressões matemáticas
         MathJax.typesetPromise().then(() => {

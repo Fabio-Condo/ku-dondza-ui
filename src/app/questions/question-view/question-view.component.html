@@ -28,6 +28,22 @@
         </div>
     </div>
 
+    <h2 class="options-title">Como Resolver</h2>
+
+    <!-- Explicação da resolução -->
+    <div class="solution-section" *ngIf="showSolution">
+        <!--<h2 class="solution-title">Solução</h2>-->
+        <div class="solution-content">
+            <p class="solution-text" *ngIf="question.text && !showLatexLoading">
+                \[{{ question.solution }}\]
+            </p>
+            <div class="loading-indicator" *ngIf="question.text && showLatexLoading">
+                <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
+                Carregando Latex...
+            </div>
+        </div>
+    </div>
+
     <h2 class="options-title">Estatísticas</h2>
 
     <div class="statistics-container">
@@ -133,23 +149,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-        <!-- Explicação da resolução -->
-    <div class="solution-section" *ngIf="showSolution">
-        <h2 class="solution-title">Como Resolver</h2>
-        <div class="solution-content">
-            <p class="solution-text">
-                \[{{ question.solution }}\]
-            </p>
-        </div>
-    </div>
-
-    <!-- Botão para mostrar/ocultar a solução -->
-    <div class="solution-toggle">
-        <button (click)="toggleSolution()" class="toggle-button">
-            {{ showSolution ? 'Ocultar Solução' : 'Mostrar Solução' }}
-        </button>
     </div>
     
 </div>

@@ -60,7 +60,7 @@ body {
 /* Cartão de perguntas */
 .question-card {
   border-radius: 12px;
-  padding: 20px;
+  padding: 15px;
   margin-bottom: 20px;
   background-color: white;
   /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
@@ -210,7 +210,7 @@ body {
 
 /* Estilos da Tela de Resultados */
 .results-screen {
-  padding: 20px;
+  padding: 15px;
   background-color: #f9f9f9;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -219,7 +219,7 @@ body {
 .results-summary {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
   background-color: white;
   border-radius: 12px;
   /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
@@ -597,7 +597,7 @@ body {
 /* Página de Detalhes da Competição */
 .competition-details {
   background: var(--color-secondary);
-  padding: 10px 15px;
+  padding: 15px 15px;
   border-radius: 15px;
   /*box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);*/
   width: 100%;
@@ -1079,6 +1079,60 @@ body {
   }
 }
 
+/* Container da solução com efeito glassmorphism */
+.solution-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.solution-container:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Textarea ou div da solução */
+.solution-text {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  resize: none;
+  /* Impede o redimensionamento manual */
+  min-height: 100px;
+  /* Altura mínima inicial */
+  overflow-y: auto;
+  /* Adiciona scroll se necessário */
+  transition: border-color 0.3s ease;
+}
+
+.solution-text.scrollable {
+  max-height: 200px;
+  /* Altura máxima com scroll */
+  overflow-y: auto;
+  /* Scroll vertical */
+}
+
+.solution-text:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  /* Cor primária ao focar */
+}
+
+/*  For small tablets and mobile phones */
+@media screen and (max-width: 992px) {
+  .title {
+      padding: 0px;
+  }
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .question-text {
@@ -1180,10 +1234,6 @@ body {
 
 /* Responsividade */
 @media screen and (max-width: 768px) {
-  .competition-details {
-    padding: 20px;
-  }
-
   .competition-description {
     font-size: 0.75rem;
   }

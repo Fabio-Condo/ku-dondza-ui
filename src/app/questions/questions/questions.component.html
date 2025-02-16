@@ -35,14 +35,9 @@
                         <div class="card-content">
                             <div class="content">
 
-                                <p class="title">{{ question.topic.name }}</p>
-                                <p class="details">{{ question.topic.subject.name }}</p>
-                                <p class="details">{{ question.difficultyLevel }}</p>
-                                
-                                <!-- Renderiza o texto da questão como expressão matemática -->
-                                <p *ngIf="question.text">
-                                    \[{{ question.text }}\]
-                                </p>   
+                                <p class="title">{{ question.topic.subject.name }}</p>
+                                <p class="details">{{ question.topic.name }}</p>
+                                <p class="details">{{ question.difficultyLevel }}</p> 
 
                             </div>
                             <div class="dropdown-container" *ngIf="isSuperAdmin">
@@ -55,7 +50,11 @@
                             <div class="button-container">
                                 <button class="btn btn-primary" [routerLink]="['/questions', question.questionId]">Ver</button>
                             </div>
+
                         </div>
+                        <p *ngIf="question.text">
+                            \[{{ question.text }}\]
+                        </p>  
                     </div>
                 </td>
             </tr>

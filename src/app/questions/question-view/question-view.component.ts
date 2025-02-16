@@ -29,6 +29,7 @@ export class QuestionViewComponent implements OnInit {
   quizQuestionStatistics: QuizQuestionStatisticsDTO = new QuizQuestionStatisticsDTO();
 
   showLoading: boolean = false;
+  showLatexLoading: boolean = false;
 
   quizzes: Quiz[] = [];
   displayModalViewQuizzes: boolean = false;
@@ -43,7 +44,7 @@ export class QuestionViewComponent implements OnInit {
   currentPageCompetitions: number = 1;
 
 
-  showSolution: boolean = false;
+  showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
 
   quizFilter: QuizFilter = {
@@ -172,9 +173,11 @@ export class QuestionViewComponent implements OnInit {
 
   // Método para renderizar expressões matemáticas
   renderMathExpressions(): void {
+    this.showLatexLoading = true;
     setTimeout(() => {
       MathJax.typesetPromise();
     }, 0);
+    this.showLatexLoading = false;
   }
 
   // Método para alternar a visibilidade da solução

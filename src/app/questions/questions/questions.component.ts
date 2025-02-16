@@ -152,9 +152,11 @@ export class QuestionsComponent implements OnInit {
 
   // Método para renderizar expressões matemáticas
   renderMathExpressions(): void {
+    this.showLoading = true;
     setTimeout(() => {
       MathJax.typesetPromise();
     }, 0);
+    this.showLoading = false;
   }
 
   // Método de carregamento de questões

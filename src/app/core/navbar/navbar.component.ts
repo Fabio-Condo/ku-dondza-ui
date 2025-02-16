@@ -122,8 +122,8 @@ export class NavbarComponent implements OnInit {
   }
 
   togglePopout() {
-    this.isPopoutVisible = !this.isPopoutVisible;
-    this.isMenuActive = false;
+    //this.isPopoutVisible = !this.isPopoutVisible;
+    //this.isMenuActive = false;
   }
 
   private sendErrorNotification(message: string): void {

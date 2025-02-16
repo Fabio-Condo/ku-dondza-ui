@@ -109,6 +109,12 @@
         <br>
         <br>
 
+        <div class="button-container">
+            <button class="btn-start" (click)="onShowFriends()">
+                Convidar amigos
+            </button>
+        </div>
+
         <div class="tab-header" style="margin-top: 50px; margin-bottom: 40px;">
             <div class="tab-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
                 Participantes
@@ -231,9 +237,20 @@
 
                 <!-- Botão para marcar como não respondida -->
                 <button class="btn" style="background: transparent; color: black;"
-                    (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)" [disabled]="showCorrection">
+                    (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)" *ngIf="!showCorrection">
                     Não Responder
                 </button>
+
+                <!-- Input para mostrar a solução -->
+                <div class="solution-container" *ngIf="showCorrection">
+                    <div class="solution-input">
+                    <label for="solution">Explicação:</label>
+                    <div id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
+                        *ngIf="questions[currentQuestionIndex].solution">
+                        \[{{ questions[currentQuestionIndex].solution }}\]
+                    </div>
+                    </div>
+                </div>
             </div>
 
             <div class="navigation-buttons text-center">
@@ -399,4 +416,27 @@
         </div>
     </div>
 
+</div>
+
+<div class="overlay" *ngIf="showFriendsDialog">
+    <div class="dialog">
+        <div class="dialog-header">
+            <h4>Seus Amigos</h4>
+            <button class="close-btn" (click)="showFriendsDialog = false">&times;</button>
+        </div>
+
+        <hr class="header-divider">
+
+        <div class="participants-list" role="list" *ngFor="let friend of friends">
+            <!-- Card de Participante -->
+            <div class="participant-card" role="listitem">
+                <img src="{{friend.profileImageUrl}}" alt="Avatar do João Silva" class="participant-avatar">
+                <div class="participant-info">
+                    <p class="participant-name">{{ friend.firstName }} {{ friend.lastName }}</p>
+                    <p class="participant-status">Confirmado</p>
+                </div>
+                <button class="btn-details" (click)="sendParticipationInvite(friend)">Convidar</button>
+            </div>
+        </div>
+    </div>
 </div>

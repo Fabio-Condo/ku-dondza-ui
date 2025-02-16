@@ -55,7 +55,7 @@ body {
 /* Cartão de perguntas */
 .question-card {
   border-radius: 12px;
-  padding: 20px;
+  padding: 15px;
   margin-bottom: 20px;
   background-color: white;
   /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
@@ -653,6 +653,53 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Container da solução com efeito glassmorphism */
+.solution-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.solution-container:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Textarea ou div da solução */
+.solution-text {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  resize: none;
+  /* Impede o redimensionamento manual */
+  min-height: 100px;
+  /* Altura mínima inicial */
+  overflow-y: auto;
+  /* Adiciona scroll se necessário */
+  transition: border-color 0.3s ease;
+}
+
+.solution-text.scrollable {
+  max-height: 200px;
+  /* Altura máxima com scroll */
+  overflow-y: auto;
+  /* Scroll vertical */
+}
+
+.solution-text:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  /* Cor primária ao focar */
 }
 
 /* Responsividade */

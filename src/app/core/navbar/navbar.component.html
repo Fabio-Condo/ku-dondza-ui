@@ -76,6 +76,19 @@
                 </div>
               </div>
 
+              <!-- Notificação de Pedido de Amizade Aceito -->
+              <div class="notification-item" *ngIf="notification.type === 'FRIEND_ACCEPTED_RECEIVER'">
+                <img class="user-avatar" [src]="notification.sender.profileImageUrl"
+                  [alt]="notification.sender.firstName">
+                <div class="notification-content">
+                  <div class="notification-text">
+                    Agora você e 
+                    <span class="user-name">{{ notification.sender.firstName }} {{ notification.sender.lastName
+                      }}</span> são amigos!
+                  </div>
+                </div>
+              </div>
+
               <!-- Notificação de Início de Competição -->
               <div class="notification-item" *ngIf="notification.type === 'COMPETITION_STARTED'">
                 <div class="notification-icon">
@@ -124,9 +137,10 @@
                 <img class="user-avatar" src="path/to/ana-profile.jpg" alt="Ana Costa">
                 <div class="notification-content">
                   <div class="notification-text">
-                    <span class="user-name">Ana Costa</span> convidou você para participar da competição
-                    <span class="notification-title">Hackathon 2023</span>.
-                  </div>
+                          <span class="user-name">{{ notification.sender.firstName }} {{ notification.sender.lastName }}</span> 
+                          convidou você para participar da competição
+                          <span class="notification-title">{{ notification.competition.title }}</span>.
+                      </div>
                   <div class="notification-actions">
                     <button class="accept-button" title="Aceitar">
                       <i class="fas fa-check"></i>
@@ -188,7 +202,7 @@
         </div>
 
 
-        <button *ngIf="isUserLoggedIn" (click)="togglePopout(); markAllAsRead()" class="menu-icon">
+        <button *ngIf="isUserLoggedIn" (click)="togglePopout();" class="menu-icon" routerLink="/notifications">
           <i class="fas fa-bell"></i>
           <span class="notification-count" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
         </button>

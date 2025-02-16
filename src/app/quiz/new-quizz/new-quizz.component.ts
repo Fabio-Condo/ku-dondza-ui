@@ -337,6 +337,19 @@ export class NewQuizzComponent implements OnInit {
           console.error('Erro ao renderizar MathJax:', err);
         });
       }
+
+      const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
+      if (mathContainerSolution && typeof MathJax !== 'undefined') {
+        // Força a recriação do conteúdo do contêiner
+        mathContainerSolution.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].solution}\\]`;
+
+        // Renderiza as expressões matemáticas
+        MathJax.typesetPromise().then(() => {
+          console.log('MathJax renderizado com sucesso!');
+        }).catch((err: any) => {
+          console.error('Erro ao renderizar MathJax:', err);
+        });
+      }
     }, 0);
   }
 

@@ -6,6 +6,8 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { CompetitionService } from 'src/app/competitions/competition.service';
+import { Competition } from 'src/app/core/model/Competition';
 
 
 @Component({
@@ -22,6 +24,7 @@ export class NotificationsComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
+    private competitionService: CompetitionService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
   ) { }
@@ -52,6 +55,17 @@ export class NotificationsComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  acceptParticipationInvite(competition: Competition, friend: User) {
+    this.competitionService.acceptParticipationInvite(competition.id, friend.id).subscribe(
+      (response) => {
+
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    )
   }
 
   setActiveTab(tabIndex: number) {

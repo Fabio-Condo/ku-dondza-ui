@@ -166,6 +166,14 @@ export class CompetitionService {
         return this.http.delete<void>(`${this.host}/${competitionId}/reject-participation-requests/${userId}`);
     }
 
+    sendParticipationInvite(competitionId: number, userId: number): Observable<void> {
+        return this.http.post<void>(`${this.host}/${competitionId}/send-participation-invite/${userId}`, {});
+    }
+
+    acceptParticipationInvite(competitionId: number, userId: number): Observable<Competition> {
+        return this.http.post<Competition>(`${this.host}/${competitionId}/accept-participation-invite/${userId}`, {});
+    }
+
     // Método para inicializar a competição
     initCompetition(competitionId: number): Observable<void> {
         return this.http.put<void>(`${this.host}/${competitionId}/init`, null);

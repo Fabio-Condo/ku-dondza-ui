@@ -124,9 +124,21 @@
 
         <!-- Botão para marcar como não respondida -->
         <button class="btn" style="background: transparent; color: black;" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
-          [disabled]="showCorrection">
+          *ngIf="!showCorrection">
           Não Responder
         </button>
+
+        <!-- Input para mostrar a solução -->
+        <div class="solution-container" *ngIf="showCorrection">
+          <div class="solution-input">
+            <label for="solution">Explicação:</label>
+            <div id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
+              *ngIf="questions[currentQuestionIndex].solution">
+              \[{{ questions[currentQuestionIndex].solution }}\]
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="navigation-buttons text-center">
