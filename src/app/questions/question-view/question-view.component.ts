@@ -49,6 +49,8 @@ export class QuestionViewComponent implements OnInit {
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
 
+  mathExpressions: string[] = ['x*x', 'Math.sin(x)', 'Math.cos(x)']; // Lista de expressões
+
   //mathExpression: string = '';
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
@@ -95,9 +97,8 @@ export class QuestionViewComponent implements OnInit {
         this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
 
-        // Adiciona lógica para garantir que o canvas esteja pronto
-        if (this.question.mathExpression.trim()) {
-          this.renderFunction();
+        if(this.question.mathExpressions.length > 0){
+          this.renderFunctions();
         }
 
       },
@@ -198,73 +199,65 @@ export class QuestionViewComponent implements OnInit {
     this.renderMathExpressions();
   }
 
-  renderFunction() {
-    const canvas: HTMLCanvasElement = this.canvas?.nativeElement;
-    if (!canvas || !this.question?.mathExpression?.trim()) {
-      return; // Não renderiza se o canvas ou a expressão não estiverem disponíveis
-    }
-  
+  renderFunctions() {
+    const canvas = this.canvas?.nativeElement;
+    if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
+
     const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      return; // Não renderiza se o contexto não for obtido
-    }
-  
+    if (!ctx) return;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
     const width = canvas.width;
     const height = canvas.height;
-  
-    // Ajuste dinâmico das escalas
     const scaleX = width / 20;
     const scaleY = height / 20;
-  
-    // Desenha os eixos X e Y
+
+    // Desenha os eixos
     ctx.beginPath();
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 1;
-  
     ctx.moveTo(0, height / 2);
-    ctx.lineTo(width, height / 2); // Eixo X
+    ctx.lineTo(width, height / 2);
     ctx.moveTo(width / 2, 0);
-    ctx.lineTo(width / 2, height); // Eixo Y
-  
+    ctx.lineTo(width / 2, height);
     ctx.stroke();
-  
+
+    // Adiciona os números nos eixos
     ctx.font = '12px Arial';
     ctx.fillStyle = 'black';
     ctx.textAlign = 'center';
-  
     for (let i = -10; i <= 10; i++) {
-      const x = width / 2 + i * scaleX;
-      const y = height / 2 - i * scaleY;
-  
+      let x = width / 2 + i * scaleX;
+      let y = height / 2 - i * scaleY;
       if (i !== 0) {
         ctx.fillText(i.toString(), x, height / 2 + 15);
         ctx.fillText(i.toString(), width / 2 - 15, y + 5);
       }
     }
-  
-    ctx.beginPath();
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
-  
-    for (let x = -10; x <= 10; x += 0.01) {
-      try {
-        let y = evaluate(this.question.mathExpression.replace(/x/g, `(${x})`));
-        let screenX = width / 2 + x * scaleX;
-        let screenY = height / 2 - y * scaleY;
-  
-        if (x === -10) ctx.moveTo(screenX, screenY);
-        else ctx.lineTo(screenX, screenY);
-      } catch (error) {
-        console.error('Erro ao avaliar expressão:', error);
+
+    // Cores para múltiplos gráficos
+    const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+    this.question.mathExpressions.forEach((express, index) => {
+      ctx.beginPath();
+      ctx.strokeStyle = colors[index % colors.length];
+      ctx.lineWidth = 2;
+
+      for (let x = -10; x <= 10; x += 0.1) {
+        try {
+          let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
+          let screenX = width / 2 + x * scaleX;
+          let screenY = height / 2 - y * scaleY;
+          if (x === -10) ctx.moveTo(screenX, screenY);
+          else ctx.lineTo(screenX, screenY);
+        } catch (error) {
+          console.error(`Erro ao avaliar ${express.expression!}:`, error);
+        }
       }
-    }
-  
-    ctx.stroke();
+      ctx.stroke();
+    });
   }
-  
-  
   
   private sendErrorNotification(message: string): void {
     if (message) {

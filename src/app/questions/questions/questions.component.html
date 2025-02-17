@@ -169,7 +169,40 @@
                     accept="image/*">
             </div>
 
-            <div class="answers-container">
+            <div class="table-container">
+                <div class="header-section">
+                    <label>Expressões Matemáticas</label>
+                    <a href="javascript:;" class="add-btn" (click)="getReadyNewMathExpression()">
+                        <i class="pi pi-plus"></i> 
+                    </a>
+                </div>
+
+                <div class="table-container">
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Expressão matemática</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let mathExpress of question.mathExpressions; let rowIndex = index">
+                                <td>{{ mathExpress.expression }}</td>
+                                <td class="actions">
+                                    <a href="javascript:;" (click)="getReadyMathExpressionEdit(mathExpress, rowIndex)" class="edit-btn">E</a>
+                                    <a href="javascript:;" (click)="onRemoveMathExpression(rowIndex)" class="remove-btn">R</a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="question.mathExpressions.length === 0">
+                                <td colspan="3" class="text-center">Sem expressões</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+
+            <div class="table-container">
                 <div class="header-section">
                     <label>Respostas</label>
                     <a href="javascript:;" class="add-btn" (click)="getReadyNewAnswer()">
@@ -227,6 +260,32 @@
                     {{ showLoading ? 'Loading...' :'Salvar' }}
                 </button>      
             </div>
+        </form>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="showMathExpressionForm && mathExpression">
+    <div class="dialog" style="width: 600px;">
+        <div class="dialog-header">
+            <h2>{{editingMathExpression ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-btn" (click)="showMathExpressionForm = false">&times;</button>
+        </div>
+    
+        <hr class="header-divider">
+  
+        <form autocomplete="off" #frmExpression="ngForm" (ngSubmit)="confirmMathExpression(frmExpression)">
+            <div class="form-group">
+                <label>Expressão</label>
+                <textarea id="expression" name="expression" ngModel #expression="ngModel" required minlength="1" 
+                    [(ngModel)]="mathExpression.expression" rows="4"></textarea> 
+            </div>     
+
+            <hr class="header-divider">
+
+            <div class="dialog-footer">
+                <button class="btn" [disabled]="frmExpression.invalid">Confirmar</button>
+            </div>
+
         </form>
     </div>
 </div>

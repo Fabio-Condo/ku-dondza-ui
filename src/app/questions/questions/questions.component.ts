@@ -15,6 +15,7 @@ import { Topic } from 'src/app/core/model/Topic';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Role } from 'src/app/enum/role.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { MathExpression } from 'src/app/core/model/MathExpression';
 declare const MathJax: any;
 
 @Component({
@@ -34,10 +35,17 @@ export class QuestionsComponent implements OnInit {
   question: Question = new Question();
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
   answer?: Answer;
   answers: Array<Answer> = [];
   showAnswerForm = false;
   answerIndex?: number;
+
+  mathExpression?: MathExpression;
+  mathExpressions: Array<MathExpression> = [];
+  showMathExpressionForm = false;
+  mathExpressionIndex?: number;
+
   fileToUpload!: File;
   subjects: Subject[] = [];
   //currentQuestionIndex: number = 0;
@@ -314,6 +322,46 @@ export class QuestionsComponent implements OnInit {
       message: 'Tem certeza que deseja remover da lista?',
       accept: () => {
         this.removeAnswer(index);
+      }
+    });
+  }
+
+  // Métodos de gerenciamento de expressoes matematicas
+  getReadyNewMathExpression() {
+    this.showMathExpressionForm = true;
+    this.mathExpression = new MathExpression();
+    this.mathExpressionIndex = this.question.mathExpressions.length;
+  }
+
+  getReadyMathExpressionEdit(mathExpression: MathExpression, index: number) {
+    this.mathExpression = this.cloneMathExpression(mathExpression);
+    this.showMathExpressionForm = true;
+    this.mathExpressionIndex = index;
+  }
+
+  confirmMathExpression(frm: NgForm) {
+    this.question.mathExpressions[this.mathExpressionIndex!] = this.cloneMathExpression(this.mathExpression!);
+    this.showMathExpressionForm = false;
+    frm.reset();
+  }
+
+  cloneMathExpression(mathExpression: MathExpression): MathExpression {
+    return new MathExpression(mathExpression.id, mathExpression.expression);
+  }
+
+  get editingMathExpression() {
+    return this.mathExpression && this.mathExpression?.id;
+  }
+
+  removeMathExpression(index: number) {
+    this.question.mathExpressions.splice(index, 1);
+  }
+
+  onRemoveMathExpression(index: number): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja remover da lista?',
+      accept: () => {
+        this.removeMathExpression(index);
       }
     });
   }
