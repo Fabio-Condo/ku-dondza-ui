@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from '../question.service';
 import { MessageService } from 'primeng/api';
@@ -15,6 +15,8 @@ import { Competition } from 'src/app/core/model/Competition';
 import { CompetitionService } from 'src/app/competitions/competition.service';
 import { CompetitionFilter } from 'src/app/core/interface/CompetitionFilter';
 declare const MathJax: any;
+import { evaluate } from 'mathjs'; //npm install mathjs
+
 
 
 @Component({
@@ -46,6 +48,10 @@ export class QuestionViewComponent implements OnInit {
 
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
+
+  //mathExpression: string = '';
+
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   quizFilter: QuizFilter = {
     page: 0,
@@ -88,6 +94,12 @@ export class QuestionViewComponent implements OnInit {
         this.getCompetitionStatisticsByQuestionId(this.question.id);
         this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
+
+        // Adiciona lógica para garantir que o canvas esteja pronto
+        if (this.question.mathExpression.trim()) {
+          this.renderFunction();
+        }
+
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {
@@ -186,6 +198,74 @@ export class QuestionViewComponent implements OnInit {
     this.renderMathExpressions();
   }
 
+  renderFunction() {
+    const canvas: HTMLCanvasElement = this.canvas?.nativeElement;
+    if (!canvas || !this.question?.mathExpression?.trim()) {
+      return; // Não renderiza se o canvas ou a expressão não estiverem disponíveis
+    }
+  
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      return; // Não renderiza se o contexto não for obtido
+    }
+  
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+    const width = canvas.width;
+    const height = canvas.height;
+  
+    // Ajuste dinâmico das escalas
+    const scaleX = width / 20;
+    const scaleY = height / 20;
+  
+    // Desenha os eixos X e Y
+    ctx.beginPath();
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
+  
+    ctx.moveTo(0, height / 2);
+    ctx.lineTo(width, height / 2); // Eixo X
+    ctx.moveTo(width / 2, 0);
+    ctx.lineTo(width / 2, height); // Eixo Y
+  
+    ctx.stroke();
+  
+    ctx.font = '12px Arial';
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'center';
+  
+    for (let i = -10; i <= 10; i++) {
+      const x = width / 2 + i * scaleX;
+      const y = height / 2 - i * scaleY;
+  
+      if (i !== 0) {
+        ctx.fillText(i.toString(), x, height / 2 + 15);
+        ctx.fillText(i.toString(), width / 2 - 15, y + 5);
+      }
+    }
+  
+    ctx.beginPath();
+    ctx.strokeStyle = 'blue';
+    ctx.lineWidth = 2;
+  
+    for (let x = -10; x <= 10; x += 0.01) {
+      try {
+        let y = evaluate(this.question.mathExpression.replace(/x/g, `(${x})`));
+        let screenX = width / 2 + x * scaleX;
+        let screenY = height / 2 - y * scaleY;
+  
+        if (x === -10) ctx.moveTo(screenX, screenY);
+        else ctx.lineTo(screenX, screenY);
+      } catch (error) {
+        console.error('Erro ao avaliar expressão:', error);
+      }
+    }
+  
+    ctx.stroke();
+  }
+  
+  
+  
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

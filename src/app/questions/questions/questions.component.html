@@ -122,15 +122,11 @@
         <hr class="header-divider">
 
         <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="save(questionForm)">
+
             <div class="form-group">
                 <label>Texto da pergunta</label>
-                <input type="text" 
-                       id="questionText" 
-                       name="text" 
-                       ngModel 
-                       required 
-                       minlength="1" 
-                       [(ngModel)]="question.text" />
+                <textarea id="text" name="text" ngModel #solution="ngModel" required minlength="1" 
+                       [(ngModel)]="question.text" rows="4"></textarea>      
             </div>
 
             <div class="form-group">
@@ -156,6 +152,12 @@
                     <option value="" disabled selected>Selecione o curso</option>
                     <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label>Expressão matématica</label>
+                <textarea id="mathExpression" name="mathExpression" ngModel #solution="ngModel" minlength="1" 
+                       [(ngModel)]="question.mathExpression" rows="4"></textarea>      
             </div>
 
             <div class="form-group">
@@ -214,7 +216,7 @@
             <div class="form-group">
                 <label for="solution">Solução</label>
                 <textarea id="solution" name="solution" ngModel #solution="ngModel" required minlength="1" 
-                    [(ngModel)]="question.solution" rows="4"></textarea>
+                    [(ngModel)]="question.solution" rows="2"></textarea>
             </div>
             
             <hr class="header-divider">

@@ -6,6 +6,7 @@ export class Question {
     id!: number;
     questionId!: string;
     text!: string;
+    mathExpression!: string;
     solution!: string;
     fileName!: string;
     urlFile!: string;
