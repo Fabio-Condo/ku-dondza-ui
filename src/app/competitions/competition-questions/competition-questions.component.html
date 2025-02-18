@@ -214,7 +214,9 @@
 
                 <img *ngIf="questions[currentQuestionIndex].urlFile" src="{{ questions[currentQuestionIndex].urlFile }}"
                     alt="Gráfico de funções" class="question-graph">
-
+                <div class="graph-container" *ngIf="!questions[currentQuestionIndex].urlFile && questions[currentQuestionIndex].mathExpressions.length > 0">
+                    <canvas #canvas width="400" height="400"></canvas>
+                </div>
                 <!-- Contêiner para expressões matemáticas -->
                 <div id="math-container-{{ currentQuestionIndex }}"
                     *ngIf="questions[currentQuestionIndex].text">

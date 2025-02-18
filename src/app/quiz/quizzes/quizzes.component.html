@@ -20,14 +20,11 @@
                 <input type="text" id="input" class="transparent-input" [(ngModel)]="filter.searchParam"
                     (ngModelChange)="getQuizzes()" placeholder="Pesquisa">
             </div>
-            <div class="dropdown-container" style="margin-left: 4px;">
-                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
-                <div class="dropdown" *ngIf="isDropdownOpen">
-                    <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
-                </div>
-            </div>
-            <button class="add-btn" [routerLink]="['/quizzes/new']">
-                <i class="pi pi-plus"></i>
+            <button class="add-new-btn" [routerLink]="['/quizzes/new']">
+                <i class="pi pi-plus"></i> Criar
+            </button>
+            <button class="filter-btn" (click)="onFilter();">
+                <i class="pi pi-filter"></i> Filtrar
             </button>
         </div>
     </div>

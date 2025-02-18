@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -16,6 +16,7 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 declare const MathJax: any;
+import { evaluate } from 'mathjs'; //npm install mathjs
 
 @Component({
   selector: 'app-new-quizz',
@@ -44,7 +45,7 @@ export class NewQuizzComponent implements OnInit {
     incorrectAnswers: number;
     nullAnswers: number; // Nova propriedade para respostas nulas
   } = { correctAnswers: 0, incorrectAnswers: 0, nullAnswers: 0 };
-  
+
   showCorrection: boolean = false;
 
   showStartScreen: boolean = true;
@@ -54,7 +55,7 @@ export class NewQuizzComponent implements OnInit {
 
   submited: boolean = false;
 
-  @ViewChild('tabela') grid: any;
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   difficultyLevels = [
     { label: 'EASY', value: 'EASY' },
@@ -157,6 +158,7 @@ export class NewQuizzComponent implements OnInit {
     this.showStartScreen = false;
     this.currentQuestionIndex = 0;
     this.renderMathExpressions();
+    this.renderFunctions();
     this.scrollToTop();
   }
 
@@ -195,6 +197,7 @@ export class NewQuizzComponent implements OnInit {
         this.quiz.questions = this.questions;
         this.showLoading = false;
         this.renderMathExpressions();
+        this.renderFunctions();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -299,9 +302,8 @@ export class NewQuizzComponent implements OnInit {
     this.showFinalScreen = false;
 
     // Aguarda a atualização do DOM antes de renderizar MathJax
-    setTimeout(() => {
-      this.renderMathExpressions();
-    }, 0);
+    this.renderMathExpressions();
+    this.renderFunctions();
 
     this.scrollToTop();
   }
@@ -310,6 +312,7 @@ export class NewQuizzComponent implements OnInit {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
       this.renderMathExpressions();
+      this.renderFunctions();
       this.scrollToTop();
     }
   }
@@ -318,8 +321,13 @@ export class NewQuizzComponent implements OnInit {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
       this.renderMathExpressions();
+      this.renderFunctions();
       this.scrollToTop();
     }
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Método para renderizar expressões matemáticas
@@ -353,8 +361,66 @@ export class NewQuizzComponent implements OnInit {
     }, 0);
   }
 
-  scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderFunctions() {
+    setTimeout(() => {
+      const canvas = this.canvas?.nativeElement;
+      if (!canvas || !this.quiz.questions[this.currentQuestionIndex].mathExpressions || this.quiz.questions[this.currentQuestionIndex].mathExpressions.length === 0) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const scaleX = width / 20;
+      const scaleY = height / 20;
+
+      // Desenha os eixos
+      ctx.beginPath();
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.stroke();
+
+      // Adiciona os números nos eixos
+      ctx.font = '12px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        let y = height / 2 - i * scaleY;
+        if (i !== 0) {
+          ctx.fillText(i.toString(), x, height / 2 + 15);
+          ctx.fillText(i.toString(), width / 2 - 15, y + 5);
+        }
+      }
+
+      // Cores para múltiplos gráficos
+      const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+      this.quiz.questions[this.currentQuestionIndex].mathExpressions.forEach((express, index) => {
+        ctx.beginPath();
+        ctx.strokeStyle = colors[index % colors.length];
+        ctx.lineWidth = 2;
+
+        for (let x = -10; x <= 10; x += 0.1) {
+          try {
+            let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
+            let screenX = width / 2 + x * scaleX;
+            let screenY = height / 2 - y * scaleY;
+            if (x === -10) ctx.moveTo(screenX, screenY);
+            else ctx.lineTo(screenX, screenY);
+          } catch (error) {
+            console.error(`Erro ao avaliar ${express.expression!}:`, error);
+          }
+        }
+        ctx.stroke();
+      });
+    }, 0);
   }
 
   private sendErrorNotification(message: string): void {

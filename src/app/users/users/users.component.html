@@ -36,15 +36,15 @@
                 <input type="text" [(ngModel)]="filtroUsers.searchParam" (ngModelChange)="getUsersSearch()" id="input"
                     class="transparent-input" placeholder="Pesquisa">
             </div>
-            <div class="dropdown-container" style="margin-left: 4px;">
-                <button class="dropdown-btn" (click)=" isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
-                <div class="dropdown" *ngIf="isDropdownOpen">
-                    <a>Filtrar</a>
-                    <a (click)="prepararNovoUser(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
-                    <a (click)="prepararUserSettings(); isDropdownOpen = !isDropdownOpen"  *ngIf="isAdmin">Reset password</a>
-                </div>
-            </div>
-
+            <button class="add-new-btn" (click)="prepararUserSettings()">
+                <i class="pi pi-setting"></i> Reset password
+            </button>
+            <button class="add-new-btn" (click)="prepararNovoUser()" *ngIf="isSuperAdmin">
+                <i class="pi pi-plus"></i> Adicionar
+            </button>
+            <button class="filter-btn">
+                <i class="pi pi-filter"></i> Filtrar
+            </button>
         </div>
     </div>
 

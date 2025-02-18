@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from '../question.service';
 import { MessageService } from 'primeng/api';
@@ -49,10 +49,6 @@ export class QuestionViewComponent implements OnInit {
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
 
-  mathExpressions: string[] = ['x*x', 'Math.sin(x)', 'Math.cos(x)']; // Lista de expressões
-
-  //mathExpression: string = '';
-
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   quizFilter: QuizFilter = {
@@ -96,11 +92,7 @@ export class QuestionViewComponent implements OnInit {
         this.getCompetitionStatisticsByQuestionId(this.question.id);
         this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
-
-        if(this.question.mathExpressions.length > 0){
-          this.renderFunctions();
-        }
-
+        this.renderFunctions();
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {
@@ -200,65 +192,67 @@ export class QuestionViewComponent implements OnInit {
   }
 
   renderFunctions() {
-    const canvas = this.canvas?.nativeElement;
-    if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
+    setTimeout(() => {
+      const canvas = this.canvas?.nativeElement;
+      if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const width = canvas.width;
-    const height = canvas.height;
-    const scaleX = width / 20;
-    const scaleY = height / 20;
+      const width = canvas.width;
+      const height = canvas.height;
+      const scaleX = width / 20;
+      const scaleY = height / 20;
 
-    // Desenha os eixos
-    ctx.beginPath();
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 1;
-    ctx.moveTo(0, height / 2);
-    ctx.lineTo(width, height / 2);
-    ctx.moveTo(width / 2, 0);
-    ctx.lineTo(width / 2, height);
-    ctx.stroke();
-
-    // Adiciona os números nos eixos
-    ctx.font = '12px Arial';
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'center';
-    for (let i = -10; i <= 10; i++) {
-      let x = width / 2 + i * scaleX;
-      let y = height / 2 - i * scaleY;
-      if (i !== 0) {
-        ctx.fillText(i.toString(), x, height / 2 + 15);
-        ctx.fillText(i.toString(), width / 2 - 15, y + 5);
-      }
-    }
-
-    // Cores para múltiplos gráficos
-    const colors = ['blue', 'red', 'green', 'orange', 'purple'];
-
-    this.question.mathExpressions.forEach((express, index) => {
+      // Desenha os eixos
       ctx.beginPath();
-      ctx.strokeStyle = colors[index % colors.length];
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.stroke();
 
-      for (let x = -10; x <= 10; x += 0.1) {
-        try {
-          let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
-          let screenX = width / 2 + x * scaleX;
-          let screenY = height / 2 - y * scaleY;
-          if (x === -10) ctx.moveTo(screenX, screenY);
-          else ctx.lineTo(screenX, screenY);
-        } catch (error) {
-          console.error(`Erro ao avaliar ${express.expression!}:`, error);
+      // Adiciona os números nos eixos
+      ctx.font = '12px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        let y = height / 2 - i * scaleY;
+        if (i !== 0) {
+          ctx.fillText(i.toString(), x, height / 2 + 15);
+          ctx.fillText(i.toString(), width / 2 - 15, y + 5);
         }
       }
-      ctx.stroke();
-    });
+
+      // Cores para múltiplos gráficos
+      const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+      this.question.mathExpressions.forEach((express, index) => {
+        ctx.beginPath();
+        ctx.strokeStyle = colors[index % colors.length];
+        ctx.lineWidth = 2;
+
+        for (let x = -10; x <= 10; x += 0.1) {
+          try {
+            let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
+            let screenX = width / 2 + x * scaleX;
+            let screenY = height / 2 - y * scaleY;
+            if (x === -10) ctx.moveTo(screenX, screenY);
+            else ctx.lineTo(screenX, screenY);
+          } catch (error) {
+            console.error(`Erro ao avaliar ${express.expression!}:`, error);
+          }
+        }
+        ctx.stroke();
+      });
+    }, 0);
   }
-  
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

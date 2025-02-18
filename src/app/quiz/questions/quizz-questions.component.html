@@ -142,8 +142,10 @@
   <div *ngIf="!showStartScreen">
     <div *ngIf="currentQuestionIndex < quiz.questions.length">
       <div class="question-card">
-        <img *ngIf="imagePath" src="{{ imagePath }}" alt="Gráfico de funções" class="question-graph" />
-
+        <img *ngIf="quiz.questions[currentQuestionIndex].urlFile" src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções" class="question-graph" />
+        <div class="graph-container" *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
+          <canvas #canvas width="400" height="400"></canvas>
+        </div>
         <!-- Contêiner para expressões matemáticas -->
         <div id="math-container-{{ currentQuestionIndex }}"
           *ngIf="quiz.questions[currentQuestionIndex].text">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,6 +16,8 @@ import { SubmissionService } from 'src/app/core/submissions/submission.service';
 import { Submission } from 'src/app/core/model/Submission';
 import { UserService } from 'src/app/users/user.service';
 declare const MathJax: any;
+import { evaluate } from 'mathjs'; //npm install mathjs
+import { Role } from 'src/app/enum/role.enum';
 
 
 @Component({
@@ -33,7 +35,6 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
-  isAdmin: boolean = true;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   answers: Array<Answer> = [];
@@ -48,6 +49,8 @@ export class CompetitionQuestionsComponent implements OnInit {
   // Armazenar as respostas do usuário
   //userAnswers: { questionId: number; answerId: number }[] = [];
   //correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
+
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   result: {
     correctAnswers: number;
@@ -114,6 +117,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showStartScreen = false;
     this.showResultsScreen = false;
     this.renderMathExpressions();
+    this.renderFunctions();
   }
 
   submite() {
@@ -184,7 +188,6 @@ export class CompetitionQuestionsComponent implements OnInit {
 
         if (this.competition.isParticipant && this.competition.status == 'FINISHED') {
           this.getSubmissionByUserAndCompetition(this.loggedUser);
-
         }
       },
       (errorResponse: HttpErrorResponse) => {
@@ -529,10 +532,9 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showResultsScreen = false;
 
     // Aguarda a atualização do DOM antes de renderizar MathJax
-    setTimeout(() => {
-      this.renderMathExpressions();
-    }, 0);
+    this.renderMathExpressions();
 
+    this.renderFunctions();
     this.scrollToTop();
   }
 
@@ -541,6 +543,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
       this.renderMathExpressions();
+      this.renderFunctions();
       this.scrollToTop();
     }
   }
@@ -550,6 +553,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
       this.renderMathExpressions();
+      this.renderFunctions();
       this.scrollToTop();
     }
   }
@@ -678,6 +682,80 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  renderFunctions() {
+    setTimeout(() => {
+      const canvas = this.canvas?.nativeElement;
+      if (!canvas || !this.competition.questions[this.currentQuestionIndex].mathExpressions || this.competition.questions[this.currentQuestionIndex].mathExpressions.length === 0) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const scaleX = width / 20;
+      const scaleY = height / 20;
+
+      // Desenha os eixos
+      ctx.beginPath();
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.stroke();
+
+      // Adiciona os números nos eixos
+      ctx.font = '12px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        let y = height / 2 - i * scaleY;
+        if (i !== 0) {
+          ctx.fillText(i.toString(), x, height / 2 + 15);
+          ctx.fillText(i.toString(), width / 2 - 15, y + 5);
+        }
+      }
+
+      // Cores para múltiplos gráficos
+      const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+      this.competition.questions[this.currentQuestionIndex].mathExpressions.forEach((express, index) => {
+        ctx.beginPath();
+        ctx.strokeStyle = colors[index % colors.length];
+        ctx.lineWidth = 2;
+
+        for (let x = -10; x <= 10; x += 0.1) {
+          try {
+            let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
+            let screenX = width / 2 + x * scaleX;
+            let screenY = height / 2 - y * scaleY;
+            if (x === -10) ctx.moveTo(screenX, screenY);
+            else ctx.lineTo(screenX, screenY);
+          } catch (error) {
+            console.error(`Erro ao avaliar ${express.expression!}:`, error);
+          }
+        }
+        ctx.stroke();
+      });
+    }, 0);
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

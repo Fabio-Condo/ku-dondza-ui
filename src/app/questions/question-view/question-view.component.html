@@ -9,7 +9,7 @@
     <div class="question-body">
         <h2 class="question-title">Exercício</h2>
         <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">
-        <div class="graph-container" >
+        <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
             <canvas #canvas width="400" height="400"></canvas>
         </div>
         <p *ngIf="question.text">

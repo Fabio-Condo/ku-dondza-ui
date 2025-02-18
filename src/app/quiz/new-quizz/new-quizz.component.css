@@ -42,8 +42,13 @@ label {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Estilos gerais */
@@ -179,8 +184,8 @@ body {
 
 @media (min-width: 768px) {
   .question-graph {
-      max-width: 500px;
-      margin: 20px auto;
+    max-width: 500px;
+    margin: 20px auto;
   }
 }
 
@@ -306,8 +311,10 @@ body {
 .topic-grid {
   display: grid;
   /*grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));*/
-  grid-template-columns: 1fr; /* Sempre uma coluna */
-  gap: 1.5rem; /* Espaçamento entre os cards */
+  grid-template-columns: 1fr;
+  /* Sempre uma coluna */
+  gap: 1.5rem;
+  /* Espaçamento entre os cards */
 }
 
 .topic-card {
@@ -356,7 +363,7 @@ body {
 }
 
 .improvement-card.high-score {
-  background-color: #e7f3ff; 
+  background-color: #e7f3ff;
 }
 
 .improvement-percentage {
@@ -366,11 +373,11 @@ body {
 }
 
 .improvement-card.low-score .improvement-percentage {
-  color: #dc3545; 
+  color: #dc3545;
 }
 
 .improvement-card.high-score .improvement-percentage {
-  color: #4a90e2; 
+  color: #4a90e2;
 }
 
 .improvement-message {
@@ -383,41 +390,54 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0; /* Espaçamento conforme necessário */
+  margin: 20px 0;
+  /* Espaçamento conforme necessário */
 }
 
 .btn-start {
-  position: relative; /* Adicionado */
+  position: relative;
+  /* Adicionado */
   padding: 12px 30px;
-  font-family: 'Poppins', sans-serif; 
+  font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
-  color: var(--color-white); /* Texto branco */
+  color: var(--color-white);
+  /* Texto branco */
   font-size: 1.1rem;
-  font-weight: bold; /* Texto em negrito para destacar */
+  font-weight: bold;
+  /* Texto em negrito para destacar */
   border: none;
-  border-radius: 30px; /* Bordas arredondadas */
+  border-radius: 30px;
+  /* Bordas arredondadas */
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
   margin-top: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Sombra sutil */
 }
 
 .btn-start:hover {
   background: linear-gradient(135deg, var(--color-hover), #5f5cfc);
-  color: var(--color-black); /* Texto preto no hover */
-  transform: scale(1.05); /* Efeito de zoom */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada no hover */
+  color: var(--color-black);
+  /* Texto preto no hover */
+  transform: scale(1.05);
+  /* Efeito de zoom */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  /* Sombra mais pronunciada no hover */
 }
 
 .btn-start:active {
-  transform: scale(0.95); /* Efeito de clique */
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Sombra reduzida no clique */
-  transition: transform 0.1s; /* Transição mais rápida */
+  transform: scale(0.95);
+  /* Efeito de clique */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  /* Sombra reduzida no clique */
+  transition: transform 0.1s;
+  /* Transição mais rápida */
 }
 
 .btn-start:focus {
-  outline: 2px solid var(--color-primary); /* Estilo para foco */
+  outline: 2px solid var(--color-primary);
+  /* Estilo para foco */
   outline-offset: 2px;
 }
 
@@ -429,7 +449,8 @@ body {
   left: 50%;
   width: 300%;
   height: 300%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%); /* Opacidade reduzida */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%);
+  /* Opacidade reduzida */
   transform: translate(-50%, -50%) scale(0);
   transition: transform 0.5s, opacity 0.5s;
   opacity: 0;
@@ -474,7 +495,8 @@ body {
   padding: 30px;
   max-width: 600px;
   width: 100%;
-  margin: 20px auto; /* Centraliza o card na tela */
+  margin: 20px auto;
+  /* Centraliza o card na tela */
   font-family: 'Poppins', sans-serif;
 }
 
@@ -560,11 +582,11 @@ body {
   position: absolute;
 }
 
-.topic-item input[type="checkbox"]:checked + .custom-checkbox {
+.topic-item input[type="checkbox"]:checked+.custom-checkbox {
   background-color: var(--color-primary);
 }
 
-.topic-item input[type="checkbox"]:checked + .custom-checkbox::after {
+.topic-item input[type="checkbox"]:checked+.custom-checkbox::after {
   content: '✔';
   position: absolute;
   top: 50%;
@@ -651,8 +673,13 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Container da solução com efeito glassmorphism */
@@ -705,72 +732,89 @@ body {
 /* Responsividade */
 @media (max-width: 768px) {
   .question-text {
-      font-size: 14px;
+    font-size: 14px;
   }
 
-  .submit-button, .start-button, .restart-button {
-      width: 100%;
-      padding: 10px;
+  .submit-button,
+  .start-button,
+  .restart-button {
+    width: 100%;
+    padding: 10px;
   }
 }
 
 @media (min-width: 768px) {
   .question-graph {
-      max-width: 500px;
-      margin: 20px auto;
+    max-width: 500px;
+    margin: 20px auto;
   }
 }
 
 /* Ajustes para dispositivos pequenos (telas menores que 768px) */
 @media (max-width: 768px) {
+
   /* Estatísticas Gerais */
   .stats-container {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Colunas menores */
-    gap: 0.5rem; /* Reduz o espaçamento entre os cards */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    /* Colunas menores */
+    gap: 0.5rem;
+    /* Reduz o espaçamento entre os cards */
   }
 
   .stat-card {
-    padding: 0.8rem; /* Reduz o padding */
+    padding: 0.8rem;
+    /* Reduz o padding */
   }
 
   .stat-label {
-    font-size: 0.8rem; /* Reduz o tamanho da fonte */
+    font-size: 0.8rem;
+    /* Reduz o tamanho da fonte */
   }
 
   .stat-value {
-    font-size: 1.2rem; /* Reduz o tamanho da fonte */
+    font-size: 1.2rem;
+    /* Reduz o tamanho da fonte */
   }
 
   /* Resultados por Tópico */
   .topic-grid {
-    grid-template-columns: 1fr; /* Uma coluna para ocupar toda a largura */
-    gap: 1rem; /* Espaçamento entre os cards */
+    grid-template-columns: 1fr;
+    /* Uma coluna para ocupar toda a largura */
+    gap: 1rem;
+    /* Espaçamento entre os cards */
   }
 
   .topic-card {
-    padding: 1rem; /* Ajusta o padding */
-    margin: 0; /* Remove margens extras */
+    padding: 1rem;
+    /* Ajusta o padding */
+    margin: 0;
+    /* Remove margens extras */
   }
 
   .topic-name {
-    font-size: 1.1rem; /* Reduz o tamanho da fonte */
+    font-size: 1.1rem;
+    /* Reduz o tamanho da fonte */
   }
 
   .topic-stats p {
-    font-size: 0.8rem; /* Reduz o tamanho da fonte */
+    font-size: 0.8rem;
+    /* Reduz o tamanho da fonte */
   }
 
   /* Mensagens de Melhoria */
   .improvement-card {
-    padding: 0.8rem; /* Reduz o padding */
+    padding: 0.8rem;
+    /* Reduz o padding */
   }
 
   .improvement-percentage {
-    font-size: 0.9rem; /* Reduz o tamanho da fonte */
+    font-size: 0.9rem;
+    /* Reduz o tamanho da fonte */
   }
 
   .improvement-message {
-    font-size: 0.8rem; /* Reduz o tamanho da fonte */
+    font-size: 0.8rem;
+    /* Reduz o tamanho da fonte */
   }
 
   /* Botão de Início */
@@ -909,4 +953,23 @@ body {
 
 .view-button:hover {
   opacity: 0.8;
+}
+
+/* graph */
+.graph-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+canvas {
+  max-width: 60%;
+  height: auto;
+  border-radius: 7px;
+  margin-top: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: none;
 }

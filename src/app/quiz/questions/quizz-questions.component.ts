@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -9,6 +9,8 @@ import { Answer } from 'src/app/core/model/Answer';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Topic } from 'src/app/core/model/Topic';
 declare const MathJax: any;
+import { evaluate } from 'mathjs'; //npm install mathjs
+
 
 @Component({
   selector: 'app-quizz-questions',
@@ -27,6 +29,8 @@ export class QuizzQuestionsComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
+
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   result: {
     correctAnswers: number;
@@ -112,9 +116,9 @@ export class QuizzQuestionsComponent implements OnInit {
       console.error('Nenhuma questão recebida ou questões vazias');
       return [];
     }
-  
+
     const topicosMap = new Map<number, Topic>();
-  
+
     questoes.forEach((questao) => {
       if (questao.topic) {
         console.log(`Processando questão: ${questao.id}, tópico: ${questao.topic.name}`);
@@ -125,7 +129,7 @@ export class QuizzQuestionsComponent implements OnInit {
         console.error(`Questão ${questao.id} sem tópico`);
       }
     });
-  
+
     return Array.from(topicosMap.values());
   }
 
@@ -180,33 +184,33 @@ export class QuizzQuestionsComponent implements OnInit {
     this.result.correctAnswers = 0;
     this.result.incorrectAnswers = 0;
     this.result.nullAnswers = 0;
-  
+
     // Reinicia o objeto de resultados por tópico
     this.quiz.resultsByTopic = {};
-  
+
     // Itera sobre todas as questões do quiz
     this.quiz.questions.forEach((question) => {
       const submittedAnswer = this.quiz.answers.find(
         (a) => a.question.id === question.id
       );
-  
+
       // Obtém o tópico da questão
       const questionTopic = question.topic?.name || 'Sem tópico';
-  
+
       // Inicializa o tópico no objeto resultsByTopic, se necessário
       if (!this.quiz.resultsByTopic[questionTopic]) {
-        this.quiz.resultsByTopic[questionTopic] = { 
-          correct: 0, 
-          incorrect: 0, 
+        this.quiz.resultsByTopic[questionTopic] = {
+          correct: 0,
+          incorrect: 0,
           nullAnswers: 0, // Adiciona contador de respostas nulas
-          total: 0, 
-          percentage: 0 
+          total: 0,
+          percentage: 0
         };
       }
-  
+
       // Incrementa o total de questões por tópico
       this.quiz.resultsByTopic[questionTopic].total++;
-  
+
       if (submittedAnswer) {
         // Se o usuário respondeu, verifica se a resposta está correta ou incorreta
         if (submittedAnswer.correct) {
@@ -222,7 +226,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz.resultsByTopic[questionTopic].nullAnswers++;
       }
     });
-  
+
     // Calcula a porcentagem de acertos por tópico
     for (const topic in this.quiz.resultsByTopic) {
       const { correct, total } = this.quiz.resultsByTopic[topic];
@@ -234,6 +238,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
       this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+      this.renderFunctions();
       this.scrollToTop();
     }
   }
@@ -242,6 +247,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (this.currentQuestionIndex < this.quiz.questions.length - 1) {
       this.currentQuestionIndex++;
       this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+      this.renderFunctions();
       this.scrollToTop();
     }
   }
@@ -279,6 +285,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showStartScreen = false; // Oculta a tela inicial
     this.currentQuestionIndex = 0; // Começa na primeira questão
     this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+    this.renderFunctions();
     this.scrollToTop();
   }
 
@@ -310,6 +317,68 @@ export class QuizzQuestionsComponent implements OnInit {
           console.error('Erro ao renderizar MathJax:', err);
         });
       }
+    }, 0);
+  }
+
+  renderFunctions() {
+    setTimeout(() => {
+      const canvas = this.canvas?.nativeElement;
+      if (!canvas || !this.quiz.questions[this.currentQuestionIndex].mathExpressions || this.quiz.questions[this.currentQuestionIndex].mathExpressions.length === 0) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const scaleX = width / 20;
+      const scaleY = height / 20;
+
+      // Desenha os eixos
+      ctx.beginPath();
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.stroke();
+
+      // Adiciona os números nos eixos
+      ctx.font = '12px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        let y = height / 2 - i * scaleY;
+        if (i !== 0) {
+          ctx.fillText(i.toString(), x, height / 2 + 15);
+          ctx.fillText(i.toString(), width / 2 - 15, y + 5);
+        }
+      }
+
+      // Cores para múltiplos gráficos
+      const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+      this.quiz.questions[this.currentQuestionIndex].mathExpressions.forEach((express, index) => {
+        ctx.beginPath();
+        ctx.strokeStyle = colors[index % colors.length];
+        ctx.lineWidth = 2;
+
+        for (let x = -10; x <= 10; x += 0.1) {
+          try {
+            let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
+            let screenX = width / 2 + x * scaleX;
+            let screenY = height / 2 - y * scaleY;
+            if (x === -10) ctx.moveTo(screenX, screenY);
+            else ctx.lineTo(screenX, screenY);
+          } catch (error) {
+            console.error(`Erro ao avaliar ${express.expression!}:`, error);
+          }
+        }
+        ctx.stroke();
+      });
     }, 0);
   }
 

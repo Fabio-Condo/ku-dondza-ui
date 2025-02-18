@@ -17,13 +17,12 @@
                 <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
                 <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"  (ngModelChange)="findAll()" placeholder="Pesquisa">
             </div>
-            <div class="dropdown-container" style="margin-left: 4px;">
-                <button class="dropdown-btn" (click)="isDropdownOpen = !isDropdownOpen"><i class="pi pi-ellipsis-v"></i></button>
-                <div class="dropdown" *ngIf="isDropdownOpen">
-                    <a (click)="onFilter(); isDropdownOpen = !isDropdownOpen">Filtrar</a>
-                    <a (click)="onAddNewQuestion(); isDropdownOpen = !isDropdownOpen" *ngIf="isSuperAdmin">Adicionar</a>
-                </div>
-            </div>
+            <button class="add-new-btn" (click)="onAddNewQuestion()" *ngIf="isSuperAdmin">
+                <i class="pi pi-plus"></i> Adicionar
+            </button>
+            <button class="filter-btn" (click)="onFilter()">
+                <i class="pi pi-filter"></i> Filtrar
+            </button>   
         </div>
     </div>
 
