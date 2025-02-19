@@ -16,6 +16,7 @@ import { Module } from 'src/app/core/model/Module';
 import { OnlineCourseRequirement } from 'src/app/core/model/OnlineCourseRequirement';
 import { NgForm } from '@angular/forms';
 import { OnlineCourseLikeService } from 'src/app/core/online-course-likes/online-course-like.service';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -47,8 +48,6 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   totalRegistros: number = 0
   showLoading: boolean = false;
-
-  isAdmin: boolean = true;
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -505,6 +504,18 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

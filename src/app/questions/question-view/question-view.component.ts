@@ -16,6 +16,7 @@ import { CompetitionService } from 'src/app/competitions/competition.service';
 import { CompetitionFilter } from 'src/app/core/interface/CompetitionFilter';
 declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
+import { interval, Subscription } from 'rxjs';
 
 
 
@@ -49,6 +50,9 @@ export class QuestionViewComponent implements OnInit {
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
 
+  timerSubscription!: Subscription;
+  formattedTime: string = ''; // Inicializa no formato correto
+
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   quizFilter: QuizFilter = {
@@ -81,6 +85,28 @@ export class QuestionViewComponent implements OnInit {
     this.scrollToTop();
   }
 
+  startTimer(): void {
+    this.timerSubscription = interval(1000).subscribe(() => {
+      if (this.question.timeLimit > 0) {
+        this.question.timeLimit--;
+        this.updateFormattedTime(); // Atualiza o tempo formatado
+      } else {
+        this.timerSubscription.unsubscribe();
+        alert("Tempo esgotado!"); // Aqui você pode chamar uma função para finalizar o quiz
+      }
+    });
+  }
+  
+  updateFormattedTime(): void {
+    const minutes = Math.floor(this.question.timeLimit / 60);
+    const seconds = this.question.timeLimit % 60;
+    this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
+  }
+  
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -93,6 +119,9 @@ export class QuestionViewComponent implements OnInit {
         this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
         this.renderFunctions();
+        //this.startTimer();
+        this.updateFormattedTime(); // Define o valor inicial de formattedTime
+
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {
@@ -174,6 +203,20 @@ export class QuestionViewComponent implements OnInit {
   onViewCompetitionsByQuestion(): void {
     this.getCompetitionsByQuestionId();
     this.displayModalViewCompetitions = true;
+  }
+
+  gettimeLimitValue(type: number) {
+    switch (type) {
+      case 120:
+        return '2 minutos';
+      case 180:
+        return '3 minutos';
+      case 240:
+        return '4 minutos';
+      case 300:
+        return '5 minutos';
+    }
+    return '';
   }
 
   // Método para renderizar expressões matemáticas

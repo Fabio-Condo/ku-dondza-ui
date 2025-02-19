@@ -160,6 +160,14 @@
             </div>
 
             <div class="form-group">
+                <label for="timeLimit">Tempo da questão</label>
+                <select id="timeLimit" [(ngModel)]="question.timeLimit" name="timeLimit" required>
+                  <option value="" disabled selected>Selecione o tempo</option>
+                  <option *ngFor="let time of timeLimits" [value]="time.value">{{ time.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label>Imagem da Pergunta</label>
                 <input 
                     (change)="onUpdateQuestionImage(question, $event)" 

@@ -142,6 +142,11 @@
   <div *ngIf="!showStartScreen">
     <div *ngIf="currentQuestionIndex < quiz.questions.length">
       <div class="question-card">
+
+        <p>{{ quiz.questions[currentQuestionIndex].topic.name }}</p>        
+        <p>{{ quiz.questions[currentQuestionIndex].difficultyLevel }}</p>
+        <p>{{ quiz.questions[currentQuestionIndex].timeLimit }}</p>
+
         <img *ngIf="quiz.questions[currentQuestionIndex].urlFile" src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções" class="question-graph" />
         <div class="graph-container" *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
           <canvas #canvas width="400" height="400"></canvas>
