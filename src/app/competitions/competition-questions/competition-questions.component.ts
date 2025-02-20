@@ -767,3 +767,40 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 }
 
+  // Método para iniciar o temporizador
+  //startTimer(): void {
+    // Cancelar o temporizador da questão anterior, se existir
+  //  if (this.timerSubscription) {
+  //    this.timerSubscription.unsubscribe();
+  //  }
+  
+    // Obter a questão atual
+  //  const currentQuestion = this.questions[this.currentQuestionIndex];
+  
+    // Inicializa o tempo
+  //  currentQuestion.timeLimit = currentQuestion.timeLimit || 60;  // Defina o tempo limite em segundos
+  
+    // Iniciar o temporizador
+  //  this.timerSubscription = interval(1000).subscribe(() => {
+  //    if (currentQuestion.timeLimit > 0) {
+  //      currentQuestion.timeLimit--;
+  //      this.updateFormattedTime(currentQuestion.timeLimit); // Atualiza o tempo formatado
+  //    } else {
+  //      this.timerSubscription.unsubscribe();
+  //      console.log('Tempo esgotado!')
+  //      this.goToNextQuestion(); // Avançar para a próxima questão ou terminar o quiz
+  //    }
+  //  });
+  //}
+  
+  // Método para atualizar o tempo formatado
+  //updateFormattedTime(timeLimit: number): void {
+  //  const minutes = Math.floor(timeLimit / 60);
+  //  const seconds = timeLimit % 60;
+  //  this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
+  //}
+  
+  // Função para adicionar zero à esquerda quando necessário
+  //padZero(value: number): string {
+  //  return value < 10 ? `0${value}` : `${value}`;
+  //}

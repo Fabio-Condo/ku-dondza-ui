@@ -42,7 +42,8 @@ export class NewQuizzComponent implements OnInit {
   imagePath = './assets/images/funcao do grau 2.png';
 
   timerSubscription!: Subscription;
-  formattedTime: string = ''; // Inicializa no formato correto
+  timeLimit: number = 0;
+  formattedTime: string = '00:00'; // Inicializa no formato correto
 
   result: {
     correctAnswers: number;
@@ -93,43 +94,51 @@ export class NewQuizzComponent implements OnInit {
     this.scrollToTop();
   }
 
-
-  // Método para iniciar o temporizador
   startTimer(): void {
-    // Cancelar o temporizador da questão anterior, se existir
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-  
-    // Obter a questão atual
-    const currentQuestion = this.questions[this.currentQuestionIndex];
-  
-    // Inicializa o tempo
-    currentQuestion.timeLimit = currentQuestion.timeLimit || 60;  // Defina o tempo limite em segundos
-  
-    // Iniciar o temporizador
+
+    this.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+
     this.timerSubscription = interval(1000).subscribe(() => {
-      if (currentQuestion.timeLimit > 0) {
-        currentQuestion.timeLimit--;
-        this.updateFormattedTime(currentQuestion.timeLimit); // Atualiza o tempo formatado
+      if (this.timeLimit > 0) {
+        this.timeLimit--;
+        this.updateFormattedTime(); // Atualiza o tempo formatado
       } else {
-        this.timerSubscription.unsubscribe();
-        console.log('Tempo esgotado!')
-        this.goToNextQuestion(); // Avançar para a próxima questão ou terminar o quiz
+        this.showFinalScreen = true; 
+        this.stopTimer();       
+        this.submitAnswers(); 
+        this.toggleCorrection(); 
+        this.scrollToTop();
+        this.messageService.add({ severity: 'success', detail: 'O Tempo esgou e a sbumissão foi feita com sucesso!' });
       }
     });
   }
-  
-  // Método para atualizar o tempo formatado
-  updateFormattedTime(timeLimit: number): void {
-    const minutes = Math.floor(timeLimit / 60);
-    const seconds = timeLimit % 60;
+
+  updateFormattedTime(): void {
+    const minutes = Math.floor(this.timeLimit / 60);
+    const seconds = this.timeLimit % 60;
     this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
   }
-  
-  // Função para adicionar zero à esquerda quando necessário
+
   padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
+  }
+
+  stopTimer(): void {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();// Cancelar o temporizador
+    }
+  }
+
+  gettimeLimitValue(type: number) {
+    switch (type) {
+      case 60:
+        return '01:00';
+      case 120:
+        return '02:00';
+      case 180:
+        return '03:00';
+    }
+    return '00:00';
   }
 
   // Método para calcular os resultados
@@ -189,9 +198,9 @@ export class NewQuizzComponent implements OnInit {
 
   submitAnswers() {
     this.calculateResults();
-
+    this.stopTimer();
     this.showFinalScreen = true;
-
+    this.scrollToTop(); 
     if (!this.submited) {
       this.saveQuiz();
     }
@@ -358,8 +367,6 @@ export class NewQuizzComponent implements OnInit {
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
-      this.startTimer();
-
     }
   }
 
@@ -369,7 +376,7 @@ export class NewQuizzComponent implements OnInit {
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
-      this.startTimer();
+      //this.startTimer();
     }
   }
 

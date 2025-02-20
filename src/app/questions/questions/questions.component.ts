@@ -63,10 +63,9 @@ export class QuestionsComponent implements OnInit {
   @ViewChild('tabela') grid: any;
 
   timeLimits = [
+    { label: '1 minutos', value: '120' },
     { label: '2 minutos', value: '120' },
     { label: '3 minutos', value: '180' },
-    { label: '4 minutos', value: '240' },
-    { label: '5 minutos', value: '300' },
   ];
 
   difficultyLevels = [
