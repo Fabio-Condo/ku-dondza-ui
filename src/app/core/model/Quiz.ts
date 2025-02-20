@@ -9,6 +9,7 @@ export class Quiz {
     quizId!: string;
     title!: string;
     submittedAt!: Date;
+    timeSpent!: number; // Tempo gasto em segundos
     difficultyLevel!: string;
     subject = new Subject();
     user = new User();

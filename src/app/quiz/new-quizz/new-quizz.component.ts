@@ -44,6 +44,8 @@ export class NewQuizzComponent implements OnInit {
   timerSubscription!: Subscription;
   timeLimit: number = 0;
   formattedTime: string = '00:00'; // Inicializa no formato correto
+  remainingTime: number = 0;   // Tempo restante para o quiz
+  startTime: number = 0; // Armazena o tempo em que o quiz foi iniciado (timestamp)
 
   result: {
     correctAnswers: number;
@@ -97,6 +99,9 @@ export class NewQuizzComponent implements OnInit {
   startTimer(): void {
 
     this.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+    
+    this.remainingTime = this.timeLimit; // Tempo restante para contagem
+    this.startTime = Date.now(); // Armazenar o tempo de início (timestamp)
 
     this.timerSubscription = interval(1000).subscribe(() => {
       if (this.timeLimit > 0) {
@@ -197,11 +202,15 @@ export class NewQuizzComponent implements OnInit {
   }
 
   submitAnswers() {
+    // Calcular o tempo gasto em segundos
+
     this.calculateResults();
     this.stopTimer();
     this.showFinalScreen = true;
     this.scrollToTop(); 
     if (!this.submited) {
+      const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
+      this.quiz.timeSpent = elapsedTimeInSeconds;
       this.saveQuiz();
     }
   }
