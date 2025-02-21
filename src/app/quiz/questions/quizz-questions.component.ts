@@ -10,6 +10,8 @@ import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Topic } from 'src/app/core/model/Topic';
 declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
+import { AuthenticationService } from 'src/app/users/authentication.service';
+import { User } from 'src/app/core/model/User';
 
 
 @Component({
@@ -41,6 +43,8 @@ export class QuizzQuestionsComponent implements OnInit {
   showCorrection: boolean = false;
   showStartScreen: boolean = true;
 
+  loggedUser: User = new User();
+
   imagePath = './assets/images/funcao do grau 2.png';
 
   @ViewChild('tabela') grid: any;
@@ -53,12 +57,14 @@ export class QuizzQuestionsComponent implements OnInit {
 
   constructor(
     private quizService: QuizService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
     if (quizId) {
       this.getQuizByQuizId(quizId);

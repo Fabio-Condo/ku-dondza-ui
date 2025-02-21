@@ -18,6 +18,7 @@ export class User {
   public notLocked: boolean;
   public userType!: string;
   public role: string;
+  public plan: string;
   public authorities: [];
   public subjectsInterests: Subject[] = [];
   public savedPosts: Post[] = [];
@@ -46,6 +47,7 @@ export class User {
     this.active = false;
     this.notLocked = false;
     this.role = '';
+    this.plan = '';
     this.authorities = [];
   }
 
