@@ -10,9 +10,6 @@
         <button class="btn-start" (click)="startQuiz()" aria-label="Iniciar Competição">Correção</button>
       </div>
 
-      <br>
-      <br>
-
       <h2 class="section-title">Resultado Geral</h2>
 
       <div class="statistics-container">
@@ -192,7 +189,7 @@
           <i class="pi pi-chevron-left"></i> Anterior
         </button>
         <button class="pagination-button" (click)="goToNextQuestion()"
-          [disabled]="currentQuestionIndex === quiz.questions.length - 1">
+          *ngIf="currentQuestionIndex !== quiz.questions.length - 1"> <!-- [disabled]="currentQuestionIndex === quiz.questions.length - 1" -->
           Próxima <i class="pi pi-chevron-right"></i>
         </button>
         <!-- Botão para voltar à tela inicial -->

@@ -152,8 +152,8 @@
           <i class="pi pi-chevron-left"></i> Anterior
         </button>
         <button class="pagination-button" (click)="goToNextQuestion()"
-          [disabled]="currentQuestionIndex === questions.length - 1">
-          Próxima <i class="pi pi-chevron-right"></i>
+        *ngIf="currentQuestionIndex !== quiz.questions.length - 1"> <!-- [disabled]="currentQuestionIndex === quiz.questions.length - 1" -->
+        Próxima <i class="pi pi-chevron-right"></i>
         </button>
 
         <!-- Botão para submeter respostas -->
