@@ -141,37 +141,48 @@
     <div *ngIf="currentQuestionIndex < quiz.questions.length">
       <div class="question-card">
 
-        <p>{{ quiz.questions[currentQuestionIndex].topic.name }}</p>        
+        <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>    
+        <!--  
         <p>{{ quiz.questions[currentQuestionIndex].difficultyLevel }}</p>
         <p>{{ quiz.questions[currentQuestionIndex].timeLimit }}</p>
+        -->  
 
+        <br>
+              
+        <div class="progress-container">
+          <div class="progress-bar-container">
+            <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'"></div>
+          </div>
+          <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}</p>
+        </div>
+  
         <img *ngIf="quiz.questions[currentQuestionIndex].urlFile" src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções" class="question-graph" />
         <div class="graph-container" *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
           <canvas #canvas width="400" height="400"></canvas>
         </div>
+        
         <!-- Contêiner para expressões matemáticas -->
-        <div id="math-container-{{ currentQuestionIndex }}"
-          *ngIf="quiz.questions[currentQuestionIndex].text">
+        <div id="math-container-{{ currentQuestionIndex }}" *ngIf="quiz.questions[currentQuestionIndex].text">
           \[{{ quiz.questions[currentQuestionIndex].text }}\]
         </div>
-
+  
         <div class="answer-options">
-          <label *ngFor="let answer of quiz.questions[currentQuestionIndex].answers" [ngClass]="{
+          <label *ngFor="let answer of quiz.questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
               'correct-answer': showCorrection && answer.correct,
               'incorrect-answer': showCorrection && !answer.correct && isSelected(quiz.questions[currentQuestionIndex].id, answer.id!),
               'selected-answer': isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)
             }">
+            <span class="num">{{ i + 1 }}</span>
             <input type="radio" name="question-{{ quiz.questions[currentQuestionIndex].id }}" [value]="answer.id"
               [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
               (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"
               [disabled]="showCorrection" />
-            <span> \[{{ answer.text }}\] </span>
-
+            <span>\[{{ answer.text }}\]</span> <!-- Numeração das opções -->
           </label>
         </div>
-
+  
         <!-- Input para mostrar a solução -->
-        <div class="solution-container" >
+        <div class="solution-container">
           <div class="solution-input">
             <label for="solution">Explicação:</label>
             <div id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
@@ -182,14 +193,12 @@
         </div>
         
       </div>
-
+  
       <div class="navigation-buttons text-center">
-
         <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
           <i class="pi pi-chevron-left"></i> Anterior
         </button>
-        <button class="pagination-button" (click)="goToNextQuestion()"
-          *ngIf="currentQuestionIndex !== quiz.questions.length - 1"> <!-- [disabled]="currentQuestionIndex === quiz.questions.length - 1" -->
+        <button class="pagination-button" (click)="goToNextQuestion()" *ngIf="currentQuestionIndex !== quiz.questions.length - 1">
           Próxima <i class="pi pi-chevron-right"></i>
         </button>
         <!-- Botão para voltar à tela inicial -->
@@ -197,13 +206,13 @@
           *ngIf="currentQuestionIndex === quiz.questions.length - 1">
           <i class="pi pi-arrow-up" style="margin-right: 0.5rem;"></i> Resultados
         </button>
-        
       </div>
     </div>
-
+  
     <div *ngIf="showLoading" class="loading-indicator">Carregando...</div>
-
+  
   </div>
+  
 
 
 </div>

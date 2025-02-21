@@ -79,6 +79,21 @@ body {
   position: relative;
 }
 
+.answer-options label .num {
+  background-color: var(--color-primary);
+  color: white; /* Cor do número */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
 .answer-options label:hover {
   background: linear-gradient(135deg, #e7f3ff, #ffffff);
   border-color: #4a90e2;
@@ -540,3 +555,39 @@ canvas {
   margin-right: auto;
   transition: none;
 }
+
+.progress-container {
+  display: flex;
+  align-items: center; /* Alinha verticalmente */
+  width: 100%;
+  gap: 10px; /* Espaço entre elementos */
+}
+
+/* Número da questão à esquerda */
+.question-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  font-family: 'Roboto', sans-serif;
+  min-width: 30px; /* Garante que o número não se mova */
+  text-align: left;
+}
+
+/* Barra de progresso ocupando o restante do espaço */
+.progress-bar-container {
+  flex-grow: 1; /* Faz a barra expandir para preencher o espaço */
+  height: 12px;
+  background: linear-gradient(90deg, #e0e0e0, #f5f5f5);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), #5f5cfc);
+  transition: width 0.4s ease-in-out;
+}
+
+
+
