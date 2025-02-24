@@ -4,13 +4,14 @@
     <div class="results-summary">
       <p class="title">{{ quiz.title }}</p>
       <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-      <p class="quiz-sub-title">Tempo gasto: {{ quiz.timeSpent }}</p>
 
       <div class="button-container">
         <button class="btn-start" (click)="startQuiz()" aria-label="Iniciar Competição">Correção</button>
       </div>
 
+      <!--
       <h2 class="section-title">Resultado Geral</h2>
+      -->
 
       <div class="statistics-container">
         <!-- Cabeçalho -->
@@ -24,7 +25,7 @@
         </div>
 
         <!-- Corpo das Estatísticas -->
-        <div class="statistics-body" [ngClass]="{'conteudo-bloqueado': loggedUser.plan === 'FREE', 'statistics-body': true}">
+        <div class="statistics-body">
           <!-- Gráfico de Barras -->
           <div class="graph">
             <div class="bar acertos" *ngIf="((result.correctAnswers / questions.length) * 100) > 0"
@@ -69,13 +70,18 @@
         </div>
       </div>
 
+      <br>
+
+      <!--
       <h2 class="section-title">Estatísticas Por Tópicos</h2>
+      -->
 
       <div *ngIf="quiz.resultsByTopic">
-        <div class="statistics-container" *ngFor="let topic of topics">
+        <div class="statistics-container" *ngFor="let topic of topics" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
           <!-- Cabeçalho -->
           <div class="statistics-header">
             <h2>{{ topic.name }}</h2>
+
             <!--
                 <p class="description">
                   Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
@@ -84,7 +90,7 @@
           </div>
 
           <!-- Corpo das Estatísticas -->
-          <div class="statistics-body" [ngClass]="{'conteudo-bloqueado': loggedUser.plan === 'FREE', 'statistics-body': true}">
+          <div class="statistics-body">
             <!-- Gráfico de Barras -->
             <div class="graph">
               <div class="bar acertos" *ngIf="quiz.resultsByTopic[topic.name].percentage! > 0"
@@ -140,14 +146,15 @@
       <div class="question-card">
 
         <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>
+        <p class="quiz-sub-title">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</p>
+
         <!--  
         <p>{{ quiz.questions[currentQuestionIndex].difficultyLevel }}</p>
         <p>{{ quiz.questions[currentQuestionIndex].timeLimit }}</p>
         -->
 
-        <br>
-
         <div class="progress-container">
+          <p class="question-number">{{ quiz.timeSpent }}</p>
           <div class="progress-bar-container">
             <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
             </div>
@@ -183,13 +190,13 @@
         </div>
 
         <!-- Input para mostrar a solução -->
-        <div class="solution-container">
+        <div class="solution-container" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
           <div class="solution-input">
             <label for="solution">Explicação:</label>
-            <div id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
+            <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
               *ngIf="quiz.questions[currentQuestionIndex].solution">
               \[{{ quiz.questions[currentQuestionIndex].solution }}\]
-            </div>
+          </p>
           </div>
         </div>
 
@@ -203,11 +210,13 @@
           *ngIf="currentQuestionIndex !== quiz.questions.length - 1">
           Próxima <i class="pi pi-chevron-right"></i>
         </button>
-        <!-- Botão para voltar à tela inicial -->
+        <!-- Botão para submeter respostas -->
         <button class="pagination-button" (click)="showStartScreen = true; scrollToTop();"
-          *ngIf="currentQuestionIndex === quiz.questions.length - 1">
-          <i class="pi pi-arrow-up" style="margin-right: 0.5rem;"></i> Resultados
+          *ngIf="currentQuestionIndex === questions.length - 1">
+          <span>Resultados</span>
+          <i style="margin-left: 0.5rem; font-weight: bold;" class="pi pi-arrow-up"></i>
         </button>
+
       </div>
     </div>
 

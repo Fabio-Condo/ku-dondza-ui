@@ -138,10 +138,13 @@
                 </div>
             </div>
         </div>
-        <br>
-        <br>
-        <button class="btn btn-primary" (click)="onShowMoreStudents()" *ngIf="students.length < 1000">Ver Mais</button>
     </div>
+
+    <!-- Botão "Carregar mais" -->
+    <div class="load-more">
+        <button (click)="onShowMoreStudents()" *ngIf="students.length < 1000" class="btn-load-more">Ver mais</button>
+    </div>
+
 </div>
 
 <!-- Modal de Vídeo -->

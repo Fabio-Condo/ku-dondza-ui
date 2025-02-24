@@ -41,7 +41,7 @@
                             <div class="content">
                                 <p class="title">{{ quiz.title }}</p>
                                 <p class="details">Disciplina: <span class="text-muted">{{ quiz.subject.name }}</span></p>
-                                <p class="details">Dificuldade: <span class="text-muted">{{ quiz.difficultyLevel }}</span></p>
+                                <p class="details">Dificuldade: <span class="text-muted">{{ getTypeValue(quiz.difficultyLevel) }}</span></p>
                                 <p class="details">Submissao: <span class="text-muted">{{ quiz.submittedAt | date: 'short' }}</span></p>
                                 <p class="details">{{ quiz.totalQuestions }} questões</p>
                             </div>
@@ -89,7 +89,7 @@
 
     <!-- Botão "Carregar mais" -->
     <div class="load-more">
-        <button (click)="loadMore()" class="btn-load-more">Buscar mais</button>
+        <button (click)="loadMore()" class="btn-load-more" [disabled]="quizzes.length === totalQuizzes && totalQuizzes > 0">Buscar mais</button>
     </div>
 
     <!-- Paginação -->

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -24,7 +24,7 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './new-quizz.component.html',
   styleUrls: ['./new-quizz.component.css']
 })
-export class NewQuizzComponent implements OnInit {
+export class NewQuizzComponent implements OnInit, OnDestroy {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
   topics: Topic[] = [];
@@ -65,11 +65,15 @@ export class NewQuizzComponent implements OnInit {
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   difficultyLevels = [
-    { label: 'EASY', value: 'EASY' },
-    { label: 'MEDIUM', value: 'MEDIUM' },
-    { label: 'HARD', value: 'HARD' },
-    { label: 'VERY_HARD', value: 'VERY_HARD' },
-    { label: 'EXPERT', value: 'EXPERT' },
+    { label: 'Fácil', value: 'EASY' },
+    { label: 'Médio', value: 'MEDIUM' },
+    { label: 'Dificil', value: 'HARD' },
+  ];
+
+  limitsPerTopic = [
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
   ];
 
   filtro: QuestionFilter = {
@@ -94,6 +98,15 @@ export class NewQuizzComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.carregarDisciplinas();
     this.scrollToTop();
+    this.quiz.difficultyLevel = 'EASY';
+    this.quiz.limitPerTopic = 2;
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();// Cancelar o temporizador
+      console.log("Temporizador parado com successo!")
+    }
   }
 
   startTimer(): void {
@@ -108,11 +121,11 @@ export class NewQuizzComponent implements OnInit {
         this.timeLimit--;
         this.updateFormattedTime(); // Atualiza o tempo formatado
       } else {
-        this.showFinalScreen = true; 
         this.stopTimer();       
         this.submitAnswers(); 
         this.toggleCorrection(); 
         this.scrollToTop();
+        this.showFinalScreen = true; 
         this.messageService.add({ severity: 'success', detail: 'O Tempo esgou e a sbumissão foi feita com sucesso!' });
       }
     });
@@ -203,10 +216,9 @@ export class NewQuizzComponent implements OnInit {
 
   submitAnswers() {
     // Calcular o tempo gasto em segundos
-
+    this.showFinalScreen = true;
     this.calculateResults();
     this.stopTimer();
-    this.showFinalScreen = true;
     this.scrollToTop(); 
     if (!this.submited) {
       const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
@@ -253,7 +265,7 @@ export class NewQuizzComponent implements OnInit {
     const selectedTopicIds = this.getSelectedTopicIds();
 
     this.showLoading = true;
-    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel).subscribe(
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
         this.quiz.questions = this.questions;

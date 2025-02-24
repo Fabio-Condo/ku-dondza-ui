@@ -17,6 +17,8 @@ import { CompetitionFilter } from 'src/app/core/interface/CompetitionFilter';
 declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
 import { interval, Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/users/authentication.service';
+import { User } from 'src/app/core/model/User';
 
 
 
@@ -49,6 +51,8 @@ export class QuestionViewComponent implements OnInit {
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
 
+  loggedUser: User = new User();
+
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   quizFilter: QuizFilter = {
@@ -68,12 +72,15 @@ export class QuestionViewComponent implements OnInit {
     private questionStatisticsService: QuestionStatisticsService,
     private competitionService: CompetitionService,
     private quizService: QuizService,
+    private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
     const questionId = this.route.snapshot.params['id'];
     if (questionId) {
       this.findById(questionId);
@@ -93,7 +100,6 @@ export class QuestionViewComponent implements OnInit {
         this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
         this.renderFunctions();
-
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {

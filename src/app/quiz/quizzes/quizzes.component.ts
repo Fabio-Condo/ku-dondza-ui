@@ -37,17 +37,15 @@ export class QuizzesComponent implements OnInit {
   @ViewChild('table') grid: any;
 
   difficultyLevels = [
-    { label: 'EASY', value: 'EASY' },
-    { label: 'MEDIUM', value: 'MEDIUM' },
-    { label: 'HARD', value: 'HARD' },
-    { label: 'VERY_HARD', value: 'VERY_HARD' },
-    { label: 'EXPERT', value: 'EXPERT' },
+    { label: 'Fácil', value: 'EASY' },
+    { label: 'Médio', value: 'MEDIUM' },
+    { label: 'Dificil', value: 'HARD' },
   ];
 
   filter: QuizFilter = {
     page: 0,
     itemsPerPage: 5,
-    sort: 'id,asc'
+    sort: 'id,desc'
   }
 
   constructor(
@@ -212,6 +210,18 @@ export class QuizzesComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRecords / this.filter.itemsPerPage);
+  }
+
+  getTypeValue(type: string) {
+    switch (type) {
+      case 'EASY':
+        return 'Fácil';
+      case 'MEDIUM':
+        return 'Médio';
+      case 'HARD':
+        return 'Dificil';  
+    }
+    return '';
   }
 
   limparCampos() {

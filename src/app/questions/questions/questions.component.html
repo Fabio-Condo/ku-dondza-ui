@@ -20,7 +20,7 @@
             </div>
             -->
             <button class="add-new-btn" (click)="onAddNewQuestion()" *ngIf="isSuperAdmin">
-                <i class="pi pi-plus"></i> Adicionar
+                <i class="pi pi-plus"></i> Novo
             </button>
             <button class="filter-btn" (click)="onFilter()">
                 <i class="pi pi-filter"></i> Filtrar
@@ -38,7 +38,7 @@
 
                                 <p class="title">{{ question.topic.subject.name }}</p>
                                 <p class="details">{{ question.topic.name }}</p>
-                                <p class="details">{{ question.difficultyLevel }}</p> 
+                                <p class="details">{{ getTypeValue(question.difficultyLevel) }}</p> 
 
                             </div>
                             <div class="dropdown-container" *ngIf="isSuperAdmin">
@@ -88,7 +88,7 @@
 
     <!-- Botão "Carregar mais" -->
     <div class="load-more">
-        <button (click)="loadMore()" class="btn-load-more">Buscar mais</button>
+        <button (click)="loadMore()" class="btn-load-more" [disabled]="questions.length === totalQuestions && totalQuestions > 0">Buscar mais</button>
     </div>
 
     <!-- Paginação -->

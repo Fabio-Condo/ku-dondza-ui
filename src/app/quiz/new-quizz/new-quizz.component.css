@@ -11,12 +11,10 @@ label {
   cursor: pointer;
 }
 
-/* AAAAA */
-/* Variáveis CSS */
 :root {
-  /*--color-primary: #4a90e2;*/
-  --color-black: #000000;
-  --color-white: #ffffff;
+  --color-text: #2d3436;
+  --font-primary: 'Inter', sans-serif;
+  /* Fonte moderna */
 }
 
 /* Indicador de carregamento */
@@ -91,6 +89,21 @@ body {
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
+}
+
+.answer-options label .num {
+  background-color: var(--color-primary);
+  color: white; /* Cor do número */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .answer-options label:hover {
@@ -192,10 +205,9 @@ body {
 /* Tela inicial */
 .start-screen {
   text-align: center;
-  padding: 30px;
+  padding: 15px;
   background-color: white;
   border-radius: 16px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   margin: 0 auto;
   display: flex;
@@ -234,7 +246,7 @@ body {
 
 .quiz-title {
   font-size: 22px;
-  color: var(--color-primary);
+  color: var(--color-black);
   margin: 0;
   font-weight: 700;
 }
@@ -331,7 +343,7 @@ body {
 }
 
 .topic-name {
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: #333;
   margin-bottom: 1rem;
 }
@@ -419,25 +431,18 @@ body {
 .btn-start:hover {
   background: linear-gradient(135deg, var(--color-hover), #5f5cfc);
   color: var(--color-black);
-  /* Texto preto no hover */
   transform: scale(1.05);
-  /* Efeito de zoom */
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-  /* Sombra mais pronunciada no hover */
 }
 
 .btn-start:active {
   transform: scale(0.95);
-  /* Efeito de clique */
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  /* Sombra reduzida no clique */
   transition: transform 0.1s;
-  /* Transição mais rápida */
 }
 
 .btn-start:focus {
   outline: 2px solid var(--color-primary);
-  /* Estilo para foco */
   outline-offset: 2px;
 }
 
@@ -503,7 +508,20 @@ body {
 /* Cabeçalho do Card */
 .quiz-header {
   margin-bottom: 25px;
-  text-align: center;
+  text-align: left;
+}
+
+.quiz-card {
+  background-color: var(--color-background);
+  border-radius: 5px;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 0px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Campos de Formulário */
@@ -524,18 +542,18 @@ body {
 .form-group select {
   width: 100%;
   padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
   font-size: 1rem;
   color: #333;
-  background-color: #f9f9f9;
+  background-color: white;
   transition: all 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 8px rgba(106, 17, 203, 0.3);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
   outline: none;
 }
 
@@ -549,8 +567,8 @@ body {
 .topic-item {
   margin: 10px 0;
   background-color: #f9f9f9;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
   padding: 12px;
   transition: all 0.3s ease;
 }
@@ -615,8 +633,8 @@ body {
   position: relative;
   padding: var(--btn-padding);
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
-  color: var(--color-white);
+  background: linear-gradient(135deg, var(--color-hover), #5f5cfc);
+  color: var(--color-black);
   font-size: 1.1rem;
   font-weight: bold;
   border: none;
@@ -678,16 +696,24 @@ body {
 .start-button {
   display: inline-block;
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
+
   transition: all 0.3s ease;
   width: 100%;
   margin-top: 20px;
+
+  position: relative;
+  padding: var(--btn-padding);
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, var(--color-primary), #5f5cfc);
+  color: var(--color-white);
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .start-button:hover {
@@ -748,21 +774,24 @@ body {
   width: 100%;
   padding: 10px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 16px;
+  line-height: 1.6;
   resize: none;
-  /* Impede o redimensionamento manual */
   min-height: 100px;
-  /* Altura mínima inicial */
   overflow-y: auto;
-  /* Adiciona scroll se necessário */
   transition: border-color 0.3s ease;
 }
 
 .solution-text.scrollable {
   max-height: 500px;
-  /* Altura máxima com scroll */
   overflow-y: auto;
-  /* Scroll vertical */
+}
+
+/*  For small tablets and mobile phones */
+@media screen and (max-width: 992px) {
+  .title {
+    padding: 0px;
+  }
 }
 
 /* Responsividade */
@@ -825,11 +854,6 @@ body {
     /* Ajusta o padding */
     margin: 0;
     /* Remove margens extras */
-  }
-
-  .topic-name {
-    font-size: 1.1rem;
-    /* Reduz o tamanho da fonte */
   }
 
   .topic-stats p {
@@ -1010,8 +1034,40 @@ canvas {
   transition: none;
 }
 
-#timer {
-  font-size: 24px;
+.progress-container {
+  display: flex;
+  align-items: center; /* Alinha verticalmente */
+  width: 100%;
+  gap: 10px; /* Espaço entre elementos */
+}
+
+/* Número da questão à esquerda */
+.question-number {
+  font-size: 1.2rem;
   font-weight: bold;
-  color: red;
+  color: var(--color-primary);
+  font-family: 'Roboto', sans-serif;
+  min-width: 30px; /* Garante que o número não se mova */
+  text-align: left;
+}
+
+/* Barra de progresso ocupando o restante do espaço */
+.progress-bar-container {
+  flex-grow: 1; /* Faz a barra expandir para preencher o espaço */
+  height: 12px;
+  background: linear-gradient(90deg, #e0e0e0, #f5f5f5);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), #5f5cfc);
+  transition: width 0.4s ease-in-out;
+}
+
+.blocked-content {
+  filter: blur(5px);
+  position: relative;
 }

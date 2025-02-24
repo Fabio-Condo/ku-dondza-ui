@@ -69,11 +69,9 @@ export class QuestionsComponent implements OnInit {
   ];
 
   difficultyLevels = [
-    { label: 'EASY', value: 'EASY' },
-    { label: 'MEDIUM', value: 'MEDIUM' },
-    { label: 'HARD', value: 'HARD' },
-    { label: 'VERY_HARD', value: 'VERY_HARD' },
-    { label: 'EXPERT', value: 'EXPERT' },
+    { label: 'Fácil', value: 'EASY' },
+    { label: 'Médio', value: 'MEDIUM' },
+    { label: 'Dificil', value: 'HARD' },
   ];
 
   filtro: QuestionFilter = {
@@ -429,6 +427,18 @@ export class QuestionsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  getTypeValue(type: string) {
+    switch (type) {
+      case 'EASY':
+        return 'Fácil';
+      case 'MEDIUM':
+        return 'Médio';
+      case 'HARD':
+        return 'Dificil';  
+    }
+    return '';
   }
 
   limparCampos() {

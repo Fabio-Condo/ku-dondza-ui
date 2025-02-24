@@ -3,13 +3,13 @@
   <div *ngIf="showStartScreen" class="start-screen">
     <div class="start-screen-content">
       <div class="quiz-header">
-        <h1 class="quiz-title">Crie seu Quiz</h1>
-        <p class="quiz-subtitle">Personalize seu quiz e comece a testar seus conhecimentos!</p>
+        <h1 class="title">Novo Quiz</h1>
+        <p class="quiz-sub-title">Personalize e comece a testar seus conhecimentos!</p>
       </div>
   
       <!-- Campo de Descrição -->
       <div class="form-group">
-        <label for="title">Titulo do Quiz</label>
+        <label for="title">Titulo</label>
         <input
           type="text"
           id="title"
@@ -25,6 +25,14 @@
         <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
           <option value="" disabled selected>Selecione o nivel</option>
           <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="limitPerTopic">Nº de questões por tópico</label>
+        <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
+          <option value="" disabled selected>Selecione o limite</option>
+          <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
         </select>
       </div>
   
@@ -45,8 +53,28 @@
           </option>
         </select>
       </div>
-  
+
+      <div class="form-group" *ngIf="quiz.subject.id">
+        <label>Selecione os Tópicos</label>
+      
+      
+        <ul class="topics-list">
+          <li *ngFor="let topic of topics" class="topic-item">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="topic.selected"
+                (change)="toggleTopic(topic)"
+              />
+              <span class="custom-checkbox"></span>
+              <span class="topic-name">{{ topic.name }}</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
       <!-- Seleção de Tópicos -->
+      <!--
       <div class="form-group">
         <label>Selecione os Tópicos</label>
         <ul class="topics-list">
@@ -70,6 +98,11 @@
           Gerar Questões
         </button>
       </div>
+      -->
+
+      <button class="start-button" (click)="getQuestions()" [disabled]="topics.length == 0" *ngIf="quiz.subject.id"> 
+        Gerar Questões
+      </button>
   
       <!-- Indicador de Carregamento -->
       <div class="loading-indicator" *ngIf="showLoading || showGetSubjectLoading">
@@ -99,9 +132,16 @@
     <div *ngIf="currentQuestionIndex < questions.length">
       <div class="question-card">
 
-        <!-- Exibição do tempo restante -->
-        <div class="timer">
-          <div id="timer">{{ formattedTime }}</div>
+        <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>
+        <p class="quiz-sub-title">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</p>
+
+        <div class="progress-container">
+          <p class="question-number">{{ formattedTime }}</p>
+          <div class="progress-bar-container">
+            <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
+            </div>
+          </div>
+          <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}</p>
         </div>
 
         <img *ngIf="questions[currentQuestionIndex].urlFile" src="{{ questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções" class="question-graph" />
@@ -115,10 +155,11 @@
         </div>
 
         <div class="answer-options">
-          <label *ngFor="let answer of questions[currentQuestionIndex].answers" [ngClass]="{
+          <label *ngFor="let answer of questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
                     'correct-answer': showCorrection && answer.correct,
                     'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
                  }">
+            <span class="num">{{ i + 1 }}</span>
             <input type="radio" name="question-{{ questions[currentQuestionIndex].id }}" [value]="answer.id"
               [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)"
               (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)"
@@ -129,19 +170,19 @@
         </div>
 
         <!-- Botão para marcar como não respondida -->
-        <button class="btn" style="background: transparent; color: black;" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
+        <button class="btn" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
           *ngIf="!showCorrection">
           Não Responder
         </button>
 
         <!-- Input para mostrar a solução -->
-        <div class="solution-container" *ngIf="showCorrection">
+        <div class="solution-container" *ngIf="showCorrection" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
           <div class="solution-input">
             <label for="solution">Explicação:</label>
-            <div id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
+            <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
               *ngIf="questions[currentQuestionIndex].solution">
               \[{{ questions[currentQuestionIndex].solution }}\]
-            </div>
+            </p>
           </div>
         </div>
 
@@ -181,7 +222,9 @@
         <button class="btn-start" (click)="toggleCorrection()" aria-label="Iniciar Competição">Correção</button>
       </div>
 
-      <h2 class="section-title">Resultados</h2>
+      <!--
+      <h2 class="section-title">Resultado Geral</h2>
+      -->
 
       <div class="statistics-container">
         <!-- Cabeçalho -->
@@ -246,7 +289,8 @@
       <h2 class="section-title">Estatísticas Por Tópicos</h2>
 
       <div *ngIf="quiz.resultsByTopic">
-        <div class="statistics-container" *ngFor="let topic of quiz.selectedTopics">
+        <div class="statistics-container" *ngFor="let topic of quiz.selectedTopics" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+
           <!-- Cabeçalho -->
           <div class="statistics-header">
             <h2>{{ topic.name }}</h2>
