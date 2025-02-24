@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
 
   userSubjectsInterests: Subject[] = [];
   selectedInterest: Subject = new Subject();
+  subjectsInterests: Subject[] = [];
 
   showLoading: boolean = false;
 
@@ -50,7 +51,7 @@ export class ProfileComponent implements OnInit {
     if (userId) {
       this.getUserByUserId(userId);
     }
-    //this.getSubjectsInterests();
+    this.getSubjectsInterests();
     this.scrollToTop();
   }
 
@@ -60,6 +61,17 @@ export class ProfileComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  getSubjectsInterests() {
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjectsInterests = dados;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    });
   }
 
   getUserByUserId(userId: string) {
@@ -117,6 +129,10 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
+  }
+
+  removeInterest(interest: { name: string }) {
+    this.user.subjectsInterests = this.user.subjectsInterests.filter(i => i !== interest);
   }
 
   private sendErrorNotification(message: string): void {
