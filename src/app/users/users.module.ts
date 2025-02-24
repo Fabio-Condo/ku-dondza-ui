@@ -19,6 +19,7 @@ import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { LoginComponent } from './login/login.component';
 import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -26,7 +27,8 @@ import { UserProfileViewComponent } from './user-profile-view/user-profile-view.
   declarations: [
     UsersComponent,
     LoginComponent,
-    UserProfileViewComponent
+    UserProfileViewComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,

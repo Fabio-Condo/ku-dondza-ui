@@ -1,0 +1,340 @@
+<div class="container">
+    <div class="profile-card">
+        <div class="banner">
+            <button class="edit-button" (click)="onUpdateCurrentUser()" *ngIf="currentUser.userId == user.userId">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-pic">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <div class="profile-info">
+                    <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+                    <p>{{ user.bio }}</p>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>São Paulo, Brasil</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ user.email }}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Membro desde Março 2024</span>
+                </div>
+            </div>
+
+            <div class="badges">
+                <span class="badge">Especialista</span>
+                <span class="badge">Top Criadora</span>
+                <span class="badge">Mentora</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-book stat-icon"></i>
+            <div class="stat-value">45</div>
+            <div class="stat-label">Quizzes Criados</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-trophy stat-icon"></i>
+            <div class="stat-value">128</div>
+            <div class="stat-label">Quizzes Completados</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-briefcase stat-icon"></i>
+            <div class="stat-value">92%</div>
+            <div class="stat-label">Média de Notas</div>
+        </div>
+    </div>
+
+<!-- Nova seção de disciplinas de interesse -->
+<div class="subjects-section">
+    <div class="subjects-header">
+        <h2 class="subjects-title">Disciplinas de Interesse</h2>
+        <button class="edit-button">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    
+    <!-- Grade de disciplinas -->
+    <div class="subjects-grid">
+        <div class="subject-card" *ngFor="let interest of user.subjectsInterests">
+            <div class="subject-icon">
+                <i class="fas fa-square-root-alt math" *ngIf="interest.name == 'Matemática'"></i>
+                <i class="fas fa-atom physics" *ngIf="interest.name == 'Física'"></i>
+                <i class="fas fa-flask chemistry" *ngIf="interest.name == 'Química'"></i>
+                <i class="fas fa-dna biology" *ngIf="interest.name == 'Biologia'"></i>
+                <i class="fas fa-landmark history" *ngIf="interest.name == 'História'"></i>
+                <i class="fas fa-globe-americas geography" *ngIf="interest.name == 'Geografia'"></i>
+                <i class="fas fa-language english" *ngIf="interest.name == 'Inglês'"></i>
+                <i class="fas fa-book portuguese" *ngIf="interest.name == 'Português'"></i>
+            </div>
+            <div class="subject-name">{{ interest.name }}</div>
+            <div class="subject-count">32 quizzes</div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="tabs">
+        <div class="tab-list">
+            <button class="tab-button" [class.active]="activeTab === 'activity'" (click)="setActiveTab('activity')">
+                Atividade Recente
+            </button>
+            <button class="tab-button" [class.active]="activeTab === 'quizzes'" (click)="setActiveTab('quizzes')">
+                Meus Quizzes
+            </button>
+            <button class="tab-button" [class.active]="activeTab === 'achievements'"
+                (click)="setActiveTab('achievements')">
+                Conquistas
+            </button>
+        </div>
+
+        <!-- Tab de Atividades Recentes -->
+        <div class="tab-content active" id="activity" *ngIf="activeTab == 'activity'">
+            <div class="activity-item">
+                <i class="fas fa-book activity-icon"></i>
+                <div class="activity-info">
+                    <div class="activity-title">Álgebra Linear Avançada</div>
+                    <div class="activity-date">2 dias atrás</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-trophy activity-icon"></i>
+                <div class="activity-info">
+                    <div class="activity-title">Conquistou medalha Top Criadora</div>
+                    <div class="activity-date">1 semana atrás</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-book activity-icon"></i>
+                <div class="activity-info">
+                    <div class="activity-title">Geometria Básica</div>
+                    <div class="activity-date">2 semanas atrás</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab de Meus Quizzes -->
+        <div class="tab-content" id="quizzes" *ngIf="activeTab == 'quizzes'">
+            <div class="quiz-item">
+                <div class="quiz-info">
+                    <h3>Álgebra Linear Avançada</h3>
+                    <div class="quiz-stats">
+                        <span><i class="fas fa-user"></i> 145 alunos</span>
+                        <span><i class="fas fa-star"></i> 4.8/5</span>
+                        <span><i class="fas fa-clock"></i> 45 min</span>
+                    </div>
+                </div>
+                <button class="edit-button">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-info">
+                    <h3>Geometria Básica</h3>
+                    <div class="quiz-stats">
+                        <span><i class="fas fa-user"></i> 89 alunos</span>
+                        <span><i class="fas fa-star"></i> 4.6/5</span>
+                        <span><i class="fas fa-clock"></i> 30 min</span>
+                    </div>
+                </div>
+                <button class="edit-button">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-info">
+                    <h3>Trigonometria Intermediária</h3>
+                    <div class="quiz-stats">
+                        <span><i class="fas fa-user"></i> 112 alunos</span>
+                        <span><i class="fas fa-star"></i> 4.7/5</span>
+                        <span><i class="fas fa-clock"></i> 35 min</span>
+                    </div>
+                </div>
+                <button class="edit-button">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab de Conquistas -->
+        <div class="tab-content" id="achievements" *ngIf="activeTab == 'achievements'">
+            <div class="achievement-grid">
+                <!-- Iniciante -->
+                <div class="achievement-card">
+                    <div class="achievement-icon bronze">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="achievement-title">Iniciante</h3>
+                    <p class="achievement-description">Complete seu primeiro quiz e comece sua jornada de aprendizado!
+                    </p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-stat">
+                            <i class="fas fa-check"></i> Conquistado
+                        </span>
+                        <span class="achievement-stat">
+                            <i class="fas fa-calendar"></i> 15/02/2024
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Aprendiz -->
+                <div class="achievement-card">
+                    <div class="achievement-icon silver">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="achievement-title">Aprendiz</h3>
+                    <p class="achievement-description">Complete 10 quizzes com nota superior a 70%</p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar" style="width: 80%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-stat">
+                            <i class="fas fa-trophy"></i> 8/10 quizzes
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Estudioso -->
+                <div class="achievement-card">
+                    <div class="achievement-icon gold">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h3 class="achievement-title">Estudioso</h3>
+                    <p class="achievement-description">Complete 50 quizzes e mantenha uma média acima de 80%</p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar" style="width: 60%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-stat">
+                            <i class="fas fa-trophy"></i> 30/50 quizzes
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Expert -->
+                <div class="achievement-card locked">
+                    <i class="fas fa-lock achievement-locked"></i>
+                    <div class="achievement-icon diamond">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="achievement-title">Expert</h3>
+                    <p class="achievement-description">Alcance média 90% em pelo menos 100 quizzes</p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar" style="width: 35%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-stat">
+                            <i class="fas fa-trophy"></i> 35/100 quizzes
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Explorador -->
+                <div class="achievement-card">
+                    <div class="achievement-icon gold">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <h3 class="achievement-title">Explorador</h3>
+                    <p class="achievement-description">Complete quizzes em 5 disciplinas diferentes</p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar" style="width: 80%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-stat">
+                            <i class="fas fa-book"></i> 4/5 disciplinas
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Desafiador -->
+                <div class="achievement-card locked">
+                    <i class="fas fa-lock achievement-locked"></i>
+                    <div class="achievement-icon master">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="achievement-title">Desafiador</h3>
+                    <p class="achievement-description">Complete 20 quizzes difíceis com nota superior a 85%</p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar" style="width: 25%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-stat">
+                            <i class="fas fa-trophy"></i> 5/20 quizzes
+                        </span>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalSave">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Editar Perfil</h2>
+            <button class="close-button" (click)="displayModalSave = false">&times;</button>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label class="form-label" for="fullName">Nome</label>
+                <input class="form-input" [(ngModel)]="user.firstName" type="text" id="fullName" name="fullName">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="bio">Título ou Bio</label>
+                <textarea class="form-input form-textarea" [(ngModel)]="user.bio" id="bio" name="bio"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" [(ngModel)]="user.email" type="email" id="email" name="email">
+            </div>
+
+            <!--
+            <div class="form-group">
+                <label class="form-label" for="location">Localização</label>
+                <input class="form-input" type="text" id="location" name="location">
+            </div>
+            -->
+
+            <!--
+            <div class="form-group">
+                <label class="form-label">Disciplinas de Interesse</label>
+                <div class="tags-container">
+                    <div class="tag">
+                        Matemática
+                        <button type="button" class="tag-remove">&times;</button>
+                    </div>
+                    <div class="tag">
+                        Física
+                        <button type="button" class="tag-remove">&times;</button>
+                    </div>
+                    <input class="add-tag-input" type="text" placeholder="Adicionar disciplina...">
+                </div>
+            </div>
+            -->
+
+            <button type="submit" class="submit-button">Salvar Alterações</button>
+        </form>
+    </div>
+</div>
