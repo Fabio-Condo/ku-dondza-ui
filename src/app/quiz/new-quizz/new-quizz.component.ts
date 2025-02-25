@@ -104,8 +104,8 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();// Cancelar o temporizador
-      console.log("Temporizador parado com successo!")
+      this.timerSubscription.unsubscribe();// Cancelar o temporizador e submiter o quiz
+      this.submitAnswers();
     }
   }
 

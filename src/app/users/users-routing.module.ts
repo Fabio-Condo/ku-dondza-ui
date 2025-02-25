@@ -20,8 +20,8 @@ const routes: Routes = [
     path: 'login', component: LoginComponent,
   },
   {
-    //path: 'user/profile/:userId',
-    path: 'user/profile2',
+    path: 'user/profile2/:userId',
+    //path: 'user/profile2',
     component: UserProfileViewComponent,
     canActivate: [AuthenticationGuard], 
   },
