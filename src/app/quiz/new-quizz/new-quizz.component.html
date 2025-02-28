@@ -73,33 +73,6 @@
         </ul>
       </div>
 
-      <!-- Seleção de Tópicos -->
-      <!--
-      <div class="form-group">
-        <label>Selecione os Tópicos</label>
-        <ul class="topics-list">
-          <li *ngFor="let topic of topics" class="topic-item">
-            <label>
-              <input
-                type="checkbox"
-                [checked]="topic.selected"
-                (change)="toggleTopic(topic)"
-              />
-              <span class="custom-checkbox"></span>
-              <span class="topic-name">{{ topic.name }}</span>
-            </label>
-          </li>
-        </ul>
-        <button
-          class="start-button"
-          (click)="getQuestions()"
-          [disabled]="topics.length == 0" *ngIf="quiz.subject.id"
-        >
-          Gerar Questões
-        </button>
-      </div>
-      -->
-
       <button class="start-button" (click)="getQuestions()" [disabled]="topics.length == 0" *ngIf="quiz.subject.id"> 
         Gerar Questões
       </button>

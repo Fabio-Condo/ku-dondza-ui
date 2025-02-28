@@ -1,3 +1,556 @@
+<br>
+<br>
+<br>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cursos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3b82f6;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        .curso-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .curso-card {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .curso-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .curso-imagem {
+            width: 30%;
+            min-width: 120px;
+            max-width: 200px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .curso-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .disciplina-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .matematica {
+            background-color: #4C51BF;
+        }
+
+        .fisica {
+            background-color: #38A169;
+        }
+
+        .programacao {
+            background-color: #E53E3E;
+        }
+
+        .design {
+            background-color: #805AD5;
+        }
+
+        .curso-conteudo {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .curso-titulo {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .curso-descricao {
+            color: #4a5568;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .curso-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .curso-autor {
+            display: flex;
+            align-items: center;
+            color: #718096;
+        }
+
+        .curso-autor-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .start-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-button:hover {
+            background-color: #2563eb;
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-info {
+            color: #718096;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        .pagination-btn {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background-color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover {
+            background-color: #f8fafc;
+        }
+
+        .pagination-btn.active {
+            background-color: #4c6ef5;
+            color: white;
+            border-color: #4c6ef5;
+        }
+
+        .pagination-btn.prev,
+        .pagination-btn.next {
+            width: auto;
+            padding: 0 15px;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .popout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popout-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .popout-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-black);
+            margin: 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: var(--color-black);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-black);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            .curso-card {
+                /* Mantém flexbox na horizontal para imagem à esquerda */
+                flex-direction: row;
+            }
+
+            .curso-imagem {
+                width: 30%;
+                min-width: 90px;
+            }
+
+            .curso-conteudo {
+                padding: 15px;
+            }
+
+            .curso-titulo {
+                font-size: 1.2rem;
+            }
+
+            .curso-descricao {
+                font-size: 0.9rem;
+            }
+
+            .disciplina-badge {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+
+            .btn-ver-curso {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+
+            .curso-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .curso-card {
+                /* Mesmo em telas pequenas, mantém o layout horizontal */
+                flex-direction: row;
+            }
+
+            .curso-imagem {
+                width: 25%;
+                min-width: 70px;
+            }
+
+            .curso-conteudo {
+                padding: 10px;
+                width: 75%;
+            }
+
+            .curso-titulo {
+                font-size: 1rem;
+                margin-bottom: 5px;
+            }
+
+            .curso-descricao {
+                font-size: 0.8rem;
+                margin-bottom: 10px;
+                /* Limita o número de linhas em telas pequenas */
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .curso-autor {
+                font-size: 0.8rem;
+            }
+
+            .curso-autor-avatar {
+                width: 20px;
+                height: 20px;
+            }
+
+            .disciplina-badge {
+                font-size: 0.6rem;
+                padding: 3px 6px;
+                top: 5px;
+                left: 5px;
+            }
+
+            .btn-ver-curso {
+                padding: 4px 8px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cursos</h1>
+        <br>
+
+        <header>
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalCourses }}</span>
+
+            <div class="actions">
+                <button class="btn-primary" id="add-btn" (click)="onAddNewOnlineCourse()" *ngIf="isSuperAdmin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Novo
+                </button>
+                <button class="btn-outline" id="filter-btn" (click)="onFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Filtrar
+                </button>
+            </div>
+        </header>
+
+        <div class="curso-lista" *ngFor="let course of courses">
+            <!-- Curso 1 -->
+            <div class="curso-card">
+                <div class="curso-imagem">
+                    <!--<span class="disciplina-badge programacao">{{ course.subject.name }}</span>-->
+                    <img src="/api/placeholder/400/300" alt="Desenvolvimento Web">
+                </div>
+                <div class="curso-conteudo">
+                    <h2 class="curso-titulo">{{ course.name }}</h2>
+                    <p class="curso-descricao">{{ course.description }}</p>
+                    <div class="curso-footer">
+                        <div class="curso-autor">
+                            <img class="curso-autor-avatar" src="/api/placeholder/60/60" alt="Ana Oliveira">
+                            <span>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span>
+                        </div>
+                        <button class="start-button" [routerLink]="['/coursos-online', course.onlineCourseId]">
+                            Ver curso
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        <!--
+                        <div class="dropdown-container" *ngIf="isSuperAdmin">
+                            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i
+                                    class="pi pi-ellipsis-v"></i></button>
+                            <div class="dropdown" *ngIf="course.isAdminMenuOpen">
+                                <a
+                                    (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
+                                <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Paginação -->
+        <div class="pagination">
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalCourses }}</span>
+            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-btn next" (click)="nextPage()"
+                [disabled]="currentPage === totalPages() || showLoading">
+                Próxima
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+    </div>
+</body>
+
+</html>
+
+<!--
 <div class="container" style="margin-top: 70px;">
 
     <div style="display:inline;">
@@ -14,13 +567,12 @@
         </div>
 
         <div class="input-group">
-            <!--
+
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i>
                 <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()"
                     placeholder="Pesquisa">
             </div>
-            -->
             <button class="add-new-btn" (click)="onAddNewOnlineCourse()" *ngIf="isSuperAdmin">
                 <i class="pi pi-plus"></i> Novo
             </button>
@@ -46,19 +598,23 @@
 
                                 <div class="content">
                                     <p class="title">{{ course.name }}</p>
-                                    <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span></p>
+                                    <p class="details">Instrutor: <span class="text-muted">{{ course.instrutor.firstName
+                                            }} {{ course.instrutor.lastName }}</span></p>
                                     <p class="details" *ngIf="!course.isSubscribed"> Não Inscrito</p>
                                     <p class="details" *ngIf="course.isSubscribed"> Inscrito</p>
                                 </div>
                                 <div class="dropdown-container" *ngIf="isSuperAdmin">
-                                    <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+                                    <button class="dropdown-btn" (click)="toggleDropdown(course)"><i
+                                            class="pi pi-ellipsis-v"></i></button>
                                     <div class="dropdown" *ngIf="course.isAdminMenuOpen">
-                                        <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
-                                        <a (click)="confirmarExclusao(course); closeDropdown(course)" >Eliminar</a>
+                                        <a
+                                            (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
+                                        <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
                                     </div>
                                 </div>
                                 <div class="button-container">
-                                    <button class="btn btn-primary" [routerLink]="['/coursos-online', course.onlineCourseId]">Ver</button>
+                                    <button class="btn btn-primary"
+                                        [routerLink]="['/coursos-online', course.onlineCourseId]">Ver</button>
                                 </div>
 
                             </div>
@@ -66,7 +622,6 @@
                     </td>
                 </tr>
 
-                <!-- Indicador de carregamento -->
                 <tr *ngIf="showLoading">
                     <td>
                         <div class="card">
@@ -78,7 +633,6 @@
                     </td>
                 </tr>
 
-                <!-- Mensagem "Nenhum item encontrado" -->
                 <tr *ngIf="!showLoading && courses.length === 0">
                     <td>
                         <div class="card">
@@ -92,20 +646,20 @@
             </tbody>
         </table>
 
-        <!-- Botão "Carregar mais" -->
         <div class="load-more">
-            <button (click)="loadMore()" class="btn-load-more" [disabled]="courses.length === totalCourses && totalCourses > 0">Buscar mais</button>
+            <button (click)="loadMore()" class="btn-load-more"
+                [disabled]="courses.length === totalCourses && totalCourses > 0">Buscar mais</button>
         </div>
 
-        <!-- Paginação -->
         <div class="pagination-controls">
             <span class="pagination-info mr-auto"></span>
-            
+
             <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
                 <i class="pi pi-chevron-left"></i> Anterior
             </button>
             <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-            <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+            <button class="pagination-button" (click)="nextPage()"
+                [disabled]="currentPage === totalPages() || showLoading">
                 Próximo <i class="pi pi-chevron-right"></i>
             </button>
             <select class="select-itens-por-pagina" (change)="changePageSize($event)">
@@ -119,16 +673,14 @@
     </div>
 
 </div>
+-->
 
-<div class="overlay" *ngIf="displayModalSave">
-    <div class="dialog">
-
-        <div class="dialog-header">
-            <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
-            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+<div class="popout-overlay" *ngIf="displayModalSave">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editing ? 'Editando Curso' : 'Adicionando Novo Curso' }}</h2>
+            <button class="close-button" (click)="displayModalSave = false">&times;</button>
         </div>
-      
-        <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
@@ -145,8 +697,9 @@
             <div class="form-group">
                 <label for="instrutor">Instrutor</label>
                 <select id="instrutor" [(ngModel)]="course.instrutor.id" name="institution" required>
-                  <option value="" disabled selected>Selecione o instrutor</option>
-                  <option *ngFor="let instrutor of users" [value]="instrutor.id">{{ instrutor.firstName }} {{ instrutor.lastName }}</option>
+                    <option value="" disabled selected>Selecione o instrutor</option>
+                    <option *ngFor="let instrutor of users" [value]="instrutor.id">{{ instrutor.firstName }} {{
+                        instrutor.lastName }}</option>
                 </select>
             </div>
 
@@ -157,62 +710,53 @@
 
             <div class="form-group">
                 <label for="description">Descrição</label>
-                <textarea id="description" name="description" ngModel #description="ngModel" required minlength="1" 
+                <textarea id="description" name="description" ngModel #description="ngModel" required minlength="1"
                     [(ngModel)]="course.description" rows="4"></textarea>
             </div>
 
-
-            <hr class="header-divider">
-
-            <div class="dialog-footer">
-                <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-            </div>
+            <button type="submit" class="submit-button" (click)="save()">{{ showLoading ? 'Loading...' : 'Salvar'
+                }}</button>
 
         </form>
     </div>
 </div>
 
-<div class="overlay" *ngIf="displayModalFilter">
-    <div class="dialog" style="width: 400px;">
+<div class="popout-overlay" *ngIf="displayModalFilter">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Filtros</h2>
+            <button class="close-button" (click)="displayModalFilter = false">&times;</button>
+        </div>
 
-      <div class="dialog-header">
-        <h2>Filtros</h2>
-        <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
-      </div>
-  
-      <hr class="header-divider">
-  
-      <form autocomplete="off" #exameForm="ngForm">
+        <form autocomplete="off" #exameForm="ngForm">
 
-        <div class="form-group">
-            <label for="option">Filtrar cursos</label>
-            <select id="option" [(ngModel)]="selectCourseOption" (ngModelChange)="findAll()" name="option" required>
-              <option *ngFor="let option of courseFilterOptions" [value]="option.value">{{ option.label }}</option>
+            <div class="form-group">
+                <label for="option">Filtrar cursos</label>
+                <select id="option" [(ngModel)]="selectCourseOption" (ngModelChange)="findAll()" name="option" required>
+                    <option *ngFor="let option of courseFilterOptions" [value]="option.value">{{ option.label }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" name="name" ngModel #name="ngModel" minlength="1" [(ngModel)]="filtro.name"
+                    (ngModelChange)="findAll()">
+            </div>
+
+            <!--
+            <div class="form-group">
+            <label for="instrutor">Instrutor</label>
+            <select id="instrutor" [(ngModel)]="filtro.instrutor" (change)="findAll()" name="instrutor" required>
+                <option value="" disabled selected>Selecione o instrutor</option>
+                <option *ngFor="let instrutor of instrutors" [value]="instrutor.value">{{ instrutor.label }}</option>
             </select>
-        </div>
+            </div>
+            -->
 
-        <div class="form-group">
-            <label for="name">Nome</label>
-            <input type="text" name="name" ngModel #name="ngModel" minlength="1"
-              [(ngModel)]="filtro.name" (ngModelChange)="findAll()">
-        </div>
+            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
 
-        <!--
-        <div class="form-group">
-          <label for="instrutor">Instrutor</label>
-          <select id="instrutor" [(ngModel)]="filtro.instrutor" (change)="findAll()" name="instrutor" required>
-            <option value="" disabled selected>Selecione o instrutor</option>
-            <option *ngFor="let instrutor of instrutors" [value]="instrutor.value">{{ instrutor.label }}</option>
-          </select>
-        </div>
-        -->
-  
-        <hr class="header-divider">
 
-        <div class="dialog-footer">
-          <button type="button" (click)="limparCampos()" class="btn">Reset</button>
-        </div>
-  
-      </form>
+        </form>
     </div>
 </div>

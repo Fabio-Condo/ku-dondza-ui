@@ -1,211 +1,723 @@
+<br>
+<br>
+<br>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Moderna</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2d3748;
+    }
+
+    .actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    button {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3b82f6;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid #d1d5db;
+    }
+
+    .btn-outline:hover {
+      background-color: #f8fafc;
+    }
+
+    .downloa-btn {
+      background-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .downloa-btn:hover {
+      background-color: #f8fafc;
+    }
+
+    .book-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      display: flex;
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .book-cover {
+      width: 80px;
+      height: 120px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .book-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+
+    .book-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #2d3748;
+    }
+
+    .book-author {
+      font-size: 14px;
+      color: #4a5568;
+      margin-bottom: 12px;
+    }
+
+    .book-description {
+      font-size: 14px;
+      color: #718096;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .book-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Badges e tags */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Cores por disciplina */
+    .matematica {
+      background-color: #dbeafe;
+      color: #2563eb;
+    }
+
+    .fisica {
+      background-color: #f3e8ff;
+      color: #7e22ce;
+    }
+
+    .biologia {
+      background-color: #dcfce7;
+      color: #16a34a;
+    }
+
+    .historia {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    .quimica {
+      background-color: #fee2e2;
+      color: #dc2626;
+    }
+
+    .book-rating {
+      display: flex;
+      align-items: center;
+      color: #ed8936;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .book-rating svg {
+      margin-right: 4px;
+    }
+
+    .filter-section {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+      display: none;
+    }
+
+    .filter-section.active {
+      display: block;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .filter-group {
+      margin-bottom: 15px;
+    }
+
+    .filter-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #4a5568;
+    }
+
+    .filter-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      font-size: 14px;
+    }
+
+    .filter-btn-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    /* Paginação */
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 30px;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pagination-info {
+      color: #718096;
+      font-size: 14px;
+      margin-right: 15px;
+    }
+
+    .pagination-btn {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background-color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-btn:hover {
+      background-color: #f8fafc;
+    }
+
+    .pagination-btn.active {
+      background-color: #4c6ef5;
+      color: white;
+      border-color: #4c6ef5;
+    }
+
+    .pagination-btn.prev,
+    .pagination-btn.next {
+      width: auto;
+      padding: 0 15px;
+    }
+
+    .pagination-btn.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .popout-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popout-container {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .popout-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .popout-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-black);
+      margin: 0;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+
+    .close-button:hover {
+      color: var(--color-black);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--color-black);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .submit-button:hover {
+      background: #1d4ed8;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border: 2px solid #fff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .pagination-info,
+      h1 {
+        padding-left: 20px;
+      }
+
+      .actions {
+        padding: 0 20px;
+      }
+
+      .pagination {
+        display: none;
+      }
+
+    }
+  </style>
+</head>
+
+<div class="container">
+  <h1>Livros</h1>
+  <br>
+
+  <header>
+    <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalbooks }}</span>
+
+    <div class="actions">
+      <button class="btn-primary" id="add-btn" (click)="onAddNewBook()" *ngIf="isSuperAdmin">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Novo
+      </button>
+      <button class="btn-outline" id="filter-btn" (click)="onFilter()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </svg>
+        Filtrar
+      </button>
+    </div>
+  </header>
+
+  <div class="book-list" *ngFor="let book of books">
+    <div class="card">
+      <img src="/api/placeholder/80/120" alt="Capa do livro" class="book-cover">
+      <div class="book-info">
+        <div>
+          <h3 class="book-title">{{ book.name }}</h3>
+          <p class="book-author">J.R.R. Tolkien</p>
+          <p class="book-description">{{ book.description }}</p>
+        </div>
+        <div class="book-meta">
+          <span class="badge matematica">{{ book.subject.name }}</span>
+          <button class="downloa-btn" id="filter-btn" [disabled]="book.showLoadingDownload"
+            (click)="download(book, book.fileName)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
+            </svg>
+            {{ book.totalDownloadNumber }}
+          </button>
+          <!--
+          <div class="dropdown-container" *ngIf="isSuperAdmin">
+            <button class="dropdown-btn" (click)="toggleDropdown(book)"><i class="pi pi-ellipsis-v"></i></button>
+            <div class="dropdown" *ngIf="book.isAdminMenuOpen">
+              <a (click)="onUpdate(book, file); closeDropdown(book)">Editar</a>
+              <a (click)="confirmarExclusao(book); closeDropdown(book)">Eliminar</a>
+            </div>
+          </div>
+          -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination">
+    <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalbooks }}</span>
+    <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      Anterior
+    </button>
+    <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+    <button class="pagination-btn next" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+      Próxima
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+</div>
+
+</html>
+
+<!--
 <div class="container" style="margin-top: 70px;">
 
-    <div style="display: inline;">
-      <h1 class="title">Livros</h1>
+  <div style="display: inline;">
+    <h1 class="title">Livros</h1>
+  </div>
+
+  <p class="title-description">
+    Explore a variedade de livros de admissão das instituições de ensino de Moçambique.
+  </p>
+
+  <div class="flex">
+    <div>
+      <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalbooks }}</span>
     </div>
-  
-    <p class="title-description">
-      Explore a variedade de livros de admissão das instituições de ensino de Moçambique.
-    </p>
-  
-    <div class="flex">
-      <div>
-        <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalbooks }}</span>
-      </div>
-  
-      <div class="input-group">
-        <!--
-        <div class="input-container">
-          <i class="pi pi-search input-icon"></i>
-          <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"
-            (ngModelChange)="findAll()" placeholder="Pesquisa">
-        </div>
-        -->
-        <button class="add-new-btn" (click)="onAddNewBook()" *ngIf="isSuperAdmin">
-          <i class="pi pi-plus"></i> Novo
-        </button>
-        <button class="filter-btn" (click)="onFilter()">
-            <i class="pi pi-filter"></i> Filtrar
-        </button>
-      </div>
-  
+
+    <div class="input-group">
+      <button class="add-new-btn" (click)="onAddNewBook()" *ngIf="isSuperAdmin">
+        <i class="pi pi-plus"></i> Novo
+      </button>
+      <button class="filter-btn" (click)="onFilter()">
+        <i class="pi pi-filter"></i> Filtrar
+      </button>
     </div>
-  
-    <table class="card-table">
-      <tbody>
-        <tr *ngFor="let book of books">
-          <td>
-            <div class="card">
-              <div class="card-content">
-                <div class="content">
-                  <p class="title">{{book.name}}</p>
-                  <p *ngIf="book.subject.name" class="details">Disciplina: <span class="text-muted">{{ book.subject.name }}</span></p>
-                  <p *ngIf="book.description" class="details">Descrição: <span class="text-muted">{{ book.description }}</span></p>
-                  <p *ngIf="!book.showLoadingDownload && isAdmin" class="details">
-                    <strong>{{book.totalDownloadNumber}}</strong> downloads</p>
-                  <p *ngIf="book.showLoadingDownload" class="details"
-                    style="font-weight: bold; color: var(--color-primary);">
-                    <i *ngIf="book.showLoadingDownload" class="pi pi-download"></i>
-                    Baixando...
-                  </p>
-                </div>
-  
-                <div class="dropdown-container"  *ngIf="isSuperAdmin">
-                  <button class="dropdown-btn" (click)="toggleDropdown(book)"><i class="pi pi-ellipsis-v"></i></button>
-                  <div class="dropdown" *ngIf="book.isAdminMenuOpen">
-                    <a
-                      (click)="onUpdate(book, file); closeDropdown(book)">Editar</a>
-                    <a (click)="confirmarExclusao(book); closeDropdown(book)">Eliminar</a>
-                  </div>
-                </div>
-  
-                <button [disabled]="book.showLoadingDownload" (click)="download(book, book.fileName)"
-                  class="btn btn-primary">
-                  <i class="pi pi-download" style="font-weight: 600;"></i>
-                </button>
+
+  </div>
+
+  <table class="card-table">
+    <tbody>
+      <tr *ngFor="let book of books">
+        <td>
+          <div class="card">
+            <div class="card-content">
+              <div class="content">
+                <p class="title">{{book.name}}</p>
+                <p *ngIf="book.subject.name" class="details">Disciplina: <span class="text-muted">{{ book.subject.name
+                    }}</span></p>
+                <p *ngIf="book.description" class="details">Descrição: <span class="text-muted">{{ book.description
+                    }}</span></p>
+                <p *ngIf="!book.showLoadingDownload && isAdmin" class="details">
+                  <strong>{{book.totalDownloadNumber}}</strong> downloads
+                </p>
+                <p *ngIf="book.showLoadingDownload" class="details"
+                  style="font-weight: bold; color: var(--color-primary);">
+                  <i *ngIf="book.showLoadingDownload" class="pi pi-download"></i>
+                  Baixando...
+                </p>
               </div>
+
+              <div class="dropdown-container" *ngIf="isSuperAdmin">
+                <button class="dropdown-btn" (click)="toggleDropdown(book)"><i class="pi pi-ellipsis-v"></i></button>
+                <div class="dropdown" *ngIf="book.isAdminMenuOpen">
+                  <a (click)="onUpdate(book, file); closeDropdown(book)">Editar</a>
+                  <a (click)="confirmarExclusao(book); closeDropdown(book)">Eliminar</a>
+                </div>
+              </div>
+
+              <button [disabled]="book.showLoadingDownload" (click)="download(book, book.fileName)"
+                class="btn btn-primary">
+                <i class="pi pi-download" style="font-weight: 600;"></i>
+              </button>
             </div>
-          </td>
-        </tr>
-  
-        <!-- Indicador de carregamento -->
-        <tr *ngIf="showLoading">
-            <td>
-                <div class="card">
-                    <div class="loading-indicator">
-                        <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
-                        Carregando...
-                    </div>
-                </div>
-            </td>
-        </tr>
-  
-        <!-- Mensagem "Nenhum item encontrado" -->
-        <tr *ngIf="!showLoading && books.length === 0">
-          <td>
-              <div class="card">
-                  <span class="no-items-message">
-                      Nenhum item encontrado
-                  </span>
-              </div>
-          </td>
-        </tr>
-  
-      </tbody>
-    </table>
+          </div>
+        </td>
+      </tr>
 
-    <!-- Botão "Carregar mais" -->
-    <div class="load-more">
-      <button (click)="loadMore()" class="btn-load-more" [disabled]="books.length === totalbooks && totalbooks > 0">Buscar mais</button>
-    </div>
-  
-    <!-- Paginação -->
-    <div class="pagination-controls ml-auto">
-      <span class="pagination-info mr-auto"></span>
-  
-      <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-        <i class="pi pi-chevron-left"></i> Anterior
-      </button>
-      <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-      <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
-        Próximo <i class="pi pi-chevron-right"></i>
-      </button>
-      <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-        <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-          [selected]="option === filtro.itensPorPagina">
-          {{ option }}
-        </option>
-      </select>
-    </div>
-  
+      <tr *ngIf="showLoading">
+        <td>
+          <div class="card">
+            <div class="loading-indicator">
+              <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
+              Carregando...
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="!showLoading && books.length === 0">
+        <td>
+          <div class="card">
+            <span class="no-items-message">
+              Nenhum item encontrado
+            </span>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="load-more">
+    <button (click)="loadMore()" class="btn-load-more" [disabled]="books.length === totalbooks && totalbooks > 0">Buscar
+      mais</button>
   </div>
-  
-  <div class="overlay" *ngIf="displayModalSave">
-    <div class="dialog">
-      
-      <div class="dialog-header">
-        <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
-        <button class="close-btn" (click)="displayModalSave = false">&times;</button>
-      </div>
-  
-      <hr class="header-divider">
-  
-      <form autocomplete="off" #bookForm="ngForm">
 
-        <div class="form-group">
-          <label for="subject">Disciplina</label>
-          <select id="subject" [(ngModel)]="book.subject.id" name="subject" required>
-            <option value="" disabled selected>Selecione a subject</option>
-            <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
-          </select>
-        </div>
+  <div class="pagination-controls ml-auto">
+    <span class="pagination-info mr-auto"></span>
 
-        <div class="form-group">
-          <label for="name">Nome</label>
-          <textarea id="name" type="text" name="name" ngModel #name="ngModel" required minlength="1"
-            [(ngModel)]="book.name" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="description">Descrição</label>
-          <textarea id="description" type="text" name="description" ngModel #description="ngModel" required minlength="1"
-            [(ngModel)]="book.description" required></textarea>
-        </div>
-  
-        <div class="form-group">
-          <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf" class="form-control"
-            required />
-        </div>
-  
-
-        <hr class="header-divider">
-
-        <div class="dialog-footer">
-          <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-        </div>
-  
-      </form>
-    </div>
+    <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+      <i class="pi pi-chevron-left"></i> Anterior
+    </button>
+    <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+    <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+      Próximo <i class="pi pi-chevron-right"></i>
+    </button>
+    <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+      <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+        [selected]="option === filtro.itensPorPagina">
+        {{ option }}
+      </option>
+    </select>
   </div>
-  
-  <div class="overlay" *ngIf="displayModalFilter">
-    <div class="dialog">
 
-      <div class="dialog-header">
-        <h2>Filtros</h2>
-        <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
-      </div>
-  
-      <hr class="header-divider">
-  
-      <form autocomplete="off" #bookForm="ngForm">
+</div>
+-->
 
-        <div class="form-group">
-          <label for="subject">Disciplina</label>
-          <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
-            <option value="" disabled selected>Selecione a subject</option>
-            <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="name">Nome</label>
-          <input type="text" name="name" ngModel #name="ngModel" minlength="1"
-            [(ngModel)]="filtro.name" (ngModelChange)="findAll()">
-        </div>
-  
-        <div class="form-group">
-          <label for="description">Descrição</label>
-          <input type="text" name="description" ngModel #description="ngModel" minlength="1"
-            [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
-        </div>
-  
-      <hr class="header-divider">
-
-      <div class="dialog-footer">
-        <button type="button" (click)="limparCampos()" class="btn">Reset</button>
-      </div>
-  
-      </form>
+<div class="popout-overlay" *ngIf="displayModalSave">
+  <div class="popout-container">
+    <div class="popout-header">
+      <h2 class="popout-title">{{ editing ? 'Editando Livro' : 'Adicionando Novo Livro' }}</h2>
+      <button class="close-button" (click)="displayModalSave = false">&times;</button>
     </div>
+
+    <form>
+      <div class="form-group">
+        <label for="subject">Disciplina</label>
+        <select id="subject" [(ngModel)]="book.subject.id" name="subject" required>
+          <option value="" disabled selected>Selecione a subject</option>
+          <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <textarea id="name" type="text" name="name" ngModel #name="ngModel" required minlength="1"
+          [(ngModel)]="book.name" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <textarea id="description" type="text" name="description" ngModel #description="ngModel" required minlength="1"
+          [(ngModel)]="book.description" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf" class="form-control"
+          required />
+      </div>
+
+      <button type="submit" class="submit-button" (click)="save()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+    </form>
   </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalFilter">
+  <div class="popout-container">
+    <div class="popout-header">
+      <h2 class="popout-title">Filtros</h2>
+      <button class="close-button" (click)="displayModalFilter = false">&times;</button>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label for="subject">Disciplina</label>
+        <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
+          <option value="" disabled selected>Selecione a subject</option>
+          <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input type="text" name="name" ngModel #name="ngModel" minlength="1" [(ngModel)]="filtro.name"
+          (ngModelChange)="findAll()">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <input type="text" name="description" ngModel #description="ngModel" minlength="1"
+          [(ngModel)]="filtro.description" (ngModelChange)="findAll()">
+      </div>
+
+      <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
+    </form>
+  </div>
+</div>

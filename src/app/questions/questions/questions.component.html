@@ -1,5 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios por Disciplina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3b82f6;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Cores por disciplina */
+        .matematica {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .fisica {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .biologia {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .historia {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .quimica {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Badges dificuldade */
+        .easy {
+            background-color: #d1fae5;
+            color: #047857;
+        }
+
+        .medium {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        .hard {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .time {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .time svg {
+            margin-right: 5px;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topic {
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .exercise {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .view-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-button:hover {
+            background-color: #2563eb;
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-info {
+            color: #718096;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        .pagination-btn {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background-color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover {
+            background-color: #f8fafc;
+        }
+
+        .pagination-btn.active {
+            background-color: #4c6ef5;
+            color: white;
+            border-color: #4c6ef5;
+        }
+
+        .pagination-btn.prev,
+        .pagination-btn.next {
+            width: auto;
+            padding: 0 15px;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .popout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popout-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .popout-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-black);
+            margin: 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: var(--color-black);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-black);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <h1>Repositório De Questões</h1>
+        <br>
+
+        <header>
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalQuestions }}</span>
+
+            <div class="actions">
+                <button (click)="onAddNewQuestion()" *ngIf="isSuperAdmin" class="btn-primary" id="add-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Novo
+                </button>
+                <button class="btn-outline" id="filter-btn" (click)="onFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Filtrar
+                </button>
+            </div>
+        </header>
+
+        <div class="cards-container">
+            <!-- Card 1 -->
+            <div class="card" *ngFor="let question of questions">
+                <div class="card-header">
+                    <span class="badge matematica">{{ question.topic.subject.name }}</span>
+                    <span class="badge easy">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="vertical-align: middle; margin-right: 4px;">
+                            <circle cx="12" cy="8" r="7"></circle>
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                        </svg>
+                        {{ getDifficultyLevelValue(question.difficultyLevel) }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="topic">{{ question.topic.name }}</div>
+                    <div class="exercise">
+                        <p *ngIf="question.text">
+                            \[{{ question.text }}\]
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                    stroke="#7f8c8d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 6V12L16 14" stroke="#7f8c8d" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            {{ question.timeLimit }}
+                        </span>
+                        <button class="view-button" [routerLink]="['/questions', question.questionId]">
+                            Ver Questão
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paginação -->
+            <div class="pagination">
+                <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalQuestions }}</span>
+                <button class="pagination-btn prev" (click)="previousPage()"
+                    [disabled]="currentPage === 1 || showLoading">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Anterior
+                </button>
+                <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+                <button class="pagination-btn next" (click)="nextPage()"
+                    [disabled]="currentPage === totalPages() || showLoading">
+                    Próxima
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
+
+<!--
 <div class="container" style="margin-top: 70px;">
-      
+
     <div style="display:inline;">
         <h1 class="title">Reposiório de questões</h1>
     </div>
@@ -13,18 +517,16 @@
             <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalQuestions }}</span>
         </div>
         <div class="input-group">
-            <!--
             <div class="input-container">
                 <i class="pi pi-search input-icon"></i>
                 <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"  (ngModelChange)="findAll()" placeholder="Pesquisa">
             </div>
-            -->
             <button class="add-new-btn" (click)="onAddNewQuestion()" *ngIf="isSuperAdmin">
                 <i class="pi pi-plus"></i> Novo
             </button>
             <button class="filter-btn" (click)="onFilter()">
                 <i class="pi pi-filter"></i> Filtrar
-            </button>   
+            </button>
         </div>
     </div>
 
@@ -38,29 +540,30 @@
 
                                 <p class="title">{{ question.topic.subject.name }}</p>
                                 <p class="details">{{ question.topic.name }}</p>
-                                <p class="details">{{ getTypeValue(question.difficultyLevel) }}</p> 
+                                <p class="details">{{ getDifficultyLevelValue(question.difficultyLevel) }}</p>
 
                             </div>
                             <div class="dropdown-container" *ngIf="isSuperAdmin">
-                                <button class="dropdown-btn" (click)="toggleDropdown(question)"><i class="pi pi-ellipsis-v"></i></button>
+                                <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
+                                        class="pi pi-ellipsis-v"></i></button>
                                 <div class="dropdown" *ngIf="question.isAdminMenuOpen">
                                     <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
-                                    <a (click)="confirmarExclusao(question); closeDropdown(question)" >Eliminar</a>
+                                    <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
                                 </div>
                             </div>
                             <div class="button-container">
-                                <button class="btn btn-primary" [routerLink]="['/questions', question.questionId]">Ver</button>
+                                <button class="btn btn-primary"
+                                    [routerLink]="['/questions', question.questionId]">Ver</button>
                             </div>
 
                         </div>
                         <p *ngIf="question.text">
                             \[{{ question.text }}\]
-                        </p>  
+                        </p>
                     </div>
                 </td>
             </tr>
 
-            <!-- Indicador de carregamento -->
             <tr *ngIf="showLoading">
                 <td>
                     <div class="card">
@@ -72,7 +575,6 @@
                 </td>
             </tr>
 
-            <!-- Mensagem "Nenhum item encontrado" -->
             <tr *ngIf="!showLoading && questions.length === 0">
                 <td>
                     <div class="card">
@@ -82,16 +584,15 @@
                     </div>
                 </td>
             </tr>
-            
+
         </tbody>
     </table>
 
-    <!-- Botão "Carregar mais" -->
     <div class="load-more">
-        <button (click)="loadMore()" class="btn-load-more" [disabled]="questions.length === totalQuestions && totalQuestions > 0">Buscar mais</button>
+        <button (click)="loadMore()" class="btn-load-more"
+            [disabled]="questions.length === totalQuestions && totalQuestions > 0">Buscar mais</button>
     </div>
 
-    <!-- Paginação -->
     <div class="pagination-controls">
         <span class="pagination-info mr-auto"></span>
 
@@ -103,46 +604,45 @@
             Próximo <i class="pi pi-chevron-right"></i>
         </button>
         <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option" [selected]="option === filtro.itemsPerPage">
+            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                [selected]="option === filtro.itemsPerPage">
                 {{ option }}
             </option>
         </select>
     </div>
-    
 </div>
+-->
 
 <!-- Modal para Adicionar ou Editar Perguntas -->
-<div class="overlay" *ngIf="displayModalSave">
-    <div class="dialog">
-
-        <div class="dialog-header">
-            <h2>{{ editing ? 'Editando Exame' : 'Adicionando Novo Exame' }}</h2>
-            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+<div class="popout-overlay" *ngIf="displayModalSave">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editing ? 'Editando Questão' : 'Adicionando Nova Questão' }}</h2>
+            <button class="close-button" (click)="displayModalSave = false">&times;</button>
         </div>
-      
-        <hr class="header-divider">
 
         <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="save(questionForm)">
 
             <div class="form-group">
                 <label>Texto da pergunta</label>
-                <textarea id="text" name="text" ngModel #solution="ngModel" required minlength="1" 
-                       [(ngModel)]="question.text" rows="4"></textarea>      
+                <textarea id="text" name="text" ngModel #solution="ngModel" required minlength="1"
+                    [(ngModel)]="question.text" rows="4"></textarea>
             </div>
 
             <div class="form-group">
                 <label for="difficultyLevel">Nivel de dificuldade</label>
                 <select id="difficultyLevel" [(ngModel)]="question.difficultyLevel" name="difficultyLevel" required>
-                  <option value="" disabled selected>Selecione o tipo</option>
-                  <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="subject">Disciplina</label>
-                <select id="subject" name="subject" [(ngModel)]="question.topic.subject.id" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" required>
-                  <option value="" disabled selected>Selecione a subject</option>
-                  <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+                <select id="subject" name="subject" [(ngModel)]="question.topic.subject.id"
+                    [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" required>
+                    <option value="" disabled selected>Selecione a subject</option>
+                    <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
                 </select>
             </div>
 
@@ -157,24 +657,21 @@
 
             <div class="form-group">
                 <label>Expressão matématica</label>
-                <textarea id="mathExpression" name="mathExpression" ngModel #solution="ngModel" minlength="1" 
-                       [(ngModel)]="question.mathExpression" rows="4"></textarea>      
+                <textarea id="mathExpression" name="mathExpression" ngModel #solution="ngModel" minlength="1"
+                    [(ngModel)]="question.mathExpression" rows="4"></textarea>
             </div>
 
             <div class="form-group">
                 <label for="timeLimit">Tempo da questão</label>
                 <select id="timeLimit" [(ngModel)]="question.timeLimit" name="timeLimit" required>
-                  <option value="" disabled selected>Selecione o tempo</option>
-                  <option *ngFor="let time of timeLimits" [value]="time.value">{{ time.label }}</option>
+                    <option value="" disabled selected>Selecione o tempo</option>
+                    <option *ngFor="let time of timeLimits" [value]="time.value">{{ time.label }}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Imagem da Pergunta</label>
-                <input 
-                    (change)="onUpdateQuestionImage(question, $event)" 
-                    type="file" 
-                    class="upload-input" 
+                <input (change)="onUpdateQuestionImage(question, $event)" type="file" class="upload-input"
                     accept="image/*">
             </div>
 
@@ -182,7 +679,7 @@
                 <div class="header-section">
                     <label>Expressões Matemáticas</label>
                     <a href="javascript:;" class="add-btn" (click)="getReadyNewMathExpression()">
-                        <i class="pi pi-plus"></i> 
+                        <i class="pi pi-plus"></i>
                     </a>
                 </div>
 
@@ -198,8 +695,10 @@
                             <tr *ngFor="let mathExpress of question.mathExpressions; let rowIndex = index">
                                 <td>{{ mathExpress.expression }}</td>
                                 <td class="actions">
-                                    <a href="javascript:;" (click)="getReadyMathExpressionEdit(mathExpress, rowIndex)" class="edit-btn">E</a>
-                                    <a href="javascript:;" (click)="onRemoveMathExpression(rowIndex)" class="remove-btn">R</a>
+                                    <a href="javascript:;" (click)="getReadyMathExpressionEdit(mathExpress, rowIndex)"
+                                        class="edit-btn">E</a>
+                                    <a href="javascript:;" (click)="onRemoveMathExpression(rowIndex)"
+                                        class="remove-btn">R</a>
                                 </td>
                             </tr>
                             <tr *ngIf="question.mathExpressions.length === 0">
@@ -208,14 +707,14 @@
                         </tbody>
                     </table>
                 </div>
-                
+
             </div>
 
             <div class="table-container">
                 <div class="header-section">
                     <label>Respostas</label>
                     <a href="javascript:;" class="add-btn" (click)="getReadyNewAnswer()">
-                        <i class="pi pi-plus"></i> 
+                        <i class="pi pi-plus"></i>
                     </a>
                 </div>
 
@@ -233,7 +732,8 @@
                                 <td>{{ answer.text }}</td>
                                 <td>{{ answer.correct ? 'Sim' : 'Não' }}</td>
                                 <td class="actions">
-                                    <a href="javascript:;" (click)="getReadyAnswerEdit(answer, rowIndex)" class="edit-btn">E</a>
+                                    <a href="javascript:;" (click)="getReadyAnswerEdit(answer, rowIndex)"
+                                        class="edit-btn">E</a>
                                     <a href="javascript:;" (click)="onRemoveAnswer(rowIndex)" class="remove-btn">R</a>
                                 </td>
                             </tr>
@@ -243,7 +743,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
             </div>
 
             <div class="form-group">
@@ -257,18 +757,14 @@
 
             <div class="form-group">
                 <label for="solution">Solução</label>
-                <textarea id="solution" name="solution" ngModel #solution="ngModel" required minlength="1" 
+                <textarea id="solution" name="solution" ngModel #solution="ngModel" required minlength="1"
                     [(ngModel)]="question.solution" rows="2"></textarea>
             </div>
-            
-            <hr class="header-divider">
 
-            <div class="dialog-footer">
+            <button class="submit-button" type="submit" [disabled]="questionForm.invalid" class="btn">
+                {{ showLoading ? 'Loading...' :'Salvar' }}
+            </button>
 
-                <button type="submit" [disabled]="questionForm.invalid" class="btn">
-                    {{ showLoading ? 'Loading...' :'Salvar' }}
-                </button>      
-            </div>
         </form>
     </div>
 </div>
@@ -279,15 +775,15 @@
             <h2>{{editingMathExpression ? 'Editando' : 'Novo'}}</h2>
             <button class="close-btn" (click)="showMathExpressionForm = false">&times;</button>
         </div>
-    
+
         <hr class="header-divider">
-  
+
         <form autocomplete="off" #frmExpression="ngForm" (ngSubmit)="confirmMathExpression(frmExpression)">
             <div class="form-group">
                 <label>Expressão</label>
-                <textarea id="expression" name="expression" ngModel #expression="ngModel" required minlength="1" 
-                    [(ngModel)]="mathExpression.expression" rows="4"></textarea> 
-            </div>     
+                <textarea id="expression" name="expression" ngModel #expression="ngModel" required minlength="1"
+                    [(ngModel)]="mathExpression.expression" rows="4"></textarea>
+            </div>
 
             <hr class="header-divider">
 
@@ -305,15 +801,15 @@
             <h2>{{editingAnswer ? 'Editando' : 'Novo'}}</h2>
             <button class="close-btn" (click)="showAnswerForm = false">&times;</button>
         </div>
-    
+
         <hr class="header-divider">
-  
+
         <form autocomplete="off" #frmAnswer="ngForm" (ngSubmit)="confirmAnswer(frmAnswer)">
             <div class="form-group">
                 <label>Designation</label>
-                <textarea id="designation" name="designation" ngModel #designation="ngModel" required minlength="1" 
-                    [(ngModel)]="answer.text" rows="4"></textarea> 
-            </div>     
+                <textarea id="designation" name="designation" ngModel #designation="ngModel" required minlength="1"
+                    [(ngModel)]="answer.text" rows="4"></textarea>
+            </div>
 
             <hr class="header-divider">
 
@@ -325,29 +821,27 @@
     </div>
 </div>
 
-<div class="overlay" *ngIf="displayModalFilter" >
-    <div class="dialog" style="width: 400px">
-
-        <div class="dialog-header">
-            <h2>Filtros</h2>
-            <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+<div class="popout-overlay" *ngIf="displayModalFilter">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Filtros</h2>
+            <button class="close-button" (click)="displayModalFilter = false">&times;</button>
         </div>
-        
-        <hr class="header-divider">
-  
-        <form autocomplete="off" #exameForm="ngForm">
 
+        <form>
             <div class="form-group">
                 <label for="subject">Disciplina</label>
-                <select id="subject" name="subject" [(ngModel)]="filtro.subject" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()" (change)="findAll()" required>
-                <option value="" disabled selected>Selecione a subject</option>
-                <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+                <select id="subject" name="subject" [(ngModel)]="filtro.subject" [(ngModel)]="selectedSubject"
+                    (change)="getTopicsBySubjectId()" (change)="findAll()" required>
+                    <option value="" disabled selected>Selecione a subject</option>
+                    <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="course">Tópico</label>
-                <select id="course" name="course" [(ngModel)]="filtro.topic" [disabled]="!selectedSubject" (change)="findAll()" required>
+                <select id="course" name="course" [(ngModel)]="filtro.topic" [disabled]="!selectedSubject"
+                    (change)="findAll()" required>
                     <option value="" disabled selected>Selecione o curso</option>
                     <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
@@ -355,16 +849,11 @@
 
             <div class="form-group">
                 <label for="text">Descrição</label>
-                <input type="text" name="text" ngModel #text="ngModel" minlength="1"
-                [(ngModel)]="filtro.text" (ngModelChange)="findAll()">
+                <input type="text" name="text" ngModel #text="ngModel" minlength="1" [(ngModel)]="filtro.text"
+                    (ngModelChange)="findAll()">
             </div>
-    
-            <hr class="header-divider">
 
-            <div class="dialog-footer">
-              <button type="button" (click)="limparCampos()" class="btn">Reset</button>
-            </div>
-  
+            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
         </form>
     </div>
 </div>

@@ -102,4 +102,8 @@ export class QuizService {
     return this.http.get<Answer[]>(`${this.baseUrl}/${quizId}/submitted-answers`);
   }
 
+  getTopicsByQuizId(quizId: number): Observable<Topic[]> {
+    return this.http.get<Topic[]>(`${this.baseUrl}/${quizId}/topics`);
+}
+
 }

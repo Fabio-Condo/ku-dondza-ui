@@ -11,6 +11,7 @@ import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Topic } from 'src/app/core/model/Topic';
 
 @Component({
   selector: 'app-quizzes',
@@ -31,9 +32,10 @@ export class QuizzesComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   selectedQuiz: Quiz = new Quiz();
   subjects: Subject[] = [];
+  topics: Topic[] = [];
 
   loggedUser: User = new User;
-  
+
   @ViewChild('table') grid: any;
 
   difficultyLevels = [
@@ -84,6 +86,7 @@ export class QuizzesComponent implements OnInit {
         this.quizzes = data.content;
         data.content.forEach(quiz => {
           this.countQuestionsByQuizId(quiz);
+          this.getTopicsByQuizId(quiz);
         });
         this.totalRecords = data.totalElements;
         this.showLoading = false;
@@ -96,18 +99,20 @@ export class QuizzesComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+    if (this.showLoading) return;
+
     this.showLoading = true;
     this.filter.user = this.loggedUser.id;
     this.filter.page++;
 
     this.quizService.getQuizzes(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {
-        this.quizzes = [...this.quizzes, ...data.content]; 
+        this.quizzes = [...this.quizzes, ...data.content];
 
         data.content.forEach(quiz => {
           this.countQuestionsByQuizId(quiz);
         });
-        
+
         this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
@@ -117,11 +122,11 @@ export class QuizzesComponent implements OnInit {
       }
     );
   }
-  
+
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados; 
+        this.subjects = dados;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -129,10 +134,21 @@ export class QuizzesComponent implements OnInit {
     });
   }
 
-  getTotalQuizzes(){
+  getTotalQuizzes() {
     this.quizService.getTotal(this.loggedUser.id).subscribe(
       (total) => {
-        this.totalQuizzes =  total;
+        this.totalQuizzes = total;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  getTopicsByQuizId(quiz: Quiz): void {
+    this.quizService.getTopicsByQuizId(quiz.id).subscribe(
+      (data: Topic[]) => {
+        quiz.selectedTopics = data;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -188,38 +204,84 @@ export class QuizzesComponent implements OnInit {
     });
   }
 
+  pageSizeOptions = [5, 10, 20, 50]; // Opções para itens por página
+  maxVisibleButtons = 5; // Número máximo de botões visíveis (como no PrimeNG)
+  
   changePageSize(event: any): void {
     this.filter.itemsPerPage = +event.target.value;
-    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.currentPage = 1;
     this.getQuizzes();
   }
-
+  
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.getQuizzes();
     }
   }
-
+  
   nextPage(): void {
     if (this.currentPage < this.totalPages()) {
       this.currentPage++;
       this.getQuizzes();
     }
   }
-
+  
+  goToPage(page: number): void {
+    this.currentPage = page;
+    this.getQuizzes();
+  }
+  
   totalPages(): number {
     return Math.ceil(this.totalRecords / this.filter.itemsPerPage);
   }
+  
+  /** Retorna a lista de páginas visíveis com reticências */
+  getPages(): (number | string)[] {
+    const total = this.totalPages();
+    const current = this.currentPage;
+    const max = this.maxVisibleButtons;
+    
+    if (total <= max) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+  
+    const pages: (number | string)[] = [];
+  
+    // Sempre mostrar a primeira página
+    pages.push(1);
+  
+    if (current > 3) {
+      pages.push("...");
+    }
+  
+    // Páginas ao redor da página atual
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+  
+    if (current < total - 2) {
+      pages.push("...");
+    }
+  
+    // Sempre mostrar a última página
+    pages.push(total);
+  
+    return pages;
+  }
+  
+  
 
-  getTypeValue(type: string) {
-    switch (type) {
+  getDifficultyLevelValue(level: string) {
+    switch (level) {
       case 'EASY':
         return 'Fácil';
       case 'MEDIUM':
         return 'Médio';
       case 'HARD':
-        return 'Dificil';  
+        return 'Dificil';
     }
     return '';
   }

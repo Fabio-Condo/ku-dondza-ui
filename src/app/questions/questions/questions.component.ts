@@ -429,14 +429,14 @@ export class QuestionsComponent implements OnInit {
     return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
   }
 
-  getTypeValue(type: string) {
-    switch (type) {
+  getDifficultyLevelValue(level: string) {
+    switch (level) {
       case 'EASY':
         return 'Fácil';
       case 'MEDIUM':
         return 'Médio';
       case 'HARD':
-        return 'Dificil';  
+        return 'Dificil';
     }
     return '';
   }
