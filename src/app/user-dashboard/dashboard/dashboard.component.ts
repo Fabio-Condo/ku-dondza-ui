@@ -27,23 +27,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.getUserDashboard();
-  }
-
-  getUserDashboard() {
-    this.userDashboardService.getUserDashboard(this.loggedUser.id).subscribe(
-      (response) => {
-        this.UserDashboard = response;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 400) {
-          // BAD_REQUEST
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        } else {
-          this.sendErrorNotification(errorResponse.error.message);
-        }
-      }
-    );
   }
 
   private sendErrorNotification(message: string): void {

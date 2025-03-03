@@ -12,9 +12,5 @@ export class UserDashboardService {
 
   constructor(private http: HttpClient) { }
 
-  getUserDashboard(userId: number): Observable<UserDashboardDTO> {
-    return this.http.get<UserDashboardDTO>(`${this.baseUrl}/${userId}/dashboard`, {});
-  }
-
 
 }

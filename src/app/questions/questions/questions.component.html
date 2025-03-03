@@ -306,9 +306,12 @@
             padding: 24px;
             width: 90%;
             max-width: 500px;
+            max-height: 600px;
+            overflow-y: auto;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             animation: slideIn 0.3s ease-out;
         }
+
 
         @keyframes slideIn {
             from {
@@ -440,6 +443,16 @@
                         </svg>
                         {{ getDifficultyLevelValue(question.difficultyLevel) }}
                     </span>
+                    <!--
+                    <div class="dropdown-container" *ngIf="isSuperAdmin">
+                        <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
+                                class="pi pi-ellipsis-v"></i></button>
+                        <div class="dropdown" *ngIf="question.isAdminMenuOpen">
+                            <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
+                            <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
+                        </div>
+                    </div>
+                    -->
                 </div>
                 <div class="card-body">
                     <div class="topic">{{ question.topic.name }}</div>
@@ -499,118 +512,6 @@
 </body>
 
 </html>
-
-<!--
-<div class="container" style="margin-top: 70px;">
-
-    <div style="display:inline;">
-        <h1 class="title">Reposiório de questões</h1>
-    </div>
-
-    <p class="title-description">
-        Central de perguntas categorizadas por disciplinas e tópicos.
-    </p>
-
-    <div class="flex">
-        <div>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalQuestions }}</span>
-        </div>
-        <div class="input-group">
-            <div class="input-container">
-                <i class="pi pi-search input-icon"></i>
-                <input type="text" id="input" class="transparent-input" [(ngModel)]="filtro.searchParam"  (ngModelChange)="findAll()" placeholder="Pesquisa">
-            </div>
-            <button class="add-new-btn" (click)="onAddNewQuestion()" *ngIf="isSuperAdmin">
-                <i class="pi pi-plus"></i> Novo
-            </button>
-            <button class="filter-btn" (click)="onFilter()">
-                <i class="pi pi-filter"></i> Filtrar
-            </button>
-        </div>
-    </div>
-
-    <table class="card-table">
-        <tbody>
-            <tr *ngFor="let question of questions">
-                <td>
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="content">
-
-                                <p class="title">{{ question.topic.subject.name }}</p>
-                                <p class="details">{{ question.topic.name }}</p>
-                                <p class="details">{{ getDifficultyLevelValue(question.difficultyLevel) }}</p>
-
-                            </div>
-                            <div class="dropdown-container" *ngIf="isSuperAdmin">
-                                <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
-                                        class="pi pi-ellipsis-v"></i></button>
-                                <div class="dropdown" *ngIf="question.isAdminMenuOpen">
-                                    <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
-                                    <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
-                                </div>
-                            </div>
-                            <div class="button-container">
-                                <button class="btn btn-primary"
-                                    [routerLink]="['/questions', question.questionId]">Ver</button>
-                            </div>
-
-                        </div>
-                        <p *ngIf="question.text">
-                            \[{{ question.text }}\]
-                        </p>
-                    </div>
-                </td>
-            </tr>
-
-            <tr *ngIf="showLoading">
-                <td>
-                    <div class="card">
-                        <div class="loading-indicator">
-                            <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
-                            Carregando...
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
-            <tr *ngIf="!showLoading && questions.length === 0">
-                <td>
-                    <div class="card">
-                        <span class="no-items-message">
-                            Nenhum item encontrado
-                        </span>
-                    </div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-
-    <div class="load-more">
-        <button (click)="loadMore()" class="btn-load-more"
-            [disabled]="questions.length === totalQuestions && totalQuestions > 0">Buscar mais</button>
-    </div>
-
-    <div class="pagination-controls">
-        <span class="pagination-info mr-auto"></span>
-
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-            <i class="pi pi-chevron-left"></i> Anterior
-        </button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
-            Próximo <i class="pi pi-chevron-right"></i>
-        </button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filtro.itemsPerPage">
-                {{ option }}
-            </option>
-        </select>
-    </div>
-</div>
--->
 
 <!-- Modal para Adicionar ou Editar Perguntas -->
 <div class="popout-overlay" *ngIf="displayModalSave">
