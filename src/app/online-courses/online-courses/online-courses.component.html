@@ -1,12 +1,10 @@
 <br>
 <br>
-<!DOCTYPE html>
-<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Cursos</title>
+    <title>Cursos</title>
     <style>
         * {
             margin: 0;
@@ -75,124 +73,183 @@
             background-color: #f8fafc;
         }
 
-        .curso-lista {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .downloa-btn {
+            background-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        .curso-card {
+        .downloa-btn:hover {
+            background-color: #f8fafc;
+        }
+
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
             display: flex;
             background-color: white;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
             margin-top: 20px;
         }
 
-        .curso-card:hover {
-            transform: translateY(-5px);
+        .card:hover {
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
-        .curso-imagem {
-            width: 30%;
-            min-width: 120px;
-            max-width: 200px;
+        .course-cover {
+            width: 80px;
+            height: 120px;
             object-fit: cover;
-            position: relative;
+            flex-shrink: 0;
         }
 
-        .curso-imagem img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .disciplina-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: white;
-            z-index: 10;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .matematica {
-            background-color: #4C51BF;
-        }
-
-        .fisica {
-            background-color: #38A169;
-        }
-
-        .programacao {
-            background-color: #E53E3E;
-        }
-
-        .design {
-            background-color: #805AD5;
-        }
-
-        .curso-conteudo {
+        .course-info {
             padding: 20px;
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
         }
 
-        .curso-titulo {
-            font-size: 1.5rem;
+        .course-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
             color: #2d3748;
-            margin-bottom: 10px;
         }
 
-        .curso-descricao {
+        .course-instrutor {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
             color: #4a5568;
-            margin-bottom: 15px;
-            line-height: 1.5;
+            margin-bottom: 12px;
+            gap: 8px;
+            /* Espaço entre a imagem e o nome */
         }
 
-        .curso-footer {
+        .course-instrutor-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            /* Deixa a imagem redonda */
+        }
+
+        .course-description {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .course-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: auto;
         }
 
-        .curso-autor {
+        /* Badges e tags */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Cores por disciplina */
+        .matematica {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .fisica {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .biologia {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .historia {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .quimica {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        .course-rating {
             display: flex;
             align-items: center;
-            color: #718096;
+            color: #ed8936;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        .curso-autor-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
+        .course-rating svg {
+            margin-right: 4px;
         }
 
-        .start-button {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 16px;
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 8px;
+        .filter-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            display: none;
+        }
+
+        .filter-section.active {
+            display: block;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-label {
+            display: block;
             font-size: 14px;
             font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            margin-bottom: 8px;
+            color: #4a5568;
         }
 
-        .start-button:hover {
-            background-color: #2563eb;
+        .filter-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .filter-btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         /* Paginação */
@@ -357,101 +414,37 @@
             background: #1d4ed8;
         }
 
-        @media (max-width: 768px) {
-            .curso-card {
-                /* Mantém flexbox na horizontal para imagem à esquerda */
-                flex-direction: row;
+        .spinner {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
             }
 
-            .curso-imagem {
-                width: 30%;
-                min-width: 90px;
-            }
-
-            .curso-conteudo {
-                padding: 15px;
-            }
-
-            .curso-titulo {
-                font-size: 1.2rem;
-            }
-
-            .curso-descricao {
-                font-size: 0.9rem;
-            }
-
-            .disciplina-badge {
-                font-size: 0.7rem;
-                padding: 4px 8px;
-            }
-
-            .btn-ver-curso {
-                padding: 6px 12px;
-                font-size: 0.9rem;
-            }
-
-            .curso-footer {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+            to {
+                transform: rotate(360deg);
             }
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            .curso-card {
-                /* Mesmo em telas pequenas, mantém o layout horizontal */
-                flex-direction: row;
+            .pagination {
+                display: none;
             }
 
-            .curso-imagem {
-                width: 25%;
-                min-width: 70px;
-            }
-
-            .curso-conteudo {
-                padding: 10px;
-                width: 75%;
-            }
-
-            .curso-titulo {
-                font-size: 1rem;
-                margin-bottom: 5px;
-            }
-
-            .curso-descricao {
-                font-size: 0.8rem;
-                margin-bottom: 10px;
-                /* Limita o número de linhas em telas pequenas */
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
-            .curso-autor {
-                font-size: 0.8rem;
-            }
-
-            .curso-autor-avatar {
-                width: 20px;
-                height: 20px;
-            }
-
-            .disciplina-badge {
-                font-size: 0.6rem;
-                padding: 3px 6px;
-                top: 5px;
-                left: 5px;
-            }
-
-            .btn-ver-curso {
-                padding: 4px 8px;
-                font-size: 0.75rem;
-            }
         }
     </style>
 </head>
@@ -483,44 +476,40 @@
             </div>
         </header>
 
-        <div class="curso-lista" *ngFor="let course of courses">
-            <!-- Curso 1 -->
-            <div class="curso-card">
-                <div class="curso-imagem">
-                    <!--<span class="disciplina-badge programacao">{{ course.subject.name }}</span>-->
-                    <img src="/api/placeholder/400/300" alt="Desenvolvimento Web">
-                </div>
-                <div class="curso-conteudo">
-                    <h2 class="curso-titulo">{{ course.name }}</h2>
-                    <p class="curso-descricao">{{ course.description }}</p>
-                    <div class="curso-footer">
-                        <div class="curso-autor">
-                            <img class="curso-autor-avatar" src="/api/placeholder/60/60" alt="Ana Oliveira">
+        <div class="course-list" *ngFor="let course of courses">
+            <div class="card">
+                <img src="/api/placeholder/80/120" alt="Capa do livro" class="course-cover">
+                <div class="course-info">
+                    <div>
+                        <h3 class="course-title">{{ course.name }}</h3>
+                        <div class="course-instrutor">
+                            <img src="instrutor.jpg" alt="Autor" class="course-instrutor-avatar">
                             <span>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span>
-                        </div>
-                        <button class="start-button" [routerLink]="['/coursos-online', course.onlineCourseId]">
-                            Ver curso
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
+                        </div>                        
+                        <p class="course-description">{{ course.description }}</p>
+                    </div>
+                    <div class="course-meta">
+                        <span class="badge matematica">Matemática</span>
+                        <button class="downloa-btn" id="filter-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
                             </svg>
+
                         </button>
                         <!--
-                        <div class="dropdown-container" *ngIf="isSuperAdmin">
-                            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i
-                                    class="pi pi-ellipsis-v"></i></button>
-                            <div class="dropdown" *ngIf="course.isAdminMenuOpen">
-                                <a
-                                    (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
-                                <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
-                            </div>
-                        </div>
-                        -->
+          <div class="dropdown-container" *ngIf="isSuperAdmin">
+            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+            <div class="dropdown" *ngIf="course.isAdminMenuOpen">
+              <a (click)="onUpdate(course, file); closeDropdown(course)">Editar</a>
+              <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
+            </div>
+          </div>
+          -->
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- Paginação -->
@@ -543,11 +532,9 @@
                 </svg>
             </button>
         </div>
-
     </div>
 </body>
 
-</html>
 
 <!--
 <div class="container" style="margin-top: 70px;">
