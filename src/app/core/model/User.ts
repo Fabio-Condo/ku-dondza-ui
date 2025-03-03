@@ -1,4 +1,3 @@
-import { Post } from "./Post";
 import { Subject } from "./Subject";
 
 export class User {
@@ -21,7 +20,6 @@ export class User {
   public plan: string;
   public authorities: [];
   public subjectsInterests: Subject[] = [];
-  public savedPosts: Post[] = [];
 
   public isFriend: boolean = false;
   public currentUserSentFriendRequest: boolean = false;

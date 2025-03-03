@@ -1,22 +1,17 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from '../question.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionStatisticsService } from '../question-statistics.service';
-import { CompetitionQuestionStatisticsDTO } from 'src/app/core/model/CompetitionQuestionStatisticsDTO';
 import { QuizQuestionStatisticsDTO } from 'src/app/core/model/QuizQuestionStatisticsDTO';
 import { QuizService } from 'src/app/quiz/quiz.service';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
-import { Competition } from 'src/app/core/model/Competition';
-import { CompetitionService } from 'src/app/competitions/competition.service';
-import { CompetitionFilter } from 'src/app/core/interface/CompetitionFilter';
 declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
-import { interval, Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 
@@ -30,7 +25,6 @@ import { User } from 'src/app/core/model/User';
 export class QuestionViewComponent implements OnInit {
 
   question: Question = new Question();
-  competitionQuestionStatistics: CompetitionQuestionStatisticsDTO = new CompetitionQuestionStatisticsDTO();
   quizQuestionStatistics: QuizQuestionStatisticsDTO = new QuizQuestionStatisticsDTO();
 
   showLoading: boolean = false;
@@ -41,12 +35,6 @@ export class QuestionViewComponent implements OnInit {
   totalQuizzes: number = 0;
   totalRecordsQuizzes: number = 0
   currentPageQuizzes: number = 1;
-
-  competitions: Competition[] = [];
-  displayModalViewCompetitions: boolean = false;
-  totalCompetitions: number = 0;
-  totalRecordsCompetitions: number = 0
-  currentPageCompetitions: number = 1;
 
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
@@ -61,16 +49,9 @@ export class QuestionViewComponent implements OnInit {
     sort: 'id,asc'
   }
 
-  competitionFilter: CompetitionFilter = {
-    page: 0,
-    itemsPerPage: 5,
-    sort: 'id,asc'
-  }
-
   constructor(
     private questionService: QuestionService,
     private questionStatisticsService: QuestionStatisticsService,
-    private competitionService: CompetitionService,
     private quizService: QuizService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -96,7 +77,6 @@ export class QuestionViewComponent implements OnInit {
     this.questionService.getQuestionByQuestionId(id).subscribe(
       (response) => {
         this.question = response;
-        this.getCompetitionStatisticsByQuestionId(this.question.id);
         this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
         this.renderFunctions();
@@ -126,21 +106,6 @@ export class QuestionViewComponent implements OnInit {
     );
   }
 
-  getCompetitionStatisticsByQuestionId(id: number) {
-    this.questionStatisticsService.getCompetitionStatisticsByQuestionId(id).subscribe(
-      (response) => {
-        this.competitionQuestionStatistics = response;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 400) {
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        } else {
-          this.sendErrorNotification(errorResponse.error.message);
-        }
-      }
-    );
-  }
-
   getQuizzesByQuestionId(page: number = 0): void {
     this.showLoading = true;
     this.quizFilter.page = this.currentPageQuizzes - 1; // Ajuste para o padrão de paginação começando em 0
@@ -157,30 +122,9 @@ export class QuestionViewComponent implements OnInit {
     );
   }
 
-  getCompetitionsByQuestionId(page: number = 0): void {
-    this.showLoading = true;
-    this.competitionFilter.page = this.currentPageCompetitions - 1; // Ajuste para o padrão de paginação começando em 0
-    this.competitionService.getCompetitionsByQuestionId(this.question.id, this.competitionFilter).subscribe(
-      (data: IApiResponse<Competition>) => {
-        this.competitions = data.content;
-        this.totalRecordsCompetitions = data.totalElements;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
   onViewQuizzesByQuestion(): void {
     this.getQuizzesByQuestionId();
     this.displayModalViewQuizzes = true;
-  }
-
-  onViewCompetitionsByQuestion(): void {
-    this.getCompetitionsByQuestionId();
-    this.displayModalViewCompetitions = true;
   }
 
   gettimeLimitValue(type: number) {

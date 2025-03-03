@@ -3,12 +3,6 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from '../model/User';
-import { SearchResultDTO } from '../model/SearchResultDTO';
-import { IApiResponse } from '../interface/IApiResponse';
-import { SearchService } from 'src/app/search/search.service';
-import { NotificationService } from 'src/app/notifications/notification-service.service';
-import { Notification } from 'src/app/core/model/Notification';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -20,9 +14,6 @@ export class NavbarComponent implements OnInit {
   imagePath = './assets/images';
   isUserLoggedIn: boolean = false;
   loggedUser: User = new User();
-  searchQuery: string = '';
-  results: SearchResultDTO[] = [];// Defina o tipo mais específico para os resultados
-  notifications: Notification[] = [];
   isPopoutVisible = false;
   isMenuActive = false; // Controla a exibição do menu
   unreadNotificationsCount: number = 0;
@@ -30,8 +21,6 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private notificationService: NotificationService,
-    private searchService: SearchService,  // Injete o serviço
     private messageService: MessageService,
     private authenticationService: AuthenticationService,
   ) { }
@@ -40,8 +29,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.loadNotifications();
-    this.loadUnreadNotificationsCount();
   }
 
   goToProfile() {
@@ -54,66 +41,6 @@ export class NavbarComponent implements OnInit {
 
   isActive(url: string): boolean {
     return this.router.isActive(url, true);
-  }
-
-  onSearchChange() {
-    if (this.searchQuery.length > 2) {  // Fazer a busca apenas se a consulta for suficientemente longa
-      this.loadPage(0);  // Começar a partir da primeira página
-    }
-  }
-
-  loadPage(page: number) {
-    this.searchService.search(this.searchQuery, page).subscribe(
-      (results: IApiResponse<SearchResultDTO>) => {
-        this.results = results.content;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  loadNotifications(): void {
-    this.notificationService.getNotifications(this.loggedUser.id).subscribe(
-      (data: IApiResponse<Notification>) => {
-        this.notifications = data.content;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  loadUnreadNotificationsCount(): void {
-    this.notificationService.getUnreadNotificationsCount(this.loggedUser.id).subscribe(
-      (count) => {
-        this.unreadNotificationsCount = count;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  markAsRead(notificationId: number): void {
-    this.notificationService.markAsRead(notificationId).subscribe(() => {
-      this.notifications = this.notifications.filter(n => n.id !== notificationId);
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  markAllAsRead(): void {
-    this.notificationService.markAllNotificationsAsRead(this.loggedUser.id).subscribe(
-      () => {
-        this.unreadNotificationsCount = 0;
-      },
-      (error) => {
-        console.error('Erro ao marcar todas as notificações como lidas', error);
-      }
-    );
   }
 
   toggleMenu() {

@@ -5,14 +5,9 @@ import { Observable } from 'rxjs';
 import { User } from '../core/model/User';
 import { CustomHttpRespone } from '../core/model/custom-http-response';
 import { IApiResponse } from '../core/interface/IApiResponse';
-import { Post } from '../core/model/Post';
 import { IUserFilter } from '../core/interface/IUserFilter';
-import { IPostFilter } from '../core/interface/IPostFilter';
 import { OnlineCourse } from '../core/model/Online-course';
 import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
-import { Group } from '../core/model/Group';
-import { GroupFilter } from '../core/interface/GroupFilter';
-import { Blog } from '../core/model/Blog';
 import { Subject } from '../core/model/Subject';
 
 
@@ -140,128 +135,6 @@ export class UserService {
     return this.http.put<void>(`${this.host}/${username}/notLocked-user`, notLocked, {});
   }
 
-  getSavedBlogs(userId: number, filtro: IPostFilter): Observable<IApiResponse<Blog>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
-
-    return this.http.get<IApiResponse<Blog>>(`${this.host}/${userId}/savedBlogs`, { params });
-  }
-
-  addBlogToSavedBlogs(userId: number, blogId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/${userId}/savedBlogs/${blogId}`, {});
-  }
-
-  removeBlogFromSavedBlogs(userId: number, blogId: number): Observable<User> {
-    return this.http.delete<User>(`${this.host}/${userId}/savedBlogs/${blogId}`);
-  }
-
-  checkIfUserSavedBlog(userId: number, blogId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/${userId}/savedBlogs/contains/${blogId}`);
-  }
-
-  addPostToSavedPosts(userId: number, postId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/${userId}/savedPosts/${postId}`, {});
-  }
-
-  removePostFromSavedPosts(userId: number, postId: number): Observable<User> {
-    return this.http.delete<User>(`${this.host}/${userId}/savedPosts/${postId}`);
-  }
-
-  checkIfUserSavedPost(userId: number, postId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/${userId}/savedPosts/contains/${postId}`);
-  }
-
-  getSavedPosts(userId: number, filtro: IPostFilter): Observable<IApiResponse<Post>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
-
-    return this.http.get<IApiResponse<Post>>(`${this.host}/${userId}/savedPosts`, { params });
-  }
-
-  countSavedPostsByUser(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.host}/${userId}/savedPosts/count`, {});
-  }
-
-  getFriendRequests(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.host}/friend-requests`, {});
-  }
-
-  getFriends(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.host}/friends`, {});
-  }
-
-  countFriendsByUserId(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.host}/${userId}/friends/total`, {});
-  }
-
-  getUserFriends(userId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
-
-    return this.http.get<IApiResponse<User>>(`${this.host}/${userId}/friends`, { params });
-  }
-
-  getCurrentUserFriends(filtro: IUserFilter): Observable<IApiResponse<User>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
-
-    if (filtro.searchParam) {
-      params = params.set('searchParam', filtro.searchParam);
-    }
-
-    return this.http.get<IApiResponse<User>>(`${this.host}/current-user-friends`, { params });
-  }
-
-  getCurrentUserFriendRequests(filtro: IUserFilter): Observable<IApiResponse<User>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
-
-    return this.http.get<IApiResponse<User>>(`${this.host}/current-user-friend-requests`, { params });
-  }
-
-  countFriendRequestsByUserId(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.host}/${userId}/friend-requests/total`, {});
-  }
-
-  acceptFriendRequest(friendId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/accept-friend-requests/${friendId}`, {});
-  }
-
-  rejectFriendRequest(friendId: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/reject-friend-requests/${friendId}`, {});
-  }
-
-  removeFriend(friendId: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/friends/${friendId}`, {});
-  }
-
-  checkFriendship(friendId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/friends/${friendId}`, {});
-  }
-
-  checkIfSentFriendRequest(receptorUserId: number, emissorUserId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/${receptorUserId}/requests/${emissorUserId}`, {});
-  }
-
-  sendFriendRequest(user: User): Observable<User> {
-    return this.http.post<User>(`${this.host}/send-friend-request`, user, {});
-  }
-
   getUserSubjectInterests(userId: number): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.host}/${userId}/interests`);
   }
@@ -306,20 +179,6 @@ export class UserService {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     return this.http.post<User>(`${this.host}/${username}/cover-photo`, formData);
-  }
-
-  getGroupsByUserId(userId: number, filtro: GroupFilter): Observable<IApiResponse<Group>> {
-
-    let params = new HttpParams()
-      .set('page', filtro.pagina)
-      .set('sort', filtro.ordenamento)
-      .set('size', filtro.itensPorPagina);
-
-    return this.http.get<IApiResponse<Group>>(`${this.host}/${userId}/groups`, { params });
-  }
-
-  countGroupsByUserId(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.host}/${userId}/groups/total`, {});
   }
 
   addContentToMarkedCourseContents(userId: number, onlineCourseContentId: number): Observable<User> {

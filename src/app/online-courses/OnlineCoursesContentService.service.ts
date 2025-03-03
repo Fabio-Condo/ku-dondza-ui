@@ -3,9 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { InstitutionFilter } from '../core/interface/InstitutionFilter';
+import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
 import { OnlineCourseContent } from '../core/model/Online-course-content';
-import { CourseFilter } from '../core/interface/CourseFilter';
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +13,7 @@ export class OnlineCoursesContentService {
 
     constructor(private http: HttpClient) { }
 
-    findAll(filtro: InstitutionFilter): Observable<IApiResponse<OnlineCourseContent>> {
+    findAll(filtro: OnlineCourseFilter): Observable<IApiResponse<OnlineCourseContent>> {
 
         let params = new HttpParams()
             .set('page', filtro.pagina)
@@ -28,7 +27,7 @@ export class OnlineCoursesContentService {
         return this.http.get<IApiResponse<OnlineCourseContent>>(`${this.host}/filter`, {});
     }
 
-    findByOnlineCourseId(onlineCourseId: number, filtro: CourseFilter): Observable<IApiResponse<OnlineCourseContent>> {
+    findByOnlineCourseId(onlineCourseId: number, filtro: OnlineCourseFilter): Observable<IApiResponse<OnlineCourseContent>> {
         
         let params = new HttpParams()
             .set('page', filtro.pagina)

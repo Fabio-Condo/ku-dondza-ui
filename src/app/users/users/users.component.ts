@@ -41,36 +41,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   totalUsers: number = 0;
   itemsPerPageUsers: number[] = [5, 10, 20, 50];
 
-  friendRequests: User[] = []
-  currentPageFriendRequests: number = 1;
-  totalFriendRequestRecord: number = 0;
-  totalFriendRequests: number = 0
-  itemsPerPageFriendRequests: number[] = [5, 10, 20, 50];
-
-  friends: User[] = [];
-  currentPageFriends: number = 1;
-  totalFriendsRecord: number = 0
-  totalFriends: number = 0
-  itemsPerPageFriends: number[] = [5, 10, 20, 50];
-
-  selectedFriendToBeRemoved = new User();
-  showConfirmDialog: boolean = false;
-
   activeTab: number = 3;
 
   filtroUsers: IUserFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'firstName,asc',
-  }
-
-  filtroFriends: IUserFilter = {
-    page: -1,
-    itemsPerPage: 5,
-    sort: 'firstName,asc',
-  }
-
-  filtroFriendRequests: IUserFilter = {
     page: -1,
     itemsPerPage: 5,
     sort: 'firstName,asc',
@@ -103,11 +76,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.title.setTitle('Pesquisa do usuário');
     this.currentUser = this.authenticationService.getUserFromLocalCache();
     this.getUsersSearch();
-    this.getUserFriends();
-    this.getCurrentUserFriendRequests();
     this.getTotalUsers();
-    this.countFriendsByUserId();
-    this.countFriendRequestsByUserId();
     this.scrollToTop();
   }
 
@@ -167,9 +136,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.search(this.filtroUsers).subscribe(
       (data: IApiResponse<User>) => {
         data.content.forEach(user => {
-          this.checkFriendship(user);
-          this.checkIfSentFriendRequest(user);
-          this.checkIfCurrentUserSentFriendRequest(user);
+
         });
         this.users = data.content
         this.totalUsersRecord = data.totalElements;
@@ -256,19 +223,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getUsersSearch();
   }
 
-
-  changePageSizeFriends(event: any): void {
-    this.filtroFriends.itemsPerPage = +event.target.value;
-    this.currentPageFriends = 1; // Resetar para a primeira página ao mudar o número de itens por página
-    this.getUserFriends();
-  }
-
-  changePageSizeFriendRequests(event: any): void {
-    this.filtroFriendRequests.itemsPerPage = +event.target.value;
-    this.currentPageFriendRequests = 1; // Resetar para a primeira página ao mudar o número de itens por página
-    this.getCurrentUserFriendRequests();
-  }
-
   // All users
   previousPage(): void {
     if (this.currentPage > 1) {
@@ -286,44 +240,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   totalPages(): number {
     return Math.ceil(this.totalUsersRecord / this.filtroUsers.itemsPerPage);
-  }
-
-  // Friends
-  previousPageFriends(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.getUserFriends();
-    }
-  }
-
-  nextPageFriends(): void {
-    if (this.currentPageFriends < this.totalPages()) {
-      this.currentPageFriends++;
-      this.getUserFriends();
-    }
-  }
-
-  totalPagesFriends(): number {
-    return Math.ceil(this.totalFriendsRecord / this.filtroFriends.itemsPerPage);
-  }
-
-  // Friend Requests
-  previousPageFriendRequests(): void {
-    if (this.currentPageFriendRequests > 1) {
-      this.currentPageFriendRequests--;
-      this.getCurrentUserFriendRequests();
-    }
-  }
-
-  nextPageFriendRequests(): void {
-    if (this.currentPageFriendRequests < this.totalPages()) {
-      this.currentPageFriendRequests++;
-      this.getCurrentUserFriendRequests();
-    }
-  }
-
-  totalPagesFriendRequests(): number {
-    return Math.ceil(this.totalFriendRequestRecord / this.filtroFriendRequests.itemsPerPage);
   }
 
   prepararNovoUser() {
@@ -365,152 +281,24 @@ export class UsersComponent implements OnInit, OnDestroy {
     );
   }
 
-  getCurrentUserFriendRequests(): void {
-    this.filtroFriendRequests.page = this.currentPageFriendRequests - 1; // Ajuste para o padrão de paginação começando em 0
-    this.userService.getCurrentUserFriendRequests(this.filtroFriendRequests).subscribe(
-      (dados: IApiResponse<User>) => {
-        this.friendRequests = [...this.friendRequests, ...dados.content];
-        this.totalFriendRequestRecord = dados.totalElements;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
 
-  getUserFriends(): void {
-    this.filtroFriends.page = this.currentPageFriends - 1; // Ajuste para o padrão de paginação começando em 0
-    this.userService.getCurrentUserFriends(this.filtroFriends).subscribe(
-      (dados: IApiResponse<User>) => {
-        this.friends = [...this.friends, ...dados.content];
-        this.totalFriendsRecord = dados.totalElements
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
 
-  countFriendsByUserId() {
-    this.showLoading = true;
-    this.userService.countFriendsByUserId(this.currentUser.id).subscribe(
-      (total) => {
-        this.totalFriends = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
 
-  countFriendRequestsByUserId() {
-    this.showLoading = true;
-    this.userService.countFriendRequestsByUserId(this.currentUser.id).subscribe(
-      (total) => {
-        this.totalFriendRequests = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
 
-  sendFriendRequest(user: User) {
-    this.userService.sendFriendRequest(user).subscribe(
-      () => {
-        user.currentUserSentFriendRequest = true;
-      }
-    )
-  }
 
-  acceptFriendRequest(user: User) {
-    this.userService.acceptFriendRequest(user.id).subscribe(
-      (friendAcepted) => {
-        // Remove a solicitação pendente da lista
-        this.friendRequests = this.friendRequests.filter(request => request.id !== user.id);
-        // Adiciona o novo amigo à lista de amigos
-        this.friends.push(user);
 
-        user.isFriend = true;
-        user.sentFriendRequest = false;
 
-      },
-      erro => this.errorHandler.handle(erro)
-    )
-  }
 
-  rejectFriendRequest(user: User) {
-    this.userService.rejectFriendRequest(user.id).subscribe(
-      () => {
-        // Remove a solicitação rejeitada da lista de pendentes
-        this.friendRequests = this.friendRequests.filter(request => request.id !== user.id);
-        user.sentFriendRequest = false;
-      },
-      error => this.errorHandler.handle(error)
-    );
-  }
 
-  removeFriend(user: User) {
-    this.userService.removeFriend(user.id).subscribe(
-      () => {
-        // Remove o amigo da lista de amigos
-        this.friends = this.friends.filter(existingFriend => existingFriend.id !== user.id);
-        user.isFriend = false;
-      },
-      erro => this.errorHandler.handle(erro)
-    )
-  }
 
-  onRemoveFriend(friend: User): void {
-    this.showConfirmDialog = true;
-    this.selectedFriendToBeRemoved = friend;
-  }
 
-  closeConfirmDialog() {
-    this.showConfirmDialog = false;
-  }
 
-  confirmDialog(friend: User) {
-    this.removeFriend(friend);
-    this.closeConfirmDialog();
-  }
 
-  checkFriendship(friend: User): void {
-    this.userService.checkFriendship(friend.id).subscribe(
-      (isFriend) => {
-        friend.isFriend = isFriend;
-      },
-      (error) => {
-        console.error('Erro ao verificar amizade:', error);
-      }
-    );
-  }
 
-  checkIfSentFriendRequest(user: User): void {
-    this.userService.checkIfSentFriendRequest(this.currentUser.id, user.id).subscribe(
-      (sentFriendRequest) => {
-        user.sentFriendRequest = sentFriendRequest;
-      },
-      (error) => {
-        console.error('Erro ao verificar:', error);
-      }
-    );
-  }
 
-  checkIfCurrentUserSentFriendRequest(user: User): void {
-    this.userService.checkIfSentFriendRequest(user.id, this.currentUser.id).subscribe(
-      (sentFriendRequest) => {
-        user.currentUserSentFriendRequest = sentFriendRequest;
-      },
-      (error) => {
-        console.error('Erro ao verificar:', error);
-      }
-    );
-  }
+
+
+
 
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;

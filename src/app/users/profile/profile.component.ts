@@ -5,7 +5,6 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { User } from 'src/app/core/model/User';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
-import { UserCourseService } from 'src/app/user-courses/user-curses.service';
 import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -42,7 +41,6 @@ export class ProfileComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private subjectsService: SubjectsService,
-    private userCourseService: UserCourseService
   ) { }
 
   ngOnInit(): void {

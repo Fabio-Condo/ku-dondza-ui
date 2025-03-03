@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { CompetitionQuestionStatisticsDTO } from '../core/model/CompetitionQuestionStatisticsDTO';
 import { QuizQuestionStatisticsDTO } from '../core/model/QuizQuestionStatisticsDTO';
 
 
@@ -15,9 +14,4 @@ export class QuestionStatisticsService {
   getQuizStatisticsByQuestionId(id: number): Observable<QuizQuestionStatisticsDTO> {
     return this.http.get<QuizQuestionStatisticsDTO>(`${this.baseUrl}/${id}/quizzes`, {});
   }
-
-  getCompetitionStatisticsByQuestionId(id: number): Observable<CompetitionQuestionStatisticsDTO> {
-    return this.http.get<CompetitionQuestionStatisticsDTO>(`${this.baseUrl}/${id}/competitions`, {});
-  }
-
 }

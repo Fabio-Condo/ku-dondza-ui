@@ -3,8 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { firstValueFrom, Observable } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { InstitutionFilter } from '../core/interface/InstitutionFilter';
-import { CourseFilter } from '../core/interface/CourseFilter';
+import { ModuleFilter } from '../core/interface/ModuleFilter';
 import { Module } from '../core/model/Module';
 
 
@@ -14,7 +13,7 @@ export class ModuleService {
 
     constructor(private http: HttpClient) { }
 
-    findAll(filtro: InstitutionFilter): Observable<IApiResponse<Module>> {
+    findAll(filtro: ModuleFilter): Observable<IApiResponse<Module>> {
 
         let params = new HttpParams()
             .set('page', filtro.pagina)

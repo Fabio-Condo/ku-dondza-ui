@@ -24,8 +24,6 @@
 
     <div class="flex">
         <div>
-            <span *ngIf="activeTab === 1" class="pagination-info ml-auto"> Mostrando {{ totalFriendsRecord }} dos {{ totalFriends }}</span>
-            <span *ngIf="activeTab === 2" class="pagination-info ml-auto"> Mostrando {{ totalFriendRequestRecord }} dos {{ totalFriendRequests }}</span>
             <span *ngIf="activeTab === 3" class="pagination-info ml-auto"> Mostrando {{ totalUsersRecord }} dos {{ totalUsers }}</span>
         </div>
 
@@ -46,101 +44,6 @@
                 <i class="pi pi-filter"></i> Filtrar
             </button>
         </div>
-    </div>
-
-    <div *ngIf="activeTab === 1" class="active">
-        <table class="card-table">
-            <tbody>
-                <tr *ngFor="let friend of friends">
-
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="profile-pic">
-                                <img src="{{friend.profileImageUrl}}" alt="pic 1" />
-                            </div>
-                            <div class="content" style="margin-left: 20px;">
-                                <p class="title user-name-hover" [routerLink]="['/user/profile', friend.userId]">
-                                    {{ friend.firstName }} {{ friend.lastName }}
-                                </p>
-                                <p class="username text-muted">12 mutual friends</p>
-                            </div>
-                            <div class="button-container">
-                                <button (click)="onRemoveFriend(friend)" class="btn">Remover amizade</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Paginação -->
-        <div class="pagination-controls">
-            <span class="pagination-info mr-auto"></span>
-
-            <button class="pagination-button" (click)="previousPageFriends()" [disabled]="currentPageFriends === 1">
-                <i class="pi pi-chevron-left"></i> Anterior
-            </button>
-            <span class="pagination-info">Página {{ currentPageFriends }} de {{ totalPagesFriends() }}</span>
-            <button class="pagination-button" (click)="nextPageFriends()" [disabled]="currentPageFriends === totalPagesFriends()">
-                Próximo <i class="pi pi-chevron-right"></i>
-            </button>
-            <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-                <option *ngFor="let option of itemsPerPageFriends" [value]="option"
-                    [selected]="option === filtroFriends.itemsPerPage">
-                    {{ option }}
-                </option>
-            </select>
-        </div>
-
-    </div>
-
-    <div *ngIf="activeTab === 2" class="active">
-        <table class="card-table">
-            <tbody>
-                <tr *ngFor="let friendReq of friendRequests">
-
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="profile-pic">
-                                <img src="{{friendReq.profileImageUrl}}" alt="pic 1" />
-                            </div>
-                            <div class="content" style="margin-left: 20px;">
-                                <p class="title user-name-hover" [routerLink]="['/user/profile', friendReq.userId]">
-                                    {{ friendReq.firstName }} {{ friendReq.lastName }}
-                                </p>
-                                <p class="username text-muted">12 mutual friends</p>
-                            </div>
-                            <div class="button-container">
-                                <button (click)="acceptFriendRequest(friendReq)" class="btn btn-primary">Confirmar</button>
-                                <button (click)="rejectFriendRequest(friendReq)" class="btn" style="margin-left: 10px;">Eliminar</button>                            
-                            </div>
-                        </div>
-                    </div>
-                    
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Paginação -->
-        <div class="pagination-controls">
-            <span class="pagination-info mr-auto"></span>
-
-            <button class="pagination-button" (click)="previousPageFriends()" [disabled]="currentPageFriendRequests === 1">
-                <i class="pi pi-chevron-left"></i> Anterior
-            </button>
-            <span class="pagination-info">Página {{ currentPageFriendRequests }} de {{ totalPagesFriendRequests() }}</span>
-            <button class="pagination-button" (click)="nextPageFriends()" [disabled]="currentPageFriendRequests === totalPagesFriendRequests()">
-                Próximo <i class="pi pi-chevron-right"></i>
-            </button>
-            <select class="select-itens-por-pagina" (change)="changePageSizeFriendRequests($event)">
-                <option *ngFor="let option of itemsPerPageFriendRequests" [value]="option"
-                    [selected]="option === filtroFriendRequests.itemsPerPage">
-                    {{ option }}
-                </option>
-            </select>
-        </div>
-
     </div>
 
     <div *ngIf="activeTab === 3" class="active">
@@ -167,13 +70,7 @@
                                 </div>
                             </div>
                             <div class="button-container">
-                                <button (click)="sendFriendRequest(user)" *ngIf="!user.isFriend && !user.sentFriendRequest && !user.currentUserSentFriendRequest" [disabled]="currentUser.id == user.id" class="btn btn-primary">Adicionar amigo</button>
-                                <button (click)="onRemoveFriend(user)" *ngIf="user.isFriend" class="btn" style="margin-left: 10px;">Remover amizade</button>  
                                 <button *ngIf="user.currentUserSentFriendRequest" class="btn" style="margin-left: 10px;">Pedido enviado</button>  
-                            </div>
-                            <div class="button-container" *ngIf="user.sentFriendRequest">
-                                <button (click)="acceptFriendRequest(user)" class="btn btn-primary">Confirmar</button>
-                                <button (click)="rejectFriendRequest(user)" class="btn" style="margin-left: 10px;">Eliminar</button>                            
                             </div>
                         </div>
                     </div>
@@ -295,20 +192,3 @@
         </div>
     </form>
 </p-dialog>
-
-<!-- confirm dialog -->
-<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
-    <div class="confirm-dialog">
-        <div class="confirm-dialog-header">
-            <h4>Deseja remover amizade ?</h4>
-            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
-        </div>
-        <div class="confirm-dialog-content">
-            <ng-content></ng-content>
-        </div>
-        <div class="confirm-dialog-footer">
-            <button (click)="confirmDialog(selectedFriendToBeRemoved)">Confirmar</button>
-            <button (click)="closeConfirmDialog()">Cancelar</button>
-        </div>
-    </div>
-</div>
