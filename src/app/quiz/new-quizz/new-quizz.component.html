@@ -1,290 +1,241 @@
-<div class="container" style="margin-top: 70px; max-width: 900px;">
-  <!-- Tela inicial -->
-  <div *ngIf="showStartScreen" class="start-screen">
-    <div class="start-screen-content">
-      <div class="quiz-header">
-        <h1 class="title">Novo Quiz</h1>
-        <p class="quiz-sub-title">Personalize e comece a testar seus conhecimentos!</p>
-      </div>
-  
-      <!-- Campo de Descrição -->
-      <div class="form-group">
-        <label for="title">Titulo</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          [(ngModel)]="quiz.title"
-          placeholder="Ex: Quiz sobre funções quadráticas"
-          required
-        />
-      </div>
+<br>
+<br>
+<body>
+  <div class="container">
+    <!-- Tela inicial -->
+    <div *ngIf="showStartScreen" class="start-screen">
+      <div class="start-screen-content">
+        <div class="quiz-header">
+          <h1 class="title">Novo Quiz</h1>
+          <p class="quiz-sub-title">Personalize e comece a testar seus conhecimentos!</p>
+        </div>
 
-      <div class="form-group">
-        <label for="difficultyLevel">Nivel de dificuldade</label>
-        <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
-          <option value="" disabled selected>Selecione o nivel</option>
-          <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
-        </select>
-      </div>
+        <!-- Campo de Descrição -->
+        <div class="form-group">
+          <label for="title">Titulo</label>
+          <input type="text" id="title" name="title" [(ngModel)]="quiz.title"
+            placeholder="Ex: Quiz sobre funções quadráticas" required />
+        </div>
 
-      <div class="form-group">
-        <label for="limitPerTopic">Nº de questões por tópico</label>
-        <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
-          <option value="" disabled selected>Selecione o limite</option>
-          <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
-        </select>
-      </div>
-  
-      <!-- Seleção de Disciplina -->
-      <div class="form-group">
-        <label for="subject">Disciplina</label>
-        <select
-          id="subject"
-          [(ngModel)]="quiz.subject"
-          (change)="getTopicsBySubjectId(quiz.subject.id)"
-          [disabled]="showLoading || showGetSubjectLoading"
-          name="subject"
-          required
-        >
-          <option value="" disabled selected>Selecione a disciplina</option>
-          <option *ngFor="let subject of subjects" [ngValue]="subject">
-            {{ subject.name }}
-          </option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label for="difficultyLevel">Nivel de dificuldade</label>
+          <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
+            <option value="" disabled selected>Selecione o nivel</option>
+            <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+          </select>
+        </div>
 
-      <div class="form-group" *ngIf="quiz.subject.id">
-        <label>Selecione os Tópicos</label>
-      
-      
-        <ul class="topics-list">
-          <li *ngFor="let topic of topics" class="topic-item">
-            <label>
-              <input
-                type="checkbox"
-                [checked]="topic.selected"
-                (change)="toggleTopic(topic)"
-              />
-              <span class="custom-checkbox"></span>
-              <span class="topic-name">{{ topic.name }}</span>
-            </label>
-          </li>
-        </ul>
-      </div>
+        <div class="form-group">
+          <label for="limitPerTopic">Nº de questões por tópico</label>
+          <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
+            <option value="" disabled selected>Selecione o limite</option>
+            <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
+          </select>
+        </div>
 
-      <button class="start-button" (click)="getQuestions()" [disabled]="topics.length == 0" *ngIf="quiz.subject.id"> 
-        Gerar Questões
-      </button>
-  
-      <!-- Indicador de Carregamento -->
-      <div class="loading-indicator" *ngIf="showLoading || showGetSubjectLoading">
-        <span>Gerando questões...</span>
-        <div class="spinner"></div>
-      </div>
-  
-      <!-- Botão de Iniciar Quiz -->
-      <button
-        class="start-button"
-        (click)="startQuiz()"
-        [disabled]="
+        <!-- Seleção de Disciplina -->
+        <div class="form-group">
+          <label for="subject">Disciplina</label>
+          <select id="subject" [(ngModel)]="quiz.subject" (change)="getTopicsBySubjectId(quiz.subject.id)"
+            [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
+            <option value="" disabled selected>Selecione a disciplina</option>
+            <option *ngFor="let subject of subjects" [ngValue]="subject">
+              {{ subject.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="quiz.subject.id">
+          <label>Selecione os Tópicos</label>
+
+
+          <ul class="topics-list">
+            <li *ngFor="let topic of topics" class="topic-item">
+              <label>
+                <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
+                <span class="custom-checkbox"></span>
+                <span class="topic-name">{{ topic.name }}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <button class="start-button" (click)="getQuestions()" [disabled]="topics.length == 0" *ngIf="quiz.subject.id">
+          Gerar Questões
+        </button>
+
+        <!-- Indicador de Carregamento -->
+        <div class="loading-indicator" *ngIf="showLoading || showGetSubjectLoading">
+          <span>Gerando questões...</span>
+          <div class="spinner"></div>
+        </div>
+
+        <!-- Botão de Iniciar Quiz -->
+        <button class="start-button" (click)="startQuiz()" [disabled]="
           !quiz.title ||
           quiz.questions.length === 0 ||
           questions.length === 0 ||
           showLoading ||
           showGetSubjectLoading
-        "
-      >
-        Começar Quiz
-      </button>
+        ">
+          Começar Quiz
+        </button>
+      </div>
     </div>
-  </div>
 
-  <!-- Tela do quiz (questões) -->
-  <div *ngIf="!showStartScreen && !showFinalScreen">
-    <div *ngIf="currentQuestionIndex < questions.length">
-      <div class="question-card">
+    <!-- Tela do quiz (questões) -->
+    <div *ngIf="!showStartScreen && !showFinalScreen">
+      <div *ngIf="currentQuestionIndex < questions.length">
+        <div class="question-card">
 
-        <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>
-        <p class="quiz-sub-title">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</p>
+          <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>
+          <p class="quiz-sub-title">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</p>
 
-        <div class="progress-container">
-          <p class="question-number">{{ formattedTime }}</p>
-          <div class="progress-bar-container">
-            <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
+          <div class="progress-container">
+            <p class="question-number">{{ formattedTime }}</p>
+            <div class="progress-bar-container">
+              <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
+              </div>
             </div>
+            <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}</p>
           </div>
-          <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}</p>
-        </div>
 
-        <img *ngIf="questions[currentQuestionIndex].urlFile" src="{{ questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções" class="question-graph" />
-        <div class="graph-container" *ngIf="!questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
-          <canvas #canvas width="400" height="400"></canvas>
-        </div>
+          <img *ngIf="questions[currentQuestionIndex].urlFile" src="{{ questions[currentQuestionIndex].urlFile }}"
+            alt="Gráfico de funções" class="question-graph" />
+          <div class="graph-container"
+            *ngIf="!questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
+            <canvas #canvas width="400" height="400"></canvas>
+          </div>
 
-        <!-- Contêiner para expressões matemáticas -->
-        <div id="math-container-{{ currentQuestionIndex }}" *ngIf="questions[currentQuestionIndex].text">
-          \[{{ questions[currentQuestionIndex].text }}\]
-        </div>
+          <!-- Contêiner para expressões matemáticas -->
+          <div id="math-container-{{ currentQuestionIndex }}" *ngIf="questions[currentQuestionIndex].text">
+            \[{{ questions[currentQuestionIndex].text }}\]
+          </div>
 
-        <div class="answer-options">
-          <label *ngFor="let answer of questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
+          <div class="answer-options">
+            <label *ngFor="let answer of questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
                     'correct-answer': showCorrection && answer.correct,
                     'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
                  }">
-            <span class="num">{{ i + 1 }}</span>
-            <input type="radio" name="question-{{ questions[currentQuestionIndex].id }}" [value]="answer.id"
-              [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)"
-              (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)"
-              [disabled]="showCorrection" />
+              <span class="num">{{ i + 1 }}</span>
+              <input type="radio" name="question-{{ questions[currentQuestionIndex].id }}" [value]="answer.id"
+                [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)"
+                (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)"
+                [disabled]="showCorrection" />
 
-            <span> \[{{ answer.text }}\] </span>  
-          </label>
-        </div>
-
-        <!-- Botão para marcar como não respondida -->
-        <button class="btn" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
-          *ngIf="!showCorrection">
-          Não Responder
-        </button>
-
-        <!-- Input para mostrar a solução -->
-        <div class="solution-container" *ngIf="showCorrection" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
-          <div class="solution-input">
-            <label for="solution">Explicação:</label>
-            <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
-              *ngIf="questions[currentQuestionIndex].solution">
-              \[{{ questions[currentQuestionIndex].solution }}\]
-            </p>
+              <span> \[{{ answer.text }}\] </span>
+            </label>
           </div>
+
+          <!-- Botão para marcar como não respondida -->
+          <button class="btn" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
+            *ngIf="!showCorrection">
+            Não Responder
+          </button>
+
+          <!-- Input para mostrar a solução -->
+          <div class="solution-container" *ngIf="showCorrection"
+            [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="solution-input">
+              <label for="solution">Explicação:</label>
+              <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
+                *ngIf="questions[currentQuestionIndex].solution">
+                \[{{ questions[currentQuestionIndex].solution }}\]
+              </p>
+            </div>
+          </div>
+
         </div>
 
+        <div class="navigation-buttons text-center">
+          <button class="pagination-btn prev" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Anterior
+          </button>
+          <button class="pagination-btn next" (click)="goToNextQuestion()"
+            *ngIf="currentQuestionIndex !== quiz.questions.length - 1">
+            Próxima
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+          <!-- Botão para submeter respostas -->
+          <button class="btn-outline" id="add-btn" (click)="submitAnswers()"
+          *ngIf="currentQuestionIndex === quiz.questions.length - 1">
+            <span *ngIf="!submited">Submeter</span>
+            <span *ngIf="submited">Resultados</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
       </div>
 
-      <div class="navigation-buttons text-center">
-        <button class="pagination-button" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
-          <i class="pi pi-chevron-left"></i> Anterior
-        </button>
-        <button class="pagination-button" (click)="goToNextQuestion()"
-        *ngIf="currentQuestionIndex !== quiz.questions.length - 1"> <!-- [disabled]="currentQuestionIndex === quiz.questions.length - 1" -->
-        Próxima <i class="pi pi-chevron-right"></i>
-        </button>
-
-        <!-- Botão para submeter respostas -->
-        <button class="pagination-button" (click)="submitAnswers();"
-          *ngIf="currentQuestionIndex === questions.length - 1">
-          <span *ngIf="!submited">Submeter</span>
-          <span *ngIf="submited">Resultados</span>
-          <i style="margin-left: 0.5rem;" class="pi pi-arrow-up"></i>
-        </button>
+      <div *ngIf="showLoading" class="loading-indicator">
+        Carregando...
       </div>
     </div>
 
-    <div *ngIf="showLoading" class="loading-indicator">
-      Carregando...
-    </div>
-  </div>
-  
-  <div *ngIf="showFinalScreen" class="results-screen2">
-    <div class="results-summary">
-      <p class="title">{{ quiz.title }}</p>
-      <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-      <p class="quiz-sub-title">Tempo gasto: {{ quiz.timeSpent }}</p>
+    <div *ngIf="showFinalScreen" class="results-screen2">
+      <div class="results-summary">
+        <p class="title">{{ quiz.title }}</p>
+        <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+        <p class="quiz-sub-title">Tempo gasto: {{ quiz.timeSpent }}</p>
 
-      <div class="button-container">
-        <button class="btn-start" (click)="toggleCorrection()" aria-label="Iniciar Competição">Correção</button>
-      </div>
+        <div class="button-container">
+          <button class="btn-outline" id="add-btn" (click)="toggleCorrection()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+            Correção
+          </button>
+        </div>
 
-      <!--
+        <!--
       <h2 class="section-title">Resultado Geral</h2>
       -->
 
-      <div class="statistics-container">
-        <!-- Cabeçalho -->
-        <div class="statistics-header">
-          <h2>Resultado Geral</h2>
-          <!--
+        <div class="statistics-container">
+          <!-- Cabeçalho -->
+          <div class="statistics-header">
+            <h2>Resultado Geral</h2>
+            <!--
             <p class="description">
               Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
             </p>
             -->
-        </div>
-
-        <!-- Corpo das Estatísticas -->
-        <div class="statistics-body"> 
-          <!-- Gráfico de Barras -->
-          <div class="graph">
-            <div class="bar acertos" *ngIf="((result.correctAnswers / quiz.questions.length) * 100) > 0"
-              [style.width.%]="((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)">
-              {{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%
-            </div>
-            <div class="bar erros" *ngIf="(100 - (result.correctAnswers / quiz.questions.length) * 100) > 0"
-              [style.width.%]="(100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1)">
-              {{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%
-            </div>
-          </div>
-
-          <!-- Detalhes -->
-          <div class="details">
-            <div class="detail-item">
-              Número de questões:
-              <span>{{ quiz.questions.length }}</span>
-            </div>
-            <div class="detail-item">
-              Total de Acertos:
-              <span>{{ result.correctAnswers }}</span>
-            </div>
-            <div class="detail-item">
-              Total de Erros (incluíndo nulas):
-              <span>{{ result.incorrectAnswers + result.nullAnswers }}</span>
-            </div>
-            <!--
-            <div class="detail-item">
-              Total de Nulas:
-              <span>{{ result.nullAnswers }}</span>
-            </div>
-            -->
-            <div class="detail-item">
-              Taxa de Acerto:
-              <span>{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
-            </div>
-            <div class="detail-item">
-              Taxa de Erro (incluíndo nulas):
-              <span>{{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <br>
-      <br>
-
-      <h2 class="section-title">Estatísticas Por Tópicos</h2>
-
-      <div *ngIf="quiz.resultsByTopic">
-        <div class="statistics-container" *ngFor="let topic of quiz.selectedTopics" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
-
-          <!-- Cabeçalho -->
-          <div class="statistics-header">
-            <h2>{{ topic.name }}</h2>
-            <!--
-                <p class="description">
-                  Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
-                </p>
-                -->
           </div>
 
           <!-- Corpo das Estatísticas -->
           <div class="statistics-body">
             <!-- Gráfico de Barras -->
             <div class="graph">
-              <div class="bar acertos" *ngIf="quiz.resultsByTopic[topic.name].percentage! > 0"
-                [style.width.%]="quiz.resultsByTopic[topic.name].percentage!.toFixed(1)">
-                {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(1) }}%
+              <div class="bar acertos" *ngIf="((result.correctAnswers / quiz.questions.length) * 100) > 0"
+                [style.width.%]="((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)">
+                {{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%
               </div>
-              <div class="bar erros" *ngIf="100 - (quiz.resultsByTopic[topic.name].percentage!) > 0"
-                [style.width.%]="(100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1)">
-                {{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) }}%
+              <div class="bar erros" *ngIf="(100 - (result.correctAnswers / quiz.questions.length) * 100) > 0"
+                [style.width.%]="(100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1)">
+                {{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%
+              </div>
+            </div>
+
+            <div class="progress-legend">
+              <div class="legend-item">
+                <span class="legend-indicator legend-correct"></span>
+                <span>Acertos</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-indicator legend-incorrect"></span>
+                <span>Erros (incluindo respostas nulas)</span>
               </div>
             </div>
 
@@ -292,37 +243,115 @@
             <div class="details">
               <div class="detail-item">
                 Número de questões:
-                <span>{{ quiz.resultsByTopic[topic.name].total || 0 }}</span>
+                <span>{{ quiz.questions.length }}</span>
               </div>
               <div class="detail-item">
                 Total de Acertos:
-                <span>{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span>
+                <span class="success-text">{{ result.correctAnswers }}</span>
               </div>
               <div class="detail-item">
-                Total de Erros (incluíndo respostas nulas):
-                <span>{{ quiz.resultsByTopic[topic.name].incorrect + quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span>
+                Total de Erros:
+                <span class="danger-text">{{ result.incorrectAnswers + result.nullAnswers }}</span>
               </div>
               <!--
-              <div class="detail-item">
-                Total de Nulas:
-                <span>{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span>
-              </div>
-              -->
+            <div class="detail-item">
+              Total de Nulas:
+              <span>{{ result.nullAnswers }}</span>
+            </div>
+            -->
               <div class="detail-item">
                 Taxa de Acerto:
-                <span>{{ quiz.resultsByTopic[topic.name].percentage!.toFixed(1) || 0 }}%</span>
+                <span class="success-text">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
               </div>
               <div class="detail-item">
-                Taxa de Erro (incluíndo respostas nulas):
-                <span>{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0 }}%</span>
+                Taxa de Erro (incluíndo nulas):
+                <span class="danger-text">{{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
               </div>
             </div>
           </div>
         </div>
 
-      </div>
-  
-    </div>
-  </div>
+        <br>
+        <br>
 
-</div>
+        <!--<h2 class="section-title">Estatísticas Por Tópicos</h2>-->
+
+        <div *ngIf="quiz.resultsByTopic">
+          <div class="statistics-container" *ngFor="let topic of quiz.selectedTopics"
+            [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+
+            <!-- Cabeçalho -->
+            <div class="statistics-header">
+              <h2>{{ topic.name }}</h2>
+              <!--
+                <p class="description">
+                  Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
+                </p>
+                -->
+            </div>
+
+            <!-- Corpo das Estatísticas -->
+            <div class="statistics-body">
+              <!-- Gráfico de Barras -->
+              <div class="graph">
+                <div class="bar acertos" *ngIf="quiz.resultsByTopic[topic.name].percentage! > 0"
+                  [style.width.%]="quiz.resultsByTopic[topic.name].percentage!.toFixed(1)">
+                  {{ quiz.resultsByTopic[topic.name].percentage!.toFixed(1) }}%
+                </div>
+                <div class="bar erros" *ngIf="100 - (quiz.resultsByTopic[topic.name].percentage!) > 0"
+                  [style.width.%]="(100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1)">
+                  {{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) }}%
+                </div>
+              </div>
+
+              <div class="progress-legend">
+                <div class="legend-item">
+                  <span class="legend-indicator legend-correct"></span>
+                  <span>Acertos</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-indicator legend-incorrect"></span>
+                  <span>Erros</span>
+                </div>
+              </div>
+
+              <!-- Detalhes -->
+              <div class="details">
+                <div class="detail-item">
+                  Número de questões:
+                  <span>{{ quiz.resultsByTopic[topic.name].total || 0 }}</span>
+                </div>
+                <div class="detail-item">
+                  Total de Acertos:
+                  <span class="success-text">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</span>
+                </div>
+                <div class="detail-item">
+                  Total de Erros:
+                  <span class="danger-text">{{ quiz.resultsByTopic[topic.name].incorrect + quiz.resultsByTopic[topic.name].nullAnswers || 0
+                    }}</span>
+                </div>
+                <!--
+              <div class="detail-item">
+                Total de Nulas:
+                <span>{{ quiz.resultsByTopic[topic.name].nullAnswers || 0 }}</span>
+              </div>
+              -->
+                <div class="detail-item">
+                  Taxa de Acerto:
+                  <span class="success-text">{{ quiz.resultsByTopic[topic.name].percentage!.toFixed(1) || 0 }}%</span>
+                </div>
+                <div class="detail-item">
+                  Taxa de Erro:
+                  <span class="danger-text">{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0 }}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>

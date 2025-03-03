@@ -1,9 +1,12 @@
 <div class="question-card">
     <!-- Cabeçalho da pergunta -->
-    <div class="question-header">
-        <h1 class="subject-name">{{ question.topic.subject.name }}</h1>
-        <p class="topic-name">{{ question.topic.name }}</p>
-        <p class="topic-name">Tempo: {{ gettimeLimitValue(question.timeLimit) }}</p>
+    <div class="question-header">                    
+        <h1 class="subject-name">{{ question.topic.name }}</h1>
+        <br>
+        <span class="badge matematica">{{ question.topic.subject.name }}</span>
+        <span class="badge easy" style="margin-left: 5px;">
+            {{ getDifficultyLevelValue(question.difficultyLevel) }}
+        </span>
     </div>
 
     <!-- Corpo da pergunta -->
@@ -24,7 +27,7 @@
     <div class="answers-card">
         <div class="answer-options">
             <div class="answers-grid">
-                <label *ngFor="let answer of question.answers" class="answer-item">
+                <label *ngFor="let answer of question.answers" class="answer-item" [ngClass]="{'answer-correct-item': answer.correct}">
                     <span> \[{{ answer.text }}\] </span> 
                     <span *ngIf="answer.correct" class="correct-tag">✓</span>
                 </label>
@@ -41,7 +44,7 @@
 
     <!-- Explicação da resolução -->
     <div class="solution-section" *ngIf="showSolution" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
-        <h2>Como Resolver</h2>
+        <h2 class="solution-title">Como Resolver</h2>
 
         <!--<h2 class="solution-title">Solução</h2>-->
         <div class="solution-content">
@@ -84,10 +87,21 @@
                     {{ quizQuestionStatistics.errorRate.toFixed(1) }} %
                 </div>
             </div>
+            
+            <div class="progress-legend">
+                <div class="legend-item">
+                  <span class="legend-indicator legend-correct"></span>
+                  <span>Acertos</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-indicator legend-incorrect"></span>
+                  <span>Erros (incluindo respostas nulas)</span>
+                </div>
+            </div>
     
             <div class="details">
                 <div class="detail-item">
-                    Total de quizzes em que esta questão foi incluída:
+                    Quizzes contendo esta questão:
                     <span>{{ quizQuestionStatistics.quizzesCount }}</span>
                 </div>
                 <div class="detail-item">
@@ -96,19 +110,19 @@
                 </div>
                 <div class="detail-item">
                     Respostas Corretas:
-                    <span>{{ quizQuestionStatistics.totalCorrectAnswers }}</span>
+                    <span class="success-text">{{ quizQuestionStatistics.totalCorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
-                    Respostas Incorretas (incluíndo respostas nulas):
-                    <span>{{ quizQuestionStatistics.totalIncorrectAnswers }}</span>
+                    Respostas Incorretas:
+                    <span class="danger-text">{{ quizQuestionStatistics.totalIncorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
                     Taxa de Acerto:
-                    <span>{{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %</span>
+                    <span class="success-text">{{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %</span>
                 </div>
                 <div class="detail-item">
-                    Taxa de Erro (incluíndo nulas):
-                    <span>{{ quizQuestionStatistics.errorRate.toFixed(1) }} %</span>
+                    Taxa de Erro:
+                    <span class="danger-text">{{ quizQuestionStatistics.errorRate.toFixed(1) }} %</span>
                 </div>
             </div>
         </div>
@@ -116,7 +130,7 @@
 
     <br>
     <br>
-
+    <!--
     <div class="statistics-container">
         <div class="statistics-header">
             <h2>Estatísticas Nas Competições</h2>
@@ -150,7 +164,7 @@
                     <span>{{ competitionQuestionStatistics.totalCorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
-                    Respostas Incorretas (incluíndo respostas nulas):
+                    Respostas Incorretas
                     <span>{{ competitionQuestionStatistics.totalIncorrectAnswers }}</span>
                 </div>
                 <div class="detail-item">
@@ -158,12 +172,13 @@
                     <span>{{ competitionQuestionStatistics.accuracyRate.toFixed(1) }} %</span>
                 </div>
                 <div class="detail-item">
-                    Taxa de Erro (incluíndo nulas):
+                    Taxa de Erro
                     <span>{{ competitionQuestionStatistics.errorRate.toFixed(1) }} %</span>
                 </div>
             </div>
         </div>
     </div>
+    -->
     
 </div>
 

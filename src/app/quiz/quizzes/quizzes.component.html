@@ -1,174 +1,170 @@
 <br>
 <br>
-<br>
-<div class="container">
+<body>
+    <div class="container">
 
-    <h1>Quizzes</h1>
-    <br>
+        <h1>Quizzes</h1>
+        <br>
 
-    <header>
-        <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
+        <header>
+            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
 
-        <div class="actions">
-            <button class="btn-primary" id="add-btn" (click)="onFilter()" [routerLink]="['/quizzes/new/']">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                Iniciar Quiz
-            </button>
-            <button class="btn-outline" id="filter-btn" (click)="onFilter()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-                Filtrar
-            </button>
-        </div>
-    </header>
+            <div class="actions">
+                <button class="btn-primary" id="add-btn" (click)="onFilter()" [routerLink]="['/quizzes/new/']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Iniciar Quiz
+                </button>
+                <button class="btn-outline" id="filter-btn" (click)="onFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Filtrar
+                </button>
+            </div>
+        </header>
 
-    <!-- Lista de Quizzes -->
-    <div class="quiz-list" id="quizList" *ngFor="let quiz of quizzes">
-        <!-- Quiz 1 -->
-        <div class="card">
-            <div class="quiz-content">
-                <div class="quiz-header">
-                    <div>
-                        <span class="badge matematica">{{ quiz.subject.name }}</span>
-                        <h2 class="quiz-title">{{ quiz.title }}</h2>
-                        <div class="topic-tags">
-                            <span class="topic-tag" *ngFor="let topic of quiz.selectedTopics">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        <!-- Lista de Quizzes -->
+        <div class="quiz-list" id="quizList" *ngFor="let quiz of quizzes">
+            <!-- Quiz 1 -->
+            <div class="card">
+                <div class="quiz-content">
+                    <div class="quiz-header">
+                        <div>
+                            <span class="badge matematica">{{ quiz.subject.name }}</span>
+                            <h2 class="quiz-title">{{ quiz.title }}</h2>
+                            <div class="topic-tags">
+                                <span class="topic-tag" *ngFor="let topic of quiz.selectedTopics">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                        </path>
+                                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                    </svg>
+                                    {{ topic.name }}
+                                </span>
+                            </div>
+                        </div>
+                        <span class="badge easy">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                style="vertical-align: middle; margin-right: 4px;">
+                                <circle cx="12" cy="8" r="7"></circle>
+                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                            </svg>
+                            {{ getDifficultyLevelValue(quiz.difficultyLevel) }}
+                        </span>
+                    </div>
+
+                    <div class="quiz-stats">
+                        <div class="stats-left">
+                            <div class="stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path
-                                        d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
-                                    </path>
-                                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
                                 </svg>
-                                {{ topic.name }}
-                            </span>
+                                {{ quiz.timeSpent }} <!--45 min-->
+                            </div>
+                            <div class="stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                                {{ quiz.totalQuestions }} questões
+                            </div>
+                            <div class="stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                1 participante (Tú)
+                            </div>
+                        </div>
+                        <div class="stat-item score">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            76% acerto
                         </div>
                     </div>
-                    <span class="badge easy">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            style="vertical-align: middle; margin-right: 4px;">
-                            <circle cx="12" cy="8" r="7"></circle>
-                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                        </svg>
-                        {{ getDifficultyLevelValue(quiz.difficultyLevel) }}
-                    </span>
-                </div>
 
-                <div class="quiz-stats">
-                    <div class="stats-left">
-                        <div class="stat-item">
+                    <div class="quiz-footer">
+                        <div class="update-date">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Submetido em: {{ quiz.submittedAt | date: 'short' }}
+                        </div>
+                        <button class="start-button" [routerLink]="['/quizzes', quiz.quizId, 'questions']">
+                            Ver Quiz
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                            {{ quiz.timeSpent }} <!--45 min-->
-                        </div>
-                        <div class="stat-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                            </svg>
-                            {{ quiz.totalQuestions }} questões
-                        </div>
-                        <div class="stat-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            1 participante (Tú)
-                        </div>
+                        </button>
                     </div>
-                    <div class="stat-item score">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="20" x2="18" y2="10"></line>
-                            <line x1="12" y1="20" x2="12" y2="4"></line>
-                            <line x1="6" y1="20" x2="6" y2="14"></line>
-                        </svg>
-                        76% acerto
-                    </div>
-                </div>
-
-                <div class="quiz-footer">
-                    <div class="update-date">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        Submetido em: {{ quiz.submittedAt | date: 'short' }}
-                    </div>
-                    <button class="start-button" [routerLink]="['/quizzes', quiz.quizId, 'questions']">
-                        Ver Quiz
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>
+
+        <div class="load-more" *ngIf="quizzes.length < totalQuizzes">
+            <button (click)="loadMore()" class="btn-load-more" [disabled]="showLoading"
+                [attr.aria-label]="'Buscar mais quizzes'" [attr.aria-disabled]="showLoading">
+                <span *ngIf="!showLoading">Buscar mais</span>
+                <span *ngIf="showLoading" class="spinner"></span>
+            </button>
+        </div>
+
+        <!-- Paginação -->
+        <div class="pagination">
+            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
+            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-btn next" (click)="nextPage()"
+                [disabled]="currentPage === totalPages() || showLoading">
+                Próxima
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+        <!--
+        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
+            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
+                [selected]="option === filter.itemsPerPage">
+                {{ option }}
+            </option>
+        </select>
+        -->
+
     </div>
-
-    <div class="load-more" *ngIf="quizzes.length < totalQuizzes">
-        <button 
-            (click)="loadMore()" 
-            class="btn-load-more" 
-            [disabled]="showLoading"
-            [attr.aria-label]="'Buscar mais quizzes'"
-            [attr.aria-disabled]="showLoading"
-        >
-            <span *ngIf="!showLoading">Buscar mais</span>
-            <span *ngIf="showLoading" class="spinner"></span>
-        </button>
-    </div>
-
-    <!-- Paginação -->
-    <div class="pagination">
-        <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
-        <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-            Anterior
-        </button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-btn next" (click)="nextPage()"
-            [disabled]="currentPage === totalPages() || showLoading">
-            Próxima
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-        </button>
-    </div>
-
-    <!--
-    <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-        <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-            [selected]="option === filter.itemsPerPage">
-            {{ option }}
-        </option>
-    </select>
-    -->
-
-</div>
+</body>
 
 <br>
 <br>
