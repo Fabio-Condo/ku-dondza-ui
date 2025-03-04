@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { UserDashboardDTO } from '../core/interface/UserDashboardDTO';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

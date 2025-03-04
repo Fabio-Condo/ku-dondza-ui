@@ -4,8 +4,6 @@ import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
-import { UserDashboardDTO } from 'src/app/core/interface/UserDashboardDTO';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +13,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class DashboardComponent implements OnInit {
 
   loggedUser: User = new User();
-  UserDashboard: UserDashboardDTO = new UserDashboardDTO();
 
   constructor(
     private userDashboardService: UserDashboardService,
@@ -33,9 +30,7 @@ export class DashboardComponent implements OnInit {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
     } else {
-      this.messageService.add({
-        severity: 'error',
-        detail: 'Ocorreu um erro. Por favor, tente novamente.',
+      this.messageService.add({severity: 'error', detail: 'Ocorreu um erro. Por favor, tente novamente.',
       });
     }
   }

@@ -5,8 +5,6 @@ nav {
   position: fixed;
   top: 0;
   z-index: 100;
-  /*background: var(--color-primary);*/
-  /*background: linear-gradient(135deg, var(--color-primary), #5f5cfc);*/
   background: #3b82f6;
 }
 
@@ -20,7 +18,6 @@ nav .nav-left {
   display: flex;
   align-items: center;
   position: relative;
-  /* Para que o popout de resultados seja posicionado relativo a este elemento */
 }
 
 nav .logo {
@@ -38,7 +35,6 @@ nav .logo {
   border-radius: var(--border-radius);
   padding: 0.7rem 0.5rem;
   position: relative;
-  /* Para posicionar o popout corretamente */
 }
 
 .search-bar i {
@@ -61,9 +57,7 @@ nav .logo {
 
 .search-bar input:focus {
   width: 25vw;
-  /* Largura do input ao focar */
   transition: width 0.3s ease;
-  /* Suaviza a transição ao aumentar a largura */
 }
 
 nav .create {
@@ -86,24 +80,16 @@ nav .create {
 .search-results-popup {
   position: absolute;
   top: 50px;
-  /* Ajuste conforme necessário para a distância abaixo da navbar */
   left: 0;
-  /* Posiciona o popout abaixo da barra de busca */
   background: white;
   border: 1px solid #ddd;
   border-radius: 12px;
-  /* Bordas mais arredondadas */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  /* Sombra mais suave e moderna */
   z-index: 1000;
-  /* Certifique-se de que o popout está sobre outros elementos */
   width: 100%;
-  /* Ajuste o tamanho conforme necessário */
   max-height: 400px;
-  /* Limite a altura máxima e adicione rolagem se necessário */
   overflow-y: auto;
   padding: 1rem;
-  /* Mais espaçamento interno */
 }
 
 .search-results-popup ul {
@@ -118,14 +104,11 @@ nav .create {
   padding: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
-  /* Efeito de hover */
 }
 
 .search-results-popup li:hover {
   background-color: #f8f9fa;
-  /* Cor de fundo mais suave no hover */
   transform: translateX(5px);
-  /* Efeito de deslizamento para a direita */
 }
 
 .search-results-popup .profile-pic {
@@ -164,7 +147,7 @@ nav .create {
   top: 100%;
   right: 0;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 12px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
   padding: 1.5rem;
   display: none;
@@ -208,8 +191,6 @@ nav .create {
 
 /* Layout de duas colunas */
 .menu-dropdown ul {
-  /* display: grid; */
-  /* grid-template-columns: 1fr 1fr; */
   gap: 1rem;
   list-style: none;
   padding: 0;
@@ -229,11 +210,8 @@ nav .create {
 
 .menu-dropdown ul li:hover {
   background-color: #f8f9fa;
-  /* Cor de fundo mais suave no hover */
   transform: translateX(5px);
-  /* Efeito de deslizamento para a direita */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  /* Sombra no hover */
 }
 
 /* Ícones dos itens */
@@ -247,18 +225,14 @@ nav .create {
   justify-content: center;
   align-items: center;
   background-color: #f0f2f5;
-  /* Fundo suave para os ícones */
   border-radius: 8px;
-  /* Bordas arredondadas para os ícones */
   transition: all 0.3s ease;
 }
 
 .menu-dropdown ul li:hover i {
   color: white;
   background-color: var(--color-primary);
-  /* Fundo do ícone muda no hover */
   transform: scale(1.1);
-  /* Efeito de zoom no ícone */
 }
 
 /* Texto dos itens */
@@ -289,23 +263,18 @@ nav .create {
   font-weight: 600;
   color: white;
   background: linear-gradient(135deg, var(--color-primary), #6a67ce);
-  /* Gradiente moderno */
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .show-all-button:hover {
   background: linear-gradient(135deg, #6a67ce, var(--color-primary));
-  /* Inverte o gradiente no hover */
   transform: translateY(-2px);
-  /* Efeito de levantar */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  /* Sombra no hover */
 }
 
 .show-all-button:active {
   transform: translateY(0);
-  /* Remove o efeito ao clicar */
 }
 
 /* Notification */
@@ -323,16 +292,11 @@ nav .create {
   z-index: 1000;
 
   background: white;
-  /* Fundo translúcido */
   backdrop-filter: blur(10px);
-  /* Efeito de vidro */
   border: 1px solid rgba(255, 255, 255, 0.2);
-  /* Borda sutil */
   width: 400px;
   border-radius: 12px;
-  /* Cantos mais arredondados */
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-  /* Sombra mais pronunciada */
 }
 
 .notifications-list.show {

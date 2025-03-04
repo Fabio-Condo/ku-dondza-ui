@@ -64,8 +64,6 @@ body {
   border-radius: 12px;
   margin-bottom: 20px;
   background-color: white;
-  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
-  /*transition: transform 0.3s ease, box-shadow 0.3s ease;*/
 }
 
 /* Texto da pergunta */
@@ -96,7 +94,6 @@ body {
 .answer-options label .num {
   background-color: #3b82f6;
   color: white;
-  /* Cor do número */
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -235,7 +232,6 @@ body {
   margin: 0 auto;
   background-color: white;
   border-radius: 12px;
-  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
 }
 
 .results-title {
@@ -356,11 +352,8 @@ button {
 
 .topic-grid {
   display: grid;
-  /*grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));*/
   grid-template-columns: 1fr;
-  /* Sempre uma coluna */
   gap: 1.5rem;
-  /* Espaçamento entre os cards */
 }
 
 .topic-card {
@@ -437,28 +430,22 @@ button {
   justify-content: center;
   align-items: center;
   margin: 20px 0;
-  /* Espaçamento conforme necessário */
 }
 
 .btn-start {
   position: relative;
-  /* Adicionado */
   padding: 12px 30px;
   background: #3b82f6;
   color: var(--color-white);
-  /* Texto branco */
   font-size: 1.1rem;
   font-weight: bold;
-  /* Texto em negrito para destacar */
   border: none;
   border-radius: 30px;
-  /* Bordas arredondadas */
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
   margin-top: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* Sombra sutil */
 }
 
 .btn-start:hover {
@@ -488,7 +475,6 @@ button {
   width: 300%;
   height: 300%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%);
-  /* Opacidade reduzida */
   transform: translate(-50%, -50%) scale(0);
   transition: transform 0.5s, opacity 0.5s;
   opacity: 0;
@@ -571,7 +557,6 @@ button {
   max-width: 600px;
   width: 100%;
   margin: 20px auto;
-  /* Centraliza o card na tela */
 }
 
 /* Cabeçalho do Card */
@@ -883,66 +868,49 @@ button {
 /* Ajustes para dispositivos pequenos (telas menores que 768px) */
 @media (max-width: 768px) {
 
-  /* Estatísticas Gerais */
   .stats-container {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    /* Colunas menores */
     gap: 0.5rem;
-    /* Reduz o espaçamento entre os cards */
   }
 
   .stat-card {
     padding: 0.8rem;
-    /* Reduz o padding */
   }
 
   .stat-label {
     font-size: 0.8rem;
-    /* Reduz o tamanho da fonte */
   }
 
   .stat-value {
     font-size: 1.2rem;
-    /* Reduz o tamanho da fonte */
   }
 
-  /* Resultados por Tópico */
   .topic-grid {
     grid-template-columns: 1fr;
-    /* Uma coluna para ocupar toda a largura */
     gap: 1rem;
-    /* Espaçamento entre os cards */
   }
 
   .topic-card {
     padding: 1rem;
-    /* Ajusta o padding */
     margin: 0;
-    /* Remove margens extras */
   }
 
   .topic-stats p {
     font-size: 0.8rem;
-    /* Reduz o tamanho da fonte */
   }
 
-  /* Mensagens de Melhoria */
   .improvement-card {
     padding: 0.8rem;
-    /* Reduz o padding */
   }
 
   .improvement-percentage {
     font-size: 0.9rem;
-    /* Reduz o tamanho da fonte */
   }
 
   .improvement-message {
     font-size: 0.8rem;
-    /* Reduz o tamanho da fonte */
   }
 
-  /* Botão de Início */
   .btn-start {
     font-size: 1rem;
     padding: 10px 20px;
@@ -966,9 +934,7 @@ button {
   transform: translateY(-5px);
 }
 
-/* Cabeçalho */
 .statistics-header {
-  /*text-align: center;*/
   margin-bottom: 30px;
 }
 
@@ -981,24 +947,18 @@ button {
 .description {
   margin-top: 0px;
   margin-bottom: 25px;
-  /* Mais espaço abaixo da descrição */
   font-size: 14px;
-  /* Tamanho um pouco maior para melhor legibilidade */
   color: #555;
-  /* Azul escuro para contraste */
   font-weight: 400;
   line-height: 1.6;
-  /* Espaçamento entre linhas para melhor leitura */
 }
 
-/* Corpo das Estatísticas */
 .statistics-body {
   display: flex;
   flex-direction: column;
   gap: 25px;
 }
 
-/* Gráfico de Barras */
 .graph {
   display: flex;
   height: 35px;
@@ -1039,7 +999,6 @@ button {
   transition: opacity 0.3s ease;
 }
 
-/* Detalhes */
 .details {
   display: flex;
   flex-direction: column;
@@ -1089,13 +1048,11 @@ button {
   color: #ef4444;
 }
 
-/* Botão "Saiba mais" */
 .view-button {
   position: absolute;
   background: transparent;
   border: none;
   color: #3b82f6;
-  /* Cor do botão */
   font-weight: 600;
   cursor: pointer;
   padding: 0 4px;
@@ -1106,7 +1063,6 @@ button {
   opacity: 0.8;
 }
 
-/* graph */
 .graph-container {
   margin-top: 20px;
   display: flex;
@@ -1128,26 +1084,20 @@ canvas {
 .progress-container {
   display: flex;
   align-items: center;
-  /* Alinha verticalmente */
   width: 100%;
   gap: 10px;
-  /* Espaço entre elementos */
 }
 
-/* Número da questão à esquerda */
 .question-number {
   font-size: 1.2rem;
   font-weight: bold;
   color: #3b82f6;
   min-width: 30px;
-  /* Garante que o número não se mova */
   text-align: left;
 }
 
-/* Barra de progresso ocupando o restante do espaço */
 .progress-bar-container {
   flex-grow: 1;
-  /* Faz a barra expandir para preencher o espaço */
   height: 12px;
   background: linear-gradient(90deg, #e0e0e0, #f5f5f5);
   border-radius: 6px;

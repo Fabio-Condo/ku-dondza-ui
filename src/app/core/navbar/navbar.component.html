@@ -9,17 +9,18 @@
     <div class="create">
       <div class="menu-button">
 
+        <!--
         <button *ngIf="isUserLoggedIn" (click)="togglePopout();" class="menu-icon" routerLink="/notifications">
           <i class="fas fa-bell"></i>
           <span class="notification-count" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
         </button>
+        -->
 
         <button *ngIf="isUserLoggedIn" (click)="toggleMenu()" class="menu-icon">
           <i class="fas fa-th"></i>
         </button>
 
         <button class="btn" *ngIf="!isUserLoggedIn" (click)="onLogIn()">Iniciar sessão</button>
-
 
         <div class="menu-dropdown large" [class.active]="isMenuActive">
           <div class="menu-title">Menu</div>
@@ -29,7 +30,7 @@
               <div class="menu-content">
                 <span class="menu-icon-item">💻</span>
                 <a class="menu-item">
-                  <span>Cursos Online</span>
+                  <span>Cursos</span>
                 </a>
               </div>
             </li>

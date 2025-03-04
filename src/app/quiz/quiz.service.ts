@@ -6,7 +6,6 @@ import { IApiResponse } from '../core/interface/IApiResponse';
 import { Quiz } from '../core/model/Quiz';
 import { QuizFilter } from '../core/interface/QuizFilter';
 import { Question } from '../core/model/Question';
-import { QuestionFilter } from '../core/interface/QuestionFilter';
 import { Answer } from '../core/model/Answer';
 import { Topic } from '../core/model/Topic';
 
@@ -53,11 +52,11 @@ export class QuizService {
   }
 
   getQuizzesByQuestionId(questionId: number, filter: QuizFilter): Observable<IApiResponse<Quiz>> {
-    
+
     let params = new HttpParams()
-    .set('page', filter.page)
-    .set('sort', filter.sort)
-    .set('size', filter.itemsPerPage);
+      .set('page', filter.page)
+      .set('sort', filter.sort)
+      .set('size', filter.itemsPerPage);
 
     return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/by-question/${questionId}`, { params });
   }
@@ -85,9 +84,9 @@ export class QuizService {
 
   getTotal(userId: number): Observable<number> {
     const params = new HttpParams()
-    .set('userId', userId);
+      .set('userId', userId);
 
-    return this.http.get<number>(`${this.baseUrl}/total`, {params});
+    return this.http.get<number>(`${this.baseUrl}/total`, { params });
   }
 
   getQuestionsByQuizId(quizId: number): Observable<Question[]> {
@@ -104,6 +103,6 @@ export class QuizService {
 
   getTopicsByQuizId(quizId: number): Observable<Topic[]> {
     return this.http.get<Topic[]>(`${this.baseUrl}/${quizId}/topics`);
-}
+  }
 
 }

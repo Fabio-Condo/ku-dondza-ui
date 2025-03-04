@@ -1,5 +1,6 @@
 <br>
 <br>
+
 <body>
   <div class="container">
     <!-- Tela inicial -->
@@ -27,11 +28,11 @@
           <!-- Cabeçalho -->
           <div class="statistics-header">
             <h2>Resultado Geral</h2>
-            <!--
+
             <p class="description">
-              Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
+              Resultado Geral do desempenho de todo quiz
             </p>
-            -->
+
           </div>
 
           <!-- Corpo das Estatísticas -->
@@ -85,7 +86,8 @@
               </div>
               <div class="detail-item">
                 Taxa de Erro:
-                <span class="danger-text">{{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1) }}%</span>
+                <span class="danger-text">{{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1)
+                  }}%</span>
               </div>
             </div>
           </div>
@@ -104,11 +106,10 @@
             <div class="statistics-header">
               <h2>{{ topic.name }}</h2>
 
-              <!--
-                <p class="description">
-                  Visão abrangente sobre o desempenho do tópico {{ topic.name }} ao longo do quiz.
-                </p>
-                -->
+              <p class="description">
+                Taxa de desempenho de {{ topic.name }} ao longo do quiz.
+              </p>
+
             </div>
 
             <!-- Corpo das Estatísticas -->
@@ -148,7 +149,8 @@
                 </div>
                 <div class="detail-item">
                   Total de Erros:
-                  <span class="danger-text">{{ quiz.resultsByTopic[topic.name].incorrect + quiz.resultsByTopic[topic.name].nullAnswers || 0
+                  <span class="danger-text">{{ quiz.resultsByTopic[topic.name].incorrect +
+                    quiz.resultsByTopic[topic.name].nullAnswers || 0
                     }}</span>
                 </div>
                 <!--
@@ -163,7 +165,8 @@
                 </div>
                 <div class="detail-item">
                   Taxa de Erro:
-                  <span class="danger-text">{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0 }}%</span>
+                  <span class="danger-text">{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0
+                    }}%</span>
                 </div>
               </div>
             </div>
@@ -253,7 +256,7 @@
             </svg>
           </button>
           <!-- Botão para submeter respostas -->
-          <button class="btn-outline" id="add-btn" (click)="showStartScreen = true; scrollToTop();" 
+          <button class="btn-outline" id="add-btn" (click)="showStartScreen = true; scrollToTop();"
             *ngIf="currentQuestionIndex === questions.length - 1">
             <span>Resultados</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
