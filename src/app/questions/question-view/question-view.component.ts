@@ -127,8 +127,8 @@ export class QuestionViewComponent implements OnInit {
     this.displayModalViewQuizzes = true;
   }
 
-  gettimeLimitValue(type: number) {
-    switch (type) {
+  gettimeLimitValue(seconds: number) {
+    switch (seconds) {
       case 120:
         return '2 minutos';
       case 180:

@@ -21,11 +21,8 @@ import { User } from 'src/app/core/model/User';
 })
 export class QuizzQuestionsComponent implements OnInit {
   quiz: Quiz = new Quiz();
-  questions: Question[] = [];
   topics: Topic[] = [];
 
-  //selectedTopics: Topic[] = [];
-  submittedAnswers: Answer[] = [];
   showLoading: boolean = false;
   isAdmin: boolean = true;
   currentPage: number = 1;
@@ -82,8 +79,10 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
-        this.getQuestionsByQuizId(this.quiz.id);
-        this.getUserSubmittedAnswersByQuizId(this.quiz.id);
+        this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
+        if (this.quiz.answers) {
+          this.calculateResults();
+        }
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
       },
       (errorResponse: HttpErrorResponse) => {
@@ -93,26 +92,6 @@ export class QuizzQuestionsComponent implements OnInit {
         } else {
           this.sendErrorNotification(errorResponse.error.message);
         }
-      }
-    );
-  }
-
-  getQuestionsByQuizId(quizId: number): void {
-    this.showLoading = true;
-    this.quizService.getQuestionsByQuizId(quizId).subscribe(
-      (dados: Question[]) => {
-        this.questions = dados;
-        this.quiz.questions = this.questions;
-        this.showLoading = false;
-        this.topics = this.getTopicosFromQuestoes(dados);
-        // Recalcula os resultados após carregar as questões
-        if (this.quiz.answers) {
-          this.calculateResults();
-        }
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -138,53 +117,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
     return Array.from(topicosMap.values());
   }
-
-  getUserSubmittedAnswersByQuizId(quizId: number): void {
-    this.showLoading = true;
-    this.quizService.getUserSubmittedAnswersByQuizId(quizId).subscribe(
-      (dados: Answer[]) => {
-        this.submittedAnswers = dados;
-        this.quiz.answers = this.submittedAnswers; // Atualiza as respostas do quiz
-        this.showLoading = false;
-
-        // Recalcula os resultados após carregar as respostas
-        if (this.quiz.questions) {
-          this.calculateResults();
-        }
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  /*
-  calculateResults2(): void {
-
-    this.result.correctAnswers = 0;
-    this.result.incorrectAnswers = 0;
-    this.result.nullAnswers = 0; 
-
-    this.quiz.questions.forEach((question) => {
-      const submittedAnswer = this.quiz.userSubmittedAnswers.find(
-        (a) => a.question.id === question.id
-      );
-
-      if (submittedAnswer) {
-        if (submittedAnswer.correct) {
-
-          this.result.correctAnswers++;
-        } else {
-          this.result.incorrectAnswers++;
-        }
-      } else {
-
-        this.result.nullAnswers++;
-      }
-    });
-  }
-  */
 
   calculateResults(): void {
     this.result.correctAnswers = 0;
@@ -386,6 +318,17 @@ export class QuizzQuestionsComponent implements OnInit {
         ctx.stroke();
       });
     }, 0);
+  }
+
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+  
+    // Formata os minutos e segundos para ter 2 dígitos
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+  
+    return `${formattedMinutes}:${formattedSeconds}`;
   }
 
   private sendErrorNotification(message: string): void {

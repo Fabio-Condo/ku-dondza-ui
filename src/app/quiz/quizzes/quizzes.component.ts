@@ -84,10 +84,6 @@ export class QuizzesComponent implements OnInit {
     this.quizService.getQuizzes(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {
         this.quizzes = data.content;
-        data.content.forEach(quiz => {
-          this.countQuestionsByQuizId(quiz);
-          this.getTopicsByQuizId(quiz);
-        });
         this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
@@ -108,11 +104,6 @@ export class QuizzesComponent implements OnInit {
     this.quizService.getQuizzes(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {
         this.quizzes = [...this.quizzes, ...data.content];
-
-        data.content.forEach(quiz => {
-          this.countQuestionsByQuizId(quiz);
-        });
-
         this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
@@ -145,37 +136,12 @@ export class QuizzesComponent implements OnInit {
     );
   }
 
-  getTopicsByQuizId(quiz: Quiz): void {
-    this.quizService.getTopicsByQuizId(quiz.id).subscribe(
-      (data: Topic[]) => {
-        quiz.selectedTopics = data;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
   toggleDropdown(quiz: Quiz) {
     quiz.isAdminMenuOpen = !quiz.isAdminMenuOpen
   }
 
   closeDropdown(quiz: Quiz) {
     quiz.isAdminMenuOpen = false;
-  }
-
-  countQuestionsByQuizId(quiz: Quiz) {
-    this.showLoading = true;
-    this.quizService.countQuestionsByQuizId(quiz.id,).subscribe(
-      (total) => {
-        quiz.totalQuestions = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
   }
 
   excluir(quiz: Quiz) {
@@ -272,7 +238,16 @@ export class QuizzesComponent implements OnInit {
     return pages;
   }
   
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
   
+    // Formata os minutos e segundos para ter 2 dígitos
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+  
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
 
   getDifficultyLevelValue(level: string) {
     switch (level) {

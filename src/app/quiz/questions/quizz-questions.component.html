@@ -39,13 +39,13 @@
           <div class="statistics-body">
             <!-- Gráfico de Barras -->
             <div class="graph">
-              <div class="bar acertos" *ngIf="((result.correctAnswers / questions.length) * 100) > 0"
-                [style.width.%]="((result.correctAnswers / questions.length) * 100).toFixed(1)">
-                {{ ((result.correctAnswers / questions.length) * 100).toFixed(1) }}%
+              <div class="bar acertos" *ngIf="((result.correctAnswers / quiz.questions.length) * 100) > 0"
+                [style.width.%]="((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)">
+                {{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%
               </div>
-              <div class="bar erros" *ngIf="(100 - (result.correctAnswers / questions.length) * 100) > 0"
-                [style.width.%]="(100 - (result.correctAnswers / questions.length) * 100).toFixed(1)">
-                {{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1) }}%
+              <div class="bar erros" *ngIf="(100 - (result.correctAnswers / quiz.questions.length) * 100) > 0"
+                [style.width.%]="(100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1)">
+                {{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%
               </div>
             </div>
 
@@ -64,7 +64,7 @@
             <div class="details">
               <div class="detail-item">
                 Número de questões:
-                <span>{{ questions.length }}</span>
+                <span>{{ quiz.questions.length }}</span>
               </div>
               <div class="detail-item">
                 Total de Acertos:
@@ -82,11 +82,11 @@
             -->
               <div class="detail-item">
                 Taxa de Acerto:
-                <span class="success-text">{{ ((result.correctAnswers / questions.length) * 100).toFixed(1) }}%</span>
+                <span class="success-text">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
               </div>
               <div class="detail-item">
                 Taxa de Erro:
-                <span class="danger-text">{{ (100 - (result.correctAnswers / questions.length) * 100).toFixed(1)
+                <span class="danger-text">{{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1)
                   }}%</span>
               </div>
             </div>
@@ -190,7 +190,7 @@
         -->
 
           <div class="progress-container">
-            <p class="question-number">{{ quiz.timeSpent }}</p>
+            <p class="question-number">{{ formatTime(quiz.timeSpent) }}</p>
             <div class="progress-bar-container">
               <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
               </div>
@@ -257,7 +257,7 @@
           </button>
           <!-- Botão para submeter respostas -->
           <button class="btn-outline" id="add-btn" (click)="showStartScreen = true; scrollToTop();"
-            *ngIf="currentQuestionIndex === questions.length - 1">
+            *ngIf="currentQuestionIndex === quiz.questions.length - 1">
             <span>Resultados</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">

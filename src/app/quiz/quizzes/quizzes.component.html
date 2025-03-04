@@ -38,7 +38,7 @@
                             <span class="badge matematica">{{ quiz.subject.name }}</span>
                             <h2 class="quiz-title">{{ quiz.title }}</h2>
                             <div class="topic-tags">
-                                <span class="topic-tag" *ngFor="let topic of quiz.selectedTopics">
+                                <span class="topic-tag" *ngFor="let topic of quiz.topics">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path
@@ -69,7 +69,7 @@
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <polyline points="12 6 12 12 16 14"></polyline>
                                 </svg>
-                                {{ quiz.timeSpent }} <!--45 min-->
+                                {{ formatTime(quiz.timeSpent) }} <!--45 min-->
                             </div>
                             <div class="stat-item">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -97,7 +97,7 @@
                                 <line x1="12" y1="20" x2="12" y2="4"></line>
                                 <line x1="6" y1="20" x2="6" y2="14"></line>
                             </svg>
-                            76% acerto
+                            {{ quiz.accuracyRate.toFixed(1) }}% acerto
                         </div>
                     </div>
 

@@ -294,7 +294,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   saveQuiz() {
-    this.quiz.selectedTopics = this.getSelectedTopics();
+    this.quiz.topics = this.getSelectedTopics();
 
     const questionIds = this.quiz.questions.map(question => question.id);
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);

@@ -252,6 +252,24 @@
             margin-top: 15px;
         }
 
+        .start-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-button:hover {
+            background-color: #2563eb;
+        }
+
         /* Paginação */
         .pagination {
             display: flex;
@@ -485,28 +503,28 @@
                         <div class="course-instrutor">
                             <img src="instrutor.jpg" alt="Autor" class="course-instrutor-avatar">
                             <span>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span>
-                        </div>                        
+                        </div>
                         <p class="course-description">{{ course.description }}</p>
                     </div>
                     <div class="course-meta">
                         <span class="badge matematica">Matemática</span>
-                        <button class="downloa-btn" id="filter-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
+                        <button class="start-button" [routerLink]="['/coursos-online', course.onlineCourseId]">
+                            Ver Curso
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-
                         </button>
                         <!--
-          <div class="dropdown-container" *ngIf="isSuperAdmin">
-            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
-            <div class="dropdown" *ngIf="course.isAdminMenuOpen">
-              <a (click)="onUpdate(course, file); closeDropdown(course)">Editar</a>
-              <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
-            </div>
-          </div>
-          -->
+                        <div class="dropdown-container" *ngIf="isSuperAdmin">
+                            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+                            <div class="dropdown" *ngIf="course.isAdminMenuOpen">
+                            <a (click)="onUpdate(course, file); closeDropdown(course)">Editar</a>
+                            <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
+                            </div>
+                        </div>
+                        -->
                     </div>
                 </div>
             </div>

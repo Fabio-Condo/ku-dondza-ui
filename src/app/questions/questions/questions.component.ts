@@ -63,7 +63,7 @@ export class QuestionsComponent implements OnInit {
   @ViewChild('tabela') grid: any;
 
   timeLimits = [
-    { label: '1 minutos', value: '120' },
+    { label: '1 minutos', value: '60' },
     { label: '2 minutos', value: '120' },
     { label: '3 minutos', value: '180' },
   ];
@@ -427,6 +427,17 @@ export class QuestionsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+  
+    // Formata os minutos e segundos para ter 2 dígitos
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+  
+    return `${formattedMinutes}:${formattedSeconds}`;
   }
 
   getDifficultyLevelValue(level: string) {

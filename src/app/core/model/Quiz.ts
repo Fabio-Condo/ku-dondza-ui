@@ -14,10 +14,11 @@ export class Quiz {
     limitPerTopic!: number;
     subject = new Subject();
     user = new User();
-    selectedTopics: Topic[] = [];
+    topics: Topic[] = [];
     questions: Question[] = [];
     answers: Answer[] = [];
 
+    accuracyRate: number = 0;
     totalQuestions: number = 0;
     isAdminMenuOpen: boolean = false;
 

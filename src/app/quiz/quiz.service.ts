@@ -5,9 +5,7 @@ import { environment } from 'src/environments/environment';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { Quiz } from '../core/model/Quiz';
 import { QuizFilter } from '../core/interface/QuizFilter';
-import { Question } from '../core/model/Question';
-import { Answer } from '../core/model/Answer';
-import { Topic } from '../core/model/Topic';
+
 
 @Injectable({
   providedIn: 'root'
@@ -87,22 +85,6 @@ export class QuizService {
       .set('userId', userId);
 
     return this.http.get<number>(`${this.baseUrl}/total`, { params });
-  }
-
-  getQuestionsByQuizId(quizId: number): Observable<Question[]> {
-    return this.http.get<Question[]>(`${this.baseUrl}/${quizId}/questions`);
-  }
-
-  countQuestionsByQuizId(quizId: number): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/${quizId}/questions/total`, {});
-  }
-
-  getUserSubmittedAnswersByQuizId(quizId: number): Observable<Answer[]> {
-    return this.http.get<Answer[]>(`${this.baseUrl}/${quizId}/submitted-answers`);
-  }
-
-  getTopicsByQuizId(quizId: number): Observable<Topic[]> {
-    return this.http.get<Topic[]>(`${this.baseUrl}/${quizId}/topics`);
   }
 
 }
