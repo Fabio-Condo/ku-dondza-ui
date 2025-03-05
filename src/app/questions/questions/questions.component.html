@@ -399,6 +399,15 @@
         .submit-button:hover {
             background: #1d4ed8;
         }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+
+            .pagination {
+                display: none;
+            }
+
+        }
     </style>
 </head>
 
@@ -483,6 +492,13 @@
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Load-more -->
+            <div class="load-more">
+                <button (click)="loadMore()" class="btn-load-more"
+                    [disabled]="questions.length === totalQuestions && totalQuestions > 0">Buscar
+                    mais</button>
             </div>
 
             <!-- Paginação -->

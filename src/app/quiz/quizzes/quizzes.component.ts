@@ -78,6 +78,8 @@ export class QuizzesComponent implements OnInit {
   }
 
   getQuizzes(page: number = 0): void {
+    if (this.showLoading) return;
+    
     this.showLoading = true;
     this.filter.user = this.loggedUser.id;
     this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0

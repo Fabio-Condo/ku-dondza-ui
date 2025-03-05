@@ -178,19 +178,10 @@ export class QuestionsComponent implements OnInit {
 
     this.questionService.getQuestions(this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
-        // Processa as questões para remover o escape das barras invertidas
-        //this.questions = dados.content.map((question) => ({
-        //  ...question,
-        //  mathExpression: question.mathExpression.replace(/\\\\/g, '\\'), // Substitui \\\\ por \\
-        //}));
-
         this.questions = dados.content
-
         this.totalRegistros = dados.totalElements;
-        this.showLoading = false;
-
-        // Renderiza as expressões matemáticas após carregar as questões
         this.renderMathExpressions();
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -206,12 +197,9 @@ export class QuestionsComponent implements OnInit {
     this.questionService.getQuestions(this.filtro).subscribe(
       (data: IApiResponse<Question>) => {
         this.questions = [...this.questions, ...data.content];
-
         this.totalRegistros = data.totalElements;
-        this.showLoading = false;
-
         this.renderMathExpressions();
-
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

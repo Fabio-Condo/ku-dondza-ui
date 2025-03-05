@@ -205,7 +205,6 @@ export class BooksComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-
   download(book: Book, filename: string): void {
     book.showLoadingDownload = true;
     this.booksService.download(book.id, filename).subscribe((data: Blob) => {
@@ -244,13 +243,11 @@ export class BooksComponent implements OnInit {
     this.findAll();
   }
 
-
   changePageSize(event: any): void {
     this.filtro.itensPorPagina = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
     this.findAll();
   }
-
 
   previousPage(): void {
     if (this.currentPage > 1) {
@@ -269,7 +266,6 @@ export class BooksComponent implements OnInit {
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
-
 
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;

@@ -125,12 +125,10 @@
             </div>
         </div>
 
-        <div class="load-more" *ngIf="quizzes.length < totalQuizzes">
-            <button (click)="loadMore()" class="btn-load-more" [disabled]="showLoading"
-                [attr.aria-label]="'Buscar mais quizzes'" [attr.aria-disabled]="showLoading">
-                <span *ngIf="!showLoading">Buscar mais</span>
-                <span *ngIf="showLoading" class="spinner"></span>
-            </button>
+        <!-- Load-more -->
+        <div class="load-more">
+            <button (click)="loadMore()" class="btn-load-more" [disabled]="quizzes.length === totalQuizzes && totalQuizzes > 0">Buscar
+            mais</button>
         </div>
 
         <!-- Paginação -->

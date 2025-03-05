@@ -65,7 +65,6 @@ export class QuizzQuestionsComponent implements OnInit {
     const quizId = this.route.snapshot.params['id'];
     if (quizId) {
       this.getQuizByQuizId(quizId);
-      console.log('MathJax carregado:', typeof MathJax !== 'undefined');
     }
     this.scrollToTop();
     this.showCorrection = true;
