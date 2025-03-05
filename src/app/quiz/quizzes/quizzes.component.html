@@ -1,5 +1,6 @@
 <br>
 <br>
+
 <body>
     <div class="container">
 
@@ -125,10 +126,26 @@
             </div>
         </div>
 
+        <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+            <div class="loading-indicator">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>{{ loadingMessage }}</span>
+            </div>
+        </div>
+
+        <div *ngIf="!showLoading && quizzes.length === 0">
+            <div class="card">
+                <span class="no-items-message">
+                    Nenhum item encontrado
+                </span>
+            </div>
+        </div>
+
         <!-- Load-more -->
         <div class="load-more">
-            <button (click)="loadMore()" class="btn-load-more" [disabled]="quizzes.length === totalQuizzes && totalQuizzes > 0">Buscar
-            mais</button>
+            <button (click)="loadMore()" class="btn-load-more"
+                [disabled]="quizzes.length === totalQuizzes && totalQuizzes > 0">Buscar
+                mais</button>
         </div>
 
         <!-- Paginação -->

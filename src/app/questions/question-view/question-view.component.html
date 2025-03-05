@@ -1,128 +1,149 @@
-<div class="question-card">
-    <!-- Cabeçalho da pergunta -->
-    <div class="question-header">                    
-        <h1 class="subject-name">{{ question.topic.name }}</h1>
-        <br>
-        <span class="badge matematica">{{ question.topic.subject.name }}</span>
-        <span class="badge easy" style="margin-left: 5px;">
-            {{ getDifficultyLevelValue(question.difficultyLevel) }}
-        </span>
-    </div>
+<br>
+<br>
+<body>
+    <div class="container">
 
-    <!-- Corpo da pergunta -->
-    <div class="question-body">
-        <h2 class="question-title">Exercício</h2>
-        <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile" alt="Gráfico de funções" class="question-image">
-        <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-            <canvas #canvas width="400" height="400"></canvas>
-        </div>
-        <p *ngIf="question.text">
-            \[{{ question.text }}\]
-        </p>   
-    </div>
-
-    <!-- Opções de resposta -->
-    <h2 class="options-title">Opções de Resposta</h2>
- 
-    <div class="answers-card">
-        <div class="answer-options">
-            <div class="answers-grid">
-                <label *ngFor="let answer of question.answers" class="answer-item" [ngClass]="{'answer-correct-item': answer.correct}">
-                    <span> \[{{ answer.text }}\] </span> 
-                    <span *ngIf="answer.correct" class="correct-tag">✓</span>
-                </label>
+        <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+            <div class="loading-indicator">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>{{ loadingMessage }}</span>
             </div>
         </div>
-    </div>
 
-    <br>
-    <br>
-
-    <!-- Explicação da resolução -->
-    <div class="solution-section" *ngIf="showSolution" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
-        <h2 class="solution-title">Como Resolver</h2>
-
-        <!--<h2 class="solution-title">Solução</h2>-->
-        <div class="solution-content">
-            <p class="solution-text" *ngIf="question.text && !showLatexLoading">
-                \[{{ question.solution }}\]
-            </p>
-            <div class="loading-indicator" *ngIf="question.text && showLatexLoading">
-                <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
-                Carregando Latex...
+        <div class="question-card">
+            <!-- Cabeçalho da pergunta -->
+            <div class="question-header">
+                <h1 class="subject-name">{{ question.topic.name }}</h1>
+                <br>
+                <span class="badge matematica">{{ question.topic.subject.name }}</span>
+                <span class="badge easy" style="margin-left: 5px;">
+                    {{ getDifficultyLevelValue(question.difficultyLevel) }}
+                </span>
             </div>
+
+            <!-- Corpo da pergunta -->
+            <div class="question-body">
+                <h2 class="question-title">Exercício</h2>
+                <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile"
+                    alt="Gráfico de funções" class="question-image">
+                <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
+                    <canvas #canvas width="400" height="400"></canvas>
+                </div>
+                <p *ngIf="question.text">
+                    \[{{ question.text }}\]
+                </p>
+            </div>
+
+            <!-- Opções de resposta -->
+            <h2 class="options-title">Opções de Resposta</h2>
+
+            <div class="answers-card">
+                <div class="answer-options">
+                    <div class="answers-grid">
+                        <label *ngFor="let answer of question.answers" class="answer-item"
+                            [ngClass]="{'answer-correct-item': answer.correct}">
+                            <span> \[{{ answer.text }}\] </span>
+                            <span *ngIf="answer.correct" class="correct-tag">✓</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <!-- Explicação da resolução -->
+            <div class="solution-section" *ngIf="showSolution"
+                [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+                <h2 class="solution-title">Como Resolver</h2>
+
+                <!--<h2 class="solution-title">Solução</h2>-->
+                <div class="solution-content">
+                    <p class="solution-text" *ngIf="question.text && !showLatexLoading">
+                        \[{{ question.solution }}\]
+                    </p>
+                    <div class="loading-indicator" *ngIf="question.text && showLatexLoading">
+                        <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
+                        Carregando Latex...
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="statistics-container">
+                <!-- Cabeçalho -->
+                <div class="statistics-header">
+                    <h2>Estatísticas Nos Quizzes</h2>
+                    <p class="description">
+                        Visão abrangente sobre o desempenho da questão ao longo de diversos quizzes.
+                        <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{
+                            quizQuestionStatistics.quizzesCount
+                            }} quizzes</a>
+                    </p>
+                </div>
+
+                <!-- Corpo das Estatísticas -->
+                <div class="statistics-body">
+                    <!-- Gráfico de Barras -->
+                    <div class="graph">
+                        <div class="bar acertos" *ngIf="quizQuestionStatistics.accuracyRate > 0"
+                            [style.width.%]="quizQuestionStatistics.accuracyRate">
+                            {{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %
+                        </div>
+                        <div class="bar erros" *ngIf="quizQuestionStatistics.errorRate > 0"
+                            [style.width.%]="quizQuestionStatistics.errorRate">
+                            {{ quizQuestionStatistics.errorRate.toFixed(1) }} %
+                        </div>
+                    </div>
+
+                    <div class="progress-legend">
+                        <div class="legend-item">
+                            <span class="legend-indicator legend-correct"></span>
+                            <span>Acertos</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-indicator legend-incorrect"></span>
+                            <span>Erros (incluindo respostas nulas)</span>
+                        </div>
+                    </div>
+
+                    <div class="details">
+                        <div class="detail-item">
+                            Quizzes contendo esta questão:
+                            <span>{{ quizQuestionStatistics.quizzesCount }}</span>
+                        </div>
+                        <div class="detail-item">
+                            Total de Respostas:
+                            <span>{{ quizQuestionStatistics.totalAnswers }}</span>
+                        </div>
+                        <div class="detail-item">
+                            Respostas Corretas:
+                            <span class="success-text">{{ quizQuestionStatistics.totalCorrectAnswers }}</span>
+                        </div>
+                        <div class="detail-item">
+                            Respostas Incorretas:
+                            <span class="danger-text">{{ quizQuestionStatistics.totalIncorrectAnswers }}</span>
+                        </div>
+                        <div class="detail-item">
+                            Taxa de Acerto:
+                            <span class="success-text">{{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %</span>
+                        </div>
+                        <div class="detail-item">
+                            Taxa de Erro:
+                            <span class="danger-text">{{ quizQuestionStatistics.errorRate.toFixed(1) }} %</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
         </div>
     </div>
-
-    <br>
-    <br>
-
-    <div class="statistics-container">
-        <!-- Cabeçalho -->
-        <div class="statistics-header">
-            <h2>Estatísticas Nos Quizzes</h2>
-            <p class="description">
-                Visão abrangente sobre o desempenho da questão ao longo de diversos quizzes. 
-                <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{ quizQuestionStatistics.quizzesCount }} quizzes</a>
-            </p>
-        </div>
-    
-        <!-- Corpo das Estatísticas -->
-        <div class="statistics-body">
-            <!-- Gráfico de Barras -->
-            <div class="graph">
-                <div class="bar acertos" *ngIf="quizQuestionStatistics.accuracyRate > 0" [style.width.%]="quizQuestionStatistics.accuracyRate">
-                    {{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %
-                </div>
-                <div class="bar erros" *ngIf="quizQuestionStatistics.errorRate > 0" [style.width.%]="quizQuestionStatistics.errorRate">
-                    {{ quizQuestionStatistics.errorRate.toFixed(1) }} %
-                </div>
-            </div>
-            
-            <div class="progress-legend">
-                <div class="legend-item">
-                  <span class="legend-indicator legend-correct"></span>
-                  <span>Acertos</span>
-                </div>
-                <div class="legend-item">
-                  <span class="legend-indicator legend-incorrect"></span>
-                  <span>Erros (incluindo respostas nulas)</span>
-                </div>
-            </div>
-    
-            <div class="details">
-                <div class="detail-item">
-                    Quizzes contendo esta questão:
-                    <span>{{ quizQuestionStatistics.quizzesCount }}</span>
-                </div>
-                <div class="detail-item">
-                    Total de Respostas:
-                    <span>{{ quizQuestionStatistics.totalAnswers }}</span>
-                </div>
-                <div class="detail-item">
-                    Respostas Corretas:
-                    <span class="success-text">{{ quizQuestionStatistics.totalCorrectAnswers }}</span>
-                </div>
-                <div class="detail-item">
-                    Respostas Incorretas:
-                    <span class="danger-text">{{ quizQuestionStatistics.totalIncorrectAnswers }}</span>
-                </div>
-                <div class="detail-item">
-                    Taxa de Acerto:
-                    <span class="success-text">{{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %</span>
-                </div>
-                <div class="detail-item">
-                    Taxa de Erro:
-                    <span class="danger-text">{{ quizQuestionStatistics.errorRate.toFixed(1) }} %</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br>
-    <br>
-    
-</div>
+</body>
 
 <div class="overlay" *ngIf="displayModalViewQuizzes">
     <div class="dialog" style="width: 600px;">

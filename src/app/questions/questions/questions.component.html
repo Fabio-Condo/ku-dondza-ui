@@ -400,6 +400,56 @@
             background: #1d4ed8;
         }
 
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            /* Ocupa toda a tela */
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            /* Fundo semitransparente */
+            z-index: 9999;
+            /* Garante que fique sobre outros elementos */
+        }
+
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* Espaço entre o ícone e o texto */
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            font-weight: bold;
+            color: #444;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .loading-indicator i {
+            font-size: 1.5rem;
+            color: #3b82f6;
+            /* Azul vibrante */
+        }
+
+        /* Animação de fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         /* Responsividade */
         @media (max-width: 768px) {
 
@@ -452,7 +502,6 @@
                         </svg>
                         {{ getDifficultyLevelValue(question.difficultyLevel) }}
                     </span>
-                    <!--
                     <div class="dropdown-container" *ngIf="isSuperAdmin">
                         <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                 class="pi pi-ellipsis-v"></i></button>
@@ -461,7 +510,6 @@
                             <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
                         </div>
                     </div>
-                    -->
                 </div>
                 <div class="card-body">
                     <div class="topic">{{ question.topic.name }}</div>
@@ -491,6 +539,21 @@
                             </svg>
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+                <div class="loading-indicator">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>{{ loadingMessage }}</span>
+                </div>
+            </div>
+
+            <div *ngIf="!showLoading && questions.length === 0">
+                <div class="card">
+                    <span class="no-items-message">
+                        Nenhum item encontrado
+                    </span>
                 </div>
             </div>
 

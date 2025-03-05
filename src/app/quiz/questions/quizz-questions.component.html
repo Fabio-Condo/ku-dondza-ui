@@ -3,8 +3,17 @@
 
 <body>
   <div class="container">
+
+    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+      <div class="loading-indicator">
+          <i class="pi pi-spin pi-spinner"></i>
+          <span>{{ loadingMessage }}</span>
+      </div>
+    </div>
+
     <!-- Tela inicial -->
     <div *ngIf="showStartScreen" class="results-screen2">
+
       <div class="results-summary">
         <p class="title">{{ quiz.title }}</p>
         <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
@@ -267,8 +276,6 @@
           </button>
         </div>
       </div>
-
-      <div *ngIf="showLoading" class="loading-indicator">Carregando...</div>
 
     </div>
 

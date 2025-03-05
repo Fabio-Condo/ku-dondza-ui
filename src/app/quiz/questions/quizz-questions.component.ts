@@ -29,6 +29,8 @@ export class QuizzQuestionsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
 
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   result: {
@@ -75,6 +77,8 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getQuizByQuizId(quizId: string) {
+    this.showLoading = true;
+    this.loadingMessage = "Carregando dados..."
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
@@ -83,8 +87,10 @@ export class QuizzQuestionsComponent implements OnInit {
           this.calculateResults();
         }
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
         if (errorResponse.status == 400) {
           // BAD_REQUEST
           this.router.navigateByUrl('/pagina-nao-encontrada');

@@ -36,6 +36,8 @@ export class QuestionViewComponent implements OnInit {
   totalRecordsQuizzes: number = 0
   currentPageQuizzes: number = 1;
 
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
 
@@ -74,14 +76,18 @@ export class QuestionViewComponent implements OnInit {
   }
 
   findById(id: string) {
+    this.loadingMessage = "Carregando dados..."
+    this.showLoading = true;
     this.questionService.getQuestionByQuestionId(id).subscribe(
       (response) => {
         this.question = response;
         this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
         this.renderFunctions();
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
         if (errorResponse.status == 400) {
           this.router.navigateByUrl('/pagina-nao-encontrada');
         } else {

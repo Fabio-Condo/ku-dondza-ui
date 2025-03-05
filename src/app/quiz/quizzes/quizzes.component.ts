@@ -34,6 +34,8 @@ export class QuizzesComponent implements OnInit {
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
   loggedUser: User = new User;
 
   @ViewChild('table') grid: any;
@@ -78,6 +80,7 @@ export class QuizzesComponent implements OnInit {
   }
 
   getQuizzes(page: number = 0): void {
+    this.loadingMessage = "Carregando dados..."
     if (this.showLoading) return;
     
     this.showLoading = true;

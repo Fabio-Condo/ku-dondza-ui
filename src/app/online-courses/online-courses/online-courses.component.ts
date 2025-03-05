@@ -34,6 +34,7 @@ export class OnlineCoursesComponent implements OnInit {
 
   selectedCourse: OnlineCourse = new OnlineCourse();
 
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -132,6 +133,7 @@ export class OnlineCoursesComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+    this.loadingMessage = "Carregando dados..."
 
     if (this.selectCourseOption == 'MY_COURSES') {
       this.filtro.user = this.loggedUser.id;
