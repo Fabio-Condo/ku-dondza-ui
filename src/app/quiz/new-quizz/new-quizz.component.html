@@ -60,14 +60,16 @@
           </ul>
         </div>
 
-        <button class="start-button" (click)="getQuestions()" [disabled]="topics.length == 0" *ngIf="quiz.subject.id">
-          Gerar Questões
+        <button class="start-button" (click)="getQuestions()" [disabled]="topics.length == 0 || showLoading" *ngIf="quiz.subject.id">
+          <span *ngIf="!showLoading || !showGetSubjectLoading">Gerar questões</span>
+          <span *ngIf="showLoading || showGetSubjectLoading">Gerando questões...</span>
         </button>
 
-        <!-- Indicador de Carregamento -->
-        <div class="loading-indicator" *ngIf="showLoading || showGetSubjectLoading">
-          <span>Gerando questões...</span>
-          <div class="spinner"></div>
+        <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+          <div class="loading-indicator">
+              <i class="pi pi-spin pi-spinner"></i>
+              <span>{{ loadingMessage }}</span>
+          </div>
         </div>
 
         <!-- Botão de Iniciar Quiz -->
@@ -176,13 +178,17 @@
           </button>
         </div>
       </div>
-
-      <div *ngIf="showLoading" class="loading-indicator">
-        Carregando...
-      </div>
     </div>
 
     <div *ngIf="showFinalScreen" class="results-screen2">
+
+      <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+        <div class="loading-indicator">
+            <i class="pi pi-spin pi-spinner"></i>
+            <span>{{ loadingMessage }}</span>
+        </div>
+      </div>
+
       <div class="results-summary">
         <p class="title">{{ quiz.title }}</p>
         <p class="quiz-sub-title">{{ quiz.subject.name }}</p>

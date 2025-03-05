@@ -45,6 +45,8 @@ export class OnlineCoursesContentComponent implements OnInit {
   requirementIndex?: number;
   showRequirementForm = false;
 
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
   totalRegistros: number = 0
   showLoading: boolean = false;
 
@@ -202,6 +204,9 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   getOnlineCourseByOnlineCourseId(onlineCourseId: string) {
+    this.loadingMessage = "Gerrando questões..."
+    this.showLoading = true;
+
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
@@ -209,8 +214,10 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.getStudentsByCourseId(this.course.id);
         this.countOnlineCourseStudentsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
         if (errorResponse.status == 400) { // BAD_REQUEST
           this.router.navigateByUrl('/pagina-nao-encontrada');
         } else {

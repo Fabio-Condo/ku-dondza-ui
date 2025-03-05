@@ -28,9 +28,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
   topics: Topic[] = [];
-
   subjects: Subject[] = [];
-
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
   showGetSubjectLoading: boolean = false;
@@ -38,6 +36,8 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
+
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
 
   imagePath = './assets/images/funcao do grau 2.png';
 
@@ -262,6 +262,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   getQuestions(): void {
+    this.loadingMessage = "Gerrando questões..."
     const selectedTopicIds = this.getSelectedTopicIds();
 
     this.showLoading = true;
@@ -294,6 +295,8 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   saveQuiz() {
+    this.loadingMessage = "Salvando o quiz..."
+    this.showLoading = true;
     this.quiz.topics = this.getSelectedTopics();
 
     const questionIds = this.quiz.questions.map(question => question.id);
@@ -303,10 +306,12 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
     this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds).subscribe(
       (response) => {
+        this.showLoading = false;
         this.submited = true;
         this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
         this.sendErrorNotification(errorResponse.error.message);
       }
     );

@@ -1,4 +1,10 @@
 <div class="learning-container" style="margin-top: 70px;">
+    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+        <div class="loading-indicator">
+            <i class="pi pi-spin pi-spinner"></i>
+            <span>{{ loadingMessage }}</span>
+        </div>
+      </div>
     <!-- Capa do Curso -->
     <div class="course-cover">
         <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
@@ -33,10 +39,12 @@
             <button class="btn btn-primary" disabled *ngIf="course.isSubscribed">Inscrito</button>
         </div>
 
-        <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()" *ngIf="isSuperAdmin"><i class="pi pi-pencil" style="font-size: 0.9rem; color: black;"></i></span></h1>
+        <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()" *ngIf="isSuperAdmin"><i
+                    class="pi pi-pencil" style="font-size: 0.9rem; color: black;"></i></span></h1>
 
         <p class="course-description" *ngFor="let req of course.requirements" style="margin-left: 10px;">
-            <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
+            <i class="pi pi-check"
+                style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
             {{ req.designation }}
         </p>
     </div>
@@ -63,8 +71,10 @@
         <div class="section-header">
             <h1 class="title">Aulas</h1>
             <div class="actions">
-                <button type="button" class="btn btn-primary" (click)="onAddNewModule()" *ngIf="isSuperAdmin">Adicionar Módulo</button>
-                <button type="button" class="btn btn-primary" (click)="onAddNewOnlineCourseContent()" *ngIf="isSuperAdmin">Adicionar Aula</button>
+                <button type="button" class="btn btn-primary" (click)="onAddNewModule()" *ngIf="isSuperAdmin">Adicionar
+                    Módulo</button>
+                <button type="button" class="btn btn-primary" (click)="onAddNewOnlineCourseContent()"
+                    *ngIf="isSuperAdmin">Adicionar Aula</button>
             </div>
         </div>
         <div class="modules-list">
@@ -81,46 +91,51 @@
                         <div class="lesson-info">
                             <i *ngIf="content.contentType == 'VIDEO'" class="pi pi-video"></i>
                             <i *ngIf="content.contentType == 'FILE'" class="pi pi-file"></i>
-                
+
                             <span class="lesson-title" (click)="onSelectContent(content)">
                                 {{ modulo.position }}.{{ content.position }}. {{ content.description }}
                             </span>
                         </div>
-                
+
                         <div class="lesson-actions">
                             <!-- Exibir status de vídeo assistido -->
                             <div *ngIf="content.contentType == 'VIDEO' && content.isMarked" class="lesson-marked">
                                 <i class="pi pi-check-circle"></i> Assistido
                             </div>
-                
+
                             <!-- Botões para marcar/desmarcar -->
                             <div class="marked-actions" *ngIf="content.contentType == 'VIDEO'">
-                                <button *ngIf="!content.isMarked" class="btn-small" (click)="addContentToMarkedCourseContents(content)" title="Marcar como assistido">
+                                <button *ngIf="!content.isMarked" class="btn-small"
+                                    (click)="addContentToMarkedCourseContents(content)" title="Marcar como assistido">
                                     <i class="pi pi-eye"></i>
                                 </button>
-                                <button *ngIf="content.isMarked" class="btn-small" (click)="removeContentFromMarkedCourseContents(content)" title="Desmarcar como assistido">
+                                <button *ngIf="content.isMarked" class="btn-small"
+                                    (click)="removeContentFromMarkedCourseContents(content)"
+                                    title="Desmarcar como assistido">
                                     <i class="pi pi-eye-slash"></i>
                                 </button>
                             </div>
-                            
-                
+
+
                             <button *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload"
                                 (click)="download(content, content.fileName)" class="btn-icon">
                                 <i class="pi pi-download"></i>
                             </button>
-                
-                            <button *ngIf="isAdmin" class="btn-icon" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen">
+
+                            <button *ngIf="isAdmin" class="btn-icon"
+                                (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen">
                                 <i class="pi pi-ellipsis-v"></i>
                             </button>
-                
+
                             <div class="dropdown" *ngIf="content.isAdminMenuOpen">
-                                <a (click)="onUpdateOnlineCourseContent(content, modulo, courseContentFile); content.isAdminMenuOpen = false">Editar</a>
+                                <a
+                                    (click)="onUpdateOnlineCourseContent(content, modulo, courseContentFile); content.isAdminMenuOpen = false">Editar</a>
                                 <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = false">Excluir</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -170,7 +185,7 @@
             <h2>{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
             <button class="close-btn" (click)="displayModalSaveContent = false">&times;</button>
         </div>
-      
+
         <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm">
@@ -206,9 +221,10 @@
             <hr class="header-divider">
 
             <div class="dialog-footer">
-                <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+                <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar'
+                    }}</button>
             </div>
-        </form>      
+        </form>
     </div>
 </div>
 
@@ -220,14 +236,13 @@
             <h2>{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
             <button class="close-btn" (click)="displayModalSaveModule = false">&times;</button>
         </div>
-      
+
         <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
                 <label for="name">Descrição</label>
-                <input type="text" name="name" ngModel #name="ngModel" required minlength="1"
-                    [(ngModel)]="modulo.name">
+                <input type="text" name="name" ngModel #name="ngModel" required minlength="1" [(ngModel)]="modulo.name">
             </div>
             <div class="form-group">
                 <label for="position">Posição</label>
@@ -238,7 +253,8 @@
             <hr class="header-divider">
 
             <div class="dialog-footer">
-                <button type="button" (click)="saveModule()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+                <button type="button" (click)="saveModule()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar'
+                    }}</button>
             </div>
         </form>
     </div>
@@ -252,10 +268,11 @@
             <h2>Requisitos</h2>
             <button class="close-btn" (click)="displayModalUpateRequirements = false">&times;</button>
         </div>
-      
+
         <hr class="header-divider">
 
-        <form autocomplete="off" #courseRequirementsForm="ngForm" (ngSubmit)="updateRequirements(courseRequirementsForm)">
+        <form autocomplete="off" #courseRequirementsForm="ngForm"
+            (ngSubmit)="updateRequirements(courseRequirementsForm)">
             <div class="requirements-container">
                 <div class="header-section">
                     <label>Todos</label>
@@ -275,8 +292,10 @@
                             <tr *ngFor="let req of course.requirements; let rowIndex = index">
                                 <td>{{ req.designation }}</td>
                                 <td class="actions">
-                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)" class="tb-edit-btn">E</a>
-                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)" class="tb-remove-btn">R</a>
+                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)"
+                                        class="tb-edit-btn">E</a>
+                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)"
+                                        class="tb-remove-btn">R</a>
                                 </td>
                             </tr>
                             <tr *ngIf="course.requirements.length === 0">
@@ -290,7 +309,8 @@
             <hr class="header-divider">
 
             <div class="dialog-footer">
-                <button type="submit" [disabled]="courseRequirementsForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+                <button type="submit" [disabled]="courseRequirementsForm.invalid" class="btn">{{ showLoading ?
+                    'Loading...' : 'Salvar' }}</button>
             </div>
         </form>
     </div>
@@ -304,15 +324,15 @@
             <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
             <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
         </div>
-      
+
         <hr class="header-divider">
 
         <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
             <div class="form-group">
                 <label for="designation">Descrição</label>
-                <textarea id="designation" type="text" name="designation" ngModel #designation="ngModel" required minlength="1"
-                    [(ngModel)]="requirement.designation" required></textarea>
-            </div>    
+                <textarea id="designation" type="text" name="designation" ngModel #designation="ngModel" required
+                    minlength="1" [(ngModel)]="requirement.designation" required></textarea>
+            </div>
 
             <hr class="header-divider">
 
