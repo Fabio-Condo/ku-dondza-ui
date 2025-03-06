@@ -81,10 +81,6 @@ export class QuestionService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }
 
-  getTotal(): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/total`, {});
-  }
-
   updateQuestionImage(id: number, file: File): Observable<Question> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);

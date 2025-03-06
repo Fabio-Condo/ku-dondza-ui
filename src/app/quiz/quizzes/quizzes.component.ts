@@ -65,7 +65,6 @@ export class QuizzesComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('Quiz page');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.getTotalQuizzes();
     this.getQuizzes();
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -90,6 +89,9 @@ export class QuizzesComponent implements OnInit {
       (data: IApiResponse<Quiz>) => {
         this.quizzes = data.content;
         this.totalRecords = data.totalElements;
+        if(this.totalQuizzes == 0){
+          this.totalQuizzes = data.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -130,17 +132,6 @@ export class QuizzesComponent implements OnInit {
     });
   }
 
-  getTotalQuizzes() {
-    this.quizService.getTotal(this.loggedUser.id).subscribe(
-      (total) => {
-        this.totalQuizzes = total;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
   toggleDropdown(quiz: Quiz) {
     quiz.isAdminMenuOpen = !quiz.isAdminMenuOpen
   }
@@ -153,7 +144,6 @@ export class QuizzesComponent implements OnInit {
     this.quizService.delete(quiz.id).subscribe(() => {
       this.getQuizzes();
       this.messageService.add({ severity: 'success', detail: 'Quiz excluído com sucesso!' })
-      this.getTotalQuizzes();
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

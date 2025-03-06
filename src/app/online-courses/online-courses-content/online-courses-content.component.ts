@@ -58,10 +58,10 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   showConfirmDialog: boolean = false;
 
-  totalStudents: number = 0;
+  //totalStudents: number = 0;
 
   students: User[] = [];
-  totalRegistrosStudents: number = 0
+  totalRegistrosStudents: number = 0;
 
   isDropdownOpen: boolean = false;
 
@@ -75,8 +75,6 @@ export class OnlineCoursesContentComponent implements OnInit {
     { label: 'Video', value: 'VIDEO' },
     { label: 'File', value: 'FILE' },
   ];
-
-
 
   filtroStudents: IUserFilter = {
     page: -1,
@@ -157,7 +155,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso salva com sucesso!' });
         this.showLoading = false;
-        this.getModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -190,7 +188,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.modulo = response
         this.messageService.add({ severity: 'success', detail: 'Module salvo com sucesso!' });
         this.showLoading = false;
-        this.getModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -210,9 +208,8 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
-        this.getModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(this.course.id);
         this.getStudentsByCourseId(this.course.id);
-        this.countOnlineCourseStudentsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
         this.showLoading = false;
       },
@@ -274,7 +271,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  getModulesByCourseById(pagina: number = 0, onlineCourseId: number): void {
+  getModulesByCourseById(onlineCourseId: number): void {
     this.showLoading = true;
     this.moduleService.findByOnlineCourseId(onlineCourseId).subscribe(
       (dados: Module[]) => {
@@ -352,20 +349,6 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.getStudentsByCourseId(this.course.id);
   }
 
-  countOnlineCourseStudentsByCourseId(onlineCourseId: number) {
-    this.showLoading = true;
-    this.onlineCoursesService.countOnlineCourseStudentsByCourseId(onlineCourseId).subscribe(
-      (total) => {
-        this.totalStudents = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
   confirmarExclusao(content: OnlineCourseContent): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
@@ -378,7 +361,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   excluir(content: OnlineCourseContent) {
     this.onlineCoursesContentService.excluir(content.id).subscribe(() => {
       if (this.grid.first === 0) {
-        this.getModulesByCourseById(0, this.course.id);
+        this.getModulesByCourseById(this.course.id);
       } else {
         this.grid.reset();
       }

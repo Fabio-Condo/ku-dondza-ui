@@ -80,10 +80,6 @@ export class OnlineCoursesService {
         return this.http.get<OnlineCourse>(`${this.host}/find-by-courseId/${onlineCourseId}`, {});
     }
 
-    buscarTotal(): Observable<number> {
-        return this.http.get<number>(`${this.host}/total`, {});
-    }
-
     updateRequirements(course: OnlineCourse): Observable<OnlineCourse> {
         return this.http.put<OnlineCourse>(`${this.host}/${course.id}/requirements/update`, course, {});
     }

@@ -495,7 +495,7 @@
     <br>
 
     <header>
-      <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalbooks }}</span>
+      <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalBooks }}</span>
 
       <div class="actions">
         <button class="btn-primary" id="add-btn" (click)="onAddNewBook()" *ngIf="isSuperAdmin">
@@ -567,13 +567,13 @@
     <!-- Load-more -->
     <div class="load-more">
       <button (click)="loadMore()" class="btn-load-more"
-        [disabled]="books.length === totalbooks && totalbooks > 0">Buscar
+        [disabled]="books.length === totalBooks && totalBooks > 0">Buscar
         mais</button>
     </div>
 
     <!-- Paginação -->
     <div class="pagination">
-      <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalbooks }}</span>
+      <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalBooks }}</span>
       <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

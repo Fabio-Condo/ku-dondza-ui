@@ -87,7 +87,6 @@ export class QuestionsComponent implements OnInit {
     private subjectsService: SubjectsService,
     private topicService: TopicService,
     private authenticationService: AuthenticationService,
-    private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
@@ -95,7 +94,6 @@ export class QuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buscarTotal();
     this.findAll(0);
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -184,6 +182,9 @@ export class QuestionsComponent implements OnInit {
         this.questions = dados.content
         this.totalRegistros = dados.totalElements;
         this.renderMathExpressions();
+        if(this.totalQuestions == 0){
+          this.totalQuestions = dados.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -241,7 +242,6 @@ export class QuestionsComponent implements OnInit {
         this.findAll();
       }
       this.messageService.add({ severity: 'success', detail: 'Questao excluída com sucesso!' });
-      this.buscarTotal();
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -359,17 +359,6 @@ export class QuestionsComponent implements OnInit {
         this.removeMathExpression(index);
       }
     });
-  }
-
-  buscarTotal() {
-    this.questionService.getTotal().subscribe(
-      (total) => {
-        this.totalQuestions = total;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
   }
 
   toggleDropdown(question: Question) {

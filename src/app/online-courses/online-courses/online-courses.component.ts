@@ -75,7 +75,6 @@ export class OnlineCoursesComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll();
-    this.buscarTotal();
     this.getUsersInstrutors();
     this.scrollToTop();
   }
@@ -151,9 +150,11 @@ export class OnlineCoursesComponent implements OnInit {
         this.courses = dados.content
         dados.content.forEach(course => {
           this.checkIfSubscribed(course);
-          this.countOnlineCourseStudentsByCourseId(course);
         });
-        this.totalRegistros = dados.totalElements
+        this.totalRegistros = dados.totalElements;
+        if(this.totalCourses == 0){
+          this.totalCourses = dados.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -182,7 +183,6 @@ export class OnlineCoursesComponent implements OnInit {
 
         data.content.forEach(course => {
           this.checkIfSubscribed(course);
-          this.countOnlineCourseStudentsByCourseId(course);
         });
         this.totalRegistros = data.totalElements;
         this.showLoading = false;
@@ -190,17 +190,6 @@ export class OnlineCoursesComponent implements OnInit {
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
-      }
-    );
-  }
-
-  buscarTotal() {
-    this.onlineCoursesService.buscarTotal().subscribe(
-      (total) => {
-        this.totalCourses = total;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
       }
     );
   }
@@ -232,7 +221,6 @@ export class OnlineCoursesComponent implements OnInit {
         this.grid.reset();
       }
       this.messageService.add({ severity: 'success', detail: 'Instituição excluída com sucesso!' })
-      this.buscarTotal();
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -295,20 +283,6 @@ export class OnlineCoursesComponent implements OnInit {
     this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
       course.isSubscribed = response;
     });
-  }
-
-  countOnlineCourseStudentsByCourseId(course: OnlineCourse) {
-    this.showLoading = true;
-    this.onlineCoursesService.countOnlineCourseStudentsByCourseId(course.id,).subscribe(
-      (total) => {
-        course.totalStudents = total;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
   }
 
   // Método para limpar campos

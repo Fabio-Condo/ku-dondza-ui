@@ -24,7 +24,7 @@ export class BooksComponent implements OnInit {
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   file!: File;
-  totalbooks: number = 0;
+  totalBooks: number = 0;
   displayModalFilter: boolean = false;
   subjects: Subject[] = [];
 
@@ -50,7 +50,6 @@ export class BooksComponent implements OnInit {
 
   ngOnInit(): void {
     this.findAll(0);
-    this.buscarTotal();
     this.carregarDisciplinas();
     this.scrollToTop();
   }
@@ -114,7 +113,10 @@ export class BooksComponent implements OnInit {
     this.booksService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<Book>) => {
         this.books = dados.content
-        this.totalRegistros = dados.totalElements
+        this.totalRegistros = dados.totalElements;
+        if(this.totalBooks == 0){
+          this.totalBooks = dados.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -172,17 +174,6 @@ export class BooksComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     });
-  }
-
-  buscarTotal() {
-    this.booksService.buscarTotal().subscribe(
-      (total) => {
-        this.totalbooks = total;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
   }
 
   toggleDropdown(book: Book) {

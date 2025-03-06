@@ -69,7 +69,4 @@ export class BooksService {
     return this.http.get(`${this.host}/download/${id}/${filename}`, { responseType: 'blob' });
   }
 
-  buscarTotal(): Observable<number> {
-    return this.http.get<number>(`${this.host}/total`, {});
-  }
 }

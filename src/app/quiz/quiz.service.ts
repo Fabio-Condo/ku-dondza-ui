@@ -80,11 +80,4 @@ export class QuizService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }
 
-  getTotal(userId: number): Observable<number> {
-    const params = new HttpParams()
-      .set('userId', userId);
-
-    return this.http.get<number>(`${this.baseUrl}/total`, { params });
-  }
-
 }
