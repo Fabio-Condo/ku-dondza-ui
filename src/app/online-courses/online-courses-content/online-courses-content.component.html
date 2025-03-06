@@ -38,7 +38,7 @@
 
             <button class="btn btn-primary" *ngIf="!course.isSubscribed"
                 (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
-            <button class="btn btn-primary" disabled *ngIf="course.isSubscribed">Inscrito</button>
+            <span class="text-muted" *ngIf="course.isSubscribed">Inscrito</span>
         </div>
 
         <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()" *ngIf="isSuperAdmin"><i
@@ -80,7 +80,7 @@
             </div>
         </div>
         <div class="modules-list">
-            <div *ngFor="let modulo of modulos" class="module-card">
+            <div *ngFor="let modulo of course.modules" class="module-card">
                 <div class="module-header">
                     <i class="pi pi-play-circle"></i>
                     <h3>{{ modulo.position }}. {{ modulo.name }}</h3>
@@ -207,7 +207,7 @@
                 <label for="modulo">Módulo</label>
                 <select id="modulo" [(ngModel)]="onlineCourseContent.module.id" name="module" required>
                     <option value="" disabled selected>Selecione o módulo</option>
-                    <option *ngFor="let module of modulos" [value]="module.id">{{ module.name }}</option>
+                    <option *ngFor="let module of course.modules" [value]="module.id">{{ module.name }}</option>
                 </select>
             </div>
             <div class="form-group">

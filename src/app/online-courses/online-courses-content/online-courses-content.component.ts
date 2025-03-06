@@ -29,7 +29,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   courseContentFile!: File;
 
   modulo: Module = new Module();
-  modulos: Module[] = [];
+  //modulos: Module[] = [];
   //listModulos: Module[] = [];
 
   onlineCourseContent: OnlineCourseContent = new OnlineCourseContent();
@@ -155,7 +155,6 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.onlineCourseContent = response
         this.messageService.add({ severity: 'success', detail: 'Courso salva com sucesso!' });
         this.showLoading = false;
-        this.getModulesByCourseById(this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -188,7 +187,6 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.modulo = response
         this.messageService.add({ severity: 'success', detail: 'Module salvo com sucesso!' });
         this.showLoading = false;
-        this.getModulesByCourseById(this.course.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -208,7 +206,15 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
-        this.getModulesByCourseById(this.course.id);
+        //this.getModulesByCourseById(this.course.id);
+        //modulo.courseContents.forEach((content) => {
+        //  this.checkIfMarkedCourseContent(content);
+        //});
+        this.course.modules.forEach((modulo) => {
+          modulo.courseContents.forEach((content) => {
+            this.checkIfMarkedCourseContent(content);
+          });
+        });
         this.getStudentsByCourseId(this.course.id);
         this.checkIfSubscribed(this.course);
         this.showLoading = false;
@@ -267,25 +273,6 @@ export class OnlineCoursesContentComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  getModulesByCourseById(onlineCourseId: number): void {
-    this.showLoading = true;
-    this.moduleService.findByOnlineCourseId(onlineCourseId).subscribe(
-      (dados: Module[]) => {
-        this.modulos = dados;
-        this.modulos.forEach((modulo) => {
-          modulo.courseContents.forEach((content) => {
-            this.checkIfMarkedCourseContent(content);
-          });
-        });
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -361,7 +348,6 @@ export class OnlineCoursesContentComponent implements OnInit {
   excluir(content: OnlineCourseContent) {
     this.onlineCoursesContentService.excluir(content.id).subscribe(() => {
       if (this.grid.first === 0) {
-        this.getModulesByCourseById(this.course.id);
       } else {
         this.grid.reset();
       }

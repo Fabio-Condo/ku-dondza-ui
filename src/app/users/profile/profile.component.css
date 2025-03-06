@@ -65,7 +65,7 @@
 
 .profile-info h1 {
   font-size: 1.5rem;
-  color:var(--color-black);
+  color: var(--color-black);
   margin-bottom: 0.25rem;
 }
 
@@ -125,7 +125,7 @@
 .stat-value {
   font-size: 1.5rem;
   font-weight: bold;
-  color:var(--color-black);
+  color: var(--color-black);
   margin-bottom: 0.25rem;
 }
 
@@ -159,7 +159,7 @@
 
 .tab-button.active {
   background: white;
-  color:  var(--color-black);
+  color: var(--color-black);
 }
 
 .tab-content {
@@ -193,7 +193,7 @@
 
 .activity-title {
   font-weight: 500;
-  color:  var(--color-black);
+  color: var(--color-black);
   margin-bottom: 0.25rem;
 }
 
@@ -218,7 +218,7 @@
 
 .quiz-title {
   font-weight: 500;
-  color:  var(--color-black);
+  color: var(--color-black);
   margin-bottom: 0.25rem;
 }
 
@@ -281,7 +281,8 @@
 
 .subjects-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Exatamente 5 colunas por linha */
+  grid-template-columns: repeat(5, 1fr);
+  /* Exatamente 5 colunas por linha */
   gap: 1rem;
 }
 
@@ -524,6 +525,39 @@
   background: #f0f0f0;
 }
 
+button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #3b82f6;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #2d3748;
+  border: 1px solid #d1d5db;
+}
+
+.btn-outline:hover {
+  background-color: #f8fafc;
+}
+
 @media (max-width: 640px) {
   .popout-container {
     width: 95%;
@@ -558,18 +592,21 @@
 /* Responsividade para telas menores */
 @media (max-width: 1024px) {
   .subjects-grid {
-    grid-template-columns: repeat(3, 1fr); /* Reduz para 3 colunas */
+    grid-template-columns: repeat(3, 1fr);
+    /* Reduz para 3 colunas */
   }
 }
 
 @media (max-width: 768px) {
   .subjects-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 colunas em telas menores */
   }
 }
 
 @media (max-width: 480px) {
   .subjects-grid {
-    grid-template-columns: repeat(1, 1fr); /* 1 coluna em telas pequenas */
+    grid-template-columns: repeat(1, 1fr);
+    /* 1 coluna em telas pequenas */
   }
 }

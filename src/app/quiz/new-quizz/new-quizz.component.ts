@@ -308,7 +308,6 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
       (response) => {
         this.showLoading = false;
         this.submited = true;
-        this.messageService.add({ severity: 'success', detail: 'Quiz salvo com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
