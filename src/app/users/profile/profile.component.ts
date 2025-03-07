@@ -133,6 +133,11 @@ export class ProfileComponent implements OnInit {
     this.user.subjectsInterests = this.user.subjectsInterests.filter(i => i !== interest);
   }
 
+  onLogOut(): void {
+    this.authenticationService.logOut();
+    this.router.navigate(['/login']);
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

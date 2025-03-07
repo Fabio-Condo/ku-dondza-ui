@@ -9,7 +9,6 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
 import { QuestionService } from 'src/app/questions/question.service';
-import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Role } from 'src/app/enum/role.enum';
 
@@ -148,9 +147,6 @@ export class OnlineCoursesComponent implements OnInit {
     this.onlineCoursesService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<OnlineCourse>) => {
         this.courses = dados.content
-        dados.content.forEach(course => {
-          this.checkIfSubscribed(course);
-        });
         this.totalRegistros = dados.totalElements;
         if(this.totalCourses == 0){
           this.totalCourses = dados.totalElements;
@@ -180,10 +176,6 @@ export class OnlineCoursesComponent implements OnInit {
     this.onlineCoursesService.findAll(this.filtro).subscribe(
       (data: IApiResponse<OnlineCourse>) => {
         this.courses = [...this.courses, ...data.content];
-
-        data.content.forEach(course => {
-          this.checkIfSubscribed(course);
-        });
         this.totalRegistros = data.totalElements;
         this.showLoading = false;
       },
@@ -277,12 +269,6 @@ export class OnlineCoursesComponent implements OnInit {
     const pagina = event!.first! / event!.rows!;
     this.filtro.itensPorPagina = event!.rows!;
     this.findAll(pagina);
-  }
-
-  checkIfSubscribed(course: OnlineCourse): void {
-    this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
-      course.isSubscribed = response;
-    });
   }
 
   // Método para limpar campos

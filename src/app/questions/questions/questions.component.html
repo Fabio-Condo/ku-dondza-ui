@@ -75,6 +75,27 @@
             background-color: #f8fafc;
         }
 
+        .load-more-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .btn-load-more {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-load-more:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-load-more:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .filters {
             display: flex;
             justify-content: center;
@@ -457,6 +478,10 @@
                 display: none;
             }
 
+            .load-more-container {
+                display: flex;
+            }
+
         }
     </style>
 </head>
@@ -493,23 +518,19 @@
             <div class="card" *ngFor="let question of questions">
                 <div class="card-header">
                     <span class="badge matematica">{{ question.topic.subject.name }}</span>
-                    <span class="badge easy">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            style="vertical-align: middle; margin-right: 4px;">
-                            <circle cx="12" cy="8" r="7"></circle>
-                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                        </svg>
-                        {{ getDifficultyLevelValue(question.difficultyLevel) }}
-                    </span>
+                    <!--
                     <div class="dropdown-container" *ngIf="isSuperAdmin">
                         <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
-                                class="pi pi-ellipsis-v"></i></button>
+                                class="pi pi-ellipsis-h"></i></button>
                         <div class="dropdown" *ngIf="question.isAdminMenuOpen">
                             <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
                             <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
                         </div>
                     </div>
+                    -->
+                    <span class="badge easy">
+                        {{ getDifficultyLevelValue(question.difficultyLevel) }}
+                    </span>
                 </div>
                 <div class="card-body">
                     <div class="topic">{{ question.topic.name }}</div>
@@ -558,10 +579,15 @@
             </div>
 
             <!-- Load-more -->
-            <div class="load-more">
-                <button (click)="loadMore()" class="btn-load-more"
-                    [disabled]="questions.length === totalQuestions && totalQuestions > 0">Buscar
-                    mais</button>
+            <div class="load-more-container">
+                <button class="btn-load-more" id="load-more-btn" (click)="loadMore()"
+                    [disabled]="questions.length === totalQuestions && totalQuestions > 0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Buscar mais
+                </button>
             </div>
 
             <!-- Paginação -->

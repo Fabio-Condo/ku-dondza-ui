@@ -22,7 +22,7 @@ export class OnlineCourse {
     isLiked: boolean = false;
     numberOfLikes: number = 0;
 
-    isSubscribed: boolean = false;
+    currentUserSubscribed: boolean = false;
     totalStudents: number = 0;
     isAdminMenuOpen: boolean = false;
 

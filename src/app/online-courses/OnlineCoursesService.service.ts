@@ -94,8 +94,4 @@ export class OnlineCoursesService {
         return this.http.get<IApiResponse<User>>(`${this.host}/${courseId}/students`, { params });
     }
 
-    countOnlineCourseStudentsByCourseId(courseId: number): Observable<number> {
-        return this.http.get<number>(`${this.host}/${courseId}/students/total`, {});
-    }
-
 }

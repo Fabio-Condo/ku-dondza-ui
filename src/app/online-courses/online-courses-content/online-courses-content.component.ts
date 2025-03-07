@@ -206,17 +206,12 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
-        //this.getModulesByCourseById(this.course.id);
-        //modulo.courseContents.forEach((content) => {
-        //  this.checkIfMarkedCourseContent(content);
-        //});
         this.course.modules.forEach((modulo) => {
           modulo.courseContents.forEach((content) => {
             this.checkIfMarkedCourseContent(content);
           });
         });
         this.getStudentsByCourseId(this.course.id);
-        this.checkIfSubscribed(this.course);
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -361,21 +356,15 @@ export class OnlineCoursesContentComponent implements OnInit {
     )
   }
 
-  checkIfSubscribed(course: OnlineCourse): void {
-    this.userService.doesUserSubscribedOnlineCourse(this.loggedUser.id, course.id).subscribe(response => {
-      course.isSubscribed = response;
-    });
-  }
-
   addCourseToSubscribedOnlineCourses(course: OnlineCourse): void {
     this.userService.addCourseToSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
-      course.isSubscribed = true;
+      course.currentUserSubscribed = true;
     });
   }
 
   removeCourseFromSubscribedOnlineCourses(course: OnlineCourse): void {
     this.userService.removeCourseFromSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
-      course.isSubscribed = false;
+      course.currentUserSubscribed = false;
     });
   }
 

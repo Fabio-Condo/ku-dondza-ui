@@ -36,9 +36,9 @@
                 <span class="text-muted">2,500 pessoas gostaram</span>
             </div>
 
-            <button class="btn btn-primary" *ngIf="!course.isSubscribed"
+            <button class="btn btn-primary" *ngIf="!course.currentUserSubscribed"
                 (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
-            <span class="text-muted" *ngIf="course.isSubscribed">Inscrito</span>
+            <span class="text-muted" *ngIf="course.currentUserSubscribed">Inscrito</span>
         </div>
 
         <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()" *ngIf="isSuperAdmin"><i
