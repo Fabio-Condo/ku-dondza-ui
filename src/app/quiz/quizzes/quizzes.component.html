@@ -61,12 +61,14 @@
                         </div>
                         -->
                         <span class="badge easy">
+                            <!--
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                 style="vertical-align: middle; margin-right: 4px;">
                                 <circle cx="12" cy="8" r="7"></circle>
                                 <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
                             </svg>
+                            -->
                             {{ getDifficultyLevelValue(quiz.difficultyLevel) }}
                         </span>
                     </div>
@@ -206,6 +208,13 @@
         </div>
 
         <form>
+            <div class="form-group">
+                <label for="option">Filtrar Quizzes</label>
+                <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option" required>
+                    <option *ngFor="let option of quizFilterOptions" [value]="option.value">{{ option.label }}
+                    </option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="difficultyLevel">Nivel de dificuldade</label>
                 <select id="difficultyLevel" [(ngModel)]="filter.difficultyLevel" (change)="getQuizzes()"

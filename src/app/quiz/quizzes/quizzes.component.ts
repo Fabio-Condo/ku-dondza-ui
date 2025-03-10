@@ -38,6 +38,13 @@ export class QuizzesComponent implements OnInit {
 
   loggedUser: User = new User;
 
+  selectQuizOption: string = 'ALL_QUIZZES';
+
+  quizFilterOptions = [
+    { label: 'Mostrar todos quizzes', value: 'ALL_QUIZZES' },
+    { label: 'Mostrar meus quizzes', value: 'MY_QUIZZES' },
+  ];
+
   @ViewChild('table') grid: any;
 
   difficultyLevels = [
@@ -81,9 +88,16 @@ export class QuizzesComponent implements OnInit {
   getQuizzes(page: number = 0): void {
     this.loadingMessage = "Carregando dados..."
     if (this.showLoading) return;
+
+    if (this.selectQuizOption == 'MY_QUIZZES') {
+      this.filter.user = this.loggedUser.id;
+    }
+
+    if (this.selectQuizOption == 'ALL_QUIZZES') {
+      this.filter.user = 0;
+    }
     
     this.showLoading = true;
-    this.filter.user = this.loggedUser.id;
     this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.quizService.getQuizzes(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {

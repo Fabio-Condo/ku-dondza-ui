@@ -28,6 +28,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
   topics: Topic[] = [];
+  selectedTopics: Topic[] = [];
   subjects: Subject[] = [];
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
@@ -126,7 +127,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         this.toggleCorrection(); 
         this.scrollToTop();
         this.showFinalScreen = true; 
-        this.messageService.add({ severity: 'success', detail: 'O Tempo esgou e a sbumissão foi feita com sucesso!' });
+        this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
       }
     });
   }
@@ -265,6 +266,11 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     this.loadingMessage = "Gerrando questões..."
     const selectedTopicIds = this.getSelectedTopicIds();
 
+    if(selectedTopicIds.length == 0){
+      this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões.!' });
+      return;
+    }
+
     this.showLoading = true;
     this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
       (dados: Question[]) => {
@@ -273,6 +279,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         this.showLoading = false;
         this.renderMathExpressions();
         this.renderFunctions();
+        this.startQuiz();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

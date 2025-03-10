@@ -13,7 +13,12 @@
         <!-- Texto e botão sobre a imagem -->
         <div class="overlay-content">
             <p class="overlay-text">{{ course.name }}</p>
+            <!--
             <button class="overlay-button">Pré-visualizar</button>
+            -->
+            <button class="btn btn-primary" *ngIf="!course.currentUserSubscribed"
+            (click)="addCourseToSubscribedOnlineCourses(course)">Inscrever</button>
+            <button class="btn btn-primary" *ngIf="course.currentUserSubscribed">Inscrito</button>
         </div>
     </div>
 </div>
@@ -26,19 +31,25 @@
 
         <!-- Informações do Curso -->
         <div class="course-info">
+            <!--
             <div class="release-date">
                 <i class="pi pi-calendar"></i><span class="text-muted">Data de Lançamento: {{ course.lunchDate }}</span>
             </div>
+            -->
 
+            <!--
             <div class="likes">
                 <i *ngIf="course.isLiked" class="pi pi-heart-fill icon-liked"></i>
                 <i *ngIf="!course.isLiked" class="pi pi-heart"></i>
                 <span class="text-muted">2,500 pessoas gostaram</span>
             </div>
+            -->
 
+            <!--
             <button class="btn btn-primary" *ngIf="!course.currentUserSubscribed"
                 (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
             <span class="text-muted" *ngIf="course.currentUserSubscribed">Inscrito</span>
+            -->
         </div>
 
         <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()" *ngIf="isSuperAdmin"><i
