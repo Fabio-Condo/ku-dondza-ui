@@ -249,11 +249,14 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   getTopicsBySubjectId(subjectId: number): void {
+    this.loadingMessage = "Obtendo tópicos..."
+    this.showLoading = true;
     this.topicService.getBySubjectId(subjectId).subscribe(
       (dados: Topic[]) => {
         this.quiz.questions = [];
         this.topics = [];
         this.topics = dados;
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

@@ -9,23 +9,14 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 })
 export class FooterComponent implements OnInit {
 
+  isUserLoggedIn: boolean = false;
+
   constructor(
-        private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
-  }
-
-  public get isAdmin(): boolean {
-    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  public get isSuperAdmin(): boolean {
-    return this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  private getUserRole(): string {
-    return this.authenticationService.getUserFromLocalCache().role;
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
   }
 
 }

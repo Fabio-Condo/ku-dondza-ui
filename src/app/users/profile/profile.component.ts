@@ -21,12 +21,11 @@ export class ProfileComponent implements OnInit {
   currentUser: User = new User();
   displayModalSave: boolean = false;
 
-  userSubjectsInterests: Subject[] = [];
   selectedInterest: Subject = new Subject();
   subjectsInterests: Subject[] = [];
 
   showLoading: boolean = false;
-
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
 
   fileToUpload!: File;
   coverFileToUpload!: File;
@@ -73,21 +72,11 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserByUserId(userId: string) {
+    this.loadingMessage = "Carregando dados..."
+    this.showLoading = true;
     this.userService.getUserByUserId(userId).subscribe(
       (user: User) => {
         this.user = user;
-        this.getUserSubjectInterests(user);
-      },
-      (erro) => this.errorHandler.handle(erro),
-    );
-  }
-
-  getUserSubjectInterests(user: User): void {
-    this.showLoading = true;
-    this.userService.getUserSubjectInterests(user.id).subscribe(
-      (dados: Subject[]) => {
-        this.userSubjectsInterests = dados;
-        this.user.subjectsInterests = this.userSubjectsInterests; // Atualiza as respostas do quiz
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

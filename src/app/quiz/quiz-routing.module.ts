@@ -9,7 +9,7 @@ const routes: Routes = [
   { 
     path: 'quizzes', 
     component: QuizzesComponent,
-    //canActivate: [AuthenticationGuard], 
+    canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
@@ -18,7 +18,7 @@ const routes: Routes = [
   { 
     path: 'quizzes/new', 
     component: NewQuizzComponent,
-    //canActivate: [AuthenticationGuard], 
+    canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
@@ -27,7 +27,7 @@ const routes: Routes = [
   { 
     path: 'quizzes/:id/questions', 
     component: QuizzQuestionsComponent,
-    //canActivate: [AuthenticationGuard], 
+    canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

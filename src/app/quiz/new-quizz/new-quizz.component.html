@@ -131,7 +131,7 @@
           </div>
 
           <!-- Botão para marcar como não respondida -->
-          <button class="btn-outline" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
+          <button class="btn-null" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
             *ngIf="!showCorrection">
             Não Responder
           </button>
@@ -167,7 +167,7 @@
             </svg>
           </button>
           <!-- Botão para submeter respostas -->
-          <button class="btn-outline" id="add-btn" (click)="submitAnswers()"
+          <button class="pagination-btn submit" id="add-btn" (click)="submitAnswers()"
           *ngIf="currentQuestionIndex === quiz.questions.length - 1">
             <span *ngIf="!submited">Submeter</span>
             <span *ngIf="submited">Resultados</span>
