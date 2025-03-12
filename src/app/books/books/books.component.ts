@@ -231,6 +231,7 @@ export class BooksComponent implements OnInit {
     this.filtro.subject = undefined;
     this.filtro.name = "";
     this.filtro.description = "";
+    this.filtro.author = "";
     this.filtro.pagina = 0;
     this.filtro.itensPorPagina = 10;
     this.filtro.ordenamento = "id,desc"

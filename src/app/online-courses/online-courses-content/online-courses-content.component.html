@@ -6,7 +6,7 @@
             <i class="pi pi-spin pi-spinner"></i>
             <span>{{ loadingMessage }}</span>
         </div>
-      </div>
+    </div>
     <!-- Capa do Curso -->
     <div class="course-cover">
         <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
@@ -16,9 +16,9 @@
             <!--
             <button class="overlay-button">Pré-visualizar</button>
             -->
-            <button class="btn btn-primary" *ngIf="!course.currentUserSubscribed"
-            (click)="addCourseToSubscribedOnlineCourses(course)">Inscrever</button>
-            <button class="btn btn-primary" *ngIf="course.currentUserSubscribed">Inscrito</button>
+            <button class="btn-outline" *ngIf="!course.currentUserSubscribed"
+                (click)="addCourseToSubscribedOnlineCourses(course)">Inscrever-se</button>
+            <button class="btn-outline" *ngIf="course.currentUserSubscribed">Inscrito</button>
         </div>
     </div>
 </div>
@@ -52,14 +52,22 @@
             -->
         </div>
 
-        <h1 class="title">Pré-requisitos <span (click)="onUpdateRequirements()" *ngIf="isSuperAdmin"><i
-                    class="pi pi-pencil" style="font-size: 0.9rem; color: black;"></i></span></h1>
+        <h1 class="title">
+            <div class="requirement-header">
+                Pré-requisitos 
+                <button class="edit-btn" (click)="onUpdateRequirements()" *ngIf="isSuperAdmin">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+        </h1>
 
-        <p class="course-description" *ngFor="let req of course.requirements" style="margin-left: 10px;">
-            <i class="pi pi-check"
-                style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
-            {{ req.designation }}
-        </p>
+        <div class="requirement-item" *ngFor="let req of course.requirements">
+            <div class="requirement-info">
+                <i class="pi pi-check-circle"></i>
+                <span class="requirement-title">{{ req.designation }}</span>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -84,10 +92,22 @@
         <div class="section-header">
             <h1 class="title">Aulas</h1>
             <div class="actions">
-                <button type="button" class="btn btn-primary" (click)="onAddNewModule()" *ngIf="isSuperAdmin">Adicionar
-                    Módulo</button>
-                <button type="button" class="btn btn-primary" (click)="onAddNewOnlineCourseContent()"
-                    *ngIf="isSuperAdmin">Adicionar Aula</button>
+                <button type="button" class="btn-outline" (click)="onAddNewModule()" *ngIf="isSuperAdmin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Módulo
+                </button>
+                <button type="button" class="btn-outline" (click)="onAddNewOnlineCourseContent()" *ngIf="isSuperAdmin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Aula
+                </button>
             </div>
         </div>
         <div class="modules-list">
@@ -96,7 +116,7 @@
                     <i class="pi pi-play-circle"></i>
                     <h3>{{ modulo.position }}. {{ modulo.name }}</h3>
                     <button class="edit-btn" (click)="onUpdateModule(modulo)" *ngIf="isSuperAdmin">
-                        <i class="pi pi-pencil"></i>
+                        <i class="fas fa-edit"></i>
                     </button>
                 </div>
                 <div class="lessons-list">
@@ -168,9 +188,13 @@
         </div>
     </div>
 
-    <!-- Botão "Carregar mais" -->
-    <div class="load-more">
-        <button (click)="onShowMoreStudents()" *ngIf="students.length < 1000" class="btn-load-more">Ver mais</button>
+
+    <!-- Load-more -->
+    <div class="load-more-container">
+        <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreStudents()"
+            [disabled]="students.length === totalRegistrosStudents && totalRegistrosStudents > 0">
+            Buscar mais
+        </button>
     </div>
 
 </div>

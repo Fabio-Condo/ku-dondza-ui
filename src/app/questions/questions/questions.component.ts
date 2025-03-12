@@ -79,7 +79,7 @@ export class QuestionsComponent implements OnInit {
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 5,
-    sort: 'id,asc'
+    sort: 'id,desc'
   };
 
   constructor(

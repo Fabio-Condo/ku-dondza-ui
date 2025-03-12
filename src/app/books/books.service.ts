@@ -37,6 +37,9 @@ export class BooksService {
         params = params.set('description', filtro.description);
       }
 
+      if (filtro.author) {
+        params = params.set('author', filtro.author);
+      }
 
     return this.http.get<IApiResponse<Book>>(`${this.host}/filter`, { params });
 
@@ -46,6 +49,7 @@ export class BooksService {
     const formData = new FormData();
     formData.append('name', book.name);
     formData.append('description', book.description);
+    formData.append('author', book.author);
     formData.append('subjectId', book.subject.id.toString());
     formData.append('file', file);
     return this.http.post<Book>(`${this.host}`, formData);
@@ -56,6 +60,7 @@ export class BooksService {
     formData.append('id', book.id.toString());
     formData.append('name', book.name);
     formData.append('description', book.description);
+    formData.append('author', book.author);
     formData.append('subjectId', book.subject.id.toString());
     formData.append('file', file);
     return this.http.put<Book>(`${this.host}`, formData);
