@@ -21,7 +21,8 @@
             <div class="profile-content">
                 <div class="profile-header">
                     <div class="profile-pic">
-                        <i class="fas fa-camera"></i>
+                        <i *ngIf="!user.profileImageUrl" class="fas fa-camera"></i>
+                        <img *ngIf="user.profileImageUrl" id="profile-photo" src="{{user.profileImageUrl}}" alt="Foto do Perfil">
                     </div>
                     <div class="profile-info">
                         <h1>{{ user.firstName }} {{ user.lastName }}</h1>

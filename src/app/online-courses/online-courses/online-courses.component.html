@@ -563,18 +563,25 @@
 
         <div class="cards-container" *ngFor="let course of courses">
             <div class="card">
-                <img src="/api/placeholder/80/120" alt="Capa do livro" class="course-cover">
+                <img [src]="course.coverImageUrl"alt="Capa do livro" class="course-cover">
                 <div class="course-info">
                     <div>
                         <h3 class="course-title">{{ course.name }}</h3>
                         <div class="course-instrutor">
-                            <img src="instrutor.jpg" alt="Autor" class="course-instrutor-avatar">
+                            <img src="{{course.instrutor.profileImageUrl}}" src="instrutor.jpg" alt="Autor" class="course-instrutor-avatar">
                             <span>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span>
                         </div>
                         <p class="course-description">{{ course.description }}</p>
                     </div>
                     <div class="course-meta">
                         <span class="badge matematica">Matemática</span>
+                        <div class="dropdown-container" *ngIf="isSuperAdmin">
+                            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+                            <div class="dropdown" *ngIf="course.isAdminMenuOpen">
+                            <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
+                            <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
+                            </div>
+                        </div>
                         <button class="start-button" [routerLink]="['/coursos-online', course.onlineCourseId]">
                             Ver Curso
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -583,15 +590,6 @@
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </button>
-                        <!--
-                        <div class="dropdown-container" *ngIf="isSuperAdmin">
-                            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
-                            <div class="dropdown" *ngIf="course.isAdminMenuOpen">
-                            <a (click)="onUpdate(course, file); closeDropdown(course)">Editar</a>
-                            <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
-                            </div>
-                        </div>
-                        -->
                     </div>
                 </div>
             </div>
