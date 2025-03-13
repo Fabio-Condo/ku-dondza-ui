@@ -9,7 +9,6 @@ export class Question {
     text!: string;
     timeLimit!: number; // Tempo em segundos
     timeRemaining!: number; 
-    mathExpression!: string;
     mathExpressions: MathExpression[] = []; // Alterado para uma lista de expressões
     solution!: string;
     fileName!: string;

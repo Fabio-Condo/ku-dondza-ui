@@ -118,8 +118,15 @@ export class QuizzesComponent implements OnInit {
   loadMore(page: number = 0): void {
     if (this.showLoading) return;
 
+    if (this.selectQuizOption == 'MY_QUIZZES') {
+      this.filter.user = this.loggedUser.id;
+    }
+
+    if (this.selectQuizOption == 'ALL_QUIZZES') {
+      this.filter.user = 0;
+    }
+
     this.showLoading = true;
-    this.filter.user = this.loggedUser.id;
     this.filter.page++;
 
     this.quizService.getQuizzes(this.filter).subscribe(
@@ -275,6 +282,7 @@ export class QuizzesComponent implements OnInit {
     this.filter.title = "";
     this.filter.subject = undefined;
     this.filter.difficultyLevel = undefined;
+    this.selectQuizOption = 'ALL_QUIZZES';   
     this.getQuizzes();
   }
 
