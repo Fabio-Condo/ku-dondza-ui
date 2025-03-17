@@ -7,7 +7,7 @@
             <span>{{ loadingMessage }}</span>
         </div>
     </div>
-    
+
     <!-- Capa do Curso -->
     <div class="course-cover">
         <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
@@ -55,7 +55,7 @@
 
         <h1 class="title">
             <div class="requirement-header">
-                Pré-requisitos 
+                Pré-requisitos
                 <button class="edit-btn" (click)="onUpdateRequirements()" *ngIf="isSuperAdmin">
                     <i class="fas fa-edit"></i>
                 </button>
@@ -201,7 +201,7 @@
 </div>
 
 <!-- Modal de Vídeo -->
-<div class="overlay" *ngIf="showLesson">
+<div class="overlay2" *ngIf="showLesson">
     <div class="vidio-dialog">
         <h2 style="font-size: 1rem; margin-left: 0.7rem;">{{ onlineSelectedCourseContent.description }}</h2>
         <button class="vidio-close-btn" (click)="showLesson = false">&times;</button>
@@ -216,15 +216,13 @@
 </div>
 
 <!-- Modal de Adicionar/Editar Aula -->
-<div class="overlay" *ngIf="displayModalSaveContent">
-    <div class="dialog">
+<div class="popout-overlay" *ngIf="displayModalSaveContent">
+    <div class="popout-container">
 
-        <div class="dialog-header">
-            <h2>{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
-            <button class="close-btn" (click)="displayModalSaveContent = false">&times;</button>
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
+            <button class="close-button" (click)="displayModalSaveContent = false">&times;</button>
         </div>
-
-        <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
@@ -256,26 +254,20 @@
                     [(ngModel)]="onlineCourseContent.position">
             </div>
 
-            <hr class="header-divider">
+            <button type="submit" class="submit-button" (click)="saveContent()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
-            <div class="dialog-footer">
-                <button type="button" (click)="saveContent()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar'
-                    }}</button>
-            </div>
         </form>
     </div>
 </div>
 
 <!-- Modal de Adicionar/Editar Módulo -->
-<div class="overlay" *ngIf="displayModalSaveModule">
-    <div class="dialog">
+<div class="popout-overlay" *ngIf="displayModalSaveModule">
+    <div class="popout-container">
 
-        <div class="dialog-header">
-            <h2>{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
-            <button class="close-btn" (click)="displayModalSaveModule = false">&times;</button>
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
+            <button class="close-button" (click)="displayModalSaveModule = false">&times;</button>
         </div>
-
-        <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
@@ -288,26 +280,20 @@
                     [(ngModel)]="modulo.position">
             </div>
 
-            <hr class="header-divider">
+            <button type="submit" class="submit-button" (click)="saveModule()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
-            <div class="dialog-footer">
-                <button type="button" (click)="saveModule()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar'
-                    }}</button>
-            </div>
         </form>
     </div>
 </div>
 
 <!-- Modal de Requisitos -->
-<div class="overlay" *ngIf="displayModalUpateRequirements">
-    <div class="dialog" style="width: 1000px;">
+<div class="popout-overlay" *ngIf="displayModalUpateRequirements">
+    <div class="popout-container">
 
-        <div class="dialog-header">
-            <h2>Requisitos</h2>
-            <button class="close-btn" (click)="displayModalUpateRequirements = false">&times;</button>
+        <div class="popout-header">
+            <h2 class="popout-title">Requisitos</h2>
+            <button class="close-button" (click)="displayModalUpateRequirements = false">&times;</button>
         </div>
-
-        <hr class="header-divider">
 
         <form autocomplete="off" #courseRequirementsForm="ngForm"
             (ngSubmit)="updateRequirements(courseRequirementsForm)">
@@ -344,26 +330,20 @@
                 </div>
             </div>
 
-            <hr class="header-divider">
+            <button type="submit" class="submit-button" [disabled]="courseRequirementsForm.invalid">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
-            <div class="dialog-footer">
-                <button type="submit" [disabled]="courseRequirementsForm.invalid" class="btn">{{ showLoading ?
-                    'Loading...' : 'Salvar' }}</button>
-            </div>
         </form>
     </div>
 </div>
 
 <!-- Modal de Requisito (Adicionar/Editar) -->
-<div class="overlay" *ngIf="showRequirementForm && requirement">
-    <div class="dialog" style="width: 600px;">
+<div class="popout-overlay" *ngIf="showRequirementForm && requirement">
+    <div class="popout-container">
 
-        <div class="dialog-header">
-            <h2>{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
-            <button class="close-btn" (click)="showRequirementForm = false">&times;</button>
+        <div class="popout-header">
+            <h2 class="popout-title">{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-button" (click)="showRequirementForm = false">&times;</button>
         </div>
-
-        <hr class="header-divider">
 
         <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
             <div class="form-group">
@@ -372,11 +352,8 @@
                     minlength="1" [(ngModel)]="requirement.designation" required></textarea>
             </div>
 
-            <hr class="header-divider">
+            <button type="submit" class="submit-button" [disabled]="formRequirement.invalid">Confirmar</button>
 
-            <div class="dialog-footer">
-                <button class="btn" [disabled]="formRequirement.invalid">Confirmar</button>
-            </div>
         </form>
     </div>
 </div>

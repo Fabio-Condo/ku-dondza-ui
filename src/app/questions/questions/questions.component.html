@@ -130,7 +130,6 @@
         .card {
             background-color: white;
             border-radius: 12px;
-            overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: box-shadow 0.3s ease, transform 0.2s ease;
             border: 1px solid #f1f5f9;
@@ -771,14 +770,12 @@
     </div>
 </div>
 
-<div class="overlay" *ngIf="showMathExpressionForm && mathExpression">
-    <div class="dialog" style="width: 600px;">
-        <div class="dialog-header">
-            <h2>{{editingMathExpression ? 'Editando' : 'Novo'}}</h2>
-            <button class="close-btn" (click)="showMathExpressionForm = false">&times;</button>
+<div class="popout-overlay" *ngIf="showMathExpressionForm && mathExpression">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{editingMathExpression ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-button" (click)="showMathExpressionForm = false">&times;</button>
         </div>
-
-        <hr class="header-divider">
 
         <form autocomplete="off" #frmExpression="ngForm" (ngSubmit)="confirmMathExpression(frmExpression)">
             <div class="form-group">
@@ -787,24 +784,18 @@
                     [(ngModel)]="mathExpression.expression" rows="4"></textarea>
             </div>
 
-            <hr class="header-divider">
-
-            <div class="dialog-footer">
-                <button class="btn" [disabled]="frmExpression.invalid">Confirmar</button>
-            </div>
+            <button type="submit" class="submit-button" [disabled]="frmExpression.invalid">Confirmar</button>
 
         </form>
     </div>
 </div>
 
-<div class="overlay" *ngIf="showAnswerForm && answer">
-    <div class="dialog" style="width: 600px;">
-        <div class="dialog-header">
-            <h2>{{editingAnswer ? 'Editando' : 'Novo'}}</h2>
-            <button class="close-btn" (click)="showAnswerForm = false">&times;</button>
+<div class="popout-overlay" *ngIf="showAnswerForm && answer">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{editingAnswer ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-button" (click)="showAnswerForm = false">&times;</button>
         </div>
-
-        <hr class="header-divider">
 
         <form autocomplete="off" #frmAnswer="ngForm" (ngSubmit)="confirmAnswer(frmAnswer)">
             <div class="form-group">
@@ -813,11 +804,7 @@
                     [(ngModel)]="answer.text" rows="4"></textarea>
             </div>
 
-            <hr class="header-divider">
-
-            <div class="dialog-footer">
-                <button class="btn" [disabled]="frmAnswer.invalid">Confirmar</button>
-            </div>
+            <button type="submit" class="submit-button" [disabled]="frmAnswer.invalid">Confirmar</button>
 
         </form>
     </div>
