@@ -519,25 +519,18 @@
             <div class="card" *ngFor="let question of questions">
                 <div class="card-header">
                     <span class="badge matematica">{{ question.topic.subject.name }}</span>
-                    <div class="dropdown-container" *ngIf="isSuperAdmin">
-                        <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
+                    <div>
+                        <span class="badge easy">
+                            {{ getDifficultyLevelValue(question.difficultyLevel) }}
+                        </span>
+                        <div class="dropdown-container" *ngIf="isSuperAdmin">
+                            <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                 class="pi pi-ellipsis-h"></i></button>
-                        <div class="dropdown" *ngIf="question.isAdminMenuOpen">
-                            <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
-                            <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
+                            <div class="dropdown" *ngIf="question.isAdminMenuOpen">
+                                <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
+                            </div>
                         </div>
                     </div>
-                    <span class="badge easy">
-                        <!--
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            style="vertical-align: middle; margin-right: 4px;">
-                            <circle cx="12" cy="8" r="7"></circle>
-                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                        </svg>
-                        -->
-                        {{ getDifficultyLevelValue(question.difficultyLevel) }}
-                    </span>
                 </div>
                 <div class="card-body">
                     <div class="topic">{{ question.topic.name }}</div>

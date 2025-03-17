@@ -168,6 +168,14 @@
       align-items: center;
     }
 
+    .book-title-dropdown {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+
     /* Badges e tags */
     .badge {
       display: inline-block;
@@ -542,22 +550,22 @@
 
     <div class="cards-container">
       <div class="card" *ngFor="let book of books">
-        <img src="{{book.urlFile}}" alt="Capa do livro" class="book-cover">
+        <img src="{{ book.urlFile }}" alt="Capa do livro" class="book-cover">
         <div class="book-info">
-          <div>
+          <div class="book-title-dropdown">
             <h3 class="book-title">{{ book.name }}</h3>
-            <p class="book-author">{{ book.author }}</p>
-            <p class="book-description">{{ book.description }}</p>
-          </div>
-          <div class="book-meta">
-            <span class="badge matematica">{{ book.subject.name }}</span>
             <div class="dropdown-container" *ngIf="isSuperAdmin">
-              <button class="dropdown-btn" (click)="toggleDropdown(book)"><i class="pi pi-ellipsis-v"></i></button>
+              <button class="dropdown-btn" (click)="toggleDropdown(book)"><i class="pi pi-ellipsis-h"></i></button>
               <div class="dropdown" *ngIf="book.isAdminMenuOpen">
                 <a (click)="onUpdate(book, file); closeDropdown(book)">Editar</a>
                 <a (click)="confirmarExclusao(book); closeDropdown(book)">Eliminar</a>
               </div>
             </div>
+          </div>
+          <p class="book-author">{{ book.author }}</p>
+          <p class="book-description">{{ book.description }}</p>
+          <div class="book-meta">
+            <span class="badge matematica">{{ book.subject.name }}</span>
             <button class="download-btn" id="filter-btn" [disabled]="book.showLoadingDownload"
               (click)="download(book, book.fileName)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"

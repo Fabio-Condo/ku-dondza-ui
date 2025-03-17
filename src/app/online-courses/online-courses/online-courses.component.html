@@ -171,6 +171,13 @@
             align-items: center;
         }
 
+        .course-title-dropdown {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
         /* Badges e tags */
         .badge {
             display: inline-block;
@@ -562,25 +569,27 @@
 
         <div class="cards-container" *ngFor="let course of courses">
             <div class="card">
-                <img [src]="course.coverImageUrl"alt="Capa do livro" class="course-cover">
+                <img [src]="course.coverImageUrl" alt="Capa do livro" class="course-cover">
                 <div class="course-info">
-                    <div>
+                    <div class="course-title-dropdown">
                         <h3 class="course-title">{{ course.name }}</h3>
-                        <div class="course-instrutor">
-                            <img src="{{course.instrutor.profileImageUrl}}" src="instrutor.jpg" alt="Autor" class="course-instrutor-avatar">
-                            <span>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span>
-                        </div>
-                        <p class="course-description">{{ course.description }}</p>
-                    </div>
-                    <div class="course-meta">
-                        <span class="badge matematica">Matemática</span>
                         <div class="dropdown-container" *ngIf="isSuperAdmin">
-                            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i class="pi pi-ellipsis-v"></i></button>
+                            <button class="dropdown-btn" (click)="toggleDropdown(course)"><i
+                                    class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="course.isAdminMenuOpen">
-                            <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
-                            <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
+                                <a (click)="onUpdateOnlineCourse(course, file); closeDropdown(course)">Editar</a>
+                                <a (click)="confirmarExclusao(course); closeDropdown(course)">Eliminar</a>
                             </div>
                         </div>
+                    </div>
+                    <div class="course-instrutor">
+                        <img src="{{course.instrutor.profileImageUrl}}" src="instrutor.jpg" alt="Autor"
+                            class="course-instrutor-avatar">
+                        <span>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span>
+                    </div>
+                    <p class="course-description">{{ course.description }}</p>
+                    <div class="course-meta">
+                        <span class="badge matematica">Matemática</span>
                         <button class="start-button" [routerLink]="['/coursos-online', course.onlineCourseId]">
                             Ver Curso
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
