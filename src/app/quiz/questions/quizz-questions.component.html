@@ -216,7 +216,7 @@
 
           <!-- Contêiner para expressões matemáticas -->
           <div id="math-container-{{ currentQuestionIndex }}" *ngIf="quiz.questions[currentQuestionIndex].text">
-            \[{{ quiz.questions[currentQuestionIndex].text }}\]
+            {{ quiz.questions[currentQuestionIndex].text }}
           </div>
 
           <div class="answer-options">
@@ -230,7 +230,7 @@
                 [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 [disabled]="showCorrection" />
-              <span>\[{{ answer.text }}\]</span> <!-- Numeração das opções -->
+              <span>{{ answer.text }}</span> <!-- Numeração das opções -->
             </label>
           </div>
 
@@ -241,7 +241,7 @@
               <label for="solution">Explicação:</label>
               <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
                 *ngIf="quiz.questions[currentQuestionIndex].solution">
-                \[{{ quiz.questions[currentQuestionIndex].solution }}\]
+                {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
             </div>
           </div>

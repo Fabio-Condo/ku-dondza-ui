@@ -425,7 +425,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
         // Força a recriação do conteúdo do contêiner
-        mathContainer.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].text}\\]`;
+        mathContainer.innerHTML = `${this.quiz.questions[this.currentQuestionIndex].text}`;
 
         // Renderiza as expressões matemáticas
         MathJax.typesetPromise().then(() => {
@@ -438,7 +438,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
       const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
       if (mathContainerSolution && typeof MathJax !== 'undefined') {
         // Força a recriação do conteúdo do contêiner
-        mathContainerSolution.innerHTML = `\\[${this.quiz.questions[this.currentQuestionIndex].solution}\\]`;
+        mathContainerSolution.innerHTML = `${this.quiz.questions[this.currentQuestionIndex].solution}`;
 
         // Renderiza as expressões matemáticas
         MathJax.typesetPromise().then(() => {

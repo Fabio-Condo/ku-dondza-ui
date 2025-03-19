@@ -32,7 +32,7 @@
                     <canvas #canvas width="400" height="400"></canvas>
                 </div>
                 <p *ngIf="question.text">
-                    \[{{ question.text }}\]
+                    {{ question.text }}
                 </p>
             </div>
 
@@ -44,7 +44,8 @@
                     <div class="answers-grid">
                         <label *ngFor="let answer of question.answers" class="answer-item"
                             [ngClass]="{'answer-correct-item': answer.correct}">
-                            <span> \[{{ answer.text }}\] </span>
+                            <span> {{ answer.text }} </span>
+                            <!-- <span> \[{{ answer.text }}\] </span> -->
                             <span *ngIf="answer.correct" class="correct-tag">✓</span>
                         </label>
                     </div>
@@ -62,7 +63,7 @@
                 <!--<h2 class="solution-title">Solução</h2>-->
                 <div class="solution-content">
                     <p class="solution-text" *ngIf="question.text && !showLatexLoading">
-                        \[{{ question.solution }}\]
+                        {{ question.solution }}
                     </p>
                     <div class="loading-indicator" *ngIf="question.text && showLatexLoading">
                         <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;

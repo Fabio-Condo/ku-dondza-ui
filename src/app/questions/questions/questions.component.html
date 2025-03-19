@@ -379,32 +379,6 @@
             margin-bottom: 20px;
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--color-black);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-
-        .form-textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
         .submit-button {
             width: 100%;
             padding: 12px;
@@ -527,6 +501,7 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                 class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
+                                <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
                                 <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
                             </div>
                         </div>
@@ -536,7 +511,7 @@
                     <div class="topic">{{ question.topic.name }}</div>
                     <div class="exercise">
                         <p *ngIf="question.text">
-                            \[{{ question.text }}\]
+                            {{ question.text }}
                         </p>
                     </div>
                     <div class="card-footer">

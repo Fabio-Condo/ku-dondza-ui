@@ -1,5 +1,6 @@
 <br>
 <br>
+
 <body>
   <div class="container">
     <!-- Tela inicial -->
@@ -10,79 +11,81 @@
           <p class="quiz-sub-title">Personalize e comece a testar seus conhecimentos!</p>
         </div>
 
-        <!-- Campo de Descrição -->
-        <div class="form-group">
-          <label for="title">Titulo</label>
-          <input type="text" id="title" name="title" [(ngModel)]="quiz.title"
-            placeholder="Ex: Quiz sobre funções quadráticas" required />
-        </div>
+        <form autocomplete="off" #courseForm="ngForm">
 
-        <div class="form-group">
-          <label for="difficultyLevel">Nivel de dificuldade</label>
-          <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
-            <option value="" disabled selected>Selecione o nivel</option>
-            <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
-          </select>
-        </div>
+          <!-- Campo de Descrição -->
+          <div class="form-group">
+            <label for="title">Titulo</label>
+            <input type="text" id="title" name="title" [(ngModel)]="quiz.title" required />
+          </div>
 
-        <div class="form-group">
-          <label for="limitPerTopic">Nº de questões por tópico</label>
-          <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
-            <option value="" disabled selected>Selecione o limite</option>
-            <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="difficultyLevel">Nivel de dificuldade</label>
+            <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
+              <option value="" disabled selected>Selecione o nivel</option>
+              <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+            </select>
+          </div>
 
-        <!-- Seleção de Disciplina -->
-        <div class="form-group">
-          <label for="subject">Disciplina</label>
-          <select id="subject" [(ngModel)]="quiz.subject" (change)="getTopicsBySubjectId(quiz.subject.id)"
-            [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
-            <option value="" disabled selected>Selecione a disciplina</option>
-            <option *ngFor="let subject of subjects" [ngValue]="subject">
-              {{ subject.name }}
-            </option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="limitPerTopic">Nº de questões por tópico</label>
+            <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
+              <option value="" disabled selected>Selecione o limite</option>
+              <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
+            </select>
+          </div>
 
-        <div class="form-group" *ngIf="quiz.subject.id">
-          <label>Selecione os Tópicos</label>
+          <!-- Seleção de Disciplina -->
+          <div class="form-group">
+            <label for="subject">Disciplina</label>
+            <select id="subject" [(ngModel)]="quiz.subject" (change)="getTopicsBySubjectId(quiz.subject.id)"
+              [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
+              <option value="" disabled selected>Selecione a disciplina</option>
+              <option *ngFor="let subject of subjects" [ngValue]="subject">
+                {{ subject.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group" *ngIf="quiz.subject.id">
+            <label>Selecione os Tópicos</label>
 
 
-          <ul class="topics-list">
-            <li *ngFor="let topic of topics" class="topic-item">
-              <label>
-                <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
-                <span class="custom-checkbox"></span>
-                <span class="topic-name">{{ topic.name }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
+            <ul class="topics-list">
+              <li *ngFor="let topic of topics" class="topic-item">
+                <label>
+                  <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
+                  <span class="custom-checkbox"></span>
+                  <span class="topic-name">{{ topic.name }}</span>
+                </label>
+              </li>
+            </ul>
+          </div>
 
-        <button class="start-button" (click)="getQuestions()" [disabled]="topics.length === 0 ">
-          <span>Gerar questões</span>
-        </button>
+          <button class="start-button" (click)="getQuestions()" [disabled]="topics.length === 0 ">
+            <span>Gerar questões</span>
+          </button>
 
-        <div *ngIf="showLoading" class="loading-container" aria-live="polite">
-          <div class="loading-indicator">
+          <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+            <div class="loading-indicator">
               <i class="pi pi-spin pi-spinner"></i>
               <span>{{ loadingMessage }}</span>
+            </div>
           </div>
-        </div>
 
-        <!-- Botão de Iniciar Quiz -->
-        <!-- 
-        <button class="start-button" (click)="startQuiz()" [disabled]="
-          !quiz.title ||
-          quiz.questions.length === 0 ||
-          questions.length === 0 ||
-          showLoading ||
-          showGetSubjectLoading
-        ">
-          Começar Quiz
-        </button>
-        -->
+          <!-- Botão de Iniciar Quiz -->
+          <!-- 
+          <button class="start-button" (click)="startQuiz()" [disabled]="
+            !quiz.title ||
+            quiz.questions.length === 0 ||
+            questions.length === 0 ||
+            showLoading ||
+            showGetSubjectLoading
+          ">
+            Começar Quiz
+          </button>
+          -->
+        </form>
       </div>
     </div>
 
@@ -112,7 +115,7 @@
 
           <!-- Contêiner para expressões matemáticas -->
           <div id="math-container-{{ currentQuestionIndex }}" *ngIf="questions[currentQuestionIndex].text">
-            \[{{ questions[currentQuestionIndex].text }}\]
+            {{ questions[currentQuestionIndex].text }}
           </div>
 
           <div class="answer-options">
@@ -126,7 +129,7 @@
                 (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)"
                 [disabled]="showCorrection" />
 
-              <span> \[{{ answer.text }}\] </span>
+              <span> {{ answer.text }} </span>
             </label>
           </div>
 
@@ -143,7 +146,7 @@
               <label for="solution">Explicação:</label>
               <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
                 *ngIf="questions[currentQuestionIndex].solution">
-                \[{{ questions[currentQuestionIndex].solution }}\]
+                {{ questions[currentQuestionIndex].solution }}
               </p>
             </div>
           </div>
@@ -168,7 +171,7 @@
           </button>
           <!-- Botão para submeter respostas -->
           <button class="pagination-btn submit" id="add-btn" (click)="submitAnswers()"
-          *ngIf="currentQuestionIndex === quiz.questions.length - 1">
+            *ngIf="currentQuestionIndex === quiz.questions.length - 1">
             <span *ngIf="!submited">Submeter</span>
             <span *ngIf="submited">Resultados</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -185,8 +188,8 @@
 
       <div *ngIf="showLoading" class="loading-container" aria-live="polite">
         <div class="loading-indicator">
-            <i class="pi pi-spin pi-spinner"></i>
-            <span>{{ loadingMessage }}</span>
+          <i class="pi pi-spin pi-spinner"></i>
+          <span>{{ loadingMessage }}</span>
         </div>
       </div>
 
@@ -270,11 +273,13 @@
             -->
               <div class="detail-item">
                 Taxa de Acerto:
-                <span class="success-text">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
+                <span class="success-text">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)
+                  }}%</span>
               </div>
               <div class="detail-item">
                 Taxa de Erro (incluíndo nulas):
-                <span class="danger-text">{{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
+                <span class="danger-text">{{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1)
+                  }}%</span>
               </div>
             </div>
           </div>
@@ -336,7 +341,8 @@
                 </div>
                 <div class="detail-item">
                   Total de Erros:
-                  <span class="danger-text">{{ quiz.resultsByTopic[topic.name].incorrect + quiz.resultsByTopic[topic.name].nullAnswers || 0
+                  <span class="danger-text">{{ quiz.resultsByTopic[topic.name].incorrect +
+                    quiz.resultsByTopic[topic.name].nullAnswers || 0
                     }}</span>
                 </div>
                 <!--
@@ -351,7 +357,8 @@
                 </div>
                 <div class="detail-item">
                   Taxa de Erro:
-                  <span class="danger-text">{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0 }}%</span>
+                  <span class="danger-text">{{ (100 - (quiz.resultsByTopic[topic.name].percentage!)).toFixed(1) || 0
+                    }}%</span>
                 </div>
               </div>
             </div>
