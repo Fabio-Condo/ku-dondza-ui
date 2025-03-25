@@ -55,7 +55,7 @@
                             <span class="badge easy">
                                 {{ getDifficultyLevelValue(quiz.difficultyLevel) }}
                             </span>
-                            <div class="dropdown-container">
+                            <div class="dropdown-container" *ngIf="isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                                 <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">

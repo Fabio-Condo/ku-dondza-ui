@@ -1,5 +1,6 @@
 <br>
 <br>
+
 <body>
     <div class="container">
 
@@ -148,15 +149,13 @@
     </div>
 </body>
 
-<div class="overlay" *ngIf="displayModalViewQuizzes">
-    <div class="dialog" style="width: 600px;">
+<div class="popout-overlay" *ngIf="displayModalViewQuizzes">
 
-        <div class="dialog-header">
-            <h2>Ver</h2>
-            <button class="close-btn" (click)="displayModalViewQuizzes = false">&times;</button>
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Filtros</h2>
+            <button class="close-button" (click)="displayModalViewQuizzes = false">&times;</button>
         </div>
-
-        <hr class="header-divider">
 
         <p class="details" *ngFor="let quiz of quizzes" style="margin-left: 10px;">
             {{ quiz.title }}

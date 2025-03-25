@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Topic } from 'src/app/core/model/Topic';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-quizzes',
@@ -28,7 +29,6 @@ export class QuizzesComponent implements OnInit {
   quiz: Quiz = new Quiz;
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
-  isAdmin: boolean = false;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   selectedQuiz: Quiz = new Quiz();
   subjects: Subject[] = [];
@@ -96,14 +96,14 @@ export class QuizzesComponent implements OnInit {
     if (this.selectQuizOption == 'ALL_QUIZZES') {
       this.filter.user = 0;
     }
-    
+
     this.showLoading = true;
     this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.quizService.getQuizzes(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {
         this.quizzes = data.content;
         this.totalRecords = data.totalElements;
-        if(this.totalQuizzes == 0){
+        if (this.totalQuizzes == 0) {
           this.totalQuizzes = data.totalElements;
         }
         this.showLoading = false;
@@ -188,80 +188,80 @@ export class QuizzesComponent implements OnInit {
 
   pageSizeOptions = [5, 10, 20, 50]; // Opções para itens por página
   maxVisibleButtons = 5; // Número máximo de botões visíveis (como no PrimeNG)
-  
+
   changePageSize(event: any): void {
     this.filter.itemsPerPage = +event.target.value;
     this.currentPage = 1;
     this.getQuizzes();
   }
-  
+
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.getQuizzes();
     }
   }
-  
+
   nextPage(): void {
     if (this.currentPage < this.totalPages()) {
       this.currentPage++;
       this.getQuizzes();
     }
   }
-  
+
   goToPage(page: number): void {
     this.currentPage = page;
     this.getQuizzes();
   }
-  
+
   totalPages(): number {
     return Math.ceil(this.totalRecords / this.filter.itemsPerPage);
   }
-  
+
   /** Retorna a lista de páginas visíveis com reticências */
   getPages(): (number | string)[] {
     const total = this.totalPages();
     const current = this.currentPage;
     const max = this.maxVisibleButtons;
-    
+
     if (total <= max) {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
-  
+
     const pages: (number | string)[] = [];
-  
+
     // Sempre mostrar a primeira página
     pages.push(1);
-  
+
     if (current > 3) {
       pages.push("...");
     }
-  
+
     // Páginas ao redor da página atual
     const start = Math.max(2, current - 1);
     const end = Math.min(total - 1, current + 1);
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-  
+
     if (current < total - 2) {
       pages.push("...");
     }
-  
+
     // Sempre mostrar a última página
     pages.push(total);
-  
+
     return pages;
   }
-  
+
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-  
+
     // Formata os minutos e segundos para ter 2 dígitos
     const formattedMinutes = minutes.toString().padStart(2, '0');
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
-  
+
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
@@ -282,8 +282,20 @@ export class QuizzesComponent implements OnInit {
     this.filter.title = "";
     this.filter.subject = undefined;
     this.filter.difficultyLevel = undefined;
-    this.selectQuizOption = 'ALL_QUIZZES';   
+    this.selectQuizOption = 'ALL_QUIZZES';
     this.getQuizzes();
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {
