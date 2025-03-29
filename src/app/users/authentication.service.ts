@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';   //npm install @auth0/angular-jwt
@@ -23,6 +23,12 @@ export class AuthenticationService {
     return this.http.post<User>(`${this.host}/user/login`, user, { observe: 'response' });
   }
 
+
+  public loginWithGoogle(credential: string): Observable<HttpResponse<User>> {
+    return this.http.post<User>(`${this.host}/user/auth/google`, { idToken: credential }, { observe: 'response' });
+
+  }
+  
   public register(user: User): Observable<User> {
     return this.http.post<User>(`${this.host}/user/register`, user);
   }
