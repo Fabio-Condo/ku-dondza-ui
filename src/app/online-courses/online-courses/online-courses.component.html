@@ -552,7 +552,7 @@
                     <div class="course-instrutor">
                         <img src="{{course.instrutor.profileImageUrl}}" src="instrutor.jpg" alt="Autor"
                             class="course-instrutor-avatar">
-                        <span>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</span>
+                        <span>{{ course.instrutor.fullName }}</span>
                     </div>
                     <p class="course-description">{{ course.description }}</p>
                     <div class="course-meta">
@@ -642,8 +642,7 @@
                 <label for="instrutor">Instrutor</label>
                 <select id="instrutor" [(ngModel)]="course.instrutor.id" name="institution" required>
                     <option value="" disabled selected>Selecione o instrutor</option>
-                    <option *ngFor="let instrutor of users" [value]="instrutor.id">{{ instrutor.firstName }} {{
-                        instrutor.lastName }}</option>
+                    <option *ngFor="let instrutor of users" [value]="instrutor.id">{{ instrutor.fullName }}</option>
                 </select>
             </div>
 

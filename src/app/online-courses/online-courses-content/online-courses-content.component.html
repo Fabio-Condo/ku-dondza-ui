@@ -79,7 +79,7 @@
         <div class="instructor-card">
             <img class="instructor-img" [src]="course.instrutor.profileImageUrl" alt="Instrutor">
             <div class="instructor-details">
-                <h3>{{ course.instrutor.firstName }} {{ course.instrutor.lastName }}</h3>
+                <h3>{{ course.instrutor.fullName }}</h3>
                 <p class="instructor-bio">{{ course.instrutor.bio }}</p>
                 <p class="instructor-course">{{ course.name }}</p>
             </div>
@@ -183,7 +183,7 @@
             <div *ngFor="let student of students" class="student-card">
                 <img class="student-avatar" [src]="student.profileImageUrl" alt="Aluno">
                 <div class="student-details">
-                    <h4>{{ student.firstName }} {{ student.lastName }}</h4>
+                    <h4>{{ student.fullName }}</h4>
                 </div>
             </div>
         </div>

@@ -24,6 +24,7 @@ export class BooksComponent implements OnInit {
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   file!: File;
+  coverImageFile!: File;
   totalBooks: number = 0;
   displayModalFilter: boolean = false;
   subjects: Subject[] = [];
@@ -72,7 +73,7 @@ export class BooksComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.booksService.update(this.book, this.file).subscribe(
+    this.booksService.update(this.book, this.file, this.coverImageFile).subscribe(
       response => {
         this.book = response
         this.messageService.add({ severity: 'success', detail: 'Livro actualizado com sucesso!' });
@@ -88,7 +89,7 @@ export class BooksComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.booksService.save(this.book, this.file).subscribe(
+    this.booksService.save(this.book, this.file, this.coverImageFile).subscribe(
       response => {
         this.book = response
         this.messageService.add({ severity: 'success', detail: 'Livro salvo com sucesso!' });
@@ -104,6 +105,10 @@ export class BooksComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
+  }
+
+  onCoverImageFileSelected(event: any) {
+    this.coverImageFile = event.target.files[0];
   }
 
   findAll(pagina: number = 0): void {

@@ -3,8 +3,7 @@ import { Subject } from "./Subject";
 export class User {
   public id!: number;
   public userId: string;
-  public firstName: string;
-  public lastName: string;
+  public fullName: string;
   public username: string;
   public bio: string;
   public email: string;
@@ -32,8 +31,7 @@ export class User {
   constructor() {
 
     this.userId = '';
-    this.firstName = '';
-    this.lastName = '';
+    this.fullName = '';
     this.username = '';
     this.bio = '';
     this.email = '';

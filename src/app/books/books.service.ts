@@ -45,17 +45,18 @@ export class BooksService {
 
   }
 
-  save(book: Book, file: File): Observable<Book> {
+  save(book: Book, file: File, coverImageFile: File): Observable<Book> {
     const formData = new FormData();
     formData.append('name', book.name);
     formData.append('description', book.description);
     formData.append('author', book.author);
     formData.append('subjectId', book.subject.id.toString());
     formData.append('file', file);
+    formData.append('coverImageFile', coverImageFile);
     return this.http.post<Book>(`${this.host}`, formData);
   }
   
-  update(book: Book, file: File): Observable<Book> {
+  update(book: Book, file: File, coverImageFile: File): Observable<Book> {
     const formData = new FormData();
     formData.append('id', book.id.toString());
     formData.append('name', book.name);
@@ -63,6 +64,7 @@ export class BooksService {
     formData.append('author', book.author);
     formData.append('subjectId', book.subject.id.toString());
     formData.append('file', file);
+    formData.append('coverImageFile', coverImageFile);
     return this.http.put<Book>(`${this.host}`, formData);
   }
 

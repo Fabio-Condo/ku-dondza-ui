@@ -42,8 +42,7 @@ export class UserService {
 
   save(user: User, profileImageFile: File): Observable<User> {
     const formData = new FormData();
-    formData.append('firstName', user.firstName);
-    formData.append('lastName', user.lastName);
+    formData.append('fullName', user.fullName);
     formData.append('username', user.username);
     formData.append('email', user.email);
     formData.append('userType', user.userType);
@@ -57,8 +56,7 @@ export class UserService {
   update(user: User, profileImageFile: File): Observable<User> {
     const formData = new FormData();
     formData.append('currentUsername', user.username);
-    formData.append('firstName', user.firstName);
-    formData.append('lastName', user.lastName);
+    formData.append('fullName', user.fullName);
     formData.append('username', user.username);
     formData.append('email', user.email);
     formData.append('userType', user.userType);
@@ -72,8 +70,7 @@ export class UserService {
   updateUserProfile(user: User): Observable<User> {
     const formData = new FormData();
     formData.append('currentUsername', user.username);
-    formData.append('firstName', user.firstName);
-    formData.append('lastName', user.lastName);
+    formData.append('fullName', user.fullName);
     formData.append('username', user.username);
     formData.append('email', user.email);
     formData.append('bio', user.bio);

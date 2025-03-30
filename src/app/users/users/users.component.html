@@ -58,7 +58,7 @@
                             </div>
                             <div class="content" style="margin-left: 20px;">
                                 <p class="title user-name-hover" [routerLink]="['/user/profile', user.userId]">
-                                    {{ user.firstName }} {{ user.lastName }}
+                                    {{ user.fullName }}
                                 </p>
                                 <p class="username text-muted">12 mutual friends</p>
                             </div>
@@ -118,15 +118,9 @@
 
         <form autocomplete="off" #courseForm="ngForm">
             <div class="form-group">
-                <label for="firstName">Nome</label>
-                <input type="text" name="firstName" ngModel #firstName="ngModel" required minlength="1"
-                    [(ngModel)]="user.firstName">
-            </div>
-
-            <div class="form-group">
-                <label for="lastName">Apelido</label>
-                <input type="text" name="lastName" ngModel #lastName="ngModel" required minlength="1"
-                    [(ngModel)]="user.lastName">
+                <label for="fullName">Nome</label>
+                <input type="text" name="fullName" ngModel #fullName="ngModel" required minlength="1"
+                    [(ngModel)]="user.fullName">
             </div>
 
             <div class="form-group">

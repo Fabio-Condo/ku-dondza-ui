@@ -28,7 +28,7 @@
                         id="profile-upload" class="upload-input" accept="image/*">
                     </div>
                     <div class="profile-info">
-                        <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+                        <h1>{{ user.fullName }}</h1>
                         <p>{{ user.bio }}</p>
                     </div>
                 </div>
@@ -264,8 +264,8 @@
 
         <form autocomplete="off" #userForm="ngForm" (ngSubmit)="update(userForm)">
             <div class="form-group">
-                <label class="form-label" for="firstName">Nome</label>
-                <input class="form-input" [(ngModel)]="user.firstName" type="text" id="firstName" name="firstName">
+                <label class="form-label" for="fullName">Nome</label>
+                <input class="form-input" [(ngModel)]="user.fullName" type="text" id="fullName" name="fullName">
             </div>
 
             <!--

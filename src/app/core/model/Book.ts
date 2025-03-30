@@ -7,6 +7,8 @@ export class Book {
     author!: string;
     fileName!: string;
     urlFile!: string;
+    coverImageFileName!: string;
+    urlCoverImage!: string;
     totalDownloadNumber!: string;
     subject = new Subject();
 
