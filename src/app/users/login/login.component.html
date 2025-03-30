@@ -1,5 +1,11 @@
 <div class="container" style="max-width: 350px; margin-bottom: 30px;">
 
+  <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+    <div class="loading-indicator">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>{{ loadingMessage }}</span>
+    </div>
+  </div>
   
   <form autocomplete="off" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
     <div class="p-grid" style="margin-top: 60px;">

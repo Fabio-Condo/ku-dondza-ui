@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpResponse, HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../authentication.service';
@@ -20,13 +20,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   public showLoading: any;
   private subscriptions: Subscription[] = [];
   value3: any;
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
 
   constructor(
-    private ngZone: NgZone, 
+    private ngZone: NgZone,
     private http: HttpClient,
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
+    private changeDetectorRef: ChangeDetectorRef // Adicionado
+
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +70,35 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public handleGoogleResponse(resp: any): void {
+    this.loadingMessage = "Estamos quase lá...";
+    this.showLoading = true;
+    this.changeDetectorRef.detectChanges(); // Força a atualização da view
+    
+    const credential = resp.credential;
+
+    this.subscriptions.push(
+      this.authenticationService.loginWithGoogle(credential).subscribe({
+        next: (response: HttpResponse<User>) => {
+          const token = response.headers.get(HeaderType.JWT_TOKEN);
+          this.authenticationService.saveToken(token);
+          this.authenticationService.addUserToLocalCache(response.body);
+          this.showLoading = false;
+          this.ngZone.run(() => {
+            this.router.navigateByUrl('/quizzes');
+          });          
+          this.changeDetectorRef.detectChanges();
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.sendErrorNotification(errorResponse.error.message);
+          this.showLoading = false;
+          this.changeDetectorRef.detectChanges();
+        }
+      })
+    );
+  }
+
+  public handleGoogleResponse2(resp: any): void {
+    this.loadingMessage = "Carregando dados..."
     this.showLoading = true;
     const credential = resp.credential;  // Obter o token (credential)
 
