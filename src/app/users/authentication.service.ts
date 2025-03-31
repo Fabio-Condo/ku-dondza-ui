@@ -20,12 +20,12 @@ export class AuthenticationService {
   ) { }
 
   public login(user: User): Observable<HttpResponse<User>> {
-    return this.http.post<User>(`${this.host}/user/login`, user, { observe: 'response' });
+    return this.http.post<User>(`${this.host}/auth/login`, user, { observe: 'response' });
   }
 
 
   public loginWithGoogle(credential: string): Observable<HttpResponse<User>> {
-    return this.http.post<User>(`${this.host}/user/auth/google`, { idToken: credential }, { observe: 'response' });
+    return this.http.post<User>(`${this.host}/auth/google`, { idToken: credential }, { observe: 'response' });
 
   }
   
