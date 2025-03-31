@@ -770,18 +770,20 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <span class="logo-icon">📚</span> dikahub
+                    <span class="logo-icon">
+                    </span> 
+                    dikahub
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#">Início</a></li>
-                    <li><a href="#">Cursos</a></li>
-                    <li><a href="#">Quizzes</a></li>
-                    <li><a href="#">Biblioteca</a></li>
-                    <li><a href="#">Sobre</a></li>
+                    <li><a [class.active]="isActive('/home')" routerLink="/home">Início</a></li>
+                    <li><a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">Cursos</a></li>
+                    <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
+                    <li><a [class.active]="isActive('/books')" routerLink="/books">Biblioteca</a></li>
+                    <li><a [class.active]="isActive('/questions')" routerLink="/questions">Questões</a></li>
                 </ul>
                 <div class="auth-buttons">
-                    <a href="#login" class="btn btn-outline">Login</a>
-                    <a href="#" class="btn btn-primary">Cadastre-se</a>
+                    <a routerLink="/login" class="btn btn-outline">Login</a>
+                    <a routerLink="/login" class="btn btn-primary">Cadastre-se</a>
                 </div>
                 <div class="mobile-toggle">☰</div>
             </nav>
@@ -796,8 +798,8 @@
                 <p>dikahub é uma plataforma completa com quizzes, cursos, biblioteca virtual e muito mais para
                     impulsionar seu aprendizado.</p>
                 <div class="hero-buttons">
-                    <a href="#" class="btn btn-large btn-white">Conheça nossos cursos</a>
-                    <a href="#login" class="btn btn-large btn-outline">Começar agora</a>
+                    <a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online" class="btn btn-large btn-white">Conheça nossos cursos</a>
+                    <a routerLink="/login" class="btn btn-large btn-outline">Começar agora</a>
                 </div>
             </div>
         </div>
@@ -878,6 +880,14 @@
     <!-- Login Section -->
     <section class="login" id="login">
         <div class="container">
+
+            <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+                <div class="loading-indicator">
+                  <i class="pi pi-spin pi-spinner"></i>
+                  <span>{{ loadingMessage }}</span>
+                </div>
+            </div>
+
             <div class="login-container">
                 <div class="login-content">
                     <h2>Entre na plataforma e comece sua jornada</h2>
@@ -885,6 +895,8 @@
                 </div>
                 <div class="login-form">
                     <h3>Login</h3>
+                    <div id="google-signin-button"></div>
+
                     <div class="social-login">
                         <button class="btn btn-google btn-block">
                             <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
@@ -905,16 +917,19 @@
                         <p>ou</p>
                         <span></span>
                     </div>
-                    <form>
+                    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input type="email" id="email" placeholder="Seu e-mail">
+                            <input type="email" id="username" name="username" #usernameInput="ngModel" ngModel placeholder="Seu e-mail"
+                            required username>
                         </div>
                         <div class="form-group">
                             <label for="password">Senha</label>
-                            <input type="password" id="password" placeholder="Sua senha">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                            <input type="password" id="password" name="password" #passwordInput="ngModel" ngModel placeholder="Sua senha"
+                            required>                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            {{ showLoading ? 'Carregando...' : 'Entrar' }}
+                        </button>
                     </form>
                     <div class="login-footer">
                         <p>Não tem uma conta? <a href="#">Cadastre-se</a></p>
@@ -1002,7 +1017,7 @@
             <h2>Pronto para começar?</h2>
             <p>Junte-se a milhares de estudantes e professores que já transformaram sua experiência acadêmica com a
                 dikahub.</p>
-            <a href="#" class="btn btn-large btn-white">Criar conta gratuita</a>
+            <a routerLink="/login" class="btn btn-large btn-white">Criar conta gratuita</a>
         </div>
     </section>
 </body>

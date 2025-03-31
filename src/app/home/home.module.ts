@@ -25,7 +25,7 @@ import { TooltipModule } from 'primeng/tooltip';
   imports: [
     CommonModule,
     RouterModule,
-
+    FormsModule,
   ]
 })
 export class HomeModule { }
