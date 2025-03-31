@@ -99,6 +99,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public onLogin(user: User): void {
+    this.loadingMessage = "Estamos quase lá...";
     this.showLoading = true;
 
     this.subscriptions.push(
