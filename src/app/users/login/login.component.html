@@ -1,3 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Moderno</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: white;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 900px;
+      height: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .image-side {
+      flex: 1;
+      background: #2196F3 url('/api/placeholder/600/600') center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: white;
+      padding: 50px;
+      position: relative;
+    }
+
+    .image-side::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(33, 150, 243, 0.8), rgba(33, 150, 243, 0.4));
+      z-index: 1;
+    }
+
+    .image-side .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .image-side h2 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+    }
+
+    .image-side p {
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .login-side {
+      flex: 1;
+      background-color: white;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .login-side h1 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      color: #666;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #2196F3;
+      outline: none;
+    }
+
+    .options-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+    }
+
+    .remember-me input[type="checkbox"] {
+      margin-right: 8px;
+      accent-color: #2196F3;
+    }
+
+    .remember-me label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .forgot-password a {
+      color: #666;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+
+    .forgot-password a:hover {
+      color: #2196F3;
+    }
+
+    .login-btn {
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-bottom: 25px;
+      width: 100%;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background-color: #ddd;
+    }
+
+    .divider span {
+      padding: 0 15px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    .google-btn:hover {
+      background-color: #f5f5f5;
+    }
+
+    .google-btn svg {
+      margin-right: 10px;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .signup-link a {
+      color: #2196F3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .image-side {
+        display: none;
+      }
+
+      .login-side {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+      <div class="loading-indicator">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>{{ loadingMessage }}</span>
+      </div>
+    </div>
+
+    <div class="image-side">
+      <div class="content">
+        <h2>Bem-vindo de volta</h2>
+        <p>Entre com sua conta para acessar todos os recursos exclusivos.</p>
+      </div>
+    </div>
+    <div class="login-side">
+      <h1>Entrar</h1>
+      <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+        <div class="input-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="username" name="username" #usernameInput="ngModel" ngModel placeholder="Seu e-mail"
+            required username>
+        </div>
+        <div class="input-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" name="password" #passwordInput="ngModel" ngModel placeholder="Sua senha"
+            required>
+        </div>
+        <div class="options-row">
+          <div class="remember-me">
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">Lembrar-me</label>
+          </div>
+          <div class="forgot-password">
+            <a href="#">Esqueceu a senha?</a>
+          </div>
+        </div>
+        <button type="submit" class="login-btn">M
+          {{ showLoading ? 'Carregando...' : 'Entrar' }}
+        </button>
+      </form>
+      <div class="divider">
+        <span>OU</span>
+      </div>
+      <!--
+            <button class="google-btn" id="google-btn">
+                <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12
+                      s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24
+                      s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" fill="#FFC107"/>
+                    <path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657
+                      C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" fill="#FF3D00"/>
+                    <path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36
+                      c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" fill="#4CAF50"/>
+                    <path d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571
+                      c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" fill="#1976D2"/>
+                </svg>
+                Entrar com Google
+            </button>
+            -->
+      <div id="google-signin-button"></div>
+      <div class="signup-link">
+        Não tem uma conta? <a href="#">Cadastre-se</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+<!--
 <div class="container" style="max-width: 350px; margin-bottom: 30px;">
 
   <div *ngIf="showLoading" class="loading-container" aria-live="polite">
@@ -38,7 +344,14 @@
       </div>
     </div>
 
-    <!--
+  </form>
+
+  <div id="google-signin-button"></div>
+
+</div>
+-->
+
+<!--
     <div id="g_id_onload"
       data-client_id="170476897572-k758vjru9e2qqa707qhb5ns2kaaegquc.apps.googleusercontent.com"
       data-context="signin"
@@ -59,10 +372,3 @@
 
     <div id="google-signin-button"></div>
     -->
-
-  </form>
-
-  <div id="google-signin-button"></div>
-
-</div>
-

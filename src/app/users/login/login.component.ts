@@ -6,6 +6,7 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../authentication.service';
 import { User } from 'src/app/core/model/User';
+import { NgForm } from '@angular/forms';
 declare var google: any; // Declaração para evitar erro de "google is not defined"
 
 
@@ -97,33 +98,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
   }
 
-  public handleGoogleResponse2(resp: any): void {
-    this.loadingMessage = "Carregando dados..."
-    this.showLoading = true;
-    const credential = resp.credential;  // Obter o token (credential)
-
-    this.subscriptions.push(
-      this.authenticationService.loginWithGoogle(credential).subscribe(
-
-        (response: HttpResponse<User>) => {
-          const token = response.headers.get(HeaderType.JWT_TOKEN);
-          this.authenticationService.saveToken(token);
-          this.authenticationService.addUserToLocalCache(response.body);
-          this.ngZone.run(() => {
-            this.router.navigateByUrl('/quizzes');
-          });
-          this.showLoading = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);  // Recebendo a reesposta do backend
-          this.showLoading = false;
-        }
-      )
-    );
-  }
-
   public onLogin(user: User): void {
     this.showLoading = true;
+
     this.subscriptions.push(
       this.authenticationService.login(user).subscribe(
 
