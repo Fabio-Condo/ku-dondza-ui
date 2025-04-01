@@ -140,6 +140,67 @@
             color: #4361ee;
         }
 
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #4361ee;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .mobile-nav-links li {
+            margin: 20px 0;
+        }
+
+        .mobile-nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .mobile-auth-buttons {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mobile-auth-buttons .btn {
+            font-size: 18px;
+        }
+
         /* Hero Section */
         .hero {
             padding: 100px 0;
@@ -771,7 +832,7 @@
             <nav>
                 <div class="logo">
                     <span class="logo-icon">
-                    </span> 
+                    </span>
                     dikahub
                 </div>
                 <ul class="nav-links">
@@ -785,10 +846,28 @@
                     <a routerLink="/login" class="btn btn-outline">Login</a>
                     <a routerLink="/login" class="btn btn-primary">Cadastre-se</a>
                 </div>
-                <div class="mobile-toggle">☰</div>
+                <!--<div class="mobile-toggle">☰</div>-->
+                <div class="mobile-toggle" id="mobile-toggle" (click)="toggleMenu()">☰</div>
             </nav>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
+        <button class="close-btn" id="close-menu">✕</button>
+        <ul class="mobile-nav-links">
+            <li><a [class.active]="isActive('/home')" routerLink="/home">Início</a></li>
+            <li><a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">Cursos</a></li>
+            <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
+            <li><a [class.active]="isActive('/books')" routerLink="/books">Biblioteca</a></li>
+            <li><a [class.active]="isActive('/questions')" routerLink="/questions">Questões</a></li>
+            <li><a href="#">Sobre</a></li>
+        </ul>
+        <div class="mobile-auth-buttons">
+            <a href="#login" class="btn btn-white">Login</a>
+            <a href="#" class="btn btn-outline" style="color: white; border-color: white;">Cadastre-se</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -798,7 +877,8 @@
                 <p>dikahub é uma plataforma completa com quizzes, cursos, biblioteca virtual e muito mais para
                     impulsionar seu aprendizado.</p>
                 <div class="hero-buttons">
-                    <a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online" class="btn btn-large btn-white">Conheça nossos cursos</a>
+                    <a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online"
+                        class="btn btn-large btn-white">Conheça nossos cursos</a>
                     <a routerLink="/login" class="btn btn-large btn-outline">Começar agora</a>
                 </div>
             </div>
@@ -883,8 +963,8 @@
 
             <div *ngIf="showLoading" class="loading-container" aria-live="polite">
                 <div class="loading-indicator">
-                  <i class="pi pi-spin pi-spinner"></i>
-                  <span>{{ loadingMessage }}</span>
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>{{ loadingMessage }}</span>
                 </div>
             </div>
 
@@ -920,13 +1000,14 @@
                     <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input type="email" id="username" name="username" #usernameInput="ngModel" ngModel placeholder="Seu e-mail"
-                            required username>
+                            <input type="email" id="username" name="username" #usernameInput="ngModel" ngModel
+                                placeholder="Seu e-mail" required username>
                         </div>
                         <div class="form-group">
                             <label for="password">Senha</label>
-                            <input type="password" id="password" name="password" #passwordInput="ngModel" ngModel placeholder="Sua senha"
-                            required>                        </div>
+                            <input type="password" id="password" name="password" #passwordInput="ngModel" ngModel
+                                placeholder="Sua senha" required>
+                        </div>
                         <button type="submit" class="btn btn-primary btn-block">
                             {{ showLoading ? 'Carregando...' : 'Entrar' }}
                         </button>

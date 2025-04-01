@@ -20,6 +20,9 @@ export class HomeComponent implements OnInit {
   value3: any;
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  isPopoutVisible = false;
+  isMenuActive = false; // Controla a exibição do menu
+
   constructor(
     private ngZone: NgZone,
     private router: Router,
@@ -110,6 +113,11 @@ export class HomeComponent implements OnInit {
         }
       )
     );
+  }
+
+  toggleMenu() {
+    this.isMenuActive = !this.isMenuActive;
+    this.isPopoutVisible = false;
   }
 
   private sendErrorNotification(message: string): void {
