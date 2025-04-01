@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpResponse, HttpErrorResponse, HttpClient } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { HttpResponse, HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../authentication.service';
 import { User } from 'src/app/core/model/User';
-declare var google: any; 
+import { NgForm } from '@angular/forms';
+declare var google: any; // Declaração para evitar erro de "google is not defined"
 
 
 @Component({
@@ -22,12 +23,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   value3: any;
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  activeTab: number = 1;
+
   constructor(
     private ngZone: NgZone,
     private http: HttpClient,
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
+    private changeDetectorRef: ChangeDetectorRef // Adicionado
 
   ) { }
 
@@ -71,6 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public handleGoogleResponse(resp: any): void {
     this.loadingMessage = "Estamos quase lá...";
     this.showLoading = true;
+    this.changeDetectorRef.detectChanges(); // Força a atualização da view
     
     const credential = resp.credential;
 
@@ -84,10 +89,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.ngZone.run(() => {
             this.router.navigateByUrl('/quizzes');
           });          
+          this.changeDetectorRef.detectChanges();
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.sendErrorNotification(errorResponse.error.message);
           this.showLoading = false;
+          this.changeDetectorRef.detectChanges();
         }
       })
     );
@@ -95,6 +102,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public onLogin(user: User): void {
     this.loadingMessage = "Estamos quase lá...";
+
     this.showLoading = true;
 
     this.subscriptions.push(
@@ -113,6 +121,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       )
     );
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
   }
 
   private sendErrorNotification(message: string): void {

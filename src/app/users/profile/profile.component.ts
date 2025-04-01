@@ -124,7 +124,7 @@ export class ProfileComponent implements OnInit {
 
   onLogOut(): void {
     this.authenticationService.logOut();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
   private sendErrorNotification(message: string): void {

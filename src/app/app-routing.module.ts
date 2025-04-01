@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { NaoAutorizadoComponent } from './core/nao-autorizado.component';
 
 import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
-import { LoginComponent } from './users/login/login.component';
+import { HomeComponent } from './home/home/home.component';
 
 const routes: Routes = [
   { path: 'nao-autorizado', component: NaoAutorizadoComponent },
-  { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'pagina-nao-encontrada', component: PaginaNaoEncontradaComponent },
   { path: '**', redirectTo: 'pagina-nao-encontrada' }
 

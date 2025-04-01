@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -23,14 +23,24 @@ export class HomeComponent implements OnInit {
   isPopoutVisible = false;
   isMenuActive = false; // Controla a exibição do menu
 
+  activeTab: number = 1;
+
   constructor(
     private ngZone: NgZone,
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+
+    if (this.authenticationService.isUserLoggedIn()) {  // Se estiver autenticado, apenas abe a tela principal
+      this.router.navigateByUrl('/quizzes');
+    } else {
+      this.router.navigateByUrl('/home');
+    }
+
     this.scrollToTop();
 
     // Inicializar o Google Login
@@ -68,10 +78,15 @@ export class HomeComponent implements OnInit {
     return this.router.isActive(url, true);
   }
 
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+  }
+
   public handleGoogleResponse(resp: any): void {
     this.loadingMessage = "Estamos quase lá...";
     this.showLoading = true;
-
+    this.changeDetectorRef.detectChanges(); // Força a atualização da view
+    
     const credential = resp.credential;
 
     this.subscriptions.push(
@@ -83,11 +98,13 @@ export class HomeComponent implements OnInit {
           this.showLoading = false;
           this.ngZone.run(() => {
             this.router.navigateByUrl('/quizzes');
-          });
+          });          
+          this.changeDetectorRef.detectChanges();
         },
         error: (errorResponse: HttpErrorResponse) => {
           this.sendErrorNotification(errorResponse.error.message);
           this.showLoading = false;
+          this.changeDetectorRef.detectChanges();
         }
       })
     );
