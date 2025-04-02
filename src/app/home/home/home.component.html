@@ -47,13 +47,13 @@
             align-items: center;
             font-size: 24px;
             font-weight: 700;
-            color: #4361ee;
+            color: #3b82f6;
         }
 
         .logo-icon {
             margin-right: 12px;
             font-size: 26px;
-            color: #4361ee;
+            color: #3b82f6;
         }
 
         .nav-links {
@@ -75,7 +75,7 @@
         }
 
         .nav-links a:hover {
-            color: #4361ee;
+            color: #3b82f6;
         }
 
         .nav-links a::after {
@@ -85,7 +85,7 @@
             height: 2px;
             bottom: 0;
             left: 0;
-            background-color: #4361ee;
+            background-color: #3b82f6;
             transition: width 0.3s;
         }
 
@@ -110,20 +110,20 @@
         }
 
         .btn-outline {
-            border: 1px solid #4361ee;
-            color: #4361ee;
+            border: 1px solid #3b82f6;
+            color: #3b82f6;
             background: transparent;
         }
 
         .btn-outline:hover {
-            background-color: #4361ee;
+            background-color: #3b82f6;
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
         }
 
         .btn-primary {
-            background-color: #4361ee;
+            background-color: #3b82f6;
             color: white;
         }
 
@@ -137,7 +137,7 @@
             display: none;
             font-size: 24px;
             cursor: pointer;
-            color: #4361ee;
+            color: #3b82f6;
         }
 
         /* Mobile menu */
@@ -147,7 +147,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #4361ee;
+            background-color: #3b82f6;
             z-index: 2000;
             display: flex;
             flex-direction: column;
@@ -204,7 +204,7 @@
         /* Hero Section */
         .hero {
             padding: 100px 0;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            background: linear-gradient(135deg, #4361ee 0%, #3b82f6 100%);
             color: white;
             position: relative;
             overflow: hidden;
@@ -256,7 +256,7 @@
 
         .btn-white {
             background-color: white;
-            color: #4361ee;
+            color: #3b82f6;
         }
 
         .btn-white:hover {
@@ -289,7 +289,7 @@
             position: absolute;
             width: 60px;
             height: 3px;
-            background-color: #4361ee;
+            background-color: #3b82f6;
             bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
@@ -326,7 +326,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #4361ee, #4cc9f0);
+            background: linear-gradient(90deg, #3b82f6, #4cc9f0);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s ease;
@@ -350,7 +350,7 @@
             align-items: center;
             margin: 0 auto 25px;
             font-size: 30px;
-            color: #4361ee;
+            color: #3b82f6;
             background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(76, 201, 240, 0.1) 100%);
             box-shadow: 0 10px 20px rgba(67, 97, 238, 0.1);
         }
@@ -387,7 +387,7 @@
         .stat-number {
             font-size: 48px;
             font-weight: 700;
-            color: #4361ee;
+            color: #3b82f6;
             margin-bottom: 10px;
             line-height: 1;
         }
@@ -511,7 +511,7 @@
         }
 
         .form-control:focus-within {
-            border-color: #4361ee;
+            border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
         }
 
@@ -578,7 +578,7 @@
         }
 
         .login-footer a {
-            color: #4361ee;
+            color: #3b82f6;
             text-decoration: none;
             font-weight: 500;
         }
@@ -683,7 +683,7 @@
             align-items: center;
             color: white;
             font-weight: bold;
-            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #4cc9f0 100%);
         }
 
         .author-info h4 {
@@ -700,7 +700,7 @@
         /* CTA Section */
         .cta {
             padding: 80px 0;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            background: linear-gradient(135deg, #4361ee 0%, #3b82f6 100%);
             color: white;
             text-align: center;
             position: relative;
@@ -886,6 +886,7 @@
 
 <body>
     <!-- Header -->
+    <!--
     <header>
         <div class="container">
             <nav>
@@ -905,11 +906,11 @@
                     <a routerLink="/login" class="btn btn-outline">Login</a>
                     <a routerLink="/login" class="btn btn-primary">Cadastre-se</a>
                 </div>
-                <!--<div class="mobile-toggle">☰</div>-->
                 <div class="mobile-toggle" id="mobile-toggle" (click)="toggleMenu()">☰</div>
             </nav>
         </div>
     </header>
+    -->
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
@@ -923,8 +924,8 @@
             <li><a href="#">Sobre</a></li>
         </ul>
         <div class="mobile-auth-buttons">
-            <a href="#login" class="btn btn-white">Login</a>
-            <a href="#" class="btn btn-outline" style="color: white; border-color: white;">Cadastre-se</a>
+            <a routerLink="/login" class="btn btn-white">Login</a>
+            <a routerLink="/login" class="btn btn-outline" style="color: white; border-color: white;">Cadastre-se</a>
         </div>
     </div>
 
@@ -932,13 +933,14 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Sua jornada acadêmica em um só lugar</h1>
+                <h1>dikahub</h1>
+                <!--<h1>Sua jornada acadêmica em um só lugar</h1>-->
                 <p>dikahub é uma plataforma completa com quizzes, cursos, biblioteca virtual e muito mais para
                     impulsionar seu aprendizado.</p>
                 <div class="hero-buttons">
-                    <a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online"
-                        class="btn btn-large btn-white">Conheça nossos cursos</a>
-                    <a routerLink="/login" class="btn btn-large btn-outline">Começar agora</a>
+                    <a routerLink="/login"
+                        class="btn btn-large btn-white">Começar agora</a>
+                    <!--<a routerLink="/login" class="btn btn-large btn-outline" style="color: white;">Começar agora</a>-->
                 </div>
             </div>
         </div>
