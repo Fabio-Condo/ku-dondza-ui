@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpResponse, HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../authentication.service';
 import { User } from 'src/app/core/model/User';
-import { NgForm } from '@angular/forms';
-declare var google: any; // Declaração para evitar erro de "google is not defined"
+import { GoogleAuthService } from '../google-auth-service.service';
 
 
 @Component({
@@ -31,96 +30,92 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private changeDetectorRef: ChangeDetectorRef // Adicionado
+    private changeDetectorRef: ChangeDetectorRef, // Adicionado
+    private googleAuthService: GoogleAuthService
+
 
   ) { }
 
   ngOnInit(): void {
-
-    if (this.authenticationService.isUserLoggedIn()) {  // Se estiver autenticado, apenas abe a tela principal
-      this.router.navigateByUrl('/quizzes');
-    } else {
-      this.router.navigateByUrl('/login');
-    }
-
+    this.checkAuthentication();
     this.scrollToTop();
-
-    // Inicializar o Google Login
-    google.accounts.id.initialize({
-      client_id: '170476897572-k758vjru9e2qqa707qhb5ns2kaaegquc.apps.googleusercontent.com',
-      callback: (response: any) => {
-        const credential = response.credential;  // Aqui você captura o token de autenticação
-        //localStorage.setItem('google_token', credential); // Armazena de maneira segura
-        this.handleGoogleResponse(response);  // Processa a resposta
-      }
-    });
-
-    // Renderizar o botão de login do Google
-    google.accounts.id.renderButton(
-      document.getElementById('google-signin-button'),
-      {
-        theme: 'outline',
-        size: 'large',
-        shape: 'rectangular'
-      }
-    );
-
-    google.accounts.id.prompt(); // Solicitar ao usuário para fazer login
+    this.initializeGoogleAuth();
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  public handleGoogleResponse(resp: any): void {
-    this.loadingMessage = "Estamos quase lá...";
-    this.showLoading = true;
-    this.changeDetectorRef.detectChanges(); // Força a atualização da view
-    
-    const credential = resp.credential;
-
-    this.subscriptions.push(
-      this.authenticationService.loginWithGoogle(credential).subscribe({
-        next: (response: HttpResponse<User>) => {
-          const token = response.headers.get(HeaderType.JWT_TOKEN);
-          this.authenticationService.saveToken(token);
-          this.authenticationService.addUserToLocalCache(response.body);
-          this.showLoading = false;
-          this.ngZone.run(() => {
-            this.router.navigateByUrl('/quizzes');
-          });          
-          this.changeDetectorRef.detectChanges();
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);
-          this.showLoading = false;
-          this.changeDetectorRef.detectChanges();
-        }
-      })
-    );
+  ngOnDestroy(): void {
+    this.cleanupSubscriptions();
   }
 
   public onLogin(user: User): void {
     this.loadingMessage = "Estamos quase lá...";
-
     this.showLoading = true;
 
-    this.subscriptions.push(
-      this.authenticationService.login(user).subscribe(
+    const subscription = this.authenticationService.login(user).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.router.navigateByUrl('/quizzes');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      },
+      complete: () => {
+        this.showLoading = false;
+      }
+    });
 
-        (response: HttpResponse<User>) => {
-          const token = response.headers.get(HeaderType.JWT_TOKEN);
-          this.authenticationService.saveToken(token);
-          this.authenticationService.addUserToLocalCache(response.body);
+    this.subscriptions.push(subscription);
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.showLoading = true;
+    this.loadingMessage = "Estamos quase lá...";
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.ngZone.run(() => {
           this.router.navigateByUrl('/quizzes');
-          this.showLoading = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);  // Recebendo a reesposta do backend
-          this.showLoading = false;
-        }
-      )
-    );
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  private checkAuthentication(): void {
+    if (this.authenticationService.isUserLoggedIn()) {
+      this.router.navigateByUrl('/quizzes');
+    }
+  }
+
+  private cleanupSubscriptions(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = [];
   }
 
   setActiveTab(tabIndex: number) {
@@ -134,9 +129,4 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
     }
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
 }
