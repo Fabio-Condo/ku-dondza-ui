@@ -11,9 +11,30 @@
             </div>
         </div>
 
+        <h1>
+            <i class="pi pi-arrow-left" routerLink="/questions" style="margin-right: 5px; cursor: pointer;"></i>
+            Questão
+        </h1>
+        <span class="badge matematica">{{ question.topic.subject.name }}</span>
+        <span class="topic-tag" style="margin-left: 5px; margin-right: 5px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                </path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            {{ question.topic.name }}
+        </span>
+        <span class="badge easy">
+            {{ getDifficultyLevelValue(question.difficultyLevel) }}
+        </span>
+
         <div class="question-card">
             <!-- Cabeçalho da pergunta -->
             <div class="question-header">
+        
+                <!--
                 <h1>
                     <i class="pi pi-arrow-left" routerLink="/questions" style="margin-right: 5px; cursor: pointer;"></i>
                     {{ question.topic.name }}
@@ -23,11 +44,12 @@
                 <span class="badge easy" style="margin-left: 5px;">
                     {{ getDifficultyLevelValue(question.difficultyLevel) }}
                 </span>
+                -->
             </div>
 
             <!-- Corpo da pergunta -->
             <div class="question-body">
-                <h2 class="question-title">Exercício</h2>
+
                 <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile"
                     alt="Gráfico de funções" class="question-image">
                 <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">

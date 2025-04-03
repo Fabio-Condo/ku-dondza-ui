@@ -1,0 +1,137 @@
+<!-- app.component.html -->
+<div class="dashboard-container">
+    <!-- Header -->
+    <header class="course-header">
+      <div class="container">
+        <div class="header-content">
+          <h1>{{ courseData.title }}</h1>
+          <div class="author-info">
+            <img [src]="courseData.author.avatar" [alt]="courseData.author.name" class="author-avatar">
+            <div class="author-details">
+              <p class="author-name">{{ courseData.author.name }}</p>
+              <p class="author-role">{{ courseData.author.role }}</p>
+            </div>
+          </div>
+          <div class="enrollment-actions">
+            <button class="btn btn-primary enroll-btn">Auto-inscrever no curso</button>
+            <button class="btn btn-secondary add-course-btn">Adicionar curso</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container">
+      <div class="content-grid">
+        <!-- Course Info & Modules -->
+        <div class="main-content">
+          <!-- Course Description -->
+          <div class="card course-description">
+            <h2>Sobre o Curso</h2>
+            <p>{{ courseData.description }}</p>
+          </div>
+          
+          <!-- Prerequisites Section -->
+          <div class="card prerequisites-section">
+            <div class="section-header">
+              <h2>Pré-requisitos</h2>
+              <button class="btn btn-outline add-prereq-btn">
+                <i class="icon-plus"></i> Adicionar pré-requisito
+              </button>
+            </div>
+            
+            <div class="prerequisites-list">
+              <div class="prerequisite-item" *ngFor="let prereq of courseData.prerequisites">
+                <span class="prereq-name">{{ prereq.name }}</span>
+                <span class="prereq-type">{{ prereq.type }}</span>
+              </div>
+              
+              <!-- Empty state -->
+              <div class="empty-state" *ngIf="!courseData.prerequisites || courseData.prerequisites.length === 0">
+                <p>Nenhum pré-requisito adicionado</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Modules Section -->
+          <div class="card modules-section">
+            <div class="section-header">
+              <h2>Módulos do Curso</h2>
+              <button class="btn btn-outline add-module-btn">
+                <i class="icon-plus"></i> Adicionar módulo
+              </button>
+            </div>
+            
+            <div class="modules-list">
+              <div class="module-item" *ngFor="let module of courseData.modules">
+                <div class="module-header" (click)="toggleModule(module.id)">
+                  <h3>{{ module.title }}</h3>
+                  <div class="module-meta">
+                    <span class="lessons-count">{{ module.lessons.length }} aulas</span>
+                    <i class="icon-chevron-down" [class.expanded]="expandedModule === module.id"></i>
+                  </div>
+                </div>
+                
+                <div class="module-lessons" [class.expanded]="expandedModule === module.id">
+                  <ul class="lessons-list">
+                    <li class="lesson-item" *ngFor="let lesson of module.lessons">
+                      <div class="lesson-content">
+                        <div class="lesson-icon">
+                          <i class="icon-play-circle"></i>
+                        </div>
+                        <span class="lesson-title">{{ lesson.title }}</span>
+                        <span class="lesson-duration">{{ lesson.duration }}</span>
+                        
+                        <div class="lesson-actions">
+                          <button class="btn btn-text download-btn">
+                            <i class="icon-download"></i>
+                          </button>
+                          <div class="dropdown">
+                            <button class="btn btn-text options-btn">
+                              <i class="icon-more-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a href="#" class="dropdown-item">Editar aula</a>
+                              <a href="#" class="dropdown-item">Mover para outro módulo</a>
+                              <a href="#" class="dropdown-item danger">Excluir aula</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Students Section -->
+        <div class="sidebar">
+          <div class="card students-section">
+            <h2>Alunos Inscritos</h2>
+            <p class="students-count">{{ courseData.students.length }} alunos neste curso</p>
+            
+            <ul class="students-list">
+              <li class="student-item" *ngFor="let student of courseData.students">
+                <img [src]="student.avatar" [alt]="student.name" class="student-avatar">
+                <div class="student-info">
+                  <p class="student-name">{{ student.name }}</p>
+                  <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="student.progress"></div>
+                  </div>
+                </div>
+                <span class="progress-percentage">{{ student.progress }}%</span>
+              </li>
+            </ul>
+            
+            <div class="sidebar-actions">
+              <button class="btn btn-primary invite-btn">
+                Convidar Alunos
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
