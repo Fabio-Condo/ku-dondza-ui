@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDashboardService } from '../user-dashboard.service';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-main-panel',
+  templateUrl: './main-panel.component.html',
+  styleUrls: ['./main-panel.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class MainPanelComponent implements OnInit {
 
   loggedUser: User = new User();
 
   constructor(
-    private userDashboardService: UserDashboardService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -24,6 +22,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private sendErrorNotification(message: string): void {

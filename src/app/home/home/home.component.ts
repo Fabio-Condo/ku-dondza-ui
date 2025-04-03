@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private checkAuthentication(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/quizzes');
+      this.router.navigateByUrl('/main-panel');
     }
   }
 
@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
-        this.router.navigateByUrl('/quizzes');
+        this.router.navigateByUrl('/main-panel');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.ngZone.run(() => {
-          this.router.navigateByUrl('/quizzes');
+          this.router.navigateByUrl('/main-panel');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {

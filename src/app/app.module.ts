@@ -31,8 +31,8 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { SubjectsRoutingModule } from './subjects/subjects-routing.module';
 import { TopicsModule } from './topics/topics.module';
 import { TopicsRoutingModule } from './topics/topics-routing.module';
-import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
-import { UserDashboardRoutingModule } from './user-dashboard/user-dashboard-routing.module';
+import { MainPanelRoutingModule } from './main-panel/main-panel-routing.module';
+import { MainPanelModule } from './main-panel/main-panel.module';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ import { UserDashboardRoutingModule } from './user-dashboard/user-dashboard-rout
     HomeRoutingModule,
     QuizRoutingModule,
     QuestionRoutingModule,
-    UserDashboardRoutingModule,
+    MainPanelRoutingModule,
   
     BooksModule,
     SubjectsModule,
@@ -61,7 +61,7 @@ import { UserDashboardRoutingModule } from './user-dashboard/user-dashboard-rout
     HomeModule,
     QuizModule,
     QuestionsModule,
-    UserDashboardModule,
+    MainPanelModule,
 
     CoreRoutingModule,
     AppRoutingModule,

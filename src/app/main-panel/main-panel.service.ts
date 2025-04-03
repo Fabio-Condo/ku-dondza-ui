@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class UserDashboardService {
+export class MainPanelService {
   private baseUrl = environment.apiUrl + '/user';
 
   constructor(private http: HttpClient) { }
