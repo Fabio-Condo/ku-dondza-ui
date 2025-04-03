@@ -337,6 +337,18 @@ export class QuizzQuestionsComponent implements OnInit {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
+  getDifficultyLevelValue(level: string) {
+    switch (level) {
+      case 'EASY':
+        return 'Fácil';
+      case 'MEDIUM':
+        return 'Médio';
+      case 'HARD':
+        return 'Dificil';
+    }
+    return '';
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

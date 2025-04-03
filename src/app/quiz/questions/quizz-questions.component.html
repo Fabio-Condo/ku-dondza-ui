@@ -6,17 +6,29 @@
 
     <div *ngIf="showLoading" class="loading-container" aria-live="polite">
       <div class="loading-indicator">
-          <i class="pi pi-spin pi-spinner"></i>
-          <span>{{ loadingMessage }}</span>
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>{{ loadingMessage }}</span>
       </div>
     </div>
 
     <!-- Tela inicial -->
     <div *ngIf="showStartScreen" class="results-screen2">
 
+      <h1>
+        <i class="pi pi-arrow-left" routerLink="/quizzes" style="margin-right: 5px; cursor: pointer;"></i>
+        {{ quiz.title }}
+      </h1>
+
+      <span class="badge matematica">{{ quiz.subject.name }}</span>
+      <span class="badge easy" style="margin-left: 5px;">
+        {{ getDifficultyLevelValue(quiz.difficultyLevel) }}
+      </span>
+
       <div class="results-summary">
+        <!--
         <p class="title">{{ quiz.title }}</p>
         <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
+        -->
 
         <div class="button-container">
           <button class="btn-outline" id="add-btn" (click)="startQuiz()">
@@ -91,7 +103,8 @@
             -->
               <div class="detail-item">
                 Taxa de Acerto:
-                <span class="success-text">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%</span>
+                <span class="success-text">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)
+                  }}%</span>
               </div>
               <div class="detail-item">
                 Taxa de Erro:
@@ -190,13 +203,36 @@
       <div *ngIf="currentQuestionIndex < quiz.questions.length">
         <div class="question-card">
 
-          <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>
-          <p class="quiz-sub-title">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</p>
+          <div class="quiz-tittle-container">
+            <h1>
+              {{ quiz.title }}
+            </h1>
+            <i class="pi pi-times" (click)="showStartScreen = true;" style="margin-right: 5px; cursor: pointer;"></i>
+          </div>
+
+          <!--
+          <h1>
+            <i class="pi pi-times" (click)="showStartScreen = true;" style="margin-right: 5px; cursor: pointer;"></i>
+            {{ quiz.title }}
+          </h1>
+          -->
+
+          <!-- 
+          <span class="badge matematica">{{ quiz.subject.name }}</span>
+          <span class="badge easy" style="margin-left: 5px;">
+              {{ getDifficultyLevelValue(quiz.difficultyLevel) }}
+          </span>
+          -->
 
           <!--  
-        <p>{{ quiz.questions[currentQuestionIndex].difficultyLevel }}</p>
-        <p>{{ quiz.questions[currentQuestionIndex].timeLimit }}</p>
-        -->
+          <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>
+          <p class="quiz-sub-title">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</p>
+          -->
+
+          <!--  
+          <p>{{ quiz.questions[currentQuestionIndex].difficultyLevel }}</p>
+          <p>{{ quiz.questions[currentQuestionIndex].timeLimit }}</p>
+          -->
 
           <div class="progress-container">
             <p class="question-number">{{ formatTime(quiz.timeSpent) }}</p>

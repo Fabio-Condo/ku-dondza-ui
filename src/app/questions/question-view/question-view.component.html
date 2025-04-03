@@ -14,14 +14,15 @@
         <div class="question-card">
             <!-- Cabeçalho da pergunta -->
             <div class="question-header">
-                <h1 class="subject-name">{{ question.topic.name }}</h1>
+                <h1>
+                    <i class="pi pi-arrow-left" routerLink="/questions" style="margin-right: 5px; cursor: pointer;"></i>
+                    {{ question.topic.name }}
+                </h1>
                 <br>
                 <span class="badge matematica">{{ question.topic.subject.name }}</span>
-                <!--
                 <span class="badge easy" style="margin-left: 5px;">
                     {{ getDifficultyLevelValue(question.difficultyLevel) }}
                 </span>
-                -->
             </div>
 
             <!-- Corpo da pergunta -->
