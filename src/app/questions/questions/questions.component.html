@@ -33,9 +33,9 @@
         }
 
         h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2d3748;
+            font-size: 25px;
+            font-weight: 600;
+            margin: 10px 0;
         }
 
         .actions {
@@ -463,7 +463,7 @@
 
 <body>
     <div class="container">
-        <h1>Repositório De Questões</h1>
+        <h1>Questões</h1>
         <br>
 
         <header>
@@ -499,7 +499,7 @@
                         </span>
                         <div class="dropdown-container" *ngIf="isSuperAdmin">
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
-                                class="pi pi-ellipsis-h"></i></button>
+                                    class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
                                 <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
                                 <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
