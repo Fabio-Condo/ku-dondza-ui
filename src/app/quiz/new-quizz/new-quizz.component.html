@@ -3,12 +3,29 @@
 
 <body>
   <div class="container">
+
+    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+      <div class="loading-indicator">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>{{ loadingMessage }}</span>
+      </div>
+    </div>
+
     <!-- Tela inicial -->
     <div *ngIf="showStartScreen" class="start-screen">
       <div class="start-screen-content">
+
         <div class="quiz-header">
+
+          <h1>
+            <i class="pi pi-arrow-left" routerLink="/quizzes" style="margin-right: 5px; cursor: pointer;"></i>
+            Novo Quiz
+          </h1>
+
+          <!--
           <h1 class="title">Novo Quiz</h1>
           <p class="quiz-sub-title">Personalize e comece a testar seus conhecimentos!</p>
+          -->
         </div>
 
         <form autocomplete="off" #courseForm="ngForm">
@@ -66,13 +83,6 @@
             <span>Gerar questões</span>
           </button>
 
-          <div *ngIf="showLoading" class="loading-container" aria-live="polite">
-            <div class="loading-indicator">
-              <i class="pi pi-spin pi-spinner"></i>
-              <span>{{ loadingMessage }}</span>
-            </div>
-          </div>
-
           <!-- Botão de Iniciar Quiz -->
           <!-- 
           <button class="start-button" (click)="startQuiz()" [disabled]="
@@ -94,8 +104,17 @@
       <div *ngIf="currentQuestionIndex < questions.length">
         <div class="question-card">
 
+          <div class="quiz-tittle-container">
+            <h1>
+              {{ quiz.title }}
+            </h1>
+            <i class="pi pi-times" (click)="onStopCurrentRunningQuiz()" style="margin-right: 5px; cursor: pointer;"></i>
+          </div>
+
+          <!--
           <p class="title">{{ quiz.questions[currentQuestionIndex].topic.name }}</p>
           <p class="quiz-sub-title">{{ quiz.questions[currentQuestionIndex].topic.subject.name }}</p>
+          -->
 
           <div class="progress-container">
             <p class="question-number">{{ formattedTime }}</p>
@@ -186,17 +205,31 @@
 
     <div *ngIf="showFinalScreen" class="results-screen2">
 
-      <div *ngIf="showLoading" class="loading-container" aria-live="polite">
-        <div class="loading-indicator">
-          <i class="pi pi-spin pi-spinner"></i>
-          <span>{{ loadingMessage }}</span>
-        </div>
-      </div>
+      <h1>
+        <i class="pi pi-arrow-left" routerLink="/quizzes" style="margin-right: 5px; cursor: pointer;"></i>
+        {{ quiz.title }}
+      </h1>
+
+      <span class="badge matematica">{{ quiz.subject.name }}</span>
+      <span class="topic-tag" style="margin-left: 5px; margin-right: 5px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+                d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+            </path>
+            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+        </svg>
+        {{ quiz.topics.length }} Tópicos
+      </span>
+      <span class="badge easy" style="margin-left: 5px;">
+        {{ getDifficultyLevelValue(quiz.difficultyLevel) }}
+      </span>
 
       <div class="results-summary">
+        <!--
         <p class="title">{{ quiz.title }}</p>
         <p class="quiz-sub-title">{{ quiz.subject.name }}</p>
-        <!--
+        
         <p class="quiz-sub-title">Tempo gasto: {{ quiz.timeSpent }}</p>
         -->
 

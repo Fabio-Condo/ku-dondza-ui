@@ -230,6 +230,19 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     }
   }
 
+  onStopCurrentRunningQuiz(){
+    //this.showFinalScreen = false;
+    //this.showStartScreen = false;
+    //this.showCorrection = true;
+
+    this.stopTimer();
+    this.scrollToTop(); 
+    this.showFinalScreen = true;
+    if(!this.submited){
+      this.router.navigateByUrl('/quizzes');
+    }
+  }
+
   startQuiz() {
     this.showStartScreen = false;
     this.currentQuestionIndex = 0;
@@ -512,6 +525,18 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         ctx.stroke();
       });
     }, 0);
+  }
+
+  getDifficultyLevelValue(level: string) {
+    switch (level) {
+      case 'EASY':
+        return 'Fácil';
+      case 'MEDIUM':
+        return 'Médio';
+      case 'HARD':
+        return 'Dificil';
+    }
+    return '';
   }
 
   private sendErrorNotification(message: string): void {
