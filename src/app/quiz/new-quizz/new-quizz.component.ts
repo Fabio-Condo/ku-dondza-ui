@@ -231,10 +231,6 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   onStopCurrentRunningQuiz(){
-    //this.showFinalScreen = false;
-    //this.showStartScreen = false;
-    //this.showCorrection = true;
-
     this.stopTimer();
     this.scrollToTop(); 
     this.showFinalScreen = true;
