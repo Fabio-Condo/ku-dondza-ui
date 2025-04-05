@@ -12,6 +12,20 @@
 }
 
 /* Button Styles */
+button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -30,7 +44,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(to right, #4f46e5, #8b5cf6);
+  background: #3b82f6;
   color: white;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -81,33 +95,92 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+.main {
+  padding: 40px 0;
+  min-height: calc(100vh - 170px);
 }
 
-.author-info {
+/* Header Styles */
+.course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #f1f5f9;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.course-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #212529;
+}
+
+.course-meta {
   display: flex;
   align-items: center;
-  margin-top: 1rem;
+  margin-bottom: 15px;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }
 
 .author-avatar {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 9999px;
-  border: 2px solid white;
-  margin-right: 0.75rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .author-name {
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.author-role {
-  font-size: 0.875rem;
-  opacity: 0.8;
+.course-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #6c757d;
+}
+
+.course-description {
+  line-height: 1.8;
+  margin-bottom: 20px;
+  color: #6c757d;
+}
+
+.enrollment-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 /* Main Content */
@@ -196,6 +269,44 @@
   transform: rotate(180deg);
 }
 
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3b82f6;
+}
+
+.edit-btn:hover {
+  opacity: 0.8;
+}
+
+.download-btn {
+  background-color: transparent;
+}
+
+.download-btn:hover {
+  background-color: #f8fafc;
+}
+
+.loadmore-btn {
+  background-color: transparent;
+  border: 1px solid #d1d5db;
+}
+
+.loadmore-btn:hover {
+  background-color: #f8fafc;
+}
+
+.loadmore-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Lessons */
 .lessons-container {
   background-color: white;
@@ -242,6 +353,12 @@
 .lesson-duration {
   font-size: 0.875rem;
   color: #6b7280;
+}
+
+.lesson-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Students Section */
@@ -306,26 +423,26 @@
   margin-left: 0.5rem;
 }
 
-.invite-section {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #f3f4f6;
+/* Botão "Carregar mais" */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
 }
 
-.invite-button {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  background-color: #3b82f6;
-  color: white;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  transition: background-color 0.2s;
-  border: none;
-  cursor: pointer;
+.btn-load-more {
+  background-color: transparent;
+  border: 1px solid #d1d5db;
 }
 
-.invite-button:hover {
-  background-color: #3b82f6;
+.btn-load-more:hover {
+  background-color: #f8fafc;
+}
+
+.btn-load-more:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Section Headers */
@@ -343,3 +460,144 @@
   }
 }
 */
+
+/* Animação de fade-in para o overlay */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+
+  to {
+      opacity: 1;
+  }
+}
+
+/* Animação de slide-up para o modal */
+@keyframes slideUp {
+  from {
+      transform: translateY(10px);
+      opacity: 0;
+  }
+
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+.popout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popout-container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateY(20px);
+      opacity: 0;
+  }
+
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+.popout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.popout-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-black);
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: var(--color-black);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--color-black);
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 768px) {
+  .course-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
