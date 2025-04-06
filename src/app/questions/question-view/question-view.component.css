@@ -569,3 +569,49 @@ canvas {
 .close-button:hover {
     color: var(--color-black);
 }
+
+/* Metadados da questão 2563eb 4299e1 805ad5 */
+.questao-meta {
+    background: linear-gradient(to right, #4299e1, #2563eb);
+    color: #fff;
+    padding: 1.25rem;
+    border-radius: 10px;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .meta-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .meta-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+}
+
+.meta-item svg {
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+.meta-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.25rem;
+}
+
+.meta-valor {
+    font-weight: 500;
+}
