@@ -7,7 +7,7 @@ import { CoursesComponent } from './courses/courses.component';
 
 const routes: Routes = [
   { 
-    path: 'coursos-online', 
+    path: 'courses', 
     component: OnlineCoursesComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 
@@ -16,7 +16,7 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'coursos-online/:id', 
+    path: 'courses/:id', 
     component: OnlineCoursesContentComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 
@@ -25,7 +25,7 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'coursos/:id', 
+    path: 'coursos-online/:id', 
     component: CoursesComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 

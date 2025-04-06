@@ -108,11 +108,30 @@
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                         </div>
-                        <span>{{ content.description }}</span>
+                        <span (click)="onSelectContent(content)">{{ content.description }}</span>
                       </div>
 
                       <div class="lesson-actions">
                         <span class="lesson-duration" *ngIf="content.contentType !== 'FILE'">10 min</span>
+
+                        <!-- Exibir status de vídeo assistido -->
+                        <!-- 
+                        <div *ngIf="content.contentType == 'VIDEO' && content.isMarked" class="lesson-marked">
+                            <i class="pi pi-check-circle"></i> Assistido
+                        </div>
+                        -->
+                        
+                        <!-- Botões para marcar/desmarcar -->
+                        <div class="marked-actions" *ngIf="content.contentType == 'VIDEO'">
+                            <button *ngIf="!content.isMarked" class="download-btn"
+                                (click)="addContentToMarkedCourseContents(content)" title="Marcar como assistido">
+                                <i class="pi pi-eye"></i>
+                            </button>
+                            <button *ngIf="content.isMarked" class="download-btn"
+                                (click)="removeContentFromMarkedCourseContents(content)" title="Desmarcar como assistido">
+                                <i class="pi pi-eye-slash"></i>
+                            </button>
+                        </div>
 
                         <button class="download-btn" *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload"
                           (click)="download(content, content.fileName)">
@@ -176,6 +195,21 @@
       </div>
     </div>
   </main>
+</div>
+
+<!-- Modal de Vídeo -->
+<div class="overlay2" *ngIf="showLesson">
+    <div class="vidio-dialog">
+        <h2 style="font-size: 1rem; margin-left: 0.7rem;">{{ onlineSelectedCourseContent.description }}</h2>
+        <button class="vidio-close-btn" (click)="showLesson = false">&times;</button>
+
+        <div *ngIf="onlineSelectedCourseContent">
+            <video class="video" #videoPlayer controls>
+                <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
 </div>
 
 <!-- Modal de Adicionar/Editar Aula -->
