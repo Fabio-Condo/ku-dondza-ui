@@ -14,61 +14,66 @@
     <!-- Tela inicial -->
     <div *ngIf="showStartScreen" class="results-screen2">
 
-      <button class="go-back-btn" routerLink="/questions">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <button class="go-back-btn" routerLink="/quizzes">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5"></path>
           <path d="M12 19l-7-7 7-7"></path>
         </svg>
         Voltar
       </button>
 
-        <!-- Metadados da questão -->
-        <div class="questao-meta">
-          <div class="meta-grid">
-            <div class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-              </svg>
-              <div>
-                <p class="meta-label">Disciplina</p>
-                <p class="meta-valor">{{ quiz.subject.name }}</p>
-              </div>
-            </div>
-
-            <div class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-              </svg>
-              <div>
-                <p class="meta-label">Tópico</p>
-                <p class="meta-valor">{{ topics.length }}</p>
-              </div>
-            </div>
-
-            <div class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 3v18h18"></path>
-                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
-              </svg>
-              <div>
-                <p class="meta-label">Dificuldade</p>
-                <p class="meta-valor">{{ getDifficultyLevelValue(quiz.difficultyLevel) }}</p>
-              </div>
-            </div>
-
-            <div class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              <div>
-                <p class="meta-label">Tempo estimado</p>
-                <p class="meta-valor">10 minutos</p>
-              </div>
+      <!-- Metadados da questão -->
+      <div class="questao-meta">
+        <div class="meta-grid">
+          <div class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <div>
+              <p class="meta-label">Disciplina</p>
+              <p class="meta-valor">{{ quiz.subject.name }}</p>
             </div>
           </div>
+
+          <div class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <div>
+              <p class="meta-label">Tópico</p>
+              <p class="meta-valor">{{ topics.length }}</p>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18"></path>
+              <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
+            </svg>
+            <div>
+              <p class="meta-label">Dificuldade</p>
+              <p class="meta-valor">{{ getDifficultyLevelValue(quiz.difficultyLevel) }}</p>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <div>
+              <p class="meta-label">Tempo estimado</p>
+              <p class="meta-valor">10 minutos</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="results-summary">
@@ -250,11 +255,13 @@
       <div *ngIf="currentQuestionIndex < quiz.questions.length">
         <div class="question-card">
 
-          <div class="quiz-tittle-container">
-            <h1>
-              {{ quiz.title }}
-            </h1>
-            <i class="pi pi-times" (click)="showStartScreen = true;" style="margin-right: 5px; cursor: pointer;"></i>
+          <div class="quiz-header">
+            <h1 class="quiz-title">{{ quiz.title }}</h1>
+            <button 
+              class="quiz-close-btn" (click)="showStartScreen = true;"
+              aria-label="Fechar quiz">
+              <i class="pi pi-times"></i>
+            </button>
           </div>
 
           <!--
