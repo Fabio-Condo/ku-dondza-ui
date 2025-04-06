@@ -332,6 +332,17 @@
     display: flex;
     align-items: center;
   }
+
+  .lesson-title {
+    font-size: 0.9rem;
+    color: #333333;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .lesson-title:hover {
+    color: #007bff;
+  }
   
   .play-icon-container {
     width: 2rem;
@@ -594,14 +605,76 @@
   .submit-button:hover {
     background: #1d4ed8;
   }
+
+  .vidio-popout-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
   
+  .vidio-popout-overlay h2 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    max-width: 80%;
+  }
+
+  .vidio-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .vidio-close-btn:hover {
+    transform: rotate(90deg);
+    color: #8E54E9;
+  }
+
+  .video {
+    width: 100%;
+    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .vidio-popout-overlay h2 {
+      font-size: 18px;
+    }
+
+    .video-button {
+      padding: 12px 24px;
+      font-size: 14px;
+    }
+    
+    .vidio-close-btn {
+      top: 10px;
+      right: 10px;
+      font-size: 30px;
+    }
+  }
+
   @media (max-width: 768px) {
     .course-header {
       flex-direction: column;
       gap: 20px;
     }
   }
-  
 
 
 
