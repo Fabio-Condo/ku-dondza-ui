@@ -61,19 +61,19 @@
             </div>
 
             <!-- Opções de resposta -->
-            <h2 class="options-title">Opções de Resposta</h2>
+            <h2 class="solution-title">Alternativas</h2>
 
-            <div class="answers-card">
-                <div class="answer-options">
-                    <div class="answers-grid">
-                        <label *ngFor="let answer of question.answers" class="answer-item"
-                            [ngClass]="{'answer-correct-item': answer.correct}">
-                            <span> {{ answer.text }} </span>
-                            <!-- <span> \[{{ answer.text }}\] </span> -->
-                            <span *ngIf="answer.correct" class="correct-tag">✓</span>
-                        </label>
-                    </div>
-                </div>
+            <div class="answer-options">
+                <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
+                        'correct-answer': answer.correct
+                     }">
+                  <span class="num">{{ i + 1 }}</span>
+                  <input type="radio" name="question-{{ question.id }}" 
+                  [checked]="answer.correct"
+                  [value]="answer.id" disabled/>
+    
+                  <span> {{ answer.text }} </span>
+                </label>
             </div>
 
             <br>
@@ -82,7 +82,7 @@
             <!-- Explicação da resolução -->
             <div class="solution-section" *ngIf="showSolution"
                 [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
-                <h2 class="solution-title">Como Resolver</h2>
+                <h2 class="solution-title">Resolução</h2>
 
                 <!--<h2 class="solution-title">Solução</h2>-->
                 <div class="solution-content">
