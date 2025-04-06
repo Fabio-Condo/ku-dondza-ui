@@ -24,6 +24,8 @@ import { Role } from 'src/app/enum/role.enum';
 })
 export class OnlineCoursesContentComponent implements OnInit {
 
+  expandedModule: number | null = 1;
+
   course: OnlineCourse = new OnlineCourse();
   onlineCourseContentList: OnlineCourseContent[] = [];
   courseContentFile!: File;
@@ -438,6 +440,10 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );
+  }
+
+  toggleModule(moduleId: number): void {
+    this.expandedModule = this.expandedModule === moduleId ? null : moduleId;
   }
 
   public get isAdmin(): boolean {

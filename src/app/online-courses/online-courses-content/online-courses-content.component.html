@@ -1,376 +1,288 @@
 <br>
 <br>
-<div class="learning-container">
-    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
-        <div class="loading-indicator">
-            <i class="pi pi-spin pi-spinner"></i>
-            <span>{{ loadingMessage }}</span>
-        </div>
-    </div>
+<div class="course-dashboard">
+  <!-- Header -->
 
-    <!-- Capa do Curso -->
-    <div class="course-cover">
-        <img class="cover-image" [src]="course.coverImageUrl" alt="Capa do Curso">
-        <!-- Texto e botão sobre a imagem -->
-        <div class="overlay-content">
-            <p class="overlay-text">{{ course.name }}</p>
-            <!--
-            <button class="overlay-button">Pré-visualizar</button>
-            -->
-            <button class="btn-outline" *ngIf="!course.currentUserSubscribed"
-                (click)="addCourseToSubscribedOnlineCourses(course)">Inscrever-se</button>
-            <button class="btn-outline" *ngIf="course.currentUserSubscribed">Inscrito</button>
-        </div>
-    </div>
-</div>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
 
-<div class="learning-container">
-    <!-- Detalhes do Curso -->
-    <div class="course-details">
-        <h1 class="title">Descrição</h1>
-        <p class="course-description">{{ course.description }}</p>
+      <div class="grid-container">
+        <!-- Course Info & Modules -->
+        <div class="course-section">
 
-        <!-- Informações do Curso -->
-        <div class="course-info">
-            <!--
-            <div class="release-date">
-                <i class="pi pi-calendar"></i><span class="text-muted">Data de Lançamento: {{ course.lunchDate }}</span>
-            </div>
-            -->
-
-            <!--
-            <div class="likes">
-                <i *ngIf="course.isLiked" class="pi pi-heart-fill icon-liked"></i>
-                <i *ngIf="!course.isLiked" class="pi pi-heart"></i>
-                <span class="text-muted">2,500 pessoas gostaram</span>
-            </div>
-            -->
-
-            <!--
-            <button class="btn btn-primary" *ngIf="!course.currentUserSubscribed"
-                (click)="addCourseToSubscribedOnlineCourses(course)">Aderir</button>
-            <span class="text-muted" *ngIf="course.currentUserSubscribed">Inscrito</span>
-            -->
-        </div>
-
-        <h1 class="title">
-            <div class="requirement-header">
-                Pré-requisitos
-                <button class="edit-btn" (click)="onUpdateRequirements()" *ngIf="isSuperAdmin">
-                    <i class="fas fa-edit"></i>
-                </button>
-            </div>
-        </h1>
-
-        <div class="requirement-item" *ngFor="let req of course.requirements">
-            <div class="requirement-info">
-                <i class="pi pi-check-circle"></i>
-                <span class="requirement-title">{{ req.designation }}</span>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="learning-container">
-    <!-- Seção do Instrutor -->
-    <div class="instructor-section">
-        <h1 class="title">Instrutor</h1>
-        <div class="instructor-card">
-            <img class="instructor-img" [src]="course.instrutor.profileImageUrl" alt="Instrutor">
-            <div class="instructor-details">
-                <h3>{{ course.instrutor.fullName }}</h3>
-                <p class="instructor-bio">{{ course.instrutor.bio }}</p>
-                <p class="instructor-course">{{ course.name }}</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="learning-container">
-    <!-- Seção de Aulas -->
-    <div class="lessons-section">
-        <div class="section-header">
-            <h1 class="title">Aulas</h1>
-            <div class="actions">
-                <button type="button" class="btn-outline" (click)="onAddNewModule()" *ngIf="isSuperAdmin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
+          <div class="course-header">
+            <div class="course-info">
+              <h1 class="course-title">{{ course.name }}</h1>
+              <div class="course-meta">
+                <div class="author">
+                  <div class="author-avatar">
+                    <img [src]="course.instrutor.profileImageUrl" [alt]="course.instrutor.fullName" class="author-avatar" />
+                  </div>
+                  <div class="author-name">{{ course.instrutor.fullName }}</div>
+                </div>
+                <div class="course-stats">
+                  <div class="stat">
+                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
-                    Módulo
-                </button>
-                <button type="button" class="btn-outline" (click)="onAddNewOnlineCourseContent()" *ngIf="isSuperAdmin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Aula
-                </button>
+                    <span>{{ totalRegistrosStudents }} alunos</span>
+                  </div>
+                  <div class="stat">
+                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>                
+                    <span>24 aulas</span>
+                  </div>
+                </div>
+              </div>
+              <p class="course-description">{{ course.description }}</p>
             </div>
-        </div>
-        <div class="modules-list">
-            <div *ngFor="let modulo of course.modules" class="module-card">
-                <div class="module-header">
-                    <i class="pi pi-play-circle"></i>
-                    <h3>{{ modulo.position }}. {{ modulo.name }}</h3>
-                    <button class="edit-btn" (click)="onUpdateModule(modulo)" *ngIf="isSuperAdmin">
-                        <i class="fas fa-edit"></i>
+            <div class="course-actions">
+              <button class="btn btn-primary" *ngIf="!course.currentUserSubscribed" (click)="addCourseToSubscribedOnlineCourses(course)">
+                <i class="fas fa-plus"></i>
+                Inscrever-se
+              </button>
+              <button class="btn btn-primary" *ngIf="course.currentUserSubscribed">
+                Inscrito
+              </button>
+            </div>
+          </div>
+
+          <!-- Modules Section -->
+          <div class="card modules-card">
+
+            <div class="section-header">
+              <h2 class="section-title">Módulos do Curso</h2>
+              <div class="actions">
+                <button class="btn btn-outline add-module-btn" (click)="onAddNewModule()" *ngIf="isSuperAdmin">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  módulo
+                </button>
+                <button class="btn btn-outline add-module-btn" (click)="onAddNewOnlineCourseContent()" *ngIf="isSuperAdmin">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  aula
+                </button>
+              </div>
+
+            </div>
+
+            <div class="modules-list">
+              <div *ngFor="let module of course.modules" class="module-item"
+                [class.expanded]="expandedModule === module.id">
+                <div class="module-header" (click)="toggleModule(module.id)">
+                  <h3 class="module-title">{{ module.name }}</h3>
+                  <div class="module-info">
+                    <button class="edit-btn" (click)="onUpdateModule(module)" *ngIf="isSuperAdmin">
+                      <i class="fas fa-edit"></i>
                     </button>
+                    <span class="lesson-count">{{ module.courseContents.length }} aulas</span>
+                    <svg class="chevron-icon" [class.rotated]="expandedModule === module.id" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
                 </div>
-                <div class="lessons-list">
-                    <div *ngFor="let content of modulo.courseContents" class="lesson-item">
-                        <div class="lesson-info">
-                            <i *ngIf="content.contentType == 'VIDEO'" class="pi pi-video"></i>
-                            <i *ngIf="content.contentType == 'FILE'" class="pi pi-file"></i>
 
-                            <span class="lesson-title" (click)="onSelectContent(content)">
-                                {{ modulo.position }}.{{ content.position }}. {{ content.description }}
-                            </span>
+                <div *ngIf="expandedModule === module.id" class="lessons-container">
+                  <ul class="lessons-list">
+                    <li *ngFor="let content of module.courseContents" class="lesson-item">
+                      <div class="lesson-content">
+                        <div class="play-icon-container">
+                          <svg class="play-icon" *ngIf="content.contentType == 'VIDEO'" className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <svg class="play-icon" *ngIf="content.contentType == 'FILE'" className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
                         </div>
+                        <span>{{ content.description }}</span>
+                      </div>
 
-                        <div class="lesson-actions">
-                            <!-- Exibir status de vídeo assistido -->
-                            <div *ngIf="content.contentType == 'VIDEO' && content.isMarked" class="lesson-marked">
-                                <i class="pi pi-check-circle"></i> Assistido
-                            </div>
+                      <div class="lesson-actions">
+                        <span class="lesson-duration" *ngIf="content.contentType !== 'FILE'">10 min</span>
 
-                            <!-- Botões para marcar/desmarcar -->
-                            <div class="marked-actions" *ngIf="content.contentType == 'VIDEO'">
-                                <button *ngIf="!content.isMarked" class="btn-small"
-                                    (click)="addContentToMarkedCourseContents(content)" title="Marcar como assistido">
-                                    <i class="pi pi-eye"></i>
-                                </button>
-                                <button *ngIf="content.isMarked" class="btn-small"
-                                    (click)="removeContentFromMarkedCourseContents(content)"
-                                    title="Desmarcar como assistido">
-                                    <i class="pi pi-eye-slash"></i>
-                                </button>
-                            </div>
+                        <button class="download-btn" *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload"
+                          (click)="download(content, content.fileName)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
+                          </svg>                        
+                        </button>
 
-
-                            <button *ngIf="content.contentType == 'FILE'" [disabled]="content.showLoadingDownload"
-                                (click)="download(content, content.fileName)" class="btn-icon">
-                                <i class="pi pi-download"></i>
-                            </button>
-
-                            <button *ngIf="isAdmin" class="btn-icon"
-                                (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen">
-                                <i class="pi pi-ellipsis-v"></i>
-                            </button>
-
-                            <div class="dropdown" *ngIf="content.isAdminMenuOpen">
-                                <a
-                                    (click)="onUpdateOnlineCourseContent(content, modulo, courseContentFile); content.isAdminMenuOpen = false">Editar</a>
-                                <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = false">Excluir</a>
-                            </div>
+                        <div class="dropdown-container" *ngIf="isSuperAdmin">
+                          <button class="dropdown-btn" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i class="pi pi-ellipsis-h"></i></button>
+                          <div class="dropdown" *ngIf="content.isAdminMenuOpen">
+                            <a (click)="onUpdateOnlineCourseContent(content, module, courseContentFile); content.isAdminMenuOpen = false">Editar</a>
+                            <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = false">Excluir</a>
+                          </div>
                         </div>
-                    </div>
+                      </div>
+
+                    </li>
+                  </ul>
                 </div>
-
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
 
-<div class="learning-container">
-    <!-- Seção de Alunos -->
-    <div class="students-section">
-        <h1 class="title">Alunos</h1>
-        <div class="students-list">
-            <div *ngFor="let student of students" class="student-card">
-                <img class="student-avatar" [src]="student.profileImageUrl" alt="Aluno">
-                <div class="student-details">
-                    <h4>{{ student.fullName }}</h4>
+        <!-- Students Section -->
+        <div class="students-section">
+          <div class="card students-card">
+            <h2 class="section-title">Alunos Inscritos</h2>
+            <p class="students-count">{{ totalRegistrosStudents }} alunos neste curso</p>
+
+            <ul class="students-list">
+              <li *ngFor="let student of students" class="student-item">
+                <img [src]="student.profileImageUrl" [alt]="student.fullName" class="student-avatar" />
+                <div class="student-progress">
+                  <p class="student-name">{{ student.fullName }}</p>
+                  <div class="progress-bar">
+                    <!--
+                  <div 
+                    class="progress-fill" 
+                    [style.width.%]="student.progress" 
+                  />
+                  -->
+                  </div>
                 </div>
+                <span class="progress-percent">{{ 85 }}%</span>
+              </li>
+            </ul>
+
+            <!-- Load-more -->
+            <div class="load-more-container">
+              <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreStudents()"
+                  [disabled]="students.length === totalRegistrosStudents && totalRegistrosStudents > 0">
+                  Buscar mais
+              </button>
             </div>
+
+          </div>
         </div>
+      </div>
     </div>
-
-
-    <!-- Load-more -->
-    <div class="load-more-container">
-        <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreStudents()"
-            [disabled]="students.length === totalRegistrosStudents && totalRegistrosStudents > 0">
-            Buscar mais
-        </button>
-    </div>
-
-</div>
-
-<!-- Modal de Vídeo -->
-<div class="overlay2" *ngIf="showLesson">
-    <div class="vidio-dialog">
-        <h2 style="font-size: 1rem; margin-left: 0.7rem;">{{ onlineSelectedCourseContent.description }}</h2>
-        <button class="vidio-close-btn" (click)="showLesson = false">&times;</button>
-
-        <div *ngIf="onlineSelectedCourseContent">
-            <video class="video" #videoPlayer controls>
-                <source [src]="onlineSelectedCourseContent.urlFile" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    </div>
+  </main>
 </div>
 
 <!-- Modal de Adicionar/Editar Aula -->
 <div class="popout-overlay" *ngIf="displayModalSaveContent">
-    <div class="popout-container">
+  <div class="popout-container">
 
-        <div class="popout-header">
-            <h2 class="popout-title">{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
-            <button class="close-button" (click)="displayModalSaveContent = false">&times;</button>
-        </div>
+      <div class="popout-header">
+          <h2 class="popout-title">{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
+          <button class="close-button" (click)="displayModalSaveContent = false">&times;</button>
+      </div>
 
-        <form autocomplete="off" #courseForm="ngForm">
-            <div class="form-group">
-                <label for="type">Tipo</label>
-                <select id="type" [(ngModel)]="onlineCourseContent.contentType" name="type" required>
-                    <option value="" disabled selected>Selecione o tipo</option>
-                    <option *ngFor="let type of contentType" [value]="type.value">{{ type.label }}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="description">Descrição</label>
-                <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
-                    [(ngModel)]="onlineCourseContent.description">
-            </div>
-            <div class="form-group">
-                <label for="modulo">Módulo</label>
-                <select id="modulo" [(ngModel)]="onlineCourseContent.module.id" name="module" required>
-                    <option value="" disabled selected>Selecione o módulo</option>
-                    <option *ngFor="let module of course.modules" [value]="module.id">{{ module.name }}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="file" (change)="onCourseContenFileSelected($event)" name="file" accept="application/**"
-                    class="form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="position">Posição</label>
-                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                    [(ngModel)]="onlineCourseContent.position">
-            </div>
+      <form autocomplete="off" #courseForm="ngForm">
+          <div class="form-group">
+              <label for="type">Tipo</label>
+              <select id="type" [(ngModel)]="onlineCourseContent.contentType" name="type" required>
+                  <option value="" disabled selected>Selecione o tipo</option>
+                  <option *ngFor="let type of contentType" [value]="type.value">{{ type.label }}</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label for="description">Descrição</label>
+              <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
+                  [(ngModel)]="onlineCourseContent.description">
+          </div>
+          <div class="form-group">
+              <label for="modulo">Módulo</label>
+              <select id="modulo" [(ngModel)]="onlineCourseContent.module.id" name="module" required>
+                  <option value="" disabled selected>Selecione o módulo</option>
+                  <option *ngFor="let module of course.modules" [value]="module.id">{{ module.name }}</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <input type="file" (change)="onCourseContenFileSelected($event)" name="file" accept="application/**"
+                  class="form-control" required />
+          </div>
+          <div class="form-group">
+              <label for="position">Posição</label>
+              <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                  [(ngModel)]="onlineCourseContent.position">
+          </div>
 
-            <button type="submit" class="submit-button" (click)="saveContent()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+          <button type="submit" class="submit-button" (click)="saveContent()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
-        </form>
-    </div>
+      </form>
+  </div>
 </div>
 
 <!-- Modal de Adicionar/Editar Módulo -->
 <div class="popout-overlay" *ngIf="displayModalSaveModule">
-    <div class="popout-container">
+  <div class="popout-container">
 
-        <div class="popout-header">
-            <h2 class="popout-title">{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
-            <button class="close-button" (click)="displayModalSaveModule = false">&times;</button>
-        </div>
+      <div class="popout-header">
+          <h2 class="popout-title">{{ editingModule ? 'Editando modulo' : 'Adicionando modulo' }}</h2>
+          <button class="close-button" (click)="displayModalSaveModule = false">&times;</button>
+      </div>
 
-        <form autocomplete="off" #courseForm="ngForm">
-            <div class="form-group">
-                <label for="name">Descrição</label>
-                <input type="text" name="name" ngModel #name="ngModel" required minlength="1" [(ngModel)]="modulo.name">
-            </div>
-            <div class="form-group">
-                <label for="position">Posição</label>
-                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                    [(ngModel)]="modulo.position">
-            </div>
+      <form autocomplete="off" #courseForm="ngForm">
+          <div class="form-group">
+              <label for="name">Descrição</label>
+              <input type="text" name="name" ngModel #name="ngModel" required minlength="1" [(ngModel)]="modulo.name">
+          </div>
+          <div class="form-group">
+              <label for="position">Posição</label>
+              <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                  [(ngModel)]="modulo.position">
+          </div>
 
-            <button type="submit" class="submit-button" (click)="saveModule()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+          <button type="submit" class="submit-button" (click)="saveModule()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
-        </form>
-    </div>
+      </form>
+  </div>
 </div>
 
-<!-- Modal de Requisitos -->
-<div class="popout-overlay" *ngIf="displayModalUpateRequirements">
-    <div class="popout-container">
 
-        <div class="popout-header">
-            <h2 class="popout-title">Requisitos</h2>
-            <button class="close-button" (click)="displayModalUpateRequirements = false">&times;</button>
-        </div>
 
-        <form autocomplete="off" #courseRequirementsForm="ngForm"
-            (ngSubmit)="updateRequirements(courseRequirementsForm)">
-            <div class="requirements-container">
-                <div class="header-section">
-                    <label>Todos</label>
-                    <a href="javascript:;" class="add-btn" (click)="openAddNewRequirementModal()">
-                        <i class="pi pi-plus"></i>
-                    </a>
-                </div>
-                <div class="table-container">
-                    <table class="responsive-table">
-                        <thead>
-                            <tr>
-                                <th>Texto</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let req of course.requirements; let rowIndex = index">
-                                <td>{{ req.designation }}</td>
-                                <td class="actions">
-                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)"
-                                        class="tb-edit-btn">E</a>
-                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)"
-                                        class="tb-remove-btn">R</a>
-                                </td>
-                            </tr>
-                            <tr *ngIf="course.requirements.length === 0">
-                                <td colspan="3" class="text-center">Sem respostas</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
-            <button type="submit" class="submit-button" [disabled]="courseRequirementsForm.invalid">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
 
-        </form>
-    </div>
-</div>
 
-<!-- Modal de Requisito (Adicionar/Editar) -->
-<div class="popout-overlay" *ngIf="showRequirementForm && requirement">
-    <div class="popout-container">
 
-        <div class="popout-header">
-            <h2 class="popout-title">{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
-            <button class="close-button" (click)="showRequirementForm = false">&times;</button>
-        </div>
 
-        <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
-            <div class="form-group">
-                <label for="designation">Descrição</label>
-                <textarea id="designation" type="text" name="designation" ngModel #designation="ngModel" required
-                    minlength="1" [(ngModel)]="requirement.designation" required></textarea>
-            </div>
 
-            <button type="submit" class="submit-button" [disabled]="formRequirement.invalid">Confirmar</button>
 
-        </form>
-    </div>
-</div>
 
-<!-- Modal de Confirmação -->
-<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
-    <div class="confirm-dialog">
-        <div class="confirm-dialog-header">
-            <h4>Deseja anular a subscrição ?</h4>
-            <button class="confirm-close-button" (click)="closeConfirmDialog()">x</button>
-        </div>
-        <div class="confirm-dialog-content">
-            <ng-content></ng-content>
-        </div>
-        <div class="confirm-dialog-footer">
-            <button (click)="confirmDialog(selectedOnlineCourse)">Confirmar</button>
-            <button (click)="closeConfirmDialog()">Cancelar</button>
-        </div>
-    </div>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
