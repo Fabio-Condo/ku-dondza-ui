@@ -10,6 +10,7 @@ export class Question {
     timeLimit!: number; // Tempo em segundos
     timeRemaining!: number; 
     mathExpressions: MathExpression[] = []; // Alterado para uma lista de expressões
+    tip!: string;
     solution!: string;
     fileName!: string;
     urlFile!: string;

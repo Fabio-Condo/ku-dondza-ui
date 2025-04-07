@@ -68,7 +68,9 @@
             </div>
         </div>
 
+        <br>
 
+        <h2 class="title">Questão</h2>
 
         <div class="question-card">
             <!-- Cabeçalho da pergunta -->
@@ -101,7 +103,7 @@
             </div>
 
             <!-- Opções de resposta -->
-            <h2 class="solution-title">Alternativas</h2>
+            <h2 class="title">Alternativas</h2>
 
             <div class="answer-options">
                 <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
@@ -117,22 +119,30 @@
             </div>
 
             <br>
+
+            <!-- Input para mostrar a solução -->
+            <div class="tip"
+                [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+                <div class="tip-input">
+                    <h1 class="title">Dicas</h1>
+                    <p class="tip-content scrollable"
+                        *ngIf="question.tip">
+                        {{ question.tip }}
+                    </p>
+                </div>
+            </div>
+
             <br>
 
-            <!-- Explicação da resolução -->
-            <div class="solution-section" *ngIf="showSolution"
+            <!-- Input para mostrar a solução -->
+            <div class="solution"
                 [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
-                <h2 class="solution-title">Resolução</h2>
-
-                <!--<h2 class="solution-title">Solução</h2>-->
-                <div class="solution-content">
-                    <p class="solution-text" *ngIf="question.text && !showLatexLoading">
+                <div class="solution-input">
+                    <h1 class="title">Resolução</h1>
+                    <p class="solution-content scrollable"
+                        *ngIf="question.solution">
                         {{ question.solution }}
                     </p>
-                    <div class="loading-indicator" *ngIf="question.text && showLatexLoading">
-                        <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
-                        Carregando Latex...
-                    </div>
                 </div>
             </div>
 
@@ -142,7 +152,7 @@
             <div class="statistics-container">
                 <!-- Cabeçalho -->
                 <div class="statistics-header">
-                    <h2>Estatísticas Nos Quizzes</h2>
+                    <h1 class="title">Desempenho</h1>
                     <p class="description">
                         Visão abrangente sobre o desempenho da questão ao longo de diversos quizzes.
                         <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{

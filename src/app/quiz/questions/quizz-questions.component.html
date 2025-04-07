@@ -256,7 +256,7 @@
         <div class="question-card">
 
           <div class="quiz-header">
-            <h1 class="quiz-title">{{ quiz.title }}</h1>
+            <h1 class="title">{{ quiz.title }}</h1>
             <button 
               class="quiz-close-btn" (click)="showStartScreen = true;"
               aria-label="Fechar quiz">
@@ -324,12 +324,25 @@
             </label>
           </div>
 
-          <!-- Input para mostrar a solução -->
-          <div class="solution-container"
+          <br>
+
+          <!-- Input para mostrar dica e solução -->
+          <div class="tip"
+            [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="tip-input">
+              <h1 class="title">Dicas</h1>
+              <p id="math-container-solution-{{ currentQuestionIndex }}" class="tip-content scrollable"
+                *ngIf="quiz.questions[currentQuestionIndex].tip">
+                {{ quiz.questions[currentQuestionIndex].tip }}
+              </p>
+            </div>
+          </div>
+
+          <div class="solution"
             [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
             <div class="solution-input">
-              <label for="solution">Explicação:</label>
-              <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-text scrollable"
+              <h1 class="title">Resolução</h1>
+              <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-content scrollable"
                 *ngIf="quiz.questions[currentQuestionIndex].solution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>

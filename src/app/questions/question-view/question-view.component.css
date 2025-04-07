@@ -26,6 +26,12 @@ body {
     border-bottom: 2px solid var(--color-border);
 }
 
+.title {
+    font-size: 20px;
+    color: var(--color-text);
+    font-weight: 600;
+}
+
 h1 {
     font-size: 25px;
     font-weight: 600;
@@ -134,66 +140,37 @@ h1 {
     right: 15px;
 }
 
-/* Estilos para a seção de solução */
-.solution-toggle {
-    margin-top: 24px;
-    text-align: center;
-}
-
-.toggle-button {
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-button:hover {
-    background-color: var(--color-secondary);
-}
-
-.solution-section {
-    background-color: #dbeafe;
+/* Container da solução com efeito glassmorphism */
+.tip {
+    margin-top: 25px;
+    padding: 15px;
     border-radius: 12px;
-    transform: translateY(-5px);
-    padding: 20px;
-    max-width: 1000px;
-    width: 100%;
-    margin: 0 auto;
-    margin-top: 0px;
-    overflow: hidden;
+    backdrop-filter: blur(10px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fffbeb;
+    border: 1px solid #fbd38d;
+}
+
+.tip-content.scrollable {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.solution {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #dbeafe;
     border: 1px solid #3b82f6;
 }
 
-.solution-title {
-    font-size: 20px;
-    color: var(--color-text);
-    font-weight: 600;
-}
-
-.solution-content {
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-.solution-text {
-    margin-bottom: 16px;
-}
-
-.solution-image {
-    max-width: 60%;
-    height: auto;
-    border-radius: 12px;
-    margin-top: 16px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.solution-content.scrollable {
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 /* Container principal */
