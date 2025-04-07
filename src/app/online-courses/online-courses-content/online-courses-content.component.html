@@ -24,12 +24,14 @@
             <div class="course-info">
               <h1 class="course-title">{{ course.name }}</h1>
               <div class="course-meta">
+                <!--
                 <div class="author">
                   <div class="author-avatar">
                     <img [src]="course.instrutor.profileImageUrl" [alt]="course.instrutor.fullName" class="author-avatar" />
                   </div>
                   <div class="author-name">{{ course.instrutor.fullName }}</div>
                 </div>
+                -->
                 <div class="course-stats">
                   <div class="stat">
                     <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,6 +168,27 @@
             </div>
           </div>
         </div>
+
+        <div class="instrutor-section card">
+          <div class="card-header">
+            <h2 class="section-title">Sobre o instrutor</h2>
+          </div>
+          <div class="card-body">
+            <div class="author-info">
+              <div class="author-avatar">
+                <img [src]="course.instrutor.profileImageUrl" [alt]="course.instrutor.fullName">
+              </div>
+              <div class="author-details">
+                <div class="author-name">{{ course.instrutor.fullName }}</div>
+                <div class="author-bio">{{ course.instrutor.bio }}</div>
+              </div>
+            </div>
+            <p class="experience-description">
+              Mais de 10 anos de experiência em desenvolvimento web e 5 anos como instrutor. Especialista em JavaScript e frameworks modernos.
+            </p>
+          </div>
+        </div>
+        
 
         <!-- Students Section -->
         <div class="students-section">
