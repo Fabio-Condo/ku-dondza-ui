@@ -37,6 +37,12 @@ body {
   margin: 0 auto;
 }
 
+.title {
+  font-size: 20px;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
 h1 {
   font-size: 25px;
   font-weight: 600;
@@ -755,18 +761,23 @@ button {
 }
 
 /* Container da solução com efeito glassmorphism */
-.solution-container {
+.tip {
   margin-top: 25px;
   padding: 15px;
   border-radius: 12px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid #f1f5f9;
+  background-color: #fffbeb;
+  border: 1px solid #fbd38d;
 }
 
-/* Textarea ou div da solução */
-.solution-container {
+.tip-content.scrollable {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.solution {
   margin-top: 25px;
   padding: 15px;
   border-radius: 12px;
@@ -777,10 +788,31 @@ button {
   border: 1px solid #3b82f6;
 }
 
-.solution-text.scrollable {
+.solution-content.scrollable {
   max-height: 500px;
   overflow-y: auto;
 }
+
+/* Botão de solução */
+.solution-button {
+  margin-top: 10px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.solution-button:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 
 /*  For small tablets and mobile phones */
 @media screen and (max-width: 992px) {
@@ -1053,7 +1085,7 @@ canvas {
 
 .progress-bar {
   height: 100%;
-  background: #3b82f6;
+  background: linear-gradient(to right, #4299e1, #2563eb);
   transition: width 0.4s ease-in-out;
 }
 
@@ -1100,76 +1132,41 @@ canvas {
   /* Azul vibrante */
 }
 
-.badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-/* Cores por disciplina */
-.matematica {
-  background-color: #dbeafe;
-  color: #2563eb;
-}
-
-.fisica {
-  background-color: #f3e8ff;
-  color: #7e22ce;
-}
-
-.biologia {
-  background-color: #dcfce7;
-  color: #16a34a;
-}
-
-.historia {
-  background-color: #fef3c7;
-  color: #d97706;
-}
-
-.quimica {
-  background-color: #fee2e2;
-  color: #dc2626;
-}
-
-/* Badges dificuldade */
-.easy {
-  background-color: #d1fae5;
-  color: #047857;
-}
-
-.medium {
-  background-color: #fef3c7;
-  color: #b45309;
-}
-
-.hard {
-  background-color: #fee2e2;
-  color: #b91c1c;
-}
-
-.topic-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  background-color: #f1f5f9;
-  color: #475569;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.topic-tag svg {
-  margin-right: 4px;
-}
-
-.quiz-tittle-container {
+.quiz-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.quiz-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.quiz-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.quiz-close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.quiz-close-btn i {
+  font-size: 1rem;
+  color: #6c757d;
+  font-weight: 600;
 }
 
 /* Animação de fade-in */
@@ -1183,4 +1180,71 @@ canvas {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* Metadados da questão 2563eb 4299e1 805ad5 */
+.questao-meta {
+  background: linear-gradient(to right, #4299e1, #2563eb);
+  color: #fff;
+  padding: 1.25rem;
+  border-radius: 10px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .meta-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+}
+
+.meta-item svg {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.25rem;
+}
+
+.meta-valor {
+  font-weight: 500;
+}
+
+.go-back-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #4a5568;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.go-back-btn:hover {
+  color: #3182ce;
+}
+
+.go-back-btn svg {
+  margin-right: 0.5rem;
 }

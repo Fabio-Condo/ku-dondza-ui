@@ -162,6 +162,17 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     return '00:00';
   }
 
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    // Formata os minutos e segundos para ter 2 dígitos
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
   // Método para calcular os resultados
   calculateResults(): void {
     this.result.correctAnswers = 0;
