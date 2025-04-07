@@ -250,6 +250,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            color: #2d3748;
         }
 
         .view-button:hover {
@@ -526,7 +527,7 @@
                             {{ formatTime(question.timeLimit) }}
                         </span>
                         <button class="view-button" [routerLink]="['/questions', question.questionId]">
-                            Ver Questão
+                            Visualizar
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -726,8 +727,8 @@
 
             <div class="form-group">
                 <label for="solution">Dicas</label>
-                <textarea id="tip" name="tip" ngModel #tip="ngModel" required minlength="1"
-                    [(ngModel)]="question.tip" rows="2"></textarea>
+                <textarea id="tip" name="tip" ngModel #tip="ngModel" required minlength="1" [(ngModel)]="question.tip"
+                    rows="2"></textarea>
             </div>
 
             <div class="form-group">
