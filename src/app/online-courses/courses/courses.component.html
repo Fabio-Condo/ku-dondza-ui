@@ -54,22 +54,6 @@
             -->
         </div>
 
-        <h1 class="title">
-            <div class="requirement-header">
-                Pré-requisitos
-                <button class="edit-btn" (click)="onUpdateRequirements()" *ngIf="isSuperAdmin">
-                    <i class="fas fa-edit"></i>
-                </button>
-            </div>
-        </h1>
-
-        <div class="requirement-item" *ngFor="let req of course.requirements">
-            <div class="requirement-info">
-                <i class="pi pi-check-circle"></i>
-                <span class="requirement-title">{{ req.designation }}</span>
-            </div>
-        </div>
-
     </div>
 </div>
 
@@ -282,78 +266,6 @@
             </div>
 
             <button type="submit" class="submit-button" (click)="saveModule()">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-
-        </form>
-    </div>
-</div>
-
-<!-- Modal de Requisitos -->
-<div class="popout-overlay" *ngIf="displayModalUpateRequirements">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Requisitos</h2>
-            <button class="close-button" (click)="displayModalUpateRequirements = false">&times;</button>
-        </div>
-
-        <form autocomplete="off" #courseRequirementsForm="ngForm"
-            (ngSubmit)="updateRequirements(courseRequirementsForm)">
-            <div class="requirements-container">
-                <div class="header-section">
-                    <label>Todos</label>
-                    <a href="javascript:;" class="add-btn" (click)="openAddNewRequirementModal()">
-                        <i class="pi pi-plus"></i>
-                    </a>
-                </div>
-                <div class="table-container">
-                    <table class="responsive-table">
-                        <thead>
-                            <tr>
-                                <th>Texto</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let req of course.requirements; let rowIndex = index">
-                                <td>{{ req.designation }}</td>
-                                <td class="actions">
-                                    <a href="javascript:;" (click)="getReadEditRequirement(req, rowIndex)"
-                                        class="tb-edit-btn">E</a>
-                                    <a href="javascript:;" (click)="removeRequirement(rowIndex)"
-                                        class="tb-remove-btn">R</a>
-                                </td>
-                            </tr>
-                            <tr *ngIf="course.requirements.length === 0">
-                                <td colspan="3" class="text-center">Sem respostas</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <button type="submit" class="submit-button" [disabled]="courseRequirementsForm.invalid">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
-
-        </form>
-    </div>
-</div>
-
-<!-- Modal de Requisito (Adicionar/Editar) -->
-<div class="popout-overlay" *ngIf="showRequirementForm && requirement">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">{{editingRequirement ? 'Editando' : 'Novo'}}</h2>
-            <button class="close-button" (click)="showRequirementForm = false">&times;</button>
-        </div>
-
-        <form autocomplete="off" #formRequirement="ngForm" (ngSubmit)="confirmRequirement(formRequirement)">
-            <div class="form-group">
-                <label for="designation">Descrição</label>
-                <textarea id="designation" type="text" name="designation" ngModel #designation="ngModel" required
-                    minlength="1" [(ngModel)]="requirement.designation" required></textarea>
-            </div>
-
-            <button type="submit" class="submit-button" [disabled]="formRequirement.invalid">Confirmar</button>
 
         </form>
     </div>

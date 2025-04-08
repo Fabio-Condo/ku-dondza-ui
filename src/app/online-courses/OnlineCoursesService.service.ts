@@ -80,10 +80,6 @@ export class OnlineCoursesService {
         return this.http.get<OnlineCourse>(`${this.host}/find-by-courseId/${onlineCourseId}`, {});
     }
 
-    updateRequirements(course: OnlineCourse): Observable<OnlineCourse> {
-        return this.http.put<OnlineCourse>(`${this.host}/${course.id}/requirements/update`, course, {});
-    }
-
     getStudentsByCourseId(courseId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
 
         let params = new HttpParams()

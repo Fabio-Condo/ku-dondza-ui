@@ -226,54 +226,7 @@ export class OnlineCoursesContentComponent implements OnInit {
       }
     );
   }
-
-  onUpdateRequirements(): void {
-    this.displayModalUpateRequirements = true;
-  }
-
-  //Requirements
-  openAddNewRequirementModal() {
-    this.showRequirementForm = true;
-    this.requirement = new OnlineCourseRequirement();
-    this.requirementIndex = this.course.requirements.length;
-  }
-
-  confirmRequirement(frm: NgForm) {
-    this.course.requirements[this.requirementIndex!] = this.cloneRequirement(this.requirement!);
-    this.showRequirementForm = false;
-    frm.reset();
-  }
-
-  cloneRequirement(requirement: OnlineCourseRequirement): OnlineCourseRequirement {
-    return new OnlineCourseRequirement(requirement.id, requirement.designation);
-  }
-
-  get editingRequirement() {  // show the title in modal
-    return this.requirement && this.requirement?.id;
-  }
-
-  removeRequirement(index: number) {
-    this.course.requirements.splice(index, 1);
-  }
-
-  getReadEditRequirement(requirement: OnlineCourseRequirement, index: number) {
-    this.requirement = this.cloneRequirement(requirement);
-    this.showRequirementForm = true;
-    this.requirementIndex = index;
-  }
-
-  updateRequirements(courseForm: NgForm) {
-    this.onlineCoursesService.updateRequirements(this.course).subscribe(
-      (response) => {
-        //this.course = response;
-        this.messageService.add({ severity: 'success', detail: 'Curso alterado com sucesso!' });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
+  
   onUpdateModule(modulo: Module): void {
     this.modulo = modulo;
     this.displayModalSaveModule = true;

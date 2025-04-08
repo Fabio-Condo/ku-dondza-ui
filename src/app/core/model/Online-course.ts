@@ -14,7 +14,6 @@ export class OnlineCourse {
     lunchDate!: string;
     instrutor = new User();
     modules: Module[] = [];
-    requirements: OnlineCourseRequirement[] = [];
     questions: Question[] = [];
 
     totalQuestions: number = 0;
