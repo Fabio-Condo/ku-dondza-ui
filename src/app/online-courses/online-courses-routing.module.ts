@@ -25,7 +25,7 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'coursos-online/:id', 
+    path: 'test', 
     component: CoursesComponent,
     canActivate: [AuthenticationGuard], 
     //data: { 
