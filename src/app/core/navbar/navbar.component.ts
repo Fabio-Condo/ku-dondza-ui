@@ -53,6 +53,10 @@ export class NavbarComponent implements OnInit {
     //this.isMenuActive = false;
   }
 
+  showNavButtons() {  
+    return this.router.url === '/home';
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

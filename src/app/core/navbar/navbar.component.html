@@ -1,112 +1,470 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="pt-br">
 
-<nav>
-  <div class="container">
-    <div class="nav-left">
-      <h2 class="logo" style="color: white;">dikahub</h2>
-    </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dikahub - Plataforma Acadêmica</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
 
-    <div class="create">
-      <div class="menu-button">
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-        <!--
-        <button *ngIf="isUserLoggedIn" (click)="togglePopout();" class="menu-icon" routerLink="/notifications">
-          <i class="fas fa-bell"></i>
-          <span class="notification-count" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
-        </button>
-        -->
+    header {
+      display: flex;
+      justify-content: space-between;
+    }
 
-        <button *ngIf="isUserLoggedIn" (click)="toggleMenu()" class="menu-icon">
-          <i class="fas fa-th"></i>
-        </button>
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        <!--<button class="btn" *ngIf="!isUserLoggedIn" (click)="onLogIn()">Iniciar sessão</button>-->
+    nav {
+      height: 60px;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(230, 230, 230, 0.7);
+      padding: 10px 0;
+    }
 
-        <div class="menu-dropdown large" [class.active]="isMenuActive">
-          <div class="menu-title">Menu</div>
-          <ul (click)="toggleMenu()">
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #4361ee;
+      letter-spacing: -1px;
+    }
 
-            <li [class.active]="isActive('/courses')" routerLink="/courses">
-              <div class="menu-content">
-                <span class="menu-icon-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4285F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                  </svg>
-                </span>
-                <a class="menu-item">
-                  <span>Cursos</span>
-                </a>
-              </div>
-            </li>
-            
-            <li [class.active]="isActive('/quizzes')" routerLink="/quizzes">
-              <div class="menu-content">
-                <span class="menu-icon-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                  </svg>
-                </span>
-                <a class="menu-item">
-                  <span>Histórico De Quizzes</span>
-                </a>
-              </div>
-            </li>
-            
-            <li [class.active]="isActive('/questions')" routerLink="/questions">
-              <div class="menu-content">
-                <span class="menu-icon-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FBBC05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                    <line x1="12" y1="6" x2="16" y2="6"></line>
-                    <line x1="12" y1="10" x2="16" y2="10"></line>
-                    <line x1="12" y1="14" x2="16" y2="14"></line>
-                  </svg>
-                </span>
-                <a class="menu-item">
-                  <span>Repositório De Questões</span>
-                </a>
-              </div>
-            </li>
-            
-            <li [class.active]="isActive('/books')" routerLink="/books">
-              <div class="menu-content">
-                <span class="menu-icon-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                  </svg>
-                </span>
-                <a class="menu-item">
-                  <span>Livros</span>
-                </a>
-              </div>
-            </li>
+    .logo-icon {
+      margin-right: 10px;
+      background: linear-gradient(135deg, #4361ee, #6c47ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 24px;
+      /* Diminuindo o tamanho do ícone */
+    }
 
-            <!--
-            <li [class.active]="isActive('/competitions')" routerLink="/competitions">
-              <div class="menu-content">
-                <span class="menu-icon-item">🏆</span>
-                <a class="menu-item">
-                  <span>Competições</span>
-                </a>
-              </div>
-            </li>
-            -->
+    .logo::before {
+      content: '🎓';
+      margin-right: 10px;
+      font-size: 24px;
+      /* Diminuindo o tamanho do emoji */
+    }
 
-          </ul>
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 24px;
+      /* Reduzindo o espaçamento entre os links */
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 3px;
+      /* Reduzindo o padding */
+      transition: all 0.3s ease;
+      font-size: 14px;
+      /* Diminuindo o tamanho da fonte */
+    }
+
+    .nav-links a:hover {
+      color: #4361ee;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background: linear-gradient(90deg, #4361ee, #6c47ff);
+      transition: width 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: #4361ee;
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .right-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 12px;
+      /* Reduzindo o espaçamento entre os botões */
+    }
+
+    .btn {
+      padding: 8px 18px;
+      /* Reduzindo o padding dos botões */
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      border: none;
+      letter-spacing: -0.2px;
+      font-size: 14px;
+      /* Reduzindo o tamanho da fonte */
+    }
+
+    .btn-outline {
+      border: 2px solid #4361ee;
+      color: #4361ee;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(67, 97, 238, 0.05);
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4361ee, #6c47ff);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3b4fd3, #5d3de0);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.25);
+    }
+
+    .user-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #f0f2f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4361ee;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .user-icon:hover {
+      background: #e6e8eb;
+    }
+
+    .mobile-toggle {
+      display: none;
+      font-size: 22px;
+      /* Diminuindo o tamanho do ícone de menu */
+      cursor: pointer;
+      color: #4361ee;
+      background: none;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-toggle:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4361ee, #6c47ff);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+      overflow-y: auto;
+    }
+
+    .mobile-menu.active {
+      transform: translateY(0);
+    }
+
+    .mobile-menu .close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 28px;
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu .close-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(90deg);
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+
+    .mobile-nav-links li {
+      margin: 20px 0;
+      /* Reduzindo a margem */
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .mobile-menu.active .mobile-nav-links li {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(3) {
+      transition-delay: 0.3s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(4) {
+      transition-delay: 0.4s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(5) {
+      transition-delay: 0.5s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(6) {
+      transition-delay: 0.6s;
+    }
+
+    .mobile-nav-links a {
+      text-decoration: none;
+      color: white;
+      font-size: 24px;
+      /* Reduzindo o tamanho da fonte */
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      transition: all 0.3s ease;
+      padding: 8px 20px;
+      border-radius: 12px;
+    }
+
+    .mobile-nav-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-nav-links a.active {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-nav-links a.active::after {
+      width: 100%;
+    }
+
+    .mobile-auth-buttons {
+      margin-top: 36px;
+      /* Reduzindo a margem */
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 200px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease 0.6s;
+    }
+
+    .mobile-menu.active .mobile-auth-buttons {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-auth-buttons .btn {
+      font-size: 16px;
+      text-align: center;
+      padding: 12px;
+      /* Reduzindo o padding */
+    }
+
+    .mobile-auth-buttons .btn-white {
+      background-color: white;
+      color: #4361ee;
+      font-weight: 600;
+    }
+
+    .mobile-auth-buttons .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .mobile-auth-buttons .btn-outline {
+      border: 2px solid white;
+      color: white;
+    }
+
+    .mobile-auth-buttons .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 992px) {
+      .nav-links {
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-links,
+      .auth-buttons {
+        display: none;
+      }
+
+      /* Manter o ícone de usuário visível no mobile */
+      .user-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .logo {
+        font-size: 20px;
+      }
+
+      .logo::before {
+        font-size: 22px;
+      }
+
+      .mobile-nav-links a {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      nav {
+        height: 56px;
+        /* Reduzindo ainda mais para telas menores */
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+
+    <nav>
+      <div class="container">
+        <div class="logo">
+          <span class="logo-icon">
+          </span>
+          dikahub
+        </div>
+        <ul class="nav-links">
+          <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel">Início</a></li>
+          <li><a [class.active]="isActive('/courses')" routerLink="/courses">Cursos</a></li>
+          <li><a [class.active]="isActive('/books')" routerLink="/books">Biblioteca</a></li>
+          <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
+          <li><a [class.active]="isActive('/questions')" routerLink="/questions">Questões</a></li>
+        </ul>
+        <div class="right-section">
+          <div class="auth-buttons" *ngIf="showNavButtons()">
+            <a routerLink="/login" class="btn btn-outline">Login</a>
+            <a routerLink="/login" class="btn btn-primary">Cadastre-se</a>
+          </div>
+          <div class="auth-buttons" *ngIf="!showNavButtons()">
+            <a routerLink="/quizzes/new" class="btn btn-primary">Iniciar Quiz</a>
+          </div>
+          <div class="user-icon" (click)="goToProfile()">
+            <i class="fas fa-user"></i>
+          </div>
+          <button class="mobile-toggle" id="mobile-toggle" (click)="toggleMenu()">☰</button>
         </div>
       </div>
+    </nav>
+  </header>
 
-      <div class="profile-pic" *ngIf="isUserLoggedIn">
-        <a (click)="goToProfile()">
-          <img src="{{loggedUser.profileImageUrl}}" alt="Profile picture" />
-        </a>
-      </div>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
+    <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
+    <ul class="mobile-nav-links">
+      <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">Início</a></li>
+      <li><a [class.active]="isActive('/courses')" routerLink="/courses" (click)="toggleMenu()">Cursos</a></li>
+      <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
+      <li><a [class.active]="isActive('/books')" routerLink="/books" (click)="toggleMenu()">Biblioteca</a></li>
+      <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Questões</a></li>
+      <li><a href="#">Sobre</a></li>
+    </ul>
+    <div class="mobile-auth-buttons">
+      <a routerLink="/login" class="btn btn-white">Login</a>
+      <a routerLink="/login" class="btn btn-outline">Cadastre-se</a>
     </div>
   </div>
-</nav>
+</body>
+
+</html>
