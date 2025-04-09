@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
       align-items: center;
       height: 100vh;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: white;
       color: #ffffff;
       overflow: hidden;
     }
@@ -54,7 +54,7 @@ import { Router } from '@angular/router';
     .error-number {
       font-size: 8rem;
       font-weight: 700;
-      background: linear-gradient(90deg, #4568dc, #b06ab3);
+      background: linear-gradient(to right, #4299e1, #2563eb);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -87,9 +87,8 @@ import { Router } from '@angular/router';
     }
     
     .return-button {
-      display: flex;
       align-items: center;
-      background: linear-gradient(90deg, #4568dc, #b06ab3);
+      background: linear-gradient(to right, #4299e1, #2563eb);
       color: white;
       padding: 0.8rem 1.5rem;
       border: none;
@@ -125,7 +124,7 @@ import { Router } from '@angular/router';
       height: 280px;
       margin-top: -140px;
       margin-left: -140px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      border: 2px solid #4568dc;
       border-radius: 50%;
       animation: rotate 15s linear infinite;
     }
@@ -208,6 +207,12 @@ import { Router } from '@angular/router';
       
       .error-divider {
         margin: 1.5rem auto;
+      }
+
+       /* Centralizando o botão */
+      .return-button {
+        margin-top: 2rem;
+        align-self: center;
       }
     }
     

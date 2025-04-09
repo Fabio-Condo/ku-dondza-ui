@@ -14,12 +14,14 @@ import { Router } from '@angular/router';
         <div class="buttons-container">
           <button class="return-button" (click)="voltarParaHome()">
             <span class="button-icon">←</span>
-            <span class="button-text">Voltar</span>
+            <span class="button-text">Voltar para a página inicial</span>
           </button>
+          <!--
           <button class="login-button" (click)="irParaLogin()">
             <span class="button-icon">↑</span>
             <span class="button-text">Fazer login</span>
           </button>
+          -->
         </div>
       </div>
       <div class="error-animation">
@@ -37,8 +39,6 @@ import { Router } from '@angular/router';
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
       color: #ffffff;
       overflow: hidden;
     }
@@ -61,20 +61,20 @@ import { Router } from '@angular/router';
     .error-number {
       font-size: 8rem;
       font-weight: 700;
-      background: linear-gradient(90deg, #e43a15, #e65245);
+      background: linear-gradient(to right, #4299e1, #2563eb);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       margin-bottom: 1rem;
       line-height: 1;
-      text-shadow: 0 0 30px rgba(228, 58, 21, 0.3);
+      text-shadow: 0 0 30px #4299e1;
       animation: pulse 3s infinite ease-in-out;
     }
     
     .error-divider {
       width: 80px;
       height: 4px;
-      background: #e43a15;
+      background: #4299e1;
       margin: 1.5rem 0;
       border-radius: 2px;
     }
@@ -111,15 +111,15 @@ import { Router } from '@angular/router';
     }
     
     .return-button {
-      background: transparent;
+      background: linear-gradient(to right, #4299e1, #2563eb);
       color: white;
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 12px #4299e1;
     }
     
     .login-button {
-      background: linear-gradient(90deg, #e43a15, #e65245);
+      background: linear-gradient(to right, #4299e1, #2563eb);
       color: white;
-      box-shadow: 0 4px 12px rgba(228, 58, 21, 0.4);
+      box-shadow: 0 4px 12px #4299e1;
     }
     
     .return-button:hover {
@@ -129,7 +129,7 @@ import { Router } from '@angular/router';
     
     .login-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(228, 58, 21, 0.6);
+      box-shadow: 0 8px 20px #4299e1;
     }
     
     .button-icon {
@@ -158,9 +158,9 @@ import { Router } from '@angular/router';
       bottom: 0;
       width: 150px;
       height: 120px;
-      background: #e43a15;
+      background: #2563eb;
       border-radius: 12px;
-      box-shadow: 0 0 30px rgba(228, 58, 21, 0.6);
+      box-shadow: 0 0 30px #4299e1;
     }
     
     .lock-shackle {
@@ -170,10 +170,10 @@ import { Router } from '@angular/router';
       transform: translateX(-50%);
       width: 80px;
       height: 100px;
-      border: 16px solid #e43a15;
+      border: 16px solid #2563eb;
       border-bottom: none;
       border-radius: 40px 40px 0 0;
-      box-shadow: 0 0 20px rgba(228, 58, 21, 0.4);
+      box-shadow: 0 0 20px #4299e1;
     }
     
     .lock-keyhole {
