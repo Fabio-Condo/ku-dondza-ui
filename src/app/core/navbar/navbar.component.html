@@ -437,8 +437,8 @@
           <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel">Início</a></li>
           <li><a [class.active]="isActive('/courses')" routerLink="/courses">Cursos</a></li>
           <li><a [class.active]="isActive('/books')" routerLink="/books">Biblioteca</a></li>
-          <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
           <li><a [class.active]="isActive('/questions')" routerLink="/questions">Questões</a></li>
+          <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
         </ul>
         <div class="right-section">
           <div class="auth-buttons" *ngIf="showNavButtons()">
@@ -463,12 +463,12 @@
     <ul class="mobile-nav-links">
       <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">Início</a></li>
       <li><a [class.active]="isActive('/courses')" routerLink="/courses" (click)="toggleMenu()">Cursos</a></li>
-      <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a [class.active]="isActive('/books')" routerLink="/books" (click)="toggleMenu()">Biblioteca</a></li>
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Questões</a></li>
+      <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a href="#">Sobre</a></li>
     </ul>
-    <div class="mobile-auth-buttons">
+    <div class="mobile-auth-buttons" *ngIf="showNavButtons()">
       <a routerLink="/login" class="btn btn-white">Login</a>
       <a routerLink="/login" class="btn btn-outline">Cadastre-se</a>
     </div>
