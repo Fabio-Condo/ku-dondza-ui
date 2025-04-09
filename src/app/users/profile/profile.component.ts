@@ -80,8 +80,13 @@ export class ProfileComponent implements OnInit {
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
+        if (errorResponse.status == 400) {
+          // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
       }
     );
   }

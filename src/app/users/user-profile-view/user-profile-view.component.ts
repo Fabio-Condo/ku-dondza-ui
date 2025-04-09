@@ -105,7 +105,15 @@ export class UserProfileViewComponent implements OnInit {
       (user: User) => {
         this.user = user;
       },
-      (erro) => this.errorHandler.handle(erro),
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        if (errorResponse.status == 400) {
+          // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      }
     );
   }
 
