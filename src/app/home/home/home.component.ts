@@ -7,7 +7,6 @@ import { User } from 'src/app/core/model/User';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
-import { environment } from 'src/environments/environment';
 
 declare var google: any;
 
@@ -78,7 +77,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        console.log(errorResponse.error.message)
         this.showLoading = false;
       }
     });
@@ -101,9 +99,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private handleGoogleCredential(googleCredential: string): void {
-    this.showLoading = true;
-    this.loadingMessage = "Estamos quase lá...";
-
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá...";
+      this.showLoading = true;
+    });
+  
     const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
@@ -115,11 +115,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
       }
     });
-
+  
     this.subscriptions.push(sub);
-  }
+  }  
 
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;

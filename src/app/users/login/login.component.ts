@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.router.navigateByUrl('/main-panel');
-        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -86,9 +85,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private handleGoogleCredential(googleCredential: string): void {
-    this.showLoading = true;
-    this.loadingMessage = "Estamos quase lá...";
-
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá...";
+      this.showLoading = true;
+    });
+  
     const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
@@ -97,16 +98,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.ngZone.run(() => {
           this.router.navigateByUrl('/main-panel');
         });
-        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
         this.showLoading = false;
       }
     });
-
+  
     this.subscriptions.push(sub);
-  }
+  } 
 
   private checkAuthentication(): void {
     if (this.authenticationService.isUserLoggedIn()) {
