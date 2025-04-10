@@ -229,7 +229,9 @@
         </button>
 
         <div class="student-info">
-          <div class="student-avatar">
+          <img [src]="loggedUser.profileImageUrl" alt="Foto de perfil" class="student-avatar"
+            *ngIf="loggedUser.profileImageUrl" />
+          <div class="student-avatar" *ngIf="!loggedUser.profileImageUrl">
             <i class="fas fa-user"></i>
           </div>
           <div>
