@@ -448,7 +448,7 @@
           <div class="auth-buttons" *ngIf="!showNavButtons()">
             <a routerLink="/quizzes/new" class="btn btn-primary">Iniciar Quiz</a>
           </div>
-          <div class="user-icon" (click)="goToProfile()">
+          <div class="user-icon" (click)="goToProfile()" *ngIf="!showNavButtons()">
             <i class="fas fa-user"></i>
           </div>
           <button class="mobile-toggle" id="mobile-toggle" (click)="toggleMenu()">☰</button>
