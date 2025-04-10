@@ -43,6 +43,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   imagePath = './assets/images/funcao do grau 2.png';
 
   timerSubscription!: Subscription;
+  totalTimeLimit: number = 0;
   timeLimit: number = 0;
   formattedTime: string = '00:00'; // Inicializa no formato correto
   remainingTime: number = 0;   // Tempo restante para o quiz
@@ -115,6 +116,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   startTimer(): void {
 
     this.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+    this.totalTimeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
     
     this.remainingTime = this.timeLimit; // Tempo restante para contagem
     this.startTime = Date.now(); // Armazenar o tempo de início (timestamp)

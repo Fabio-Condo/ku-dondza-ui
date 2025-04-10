@@ -224,6 +224,17 @@ export class QuestionViewComponent implements OnInit {
     }, 0);
   }
 
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    // Formata os minutos e segundos para ter 2 dígitos
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
   getDifficultyLevelValue(level: string) {
     switch (level) {
       case 'EASY':
