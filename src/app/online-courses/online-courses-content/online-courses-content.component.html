@@ -135,7 +135,7 @@
                     </div>
 
                     <div class="lesson-actions">
-                      <span class="lesson-duration" *ngIf="content.contentType !== 'FILE'">10 min</span>
+                      <span class="lesson-duration" *ngIf="content.contentType !== 'FILE'">{{ content.time }}</span>
 
                       <!-- Exibir status de vídeo assistido -->
                       <!-- 
@@ -277,6 +277,11 @@
         <label for="description">Descrição</label>
         <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
           [(ngModel)]="onlineCourseContent.description">
+      </div>
+      <div class="form-group" *ngIf="onlineCourseContent.contentType === 'VIDEO'">
+        <label for="time">Tempo do video</label>
+        <input type="text" name="time" ngModel #time="ngModel" required minlength="1"
+          [(ngModel)]="onlineCourseContent.time">
       </div>
       <div class="form-group">
         <label for="modulo">Módulo</label>

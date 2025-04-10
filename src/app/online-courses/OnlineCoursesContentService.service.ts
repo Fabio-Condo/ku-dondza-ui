@@ -53,6 +53,7 @@ export class OnlineCoursesContentService {
         formData.append('id', content.id.toString());
         formData.append('description', content.description);
         formData.append('contentType', content.contentType);
+        formData.append('time', content.time.toString());
         formData.append('moduleId', content.module.id.toString());
         formData.append('position', content.position.toString());
         formData.append('file', file);

@@ -240,6 +240,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   onUpdateOnlineCourseContent(content: OnlineCourseContent, module: Module, file: File): void {
     this.onlineCourseContent = content;
     this.onlineCourseContent.contentType = content.contentType;
+    this.onlineCourseContent.time = content.time;
     this.onlineCourseContent.module = module;
     this.courseContentFile = file;
     this.displayModalSaveContent = true;

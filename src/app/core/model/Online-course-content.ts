@@ -6,6 +6,7 @@ export class OnlineCourseContent {
     fileName!: string;
     urlFile!: string;
     contentType!: string;
+    time!: string;
     module = new Module();
     position!: number;
     
