@@ -60,11 +60,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.router.navigateByUrl('/main-panel');
+        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-      },
-      complete: () => {
         this.showLoading = false;
       }
     });
@@ -98,9 +97,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.ngZone.run(() => {
           this.router.navigateByUrl('/main-panel');
         });
+        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
       }
     });
 

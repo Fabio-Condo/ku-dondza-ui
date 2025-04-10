@@ -14,8 +14,7 @@ declare var google: any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  providers: [MessageService]
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
@@ -34,7 +33,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private googleAuthService: GoogleAuthService,
-    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -76,11 +74,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.router.navigateByUrl('/main-panel');
+        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-      },
-      complete: () => {
+        console.log(errorResponse.error.message)
         this.showLoading = false;
       }
     });
@@ -133,11 +131,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private sendErrorNotification(message: string): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erro',
-      detail: message || 'Ocorreu um erro. Por favor, tente novamente.',
-      life: 5000
-    });
+    if (message) {
+      this.messageService.add({ severity: 'error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
   }
 }
