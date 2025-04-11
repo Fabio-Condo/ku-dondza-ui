@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, NgZone, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -16,6 +16,8 @@ declare var google: any;
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+
+  @ViewChild('slider', { static: false }) slider: ElementRef | undefined;
 
   public showLoading: boolean = false;
   private subscriptions: Subscription[] = [];
@@ -103,7 +105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.loadingMessage = "Estamos quase lá...";
       this.showLoading = true;
     });
-  
+
     const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
@@ -118,9 +120,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.showLoading = false;
       }
     });
-  
+
     this.subscriptions.push(sub);
-  }  
+  }
 
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
@@ -136,6 +138,24 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.messageService.add({ severity: 'error', detail: message });
     } else {
       this.messageService.add({ severity: 'error', detail: 'An error occurred. Please try again.' });
+    }
+  }
+
+  testimonials = [
+    { text: '"A dikahub transformou minha forma de estudar. Os quizzes me ajudam a identificar pontos fracos e os cursos são incríveis. Recomendo para todos os estudantes!"', author: 'Maria Paula', role: 'Estudante' },
+    { text: '"Como professor, encontrei na plataforma uma ferramenta completa para engajar meus alunos. Os recursos disponíveis são excelentes para complementar as aulas presenciais."', author: 'Rafael Silva', role: 'Professor' },
+    { text: '"O repositório de questões foi fundamental para minha aprovação no vestibular. Consegui praticar com questões de provas anteriores e entender meus erros."', author: 'João Carlos', role: 'Aluna' },
+    // Adicione mais depoimentos aqui
+  ];
+
+  scroll(direction: string): void {
+    const sliderElement = this.slider?.nativeElement;
+    const scrollAmount = 320; // Igual ou maior que a largura do card
+
+    if (direction === 'next') {
+      sliderElement.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    } else if (direction === 'prev') {
+      sliderElement.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     }
   }
 }

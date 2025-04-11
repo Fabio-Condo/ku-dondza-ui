@@ -27,7 +27,7 @@ const routes: Routes = [
   { 
     path: 'test', 
     component: CoursesComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

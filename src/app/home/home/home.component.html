@@ -673,6 +673,32 @@
             align-items: center;
         }
 
+        .slider-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .slider-btn {
+            background: transparent;
+            color: #212529;
+            border: none;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .prev-btn {
+            margin-right: 10px;
+        }
+
+        .next-btn {
+            margin-left: 10px;
+        }
+
         .author-avatar {
             width: 50px;
             height: 50px;
@@ -937,8 +963,7 @@
                 <p>dikahub é uma plataforma completa com quizzes, cursos, biblioteca virtual e muito mais para
                     impulsionar seu aprendizado.</p>
                 <div class="hero-buttons">
-                    <a routerLink="/login"
-                        class="btn btn-large btn-white">Começar agora</a>
+                    <a routerLink="/login" class="btn btn-large btn-white">Começar agora</a>
                     <!--<a routerLink="/login" class="btn btn-large btn-outline" style="color: white;">Começar agora</a>-->
                 </div>
             </div>
@@ -1063,7 +1088,7 @@
                             </button>
                         </div>
                         -->
-                        
+
                         <div id="google-signin-button"></div>
 
                         <div class="login-divider">
@@ -1074,7 +1099,7 @@
                         <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
                             <div class="form-group">
                                 <label for="email">E-mail</label>
-                                <input type="email" id="email" name="email" #emailInput="ngModel" ngModel
+                                <input type="email" id="email" name="email" #usernameInput="ngModel" ngModel
                                     placeholder="Seu e-mail" required email>
                             </div>
                             <div class="form-group">
@@ -1130,65 +1155,29 @@
                 <h2>O que nossos usuários dizem</h2>
                 <p>Veja o que estudantes e professores acham da plataforma dikahub</p>
             </div>
-            <div class="testimonials-slider">
-                <!-- Testimonial 1 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        "A dikahub transformou minha forma de estudar. Os quizzes me ajudam a identificar pontos
-                        fracos e os cursos são incríveis. Recomendo para todos os estudantes!"
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MP</div>
-                        <div class="author-info">
-                            <h4>Maria Paula</h4>
-                            <p>Estudante de Medicina</p>
+
+            <div class="slider-wrapper">
+                <div>
+                    <button class="slider-btn prev-btn" (click)="scroll('prev')">&#10094;</button>
+                </div>
+
+                <div class="testimonials-slider" #slider>
+                    <div class="testimonial-card" *ngFor="let testimonial of testimonials">
+                        <div class="testimonial-content">
+                            {{ testimonial.text }}
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">MP</div>
+                            <div class="author-info">
+                                <h4> {{ testimonial.author }}</h4>
+                                <p> {{ testimonial.role }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Testimonial 2 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        "Como professor, encontrei na plataforma uma ferramenta completa para engajar meus alunos. Os
-                        recursos disponíveis são excelentes para complementar as aulas presenciais."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">RS</div>
-                        <div class="author-info">
-                            <h4>Rafael Silva</h4>
-                            <p>Professor de Física</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Testimonial 3 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        "O repositório de questões foi fundamental para minha aprovação no vestibular. Consegui praticar
-                        com questões de provas anteriores e entender meus erros."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JC</div>
-                        <div class="author-info">
-                            <h4>João Carlos</h4>
-                            <p>Estudante de Engenharia</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Testimonial 4 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        "A biblioteca virtual tem uma seleção incrível de livros. Economizei muito dinheiro desde que
-                        comecei a usar a plataforma para minhas pesquisas acadêmicas."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AB</div>
-                        <div class="author-info">
-                            <h4>Ana Beatriz</h4>
-                            <p>Mestranda em História</p>
-                        </div>
-                    </div>
+                <div>
+                    <button class="slider-btn next-btn" (click)="scroll('next')">&#10095;</button>
                 </div>
             </div>
         </div>
