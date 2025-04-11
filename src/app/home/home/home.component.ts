@@ -142,10 +142,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   testimonials = [
-    { text: '"A dikahub transformou minha forma de estudar. Os quizzes me ajudam a identificar pontos fracos e os cursos são incríveis. Recomendo para todos os estudantes!"', author: 'Maria Paula', role: 'Estudante' },
-    { text: '"Como professor, encontrei na plataforma uma ferramenta completa para engajar meus alunos. Os recursos disponíveis são excelentes para complementar as aulas presenciais."', author: 'Rafael Silva', role: 'Professor' },
-    { text: '"O repositório de questões foi fundamental para minha aprovação no vestibular. Consegui praticar com questões de provas anteriores e entender meus erros."', author: 'João Carlos', role: 'Aluna' },
-    // Adicione mais depoimentos aqui
+    {
+      text: '"A dikahub transformou minha forma de estudar. Os quizzes me ajudam a identificar pontos fracos e os cursos são incríveis. Recomendo para todos os estudantes!"',
+      author: 'Maria Paula',
+      role: 'Estudante'
+    },
+    {
+      text: '"Como professor, encontrei na plataforma uma ferramenta completa para engajar meus alunos. Os recursos disponíveis são excelentes para complementar as aulas presenciais."',
+      author: 'Rafael Silva',
+      role: 'Professor'
+    },
+    {
+      text: '"O repositório de questões foi fundamental para minha aprovação no vestibular. Consegui praticar com questões de provas anteriores e entender meus erros."',
+      author: 'João Carlos',
+      role: 'Aluno'
+    },
+    {
+      text: '"Nunca imaginei que estudar online poderia ser tão envolvente. Os desafios semanais me mantêm motivada e focada!"',
+      author: 'Larissa Gomes',
+      role: 'Estudante de Direito'
+    },
+    {
+      text: '"Utilizei a plataforma para revisar conteúdos antes de um concurso e tive ótimos resultados. A didática é excelente."',
+      author: 'Carlos Mendes',
+      role: 'Concurseiro'
+    },
+    {
+      text: '"Os recursos interativos e as estatísticas de desempenho me ajudaram a melhorar significativamente minhas notas."',
+      author: 'Bruna Teixeira',
+      role: 'Aluna do Ensino Médio'
+    }
   ];
 
   scroll(direction: string): void {
