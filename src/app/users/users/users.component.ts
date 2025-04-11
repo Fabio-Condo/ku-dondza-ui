@@ -207,7 +207,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
-        this.onDeleteUder(user.username);
+        this.onDeleteUder(user.email);
       }
     });
   }
@@ -258,7 +258,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   changeStatusActive(user: User): void {
     const newStatus = !user.active; 3
 
-    this.userService.changeStatusActive(user.username, newStatus).subscribe(
+    this.userService.changeStatusActive(user.email, newStatus).subscribe(
       () => {
         const acao = newStatus ? 'active' : 'inactive';
 
@@ -271,7 +271,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   changeStatusNotLocked(user: User): void {
     const newStatus = !user.notLocked;
-    this.userService.changeStatusNotLocked(user.username, newStatus).subscribe(
+    this.userService.changeStatusNotLocked(user.email, newStatus).subscribe(
       () => {
         const acao = newStatus ? 'true' : 'false';
         user.notLocked = newStatus;

@@ -43,7 +43,6 @@ export class UserService {
   save(user: User, profileImageFile: File): Observable<User> {
     const formData = new FormData();
     formData.append('fullName', user.fullName);
-    formData.append('username', user.username);
     formData.append('email', user.email);
     formData.append('userType', user.userType);
     formData.append('role', user.role);
@@ -55,9 +54,8 @@ export class UserService {
 
   update(user: User, profileImageFile: File): Observable<User> {
     const formData = new FormData();
-    formData.append('currentUsername', user.username);
+    formData.append('currentEmail', user.email);
     formData.append('fullName', user.fullName);
-    formData.append('username', user.username);
     formData.append('email', user.email);
     formData.append('userType', user.userType);
     formData.append('role', user.role);
@@ -69,9 +67,8 @@ export class UserService {
 
   updateUserProfile(user: User): Observable<User> {
     const formData = new FormData();
-    formData.append('currentUsername', user.username);
+    formData.append('currentEmail', user.email);
     formData.append('fullName', user.fullName);
-    formData.append('username', user.username);
     formData.append('email', user.email);
     formData.append('bio', user.bio);
     formData.append('role', user.role);
@@ -100,8 +97,8 @@ export class UserService {
       });  // You need to use reportProgress: true to show some progress of any HTTP request. If you want to see all events, including the progress of transfers you need to use observe: 'events' option as well and return an Observable of type HttpEvent .
   }
 
-  public deleteUser(username: string): Observable<CustomHttpRespone> {
-    return this.http.delete<CustomHttpRespone>(`${this.host}/delete/${username}`);
+  public deleteUser(email: string): Observable<CustomHttpRespone> {
+    return this.http.delete<CustomHttpRespone>(`${this.host}/delete/${email}`);
   }
 
   getUserByUserId(userId: string): Observable<User> {
@@ -124,12 +121,12 @@ export class UserService {
     return localStorage.getItem('user');
   }
 
-  changeStatusActive(username: string, active: boolean): Observable<void> {
-    return this.http.put<void>(`${this.host}/${username}/active-user`, active, {});
+  changeStatusActive(email: string, active: boolean): Observable<void> {
+    return this.http.put<void>(`${this.host}/${email}/active-user`, active, {});
   }
 
-  changeStatusNotLocked(username: string, notLocked: boolean): Observable<void> {
-    return this.http.put<void>(`${this.host}/${username}/notLocked-user`, notLocked, {});
+  changeStatusNotLocked(email: string, notLocked: boolean): Observable<void> {
+    return this.http.put<void>(`${this.host}/${email}/notLocked-user`, notLocked, {});
   }
 
   getUserSubjectInterests(userId: number): Observable<Subject[]> {
@@ -166,16 +163,16 @@ export class UserService {
     return this.http.get<boolean>(`${this.host}/${userId}/subscribedOnlineCourses/contains/${onlineCourseId}`);
   }
 
-  updateProfilePhoto(username: string, file: File): Observable<User> {
+  updateProfilePhoto(email: string, file: File): Observable<User> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-    return this.http.post<User>(`${this.host}/${username}/profile-photo`, formData);
+    return this.http.post<User>(`${this.host}/${email}/profile-photo`, formData);
   }
 
-  updateProfileCoverPhoto(username: string, file: File): Observable<User> {
+  updateProfileCoverPhoto(email: string, file: File): Observable<User> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-    return this.http.post<User>(`${this.host}/${username}/cover-photo`, formData);
+    return this.http.post<User>(`${this.host}/${email}/cover-photo`, formData);
   }
 
   addContentToMarkedCourseContents(userId: number, onlineCourseContentId: number): Observable<User> {

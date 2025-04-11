@@ -58,7 +58,7 @@ export class UserProfileViewComponent implements OnInit {
   filtroAmigos: IUserFilter = {
     page: -1,
     itemsPerPage: 5,
-    sort: 'firstName,asc',
+    sort: 'fullName,asc',
   }
 
   constructor(
@@ -138,7 +138,7 @@ export class UserProfileViewComponent implements OnInit {
     if (event.target.files.length > 0) {
       this.fileToUpload = event.target.files[0];
 
-      this.userService.updateProfilePhoto(this.currentUser.username, this.fileToUpload).subscribe(
+      this.userService.updateProfilePhoto(this.currentUser.email, this.fileToUpload).subscribe(
         response => {
           this.user = response;
         },
@@ -153,7 +153,7 @@ export class UserProfileViewComponent implements OnInit {
     if (event.target.files.length > 0) {
       this.coverFileToUpload = event.target.files[0];
 
-      this.userService.updateProfileCoverPhoto(this.currentUser.username, this.coverFileToUpload).subscribe(
+      this.userService.updateProfileCoverPhoto(this.currentUser.email, this.coverFileToUpload).subscribe(
         response => {
           this.user = response;
         },

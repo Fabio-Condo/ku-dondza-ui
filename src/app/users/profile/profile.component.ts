@@ -112,7 +112,7 @@ export class ProfileComponent implements OnInit {
     if (event.target.files.length > 0) {
       this.fileToUpload = event.target.files[0];
 
-      this.userService.updateProfilePhoto(this.currentUser.username, this.fileToUpload).subscribe(
+      this.userService.updateProfilePhoto(this.currentUser.email, this.fileToUpload).subscribe(
         response => {
           this.user = response;
         },
