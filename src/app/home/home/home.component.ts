@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, NgZone, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   @ViewChild('slider', { static: false }) slider: ElementRef | undefined;
 
+  user = new User();
   public showLoading: boolean = false;
   private subscriptions: Subscription[] = [];
   value3: any;
@@ -63,6 +65,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   toggleMenu() {
     this.isMenuActive = !this.isMenuActive;
     this.isPopoutVisible = false;
+  }
+
+  public onRegister(user: NgForm): void {
+    this.user.plan = "PREMIUM";
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.authenticationService.register(this.user).subscribe(
+        (response: User) => {
+          this.showLoading = false;
+          this.messageService.add({ severity: 'success', detail: 'A new account was created for ${response.firstName}.Please check your email for password to log in.' })
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendErrorNotification(errorResponse.error.message);
+          this.showLoading = false;
+        }
+      )
+    );
   }
 
   public onLogin(user: User): void {

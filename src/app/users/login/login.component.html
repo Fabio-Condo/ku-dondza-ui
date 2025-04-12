@@ -276,8 +276,8 @@
       <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
         <div class="input-group">
           <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
-            required email>
+          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+            email>
         </div>
         <div class="input-group">
           <label for="password">Senha</label>
@@ -324,15 +324,15 @@
 
     <div class="login-side" *ngIf="activeTab === 2">
       <h1>Cadastrar</h1>
-      <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+      <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
         <div class="input-group">
           <label for="name">Nome completo</label>
-          <input type="text" id="name" placeholder="Seu nome completo">
+          <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel placeholder="Seu nome completo" [(ngModel)]="user.fullName">
         </div>
         <div class="input-group">
           <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
-            required email>
+          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+            email [(ngModel)]="user.email">
         </div>
         <div class="input-group">
           <label for="password">Senha</label>

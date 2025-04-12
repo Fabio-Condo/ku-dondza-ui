@@ -1119,14 +1119,15 @@
 
                     <!-- Register Content -->
                     <div class="auth-content" id="register-content" *ngIf="activeTab === 2">
-                        <form>
+                        <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
                             <div class="form-group">
                                 <label for="register-name">Nome completo</label>
-                                <input type="text" id="register-name" placeholder="Seu nome completo">
+                                <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel placeholder="Seu nome completo" [(ngModel)]="user.fullName">
                             </div>
                             <div class="form-group">
                                 <label for="register-email">E-mail</label>
-                                <input type="email" id="register-email" placeholder="Seu e-mail">
+                                <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+                                email [(ngModel)]="user.email">
                             </div>
                             <div class="form-group">
                                 <label for="register-password">Senha</label>
@@ -1136,7 +1137,9 @@
                                 <label for="register-confirm">Confirmar senha</label>
                                 <input type="password" id="register-confirm" placeholder="Confirme sua senha">
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Criar conta</button>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                {{ showLoading ? 'Carregando...' : 'Entrar' }}
+                              </button>
                         </form>
                         <div class="login-footer">
                             <p>Ao se cadastrar, você concorda com nossos <a href="#">Termos de Uso</a> e <a

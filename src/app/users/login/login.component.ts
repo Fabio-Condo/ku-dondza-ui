@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../authentication.service';
 import { User } from 'src/app/core/model/User';
 import { GoogleAuthService } from '../google-auth-service.service';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { GoogleAuthService } from '../google-auth-service.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
+  user = new User();
   imagePath = './assets/scilogo.png'
   public showLoading: any;
   private subscriptions: Subscription[] = [];
@@ -48,6 +49,23 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanupSubscriptions();
+  }
+
+  public onRegister(user: NgForm): void {
+    this.user.plan = "PREMIUM";
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.authenticationService.register(this.user).subscribe(
+        (response: User) => {
+          this.showLoading = false;
+          this.messageService.add({ severity: 'success', detail: 'A new account was created for ${response.firstName}.Please check your email for password to log in.' })
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendErrorNotification(errorResponse.error.message);
+          this.showLoading = false;
+        }
+      )
+    );
   }
 
   public onLogin(user: User): void {
