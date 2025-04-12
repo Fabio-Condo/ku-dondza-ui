@@ -61,7 +61,7 @@
                             </span>
                             <div class="dropdown-container" *ngIf="isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
-                                    class="pi pi-ellipsis-h"></i></button>
+                                        class="pi pi-ellipsis-h"></i></button>
                                 <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
                                     <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)">Eliminar</a>
                                 </div>
@@ -71,9 +71,12 @@
 
                     <div class="quiz-stats">
                         <div class="stats-left">
-                            <div class="user">
-                                <img src="{{quiz.user.profileImageUrl}}" src="instrutor.jpg" alt="Autor"
-                                    class="user-avatar">
+                            <div class="user-container">
+                                <img src="{{quiz.user.profileImageUrl}}" alt="Foto de perfil"
+                                    class="user-avatar" *ngIf="quiz.user.profileImageUrl">
+                                <div class="user-avatar" *ngIf="!quiz.user.profileImageUrl">
+                                    <i class="fas fa-user" style="font-size: 0.5rem;"></i>
+                                </div>
                                 <span>{{ quiz.user.fullName }}</span>
                             </div>
                             <div class="stat-item">
