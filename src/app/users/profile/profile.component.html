@@ -303,7 +303,9 @@
                 </div>
             </div>
 
-            <button type="submit" class="submit-button" [disabled]="userForm.invalid">Salvar Alterações</button>
+            <button type="submit" class="submit-button" [disabled]="userForm.invalid">
+                {{ showLoading ? 'Loading...' :'Salvar' }}
+            </button>
         </form>
     </div>
 </div>

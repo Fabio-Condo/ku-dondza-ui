@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   imagePath = './assets/scilogo.png'
   public showLoading: any;
   private subscriptions: Subscription[] = [];
-  value3: any;
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
   activeTab: number = 1;

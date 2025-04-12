@@ -92,13 +92,16 @@ export class ProfileComponent implements OnInit {
   }
 
   update(userForm: NgForm) {
+    this.showLoading = true;
     this.userService.updateUserProfile(this.user).subscribe(
       (response) => {
         this.user = response;
         this.authenticationService.addUserToLocalCache(response);
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     )
   }
