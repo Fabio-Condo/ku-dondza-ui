@@ -140,7 +140,8 @@
           <div class="answer-options">
             <label *ngFor="let answer of questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
                     'correct-answer': showCorrection && answer.correct,
-                    'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!)
+                    'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!),
+                    'selected-answer': isSelected(questions[currentQuestionIndex].id, answer.id!)
                  }">
               <span class="num">{{ i + 1 }}</span>
               <input type="radio" name="question-{{ questions[currentQuestionIndex].id }}" [value]="answer.id"
