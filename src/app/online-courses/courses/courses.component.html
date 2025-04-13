@@ -537,16 +537,16 @@
 
     <div class="title-container">
       <h1>Pessoas</h1>
-      <p class="subtitle">Acesse nossa biblioteca digital de livros recomendados</p>
+      <p class="subtitle">Conecte-se com outros usuários, compartilhe conhecimentos e recursos</p>
     </div>
 
     <br>
 
     <header>
-      <span class="pagination-info">Mostrando 10 de 20</span>
+      <span class="pagination-info">Mostrando {{ totalUsersRecord }} de {{ totalUsers }}</span>
 
       <div class="actions">
-        <button class="btn-primary" id="add-btn">
+        <button class="btn-primary" id="add-btn" (click)="onAddNewUser()" *ngIf="isSuperAdmin">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -554,7 +554,7 @@
           </svg>
           Novo
         </button>
-        <button class="btn-outline" id="filter-btn">
+        <button class="btn-outline" id="filter-btn" (click)="onFilter()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
@@ -573,27 +573,55 @@
         <div class="user-info">
           <h3 class="user-name">{{ user.fullName }}</h3>
           <div class="user-details">
-            <span class="user-detail"><i class="fas fa-envelope"></i> {{ user.email }}</span>
-            <span class="user-detail"><i class="fas fa-user-tag"></i> {{ user.userType }}</span>
-            <span class="user-detail"><i class="fas fa-clock"></i> Último acesso: {{ user.lastLoginDate }}</span>
+            <span *ngIf="isSuperAdmin" class="user-detail"><i class="fas fa-envelope"></i> {{ user.email }}</span>
+            <span class="user-detail"><i class="fas fa-user-tag"></i> {{ getUserTypeValue(user.userType) }}</span>
+            <span *ngIf="isSuperAdmin" class="user-detail"><i class="fas fa-user-tag"></i> {{
+              getUserRoleValue(user.role) }}</span>
+            <span class="user-detail"><i class="fas fa-clock"></i> Último acesso: {{ user.lastLoginDate | date: 'short'
+              }}</span>
             <span class="status-badge status-active"><i class="fas fa-circle"></i> Ativo</span>
           </div>
         </div>
         <div class="user-actions">
-          <div class="dropdown-container">
-            <button class="dropdown-btn" (click)="toggleDropdown(user)"><i class="pi pi-ellipsis-h"></i></button>
+          <div class="dropdown-container" *ngIf="isSuperAdmin">
+            <button class="dropdown-btn" (click)="toggleDropdown(user)"><i class="pi pi-ellipsis-v"></i></button>
             <div class="dropdown" *ngIf="user.isAdminMenuOpen">
-              <a (click)="closeDropdown(user)">Eliminar</a>
+              <a (click)="onEditUser(user); closeDropdown(user)">Editar</a>
+              <a (click)="confirmarExclusao(user); closeDropdown(user)">Eliminar</a>
             </div>
           </div>
+          <button class="btn-outline" [routerLink]="['/user/profile', user.userId]">
+            Visualizar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
         </div>
       </div>
 
     </div>
 
+    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+      <div class="loading-indicator">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>{{ loadingMessage }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="!showLoading && users.length === 0">
+      <div class="card">
+        <span class="no-items-message">
+          Nenhum item encontrado
+        </span>
+      </div>
+    </div>
+
     <!-- Load-more -->
     <div class="load-more-container">
-      <button class="btn-load-more" id="load-more-btn">
+      <button class="btn-load-more" id="load-more-btn" (click)="loadMore()"
+        [disabled]="users.length === totalUsers && totalUsers > 0">
         Buscar mais
       </button>
     </div>
@@ -601,15 +629,15 @@
     <!-- Paginação -->
     <div class="pagination">
       <span class="pagination-info">Mostrando {{ totalUsersRecord }} de {{ totalUsers }}</span>
-      <button class="pagination-btn prev" [disabled]="currentPage === 1 || showLoading">
+      <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
         Anterior
       </button>
-      <span class="pagination-info">Página {{ currentPage }} de </span>
-      <button class="pagination-btn next">
+      <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+      <button class="pagination-btn next" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
         Próxima
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -619,23 +647,55 @@
     </div>
 
   </main>
-
-  <script>
-    // Menu responsivo
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-
-    hamburger.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-    });
-
-    // Fechar menu ao clicar em um item
-    document.querySelectorAll('.nav-menu a').forEach(item => {
-      item.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-      });
-    });
-  </script>
 </body>
 
 </html>
+
+<div class="popout-overlay" *ngIf="displayModalSave">
+  <div class="popout-container">
+    <div class="popout-header">
+      <h2 class="popout-title">{{ editing ? 'Editando User' : 'Adicionando Novo User' }}</h2>
+      <button class="close-button" (click)="displayModalSave = false">&times;</button>
+    </div>
+
+    <form autocomplete="off" #courseForm="ngForm">
+      <div class="form-group">
+        <label for="fullName">Nome</label>
+        <input type="text" name="fullName" ngModel #fullName="ngModel" required minlength="1"
+          [(ngModel)]="user.fullName">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" name="email" ngModel #email="ngModel" required minlength="1" [(ngModel)]="user.email">
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role" [(ngModel)]="user.role" name="role" required>
+          <option value="" disabled selected>Selecione o tipo</option>
+          <option *ngFor="let role of roles" [value]="role.value">{{ role.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="type">Tipo</label>
+        <select id="type" [(ngModel)]="user.userType" name="type" required>
+          <option value="" disabled selected>Selecione o tipo</option>
+          <option *ngFor="let type of userType" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="profileImage">Foto de perfil</label>
+        <input type="file" (change)="onFileSelected($event)" name="profileImage" accept="image/*" class="form-control"
+          required />
+      </div>
+
+      <div class="form-group">
+        <button type="button" (click)="save()" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

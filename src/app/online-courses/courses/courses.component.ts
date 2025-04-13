@@ -7,7 +7,9 @@ import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
+import { CustomHttpRespone } from 'src/app/core/model/custom-http-response';
 import { User } from 'src/app/core/model/User';
+import { Role } from 'src/app/enum/role.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { UserService } from 'src/app/users/user.service';
 
@@ -23,12 +25,15 @@ export class CoursesComponent implements OnInit {
   //exbindoFormularioAddUser = false;
   //exbindoFormularioEditUser = false;
   exbindoFormularioSettingsUser = false;
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
 
 
   user: User = new User;
   showLoading: boolean = true;
   subscriptions: Subscription[] = [];
   displayModalSave: boolean = false;
+  displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   profileImageFile!: File;
 
@@ -40,16 +45,16 @@ export class CoursesComponent implements OnInit {
 
   activeTab: number = 3;
 
-  filtroUsers: IUserFilter = {
+  filtro: IUserFilter = {
     page: -1,
     itemsPerPage: 5,
     sort: 'fullName,asc',
   }
 
   userType = [
-    { label: 'SIMPLE', value: 'SIMPLE' },
-    { label: 'INSTRUTOR', value: 'INSTRUTOR' },
-    { label: 'TEACHER', value: 'TEACHER' },
+    { label: 'Estudante', value: 'STUDENT' },
+    { label: 'Instrutor', value: 'INSTRUTOR' },
+    { label: 'Professor', value: 'TEACHER' },
   ];
 
   roles = [
@@ -72,8 +77,7 @@ export class CoursesComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('Pesquisa do usuário');
     this.currentUser = this.authenticationService.getUserFromLocalCache();
-    this.getUsersSearch();
-    this.getTotalUsers();
+    this.findAll(0);
     this.scrollToTop();
   }
 
@@ -123,30 +127,26 @@ export class CoursesComponent implements OnInit {
     );
   }
 
-  getUsersSearch(pagina: number = 0) {
-    this.showLoading = true;
-    this.filtroUsers.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.userService.search(this.filtroUsers).subscribe(
-      (data: IApiResponse<User>) => {
-        data.content.forEach(user => {
-
-        });
-        this.users = data.content
-        this.totalUsersRecord = data.totalElements;
-        this.showLoading = false;
-      },
-      (erro) => {
-        this.errorHandler.handle(erro);
-        this.showLoading = false;
-      }
-    );
+  onAddNewUser(): void {
+    this.user = new User();
+    this.displayModalSave = true;
   }
 
-  getTotalUsers() {
+  onFilter(): void {
+    this.displayModalFilter = true;
+  }
+
+  findAll(pagina: number = 0): void {
+    this.loadingMessage = "Carregando dados..."
     this.showLoading = true;
-    this.userService.getTotalUsers().subscribe(
-      (total) => {
-        this.totalUsers = total;
+    this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.userService.search(this.filtro).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.users = dados.content
+        this.totalUsersRecord = dados.totalElements;
+        if (this.totalUsers == 0) {
+          this.totalUsers = dados.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -156,12 +156,122 @@ export class CoursesComponent implements OnInit {
     );
   }
 
+  loadMore(page: number = 0): void {
+    this.showLoading = true;
+    this.filtro.page++;
+
+    this.userService.search(this.filtro).subscribe(
+      (data: IApiResponse<User>) => {
+        this.users = [...this.users, ...data.content];
+
+        this.totalUsersRecord = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onDeleteUder(username: string): void {
+    this.subscriptions.push(
+      this.userService.deleteUser(username).subscribe(
+        (response: CustomHttpRespone) => {
+          this.messageService.add({ severity: 'success', detail: response.message });
+          this.findAll();
+        },
+        (error: HttpErrorResponse) => {
+          this.sendErrorNotification(error.error.message);
+        }
+      )
+    );
+  }
+
+  confirmarExclusao(user: User): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.onDeleteUder(user.email);
+      }
+    });
+  }
+
+  onEditUser(user: User): void {
+    this.user = user;
+    this.displayModalSave = true;
+  }
+
   toggleDropdown(user: User) {
     user.isAdminMenuOpen = !user.isAdminMenuOpen
   }
 
   closeDropdown(user: User) {
     user.isAdminMenuOpen = false;
+  }
+
+  onFileSelected(event: any) {
+    this.profileImageFile = event.target.files[0];
+  }
+
+  getUserTypeValue(type: string) {
+    switch (type) {
+      case 'STUDENT':
+        return 'Estudante';
+      case 'INSTRUTOR':
+        return 'Instrutor';
+      case 'TEACHER':
+        return 'Professor';
+    }
+    return '';
+  }
+
+  getUserRoleValue(role: string) {
+    switch (role) {
+      case 'ROLE_USER':
+        return 'User';
+      case 'ROLE_ADMIN':
+        return 'Admin';
+      case 'ROLE_SUPER_ADMIN':
+        return 'Super Admin';
+    }
+    return '';
+  }
+
+  changePageSize(event: any): void {
+    this.filtro.itemsPerPage = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findAll();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findAll();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalUsersRecord / this.filtro.itemsPerPage);
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

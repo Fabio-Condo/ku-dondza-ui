@@ -351,6 +351,18 @@ export class QuizzQuestionsComponent implements OnInit {
     return '';
   }
 
+  getUserTypeValue(type: string) {
+    switch (type) {
+      case 'STUDENT':
+        return 'Estudante';
+      case 'INSTRUTOR':
+        return 'Instrutor';
+      case 'TEACHER':
+        return 'Professor';
+    }
+    return '';
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
