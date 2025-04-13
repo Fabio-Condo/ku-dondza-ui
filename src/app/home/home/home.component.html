@@ -35,69 +35,6 @@
             z-index: 1000;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: #3b82f6;
-        }
-
-        .logo-icon {
-            margin-right: 12px;
-            font-size: 26px;
-            color: #3b82f6;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 25px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #212529;
-            font-weight: 500;
-            position: relative;
-            padding-bottom: 5px;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #3b82f6;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #3b82f6;
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
         .btn {
             padding: 10px 20px;
             border-radius: 8px;
@@ -109,102 +46,11 @@
             border: none;
         }
 
-        .btn-outline {
-            border: 1px solid #3b82f6;
-            color: #3b82f6;
-            background: transparent;
-        }
-
-        .btn-outline:hover {
-            background-color: #3b82f6;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
-        }
-
-        .btn-primary {
-            background-color: #3b82f6;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #3f37c9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        .mobile-toggle {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #3b82f6;
-        }
-
-        /* Mobile menu */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #3b82f6;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .mobile-menu.active {
-            transform: translateY(0);
-        }
-
-        .mobile-menu .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 28px;
-            color: white;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .mobile-nav-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: center;
-        }
-
-        .mobile-nav-links li {
-            margin: 20px 0;
-        }
-
-        .mobile-nav-links a {
-            text-decoration: none;
-            color: white;
-            font-size: 24px;
-            font-weight: 500;
-        }
-
-        .mobile-auth-buttons {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .mobile-auth-buttons .btn {
-            font-size: 18px;
-        }
-
         /* Hero Section */
         .hero {
             padding: 100px 0;
             background: linear-gradient(to right, #4299e1, #2563eb);
+            background: #4361ee;
             color: white;
             position: relative;
             overflow: hidden;
@@ -860,15 +706,6 @@
         }
 
         @media (max-width: 768px) {
-            .mobile-toggle {
-                display: block;
-            }
-
-            .nav-links,
-            .auth-buttons {
-                display: none;
-            }
-
             .hero h1 {
                 font-size: 36px;
             }
@@ -911,49 +748,6 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <!--
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <span class="logo-icon">
-                    </span>
-                    dikahub
-                </div>
-                <ul class="nav-links">
-                    <li><a [class.active]="isActive('/home')" routerLink="/home">Início</a></li>
-                    <li><a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">Cursos</a></li>
-                    <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
-                    <li><a [class.active]="isActive('/books')" routerLink="/books">Biblioteca</a></li>
-                    <li><a [class.active]="isActive('/questions')" routerLink="/questions">Questões</a></li>
-                </ul>
-                <div class="auth-buttons">
-                    <a routerLink="/login" class="btn btn-outline">Login</a>
-                    <a routerLink="/login" class="btn btn-primary">Cadastre-se</a>
-                </div>
-                <div class="mobile-toggle" id="mobile-toggle" (click)="toggleMenu()">☰</div>
-            </nav>
-        </div>
-    </header>
-    -->
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
-        <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
-        <ul class="mobile-nav-links">
-            <li><a [class.active]="isActive('/home')" routerLink="/home">Início</a></li>
-            <li><a [class.active]="isActive('/coursos-online')" routerLink="/coursos-online">Cursos</a></li>
-            <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
-            <li><a [class.active]="isActive('/books')" routerLink="/books">Biblioteca</a></li>
-            <li><a [class.active]="isActive('/questions')" routerLink="/questions">Questões</a></li>
-            <li><a href="#">Sobre</a></li>
-        </ul>
-        <div class="mobile-auth-buttons">
-            <a routerLink="/login" class="btn btn-white">Login</a>
-            <a routerLink="/login" class="btn btn-outline" style="color: white; border-color: white;">Cadastre-se</a>
-        </div>
-    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1122,12 +916,13 @@
                         <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
                             <div class="form-group">
                                 <label for="register-name">Nome completo</label>
-                                <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+                                <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
+                                    placeholder="Seu nome completo" [(ngModel)]="user.fullName">
                             </div>
                             <div class="form-group">
                                 <label for="register-email">E-mail</label>
-                                <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
-                                email [(ngModel)]="user.email">
+                                <input type="email" id="email" name="email" #emailInput="ngModel" ngModel
+                                    placeholder="Seu e-mail" required email [(ngModel)]="user.email">
                             </div>
                             <div class="form-group">
                                 <label for="register-password">Senha</label>
@@ -1139,7 +934,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">
                                 {{ showLoading ? 'Carregando...' : 'Entrar' }}
-                              </button>
+                            </button>
                         </form>
                         <div class="login-footer">
                             <p>Ao se cadastrar, você concorda com nossos <a href="#">Termos de Uso</a> e <a
