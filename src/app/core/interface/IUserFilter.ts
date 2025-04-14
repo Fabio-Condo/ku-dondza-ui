@@ -1,10 +1,9 @@
 export interface IUserFilter {
   searchParam?: string,
-  firstName?: string,
-  lastName?: string,
-  username?: string,
-  role?: string,
   email?: string,
+  fullName?: string,
+  role?: string,
+  userType?: string,
   isActive?: string,
   isNotLocked?: string
   page: number,

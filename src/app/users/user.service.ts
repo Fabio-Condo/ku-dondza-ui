@@ -17,19 +17,35 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  search(filter: IUserFilter): Observable<IApiResponse<User>> {
+  findAll(filtro: IUserFilter): Observable<IApiResponse<User>> {
 
     let params = new HttpParams()
-      .set('page', filter.page)
-      .set('size', filter.itemsPerPage)
-      .set('sort', filter.sort)
-      ;
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
 
-    if (filter.searchParam) {
-      params = params.set('searchParam', filter.searchParam);
+    if (filtro.searchParam) {
+      params = params.set('searchParam', filtro.searchParam);
     }
 
-    return this.http.get<IApiResponse<User>>(`${this.host}/list/pageable`, { params });
+    if (filtro.fullName) {
+      params = params.set('fullName', filtro.fullName);
+    }
+
+    if (filtro.email) {
+      params = params.set('email', filtro.email);
+    }
+
+    if (filtro.role) {
+      params = params.set('role', filtro.role);
+    }
+
+    if (filtro.userType) {
+      params = params.set('userType', filtro.userType);
+    }
+
+    return this.http.get<IApiResponse<User>>(`${this.host}/filter`, { params });
+
   }
 
   public getUsers(): Observable<User[]> {

@@ -53,14 +53,14 @@ export class UsersComponent implements OnInit {
    
      userType = [
        { label: 'Estudante', value: 'STUDENT' },
-       { label: 'Instrutor', value: 'INSTRUTOR' },
        { label: 'Professor', value: 'TEACHER' },
+       { label: 'Instrutor', value: 'INSTRUTOR' },
      ];
    
      roles = [
-       { label: 'USER', value: 'ROLE_USER' },
-       { label: 'ADMIN', value: 'ROLE_ADMIN' },
-       { label: 'SUPER ADMIN', value: 'ROLE_SUPER_ADMIN' },
+       { label: 'User', value: 'ROLE_USER' },
+       { label: 'Admin', value: 'ROLE_ADMIN' },
+       { label: 'Super admin', value: 'ROLE_SUPER_ADMIN' },
      ];
    
      constructor(
@@ -140,7 +140,7 @@ export class UsersComponent implements OnInit {
        this.loadingMessage = "Carregando dados..."
        this.showLoading = true;
        this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-       this.userService.search(this.filtro).subscribe(
+       this.userService.findAll(this.filtro).subscribe(
          (dados: IApiResponse<User>) => {
            this.users = dados.content
            this.totalUsersRecord = dados.totalElements;
@@ -160,7 +160,7 @@ export class UsersComponent implements OnInit {
        this.showLoading = true;
        this.filtro.page++;
    
-       this.userService.search(this.filtro).subscribe(
+       this.userService.findAll(this.filtro).subscribe(
          (data: IApiResponse<User>) => {
            this.users = [...this.users, ...data.content];
    
@@ -237,6 +237,18 @@ export class UsersComponent implements OnInit {
        }
        return '';
      }
+
+     limparCampos() {
+      this.filtro.searchParam = "";
+      this.filtro.fullName = "";
+      this.filtro.email = "";
+      this.filtro.role = "";
+      this.filtro.userType = undefined;
+      this.filtro.page = 0;
+      this.filtro.itemsPerPage = 10;
+      this.filtro.sort = "id,desc"
+      this.findAll();
+    }
    
      changePageSize(event: any): void {
        this.filtro.itemsPerPage = +event.target.value;
