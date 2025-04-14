@@ -157,21 +157,24 @@
                         <button *ngIf="!content.isMarked" [disabled]="!course.currentUserSubscribed"
                           class="download-btn" (click)="addContentToMarkedCourseContents(content)"
                           title="Marcar como assistido">
-                          <i class="pi pi-eye"></i>
+                          <i *ngIf="!content.showLoadingMarked" class="pi pi-eye"></i>
+                          <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner" style="color: #4361ee;"></i>
                         </button>
                         <button *ngIf="content.isMarked" [disabled]="!course.currentUserSubscribed" class="download-btn"
                           (click)="removeContentFromMarkedCourseContents(content)" title="Desmarcar como assistido">
-                          <i class="pi pi-eye-slash"></i>
+                          <i *ngIf="!content.showLoadingMarked" class="pi pi-eye-slash"></i>
+                          <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner" style="color: #4361ee;"></i>
                         </button>
                       </div>
 
                       <button class="download-btn" *ngIf="content.contentType == 'FILE'"
                         [disabled]="content.showLoadingDownload || !course.currentUserSubscribed"
                         (click)="download(content, content.fileName)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        <svg *ngIf="!content.showLoadingDownload" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                           <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
                         </svg>
+                        <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner" style="color: #4361ee;"></i>
                       </button>
 
                       <div class="dropdown-container" *ngIf="isSuperAdmin">

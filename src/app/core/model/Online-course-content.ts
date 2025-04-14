@@ -12,6 +12,7 @@ export class OnlineCourseContent {
     
     isMarked: boolean = false; // Marcado como assistido
 
+    showLoadingMarked: boolean = false;
     showLoadingDownload: boolean = false;
     isAdminMenuOpen: boolean = false;
 

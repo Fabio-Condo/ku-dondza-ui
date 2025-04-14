@@ -343,21 +343,27 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   addContentToMarkedCourseContents(content: OnlineCourseContent): void {
+    content.showLoadingMarked = true;
     this.userService.addContentToMarkedCourseContents(this.loggedUser.id, content.id).subscribe(() => {
       content.isMarked = true;
+      content.showLoadingMarked = false;
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        content.showLoadingMarked = false;
       }
     );
   }
 
   removeContentFromMarkedCourseContents(content: OnlineCourseContent): void {
+    content.showLoadingMarked = true;
     this.userService.removeContentFromMarkedCourseContents(this.loggedUser.id, content.id).subscribe(() => {
       content.isMarked = false;
+      content.showLoadingMarked = false;
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        content.showLoadingMarked = false;
       }
     );
   }
