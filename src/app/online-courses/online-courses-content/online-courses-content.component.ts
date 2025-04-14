@@ -202,7 +202,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   getOnlineCourseByOnlineCourseId(onlineCourseId: string) {
-    this.loadingMessage = "Gerrando questões..."
+    this.loadingMessage = "Carregando dados..."
     this.showLoading = true;
 
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
@@ -271,14 +271,18 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   getStudentsByCourseId(onlineCourseId: number): void {
+    this.loadingMessage = "Buscando alunos..."
+    this.showLoading = true;
     this.filtroStudents.page++;
     this.onlineCoursesService.getStudentsByCourseId(onlineCourseId, this.filtroStudents).subscribe(
       (dados: IApiResponse<User>) => {
         this.students = [...this.students, ...dados.content];
         this.totalRegistrosStudents = dados.totalElements;
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     );
   }

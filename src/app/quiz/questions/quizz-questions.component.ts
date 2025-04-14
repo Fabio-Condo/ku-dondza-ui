@@ -5,7 +5,6 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
-import { Answer } from 'src/app/core/model/Answer';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Topic } from 'src/app/core/model/Topic';
 declare const MathJax: any;
