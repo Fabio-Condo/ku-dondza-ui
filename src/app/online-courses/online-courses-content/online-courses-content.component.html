@@ -234,15 +234,12 @@
               <div class="student-progress">
                 <p class="student-name">{{ student.fullName }}</p>
                 <div class="progress-bar">
-                  <!--
-                  <div 
-                    class="progress-fill" 
-                    [style.width.%]="student.progress" 
-                  />
-                  -->
+                  
+                  <div class="progress-fill" [style.width.%]="student.markedContentRate.toFixed(1)"></div>
+                  
                 </div>
               </div>
-              <span class="progress-percent">{{ 85 }}%</span>
+              <span class="progress-percent">{{ student.markedContentRate.toFixed(1) }}%</span>
             </li>
           </ul>
 

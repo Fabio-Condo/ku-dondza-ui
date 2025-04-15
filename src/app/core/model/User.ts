@@ -18,6 +18,7 @@ export class User {
   public plan: string;
   public authorities: [];
   public subjectsInterests: Subject[] = [];
+  public markedContentRate: number;
 
   public isFriend: boolean = false;
   public currentUserSentFriendRequest: boolean = false;
@@ -43,6 +44,7 @@ export class User {
     this.role = '';
     this.plan = '';
     this.authorities = [];
+    this.markedContentRate = 0;
   }
 
 }
