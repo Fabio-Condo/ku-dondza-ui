@@ -191,12 +191,8 @@ export class UserService {
     return this.http.post<User>(`${this.host}/${email}/cover-photo`, formData);
   }
 
-  addContentToMarkedCourseContents(userId: number, onlineCourseContentId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/${userId}/marked-course-content/${onlineCourseContentId}`, {});
-  }
-
-  removeContentFromMarkedCourseContents(userId: number, onlineCourseContentId: number): Observable<User> {
-    return this.http.delete<User>(`${this.host}/${userId}/marked-course-content/${onlineCourseContentId}`);
+  toggleMarkedContent(userId: number, onlineCourseContentId: number): Observable<User> {
+    return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
   }
 
   checkIfMarkedCourseContent(userId: number, onlineCourseContentId: number): Observable<boolean> {

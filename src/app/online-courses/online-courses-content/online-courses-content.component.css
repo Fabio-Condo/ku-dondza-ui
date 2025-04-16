@@ -744,6 +744,57 @@ button {
   /* Azul vibrante */
 }
 
+.custom-checkbox-visible {
+  display: inline-flex;
+  align-items: center;
+}
+
+.styled-checkbox {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #4361ee;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  background-color: #fff;
+}
+
+.styled-checkbox:checked {
+  background-color: #4361ee;
+}
+
+.styled-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 7px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Ícone ao lado do checkbox */
+.custom-checkbox-visible label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #444;
+  transition: color 0.2s;
+}
+
+.custom-checkbox-visible label.checked {
+  color: #4361ee;
+}
+
+.custom-checkbox-visible label .pi {
+  font-size: 18px;
+}
+
+
 /* Responsividade */
 @media (max-width: 768px) {
   .vidio-popout-overlay h2 {

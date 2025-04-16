@@ -342,28 +342,16 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.closeConfirmDialog();
   }
 
-  addContentToMarkedCourseContents(content: OnlineCourseContent): void {
+  toggleMarkedContent(content: OnlineCourseContent): void {
     content.showLoadingMarked = true;
-    this.userService.addContentToMarkedCourseContents(this.loggedUser.id, content.id).subscribe(() => {
-      content.isMarked = true;
-      content.showLoadingMarked = false;
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+    this.userService.toggleMarkedContent(this.loggedUser.id, content.id).subscribe(
+      response => {
+        content.isMarked = !content.isMarked;
         content.showLoadingMarked = false;
-      }
-    );
-  }
-
-  removeContentFromMarkedCourseContents(content: OnlineCourseContent): void {
-    content.showLoadingMarked = true;
-    this.userService.removeContentFromMarkedCourseContents(this.loggedUser.id, content.id).subscribe(() => {
-      content.isMarked = false;
-      content.showLoadingMarked = false;
-    },
+      },
       (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
         content.showLoadingMarked = false;
+        this.sendErrorNotification(errorResponse.error.message);
       }
     );
   }
