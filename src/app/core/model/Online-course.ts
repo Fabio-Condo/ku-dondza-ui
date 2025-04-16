@@ -24,5 +24,6 @@ export class OnlineCourse {
     currentUserSubscribed: boolean = false;
     totalStudents: number = 0;
     isAdminMenuOpen: boolean = false;
+    showLoadingSubscription: boolean = false;
 
 }

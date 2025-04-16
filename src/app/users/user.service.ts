@@ -167,12 +167,8 @@ export class UserService {
     return this.http.get<number>(`${this.host}/${userId}/subscribedOnlineCourses/total`, {});
   }
 
-  addCourseToSubscribedOnlineCourses(userId: number, onlineCourseId: number): Observable<User> {
+  toggleCourseSubscription(userId: number, onlineCourseId: number): Observable<User> {
     return this.http.post<User>(`${this.host}/${userId}/subscribedOnlineCourses/${onlineCourseId}`, {});
-  }
-
-  removeCourseFromSubscribedOnlineCourses(userId: number, onlineCourseId: number): Observable<User> {
-    return this.http.delete<User>(`${this.host}/${userId}/subscribedOnlineCourses/${onlineCourseId}`);
   }
 
   doesUserSubscribedOnlineCourse(userId: number, onlineCourseId: number): Observable<boolean> {

@@ -58,8 +58,6 @@ export class OnlineCoursesContentComponent implements OnInit {
   loggedUser: User = new User;
   selectedOnlineCourse = new OnlineCourse();
 
-  showConfirmDialog: boolean = false;
-
   //totalStudents: number = 0;
 
   students: User[] = [];
@@ -316,30 +314,12 @@ export class OnlineCoursesContentComponent implements OnInit {
     )
   }
 
-  addCourseToSubscribedOnlineCourses(course: OnlineCourse): void {
-    this.userService.addCourseToSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
+  toggleCourseSubscription(course: OnlineCourse): void {
+    course.showLoadingSubscription = true;
+    this.userService.toggleCourseSubscription(this.loggedUser.id, course.id).subscribe(() => {
       course.currentUserSubscribed = true;
+      course.showLoadingSubscription = false;
     });
-  }
-
-  removeCourseFromSubscribedOnlineCourses(course: OnlineCourse): void {
-    this.userService.removeCourseFromSubscribedOnlineCourses(this.loggedUser.id, course.id).subscribe(() => {
-      course.currentUserSubscribed = false;
-    });
-  }
-
-  onRemoveCourse(course: OnlineCourse): void {
-    this.showConfirmDialog = true;
-    this.selectedOnlineCourse = course;
-  }
-
-  closeConfirmDialog() {
-    this.showConfirmDialog = false;
-  }
-
-  confirmDialog(course: OnlineCourse) {
-    this.removeCourseFromSubscribedOnlineCourses(course);
-    this.closeConfirmDialog();
   }
 
   toggleMarkedContent(content: OnlineCourseContent): void {

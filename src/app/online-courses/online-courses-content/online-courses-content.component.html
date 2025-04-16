@@ -63,13 +63,11 @@
             <p class="course-description">{{ course.description }}</p>
           </div>
           <div class="course-actions">
-            <button class="btn btn-primary" *ngIf="!course.currentUserSubscribed"
-              (click)="addCourseToSubscribedOnlineCourses(course)">
-              <i class="fas fa-plus"></i>
-              Inscrever-se
-            </button>
-            <button class="btn btn-primary" *ngIf="course.currentUserSubscribed">
-              Inscrito
+            <button (click)="toggleCourseSubscription(course)" class="btn btn-primary" [disabled]="course.currentUserSubscribed">
+              <i *ngIf="!course.currentUserSubscribed && !course.showLoadingSubscription" class="fas fa-plus"></i>
+              <span *ngIf="!course.currentUserSubscribed && !course.showLoadingSubscription">Inscrever-se</span>
+              <i *ngIf="!course.currentUserSubscribed && course.showLoadingSubscription" class="pi pi-spin pi-spinner" style="color: white;"></i>
+              <span *ngIf="course.currentUserSubscribed && course.currentUserSubscribed">Inscrito</span>
             </button>
           </div>
         </div>
