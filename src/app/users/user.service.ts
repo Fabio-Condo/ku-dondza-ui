@@ -191,8 +191,4 @@ export class UserService {
     return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
   }
 
-  checkIfMarkedCourseContent(userId: number, onlineCourseContentId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.host}/${userId}/marked-course-content/contains/${onlineCourseContentId}`);
-  }
-
 }

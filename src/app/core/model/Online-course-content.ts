@@ -10,7 +10,7 @@ export class OnlineCourseContent {
     module = new Module();
     position!: number;
     
-    isMarked: boolean = false; // Marcado como assistido
+    markedByUser: boolean = false; // Marcado como assistido
 
     showLoadingMarked: boolean = false;
     showLoadingDownload: boolean = false;

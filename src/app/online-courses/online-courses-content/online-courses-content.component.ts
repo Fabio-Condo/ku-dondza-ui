@@ -206,11 +206,6 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
       (response) => {
         this.course = response;
-        this.course.modules.forEach((modulo) => {
-          modulo.courseContents.forEach((content) => {
-            this.checkIfMarkedCourseContent(content);
-          });
-        });
         this.getStudentsByCourseId(this.course.id);
         this.showLoading = false;
       },
@@ -326,22 +321,11 @@ export class OnlineCoursesContentComponent implements OnInit {
     content.showLoadingMarked = true;
     this.userService.toggleMarkedContent(this.loggedUser.id, content.id).subscribe(
       response => {
-        content.isMarked = !content.isMarked;
+        content.markedByUser = !content.markedByUser;
         content.showLoadingMarked = false;
       },
       (errorResponse: HttpErrorResponse) => {
         content.showLoadingMarked = false;
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  checkIfMarkedCourseContent(content: OnlineCourseContent): void {
-    this.userService.checkIfMarkedCourseContent(this.loggedUser.id, content.id).subscribe(
-      response => {
-        content.isMarked = response;
-      },
-      (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
       }
     );

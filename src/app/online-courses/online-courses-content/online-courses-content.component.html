@@ -176,15 +176,15 @@
                           type="checkbox"
                           class="styled-checkbox"
                           [id]="'visible-checkbox-' + content.id"
-                          [checked]="content.isMarked"
+                          [checked]="content.markedByUser"
                           (change)="toggleMarkedContent(content)"
                           [disabled]="!course.currentUserSubscribed"
                           *ngIf="!content.showLoadingMarked"
                         />
                         <label
                           [for]="'visible-checkbox-' + content.id"
-                          [class.checked]="content.isMarked"
-                          [title]="content.isMarked ? 'Desmarcar como assistido' : 'Marcar como assistido'"
+                          [class.checked]="content.markedByUser"
+                          [title]="content.markedByUser ? 'Desmarcar como assistido' : 'Marcar como assistido'"
                         >
                         <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner" style="color: #4361ee; font-size: 22px;"></i>
 
