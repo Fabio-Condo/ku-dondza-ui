@@ -108,7 +108,7 @@
                   <button class="edit-btn" (click)="onUpdateModule(module)" *ngIf="isSuperAdmin">
                     <i class="fas fa-edit"></i>
                   </button>
-                  <span class="lesson-count">{{ module.courseContents.length }} aulas</span>
+                  <span class="lesson-count">{{ module.contents.length }} aulas</span>
                   <svg class="chevron-icon" [class.rotated]="expandedModule === module.id" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -119,7 +119,7 @@
 
               <div *ngIf="expandedModule === module.id" class="lessons-container">
                 <ul class="lessons-list">
-                  <li *ngFor="let content of module.courseContents" class="lesson-item">
+                  <li *ngFor="let content of module.contents" class="lesson-item">
                     <div class="lesson-content">
                       <div class="play-icon-container">
                         <svg class="play-icon" *ngIf="content.contentType == 'VIDEO'"

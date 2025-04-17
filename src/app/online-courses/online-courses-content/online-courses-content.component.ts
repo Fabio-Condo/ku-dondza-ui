@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { OnlineCourse } from 'src/app/core/model/Online-course';
 import { OnlineCourseContent } from 'src/app/core/model/Online-course-content';
 import { OnlineCoursesService } from '../OnlineCoursesService.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,9 +12,11 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { ModuleService } from '../module.service';
 import { Module } from 'src/app/core/model/Module';
-import { OnlineCourseRequirement } from 'src/app/core/model/OnlineCourseRequirement';
 import { NgForm } from '@angular/forms';
 import { Role } from 'src/app/enum/role.enum';
+import { Course } from 'src/app/core/model/Course';
+import { UserCourseService } from 'src/app/core/user-courses/UserCourseService';
+import { UserCourse } from 'src/app/core/model/UserCourse';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -26,9 +27,11 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   expandedModule: number | null = 1;
 
-  course: OnlineCourse = new OnlineCourse();
+  course: Course = new Course();
   onlineCourseContentList: OnlineCourseContent[] = [];
   courseContentFile!: File;
+
+  userCourse: UserCourse = new UserCourse();
 
   modulo: Module = new Module();
   //modulos: Module[] = [];
@@ -42,11 +45,6 @@ export class OnlineCoursesContentComponent implements OnInit {
   displayModalSaveModule: boolean = false;
   displayModalUpateRequirements: boolean = false;
 
-  requirement?: OnlineCourseRequirement;
-  requirements: Array<OnlineCourseRequirement> = [];
-  requirementIndex?: number;
-  showRequirementForm = false;
-
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
   totalRegistros: number = 0
@@ -56,7 +54,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
   loggedUser: User = new User;
-  selectedOnlineCourse = new OnlineCourse();
+  selectedOnlineCourse = new Course();
 
   //totalStudents: number = 0;
 
@@ -89,6 +87,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     private moduleService: ModuleService,
     private onlineCoursesContentService: OnlineCoursesContentService,
     private userService: UserService,
+    private userCourseService: UserCourseService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -219,7 +218,7 @@ export class OnlineCoursesContentComponent implements OnInit {
       }
     );
   }
-  
+
   onUpdateModule(modulo: Module): void {
     this.modulo = modulo;
     this.displayModalSaveModule = true;
@@ -309,12 +308,19 @@ export class OnlineCoursesContentComponent implements OnInit {
     )
   }
 
-  toggleCourseSubscription(course: OnlineCourse): void {
+  toggleCourseSubscription(course: Course): void {
     course.showLoadingSubscription = true;
-    this.userService.toggleCourseSubscription(this.loggedUser.id, course.id).subscribe(() => {
+    this.userCourse.course = course;
+    this.userCourse.user = this.loggedUser;
+    this.userCourseService.addCourseToUser(this.userCourse).subscribe(() => {
       course.currentUserSubscribed = true;
       course.showLoadingSubscription = false;
-    });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   toggleMarkedContent(content: OnlineCourseContent): void {

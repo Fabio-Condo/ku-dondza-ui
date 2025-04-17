@@ -1,4 +1,4 @@
-import { OnlineCourse } from "./Online-course";
+import { OnlineCourse } from "./Course";
 import { User } from "./User";
 
 export class OnlineCourseLike { 

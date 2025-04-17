@@ -20,11 +20,11 @@ export class User {
   public subjectsInterests: Subject[] = [];
   public markedContentRate: number;
 
-  public isFriend: boolean = false;
-  public currentUserSentFriendRequest: boolean = false;
-  public sentFriendRequest: boolean = false;
+  //public isFriend: boolean = false;
+  //public currentUserSentFriendRequest: boolean = false;
+  //public sentFriendRequest: boolean = false;
 
-  public isGroupAdmin: boolean = false
+  //public isGroupAdmin: boolean = false
 
   public isAdminMenuOpen: boolean = false;
   

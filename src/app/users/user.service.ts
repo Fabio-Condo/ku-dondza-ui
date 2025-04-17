@@ -6,9 +6,9 @@ import { User } from '../core/model/User';
 import { CustomHttpRespone } from '../core/model/custom-http-response';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { IUserFilter } from '../core/interface/IUserFilter';
-import { OnlineCourse } from '../core/model/Online-course';
 import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
 import { Subject } from '../core/model/Subject';
+import { Course } from '../core/model/Course';
 
 
 @Injectable({ providedIn: 'root' })
@@ -153,23 +153,23 @@ export class UserService {
     return this.http.post<User>(`${this.host}/${userId}/interests/${interestId}`, {});
   }
 
-  getSubscribedOnlineCoursesByUserId(userId: number, filtro: OnlineCourseFilter): Observable<IApiResponse<OnlineCourse>> {
+  getSubscribedOnlineCoursesByUserId(userId: number, filtro: OnlineCourseFilter): Observable<IApiResponse<Course>> {
 
     let params = new HttpParams()
       .set('page', filtro.pagina)
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
 
-    return this.http.get<IApiResponse<OnlineCourse>>(`${this.host}/${userId}/subscribedOnlineCourses`, { params });
+    return this.http.get<IApiResponse<Course>>(`${this.host}/${userId}/subscribedOnlineCourses`, { params });
   }
 
   countSubscribedOnlineCoursesByUserId(userId: number): Observable<number> {
     return this.http.get<number>(`${this.host}/${userId}/subscribedOnlineCourses/total`, {});
   }
 
-  toggleCourseSubscription(userId: number, onlineCourseId: number): Observable<User> {
-    return this.http.post<User>(`${this.host}/${userId}/subscribedOnlineCourses/${onlineCourseId}`, {});
-  }
+  //toggleCourseSubscription(userId: number, onlineCourseId: number): Observable<User> {
+  //  return this.http.post<User>(`${this.host}/${userId}/subscribedOnlineCourses/${onlineCourseId}`, {});
+  //}
 
   doesUserSubscribedOnlineCourse(userId: number, onlineCourseId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.host}/${userId}/subscribedOnlineCourses/contains/${onlineCourseId}`);

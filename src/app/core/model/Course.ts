@@ -1,10 +1,8 @@
-import { OnlineCourseContent } from "./Online-course-content";
 import { Question } from "./Question";
 import { Module } from "./Module";
 import { User } from "./User";
-import { OnlineCourseRequirement } from "./OnlineCourseRequirement";
 
-export class OnlineCourse {
+export class Course {
     id!: number;
     onlineCourseId!: string;
     name!: string;

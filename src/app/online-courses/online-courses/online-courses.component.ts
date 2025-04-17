@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
-import { OnlineCourse } from 'src/app/core/model/Online-course';
 import { OnlineCoursesService } from '../OnlineCoursesService.service';
 import { OnlineCourseFilter } from 'src/app/core/interface/OnlineCourseFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
@@ -11,6 +10,7 @@ import { User } from 'src/app/core/model/User';
 import { QuestionService } from 'src/app/questions/question.service';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Role } from 'src/app/enum/role.enum';
+import { Course } from 'src/app/core/model/Course';
 
 @Component({
   selector: 'app-online-courses',
@@ -22,8 +22,8 @@ export class OnlineCoursesComponent implements OnInit {
   showLoadingDownload: boolean = false;
   showLoading: boolean = false;
   totalRegistros: number = 0
-  courses: OnlineCourse[] = [];
-  course: OnlineCourse = new OnlineCourse;
+  courses: Course[] = [];
+  course: Course = new Course;
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   file!: File;
@@ -31,7 +31,7 @@ export class OnlineCoursesComponent implements OnInit {
   displayModalFilter: boolean = false;
   users: User[] = [];
 
-  selectedCourse: OnlineCourse = new OnlineCourse();
+  selectedCourse: Course = new Course();
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -145,7 +145,7 @@ export class OnlineCoursesComponent implements OnInit {
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
     this.onlineCoursesService.findAll(this.filtro).subscribe(
-      (dados: IApiResponse<OnlineCourse>) => {
+      (dados: IApiResponse<Course>) => {
         this.courses = dados.content
         this.totalRegistros = dados.totalElements;
         if(this.totalCourses == 0){
@@ -174,7 +174,7 @@ export class OnlineCoursesComponent implements OnInit {
     this.filtro.pagina++;
 
     this.onlineCoursesService.findAll(this.filtro).subscribe(
-      (data: IApiResponse<OnlineCourse>) => {
+      (data: IApiResponse<Course>) => {
         this.courses = [...this.courses, ...data.content];
         this.totalRegistros = data.totalElements;
         this.showLoading = false;
@@ -186,26 +186,26 @@ export class OnlineCoursesComponent implements OnInit {
     );
   }
 
-  toggleDropdown(course: OnlineCourse) {
+  toggleDropdown(course: Course) {
     course.isAdminMenuOpen = !course.isAdminMenuOpen
   }
 
-  closeDropdown(course: OnlineCourse) {
+  closeDropdown(course: Course) {
     course.isAdminMenuOpen = false;
   }
 
-  onUpdateOnlineCourse(course: OnlineCourse, file: File): void {
+  onUpdateOnlineCourse(course: Course, file: File): void {
     this.course = course
     this.file = file;
     this.displayModalSave = true;
   }
 
   onAddNewOnlineCourse(): void {
-    this.course = new OnlineCourse();
+    this.course = new Course();
     this.displayModalSave = true;
   }
 
-  excluir(course: OnlineCourse) {
+  excluir(course: Course) {
     this.onlineCoursesService.excluir(course.id).subscribe(() => {
       if (this.grid.first === 0) {
         this.findAll();
@@ -256,7 +256,7 @@ export class OnlineCoursesComponent implements OnInit {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
   }
 
-  confirmarExclusao(course: OnlineCourse): void {
+  confirmarExclusao(course: Course): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
