@@ -17,6 +17,7 @@ import { Role } from 'src/app/enum/role.enum';
 import { Course } from 'src/app/core/model/Course';
 import { UserCourseService } from 'src/app/core/user-courses/UserCourseService';
 import { UserCourse } from 'src/app/core/model/UserCourse';
+import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -77,6 +78,12 @@ export class OnlineCoursesContentComponent implements OnInit {
   filtroStudents: IUserFilter = {
     page: -1,
     itemsPerPage: 2,
+    sort: 'id,asc',
+  }
+
+  filterUserCourses: UserCourseFilter = {
+    page: 0,
+    itemsPerPage: 20,
     sort: 'id,asc',
   }
 
@@ -206,6 +213,7 @@ export class OnlineCoursesContentComponent implements OnInit {
       (response) => {
         this.course = response;
         this.getStudentsByCourseId(this.course.id);
+        //this.getStudentsByCourseId2(this.course.id);
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -266,7 +274,8 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.loadingMessage = "Buscando alunos..."
     this.showLoading = true;
     this.filtroStudents.page++;
-    this.onlineCoursesService.getStudentsByCourseId(onlineCourseId, this.filtroStudents).subscribe(
+    this.userCourseService.getEnrolledUsersByCourseId(onlineCourseId, this.filtroStudents).subscribe(
+
       (dados: IApiResponse<User>) => {
         this.students = [...this.students, ...dados.content];
         this.totalRegistrosStudents = dados.totalElements;

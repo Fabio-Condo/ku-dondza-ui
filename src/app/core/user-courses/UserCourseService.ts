@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { UserCourse } from '../model/UserCourse';
 import { IApiResponse } from '../interface/IApiResponse';
 import { UserCourseFilter } from '../interface/UserCourseFilter';
+import { IUserFilter } from '../interface/IUserFilter';
+import { User } from '../model/User';
 
 
 
@@ -51,6 +53,16 @@ export class UserCourseService {
             .set('courseId', courseId.toString());
 
         return this.http.get<boolean>(`${this.host}/check-enrollment`, { params });
+    }
+
+    getEnrolledUsersByCourseId(courseId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
+
+        let params = new HttpParams()
+            .set('page', filtro.page)
+            .set('sort', filtro.sort)
+            .set('size', filtro.itemsPerPage);
+
+        return this.http.get<IApiResponse<User>>(`${this.host}/${courseId}/enrolled-users`, { params });
     }
 
 }

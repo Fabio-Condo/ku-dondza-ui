@@ -80,14 +80,4 @@ export class OnlineCoursesService {
         return this.http.get<Course>(`${this.host}/find-by-courseId/${onlineCourseId}`, {});
     }
 
-    getStudentsByCourseId(courseId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
-
-        let params = new HttpParams()
-            .set('page', filtro.page)
-            .set('sort', filtro.sort)
-            .set('size', filtro.itemsPerPage);
-
-        return this.http.get<IApiResponse<User>>(`${this.host}/${courseId}/students`, { params });
-    }
-
 }
