@@ -336,12 +336,14 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     const questionIds = this.quiz.questions.map(question => question.id);
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
+    this.quiz.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
     this.quiz.user = this.loggedUser;
 
     this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds).subscribe(
       (response) => {
         this.showLoading = false;
         this.submited = true;
+        this.quiz.submittedAt = response.submittedAt
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;

@@ -21,7 +21,6 @@ import { User } from 'src/app/core/model/User';
 export class QuizzQuestionsComponent implements OnInit {
   quiz: Quiz = new Quiz();
   topics: Topic[] = [];
-  totalTimeLimit: number = 0;
 
   showLoading: boolean = false;
   isAdmin: boolean = true;
@@ -87,7 +86,6 @@ export class QuizzQuestionsComponent implements OnInit {
           this.calculateResults();
         }
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
-        this.totalTimeLimit = this.quiz.questions.reduce((sum, question) => sum + question.timeLimit, 0);
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

@@ -32,7 +32,7 @@
           </div>
           <div>
             <div class="student-name">{{ quiz.user.fullName }}</div>
-            <div class="student-class">{{ getUserTypeValue(quiz.user.userType) }}</div>
+            <div class="student-class">{{ quiz.submittedAt | date: 'short' }}</div>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@
             </svg>
             <div>
               <p class="meta-label">Tempo gasto / estimado</p>
-              <p class="meta-valor">{{ formatTime(quiz.timeSpent) }} / {{ formatTime(totalTimeLimit) }}</p>
+              <p class="meta-valor">{{ formatTime(quiz.timeSpent) }} / {{ formatTime(quiz.timeLimit) }}</p>
             </div>
           </div>
         </div>
@@ -221,7 +221,7 @@
           </div>
 
           <div class="progress-container">
-            <p class="question-number">{{ formatTime(quiz.timeSpent) }}</p>
+            <p class="question-number">{{ formatTime(quiz.timeLimit - quiz.timeSpent) }}</p>
             <div class="progress-bar-container">
               <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
               </div>
