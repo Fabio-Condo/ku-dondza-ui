@@ -86,7 +86,7 @@
         <div class="card modules-card">
 
           <div class="section-header">
-            <h2 class="section-title">Módulos do Curso</h2>
+            <h2 class="section-title">Módulos</h2>
             <div class="actions">
               <button class="btn btn-outline add-module-btn" (click)="onAddNewModule()" *ngIf="isSuperAdmin">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -105,21 +105,27 @@
                 </svg>
                 aula
               </button>
+              <button class="btn btn-outline add-module-btn" (click)="toggleExpandCollapseAll()">
+                {{ areAllModulesExpanded() ? 'Recolher todos' : 'Expandir todos' }}
+              </button>        
             </div>
-
           </div>
 
           <div class="modules-list">
             <div *ngFor="let module of course.modules" class="module-item"
-              [class.expanded]="expandedModule === module.id">
+            [class.expanded]="isModuleExpanded(module.id)">
               <div class="module-header" (click)="toggleModule(module.id)">
                 <h3 class="module-title">{{ module.name }}</h3>
                 <div class="module-info">
                   <button class="edit-btn" (click)="onUpdateModule(module)" *ngIf="isSuperAdmin">
                     <i class="fas fa-edit"></i>
                   </button>
-                  <span class="lesson-count">{{ module.contents.length }} aulas</span>
-                  <svg class="chevron-icon" [class.rotated]="expandedModule === module.id" width="24" height="24"
+                  <span class="lesson-count">
+                    {{ getVideoCount(module) }} vídeo{{ getVideoCount(module) !== 1 ? 's' : '' }},
+                    {{ getFileCount(module) }} ficheiro{{ getFileCount(module) !== 1 ? 's' : '' }}
+                  </span>                  
+                  <!-- <span class="lesson-count">{{ module.contents.length }} aulas</span> -->
+                  <svg class="chevron-icon"  width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
                     <path d="M6 9l6 6 6-6" />
@@ -127,7 +133,7 @@
                 </div>
               </div>
 
-              <div *ngIf="expandedModule === module.id" class="lessons-container">
+              <div *ngIf="isModuleExpanded(module.id)" class="lessons-container">
                 <ul class="lessons-list">
                   <li *ngFor="let content of module.contents" class="lesson-item">
                     <div class="lesson-content">

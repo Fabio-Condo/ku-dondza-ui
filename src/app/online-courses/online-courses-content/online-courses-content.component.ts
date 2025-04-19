@@ -26,7 +26,8 @@ import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
 })
 export class OnlineCoursesContentComponent implements OnInit {
 
-  expandedModule: number | null = 1;
+  //expandedModule: number | null = 1;
+  expandedModules: number[] = [];
 
   course: Course = new Course();
   onlineCourseContentList: OnlineCourseContent[] = [];
@@ -214,6 +215,9 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.course = response;
         this.getStudentsByCourseId(this.course.id);
         //this.getStudentsByCourseId2(this.course.id);
+        if (this.course.modules.length > 0) {
+          this.expandedModules = [this.course.modules[0].id];
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -393,10 +397,50 @@ export class OnlineCoursesContentComponent implements OnInit {
       }
     );
   }
-
-  toggleModule(moduleId: number): void {
-    this.expandedModule = this.expandedModule === moduleId ? null : moduleId;
+  
+  isModuleExpanded(moduleId: number): boolean {
+    return this.expandedModules.includes(moduleId);
   }
+
+  expandAllModules(): void {
+    this.expandedModules = this.course.modules.map(m => m.id);
+  }
+  
+  collapseAllModules(): void {
+    this.expandedModules = [];
+  }
+
+  areAllModulesExpanded(): boolean {
+    return this.course?.modules?.every(module => this.expandedModules.includes(module.id));
+  }
+  
+  toggleExpandCollapseAll(): void {
+    if (this.areAllModulesExpanded()) {
+      this.collapseAllModules();
+    } else {
+      this.expandAllModules();
+    }
+  }  
+  
+  toggleModule(moduleId: number): void {
+    const index = this.expandedModules.indexOf(moduleId);
+    if (index > -1) {
+      this.expandedModules.splice(index, 1); // Recolher
+    } else {
+      this.expandedModules.push(moduleId); // Expandir
+    }
+  }
+
+  getVideoCount(module: any): number {
+    if (!module || !module.contents) return 0;
+    return module.contents.filter((content: any) => content.contentType === 'VIDEO').length;
+  }
+  
+  getFileCount(module: any): number {
+    if (!module || !module.contents) return 0;
+    return module.contents.filter((content: any) => content.contentType === 'FILE').length;
+  }
+  
 
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
