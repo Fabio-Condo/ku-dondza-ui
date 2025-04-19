@@ -227,6 +227,27 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
+  getTotalContents(): number {
+    if (!this.course || !this.course.modules) {
+      return 0;
+    }
+  
+    return this.course.modules.reduce((total, module) => {
+      return total + (module.contents ? module.contents.length : 0);
+    }, 0);
+  }
+  
+  getTotalVideos(): number {
+    if (!this.course || !this.course.modules) {
+      return 0;
+    }
+  
+    return this.course.modules.reduce((total, module) => {
+      const videoCount = module.contents?.filter(content => content.contentType === 'VIDEO').length || 0;
+      return total + videoCount;
+    }, 0);
+  }  
+
   onUpdateModule(modulo: Module): void {
     this.modulo = modulo;
     this.displayModalSaveModule = true;
