@@ -231,27 +231,6 @@ export class OnlineCoursesContentComponent implements OnInit {
     );
   }
 
-  getTotalContents(): number {
-    if (!this.course || !this.course.modules) {
-      return 0;
-    }
-  
-    return this.course.modules.reduce((total, module) => {
-      return total + (module.contents ? module.contents.length : 0);
-    }, 0);
-  }
-  
-  getTotalVideos(): number {
-    if (!this.course || !this.course.modules) {
-      return 0;
-    }
-  
-    return this.course.modules.reduce((total, module) => {
-      const videoCount = module.contents?.filter(content => content.contentType === 'VIDEO').length || 0;
-      return total + videoCount;
-    }, 0);
-  }  
-
   onUpdateModule(modulo: Module): void {
     this.modulo = modulo;
     this.displayModalSaveModule = true;
@@ -397,6 +376,27 @@ export class OnlineCoursesContentComponent implements OnInit {
       }
     );
   }
+
+  getTotalContents(): number {
+    if (!this.course || !this.course.modules) {
+      return 0;
+    }
+  
+    return this.course.modules.reduce((total, module) => {
+      return total + (module.contents ? module.contents.length : 0);
+    }, 0);
+  }
+  
+  getTotalVideos(): number {
+    if (!this.course || !this.course.modules) {
+      return 0;
+    }
+  
+    return this.course.modules.reduce((total, module) => {
+      const videoCount = module.contents?.filter(content => content.contentType === 'VIDEO').length || 0;
+      return total + videoCount;
+    }, 0);
+  }  
   
   isModuleExpanded(moduleId: number): boolean {
     return this.expandedModules.includes(moduleId);
@@ -440,7 +440,6 @@ export class OnlineCoursesContentComponent implements OnInit {
     if (!module || !module.contents) return 0;
     return module.contents.filter((content: any) => content.contentType === 'FILE').length;
   }
-  
 
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
