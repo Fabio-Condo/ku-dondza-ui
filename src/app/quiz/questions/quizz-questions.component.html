@@ -261,9 +261,15 @@
           <!-- Input para mostrar dica e solução -->
           <div class="solution" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
             <div class="solution-input">
-              <h1 class="title">Resolução</h1>
+              <div class="solution-header">
+                <h1 class="title">Resolução</h1>
+                <svg (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();" class="chevron-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </div>
               <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-content scrollable"
-                *ngIf="quiz.questions[currentQuestionIndex].solution">
+                *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
             </div>
