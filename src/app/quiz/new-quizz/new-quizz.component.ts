@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -229,7 +229,19 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
       this.quiz.resultsByTopic[topic].percentage = (correct / total) * 100;
     }
   }
-
+  
+  get progressPercentage(): number {
+    const totalQuestions = this.quiz.questions.length;
+  
+    // Filtra para contar somente as respostas não nulas
+    const answeredCount = this.submittedAnswers.filter(
+      a => a.id !== null && a.id !== undefined
+    ).length;
+  
+    // Calcula o progresso com base nas respostas
+    return (answeredCount / totalQuestions) * 100;
+  }
+  
   submitAnswers() {
     // Calcular o tempo gasto em segundos
     this.showFinalScreen = true;
@@ -352,8 +364,10 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     );
   }
 
+
   // Método para capturar a resposta do usuário
   captureUserAnswer(questionId: number, answerId: number | null): void {
+
     const question = this.questions.find(q => q.id === questionId);
     if (question) {
       let userAnswer: Answer;

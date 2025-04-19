@@ -119,8 +119,8 @@
           <div class="progress-container">
             <p class="question-number">{{ formattedTime }}</p>
             <div class="progress-bar-container">
-              <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
-              </div>
+              <!--<div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'"></div>-->
+              <div class="progress-bar" [style.width]="progressPercentage + '%'"></div>
             </div>
             <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}</p>
           </div>
@@ -154,7 +154,7 @@
           </div>
 
           <!-- Botão para marcar como não respondida -->
-          <button class="btn-null" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null)"
+          <button class="btn-null" (click)="captureUserAnswer(questions[currentQuestionIndex].id, null);"
             *ngIf="!showCorrection">
             Não Responder
           </button>

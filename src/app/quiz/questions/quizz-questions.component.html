@@ -223,8 +223,8 @@
           <div class="progress-container">
             <p class="question-number">{{ formatTime(quiz.timeLimit - quiz.timeSpent) }}</p>
             <div class="progress-bar-container">
-              <div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'">
-              </div>
+              <!--<div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'"></div>-->
+              <div class="progress-bar" [style.width]="progressPercentage + '%'"></div>
             </div>
             <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}</p>
           </div>

@@ -176,6 +176,18 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
+  get progressPercentage(): number {
+    const totalQuestions = this.quiz.questions.length;
+  
+    // Filtra para contar somente as respostas não nulas
+    const answeredCount = this.quiz.answers.filter(
+      a => a.id !== null && a.id !== undefined
+    ).length;
+  
+    // Calcula o progresso com base nas respostas
+    return (answeredCount / totalQuestions) * 100;
+  }
+
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
