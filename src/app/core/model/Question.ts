@@ -20,4 +20,5 @@ export class Question {
 
     isAdminMenuOpen: boolean = false;
     showSolution: boolean = false;
+    showTip: boolean = false;
 }
