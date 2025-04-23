@@ -33,6 +33,17 @@ export class AuthenticationService {
     return this.http.post<User>(`${this.host}/user/register`, user);
   }
 
+  generateOtp(email: string): Observable<void> {
+    return this.http.post<void>(`${this.host}/auth/generate-otp`, email );
+  }
+  
+  validateOtp(email: string, otp: string): Observable<HttpResponse<User>> {
+    return this.http.post<User>(`${this.host}/auth/validate-otp?email=${email}&otp=${otp}`, {}, {
+      observe: 'response'
+    });
+  }
+  
+
   public logOut(): void {
     this.token = null;
     this.loggedInUsername = null;

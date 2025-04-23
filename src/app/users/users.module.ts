@@ -20,6 +20,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LoginComponent } from './login/login.component';
 import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -35,6 +36,7 @@ import { ProfileComponent } from './profile/profile.component';
     TableModule,
     FormsModule,
 
+    ReactiveFormsModule,
     ButtonModule,
     InputTextModule,
     TableModule,

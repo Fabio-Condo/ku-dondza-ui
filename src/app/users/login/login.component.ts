@@ -7,7 +7,8 @@ import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../authentication.service';
 import { User } from 'src/app/core/model/User';
 import { GoogleAuthService } from '../google-auth-service.service';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
@@ -24,16 +25,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   activeTab: number = 1;
 
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  //message: string = '';
+  //jwtToken: string = '';
+
+
+
+  otp: string = '';
+
   constructor(
+    private fb: FormBuilder, 
     private ngZone: NgZone,
-    private http: HttpClient,
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private changeDetectorRef: ChangeDetectorRef, // Adicionado
     private googleAuthService: GoogleAuthService
-
-
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +54,37 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanupSubscriptions();
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.router.navigateByUrl('/main-panel');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
   }
 
   public onRegister(user: NgForm): void {

@@ -258,6 +258,7 @@
         <span>OU</span>
       </div>
 
+      <!--
       <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
         <div class="input-group">
           <label for="email">E-mail</label>
@@ -282,6 +283,30 @@
           {{ showLoading ? 'Carregando...' : 'Entrar' }}
         </button>
       </form>
+      -->
+
+      <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+        <div class="input-group" *ngIf="step === 'email'">
+          <label>Email:</label>
+          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+          email [(ngModel)]="user.email">
+        </div>
+
+        <div class="input-group" *ngIf="step === 'otp'">
+          <label>OTP:</label>
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="otp" required
+          otp [(ngModel)]="otp">
+        </div>
+
+        <button class="login-btn"  type="submit" [disabled]="otpForm.invalid || showLoading">
+          {{ step === 'email' ? 'Enviar Código' : 'Validar Código' }}
+        </button>
+
+        <button class="login-btn" *ngIf="step === 'otp'" (click)="step = 'email'">Voltar</button>
+
+      </form>
+
+
 
       <!--
       <div class="signup-link">
