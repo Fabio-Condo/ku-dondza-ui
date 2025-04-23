@@ -161,6 +161,46 @@
       box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
     }
 
+    .message {
+      font-size: 0.9rem;
+      color: #5a5a5a;
+      line-height: 1.5;
+      margin: 15px 0;
+      padding: 12px;
+      background-color: #f8f9fa;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .message a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .message a:hover {
+      text-decoration: underline;
+      color: #0056b3;
+    }
+
+    .go-back-btn {
+      color: #333;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s ease;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    .go-back-btn:hover {
+      gap: 0.5rem;
+    }
+
+
     .divider {
       display: flex;
       align-items: center;
@@ -252,9 +292,9 @@
     <div class="login-side" *ngIf="activeTab === 1">
       <h1>Entrar</h1>
 
-      <div id="google-signin-button"></div>
+      <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
-      <div class="divider">
+      <div class="divider" *ngIf="step === 'email'">
         <span>OU</span>
       </div>
 
@@ -286,59 +326,75 @@
       -->
 
       <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+        <br>
+
+        <p class="message" *ngIf="step === 'otp'">
+          Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
+        </p>
+
         <div class="input-group" *ngIf="step === 'email'">
           <label>Email:</label>
           <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
-          email [(ngModel)]="user.email">
+            email [(ngModel)]="user.email">
         </div>
 
         <div class="input-group" *ngIf="step === 'otp'">
           <label>OTP:</label>
-          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="otp" required
-          otp [(ngModel)]="otp">
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="otp" required otp
+            [(ngModel)]="otp">
         </div>
 
-        <button class="login-btn"  type="submit" [disabled]="otpForm.invalid || showLoading">
-          {{ step === 'email' ? 'Enviar Código' : 'Validar Código' }}
+        <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+          {{ step === 'email' ? 'Login' : 'Verificar' }}
         </button>
 
-        <button class="login-btn" *ngIf="step === 'otp'" (click)="step = 'email'">Voltar</button>
+        <p class="message" *ngIf="step === 'email'">
+          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar sua senha tradicional para
+          acessar sua conta.
+        </p>
+
+        <div class="signup-link">
+          Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+        </div>
 
       </form>
 
-
-
-      <!--
-      <div class="signup-link">
-        Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
-      </div>
-      -->
     </div>
 
     <div class="login-side" *ngIf="activeTab === 2">
       <h1>Cadastrar</h1>
-      <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
-        <div class="input-group">
+
+      <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+      <div class="divider" *ngIf="step === 'email'">
+        <span>OU</span>
+      </div>
+
+      <form autocomplete="off" #registerForm="ngForm">    <!--(ngSubmit)="onRegister(registerForm)"-->
+        <div class="input-group" *ngIf="step === 'email'">
           <label for="name">Nome completo</label>
           <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
             placeholder="Seu nome completo" [(ngModel)]="user.fullName">
         </div>
-        <div class="input-group">
+
+        <div class="input-group" *ngIf="step === 'email'">
           <label for="email">E-mail</label>
           <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
             email [(ngModel)]="user.email">
         </div>
-        <div class="input-group">
-          <label for="password">Senha</label>
-          <input type="password" id="password" name="password" #passwordInput="ngModel" ngModel placeholder="Sua senha"
-            required>
+
+        <div class="input-group" *ngIf="step === 'otp'">
+          <label>OTP:</label>
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="otp" required otp
+            [(ngModel)]="otp">
         </div>
-        <div class="input-group">
-          <label for="register-confirm">Confirmar senha</label>
-          <input type="password" id="register-confirm" placeholder="Confirme sua senha">
-        </div>
-        <button type="submit" class="login-btn">
-          {{ showLoading ? 'Carregando...' : 'Entrar' }}
+
+
+        <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+          {{ step === 'email' ? 'Login' : 'Verificar' }}
         </button>
       </form>
       <div id="google-signin-button"></div>
