@@ -28,10 +28,6 @@ export class AuthenticationService {
     return this.http.post<User>(`${this.host}/auth/google`, { idToken: credential }, { observe: 'response' });
 
   }
-  
-  public register(user: User): Observable<User> {
-    return this.http.post<User>(`${this.host}/user/register`, user);
-  }
 
   generateOtp(email: string): Observable<void> {
     return this.http.post<void>(`${this.host}/auth/generate-otp`, email );
@@ -42,8 +38,23 @@ export class AuthenticationService {
       observe: 'response'
     });
   }
-  
 
+  startRegistrationViaOtp(email: string): Observable<HttpResponse<void>> {
+    return this.http.post<void>(`${this.host}/auth/start-registration?email=${email}`, {}, {
+      observe: 'response'
+    });
+  }
+
+  completeRegistrationViaOtp(fullName: string, email: string, otp: string): Observable<HttpResponse<void>> {
+    return this.http.post<void>(`${this.host}/auth/complete-registration?fullName=${fullName}&email=${email}&otp=${otp}`, {}, {
+      observe: 'response'
+    });
+  }
+
+  public register(user: User): Observable<User> {
+    return this.http.post<User>(`${this.host}/user/register`, user);
+  }
+  
   public logOut(): void {
     this.token = null;
     this.loggedInUsername = null;

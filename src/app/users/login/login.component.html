@@ -373,7 +373,7 @@
         <span>OU</span>
       </div>
 
-      <form autocomplete="off" #registerForm="ngForm">    <!--(ngSubmit)="onRegister(registerForm)"-->
+      <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">    <!--(ngSubmit)="onRegister(registerForm)"-->
         <div class="input-group" *ngIf="step === 'email'">
           <label for="name">Nome completo</label>
           <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
@@ -391,7 +391,6 @@
           <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="otp" required otp
             [(ngModel)]="otp">
         </div>
-
 
         <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
           {{ step === 'email' ? 'Login' : 'Verificar' }}
