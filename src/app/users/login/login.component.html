@@ -165,7 +165,7 @@
       font-size: 0.9rem;
       color: #5a5a5a;
       line-height: 1.5;
-      margin: 15px 0;
+      margin: 20px 0;
       padding: 12px;
       background-color: #f8f9fa;
       border-radius: 6px;
@@ -198,8 +198,30 @@
 
     .go-back-btn:hover {
       gap: 0.5rem;
+      opacity: 0.8;
     }
 
+    .resend-btn {
+      color: #333;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s ease;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 1rem auto;
+      /* centraliza horizontalmente */
+    }
+
+    .resend-btn:hover {
+      gap: 0.5rem;
+      opacity: 0.8;
+    }
 
     .divider {
       display: flex;
@@ -343,7 +365,7 @@
 
         <div class="input-group" *ngIf="step === 'otp'">
           <label>OTP:</label>
-          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="otp" required otp
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
             [(ngModel)]="otp">
         </div>
 
@@ -352,8 +374,8 @@
         </button>
 
         <p class="message" *ngIf="step === 'email'">
-          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar sua senha tradicional para
-          acessar sua conta.
+          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para
+          acessar sua conta se tiver se cadastradao com gmail.
         </p>
 
         <div class="signup-link">
@@ -373,7 +395,9 @@
         <span>OU</span>
       </div>
 
-      <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">    <!--(ngSubmit)="onRegister(registerForm)"-->
+      <form autocomplete="off" #registerForm="ngForm"
+        (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+        <!--(ngSubmit)="onRegister(registerForm)"-->
         <div class="input-group" *ngIf="step === 'email'">
           <label for="name">Nome completo</label>
           <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
@@ -386,15 +410,24 @@
             email [(ngModel)]="user.email">
         </div>
 
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+        <p class="message" *ngIf="step === 'otp'">
+          Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
+        </p>
+
         <div class="input-group" *ngIf="step === 'otp'">
-          <label>OTP:</label>
-          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="otp" required otp
+          <!--<label>OTP:</label>-->
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
             [(ngModel)]="otp">
         </div>
 
         <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
           {{ step === 'email' ? 'Login' : 'Verificar' }}
         </button>
+
+        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
+
       </form>
       <div id="google-signin-button"></div>
       <div class="signup-link">
