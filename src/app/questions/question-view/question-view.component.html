@@ -108,9 +108,9 @@
             </div>
 
             <!-- Opções de resposta -->
-            <h2 class="title">Alternativas</h2>
+            <h2 class="title" *ngIf="isSuperAdmin">Alternativas</h2>
 
-            <div class="answer-options">
+            <div class="answer-options" *ngIf="isSuperAdmin">
                 <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
                         'correct-answer': answer.correct
                      }">
@@ -149,7 +149,7 @@
             <br>
             <br>
 
-            <div class="card">
+            <div class="card" *ngIf="isSuperAdmin">
                 <div class="card-header">
                     <div class="card-title">Desempenho Geral</div>
                 </div>
@@ -187,7 +187,7 @@
 
             </div>
 
-            <p class="description">
+            <p class="description" *ngIf="isSuperAdmin">
                 <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{
                     quizQuestionStatistics.quizzesCount
                     }} quizzes</a>

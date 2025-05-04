@@ -11,6 +11,7 @@ import { QuestionService } from 'src/app/questions/question.service';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Role } from 'src/app/enum/role.enum';
 import { Course } from 'src/app/core/model/Course';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-online-courses',
@@ -68,10 +69,12 @@ export class OnlineCoursesComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private title: Title, 
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Courses page');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll();
     this.getUsersInstrutors();

@@ -14,6 +14,7 @@ declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
+import { Role } from 'src/app/enum/role.enum';
 
 
 
@@ -245,6 +246,18 @@ export class QuestionViewComponent implements OnInit {
         return 'Dificil';
     }
     return '';
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {
