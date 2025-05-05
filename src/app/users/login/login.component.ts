@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   otp: string = '';
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
     private authenticationService: AuthenticationService,
@@ -174,7 +174,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loadingMessage = "Estamos quase lá...";
       this.showLoading = true;
     });
-  
+
     const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
@@ -189,9 +189,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.showLoading = false;
       }
     });
-  
+
     this.subscriptions.push(sub);
-  } 
+  }
 
   private checkAuthentication(): void {
     if (this.authenticationService.isUserLoggedIn()) {
@@ -206,6 +206,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
   }
 
   private sendErrorNotification(message: string): void {

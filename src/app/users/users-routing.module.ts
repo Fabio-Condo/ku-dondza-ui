@@ -17,7 +17,8 @@ const routes: Routes = [
     //} 
   },
   {
-    path: 'login', component: LoginComponent,
+    path: 'login', 
+    component: LoginComponent,
   },
   {
     path: 'user/profile2/:userId',

@@ -29,7 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     UsersComponent,
     LoginComponent,
     UserProfileViewComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     CommonModule,
