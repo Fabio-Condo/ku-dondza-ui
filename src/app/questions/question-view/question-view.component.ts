@@ -248,6 +248,10 @@ export class QuestionViewComponent implements OnInit {
     return '';
   }
 
+  getTextoComNegrito(text: string): string {
+    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }

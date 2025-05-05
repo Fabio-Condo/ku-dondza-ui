@@ -11,6 +11,7 @@ declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
@@ -54,6 +55,7 @@ export class QuizzQuestionsComponent implements OnInit {
   };
 
   constructor(
+    private sanitizer: DomSanitizer,
     private quizService: QuizService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -370,6 +372,17 @@ export class QuizzQuestionsComponent implements OnInit {
         return 'Professor';
     }
     return '';
+  }
+
+  getTextoComNegrito2(text: string): string {
+    if (!text) return '';
+    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
+  getTextoComNegrito(text: string): SafeHtml {
+    if (!text) return '';
+    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    return this.sanitizer.bypassSecurityTrustHtml(textoComNegrito);
   }
 
   private sendErrorNotification(message: string): void {

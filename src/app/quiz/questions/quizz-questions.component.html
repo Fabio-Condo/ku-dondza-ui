@@ -237,8 +237,13 @@
           </div>
 
           <!-- Contêiner para expressões matemáticas -->
+          <!-- 
           <div id="math-container-{{ currentQuestionIndex }}" *ngIf="quiz.questions[currentQuestionIndex].text">
             {{ quiz.questions[currentQuestionIndex].text }}
+          </div>
+          -->
+
+          <div id="math-container-{{ currentQuestionIndex }}" *ngIf="quiz.questions[currentQuestionIndex].text" [innerHTML]="getTextoComNegrito(quiz.questions[currentQuestionIndex].text)">
           </div>
 
           <div class="answer-options">
@@ -252,7 +257,8 @@
                 [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 [disabled]="showCorrection" />
-              <span>{{ answer.text }}</span> <!-- Numeração das opções -->
+              <!--<span>{{ answer.text }}</span>--> <!-- Numeração das opções -->
+              <p *ngIf="answer.text" [innerHTML]="getTextoComNegrito(answer.text)"></p> 
             </label>
           </div>
 
@@ -268,10 +274,17 @@
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </div>
+              <!--
               <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-content scrollable"
                 *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
+              -->
+              <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-content scrollable"
+                *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution"
+                [innerHTML]="getTextoComNegrito(quiz.questions[currentQuestionIndex].solution)">
+              </p>
+
             </div>
           </div>
 

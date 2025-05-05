@@ -432,6 +432,11 @@ export class QuestionsComponent implements OnInit {
     return '';
   }
 
+  getTextoComNegrito(text: string): string {
+    if (!text) return '';
+    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
   limparCampos() {
     this.filtro.searchParam = "";
     this.filtro.text = "";

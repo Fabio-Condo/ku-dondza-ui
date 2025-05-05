@@ -102,9 +102,9 @@
                 <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
                     <canvas #canvas width="400" height="400"></canvas>
                 </div>
-                <p *ngIf="question.text">
-                    {{ question.text }}
-                </p>
+                <!-- <p *ngIf="question.text">{{ question.text }}</p> -->
+                <p *ngIf="question.text" [innerHTML]="getTextoComNegrito(question.text)"></p>
+
             </div>
 
             <!-- Opções de resposta -->
@@ -118,7 +118,9 @@
                     <input type="radio" name="question-{{ question.id }}" [checked]="answer.correct" [value]="answer.id"
                         disabled />
 
-                    <span> {{ answer.text }} </span>
+                    <!--<span> {{ answer.text }} </span>-->
+                    <p *ngIf="answer.text" [innerHTML]="getTextoComNegrito(answer.text)"></p> 
+
                 </label>
             </div>
 
@@ -128,9 +130,13 @@
             <div class="tip" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="tip-input">
                     <h1 class="title">Dicas</h1>
+                    <!--
                     <p class="tip-content scrollable" *ngIf="question.tip">
                         {{ question.tip }}
                     </p>
+                    -->
+                    <p class="tip-content scrollable" *ngIf="question.tip" [innerHTML]="getTextoComNegrito(question.tip)"></p> 
+
                 </div>
             </div>
 
@@ -140,9 +146,13 @@
             <div class="solution" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="solution-input">
                     <h1 class="title">Resolução</h1>
+                    <!--
                     <p class="solution-content scrollable" *ngIf="question.solution">
                         {{ question.solution }}
                     </p>
+                    -->
+                    <p class="solution-content scrollable" *ngIf="question.solution" [innerHTML]="getTextoComNegrito(question.solution)"></p> 
+
                 </div>
             </div>
 

@@ -107,7 +107,7 @@
     }
 
     .input-group input:focus {
-      border-color: #2196F3;
+      border-color: #4361ee;
       outline: none;
     }
 
@@ -125,7 +125,7 @@
 
     .remember-me input[type="checkbox"] {
       margin-right: 8px;
-      accent-color: #2196F3;
+      accent-color: #4361ee;
     }
 
     .remember-me label {
@@ -140,11 +140,11 @@
     }
 
     .forgot-password a:hover {
-      color: #2196F3;
+      color: #4361ee;
     }
 
     .login-btn {
-      background-color: #3b82f6;
+      background-color: #4361ee;
       color: white;
       border: none;
       padding: 15px;
@@ -165,7 +165,6 @@
       font-size: 0.9rem;
       color: #5a5a5a;
       line-height: 1.5;
-      margin: 20px 0;
       padding: 12px;
       background-color: #f8f9fa;
       border-radius: 6px;
@@ -173,14 +172,14 @@
     }
 
     .message a {
-      color: #007bff;
+      color: #4361ee;
       text-decoration: none;
       font-weight: 600;
     }
 
     .message a:hover {
       text-decoration: underline;
-      color: #0056b3;
+      color: #4361ee;
     }
 
     .go-back-btn {
@@ -252,7 +251,7 @@
     }
 
     .signup-link a {
-      color: #2196F3;
+      color: #4361ee;
       text-decoration: none;
       font-weight: bold;
     }
@@ -375,7 +374,7 @@
 
         <p class="message" *ngIf="step === 'email'">
           Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para
-          acessar sua conta se tiver se cadastradao com gmail.
+          acessar sua conta se tiver se cadastrado com gmail.
         </p>
 
         <div class="signup-link">
@@ -427,6 +426,10 @@
         </button>
 
         <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
+
+        <p class="message" *ngIf="step === 'email'">
+          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para se cadastradar com gmail.
+        </p>
 
       </form>
       <div id="google-signin-button"></div>
