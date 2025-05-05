@@ -32,8 +32,13 @@ export class NavbarComponent implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(['/user/profile', this.loggedUser.userId]);
+    const userId = this.loggedUser.userId;
+  
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/user/profile', userId]);
+    });
   }
+  
 
   onLogIn(): void {
     this.router.navigate(['/login']);
