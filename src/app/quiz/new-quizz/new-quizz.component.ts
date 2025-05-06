@@ -18,7 +18,6 @@ import { SubjectsService } from 'src/app/subjects/subjects.service';
 declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
 import { interval, Subscription } from 'rxjs';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-new-quizz',
@@ -88,7 +87,6 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private sanitizer: DomSanitizer,
     private quizService: QuizService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
@@ -119,7 +117,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
     this.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
     this.totalTimeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
-
+    
     this.remainingTime = this.timeLimit; // Tempo restante para contagem
     this.startTime = Date.now(); // Armazenar o tempo de início (timestamp)
 
@@ -128,11 +126,11 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         this.timeLimit--;
         this.updateFormattedTime(); // Atualiza o tempo formatado
       } else {
-        this.stopTimer();
-        this.submitAnswers();
-        this.toggleCorrection();
+        this.stopTimer();       
+        this.submitAnswers(); 
+        this.toggleCorrection(); 
         this.scrollToTop();
-        this.showFinalScreen = true;
+        this.showFinalScreen = true; 
         this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
       }
     });
@@ -231,25 +229,25 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
       this.quiz.resultsByTopic[topic].percentage = (correct / total) * 100;
     }
   }
-
+  
   get progressPercentage(): number {
     const totalQuestions = this.quiz.questions.length;
-
+  
     // Filtra para contar somente as respostas não nulas
     const answeredCount = this.submittedAnswers.filter(
       a => a.id !== null && a.id !== undefined
     ).length;
-
+  
     // Calcula o progresso com base nas respostas
     return (answeredCount / totalQuestions) * 100;
   }
-
+  
   submitAnswers() {
     // Calcular o tempo gasto em segundos
     this.showFinalScreen = true;
     this.calculateResults();
     this.stopTimer();
-    this.scrollToTop();
+    this.scrollToTop(); 
     if (!this.submited) {
       const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
       this.quiz.timeSpent = elapsedTimeInSeconds;
@@ -257,11 +255,11 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     }
   }
 
-  onStopCurrentRunningQuiz() {
+  onStopCurrentRunningQuiz(){
     this.stopTimer();
-    this.scrollToTop();
+    this.scrollToTop(); 
     this.showFinalScreen = true;
-    if (!this.submited) {
+    if(!this.submited){
       this.router.navigateByUrl('/quizzes');
     }
   }
@@ -307,7 +305,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     this.loadingMessage = "Gerrando questões..."
     const selectedTopicIds = this.getSelectedTopicIds();
 
-    if (selectedTopicIds.length == 0) {
+    if(selectedTopicIds.length == 0){
       this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões.!' });
       return;
     }
@@ -462,7 +460,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   // Método para renderizar expressões matemáticas
-  renderMathExpressions(): void {
+  renderMathExpressions2(): void {
     setTimeout(() => {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
@@ -503,6 +501,39 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         });
       }
     }, 0);
+  }
+
+  renderMathExpressions(): void {
+    setTimeout(() => {
+      const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
+      if (mathContainer && typeof MathJax !== 'undefined') {
+        mathContainer.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].text);
+      }
+  
+      const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
+      if (mathContainerSolution && typeof MathJax !== 'undefined') {
+        mathContainerSolution.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].solution);
+      }
+  
+      const mathContainerTip = document.getElementById(`math-container-tip-${this.currentQuestionIndex}`);
+      if (mathContainerTip && typeof MathJax !== 'undefined') {
+        mathContainerTip.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].tip);
+      }
+  
+      // ✅ Renderiza MathJax após todos os elementos atualizados
+      if (typeof MathJax !== 'undefined') {
+        MathJax.typesetPromise().then(() => {
+          console.log('MathJax renderizado com sucesso!');
+        }).catch((err: any) => {
+          console.error('Erro ao renderizar MathJax:', err);
+        });
+      }
+    }, 0);
+  }
+
+  getTextoComNegrito(text: string): string {
+    if (!text) return '';
+    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   }
 
   renderFunctions() {
@@ -589,12 +620,6 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         return 'Professor';
     }
     return '';
-  }
-
-  getTextoComNegrito(text: string): SafeHtml {
-    if (!text) return '';
-    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    return this.sanitizer.bypassSecurityTrustHtml(textoComNegrito);
   }
 
   private sendErrorNotification(message: string): void {

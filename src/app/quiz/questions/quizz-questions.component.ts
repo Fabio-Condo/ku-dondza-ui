@@ -245,8 +245,34 @@ export class QuizzQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
-  // Método para renderizar expressões matemáticas
   renderMathExpressions(): void {
+    setTimeout(() => {
+      const questionText = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].text);
+      const solutionText = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].solution);
+  
+      const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
+      if (mathContainer && typeof MathJax !== 'undefined') {
+        mathContainer.innerHTML = questionText;
+      }
+  
+      const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
+      if (mathContainerSolution && typeof MathJax !== 'undefined') {
+        mathContainerSolution.innerHTML = solutionText;
+      }
+  
+      if (typeof MathJax !== 'undefined') {
+        MathJax.typesetPromise().then(() => {
+          console.log('MathJax renderizado com sucesso!');
+        }).catch((err: any) => {
+          console.error('Erro ao renderizar MathJax:', err);
+        });
+      }
+    }, 0);
+  }
+  
+
+  // Método para renderizar expressões matemáticas
+  renderMathExpressions2(): void {
     setTimeout(() => {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
@@ -374,15 +400,9 @@ export class QuizzQuestionsComponent implements OnInit {
     return '';
   }
 
-  getTextoComNegrito2(text: string): string {
+  getTextoComNegrito(text: string): string {
     if (!text) return '';
     return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  }
-
-  getTextoComNegrito(text: string): SafeHtml {
-    if (!text) return '';
-    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    return this.sanitizer.bypassSecurityTrustHtml(textoComNegrito);
   }
 
   private sendErrorNotification(message: string): void {
