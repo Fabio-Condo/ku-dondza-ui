@@ -13,6 +13,8 @@
         }
 
         body {
+            background-color: #f8f9fa;
+            color: #212529;
             padding: 2rem;
             line-height: 1.6;
         }
@@ -38,7 +40,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -80,6 +82,13 @@
             flex-direction: column;
         }
 
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
         .card-tag {
             display: inline-block;
             background-color: #ebf0ff;
@@ -88,8 +97,39 @@
             font-weight: 600;
             padding: 0.3rem 0.8rem;
             border-radius: 100px;
-            margin-bottom: 1rem;
-            align-self: flex-start;
+        }
+
+        .like-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+
+        .like-button:hover {
+            color: #f25c54;
+        }
+
+        .like-button.active {
+            color: #f25c54;
+        }
+
+        .like-icon {
+            font-size: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .like-button:hover .like-icon {
+            transform: scale(1.1);
+        }
+
+        .like-count {
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .card-title {
@@ -160,12 +200,11 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 900px) {
             .card {
                 flex-direction: column;
             }
-            
+
             .card-img {
                 flex: 0 0 200px;
                 width: 100%;
@@ -180,9 +219,20 @@
             h1 {
                 font-size: 2rem;
             }
-            
+
             .card-content {
                 padding: 1.5rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .like-button {
+                align-self: flex-end;
+                margin-top: -2.5rem;
             }
         }
     </style>
@@ -198,7 +248,13 @@
             <article class="card">
                 <div class="card-img">Imagem do artigo</div>
                 <div class="card-content">
-                    <span class="card-tag">Neurociência</span>
+                    <div class="card-header">
+                        <span class="card-tag">Neurociência</span>
+                        <button class="like-button" onclick="toggleLike(this)">
+                            <span class="like-icon">♡</span>
+                            <span class="like-count">82</span>
+                        </button>
+                    </div>
                     <h2 class="card-title">Avanços na Compreensão da Plasticidade Neural</h2>
                     <div class="card-meta">
                         <div class="card-author">
@@ -223,7 +279,13 @@
             <article class="card">
                 <div class="card-img">Imagem do artigo</div>
                 <div class="card-content">
-                    <span class="card-tag">Sustentabilidade</span>
+                    <div class="card-header">
+                        <span class="card-tag">Sustentabilidade</span>
+                        <button class="like-button" onclick="toggleLike(this)">
+                            <span class="like-icon">♡</span>
+                            <span class="like-count">124</span>
+                        </button>
+                    </div>
                     <h2 class="card-title">Sistemas Urbanos Sustentáveis: Modelos e Implementações</h2>
                     <div class="card-meta">
                         <div class="card-author">
@@ -248,7 +310,13 @@
             <article class="card">
                 <div class="card-img">Imagem do artigo</div>
                 <div class="card-content">
-                    <span class="card-tag">Economia</span>
+                    <div class="card-header">
+                        <span class="card-tag">Economia</span>
+                        <button class="like-button active" onclick="toggleLike(this)">
+                            <span class="like-icon">♥</span>
+                            <span class="like-count">67</span>
+                        </button>
+                    </div>
                     <h2 class="card-title">Tendências Emergentes em Economia Comportamental</h2>
                     <div class="card-meta">
                         <div class="card-author">
@@ -273,7 +341,13 @@
             <article class="card">
                 <div class="card-img">Imagem do artigo</div>
                 <div class="card-content">
-                    <span class="card-tag">Inteligência Artificial</span>
+                    <div class="card-header">
+                        <span class="card-tag">Inteligência Artificial</span>
+                        <button class="like-button" onclick="toggleLike(this)">
+                            <span class="like-icon">♡</span>
+                            <span class="like-count">95</span>
+                        </button>
+                    </div>
                     <h2 class="card-title">IA Explicável: Desafios Éticos e Implementações Práticas</h2>
                     <div class="card-meta">
                         <div class="card-author">
@@ -296,5 +370,21 @@
             </article>
         </div>
     </div>
+
+    <script>
+        function toggleLike(button) {
+            button.classList.toggle('active');
+            const likeIcon = button.querySelector('.like-icon');
+            const likeCount = button.querySelector('.like-count');
+            
+            if (button.classList.contains('active')) {
+                likeIcon.textContent = '♥';
+                likeCount.textContent = parseInt(likeCount.textContent) + 1;
+            } else {
+                likeIcon.textContent = '♡';
+                likeCount.textContent = parseInt(likeCount.textContent) - 1;
+            }
+        }
+    </script>
 </body>
 </html>

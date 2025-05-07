@@ -33,6 +33,8 @@ import { TopicsModule } from './topics/topics.module';
 import { TopicsRoutingModule } from './topics/topics-routing.module';
 import { MainPanelRoutingModule } from './main-panel/main-panel-routing.module';
 import { MainPanelModule } from './main-panel/main-panel.module';
+import { ArticlesModule } from './articles/articles.module';
+import { ArticlesRoutingModule } from './articles/articles-routing.module';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { MainPanelModule } from './main-panel/main-panel.module';
     QuizRoutingModule,
     QuestionRoutingModule,
     MainPanelRoutingModule,
+    ArticlesRoutingModule,
   
     BooksModule,
     SubjectsModule,
@@ -62,6 +65,7 @@ import { MainPanelModule } from './main-panel/main-panel.module';
     QuizModule,
     QuestionsModule,
     MainPanelModule,
+    ArticlesModule,
 
     CoreRoutingModule,
     AppRoutingModule,
