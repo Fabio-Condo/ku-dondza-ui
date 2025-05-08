@@ -150,7 +150,7 @@ export class ArticlesComponent implements OnInit {
     );
   }
 
-  onDeleteBArticle(article: Article): void {
+  onDeleteArticle(article: Article): void {
     this.showDeleteConfirmDialog = true;
     this.selectedArticle = article;
   }

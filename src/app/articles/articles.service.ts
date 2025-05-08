@@ -38,6 +38,7 @@ export class ArticlesService {
     formData.append('title', aticle.title);
     formData.append('content', aticle.content);
     formData.append('category', aticle.category);
+    formData.append('readingTimeMinutes', aticle.readingTimeMinutes.toString());
     formData.append('file', file);
     return this.http.post<Article>(`${this.host}`, formData);
   }
@@ -48,6 +49,7 @@ export class ArticlesService {
     formData.append('title', aticle.title);
     formData.append('content', aticle.content);
     formData.append('category', aticle.category);
+    formData.append('readingTimeMinutes', aticle.readingTimeMinutes.toString());
     formData.append('file', file);
     return this.http.put<Article>(`${this.host}`, formData);
   }

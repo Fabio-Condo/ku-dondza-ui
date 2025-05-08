@@ -697,7 +697,7 @@
                             <div class="dropdown" *ngIf="article.isAdminMenuOpen">
                                 <a [routerLink]="['/articles', article.articleId]">Saiba Mais</a>
                                 <a [routerLink]="['/articles/create', article.articleId]" *ngIf="isSuperAdmin">Editar</a>
-                                <a style="cursor: pointer;" *ngIf="isSuperAdmin">Delete</a>
+                                <a (click)="onDeleteArticle(article)" style="cursor: pointer;" *ngIf="isSuperAdmin">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -728,3 +728,20 @@
 </body>
 
 </html>
+
+<!-- confirm dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showDeleteConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog-header">
+            <h4>Deseja remover o artigo ?</h4>
+            <button class="confirm-close-button" (click)="closeDeleteConfirmDialog()">x</button>
+        </div>
+        <div class="confirm-dialog-content">
+            <ng-content></ng-content>
+        </div>
+        <div class="confirm-dialog-footer">
+            <button (click)="deleteConfirmDialog(selectedArticle)">Confirmar</button>
+            <button (click)="closeDeleteConfirmDialog()">Cancelar</button>
+        </div>
+    </div>
+</div>
