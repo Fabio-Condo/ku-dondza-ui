@@ -85,7 +85,7 @@ export class CreateArticleComponent implements OnInit {
     this.articleService.update(this.article, this.file).subscribe(
       (response) => {
         this.article = response;
-        this.messageService.add({ severity: 'success', detail: 'Exame actualizado com sucesso!' });
+        this.messageService.add({ severity: 'success', detail: 'Artigo actualizado com sucesso!' });
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -100,7 +100,8 @@ export class CreateArticleComponent implements OnInit {
     this.articleService.save(this.article, this.file).subscribe(
       (response) => {
         this.article = response;
-        this.messageService.add({ severity: 'success', detail: 'Exame salvo com sucesso!' });
+        this.messageService.add({ severity: 'success', detail: 'Artigo salvo com sucesso!' });
+        this.router.navigate(['/articles/create', this.article.articleId]); 
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

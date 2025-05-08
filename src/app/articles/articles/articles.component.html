@@ -165,6 +165,25 @@
             font-style: italic;
         }
 
+        .card-img {
+            flex: 0 0 35%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-style: italic;
+            max-height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+
         .card-content {
             flex: 1;
             padding: 2rem;
@@ -700,7 +719,8 @@
 
         <div class="articles-list" *ngFor="let article of articles">
             <article class="card">
-                <div class="card-img">Imagem do artigo</div>
+                <div class="card-img" *ngIf="!article.urlFile">Imagem do artigo</div>
+                <img class="card-img" *ngIf="article.urlFile" [src]="article.urlFile" alt="Imagem do artigo" />
                 <div class="card-content">
                     <div class="card-header">
                         <span class="card-tag">{{ getCategoryTypeLabel(article.category) }}</span>
