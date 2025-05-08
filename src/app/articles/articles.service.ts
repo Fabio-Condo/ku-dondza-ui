@@ -10,63 +10,67 @@ import { Article } from '../core/model/Article';
 
 @Injectable({ providedIn: 'root' })
 export class ArticlesService {
-  private host = environment.apiUrl + '/articles';
+    private host = environment.apiUrl + '/articles';
 
-  constructor(private http: HttpClient, private datePipe: DatePipe) { }
+    constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
-  findAll(filtro: ArticleFilter): Observable<IApiResponse<Article>> {
+    findAll(filtro: ArticleFilter): Observable<IApiResponse<Article>> {
 
-    let params = new HttpParams()
-      .set('page', filtro.page)
-      .set('sort', filtro.sort)
-      .set('size', filtro.itemsPerPage);
+        let params = new HttpParams()
+            .set('page', filtro.page)
+            .set('sort', filtro.sort)
+            .set('size', filtro.itemsPerPage);
 
-    if (filtro.searchParam) {
-      params = params.set('searchParam', filtro.searchParam);
+        if (filtro.searchParam) {
+            params = params.set('searchParam', filtro.searchParam);
+        }
+
+        if (filtro.title) {
+            params = params.set('title', filtro.title);
+        }
+
+        if (filtro.category) {
+            params = params.set('category', filtro.category);
+        }
+
+        return this.http.get<IApiResponse<Article>>(`${this.host}/filter`, { params });
+
     }
 
-    if (filtro.title) {
-      params = params.set('title', filtro.title);
+    save(aticle: Article, file: File): Observable<Article> {
+        const formData = new FormData();
+        formData.append('title', aticle.title);
+        formData.append('content', aticle.content);
+        formData.append('category', aticle.category);
+        formData.append('readingTimeMinutes', aticle.readingTimeMinutes.toString());
+        formData.append('file', file);
+        return this.http.post<Article>(`${this.host}`, formData);
     }
 
-    return this.http.get<IApiResponse<Article>>(`${this.host}/filter`, { params });
+    update(aticle: Article, file: File): Observable<Article> {
+        const formData = new FormData();
+        formData.append('id', aticle.id.toString());
+        formData.append('title', aticle.title);
+        formData.append('content', aticle.content);
+        formData.append('category', aticle.category);
+        formData.append('readingTimeMinutes', aticle.readingTimeMinutes.toString());
+        formData.append('file', file);
+        return this.http.put<Article>(`${this.host}`, formData);
+    }
 
-  }
+    findById(id: number): Observable<Article> {
+        return this.http.get<Article>(`${this.host}/${id}`, {});
+    }
 
-  save(aticle: Article, file: File): Observable<Article> {
-    const formData = new FormData();
-    formData.append('title', aticle.title);
-    formData.append('content', aticle.content);
-    formData.append('category', aticle.category);
-    formData.append('readingTimeMinutes', aticle.readingTimeMinutes.toString());
-    formData.append('file', file);
-    return this.http.post<Article>(`${this.host}`, formData);
-  }
+    getArticleByArticleId(aticleId: string): Observable<Article> {
+        return this.http.get<Article>(`${this.host}/find-by-articleId/${aticleId}`, {});
+    }
 
-  update(aticle: Article, file: File): Observable<Article> {
-    const formData = new FormData();
-    formData.append('id', aticle.id.toString());
-    formData.append('title', aticle.title);
-    formData.append('content', aticle.content);
-    formData.append('category', aticle.category);
-    formData.append('readingTimeMinutes', aticle.readingTimeMinutes.toString());
-    formData.append('file', file);
-    return this.http.put<Article>(`${this.host}`, formData);
-  }
+    excluir(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.host}/${id}`, {});
+    }
 
-  findById(id: number): Observable<Article> {
-    return this.http.get<Article>(`${this.host}/${id}`, {});
-  }
-
-  getArticleByArticleId(aticleId: string): Observable<Article> {
-    return this.http.get<Article>(`${this.host}/find-by-articleId/${aticleId}`, {});
-  }
-
-  excluir(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/${id}`, {});
-  }
-
-  buscarTotal(): Observable<number> {
-    return this.http.get<number>(`${this.host}/total`, {});
-  }
+    buscarTotal(): Observable<number> {
+        return this.http.get<number>(`${this.host}/total`, {});
+    }
 }

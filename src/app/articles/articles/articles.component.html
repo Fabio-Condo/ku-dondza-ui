@@ -536,6 +536,19 @@
             /* Azul vibrante */
         }
 
+        /* Animação de fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         /* Dropdown Container */
         .dropdown-container {
             position: absolute;
@@ -640,6 +653,14 @@
                 align-self: flex-end;
                 margin-top: -2.5rem;
             }
+
+            .pagination {
+                display: none;
+            }
+
+            .load-more-container {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -656,10 +677,10 @@
         <br>
 
         <header>
-            <span class="pagination-info">Mostrando {{ 12 }} de {{ 20 }}</span>
+            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalArticles }}</span>
 
             <div class="actions">
-                <button class="btn-primary" id="add-btn"  [routerLink]="['/articles/create', 'new']">
+                <button class="btn-primary" id="add-btn" [routerLink]="['/articles/create', 'new']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -667,7 +688,7 @@
                     </svg>
                     Novo
                 </button>
-                <button class="btn-outline" id="filter-btn">
+                <button class="btn-outline" id="filter-btn" (click)="onFilter()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
@@ -696,8 +717,10 @@
                             </button>
                             <div class="dropdown" *ngIf="article.isAdminMenuOpen">
                                 <a [routerLink]="['/articles', article.articleId]">Saiba Mais</a>
-                                <a [routerLink]="['/articles/create', article.articleId]" *ngIf="isSuperAdmin">Editar</a>
-                                <a (click)="onDeleteArticle(article)" style="cursor: pointer;" *ngIf="isSuperAdmin">Delete</a>
+                                <a [routerLink]="['/articles/create', article.articleId]"
+                                    *ngIf="isSuperAdmin">Editar</a>
+                                <a (click)="onDeleteArticle(article)" style="cursor: pointer;"
+                                    *ngIf="isSuperAdmin">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -724,6 +747,49 @@
                 </div>
             </article>
         </div>
+        <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+            <div class="loading-indicator">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>{{ loadingMessage }}</span>
+            </div>
+        </div>
+
+        <div *ngIf="!showLoading && articles.length === 0">
+            <div class="card">
+                <span class="no-items-message">
+                    Nenhum item encontrado
+                </span>
+            </div>
+        </div>
+
+        <!-- Load-more -->
+        <div class="load-more-container">
+            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()"
+                [disabled]="articles.length === totalArticles && totalArticles > 0">
+                Buscar mais
+            </button>
+        </div>
+
+        <!-- Paginação -->
+        <div class="pagination">
+            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalArticles }}</span>
+            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-btn next" (click)="nextPage()"
+                [disabled]="currentPage === totalPages() || showLoading">
+                Próxima
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
     </div>
 </body>
 
@@ -743,5 +809,27 @@
             <button (click)="deleteConfirmDialog(selectedArticle)">Confirmar</button>
             <button (click)="closeDeleteConfirmDialog()">Cancelar</button>
         </div>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalFilter">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Filtros</h2>
+            <button class="close-button" (click)="displayModalFilter = false">&times;</button>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="category">Categoria</label>
+                <select id="category" [(ngModel)]="filter.category" name="category" (change)="findAll()" required>
+                    <option value="" disabled selected>Selecione a categoria</option>
+                    <option *ngFor="let category of categoryTypes" [value]="category.value">{{ category.label }}
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit-button">Reset</button>
+        </form>
     </div>
 </div>

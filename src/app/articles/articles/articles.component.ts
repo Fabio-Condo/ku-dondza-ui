@@ -20,17 +20,32 @@ export class ArticlesComponent implements OnInit {
 
   articles: Article[] = [];
   totalRecords: number = 0;
+  totalArticles: number = 0;
   showLoading: boolean = false;
-  selectedArticle: Article =  new Article();
+  selectedArticle: Article = new Article();
   showConfirmDialog: boolean = false;
   showDeleteConfirmDialog: boolean = false;
+  displayModalFilter: boolean = false;
 
   loggedUser: User = new User();
   imagePath = './assets/images/funcao do grau 2.png';
 
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  categoryTypes = [
+    { label: 'Matemática', value: 'MATH' },
+    { label: 'Ciência', value: 'SCIENCE' },
+    { label: 'História', value: 'HISTORY' },
+    { label: 'Língua', value: 'LANGUAGE' },
+    { label: 'Tecnologia', value: 'TECHNOLOGY' },
+  ];
+
   filter: ArticleFilter = {
-    page: -1,
-    itemsPerPage: 10,
+    page: 0,
+    itemsPerPage: 5,
     sort: 'id,desc',
     title: '', // Filtro por título
   };
@@ -45,7 +60,7 @@ export class ArticlesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.loadMore();
+    this.findAll();
     this.scrollToTop();
   }
 
@@ -53,18 +68,36 @@ export class ArticlesComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  loadMore(): void {
+  findAll(pagina: number = 0): void {
+    this.loadingMessage = "Carregando dados..."
+    this.showLoading = true;
+    this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.articleService.findAll(this.filter).subscribe(
+      (dados: IApiResponse<Article>) => {
+        this.articles = dados.content
+        this.totalRecords = dados.totalElements;
+        if (this.totalArticles == 0) {
+          this.totalArticles = dados.totalElements;
+        }
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  loadMore(page: number = 0): void {
     this.showLoading = true;
     this.filter.page++;
+
     this.articleService.findAll(this.filter).subscribe(
       (data: IApiResponse<Article>) => {
+        this.articles = [...this.articles, ...data.content];
+
         this.totalRecords = data.totalElements;
         this.showLoading = false;
-        data.content.forEach(article => {
-        //  this.checkIfLiked(article);
-        //  this.checkIfSaved(article);
-        });
-        this.articles = [...this.articles, ...data.content]; // Adiciona novos artigos à lista existente
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -76,7 +109,7 @@ export class ArticlesComponent implements OnInit {
   applyFilters(): void {
     this.filter.page = -1; // Reinicia a paginação
     this.articles = []; // Limpa a lista de artigos
-    this.loadMore(); // Carrega os artigos com os novos filtros
+    this.findAll(); // Carrega os artigos com os novos filtros
   }
 
   //toggleLike(article: Article): void {
@@ -164,6 +197,10 @@ export class ArticlesComponent implements OnInit {
     this.closeDeleteConfirmDialog();
   }
 
+  onFilter(): void {
+    this.displayModalFilter = true;
+  }
+
   getCategoryTypeLabel(type: string) {
     switch (type) {
       case 'MATH':
@@ -178,6 +215,39 @@ export class ArticlesComponent implements OnInit {
         return 'Tecnologia';
     }
     return '';
+  }
+
+  limparCampos() {
+    this.filter.searchParam = "";
+    this.filter.category =  "";
+    this.filter.page = 0;
+    this.filter.itemsPerPage = 10;
+    this.filter.sort = "id,desc"
+    this.findAll();
+  }
+
+  changePageSize(event: any): void {
+    this.filter.itemsPerPage = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findAll();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findAll();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRecords / this.filter.itemsPerPage);
   }
 
   public get isAdmin(): boolean {
