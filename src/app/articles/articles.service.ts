@@ -37,6 +37,7 @@ export class ArticlesService {
     const formData = new FormData();
     formData.append('title', aticle.title);
     formData.append('content', aticle.content);
+    formData.append('category', aticle.category);
     formData.append('file', file);
     return this.http.post<Article>(`${this.host}`, formData);
   }
@@ -46,6 +47,7 @@ export class ArticlesService {
     formData.append('id', aticle.id.toString());
     formData.append('title', aticle.title);
     formData.append('content', aticle.content);
+    formData.append('category', aticle.category);
     formData.append('file', file);
     return this.http.put<Article>(`${this.host}`, formData);
   }

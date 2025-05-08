@@ -19,6 +19,14 @@ export class CreateArticleComponent implements OnInit {
   file!: File;
   isTinyMceInitialized: boolean = false; // Flag para verificar se o TinyMCE foi inicializado
 
+  categoryTypes = [
+    { label: 'Matemática', value: 'MATH' },
+    { label: 'Ciência', value: 'SCIENCE' },
+    { label: 'História', value: 'HISTORY' },
+    { label: 'Língua', value: 'LANGUAGE' },
+    { label: 'Tecnologia', value: 'TECHNOLOGY' },
+  ];
+
   constructor(
     private articleService: ArticlesService,
     private messageService: MessageService,

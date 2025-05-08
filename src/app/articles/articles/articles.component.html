@@ -659,7 +659,7 @@
             <span class="pagination-info">Mostrando {{ 12 }} de {{ 20 }}</span>
 
             <div class="actions">
-                <button class="btn-primary" id="add-btn">
+                <button class="btn-primary" id="add-btn"  [routerLink]="['/articles', 'create']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -682,7 +682,7 @@
                 <div class="card-img">Imagem do artigo</div>
                 <div class="card-content">
                     <div class="card-header">
-                        <span class="card-tag">{{ article.category }}</span>
+                        <span class="card-tag">{{ getCategoryTypeLabel(article.category) }}</span>
                         <!--
                         <button class="like-button" onclick="toggleLike(this)">
                             <span class="like-icon">♡</span>
@@ -704,10 +704,11 @@
                     <h2 class="card-title">{{ article.title }}</h2>
                     <div class="card-meta">
                         <div class="card-author">
-                            <div class="card-author-img">MS</div>
-                            <span>Dr. Miguel Santos</span>
+                            <div class="card-author-img">ED</div>
+                            <span>Eduka +</span>
                         </div>
-                        <span>12 Abr 2025</span>
+                        <span>{{ article.date | date: 'dd MMM yyyy' }}</span>
+
                     </div>
                     <!--
                     <p class="card-excerpt">
@@ -718,7 +719,7 @@
                     <div class="card-footer">
                         <a href="#" class="read-more" [routerLink]="['/articles/', article.articleId]">Ler artigo
                             →</a>
-                        <span class="read-time">12 min de leitura</span>
+                        <span class="read-time">{{ article.readingTimeMinutes }} min de leitura</span>
                     </div>
                 </div>
             </article>

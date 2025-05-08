@@ -164,6 +164,22 @@ export class ArticlesComponent implements OnInit {
     this.closeDeleteConfirmDialog();
   }
 
+  getCategoryTypeLabel(type: string) {
+    switch (type) {
+      case 'MATH':
+        return 'Matemática';
+      case 'SCIENCE':
+        return 'Ciência';
+      case 'HISTORY':
+        return 'História';
+      case 'LANGUAGE':
+        return 'Língua';
+      case 'TECHNOLOGY':
+        return 'Tecnologia';
+    }
+    return '';
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
