@@ -16,7 +16,7 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'articles/edit/:id', 
+    path: 'articles/create/:id', 
     component: CreateArticleComponent,
     canActivate: [AuthenticationGuard], 
     runGuardsAndResolvers: 'always', // Força a recriação do componente

@@ -37,7 +37,9 @@ export class CreateArticleComponent implements OnInit {
   ngOnInit(): void {
     const articleId = this.route.snapshot.params['id'];
     if (articleId) {
-      this.findById(articleId);
+      if(articleId != 'new') {
+        this.findById(articleId);
+      }
     }
     this.scrollToTop();
 
