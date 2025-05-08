@@ -740,9 +740,8 @@
                     -->
                     <div class="post-text" [innerHTML]="article.content"></div>
                     <div class="card-footer">
-                        <a href="#" class="read-more" [routerLink]="['/articles/', article.articleId]">Ler artigo
-                            →</a>
                         <span class="read-time">{{ article.readingTimeMinutes }} min de leitura</span>
+                        <a href="#" class="read-more" [routerLink]="['/articles/', article.articleId]">Ler artigo →</a>
                     </div>
                 </div>
             </article>
@@ -829,7 +828,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="submit-button">Reset</button>
+            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
         </form>
     </div>
 </div>
