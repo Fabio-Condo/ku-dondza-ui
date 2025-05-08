@@ -263,6 +263,33 @@
             flex-grow: 1;
         }
 
+        /* Container do texto */
+        .post-text {
+            position: relative;
+            overflow: hidden;
+            max-height: 4.8em;
+            /* Limita a 3 linhas (1.6 * 3) */
+            line-height: 1.6;
+            margin-bottom: 15px;
+
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+
+        /* Efeito de transparência no final do texto */
+        .post-text::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 1.6em;
+            /* Altura de uma linha */
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+        }
+
         .card-footer {
             display: flex;
             justify-content: space-between;
@@ -682,9 +709,12 @@
                         </div>
                         <span>12 Abr 2025</span>
                     </div>
+                    <!--
                     <p class="card-excerpt">
                         {{ article.content }}
                     </p>
+                    -->
+                    <div class="post-text" [innerHTML]="article.content"></div>
                     <div class="card-footer">
                         <a href="#" class="read-more" [routerLink]="['/articles/', article.articleId]">Ler artigo
                             →</a>

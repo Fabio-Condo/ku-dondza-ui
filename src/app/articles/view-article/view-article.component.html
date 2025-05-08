@@ -1,1 +1,32 @@
-<p>view-article works!</p>
+<div class="blog-container">
+    <!-- Botão de Voltar -->
+    <button class="back-button" routerLink="/articles">
+        <i class="pi pi-arrow-left"></i> Voltar
+    </button>
+
+    <!-- Título do Blog -->
+    <h1 class="blog-title">{{ article.title }}</h1>
+
+    <!-- Data de Postagem -->
+    <span class="blog-date">{{ article.date| date: 'dd/MM/yyyy' }}</span>
+
+    <!-- Conteúdo do Blog -->
+    <div class="blog-content" [innerHTML]="article.content"></div>
+
+    <!-- Imagem do Blog -->
+    <img *ngIf="article.urlFile" [src]="article.urlFile" alt="Imagem do blog" class="blog-image" />
+
+    <!-- Seção de Interação (Like e Save) -->
+    <div class="interaction-section">
+        <!-- Botão de Like -->
+        <button (click)="toggleLike(article)" class="like-button" [class.liked]="article.isLiked">
+            <i class="pi" [ngClass]="article.isLiked ? 'pi-heart-fill' : 'pi-heart'"></i>
+            <span class="like-count">{{ 10 }}</span>
+        </button>
+
+        <!-- Botão de Save -->
+        <button class="save-button" [class.saved]="article.isSaved">
+            <i class="pi" [ngClass]="article.isSaved ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+        </button>
+    </div>
+</div>

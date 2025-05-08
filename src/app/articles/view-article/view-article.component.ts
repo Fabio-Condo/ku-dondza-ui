@@ -58,28 +58,28 @@ export class ViewArticleComponent implements OnInit {
     );
   }
 
-  //toggleLike(article: Article): void {
-  //  this.likeService.toggleLike(article.id).subscribe(
-  //    response => {
-  //      article.isLiked = !article.isLiked;
-  //      if (article.isLiked) {
-  //        article.numberOfLikes = article.numberOfLikes + 1;
-  //      } else {
-  //        article.numberOfLikes = article.numberOfLikes - 1;
-  //      }
-  //    },
-  //    (errorResponse: HttpErrorResponse) => {
-  //      this.sendErrorNotification(errorResponse.error.message);
-  //    }
-  //  );
-  //}
+  toggleLike(article: Article): void {
+    this.likeService.toggleLike(article.id).subscribe(
+      response => {
+        article.isLiked = !article.isLiked;
+        if (article.isLiked) {
+          article.numberOfLikes = article.numberOfLikes + 1;
+        } else {
+          article.numberOfLikes = article.numberOfLikes - 1;
+        }
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
 
   //addArticleToSavedArticles(article: Article): void {
   //  this.userService.addArticleToSavedArticles(this.loggedUser.id, article.id).subscribe(() => {
   //    article.isSaved = true;
   //  });
   //}
-  
+
   //removeArticleFromSavedArticles(article: Article): void {
   //  this.userService.removeArticleFromSavedArticles(this.loggedUser.id, article.id).subscribe(() => {
   //    article.isSaved = false;
