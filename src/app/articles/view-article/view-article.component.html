@@ -1,7 +1,21 @@
+<br>
+<br>
+
 <div class="blog-container">
     <!-- Botão de Voltar -->
+    <!--
     <button class="back-button" routerLink="/articles">
         <i class="pi pi-arrow-left"></i> Voltar
+    </button>
+    -->
+
+    <button class="go-back-btn" routerLink="/quizzes">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5"></path>
+          <path d="M12 19l-7-7 7-7"></path>
+        </svg>
+        Voltar
     </button>
 
     <!-- Título do Blog -->
@@ -10,11 +24,11 @@
     <!-- Data de Postagem -->
     <span class="blog-date">{{ article.date| date: 'dd MMM yyyy' }}</span>
 
-    <!-- Conteúdo do Blog -->
-    <div class="blog-content" [innerHTML]="article.content"></div>
-
     <!-- Imagem do Blog -->
     <img *ngIf="article.urlFile" [src]="article.urlFile" alt="Imagem do blog" class="blog-image" />
+
+    <!-- Conteúdo do Blog -->
+    <div class="blog-content" [innerHTML]="article.content"></div>
 
     <!-- Seção de Interação (Like e Save) -->
     <div class="interaction-section">
