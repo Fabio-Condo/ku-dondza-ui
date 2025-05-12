@@ -25,7 +25,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
+      margin-top: 30px;
       flex-wrap: wrap;
       gap: 15px;
     }
@@ -51,6 +51,13 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       margin-bottom: 15px;
+    }
+
+    .title {
+      display: none;
+      color: #718096;
+      font-size: 14px;
+      margin-right: 15px;
     }
 
     .actions {
@@ -298,6 +305,24 @@
       justify-content: flex-end;
       gap: 10px;
       margin-top: 15px;
+    }
+
+    .fab {
+      display: none;
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background-color: #4361ee;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      font-size: 24px;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
 
     /* Paginação */
@@ -557,6 +582,23 @@
       .load-more-container {
         display: flex;
       }
+
+      .title {
+        display: flex;
+      }
+
+      .fab {
+        display: flex;
+      }
+
+      .pagination-info {
+        display: none;
+      }
+
+      .title-container {
+        display: none;
+      }
+
     }
   </style>
 </head>
@@ -568,9 +610,8 @@
       <p class="subtitle">Acesse nossa biblioteca digital de livros recomendados</p>
     </div>
 
-    <br>
-
     <header>
+      <div class="title">Livros</div>
       <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalBooks }}</span>
 
       <div class="actions">
@@ -591,6 +632,10 @@
         </button>
       </div>
     </header>
+
+    <button class="fab" (click)="onAddNewBook()" *ngIf="isSuperAdmin">
+      <i class="pi pi-plus"></i>
+    </button>
 
     <div class="cards-container">
       <div class="card" *ngFor="let book of books">

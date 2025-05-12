@@ -27,7 +27,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-top: 30px;
             flex-wrap: wrap;
             gap: 15px;
         }
@@ -53,6 +53,13 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             margin-bottom: 15px;
+        }
+
+        .title {
+            display: none;
+            color: #718096;
+            font-size: 14px;
+            margin-right: 15px;
         }
 
         .actions {
@@ -281,6 +288,24 @@
             background-color: #f8fafc;
         }
 
+        .fab {
+            display: none;
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
         /* Paginação */
         .pagination {
             display: flex;
@@ -481,6 +506,22 @@
                 display: flex;
             }
 
+            .title {
+                display: flex;
+            }
+
+            .fab {
+                display: flex;
+            }
+
+            .pagination-info {
+                display: none;
+            }
+
+            .title-container {
+                display: none;
+            }
+
         }
     </style>
 </head>
@@ -492,9 +533,8 @@
             <p class="subtitle">Explore nossa biblioteca completa de questões organizadas por temas</p>
         </div>
 
-        <br>
-
         <header>
+            <div class="title">Questões</div>
             <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalQuestions }}</span>
 
             <div class="actions">
@@ -515,6 +555,10 @@
                 </button>
             </div>
         </header>
+
+        <button class="fab" (click)="onAddNewQuestion()" *ngIf="isSuperAdmin">
+            <i class="pi pi-plus"></i>
+        </button>
 
         <div class="cards-container">
             <!-- Card 1 -->
@@ -543,7 +587,7 @@
                             {{ question.text }}
                         </p>
                         -->
-                        <p *ngIf="question.text" [innerHTML]="getTextoComNegrito(question.text)"></p> 
+                        <p *ngIf="question.text" [innerHTML]="getTextoComNegrito(question.text)"></p>
 
                     </div>
                     <div class="card-footer">
