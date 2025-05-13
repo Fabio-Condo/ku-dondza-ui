@@ -191,4 +191,8 @@ export class UserService {
     return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
   }
 
+  toggleSaveArticle(userId: number, articleId: number): Observable<User> {
+    return this.http.put<User>(`${this.host}/${userId}/saved-articles/${articleId}/toggle`, {});
+  }
+
 }

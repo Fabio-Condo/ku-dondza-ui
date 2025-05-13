@@ -7,6 +7,7 @@ import { UserService } from 'src/app/users/user.service';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
   selector: 'app-view-article',
@@ -28,10 +29,12 @@ export class ViewArticleComponent implements OnInit {
     private userService: UserService,
     private messageService: MessageService,
     private route: ActivatedRoute,
+    private authenticationService: AuthenticationService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const articleId = this.route.snapshot.params['id'];
     if (articleId) {
       this.findById(articleId);
@@ -59,17 +62,36 @@ export class ViewArticleComponent implements OnInit {
   }
 
   toggleLike(article: Article): void {
+    article.showLoadingLike = true;
     this.likeService.toggleLike(article.id).subscribe(
       response => {
-        article.isLiked = !article.isLiked;
-        if (article.isLiked) {
+        article.likedByUser = !article.likedByUser;
+        if (article.likedByUser) {
           article.numberOfLikes = article.numberOfLikes + 1;
         } else {
           article.numberOfLikes = article.numberOfLikes - 1;
         }
+        article.showLoadingLike = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        article.showLoadingLike = false;
+      }
+    );
+  }
+
+  toggleSaveArticle(article: Article): void {
+    article.showLoadingSave = true;
+    console.log(this.loggedUser.id);
+    console.log(article.id);
+    this.userService.toggleSaveArticle(this.loggedUser.id, article.id).subscribe(
+      response => {
+        article.savedByUser = !article.savedByUser;
+        article.showLoadingSave = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        article.showLoadingSave = false;
       }
     );
   }

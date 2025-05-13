@@ -201,6 +201,39 @@ export class ArticlesComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
+  toggleLike(article: Article): void {
+    article.showLoadingLike = true;
+    this.likeService.toggleLike(article.id).subscribe(
+      response => {
+        article.likedByUser = !article.likedByUser;
+        if (article.likedByUser) {
+          article.numberOfLikes = article.numberOfLikes + 1;
+        } else {
+          article.numberOfLikes = article.numberOfLikes - 1;
+        }
+        article.showLoadingLike = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        article.showLoadingLike = false;
+      }
+    );
+  }
+
+  toggleSaveArticle(article: Article): void {
+    article.showLoadingSave = true;
+    this.userService.toggleSaveArticle(this.loggedUser.id, article.id).subscribe(
+      response => {
+        article.savedByUser = !article.savedByUser;
+        article.showLoadingSave = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        article.showLoadingSave = false;
+      }
+    );
+  }
+
   getCategoryTypeLabel(type: string) {
     switch (type) {
       case 'MATH':

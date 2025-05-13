@@ -215,37 +215,59 @@
             border-radius: 100px;
         }
 
-        .like-button {
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
             background: none;
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
-            color: #6c757d;
-            transition: all 0.2s ease;
+            justify-content: center;
+            gap: 6px;
+            color: #1a202c;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            padding: 5px;
+            border-radius: 8px;
         }
 
-        .like-button:hover {
-            color: #f25c54;
+        .like-button {
+            color: #1a202c;
         }
 
+        .like-button:hover,
         .like-button.active {
             color: #f25c54;
         }
 
-        .like-icon {
-            font-size: 1.5rem;
+        .like-button.liked {
+            color: #f25c54;
+        }
+
+        .bookmark-button {
+            color: #1a202c;
+        }
+
+        .bookmark-button:hover,
+        .bookmark-button.active {
+            color: #4c6ef5;
+        }
+
+        .action-btn i {
+            font-size: 1.2rem;
             transition: transform 0.2s ease;
         }
 
-        .like-button:hover .like-icon {
+        .action-btn:hover i {
             transform: scale(1.1);
         }
 
-        .like-count {
+        .count {
             font-weight: 600;
-            font-size: 0.9rem;
         }
 
         .card-title {
@@ -686,11 +708,6 @@
                 align-items: flex-start;
             }
 
-            .like-button {
-                align-self: flex-end;
-                margin-top: -2.5rem;
-            }
-
             .pagination {
                 display: none;
             }
@@ -714,7 +731,18 @@
             .title-container {
                 display: none;
             }
+
+            .card-meta {
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                align-self: flex-end;
+                margin-top: -40px;
+            }
+
         }
+
     </style>
 </head>
 
@@ -769,6 +797,25 @@
                         </button>
                         -->
 
+                        <div class="action-buttons">
+                            <button (click)="toggleLike(article)" class="action-btn like-button" [class.liked]="article.likedByUser" aria-label="Curtir artigo">
+                                <i class="pi" *ngIf="!article.showLoadingLike" [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+                                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+                                <span class="count">{{ article.numberOfLikes }}</span>
+                            </button>
+
+                            <button (click)="toggleSaveArticle(article)" class="action-btn bookmark-button" [class.liked]="article.likedByUser" aria-label="Salvar artigo">
+                                <i class="pi" *ngIf="!article.showLoadingSave" [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+                                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+                            </button>
+                            <!--
+                            <button class="action-btn bookmark-button" aria-label="Salvar artigo">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                            -->
+                        </div>
+
+                        <!--
                         <div class="dropdown-container">
                             <button class="dropdown-btn" (click)="article.isAdminMenuOpen = !article.isAdminMenuOpen">
                                 <i class="pi pi-ellipsis-v"></i>
@@ -781,6 +828,7 @@
                                     *ngIf="isSuperAdmin">Delete</a>
                             </div>
                         </div>
+                        -->
                     </div>
                     <h2 class="card-title">{{ article.title }}</h2>
                     <div class="card-meta">

@@ -33,14 +33,16 @@
     <!-- Seção de Interação (Like e Save) -->
     <div class="interaction-section">
         <!-- Botão de Like -->
-        <button (click)="toggleLike(article)" class="like-button" [class.liked]="article.isLiked">
-            <i class="pi" [ngClass]="article.isLiked ? 'pi-heart-fill' : 'pi-heart'"></i>
-            <span class="like-count">{{ 10 }}</span>
+        <button (click)="toggleLike(article)" class="like-button" [class.liked]="article.likedByUser">
+            <i class="pi" *ngIf="!article.showLoadingLike" [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+            <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>            
+            <span class="like-count">{{ article.numberOfLikes }}</span>
         </button>
 
         <!-- Botão de Save -->
-        <button class="save-button" [class.saved]="article.isSaved">
-            <i class="pi" [ngClass]="article.isSaved ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+        <button (click)="toggleSaveArticle(article)" class="save-button" [class.saved]="article.savedByUser">
+            <i class="pi" *ngIf="!article.showLoadingSave" [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+            <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>            
         </button>
     </div>
 </div>

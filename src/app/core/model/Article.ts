@@ -13,9 +13,11 @@ export class Article {
   category!: string;
   likes!: Like[];
 
-  isLiked: boolean = false;
-  isSaved: boolean = false;
+  likedByUser: boolean = false;
+  savedByUser: boolean = false;
   numberOfLikes: number = 0;
 
   isAdminMenuOpen: boolean = false;
+  showLoadingLike: boolean = false;
+  showLoadingSave: boolean = false;
 } 
