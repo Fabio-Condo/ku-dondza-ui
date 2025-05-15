@@ -151,13 +151,13 @@
             <br>
 
             <!-- Input para mostrar a solução -->
-            <div class="solution" [ngClass]="{'blocked-content': loggedUser.plan !== 'FREE', 'statistics-body': true}">
+            <div class="solution" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="solution-input">
                     <h1 class="title">Resolução</h1>
                     <p class="solution-content scrollable" *ngIf="question.solution"
                         [innerHTML]="getTextoComNegrito(question.solution)">
                     </p>
-                    <div *ngIf="loggedUser.plan !== 'FREE'" class="upgrade-overlay">
+                    <div *ngIf="loggedUser.plan === 'FREE'" class="upgrade-overlay">
                         <button class="upgrade-button">
                             Atualizar para Premium
                         </button>
