@@ -38,7 +38,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
 
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   imagePath = './assets/images/funcao do grau 2.png';
 
@@ -285,7 +285,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   getTopicsBySubjectId(subjectId: number): void {
-    this.loadingMessage = "Obtendo tópicos..."
+    this.loadingMessage = "Obtendo tópicos"
     this.showLoading = true;
     this.topicService.getBySubjectId(subjectId).subscribe(
       (dados: Topic[]) => {
@@ -302,7 +302,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   getQuestions(): void {
-    this.loadingMessage = "Gerrando questões..."
+    this.loadingMessage = "Gerrando questões"
     const selectedTopicIds = this.getSelectedTopicIds();
 
     if(selectedTopicIds.length == 0){
@@ -341,7 +341,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   saveQuiz() {
-    this.loadingMessage = "Salvando o quiz..."
+    this.loadingMessage = "Salvando o quiz"
     this.showLoading = true;
     this.quiz.topics = this.getSelectedTopics();
 
