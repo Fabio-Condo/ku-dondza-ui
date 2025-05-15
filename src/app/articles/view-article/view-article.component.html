@@ -1,53 +1,55 @@
 <br>
 <br>
 
-<div class="blog-container">
+<body>
+    <div class="container">
 
-    <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-        <div class="loading-indicator">
-            <div class="spinner"></div>
-            <div class="loading-text">
-                {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <button class="go-back-btn" routerLink="/articles">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5"></path>
-            <path d="M12 19l-7-7 7-7"></path>
-        </svg>
-        Voltar
-    </button>
-
-    <!-- Título do Blog -->
-    <h1 class="blog-title">{{ article.title }}</h1>
-
-    <!-- Data de Postagem -->
-    <span class="blog-date">{{ article.date| date: 'dd MMM yyyy' }}</span>
-
-    <!-- Imagem do Blog -->
-    <img *ngIf="article.urlFile" [src]="article.urlFile" alt="Imagem do blog" class="blog-image" />
-
-    <!-- Conteúdo do Blog -->
-    <div class="blog-content" [innerHTML]="article.content"></div>
-
-    <!-- Seção de Interação (Like e Save) -->
-    <div class="interaction-section">
-        <!-- Botão de Like -->
-        <button (click)="toggleLike(article)" class="like-button" [class.liked]="article.likedByUser">
-            <i class="pi" *ngIf="!article.showLoadingLike"
-                [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
-            <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>
-            <span class="like-count">{{ article.numberOfLikes }}</span>
+        <button class="go-back-btn" routerLink="/articles">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5"></path>
+                <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            Voltar
         </button>
 
-        <!-- Botão de Save -->
-        <button (click)="toggleSaveArticle(article)" class="save-button" [class.saved]="article.savedByUser">
-            <i class="pi" *ngIf="!article.showLoadingSave"
-                [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
-            <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
-        </button>
+        <!-- Título do Blog -->
+        <h1 class="blog-title">{{ article.title }}</h1>
+
+        <!-- Data de Postagem -->
+        <span class="blog-date">{{ article.date| date: 'dd MMM yyyy' }}</span>
+
+        <!-- Imagem do Blog -->
+        <img *ngIf="article.urlFile" [src]="article.urlFile" alt="Imagem do blog" class="blog-image" />
+
+        <!-- Conteúdo do Blog -->
+        <div class="blog-content" [innerHTML]="article.content"></div>
+
+        <!-- Seção de Interação (Like e Save) -->
+        <div class="interaction-section">
+            <!-- Botão de Like -->
+            <button (click)="toggleLike(article)" class="like-button" [class.liked]="article.likedByUser">
+                <i class="pi" *ngIf="!article.showLoadingLike"
+                    [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+                <span class="like-count">{{ article.numberOfLikes }}</span>
+            </button>
+
+            <!-- Botão de Save -->
+            <button (click)="toggleSaveArticle(article)" class="save-button" [class.saved]="article.savedByUser">
+                <i class="pi" *ngIf="!article.showLoadingSave"
+                    [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+            </button>
+        </div>
     </div>
-</div>
+</body>

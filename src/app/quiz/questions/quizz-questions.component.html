@@ -13,31 +13,17 @@
       </div>
     </div>
 
+    <button class="go-back-btn" routerLink="/quizzes">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5"></path>
+        <path d="M12 19l-7-7 7-7"></path>
+      </svg>
+      Voltar
+    </button>
+
     <!-- Tela inicial -->
     <div *ngIf="showStartScreen" class="results-screen2">
-
-      <div style="display: flex; justify-content: space-between">
-        <button class="go-back-btn" routerLink="/quizzes">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5"></path>
-            <path d="M12 19l-7-7 7-7"></path>
-          </svg>
-          Voltar
-        </button>
-
-        <div class="student-info">
-          <img [src]="quiz.user.profileImageUrl" alt="Foto de perfil" class="student-avatar"
-            *ngIf="quiz.user.profileImageUrl" />
-          <div class="student-avatar" *ngIf="!quiz.user.profileImageUrl">
-            <i class="fas fa-user"></i>
-          </div>
-          <div>
-            <div class="student-name">{{ quiz.user.fullName }}</div>
-            <div class="student-class">{{ quiz.submittedAt | date: 'short' }}</div>
-          </div>
-        </div>
-      </div>
 
       <!-- Metadados da questão -->
       <div class="questao-meta">
@@ -87,6 +73,32 @@
             <div>
               <p class="meta-label">Tempo gasto / estimado</p>
               <p class="meta-valor">{{ formatTime(quiz.timeSpent) }} / {{ formatTime(quiz.timeLimit) }}</p>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <div>
+              <p class="meta-label">Data</p>
+              <p class="meta-valor">{{ quiz.submittedAt | date: 'short' }}</p>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <img [src]="quiz.user.profileImageUrl" alt="Foto de perfil" class="student-avatar"
+              *ngIf="quiz.user.profileImageUrl" />
+            <div class="student-avatar" *ngIf="!quiz.user.profileImageUrl">
+              <i class="fas fa-user"></i>
+            </div>
+            <div>
+              <div class="student-name">{{ quiz.user.fullName }}</div>
+              <!--<div class="student-class">{{ quiz.submittedAt | date: 'short' }}</div>-->
             </div>
           </div>
         </div>
