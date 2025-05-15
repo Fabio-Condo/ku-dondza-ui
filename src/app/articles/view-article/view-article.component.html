@@ -2,12 +2,13 @@
 <br>
 
 <div class="blog-container">
-    <!-- Botão de Voltar -->
-    <!--
-    <button class="back-button" routerLink="/articles">
-        <i class="pi pi-arrow-left"></i> Voltar
-    </button>
-    -->
+
+    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+      <div class="loading-indicator">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>{{ loadingMessage }}</span>
+      </div>
+    </div>
 
     <button class="go-back-btn" routerLink="/articles">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"

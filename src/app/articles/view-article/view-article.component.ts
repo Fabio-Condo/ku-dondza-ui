@@ -22,6 +22,9 @@ export class ViewArticleComponent implements OnInit {
 
   loggedUser: User = new User;
 
+  showLoading: boolean = false;
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
 
   constructor(
     private articleService: ArticlesService,
@@ -47,9 +50,14 @@ export class ViewArticleComponent implements OnInit {
   }
 
   findById(id: string) {
+
+    this.loadingMessage = "Carregando dados..."
+    this.showLoading = true;
+  
     this.articleService.getArticleByArticleId(id).subscribe(
       (response) => {
         this.article = response;
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {
@@ -57,6 +65,7 @@ export class ViewArticleComponent implements OnInit {
         } else {
           this.sendErrorNotification(errorResponse.error.message);
         }
+        this.showLoading = false;
       }
     );
   }
