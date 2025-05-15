@@ -29,7 +29,7 @@ export class QuizzQuestionsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
 
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
@@ -79,7 +79,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   getQuizByQuizId(quizId: string) {
     this.showLoading = true;
-    this.loadingMessage = "Carregando dados..."
+    this.loadingMessage = "Carregando dados"
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;

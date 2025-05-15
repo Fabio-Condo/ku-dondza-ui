@@ -75,8 +75,8 @@
                     <div class="quiz-stats">
                         <div class="stats-left">
                             <div class="user-container">
-                                <img src="{{quiz.user.profileImageUrl}}" alt="Foto de perfil"
-                                    class="user-avatar" *ngIf="quiz.user.profileImageUrl">
+                                <img src="{{quiz.user.profileImageUrl}}" alt="Foto de perfil" class="user-avatar"
+                                    *ngIf="quiz.user.profileImageUrl">
                                 <div class="user-avatar" *ngIf="!quiz.user.profileImageUrl">
                                     <i class="fas fa-user" style="font-size: 0.5rem;"></i>
                                 </div>
@@ -147,10 +147,12 @@
             </div>
         </div>
 
-        <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
             <div class="loading-indicator">
-                <i class="pi pi-spin pi-spinner"></i>
-                <span>{{ loadingMessage }}</span>
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
             </div>
         </div>
 

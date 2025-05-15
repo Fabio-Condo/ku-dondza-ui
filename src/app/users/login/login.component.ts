@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   imagePath = './assets/scilogo.png'
   public showLoading: any;
   private subscriptions: Subscription[] = [];
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   activeTab: number = 1;
 
@@ -136,7 +136,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public onLogin(user: User): void {
-    this.loadingMessage = "Estamos quase lá...";
+    this.loadingMessage = "Estamos quase lá";
     this.showLoading = true;
 
     const subscription = this.authenticationService.login(user).subscribe({
@@ -171,7 +171,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private handleGoogleCredential(googleCredential: string): void {
     this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá...";
+      this.loadingMessage = "Estamos quase lá";
       this.showLoading = true;
     });
 

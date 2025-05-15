@@ -23,7 +23,7 @@ export class ViewArticleComponent implements OnInit {
   loggedUser: User = new User;
 
   showLoading: boolean = false;
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
 
   constructor(
@@ -51,7 +51,7 @@ export class ViewArticleComponent implements OnInit {
 
   findById(id: string) {
 
-    this.loadingMessage = "Carregando dados..."
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
   
     this.articleService.getArticleByArticleId(id).subscribe(

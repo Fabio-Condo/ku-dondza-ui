@@ -1,12 +1,15 @@
 <br>
 <br>
 <br>
+
 <body>
 
-    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+    <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
         <div class="loading-indicator">
-            <!--<i class="pi pi-spin pi-spinner"></i>-->
-            <span>{{ loadingMessage }}</span>
+            <div class="spinner"></div>
+            <div class="loading-text">
+                {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+            </div>
         </div>
     </div>
 
@@ -22,10 +25,12 @@
                 <div class="profile-header">
                     <div class="profile-pic">
                         <i *ngIf="!user.profileImageUrl" class="fas fa-user" style="font-size: 3rem;"></i>
-                        <img *ngIf="user.profileImageUrl" src="{{user.profileImageUrl}}" id="profile-photo" type="file" alt="Foto do Perfil">
-                        <label *ngIf="currentUser.userId == user.userId" for="profile-upload" class="upload-button">Trocar</label>
-                        <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)" type="file"
-                        id="profile-upload" class="upload-input" accept="image/*">
+                        <img *ngIf="user.profileImageUrl" src="{{user.profileImageUrl}}" id="profile-photo" type="file"
+                            alt="Foto do Perfil">
+                        <label *ngIf="currentUser.userId == user.userId" for="profile-upload"
+                            class="upload-button">Trocar</label>
+                        <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)"
+                            type="file" id="profile-upload" class="upload-input" accept="image/*">
                     </div>
                     <div class="profile-info">
                         <h1>{{ user.fullName }}</h1>
@@ -46,7 +51,8 @@
                         <i class="fas fa-calendar"></i>
                         <span>Membro desde Março 2024</span>
                     </div>
-                    <button class="btn-outline" id="logout-btn" (click)="onLogOut()" *ngIf="currentUser.userId == user.userId">
+                    <button class="btn-outline" id="logout-btn" (click)="onLogOut()"
+                        *ngIf="currentUser.userId == user.userId">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </button>

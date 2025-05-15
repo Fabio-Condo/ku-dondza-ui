@@ -29,7 +29,7 @@ export class BooksComponent implements OnInit {
   displayModalFilter: boolean = false;
   subjects: Subject[] = [];
 
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -112,7 +112,7 @@ export class BooksComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
-    this.loadingMessage = "Carregando dados..."
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.booksService.findAll(this.filtro).subscribe(

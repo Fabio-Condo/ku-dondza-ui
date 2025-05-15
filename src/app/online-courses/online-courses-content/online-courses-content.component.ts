@@ -47,7 +47,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   displayModalSaveModule: boolean = false;
   displayModalUpateRequirements: boolean = false;
 
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   totalRegistros: number = 0
   showLoading: boolean = false;
@@ -207,7 +207,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   getOnlineCourseByOnlineCourseId(onlineCourseId: string) {
-    this.loadingMessage = "Carregando dados..."
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
     this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(

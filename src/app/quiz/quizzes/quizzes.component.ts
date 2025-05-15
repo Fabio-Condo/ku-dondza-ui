@@ -34,7 +34,7 @@ export class QuizzesComponent implements OnInit {
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   loggedUser: User = new User;
 
@@ -86,7 +86,7 @@ export class QuizzesComponent implements OnInit {
   }
 
   getQuizzes(page: number = 0): void {
-    this.loadingMessage = "Carregando dados..."
+    this.loadingMessage = "Carregando dados"
     if (this.showLoading) return;
 
     if (this.selectQuizOption == 'MY_QUIZZES') {

@@ -77,7 +77,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   findById(id: string) {
-    this.loadingMessage = "Carregando dados..."
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.questionService.getQuestionByQuestionId(id).subscribe(
       (response) => {

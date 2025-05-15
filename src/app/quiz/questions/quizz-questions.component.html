@@ -4,10 +4,12 @@
 <body>
   <div class="container">
 
-    <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+    <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
       <div class="loading-indicator">
-        <i class="pi pi-spin pi-spinner"></i>
-        <span>{{ loadingMessage }}</span>
+        <div class="spinner"></div>
+        <div class="loading-text">
+          {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+        </div>
       </div>
     </div>
 
@@ -264,7 +266,9 @@
             <div class="solution-input">
               <div class="solution-header">
                 <h1 class="title">Resolução</h1>
-                <svg (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();" class="chevron-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <svg
+                  (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();"
+                  class="chevron-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9l6 6 6-6" />
                 </svg>

@@ -4,10 +4,12 @@
 <body>
     <div class="container">
 
-        <div *ngIf="showLoading" class="loading-container" aria-live="polite">
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
             <div class="loading-indicator">
-                <i class="pi pi-spin pi-spinner"></i>
-                <span>{{ loadingMessage }}</span>
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
             </div>
         </div>
 
@@ -119,7 +121,7 @@
                         disabled />
 
                     <!--<span> {{ answer.text }} </span>-->
-                    <p *ngIf="answer.text" [innerHTML]="getTextoComNegrito(answer.text)"></p> 
+                    <p *ngIf="answer.text" [innerHTML]="getTextoComNegrito(answer.text)"></p>
 
                 </label>
             </div>
@@ -135,7 +137,8 @@
                         {{ question.tip }}
                     </p>
                     -->
-                    <p class="tip-content scrollable" *ngIf="question.tip" [innerHTML]="getTextoComNegrito(question.tip)"></p> 
+                    <p class="tip-content scrollable" *ngIf="question.tip"
+                        [innerHTML]="getTextoComNegrito(question.tip)"></p>
 
                 </div>
             </div>
@@ -151,7 +154,8 @@
                         {{ question.solution }}
                     </p>
                     -->
-                    <p class="solution-content scrollable" *ngIf="question.solution" [innerHTML]="getTextoComNegrito(question.solution)"></p> 
+                    <p class="solution-content scrollable" *ngIf="question.solution"
+                        [innerHTML]="getTextoComNegrito(question.solution)"></p>
 
                 </div>
             </div>

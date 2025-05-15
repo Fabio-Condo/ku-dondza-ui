@@ -30,7 +30,7 @@ export class ArticlesComponent implements OnInit {
   loggedUser: User = new User();
   imagePath = './assets/images/funcao do grau 2.png';
 
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -69,7 +69,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
-    this.loadingMessage = "Carregando dados..."
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.articleService.findAll(this.filter).subscribe(

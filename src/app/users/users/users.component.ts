@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
      //exbindoFormularioAddUser = false;
      //exbindoFormularioEditUser = false;
      exbindoFormularioSettingsUser = false;
-     loadingMessage = "Carregando..."; // Alterar dinamicamente
+     loadingMessage = "Carregando"; // Alterar dinamicamente
    
    
    
@@ -137,7 +137,7 @@ export class UsersComponent implements OnInit {
      }
    
      findAll(pagina: number = 0): void {
-       this.loadingMessage = "Carregando dados..."
+       this.loadingMessage = "Carregando dados"
        this.showLoading = true;
        this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
        this.userService.findAll(this.filtro).subscribe(
