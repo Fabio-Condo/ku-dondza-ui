@@ -129,7 +129,7 @@
             <br>
 
             <!-- Input para mostrar a solução -->
-            <div class="tip" [ngClass]="{'blocked-content': loggedUser.plan !== 'FREE', 'statistics-body': true}">
+            <div class="tip" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="tip-input">
                     <h1 class="title">Dicas</h1>
                     <!--
@@ -140,7 +140,7 @@
                     <p class="tip-content scrollable" *ngIf="question.tip"
                         [innerHTML]="getTextoComNegrito(question.tip)">
                     </p>
-                    <div *ngIf="loggedUser.plan !== 'FREE'" class="upgrade-overlay">
+                    <div *ngIf="loggedUser.plan === 'FREE'" class="upgrade-overlay">
                         <button class="upgrade-button">
                             Atualizar para Premium
                         </button>
