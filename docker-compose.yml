@@ -1,7 +1,8 @@
 services:
   kudondzaui:
     build: .    
-    image: kudondza-ui:v1
+    #image: kudondza-ui:v1
+    image: fabiocondo/kudondza-ui:v1
     ports:
       - 4205:80
     expose:
@@ -18,8 +19,8 @@ networks:
 # docker-compose up -d --build
 
 # Usando o DockerFile apenas(Sem usar o docker-compose) :
-# docker build -t sci-kudondza-ui:v1 .
-# docker run -p 4200:80 sci-kudondza-ui:v1
+# docker build -t kudondza-ui:v1 .
+# docker run -p 4200:80 kudondza-ui:v1
 # docker run -p 4200:80 -d kudondza-ui:v1    #Liberar o terminal
 
 # Para destruir e remover tudo
