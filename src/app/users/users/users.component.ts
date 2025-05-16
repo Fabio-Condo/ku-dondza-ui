@@ -79,7 +79,6 @@ export class UsersComponent implements OnInit {
        this.currentUser = this.authenticationService.getUserFromLocalCache();
        this.findAll(0);
        this.scrollToTop();
-       console.log("Olaaaaa");
      }
    
      scrollToTop() {
