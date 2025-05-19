@@ -67,16 +67,17 @@
                         </div>
                     </div>
 
+                    <div class="user-container">
+                        <img src="{{quiz.user.profileImageUrl}}" alt="Foto de perfil" class="user-avatar"
+                            *ngIf="quiz.user.profileImageUrl">
+                        <div class="user-avatar" *ngIf="!quiz.user.profileImageUrl">
+                            <i class="fas fa-user" style="font-size: 0.5rem;"></i>
+                        </div>
+                        <span>{{ quiz.user.fullName }}</span>
+                    </div>
+
                     <div class="quiz-stats">
                         <div class="stats-left">
-                            <div class="user-container">
-                                <img src="{{quiz.user.profileImageUrl}}" alt="Foto de perfil" class="user-avatar"
-                                    *ngIf="quiz.user.profileImageUrl">
-                                <div class="user-avatar" *ngIf="!quiz.user.profileImageUrl">
-                                    <i class="fas fa-user" style="font-size: 0.5rem;"></i>
-                                </div>
-                                <span>{{ quiz.user.fullName }}</span>
-                            </div>
                             <div class="stat-item">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
