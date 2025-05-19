@@ -63,6 +63,7 @@
         .actions {
             display: flex;
             gap: 15px;
+            margin-bottom: 20px;
         }
 
         button {
@@ -121,7 +122,7 @@
         .cards-container {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
 
         .card {
@@ -132,7 +133,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid #f1f5f9;
-            margin-top: 20px;
         }
 
         .card:hover {
@@ -707,8 +707,8 @@
             <i class="pi pi-plus"></i>
         </button>
 
-        <div class="cards-container" *ngFor="let course of courses">
-            <div class="card">
+        <div class="cards-container">
+            <div class="card" *ngFor="let course of courses">
                 <img [src]="course.coverImageUrl" alt="Capa do livro" class="course-cover">
                 <div class="course-info">
                     <div class="course-title-dropdown">

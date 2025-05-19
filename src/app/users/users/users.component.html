@@ -68,6 +68,7 @@
     .actions {
       display: flex;
       gap: 15px;
+      margin-bottom: 20px;
     }
 
     button {
@@ -142,13 +143,13 @@
     }
 
     /* User Cards */
-    .user-cards {
+    .cards-container {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 20px;
     }
 
-    .user-card {
+    .card {
       background-color: white;
       border-radius: 12px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -159,10 +160,9 @@
       align-items: center;
       transition: all 0.3s ease;
       border: 1px solid #f1f5f9;
-      margin-top: 20px;
     }
 
-    .user-card:hover {
+    .card:hover {
       box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
       transform: translateY(-2px);
     }
@@ -603,7 +603,7 @@
 
     /* Responsive */
     @media (max-width: 992px) {
-      .user-card {
+      .card {
         grid-template-columns: auto 1fr;
         gap: 1rem;
       }
@@ -617,7 +617,7 @@
 
     @media (max-width: 768px) {
 
-      .user-card {
+      .card {
         grid-template-columns: 1fr;
         text-align: center;
       }
@@ -703,8 +703,8 @@
       <i class="pi pi-plus"></i>
     </button>
 
-    <div class="user-cards" *ngFor="let user of users">
-      <div class="user-card">
+    <div class="cards-container">
+      <div class="card" *ngFor="let user of users">
         <img src="{{user.profileImageUrl}}" alt="Foto de perfil" class="avatar" *ngIf="user.profileImageUrl">
         <div class="avatar" *ngIf="!user.profileImageUrl">
           <i class="fas fa-user" style="font-size: 2rem;"></i>

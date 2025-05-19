@@ -66,6 +66,7 @@
         .actions {
             display: flex;
             gap: 15px;
+            margin-bottom: 20px;
         }
 
         .btn-primary {
@@ -140,10 +141,10 @@
             cursor: not-allowed;
         }
 
-        .articles-list {
+        .cards-container {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 20px;
         }
 
         .card {
@@ -154,7 +155,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid #f1f5f9;
-            margin-top: 20px;
         }
 
         .card:hover {
@@ -860,8 +860,8 @@
             <i class="pi pi-plus"></i>
         </button>
 
-        <div class="articles-list" *ngFor="let article of articles">
-            <article class="card">
+        <div class="cards-container">
+            <article class="card" *ngFor="let article of articles">
                 <div class="card-img" *ngIf="!article.urlFile">Imagem do artigo</div>
                 <img class="card-img" *ngIf="article.urlFile" [src]="article.urlFile" alt="Imagem do artigo" />
                 <div class="card-content">
