@@ -9,6 +9,7 @@ export const environment = {
   apiUrl: 'http://localhost:8080',
   //apiUrl: 'http://localhost:81',
   //apiUrl: 'http://168.231.87.25:80',
+  //apiUrl: 'https://api.dikahub.com',
   googleClientId: '170476897572-k758vjru9e2qqa707qhb5ns2kaaegquc.apps.googleusercontent.com' 
 
 };
