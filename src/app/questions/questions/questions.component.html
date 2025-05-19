@@ -723,56 +723,55 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-                <div class="loading-indicator">
-                    <div class="spinner"></div>
-                    <div class="loading-text">
-                        {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-                    </div>
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
                 </div>
             </div>
+        </div>
 
-            <div *ngIf="!showLoading && questions.length === 0">
-                <div class="card">
-                    <span class="no-items-message">
-                        Nenhum item encontrado
-                    </span>
-                </div>
+        <div *ngIf="!showLoading && questions.length === 0">
+            <div class="card">
+                <span class="no-items-message">
+                    Nenhum item encontrado
+                </span>
             </div>
+        </div>
 
-            <!-- Load-more -->
-            <div class="load-more-container">
-                <button class="btn-load-more" id="load-more-btn" (click)="loadMore()"
-                    [disabled]="questions.length === totalQuestions && totalQuestions > 0">
-                    Buscar mais
-                </button>
-            </div>
+        <!-- Load-more -->
+        <div class="load-more-container">
+            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()"
+                [disabled]="questions.length === totalQuestions && totalQuestions > 0">
+                Buscar mais
+            </button>
+        </div>
 
-            <!-- Paginação -->
-            <div class="pagination">
-                <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalQuestions }}</span>
-                <button class="pagination-btn prev" (click)="previousPage()"
-                    [disabled]="currentPage === 1 || showLoading">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    Anterior
-                </button>
-                <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-                <button class="pagination-btn next" (click)="nextPage()"
-                    [disabled]="currentPage === totalPages() || showLoading">
-                    Próxima
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-            </div>
-
+        <!-- Paginação -->
+        <div class="pagination">
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalQuestions }}</span>
+            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-btn next" (click)="nextPage()"
+                [disabled]="currentPage === totalPages() || showLoading">
+                Próxima
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
         </div>
     </div>
+
 </body>
 
 </html>
