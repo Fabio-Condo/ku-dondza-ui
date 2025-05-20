@@ -343,19 +343,23 @@
             margin-top: auto;
         }
 
-        .read-more {
-            color: #4361ee;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
+        .start-button {
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
-            transition: gap 0.2s ease;
+            background-color: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            transition: all 0.2s ease;
+            color: #2d3748;
+            gap: 8px;
         }
 
-        .read-more:hover {
-            gap: 0.5rem;
+        .start-button:hover {
+            color: #4361ee;
         }
 
         .read-time {
@@ -927,7 +931,14 @@
                     <div class="post-text" [innerHTML]="article.content"></div>
                     <div class="card-footer">
                         <span class="read-time">{{ article.readingTimeMinutes }} min de leitura</span>
-                        <a href="#" class="read-more" [routerLink]="['/articles/', article.articleId]">Ler artigo →</a>
+                        <button class="start-button" [routerLink]="['/articles', article.articleId]">
+                            Ler artigo
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </article>
