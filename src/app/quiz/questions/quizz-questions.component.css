@@ -67,6 +67,8 @@ h1 {
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .answer-options label .num {
@@ -82,6 +84,7 @@ h1 {
   font-weight: bold;
   font-size: 1.2rem;
   transition: transform 0.3s ease, background-color 0.3s ease;
+  flex-shrink: 0; /* Impede que o botão diminua quando o conteúdo crescer */
 }
 
 .answer-options label:hover {
