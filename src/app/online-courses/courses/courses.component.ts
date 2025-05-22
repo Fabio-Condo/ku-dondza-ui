@@ -20,23 +20,20 @@ import { UserService } from 'src/app/users/user.service';
 })
 export class CoursesComponent implements OnInit {
 
+  loggedUser: User = new User;
+
   constructor(
-    private router: Router,
     private authenticationService: AuthenticationService,
-    private userService: UserService,
-    private messageService: MessageService,
-    private title: Title,
-    private confirmationService: ConfirmationService,
-    private errorHandler: ErrorHandlerService,
-  ) {
-  }
+    private title: Title, 
+  ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('Pesquisa do usuário');
+    this.title.setTitle('Prices page');
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    this.scrollToTop();
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
 }

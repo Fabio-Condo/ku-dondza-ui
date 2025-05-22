@@ -255,137 +255,115 @@
 
         <div class="pricing-container">
             <!-- Gratuito -->
-            <div class="pricing-card current-plan">
-                <div class="current-badge">Plano Atual</div>
+            <div class="pricing-card" [ngClass]="{'current-plan': loggedUser.plan === 'FREE'}">
+                <div *ngIf="loggedUser.plan === 'FREE'" class="current-badge">Plano Atual</div>
                 <div class="plan-header">
                     <h3 class="plan-name">Gratuito</h3>
-                    <div class="plan-price free">R$ 0</div>
+                    <div class="plan-price free">MT 0</div>
                     <div class="plan-period">Para sempre</div>
                 </div>
 
                 <div class="features">
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>3 artigos por mês</span>
+                        <div class="feature-icon"></div><span>3 artigos por mês</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>1 curso básico</span>
+                        <div class="feature-icon"></div><span>1 curso básico</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Biblioteca limitada</span>
+                        <div class="feature-icon"></div><span>Biblioteca limitada</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>5 exercícios por semana</span>
+                        <div class="feature-icon"></div><span>5 exercícios por semana</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Quizzes básicos</span>
+                        <div class="feature-icon"></div><span>Quizzes básicos</span>
                     </div>
                     <div class="feature limited">
-                        <div class="feature-icon"></div>
-                        <span>Competições</span>
+                        <div class="feature-icon"></div><span>Competições</span>
                     </div>
                 </div>
 
-                <button class="cta-button btn-current">Plano Atual</button>
+                <button class="cta-button" [ngClass]="loggedUser.plan === 'FREE' ? 'btn-current' : 'btn-secondary'"
+                    [disabled]="loggedUser.plan === 'FREE'">
+                    {{ loggedUser.plan === 'FREE' ? 'Plano Atual' : 'Escolher Plano' }}
+                </button>
             </div>
 
             <!-- Premium -->
-            <div class="pricing-card popular">
-                <div class="popular-badge">Popular</div>
+            <div class="pricing-card" [ngClass]="{'popular': true, 'current-plan': loggedUser.plan === 'PREMIUM'}">
+                <div *ngIf="loggedUser.plan === 'PREMIUM'" class="current-badge">Plano Atual</div>
+                <div *ngIf="loggedUser.plan !== 'PREMIUM'" class="popular-badge">Popular</div>
                 <div class="plan-header">
                     <h3 class="plan-name">Premium</h3>
-                    <div class="plan-price">R$ 29</div>
+                    <div class="plan-price">MT 29</div>
                     <div class="plan-period">por mês</div>
                 </div>
 
                 <div class="features">
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Artigos ilimitados</span>
+                        <div class="feature-icon"></div><span>Artigos ilimitados</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Todos os cursos</span>
+                        <div class="feature-icon"></div><span>Todos os cursos</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Biblioteca completa</span>
+                        <div class="feature-icon"></div><span>Biblioteca completa</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Exercícios ilimitados</span>
+                        <div class="feature-icon"></div><span>Exercícios ilimitados</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Quizzes avançados</span>
+                        <div class="feature-icon"></div><span>Quizzes avançados</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Competições completas</span>
+                        <div class="feature-icon"></div><span>Competições completas</span>
                     </div>
                 </div>
 
-                <button class="cta-button btn-upgrade">Fazer Upgrade</button>
+                <button class="cta-button" [ngClass]="loggedUser.plan === 'PREMIUM' ? 'btn-current' : 'btn-upgrade'"
+                    [disabled]="loggedUser.plan === 'PREMIUM'">
+                    {{ loggedUser.plan === 'PREMIUM' ? 'Plano Atual' : 'Fazer Upgrade' }}
+                </button>
             </div>
 
             <!-- Pro -->
-            <div class="pricing-card">
+            <div class="pricing-card" [ngClass]="{'current-plan': loggedUser.plan === 'PRO'}">
+                <div *ngIf="loggedUser.plan === 'PRO'" class="current-badge">Plano Atual</div>
                 <div class="plan-header">
                     <h3 class="plan-name">Pro</h3>
-                    <div class="plan-price">R$ 59</div>
+                    <div class="plan-price">MT 59</div>
                     <div class="plan-period">por mês</div>
                 </div>
 
                 <div class="features">
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Tudo do Premium</span>
+                        <div class="feature-icon"></div><span>Tudo do Premium</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Mentoria individual</span>
+                        <div class="feature-icon"></div><span>Mentoria individual</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Cursos exclusivos</span>
+                        <div class="feature-icon"></div><span>Cursos exclusivos</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Análise detalhada</span>
+                        <div class="feature-icon"></div><span>Análise detalhada</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Suporte prioritário</span>
+                        <div class="feature-icon"></div><span>Suporte prioritário</span>
                     </div>
                     <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Certificados oficiais</span>
+                        <div class="feature-icon"></div><span>Certificados oficiais</span>
                     </div>
                 </div>
 
-                <button class="cta-button btn-upgrade">Fazer Upgrade</button>
+                <button class="cta-button" [ngClass]="loggedUser.plan === 'PRO' ? 'btn-current' : 'btn-upgrade'"
+                    [disabled]="loggedUser.plan === 'PRO'">
+                    {{ loggedUser.plan === 'PRO' ? 'Plano Atual' : 'Fazer Upgrade' }}
+                </button>
             </div>
         </div>
     </div>
-
-    <script>
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', function () {
-                const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
-                console.log(`Selecionado: ${planName}`);
-
-                // Feedback visual
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 100);
-            });
-        });
-    </script>
 </body>
 
 </html>
