@@ -81,9 +81,10 @@
     }
 
     .login-side h1 {
-      font-size: 2rem;
+      font-size: 1rem;
       color: #333;
-      margin-bottom: 30px;
+      margin-top: 15px;
+      margin-bottom: 15px;
     }
 
     .input-group {
@@ -278,6 +279,38 @@
       border-bottom: 3px solid var(--primary);
     }
 
+    .logo-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #4361ee;
+      letter-spacing: -1px;
+    }
+
+    .logo-icon {
+      margin-right: 10px;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 24px;
+      width: 30px;
+      height: 30px;
+      /* Diminuindo o tamanho do ícone */
+    }
+
+    .logo::before {
+      /* content: '🎓';*/
+      margin-right: 10px;
+      font-size: 24px;
+      /* Diminuindo o tamanho do emoji */
+    }
+
     @media (max-width: 768px) {
       body {
         padding: 10px;
@@ -322,6 +355,21 @@
 
     </div>
     <div class="login-side" *ngIf="activeTab === 1">
+
+      <div class="logo-container">
+        <div class="logo">
+          <span class="logo-icon">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+              fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="7" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </span>
+          Dikahub
+        </div>
+      </div>
+
       <h1>Entrar</h1>
 
       <div id="google-signin-button" *ngIf="step === 'email'"></div>
