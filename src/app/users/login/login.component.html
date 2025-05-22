@@ -27,7 +27,6 @@
       width: 90%;
       max-width: 900px;
       height: 600px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       border-radius: 20px;
       overflow: hidden;
     }
@@ -279,9 +278,19 @@
     }
 
     @media (max-width: 768px) {
+      body {
+        padding: 10px;
+        align-items: flex-start;
+        /* melhor alinhamento em telas pequenas */
+      }
+
       .container {
         flex-direction: column;
         height: auto;
+        width: 100%;
+        max-width: 100%;
+        max-height: 100vh;
+        overflow-y: auto;
       }
 
       .image-side {
@@ -289,7 +298,7 @@
       }
 
       .login-side {
-        padding: 30px;
+        padding: 30px 20px;
       }
     }
   </style>
@@ -308,12 +317,7 @@
     </div>
 
     <div class="image-side">
-      <!--
-      <div class="content">
-        <h2>Bem-vindo de volta</h2>
-        <p>Entre com sua conta para acessar todos os recursos exclusivos.</p>
-      </div>
-      -->
+
     </div>
     <div class="login-side" *ngIf="activeTab === 1">
       <h1>Entrar</h1>
@@ -323,33 +327,6 @@
       <div class="divider" *ngIf="step === 'email'">
         <span>OU</span>
       </div>
-
-      <!--
-      <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
-        <div class="input-group">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
-            email>
-        </div>
-        <div class="input-group">
-          <label for="password">Senha</label>
-          <input type="password" id="password" name="password" #passwordInput="ngModel" ngModel placeholder="Sua senha"
-            required>
-        </div>
-        <div class="options-row">
-          <div class="remember-me">
-            <input type="checkbox" id="remember" name="remember">
-            <label for="remember">Lembrar-me</label>
-          </div>
-          <div class="forgot-password">
-            <a href="#">Esqueceu a senha?</a>
-          </div>
-        </div>
-        <button type="submit" class="login-btn">
-          {{ showLoading ? 'Carregando...' : 'Entrar' }}
-        </button>
-      </form>
-      -->
 
       <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
 
@@ -401,7 +378,6 @@
 
       <form autocomplete="off" #registerForm="ngForm"
         (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
-        <!--(ngSubmit)="onRegister(registerForm)"-->
         <div class="input-group" *ngIf="step === 'email'">
           <label for="name">Nome completo</label>
           <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
@@ -421,7 +397,6 @@
         </p>
 
         <div class="input-group" *ngIf="step === 'otp'">
-          <!--<label>OTP:</label>-->
           <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
             [(ngModel)]="otp">
         </div>
@@ -447,73 +422,3 @@
 </body>
 
 </html>
-
-<!--
-<div class="container" style="max-width: 350px; margin-bottom: 30px;">
-
-  <div *ngIf="showLoading" class="loading-container" aria-live="polite">
-    <div class="loading-indicator">
-        <i class="pi pi-spin pi-spinner"></i>
-        <span>{{ loadingMessage }}</span>
-    </div>
-  </div>
-  
-  <form autocomplete="off" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
-    <div class="p-grid" style="margin-top: 60px;">
-
-      <div class="col-12 p-fluid" class="text-center">
-        <h2>dikahub</h2>
-      </div>
-
-      <div class="col-12 p-fluid">
-        <input pInputText type="text" class="form-control" name="username" placeholder="Username" ngModel
-          #usernameInput="ngModel" required>
-        <span class="help-block" style="color:red;" *ngIf="usernameInput.invalid && usernameInput.touched">Insira o
-          username</span>
-      </div>
-
-      <div class="col-12 p-fluid">
-        <input pInputText type="password" class="form-control" name="password" placeholder="Password" ngModel
-          #passwordInput="ngModel" required>
-        <span class="help-block" style="color:red;" *ngIf="passwordInput.invalid && passwordInput.touched">Insira a
-          senha.</span>
-      </div>
-
-      <div class="col-12 p-fluid">
-
-        <button pButton type="submit" [disabled]="loginForm.invalid || showLoading" name="button" class="btn login_btn">
-          <i *ngIf="showLoading" class="pi pi-spin pi-spinner"></i>&nbsp;&nbsp;
-          <span *ngIf="showLoading">Getting...</span>
-          <span *ngIf="!showLoading">Login</span>
-        </button>
-      </div>
-    </div>
-
-  </form>
-
-  <div id="google-signin-button"></div>
-
-</div>
--->
-
-<!--
-    <div id="g_id_onload"
-      data-client_id="170476897572-k758vjru9e2qqa707qhb5ns2kaaegquc.apps.googleusercontent.com"
-      data-context="signin"
-      data-ux_mode="popup"
-      data-auto_select="true"
-      data-login_uri="http://localhost:8080/user/auth/google"
-      data-itp_support="true">
-    </div>
-
-    <div class="g_id_signin"
-        data-type="standard"
-        data-shape="rectangular"
-        data-theme="outline"
-        data-text="signin_with"
-        data-size="large"
-        data-logo_alignment="left">
-    </div>
-
-    <div id="google-signin-button"></div>
-    -->
