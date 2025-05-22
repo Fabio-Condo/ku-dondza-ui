@@ -68,32 +68,6 @@
             margin-bottom: 15px;
         }
 
-        .fab-container {
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 1000;
-        }
-
-        /* Estilo padrão dos botões flutuantes */
-        .fab {
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-        }
-
         .btn-primary {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             padding: 10px 20px;
@@ -410,6 +384,26 @@
         .read-time {
             color: #64748b;
             font-size: 0.9rem;
+        }
+
+        .fab {
+            display: none;
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            flex-direction: column;
+            z-index: 1000;
         }
 
         /* Paginação */
@@ -834,12 +828,8 @@
                 margin-top: -40px;
             }
 
-            .actions {
+            .button-add-new {
                 display: none;
-            }
-
-            .fab-container {
-                display: flex !important;
             }
 
         }
@@ -879,14 +869,9 @@
             </div>
         </header>
 
-        <div class="fab-container" *ngIf="isSuperAdmin">
-            <button class="fab" (click)="onFilter()">
-                <i class="pi pi-filter"></i>
-            </button>
-            <button class="fab" [routerLink]="['/articles/create', 'new']">
-                <i class="pi pi-plus"></i>
-            </button>
-        </div>
+        <button class="fab" [routerLink]="['/articles/create', 'new']" *ngIf="isSuperAdmin">
+            <i class="pi pi-plus"></i>
+        </button>
 
         <div class="cards-container">
             <article class="card" *ngFor="let article of articles">
