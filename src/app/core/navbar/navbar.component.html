@@ -421,7 +421,8 @@
       <div class="container">
         <div class="logo">
           <span class="logo-icon">
-            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+              fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="7" x2="12" y2="13"></line>
               <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -437,6 +438,7 @@
           <li><a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a></li>
           <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
           <li><a [class.active]="isActive('/users')" routerLink="/users">Pessoas</a></li>
+          <li><a [class.active]="isActive('/prices')" routerLink="/prices">Preços</a></li>
         </ul>
         <div class="right-section">
           <div class="auth-buttons" *ngIf="showNavButtons()">
@@ -446,8 +448,8 @@
           <div class="auth-buttons" *ngIf="!showNavButtons()">
             <a routerLink="/quizzes/new" class="btn btn-primary">Iniciar Quiz</a>
           </div>
-          <img [src]="loggedUser.profileImageUrl" alt="Foto de perfil" class="user-icon"
-            (click)="goToProfile()" *ngIf="!showNavButtons() && loggedUser.profileImageUrl" />
+          <img [src]="loggedUser.profileImageUrl" alt="Foto de perfil" class="user-icon" (click)="goToProfile()"
+            *ngIf="!showNavButtons() && loggedUser.profileImageUrl" />
           <div class="user-icon" (click)="goToProfile()" *ngIf="!showNavButtons()  && !loggedUser.profileImageUrl">
             <i class="fas fa-user"></i>
           </div>
@@ -468,7 +470,7 @@
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a [class.active]="isActive('/users')" routerLink="/users" (click)="toggleMenu()">Pessoas</a></li>
-      <li><a href="#">Sobre</a></li>
+      <li><a [class.active]="isActive('/prices')" routerLink="/prices" (click)="toggleMenu()">Preços</a></li>
     </ul>
     <div class="mobile-auth-buttons" *ngIf="showNavButtons()">
       <a routerLink="/login" class="btn btn-white">Login</a>

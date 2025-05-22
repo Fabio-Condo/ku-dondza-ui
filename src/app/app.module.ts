@@ -35,6 +35,8 @@ import { MainPanelRoutingModule } from './main-panel/main-panel-routing.module';
 import { MainPanelModule } from './main-panel/main-panel.module';
 import { ArticlesModule } from './articles/articles.module';
 import { ArticlesRoutingModule } from './articles/articles-routing.module';
+import { PricesModule } from './prices/prices.module';
+import { PricesRoutingModule } from './prices/prices-routing.module';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { ArticlesRoutingModule } from './articles/articles-routing.module';
     QuestionRoutingModule,
     MainPanelRoutingModule,
     ArticlesRoutingModule,
+    PricesRoutingModule,
   
     BooksModule,
     SubjectsModule,
@@ -66,6 +69,7 @@ import { ArticlesRoutingModule } from './articles/articles-routing.module';
     QuestionsModule,
     MainPanelModule,
     ArticlesModule,
+    PricesModule,
 
     CoreRoutingModule,
     AppRoutingModule,
