@@ -183,6 +183,42 @@
             background: #e2e8f0;
         }
 
+        .current-plan {
+            border: 2px solid #059669;
+            background: linear-gradient(to bottom, #f0fdf4, white);
+        }
+
+        .current-badge {
+            position: absolute;
+            top: -10px;
+            left: 1.5rem;
+            background: #059669;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .btn-current {
+            background: #059669;
+            color: white;
+            cursor: default;
+        }
+
+        .btn-current:hover {
+            background: #059669;
+        }
+
+        .btn-upgrade {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-upgrade:hover {
+            background: #d97706;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 2rem 1rem;
@@ -216,7 +252,8 @@
 
         <div class="pricing-container">
             <!-- Gratuito -->
-            <div class="pricing-card">
+            <div class="pricing-card current-plan">
+                <div class="current-badge">Plano Atual</div>
                 <div class="plan-header">
                     <h3 class="plan-name">Gratuito</h3>
                     <div class="plan-price free">R$ 0</div>
@@ -250,7 +287,7 @@
                     </div>
                 </div>
 
-                <button class="cta-button btn-secondary">Começar grátis</button>
+                <button class="cta-button btn-current">Plano Atual</button>
             </div>
 
             <!-- Premium -->
@@ -289,7 +326,7 @@
                     </div>
                 </div>
 
-                <button class="cta-button btn-primary">Assinar Premium</button>
+                <button class="cta-button btn-upgrade">Fazer Upgrade</button>
             </div>
 
             <!-- Pro -->
@@ -327,7 +364,7 @@
                     </div>
                 </div>
 
-                <button class="cta-button btn-secondary">Assinar Pro</button>
+                <button class="cta-button btn-upgrade">Fazer Upgrade</button>
             </div>
         </div>
     </div>
