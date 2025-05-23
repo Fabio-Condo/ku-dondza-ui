@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planos - AcademiaApp</title>
+    <title>FAQ - Dikahub</title>
     <style>
         * {
             margin: 0;
@@ -12,233 +12,245 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8fafc;
-            color: #334155;
-            line-height: 1.6;
+            padding: 10px;
         }
 
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 4rem 1.5rem;
+            margin-top: 75px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
+            color: #4361ee;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4361ee, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header p {
-            font-size: 1.1rem;
-            color: #64748b;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
             max-width: 500px;
             margin: 0 auto;
         }
 
-        .pricing-container {
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 20px rgba(67, 97, 238, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4361ee;
+            font-size: 1.2rem;
+        }
+
+        .categories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            max-width: 900px;
-            margin: 0 auto;
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
-        .pricing-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid #e2e8f0;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .pricing-card:hover {
-            border-color: #4361ee;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.1);
-        }
-
-        .popular {
-            border: 2px solid #4361ee;
-            transform: scale(1.02);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -10px;
-            right: 1.5rem;
-            background: #4361ee;
-            color: white;
-            padding: 0.25rem 0.75rem;
+        .category-card {
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .plan-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
         }
 
-        .plan-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
-        }
-
-        .plan-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #4361ee;
-            margin-bottom: 0.25rem;
-        }
-
-        .plan-price.free {
-            color: #059669;
-        }
-
-        .plan-period {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .features {
-            margin-bottom: 2rem;
-        }
-
-        .feature {
+        .category-header {
             display: flex;
             align-items: center;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
-        .feature-icon {
-            width: 16px;
-            height: 16px;
-            background: #4361ee;
-            border-radius: 50%;
-            margin-right: 0.75rem;
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #4361ee, #667eea);
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .feature-icon::after {
-            content: '✓';
+            margin-right: 15px;
+            font-size: 1.5rem;
             color: white;
-            font-size: 10px;
-            font-weight: bold;
         }
 
-        .limited .feature-icon {
-            background: #e2e8f0;
+        .category-title {
+            color: #4361ee;
+            font-size: 1.4rem;
+            font-weight: 600;
         }
 
-        .limited .feature-icon::after {
-            content: '—';
-            color: #94a3b8;
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
         }
 
-        .limited {
-            color: #94a3b8;
-        }
-
-        .cta-button {
-            width: 100%;
-            padding: 0.875rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 500;
+        .faq-question {
+            padding: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            background: #f8f9fa;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .btn-primary {
+        .faq-question:hover {
+            background: #e9ecef;
+            color: #4361ee;
+        }
+
+        .faq-question.active {
             background: #4361ee;
             color: white;
         }
 
-        .btn-primary:hover {
-            background: #3b54d9;
+        .faq-arrow {
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
         }
 
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
+        .faq-question.active .faq-arrow {
+            transform: rotate(180deg);
         }
 
-        .btn-secondary:hover {
-            background: #e2e8f0;
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+            border-top: 1px solid #e9ecef;
         }
 
-        .current-plan {
-            border: 2px solid #059669;
-            background: linear-gradient(to bottom, #f0fdf4, white);
+        .faq-answer.active {
+            max-height: 500px;
         }
 
-        .current-badge {
-            position: absolute;
-            top: -10px;
-            left: 1.5rem;
-            background: #059669;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .faq-answer-content {
+            padding: 20px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #4361ee20 0%, #4361ee20 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #4361ee;
             font-weight: 500;
         }
 
-        .btn-current {
-            background: #059669;
+        .contact-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin-top: 40px;
+        }
+
+        .contact-section h2 {
+            color: #4361ee;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .contact-section p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .contact-btn {
+            background: linear-gradient(45deg, #4361ee, #667eea);
             color: white;
-            cursor: default;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .btn-current:hover {
-            background: #059669;
-        }
-
-        .btn-upgrade {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .btn-upgrade:hover {
-            background: #d97706;
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 2rem 1rem;
-            }
-            
             .header h1 {
                 font-size: 2rem;
             }
             
-            .pricing-container {
+            .categories {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 20px;
             }
             
-            .popular {
-                transform: none;
-            }
-            
-            .pricing-card {
-                padding: 1.5rem;
+            .category-card {
+                padding: 20px;
             }
         }
     </style>
@@ -246,127 +258,284 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Escolha seu plano</h1>
-            <p>Comece gratuitamente e evolua conforme suas necessidades</p>
+            <h1>📚 FAQ - Dikahub</h1>
+            <p>Todas as respostas sobre nossa plataforma acadêmica em um só lugar</p>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Pesquisar dúvidas..." id="searchInput">
+                <span class="search-icon">🔍</span>
+            </div>
         </div>
 
-        <div class="pricing-container">
-            <!-- Gratuito -->
-            <div class="pricing-card current-plan">
-                <div class="current-badge">Plano Atual</div>
-                <div class="plan-header">
-                    <h3 class="plan-name">Gratuito</h3>
-                    <div class="plan-price free">R$ 0</div>
-                    <div class="plan-period">Para sempre</div>
+        <div class="categories" id="faqCategories">
+            <div class="category-card">
+                <div class="category-header">
+                    <div class="category-icon">🎯</div>
+                    <h3 class="category-title">Quizzes Automáticos</h3>
                 </div>
-
-                <div class="features">
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>3 artigos por mês</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>1 curso básico</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Biblioteca limitada</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>5 exercícios por semana</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Quizzes básicos</span>
-                    </div>
-                    <div class="feature limited">
-                        <div class="feature-icon"></div>
-                        <span>Competições</span>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como criar um quiz automático?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Para criar um quiz automático, selecione a <span class="highlight">disciplina</span>, escolha os <span class="highlight">tópicos</span> de interesse e defina o <span class="highlight">nível de dificuldade</span>. O sistema gerará automaticamente questões baseadas nos exercícios cadastrados e suas configurações.
+                        </div>
                     </div>
                 </div>
-
-                <button class="cta-button btn-current">Plano Atual</button>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como funcionam as dicas durante o quiz?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Durante o quiz, você pode solicitar <span class="highlight">dicas de resolução</span> clicando no botão "💡 Dica". As dicas são progressivas, oferecendo orientações sem revelar a resposta completa, ajudando no processo de aprendizagem.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como visualizar a correção e resolução?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Após finalizar o quiz, você receberá a <span class="highlight">correção completa</span> com a pontuação e poderá visualizar a <span class="highlight">resolução detalhada</span> de cada questão, incluindo explicações passo a passo.
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Premium -->
-            <div class="pricing-card popular">
-                <div class="popular-badge">Popular</div>
-                <div class="plan-header">
-                    <h3 class="plan-name">Premium</h3>
-                    <div class="plan-price">R$ 29</div>
-                    <div class="plan-period">por mês</div>
+            <div class="category-card">
+                <div class="category-header">
+                    <div class="category-icon">📖</div>
+                    <h3 class="category-title">Biblioteca Digital</h3>
                 </div>
-
-                <div class="features">
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Artigos ilimitados</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Todos os cursos</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Biblioteca completa</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Exercícios ilimitados</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Quizzes avançados</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Competições completas</span>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como baixar livros da biblioteca?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Acesse o módulo <span class="highlight">Biblioteca</span>, utilize os filtros para encontrar o livro desejado e clique em "📥 Download". Os livros ficam disponíveis em formato PDF para estudo offline.
+                        </div>
                     </div>
                 </div>
-
-                <button class="cta-button btn-upgrade">Fazer Upgrade</button>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Posso ler os livros online?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Sim! Além do download, você pode <span class="highlight">ler online</span> através do nosso visualizador integrado, que oferece ferramentas de marcação e anotações.
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Pro -->
-            <div class="pricing-card">
-                <div class="plan-header">
-                    <h3 class="plan-name">Pro</h3>
-                    <div class="plan-price">R$ 59</div>
-                    <div class="plan-period">por mês</div>
+            <div class="category-card">
+                <div class="category-header">
+                    <div class="category-icon">🎥</div>
+                    <h3 class="category-title">Cursos em Vídeo</h3>
                 </div>
-
-                <div class="features">
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Tudo do Premium</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Mentoria individual</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Cursos exclusivos</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Análise detalhada</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Suporte prioritário</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Certificados oficiais</span>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como os cursos são organizados?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Os cursos são organizados em <span class="highlight">módulos sequenciais</span>. Cada módulo contém várias aulas em vídeo e, ao final, você encontrará <span class="highlight">exercícios para download</span> e <span class="highlight">exercícios resolvidos</span> para praticar o conteúdo aprendido.
+                        </div>
                     </div>
                 </div>
-
-                <button class="cta-button btn-upgrade">Fazer Upgrade</button>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como acessar os exercícios do módulo?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Após assistir todas as aulas de um módulo, a seção de <span class="highlight">exercícios</span> será desbloqueada. Você poderá baixar listas de exercícios para praticar e acessar as resoluções detalhadas.
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="category-card">
+                <div class="category-header">
+                    <div class="category-icon">🏆</div>
+                    <h3 class="category-title">Competições</h3>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como participar das competições?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Acesse o módulo <span class="highlight">Competições</span>, escolha uma competição ativa e faça sua <span class="highlight">submissão</span> respondendo aos quizzes. Cada usuário pode fazer apenas uma submissão por competição.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como funciona o ranking?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            O ranking é atualizado em tempo real baseado na <span class="highlight">pontuação</span> e <span class="highlight">tempo de conclusão</span>. Você pode acompanhar sua posição e ver os melhores colocados na tabela de classificação.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-card">
+                <div class="category-header">
+                    <div class="category-icon">📝</div>
+                    <h3 class="category-title">Exercícios Resolvidos</h3>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como acessar exercícios resolvidos?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            No módulo <span class="highlight">Exercícios Resolvidos</span>, você pode filtrar por disciplina e tópico. Cada exercício possui resolução completa com <span class="highlight">dicas de resolução</span> e explicações detalhadas.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Os exercícios aparecem nos quizzes?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Sim! Os exercícios resolvidos <span class="highlight">alimentam o banco de questões</span> dos quizzes automáticos e competições, garantindo conteúdo sempre atualizado e de qualidade.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-card">
+                <div class="category-header">
+                    <div class="category-icon">📰</div>
+                    <h3 class="category-title">Artigos Acadêmicos</h3>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como ler e interagir com artigos?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Selecione um artigo na biblioteca para leitura. Após ler, você pode dar <span class="highlight">like</span> se achou interessante ou usar <span class="highlight">save</span> para salvar em seus favoritos para consulta posterior.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como encontrar artigos salvos?
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Seus artigos salvos ficam na seção <span class="highlight">"Meus Favoritos"</span> dentro do módulo de artigos, organizados por data de salvamento para fácil acesso.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <h2>Ainda tem dúvidas?</h2>
+            <p>Nossa equipe de suporte está sempre pronta para ajudar você!</p>
+            <a href="#" class="contact-btn">💬 Fale Conosco</a>
         </div>
     </div>
+
+    <script>
+        // Functionality for FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                // Close all other items
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('active');
+                });
+                
+                // Toggle current item
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            const categories = document.querySelectorAll('.category-card');
+            
+            categories.forEach(category => {
+                let hasVisibleItems = false;
+                const items = category.querySelectorAll('.faq-item');
+                
+                items.forEach(item => {
+                    const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                    
+                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        hasVisibleItems = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                category.style.display = hasVisibleItems ? 'block' : 'none';
+            });
+        });
+
+        // Smooth scrolling and animations
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.category-card');
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (cardTop < windowHeight * 0.8) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.category-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = 'all 0.6s ease';
+                card.style.transitionDelay = `${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + index * 100);
+            });
+        });
+    </script>
 </body>
 </html>
