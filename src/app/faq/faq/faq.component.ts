@@ -29,7 +29,7 @@ export class FaqComponent implements OnInit {
         },
         {
           question: 'Como funcionam as dicas durante o quiz?',
-          answer: 'Durante o quiz, você pode solicitar dicas de resolução clicando no botão "💡 Dica". As dicas são progressivas, oferecendo orientações sem revelar a resposta completa, ajudando no processo de aprendizagem.',
+          answer: 'Durante o quiz, você pode solicitar dicas de resolução clicando no botão "Dica". As dicas são progressivas, oferecendo orientações sem revelar a resposta completa, ajudando no processo de aprendizagem.',
           open: false
         },
         {
@@ -44,7 +44,7 @@ export class FaqComponent implements OnInit {
       items: [
         {
           question: 'Como baixar livros da biblioteca?',
-          answer: 'Acesse o módulo Biblioteca, utilize os filtros para encontrar o livro desejado e clique em "📥 Download". Os livros ficam disponíveis em formato PDF para estudo offline.',
+          answer: 'Acesse o módulo Biblioteca, utilize os filtros para encontrar o livro desejado e clique em "Download". Os livros ficam disponíveis em formato PDF para estudo offline.',
           open: false
         },
         {
