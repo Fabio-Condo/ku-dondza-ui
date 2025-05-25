@@ -9,6 +9,7 @@ import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-profile',
@@ -133,6 +134,18 @@ export class ProfileComponent implements OnInit {
   onLogOut(): void {
     this.authenticationService.logOut();
     this.router.navigate(['/home']);
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {
