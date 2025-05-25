@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthenticationGuard } from '../security/Guard/authentication.guard';
+import { AboutUsComponent } from './about-us/about-us.component';
+
+const routes: Routes = [
+  { 
+    path: 'about-us', 
+    component: AboutUsComponent,
+    canActivate: [AuthenticationGuard], 
+    //data: { 
+    //  roles: ['ROLE_USER'], 
+    //  requiresRoleCheck: true
+    //} 
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class AboutUsRoutingModule { }

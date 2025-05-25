@@ -39,8 +39,10 @@ import { PricesModule } from './prices/prices.module';
 import { PricesRoutingModule } from './prices/prices-routing.module';
 import { FaqRoutingModule } from './faq/faq-routing.module';
 import { FaqModule } from './faq/faq.module';
-import { PrivacyPolicyRoutingModule } from './privacy-policy/books-routing.module';
+import { PrivacyPolicyRoutingModule } from './privacy-policy/privacy-policy-routing.module';
 import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
+import { AboutUsModule } from './about-us/about-us.module';
+import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
     PricesRoutingModule,
     FaqRoutingModule,
     PrivacyPolicyRoutingModule,
+    AboutUsRoutingModule,
   
     BooksModule,
     SubjectsModule,
@@ -78,6 +81,7 @@ import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
     PricesModule,
     FaqModule,
     PrivacyPolicyModule,
+    AboutUsModule,
 
     CoreRoutingModule,
     AppRoutingModule,
