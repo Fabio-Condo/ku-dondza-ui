@@ -234,6 +234,12 @@
             border-radius: 8px;
         }
 
+        .like-container {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+        }
+
         .like-button {
             color: #1a202c;
         }
@@ -245,6 +251,15 @@
 
         .like-button.liked {
             color: #f25c54;
+        }
+
+        .likes-count-button {
+            color: #1a202c;
+        }
+
+        .likes-count-button:hover {
+            text-decoration: underline;
+            color: #2b6cb0;
         }
 
         .bookmark-button {
@@ -880,13 +895,33 @@
                     <div class="card-header">
                         <span class="card-tag">{{ getCategoryTypeLabel(article.category) }}</span>
                         <div class="action-buttons">
+                            <!--
                             <button (click)="toggleLike(article)" class="action-btn like-button"
                                 [class.liked]="article.likedByUser" aria-label="Curtir artigo">
                                 <i class="pi" *ngIf="!article.showLoadingLike"
                                     [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
-                                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+                                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"
+                                    (click)="onSelectArticle(article)"></i>
                                 <span class="count">{{ article.numberOfLikes }}</span>
                             </button>
+                            -->
+
+                            <div class="like-container">
+                                <!-- Botão de curtir/descurtir -->
+                                <button (click)="toggleLike(article)" class="action-btn like-button"
+                                    [class.liked]="article.likedByUser" aria-label="Curtir artigo">
+                                    <i class="pi" [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+                                </button>
+
+                                <!-- Botão que mostra o número de likes e permite visualizar quem curtiu -->
+                                <button class="action-btn likes-count-button" (click)="onSelectArticle(article)">
+                                    <span>{{ article.numberOfLikes }}</span>
+                                </button>
+
+                                <!-- Ícone de loading (opcional) -->
+                                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner spinner-icon"></i>
+                            </div>
+
 
                             <button (click)="toggleSaveArticle(article)" class="action-btn bookmark-button"
                                 [class.liked]="article.likedByUser" aria-label="Salvar artigo">
@@ -908,11 +943,6 @@
                                         *ngIf="isSuperAdmin">Delete</a>
                                 </div>
                             </div>
-                            <!--
-                            <button class="action-btn bookmark-button" aria-label="Salvar artigo">
-                                <i class="far fa-bookmark"></i>
-                            </button>
-                            -->
                         </div>
                     </div>
                     <h2 class="card-title">{{ article.title }}</h2>
@@ -1021,7 +1051,8 @@
         <form>
             <div class="form-group">
                 <label for="option">Filtrar artigos</label>
-                <select id="option" [(ngModel)]="selectArticleOption" (ngModelChange)="findAll()" name="option" required>
+                <select id="option" [(ngModel)]="selectArticleOption" (ngModelChange)="findAll()" name="option"
+                    required>
                     <option *ngFor="let option of courseFilterOptions" [value]="option.value">{{ option.label }}
                     </option>
                 </select>
@@ -1038,5 +1069,40 @@
 
             <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
         </form>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalLikes">
+    <div class="popout-container">
+        <div class="likes-popout-header">
+            <div class="likes-header-info">
+                <div class="heart-badge">❤️</div>
+                <div class="header-text">
+                    <h2>Curtidas</h2>
+                    <p><span>{{ selectedArticle.numberOfLikes }}</span> pessoas curtiram</p>
+                </div>
+            </div>
+            <button class="close-btn" (click)="displayModalLikes = false">×</button>
+        </div>
+
+        <div class="users-container">
+            <div class="user-item" *ngFor="let like of likes">
+                <div class="user-avatar">
+                    <img [src]="like.user.profileImageUrl" [alt]="like.user.fullName" class="avatar-img">
+                    <!--<div *ngIf="like.verified" class="verified-badge">✓</div>-->
+                </div>
+                <div class="user-info">
+                    <div class="user-name">{{ like.user.fullName }}</div>
+                    <!--<div class="user-username">{{ like.user.fullName }}</div>-->
+                </div>
+                <button class="follow-btn">Seguir</button>
+            </div>
+        </div>
+
+        <div class="load-more-likes-container">
+            <button class="load-more-likes-btn">
+                <span>Carregar mais</span>
+            </button>
+        </div>
     </div>
 </div>

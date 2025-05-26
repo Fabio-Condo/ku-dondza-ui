@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -24,7 +24,7 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private title: Title, 
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
@@ -35,5 +35,22 @@ export class CoursesComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  @Input() visible = true;
+  @Input() totalLikes = 0;
+  @Input() users: any[] = [];
+
+  @Output() close = new EventEmitter<void>();
+
+  onOverlayClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('overlay')) {
+      this.close.emit();
+    }
+  }
+
+  closePopout() {
+    this.close.emit();
   }
 }

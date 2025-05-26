@@ -10,6 +10,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Role } from 'src/app/enum/role.enum';
 import { MessageService } from 'primeng/api';
 import { ArticleFilter } from 'src/app/core/interface/ArticleFilter';
+import { LikeFilter } from 'src/app/core/interface/LikeFilter';
+import { Like } from 'src/app/core/model/Like';
 
 @Component({
   selector: 'app-articles',
@@ -26,6 +28,7 @@ export class ArticlesComponent implements OnInit {
   showConfirmDialog: boolean = false;
   showDeleteConfirmDialog: boolean = false;
   displayModalFilter: boolean = false;
+  displayModalLikes: boolean = false;
 
   loggedUser: User = new User();
   imagePath = './assets/images/funcao do grau 2.png';
@@ -49,6 +52,15 @@ export class ArticlesComponent implements OnInit {
     { label: 'Língua', value: 'LANGUAGE' },
     { label: 'Tecnologia', value: 'TECHNOLOGY' },
   ];
+
+  likes: Like[] = [];
+  totalLikesRecord: number = 0;
+
+  likeFilter: LikeFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
 
   filter: ArticleFilter = {
     page: 0,
@@ -239,6 +251,32 @@ export class ArticlesComponent implements OnInit {
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         article.showLoadingSave = false;
+      }
+    );
+  }
+
+  onSelectArticle(article: Article): void {
+    this.displayModalLikes = true;
+    this.selectedArticle = article;
+    this.likes = [];
+    this.likeFilter.page = -1; // Reinicia a paginação
+    this.totalLikesRecord = 0; // Reinicia o total de likes
+    this.getLikesByArticleId(article.id);
+  }
+
+  getLikesByArticleId(articleId: number): void {
+    this.loadingMessage = "Buscando alunos..."
+    this.showLoading = true;
+    this.likeFilter.page++;
+    this.likeService.findLikesByArticleId(articleId, this.likeFilter).subscribe(
+      (dados: IApiResponse<Like>) => {
+        this.likes = [...this.likes, ...dados.content];
+        this.totalLikesRecord = dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     );
   }
