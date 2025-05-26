@@ -35,6 +35,13 @@ export class ArticlesComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  selectArticleOption: string = 'ALL_ARTICLES';
+
+  courseFilterOptions = [
+    { label: 'Mostrar todos cursos', value: 'ALL_ARTICLES' },
+    { label: 'Mostrar meus cursos', value: 'MY_SAVED_ARTICLES' },
+  ];
+
   categoryTypes = [
     { label: 'Matemática', value: 'MATH' },
     { label: 'Ciência', value: 'SCIENCE' },
@@ -69,6 +76,15 @@ export class ArticlesComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+
+    if (this.selectArticleOption == 'MY_SAVED_ARTICLES') {
+      this.filter.userId = this.loggedUser.id;
+    }
+
+    if (this.selectArticleOption == 'ALL_ARTICLES') {
+      this.filter.userId = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
@@ -89,6 +105,15 @@ export class ArticlesComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+
+    if (this.selectArticleOption == 'MY_SAVED_ARTICLES') {
+      this.filter.userId = this.loggedUser.id;
+    }
+
+    if (this.selectArticleOption == 'ALL_ARTICLES') {
+      this.filter.userId = 0;
+    }
+
     this.showLoading = true;
     this.filter.page++;
 
@@ -236,10 +261,11 @@ export class ArticlesComponent implements OnInit {
 
   limparCampos() {
     this.filter.searchParam = "";
-    this.filter.category =  "";
+    this.filter.category = "";
     this.filter.page = 0;
     this.filter.itemsPerPage = 10;
-    this.filter.sort = "id,desc"
+    this.filter.sort = "id,desc";
+    this.selectArticleOption = 'ALL_ARTICLES';
     this.findAll();
   }
 
