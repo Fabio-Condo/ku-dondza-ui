@@ -909,17 +909,17 @@
                             <div class="like-container">
                                 <!-- Botão de curtir/descurtir -->
                                 <button (click)="toggleLike(article)" class="action-btn like-button"
-                                    [class.liked]="article.likedByUser" aria-label="Curtir artigo">
-                                    <i class="pi" [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+                                    [class.liked]="article.likedByUser" aria-label="Curtir artigo">                                    
+                                    <i class="pi" *ngIf="!article.showLoadingLike"
+                                        [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+                                    <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"
+                                        (click)="onSelectArticle(article)"></i>
                                 </button>
 
                                 <!-- Botão que mostra o número de likes e permite visualizar quem curtiu -->
                                 <button class="action-btn likes-count-button" (click)="onSelectArticle(article)">
                                     <span>{{ article.numberOfLikes }}</span>
                                 </button>
-
-                                <!-- Ícone de loading (opcional) -->
-                                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner spinner-icon"></i>
                             </div>
 
 
