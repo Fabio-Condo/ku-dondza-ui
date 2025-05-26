@@ -13,6 +13,7 @@ export class Course {
     instrutor = new User();
     modules: Module[] = [];
     questions: Question[] = [];
+    totalStudents!: number;
 
     totalQuestions: number = 0;
 
@@ -20,7 +21,6 @@ export class Course {
     numberOfLikes: number = 0;
 
     currentUserSubscribed: boolean = false;
-    totalStudents: number = 0;
     isAdminMenuOpen: boolean = false;
     showLoadingSubscription: boolean = false;
 
