@@ -38,8 +38,8 @@ export class ArticlesComponent implements OnInit {
   selectArticleOption: string = 'ALL_ARTICLES';
 
   courseFilterOptions = [
-    { label: 'Mostrar todos cursos', value: 'ALL_ARTICLES' },
-    { label: 'Mostrar meus cursos', value: 'MY_SAVED_ARTICLES' },
+    { label: 'Mostrar todos artigos', value: 'ALL_ARTICLES' },
+    { label: 'Mostrar artigos salvos', value: 'MY_SAVED_ARTICLES' },
   ];
 
   categoryTypes = [
