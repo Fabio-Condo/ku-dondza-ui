@@ -133,7 +133,7 @@ button {
 .course-meta {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 
 .course-stats {
@@ -302,7 +302,18 @@ button {
 
 .lesson-content {
   display: flex;
+  align-items: flex-start;
+  flex: 1;
+  margin: 1rem;
+}
+
+.lesson-meta {
+  display: flex;
   align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  color: var(--gray);
 }
 
 button {
@@ -320,23 +331,26 @@ button {
 }
 
 .lesson-title-button {
-  padding: 0px 0px;
-  font-size: 0.9rem;
-  font-weight: 400;
-  background: transparent;
-  color: #333333;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .lesson-title-button:hover {
-  color: #007bff;
+  color: #4361ee;
+  text-decoration: underline;
 }
 
 .lesson-title-button:disabled {
-  color: #333333;
-  opacity: 0.5;
+  color: #aaa;
   cursor: not-allowed;
+  text-decoration: none;
 }
 
 .play-icon-container {
