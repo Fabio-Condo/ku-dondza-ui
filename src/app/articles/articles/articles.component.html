@@ -1100,7 +1100,8 @@
         </div>
 
         <div class="load-more-likes-container">
-            <button class="load-more-likes-btn">
+            <button class="load-more-likes-btn" (click)="onShowMoreLikes()"
+                [disabled]="likes.length === totalLikesRecord && totalLikesRecord > 0">
                 <span>Carregar mais</span>
             </button>
         </div>

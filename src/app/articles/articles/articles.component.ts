@@ -281,6 +281,10 @@ export class ArticlesComponent implements OnInit {
     );
   }
 
+    onShowMoreLikes(): void {
+    this.getLikesByArticleId(this.selectedArticle.id);
+  }
+
   getCategoryTypeLabel(type: string) {
     switch (type) {
       case 'MATH':
