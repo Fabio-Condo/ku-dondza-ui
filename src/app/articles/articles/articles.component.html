@@ -909,7 +909,7 @@
                             <div class="like-container">
                                 <!-- Botão de curtir/descurtir -->
                                 <button (click)="toggleLike(article)" class="action-btn like-button"
-                                    [class.liked]="article.likedByUser" aria-label="Curtir artigo">                                    
+                                    [class.liked]="article.likedByUser" aria-label="Curtir artigo">
                                     <i class="pi" *ngIf="!article.showLoadingLike"
                                         [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
                                     <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"
@@ -917,9 +917,11 @@
                                 </button>
 
                                 <!-- Botão que mostra o número de likes e permite visualizar quem curtiu -->
+                                <!--
                                 <button class="action-btn likes-count-button" (click)="onSelectArticle(article)">
                                     <span>{{ article.numberOfLikes }}</span>
                                 </button>
+                                -->
                             </div>
 
 
@@ -961,7 +963,13 @@
                     -->
                     <div class="post-text" [innerHTML]="article.content"></div>
                     <div class="card-footer">
+                        <!--
                         <span class="read-time">{{ article.readingTimeMinutes }} min de leitura</span>
+                        -->
+                        <!-- Botão que mostra o número de likes e permite visualizar quem curtiu -->
+                        <button class="action-btn likes-count-button" (click)="onSelectArticle(article)">
+                            <span>{{ article.numberOfLikes }} gostos</span>
+                        </button>
                         <button class="start-button" [routerLink]="['/articles', article.articleId]">
                             Ler artigo
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
