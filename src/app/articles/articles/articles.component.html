@@ -896,39 +896,20 @@
                         <span class="card-tag">{{ getCategoryTypeLabel(article.category) }}</span>
                         <div class="action-buttons">
                             <!--
-                            <button (click)="toggleLike(article)" class="action-btn like-button"
-                                [class.liked]="article.likedByUser" aria-label="Curtir artigo">
-                                <i class="pi" *ngIf="!article.showLoadingLike"
-                                    [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
-                                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"
-                                    (click)="onSelectArticle(article)"></i>
-                                <span class="count">{{ article.numberOfLikes }}</span>
-                            </button>
-                            -->
-
                             <div class="like-container">
-                                <!-- Botão de curtir/descurtir -->
                                 <button (click)="toggleLike(article)" class="action-btn like-button"
-                                    [class.liked]="article.likedByUser" aria-label="Curtir artigo">                                    
+                                    [class.liked]="article.likedByUser" aria-label="Curtir artigo">
                                     <i class="pi" *ngIf="!article.showLoadingLike"
                                         [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
                                     <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"
                                         (click)="onSelectArticle(article)"></i>
                                 </button>
 
-                                <!-- Botão que mostra o número de likes e permite visualizar quem curtiu -->
                                 <button class="action-btn likes-count-button" (click)="onSelectArticle(article)">
                                     <span>{{ article.numberOfLikes }}</span>
                                 </button>
                             </div>
-
-
-                            <button (click)="toggleSaveArticle(article)" class="action-btn bookmark-button"
-                                [class.liked]="article.likedByUser" aria-label="Salvar artigo">
-                                <i class="pi" *ngIf="!article.showLoadingSave"
-                                    [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
-                                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
-                            </button>
+                            -->
 
                             <div class="dropdown-container">
                                 <button class="dropdown-btn"
@@ -943,6 +924,14 @@
                                         *ngIf="isSuperAdmin">Delete</a>
                                 </div>
                             </div>
+
+                            <button (click)="toggleSaveArticle(article)" class="action-btn bookmark-button"
+                                [class.liked]="article.likedByUser" aria-label="Salvar artigo">
+                                <i class="pi" *ngIf="!article.showLoadingSave"
+                                    [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+                                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+                            </button>
+
                         </div>
                     </div>
                     <h2 class="card-title">{{ article.title }}</h2>
@@ -961,7 +950,22 @@
                     -->
                     <div class="post-text" [innerHTML]="article.content"></div>
                     <div class="card-footer">
-                        <span class="read-time">{{ article.readingTimeMinutes }} min de leitura</span>
+                        <div class="like-container">
+                            <!-- Botão de curtir/descurtir -->
+                            <button (click)="toggleLike(article)" class="action-btn like-button"
+                                [class.liked]="article.likedByUser" aria-label="Curtir artigo">
+                                <i class="pi" *ngIf="!article.showLoadingLike"
+                                    [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+                                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"
+                                    (click)="onSelectArticle(article)"></i>
+                            </button>
+
+                            <!-- Botão que mostra o número de likes e permite visualizar quem curtiu -->
+                            <button class="action-btn likes-count-button" (click)="onSelectArticle(article)">
+                                <span>{{ article.numberOfLikes }}</span>
+                            </button>
+                        </div>
+                        <!--<span class="read-time">{{ article.readingTimeMinutes }} min de leitura</span>-->
                         <button class="start-button" [routerLink]="['/articles', article.articleId]">
                             Ler artigo
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
