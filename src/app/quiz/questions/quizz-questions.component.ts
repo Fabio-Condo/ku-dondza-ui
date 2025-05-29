@@ -269,39 +269,6 @@ export class QuizzQuestionsComponent implements OnInit {
       }
     }, 0);
   }
-  
-
-  // Método para renderizar expressões matemáticas
-  renderMathExpressions2(): void {
-    setTimeout(() => {
-      const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
-      if (mathContainer && typeof MathJax !== 'undefined') {
-        // Força a recriação do conteúdo do contêiner
-        mathContainer.innerHTML = `${this.quiz.questions[this.currentQuestionIndex].text}`;
-
-        // Renderiza as expressões matemáticas
-        MathJax.typesetPromise().then(() => {
-          console.log('MathJax renderizado com sucesso!');
-        }).catch((err: any) => {
-          console.error('Erro ao renderizar MathJax:', err);
-        });
-      }
-
-      const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
-      if (mathContainerSolution && typeof MathJax !== 'undefined') {
-        // Força a recriação do conteúdo do contêiner
-        mathContainerSolution.innerHTML = `${this.quiz.questions[this.currentQuestionIndex].solution}`;
-
-
-        // Renderiza as expressões matemáticas
-        MathJax.typesetPromise().then(() => {
-          console.log('MathJax renderizado com sucesso!');
-        }).catch((err: any) => {
-          console.error('Erro ao renderizar MathJax:', err);
-        });
-      }
-    }, 0);
-  }
 
   renderFunctions() {
     setTimeout(() => {

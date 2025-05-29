@@ -43,6 +43,8 @@ import { PrivacyPolicyRoutingModule } from './privacy-policy/privacy-policy-rout
 import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
 import { AboutUsModule } from './about-us/about-us.module';
 import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
+import { CompetitionRoutingModule } from './competitions/competition-routing.module';
+import { CompetitionsModule } from './competitions/competitions.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,7 @@ import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    
+
     BooksRoutingModule,
     SubjectsRoutingModule,
     TopicsRoutingModule,
@@ -60,6 +62,7 @@ import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
     UsersRoutingModule,
     HomeRoutingModule,
     QuizRoutingModule,
+    CompetitionRoutingModule,
     QuestionRoutingModule,
     MainPanelRoutingModule,
     ArticlesRoutingModule,
@@ -67,7 +70,7 @@ import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
     FaqRoutingModule,
     PrivacyPolicyRoutingModule,
     AboutUsRoutingModule,
-  
+
     BooksModule,
     SubjectsModule,
     TopicsModule,
@@ -75,6 +78,7 @@ import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
     UsersModule,
     HomeModule,
     QuizModule,
+    CompetitionsModule,
     QuestionsModule,
     MainPanelModule,
     ArticlesModule,

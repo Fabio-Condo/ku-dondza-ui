@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popout de Likes</title>
+    <title>Competições</title>
     <style>
         * {
             margin: 0;
@@ -13,363 +12,412 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .trigger-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
             color: #333;
-            transition: all 0.3s ease;
         }
 
-        .trigger-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
 
-        .heart-icon {
-            color: #e74c3c;
-            font-size: 18px;
+        .header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #4361ee;
         }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4361ee;
+            margin-bottom: 0.5rem;
         }
 
-        .overlay.show {
-            display: flex;
-            opacity: 1;
+        .header p {
+            font-size: 1.1rem;
+            color: #666;
         }
 
-        .popout {
-            background: white;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 420px;
-            height: 600px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        .competitions-list {
             display: flex;
             flex-direction: column;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            gap: 1.5rem;
         }
 
-        .overlay.show .popout {
-            transform: scale(1);
-        }
-
-        .popout-header {
-            padding: 24px;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-
-        .header-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .heart-badge {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-        }
-
-        .header-text h2 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 4px;
-        }
-
-        .header-text p {
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-
-        .close-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: none;
-            background: #f8f9fa;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #6c757d;
-            transition: all 0.2s ease;
-        }
-
-        .close-btn:hover {
-            background: #e9ecef;
-            color: #495057;
-        }
-
-        .users-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 24px;
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e0 transparent;
-        }
-
-        .users-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .users-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .users-container::-webkit-scrollbar-thumb {
-            background: #cbd5e0;
-            border-radius: 10px;
-        }
-
-        .users-container::-webkit-scrollbar-thumb:hover {
-            background: #a0aec0;
-        }
-
-        .user-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 12px;
-            transition: background 0.2s ease;
-            margin-bottom: 8px;
-        }
-
-        .user-item:hover {
-            background: #f8f9fa;
-        }
-
-        .user-avatar {
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .user-avatar img {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .verified-badge {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 18px;
-            height: 18px;
-            background: #3498db;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 10px;
-            border: 2px solid white;
-        }
-
-        .user-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 15px;
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .user-username {
-            color: #7f8c8d;
-            font-size: 13px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .follow-btn {
-            padding: 8px 16px;
-            background: #2c3e50;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .follow-btn:hover {
-            background: #34495e;
-            transform: translateY(-1px);
-        }
-
-        .load-more-container {
-            padding: 24px;
-            border-top: 1px solid #f0f0f0;
-            flex-shrink: 0;
-        }
-
-        .load-more-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
+        .competition-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .competition-card:hover {
+            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.15);
+            border-color: #4361ee;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .competition-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: #4361ee;
+            color: white;
+        }
+
+        .status-inactive {
+            background: #dc3545;
+            color: white;
+        }
+
+        .card-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .main-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .difficulty-level {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
 
-        .load-more-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        .difficulty-dots {
+            display: flex;
+            gap: 0.3rem;
         }
 
-        .load-more-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
+        .difficulty-dot {
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            background: #e0e0e0;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        .difficulty-dot.filled {
+            background: #4361ee;
         }
 
-        .hidden {
-            display: none !important;
+        .stats-sidebar {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #4361ee;
         }
 
-        @media (max-width: 480px) {
-            .popout {
-                height: 80vh;
-                max-height: 600px;
+        .stats-title {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4361ee;
+        }
+
+        .topics-section {
+            grid-column: 1 / -1;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .topics-title {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .topics-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .topic-tag {
+            background: #4361ee;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .expiry-info {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .expiry-info.valid {
+            color: #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .card-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .main-info {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
             }
 
-            .popout-header {
-                padding: 20px;
-            }
-
-            .users-container {
-                padding: 0 20px;
-            }
-
-            .load-more-container {
-                padding: 20px;
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
-
 <body>
-    <button class="trigger-btn" onclick="openPopout()">
-        <span class="heart-icon">❤️</span>
-        <span>147 likes</span>
-    </button>
+    <div class="container">
+        <div class="header">
+            <h1>Competições</h1>
+            <p>Lista de competições disponíveis</p>
+        </div>
 
-    <div class="overlay" [ngClass]="{ 'show': visible }" (click)="onOverlayClick($event)">
-        <div class="popout" (click)="$event.stopPropagation()">
-            <div class="popout-header">
-                <div class="header-info">
-                    <div class="heart-badge">❤️</div>
-                    <div class="header-text">
-                        <h2>Curtidas</h2>
-                        <p><span>{{ totalLikes }}</span> pessoas curtiram</p>
-                    </div>
-                </div>
-                <button class="close-btn" (click)="closePopout()">×</button>
-            </div>
-
-            <div class="users-container">
-                <div class="user-item" *ngFor="let user of users">
-                    <div class="user-avatar">
-                        <img [src]="user.avatar" [alt]="user.name">
-                        <div *ngIf="user.verified" class="verified-badge">✓</div>
-                    </div>
-                    <div class="user-info">
-                        <div class="user-name">{{ user.name }}</div>
-                        <div class="user-username">{{ user.username }}</div>
-                    </div>
-                    <button class="follow-btn">Seguir</button>
-                </div>
-            </div>
-
-            <div class="load-more-container">
-                <button class="load-more-btn">
-                    <span>Carregar mais</span>
-                </button>
-            </div>
+        <div class="competitions-list" id="competitionsList">
+            <!-- As competições serão inseridas aqui via JavaScript -->
         </div>
     </div>
 
-</body>
+    <script>
+        // Dados de exemplo das competições
+        const competitions = [
+            {
+                title: "Desafio de Algoritmos Avançados",
+                expiry: "2025-06-15",
+                active: true,
+                difficultyLevel: 4,
+                subject: "Ciência da Computação",
+                questions: 25,
+                submissions: 1247,
+                topics: ["Estruturas de Dados", "Grafos", "Programação Dinâmica", "Algoritmos"]
+            },
+            {
+                title: "Competição de Machine Learning",
+                expiry: "2025-07-20",
+                active: true,
+                difficultyLevel: 5,
+                subject: "Inteligência Artificial",
+                questions: 15,
+                submissions: 892,
+                topics: ["Deep Learning", "Neural Networks", "Computer Vision", "NLP"]
+            },
+            {
+                title: "Hackathon de Desenvolvimento Web",
+                expiry: "2025-05-25",
+                active: false,
+                difficultyLevel: 3,
+                subject: "Desenvolvimento",
+                questions: 18,
+                submissions: 2156,
+                topics: ["React", "Node.js", "MongoDB", "CSS", "JavaScript"]
+            },
+            {
+                title: "Desafio de Matemática Aplicada",
+                expiry: "2025-08-10",
+                active: true,
+                difficultyLevel: 4,
+                subject: "Matemática",
+                questions: 30,
+                submissions: 634,
+                topics: ["Cálculo", "Álgebra Linear", "Estatística", "Probabilidade"]
+            },
+            {
+                title: "Competição de Cybersecurity",
+                expiry: "2025-06-30",
+                active: true,
+                difficultyLevel: 5,
+                subject: "Segurança",
+                questions: 20,
+                submissions: 578,
+                topics: ["Ethical Hacking", "Cryptography", "Network Security", "Forensics"]
+            },
+            {
+                title: "Desafio de Data Science",
+                expiry: "2025-04-15",
+                active: false,
+                difficultyLevel: 3,
+                subject: "Ciência de Dados",
+                questions: 22,
+                submissions: 1893,
+                topics: ["Python", "Pandas", "Matplotlib", "SQL", "Statistics"]
+            }
+        ];
 
+        function getDifficultyDots(level) {
+            let dots = '';
+            for (let i = 1; i <= 5; i++) {
+                const filled = i <= level ? 'filled' : '';
+                dots += `<div class="difficulty-dot ${filled}"></div>`;
+            }
+            return dots;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const isExpired = date < now;
+            const className = isExpired ? 'expiry-info' : 'expiry-info valid';
+            
+            return `<span class="${className}">${date.toLocaleDateString('pt-BR')}</span>`;
+        }
+
+        function createCompetitionCard(competition) {
+            return `
+                <div class="competition-card">
+                    <div class="card-header">
+                        <h3 class="competition-title">${competition.title}</h3>
+                        <div class="status-badge ${competition.active ? 'status-active' : 'status-inactive'}">
+                            ${competition.active ? 'Ativa' : 'Encerrada'}
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="main-info">
+                            <div class="info-item">
+                                <span class="info-label">Matéria</span>
+                                <span class="info-value">${competition.subject}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Encerramento</span>
+                                <span class="info-value">${formatDate(competition.expiry)}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Dificuldade</span>
+                                <div class="difficulty-level">
+                                    <div class="difficulty-dots">
+                                        ${getDifficultyDots(competition.difficultyLevel)}
+                                    </div>
+                                    <span class="info-value">${competition.difficultyLevel}/5</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Total de Questões</span>
+                                <span class="info-value">${competition.questions}</span>
+                            </div>
+                        </div>
+
+                        <div class="stats-sidebar">
+                            <div class="stats-title">Estatísticas</div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-label">Submissões</span>
+                                    <span class="stat-number">${competition.submissions.toLocaleString()}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Questões</span>
+                                    <span class="stat-number">${competition.questions}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Tópicos</span>
+                                    <span class="stat-number">${competition.topics.length}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="topics-section">
+                            <div class="topics-title">Tópicos</div>
+                            <div class="topics-list">
+                                ${competition.topics.map(topic => `<span class="topic-tag">${topic}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCompetitions() {
+            const list = document.getElementById('competitionsList');
+            list.innerHTML = competitions.map(createCompetitionCard).join('');
+        }
+
+        // Renderizar as competições quando a página carregar
+        document.addEventListener('DOMContentLoaded', renderCompetitions);
+    </script>
+</body>
 </html>

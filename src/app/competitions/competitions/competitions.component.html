@@ -1,0 +1,287 @@
+<body>
+    <div class="container">
+
+        <div class="title-container">
+            <h1>Competições</h1>
+            <p class="subtitle">Acesse competições interativos e desafie os outros</p>
+        </div>
+
+        <header>
+            <div class="title">Competições</div>
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalCompetitions }}</span>
+
+            <div class="actions">
+                <button class="start-quiz-button" id="add-btn" (click)="onAddNewCompetition()" *ngIf="isSuperAdmin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Iniciar
+                </button>
+                <button class="btn-outline" id="filter-btn" (click)="onFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Filtrar
+                </button>
+            </div>
+        </header>
+
+        <button class="fab" [routerLink]="['/quizzes/new/']">
+            <i class="pi pi-plus"></i>
+        </button>
+
+        <div class="cards-container">
+            <div class="card" *ngFor="let competition of competitions">
+                <div class="quiz-content">
+                    <div class="quiz-header">
+                        <div>
+                            <span class="badge matematica">{{ competition.subject.name }}</span>
+                            <h2 class="quiz-title">{{ competition.title }}</h2>
+                            <div class="topic-tags">
+                                <span class="topic-tag" *ngFor="let topic of competition.topics">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                        </path>
+                                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                    </svg>
+                                    {{ topic.name }}
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge easy">
+                                {{ getDifficultyLevelValue(competition.difficultyLevel) }}
+                            </span>
+                            <div class="dropdown-container" *ngIf="isSuperAdmin">
+                                <button class="dropdown-btn" (click)="toggleDropdown(competition)"><i
+                                        class="pi pi-ellipsis-h"></i></button>
+                                <div class="dropdown" *ngIf="competition.isAdminMenuOpen">
+                                    <a (click)="onUpdateCompetition(competition); closeDropdown(competition)">Editar</a>
+                                    <a (click)="confirmarExclusao(competition); closeDropdown(competition)">Eliminar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quiz-status">
+                        <span class="status-badge status-active"><i class="fas fa-circle"></i> {{getStatusValue(competition.active)}}</span>
+                    </div>
+                    <div class="quiz-stats">
+                        <div class="stats-left">
+                            <div class="stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                {{ formatTime(competition.timeLimit) }}
+
+                            </div>
+                            <div class="stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                                {{ competition.totalQuestions }} questões
+                            </div>
+
+                            <div class="stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                                {{ competition.totalTopics }} tópicos
+                            </div>
+                        </div>
+
+                        <div class="stat-item score">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            {{ competition.totalSubmissions }} submissões
+                        </div>
+                    </div>
+
+                    <div class="quiz-footer">
+                        <div class="update-date">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Encerramento: {{ competition.expiry }}
+                        </div>
+                        <button class="start-button"
+                            [routerLink]="['/competitions', competition.competitionId, 'questions']">
+
+                            Visualizar
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!showLoading && competitions.length === 0">
+            <div class="card">
+                <span class="no-items-message">
+                    Nenhum item encontrado
+                </span>
+            </div>
+        </div>
+
+        <div class="load-more-container">
+            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()"
+                [disabled]="competitions.length === totalCompetitions && totalCompetitions > 0">
+                Buscar mais
+            </button>
+        </div>
+
+        <div class="pagination">
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalCompetitions }}</span>
+            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-btn next" (click)="nextPage()"
+                [disabled]="currentPage === totalPages() || showLoading">
+                Próxima
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+    </div>
+</body>
+
+<div class="popout-overlay" *ngIf="displayModalSave">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando Nova' }}</h2>
+            <button class="close-button" (click)="displayModalSave = false">&times;</button>
+        </div>
+
+        <hr class="header-divider">
+
+        <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" ngModel #title="ngModel" required minlength="1"
+                    [(ngModel)]="competition.title">
+            </div>
+
+            <div class="toggle-container">
+                <label for="generateQuestions">Modificar tópicos e questões</label>
+                <input id="generateQuestions" type="checkbox" [checked]="generateQuestions"
+                    (change)="toggleGenerateQuesions()" />
+            </div>
+
+            <div class="form-group" *ngIf="generateQuestions">
+                <label for="difficultyLevel">Nivel de dificuldade</label>
+                <select id="difficultyLevel" [(ngModel)]="competition.difficultyLevel" name="difficultyLevel" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="generateQuestions">
+                <label for="subject">Disciplina</label>
+                <select id="subject" [(ngModel)]="competition.subject.id"
+                    (change)="getTopicsBySubjectId(competition.subject.id)"
+                    [disabled]="showLoading && generateQuestions" name="subject" required>
+                    <option value="" disabled selected>Selecione a disciplina</option>
+                    <option *ngFor="let subject of subjects" [ngValue]="subject.id">
+                        {{ subject.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="generateQuestions">
+                <label>Selecione os Tópicos</label>
+                <ul class="topics-list">
+                    <li *ngFor="let topic of topics" class="topic-item">
+                        <label>
+                            <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
+                            <span class="custom-checkbox"></span>
+                            <span class="topic-name">{{ topic.name }}</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+            <hr class="header-divider">
+
+            <button type="submit" class="submit-button" [disabled]="courseForm.invalid" class="btn">{{ showLoading ?
+                'Loading...' :
+                'Salvar' }}</button>
+        </form>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalFilter">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Filtros</h2>
+            <button class="close-button" (click)="displayModalFilter = false">&times;</button>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="difficultyLevel">Nivel de dificuldade</label>
+                <select id="difficultyLevel" [(ngModel)]="filtro.difficultyLevel" (change)="findAll()"
+                    name="difficultyLevel" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Disciplina</label>
+                <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
+                    <option value="" disabled selected>Selecione a subject</option>
+                    <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Titulo</label>
+                <input type="title" name="title" ngModel #title="ngModel" minlength="1" [(ngModel)]="filtro.title"
+                    (ngModelChange)="findAll()">
+            </div>
+
+            <hr class="header-divider">
+
+            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
+        </form>
+    </div>
+</div>
