@@ -48,13 +48,14 @@
                     </div>
 
                     <div class="meta-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                            </path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
                         </svg>
                         <div>
-                            <p class="meta-label">Tópico</p>
+                            <p class="meta-label">Tópicos</p>
                             <p class="meta-valor">{{ competition.totalTopics }}</p>
                         </div>
                     </div>
@@ -93,18 +94,18 @@
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
                         <div>
-                            <p class="meta-label">Data</p>
-                            <p class="meta-valor">10/10/2025</p>
+                            <p class="meta-label">Encerramento</p>
+                            <p class="meta-valor">{{ competition.expiry | date: 'short' }}</p>
                         </div>
                     </div>
 
                     <div class="meta-item">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <path d="M12 11v6" />
+                            <path d="M9 14l3-3 3 3" />
                         </svg>
                         <div>
                             <p class="meta-label">Submissões</p>
@@ -115,14 +116,15 @@
                     <div class="meta-item">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="m9 12 2 2 4-4"></path>
                         </svg>
                         <div>
                             <p class="meta-label">Status</p>
-                            <p class="meta-valor">{{ getStatusValue(competition.active) }}</p>
+                            <p class="meta-valor"
+                                [ngClass]="{'ativo': competition.active,'inativo': !competition.active}">
+                                {{ getStatusValue(competition.active) }}
+                            </p>
                         </div>
                     </div>
                 </div>
