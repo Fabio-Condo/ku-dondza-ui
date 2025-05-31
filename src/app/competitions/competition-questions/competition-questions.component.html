@@ -146,43 +146,41 @@
         </div>
 
         <!-- Submissions Section -->
-        <div class="submissions-section" *ngIf="showStartScreen">
-            <div class="card submissions-card">
-                <h2 class="section-title">Submissões</h2>
-                <p class="submissions-count">{{ totalRecordSubmissions }} submissões nesta competição</p>
+        <div class="submissions-card" *ngIf="showStartScreen">
+            <h2 class="section-title">Submissões</h2>
+            <p class="submissions-count">{{ totalRecordSubmissions }} submissões nesta competição</p>
 
-                <ul class="submissions-list">
-                    <li *ngFor="let submission of submissions" class="submission-item">
-                        <img [src]="submission.user.profileImageUrl" [alt]="submission.user.fullName"
-                            class="submission-user-avatar" />
-                        <div class="submission-progress">
-                            <p class="submission-user-name">{{ submission.user.fullName }}</p>
-                            <div class="progress-bar">
+            <ul class="submissions-list">
+                <li *ngFor="let submission of submissions" class="submission-item">
+                    <img [src]="submission.user.profileImageUrl" [alt]="submission.user.fullName"
+                        class="submission-user-avatar" />
+                    <div class="submission-progress">
+                        <p class="submission-user-name">{{ submission.user.fullName }}</p>
+                        <div class="progress-bar">
 
-                                <!--<div class="progress-fill" [style.width.%]="submission.user.markedContentRate.toFixed(1)"></div>-->
+                            <!--<div class="progress-fill" [style.width.%]="submission.user.markedContentRate.toFixed(1)"></div>-->
 
-                            </div>
                         </div>
-                        <button class="btn-details" (click)="onShowUserSubmission(submission.user)"
-                            style="margin-left: 10px;">Ver submissão</button>
+                    </div>
+                    <button class="btn-details" (click)="onShowUserSubmission(submission.user)"
+                        style="margin-left: 10px;">Ver submissão</button>
 
-                        <!--<span class="progress-percent">{{ submission.user.markedContentRate.toFixed(1) }}%</span>-->
-                    </li>
-                </ul>
+                    <!--<span class="progress-percent">{{ submission.user.markedContentRate.toFixed(1) }}%</span>-->
+                </li>
+            </ul>
 
-                <!-- Load-more -->
-                <div class="load-more-container">
-                    <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreSubmissions()"
-                        [disabled]="submissions.length === totalRecordSubmissions && totalRecordSubmissions > 0">
-                        Buscar mais
-                    </button>
-                </div>
-
+            <!-- Load-more -->
+            <div class="load-more-container">
+                <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreSubmissions()"
+                    [disabled]="submissions.length === totalRecordSubmissions && totalRecordSubmissions > 0">
+                    Buscar mais
+                </button>
             </div>
+
         </div>
 
         <div *ngIf="!showStartScreen && !showResultsScreen">
-            <div *ngIf="currentQuestionIndex < questions.length">
+            <div *ngIf="currentQuestionIndex < competition.questions.length">
                 <div class="question-card">
 
                     <div class="quiz-header">
@@ -200,29 +198,29 @@
                         <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ competition.questions.length }}</p>
                     </div>
 
-                    <img *ngIf="questions[currentQuestionIndex].urlFile"
-                        src="{{ questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções"
+                    <img *ngIf="competition.questions[currentQuestionIndex].urlFile"
+                        src="{{ competition.questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções"
                         class="question-graph" />
                     <div class="graph-container"
-                        *ngIf="!questions[currentQuestionIndex].urlFile && questions[currentQuestionIndex].mathExpressions.length > 0">
+                        *ngIf="!competition.questions[currentQuestionIndex].urlFile && competition.questions[currentQuestionIndex].mathExpressions.length > 0">
                         <canvas #canvas width="400" height="400"></canvas>
                     </div>
 
                     <!-- Contêiner para expressões matemáticas -->
-                    <div id="math-container-{{ currentQuestionIndex }}" *ngIf="questions[currentQuestionIndex].text">
-                        {{ questions[currentQuestionIndex].text }}
+                    <div id="math-container-{{ currentQuestionIndex }}" *ngIf="competition.questions[currentQuestionIndex].text">
+                        {{ competition.questions[currentQuestionIndex].text }}
                     </div>
 
                     <div class="answer-options">
-                        <label *ngFor="let answer of questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
+                        <label *ngFor="let answer of competition.questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
                                 'correct-answer': showCorrection && answer.correct,
-                                'incorrect-answer': showCorrection && !answer.correct && isSelected(questions[currentQuestionIndex].id, answer.id!),
-                                'selected-answer': isSelected(questions[currentQuestionIndex].id, answer.id!)
+                                'incorrect-answer': showCorrection && !answer.correct && isSelected(competition.questions[currentQuestionIndex].id, answer.id!),
+                                'selected-answer': isSelected(competition.questions[currentQuestionIndex].id, answer.id!)
                                 }">
                             <span class="num">{{ i + 1 }}</span>
-                            <input type="radio" name="question-{{ questions[currentQuestionIndex].id }}"
+                            <input type="radio" name="question-{{ competition.questions[currentQuestionIndex].id }}"
                                 [value]="answer.id"
-                                [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)"
+                                [checked]="isSelected(competition.questions[currentQuestionIndex].id, answer.id!)"
                                 (change)="captureUserAnswer(competition.questions[currentQuestionIndex].id, answer.id!)"
                                 [disabled]="showCorrection" />
                             <!--<span>{{ answer.text }}</span>--> <!-- Numeração das opções -->
@@ -234,7 +232,7 @@
 
                     <!-- Input para mostrar dica e solução -->
                     <div class="tip" *ngIf="!showCorrection"
-                        [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+                        [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                         <div class="tip-input">
                             <button class="solution-button"
                                 (click)="competition.questions[currentQuestionIndex].showTip = !competition.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
@@ -254,7 +252,7 @@
                     </div>
 
                     <div class="solution"
-                        [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+                        [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                         <div class="solution-input">
                             <button class="solution-button"
                                 (click)="competition.questions[currentQuestionIndex].showSolution = !competition.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
@@ -297,7 +295,7 @@
                     <!-- Botão para submeter respostas -->
                     <button class="pagination-button"
                         (click)="submitAnswers(); toggleCorrection(); showResultsScreen = true; scrollToTop()"
-                        *ngIf="currentQuestionIndex === questions.length - 1">
+                        *ngIf="currentQuestionIndex === competition.questions.length - 1">
                         <span *ngIf="!submited">Submeter</span>
                         <span *ngIf="submited">Resultados</span>
                         <i style="margin-left: 0.5rem;" class="pi pi-arrow-up"></i>

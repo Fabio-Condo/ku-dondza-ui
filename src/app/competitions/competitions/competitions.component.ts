@@ -42,6 +42,7 @@ export class CompetitionsComponent implements OnInit {
   subjects: Subject[] = [];
 
   loggedUser: User = new User;
+  isUserLoggedIn: boolean = false;
 
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
@@ -103,10 +104,10 @@ export class CompetitionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.buscarTotal();
-    //this.getQuestions();
     this.carregarDisciplinas();
     this.scrollToTop();
   }

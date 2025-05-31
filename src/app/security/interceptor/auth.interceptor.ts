@@ -7,32 +7,30 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {}
+  constructor(private authenticationService: AuthenticationService, private router: Router) { }
+
+
+  private publicUrls = [
+    `${this.authenticationService.host}/subjects`,
+    `${this.authenticationService.host}/submissions`,
+    `${this.authenticationService.host}/competitions`,
+    `${this.authenticationService.host}/auth/login`,
+    `${this.authenticationService.host}/auth/google`,
+    `${this.authenticationService.host}/generate-otp`,
+    `${this.authenticationService.host}/validate-otp`,
+    `${this.authenticationService.host}/user/register`
+
+    // Adicione outras URLs públicas aqui
+  ];
 
   intercept(httpRequest: HttpRequest<any>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
-    // Pula a interceptação para certos endpoints, como login, registro e Google OAuth
-    if (httpRequest.url.includes(`${this.authenticationService.host}/auth/login`) ||
-        httpRequest.url.includes(`${this.authenticationService.host}/auth/google`) ||
-        httpRequest.url.includes(`${this.authenticationService.host}/user/register`) ||
-        httpRequest.url.includes(`${this.authenticationService.host}/generate-otp`) || // Para o envio do OTP
-        httpRequest.url.includes(`${this.authenticationService.host}/validate-otp`)) {  // Para a validação do OTP
+    if (this.publicUrls.some(url => httpRequest.url.includes(url))) {
       return httpHandler.handle(httpRequest);
     }
 
-    // Carrega o token antes de enviar a requisição
-    this.authenticationService.loadToken();  
-    const token = this.authenticationService.getToken();  // Obtem o token armazenado
-
-    // Se houver um token, adiciona no header Authorization
-    if (token) {
-      const clonedRequest = httpRequest.clone({
-        setHeaders: { Authorization: `Bearer ${token}` }
-      });
-      return httpHandler.handle(clonedRequest);
-    } else {
-      // Se não houver token, redireciona o usuário para o login
-      this.router.navigate(['/login']);
-      return httpHandler.handle(httpRequest);
-    }
+    this.authenticationService.loadToken();
+    const token = this.authenticationService.getToken();
+    const request = httpRequest.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    return httpHandler.handle(request);
   }
 }

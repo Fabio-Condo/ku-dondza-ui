@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CompetitionsComponent } from './competitions/competitions.component';
-import { AuthenticationGuard } from '../security/Guard/authentication.guard';
 import { CompetitionQuestionsComponent } from './competition-questions/competition-questions.component';
+import { AuthenticationGuard } from '../security/Guard/authentication.guard';
 
 const routes: Routes = [
   { 
     path: 'competitions', 
     component: CompetitionsComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
@@ -17,11 +17,6 @@ const routes: Routes = [
   { 
     path: 'competitions/:id/questions', 
     component: CompetitionQuestionsComponent, 
-    canActivate: [AuthenticationGuard], 
-    //data: { 
-    //  roles: ['ROLE_USER'], 
-    //  requiresRoleCheck: true
-    //} 
   }
 ];
 

@@ -29,7 +29,7 @@ import { SubmissionFilter } from 'src/app/core/interface/SubmissionFilter';
 export class CompetitionQuestionsComponent implements OnInit {
 
   competition: Competition = new Competition();
-  questions: Question[] = [];
+  //questions: Question[] = [];
   topics: Topic[] = [];
   participants: User[] = [];
   submission: Submission = new Submission();
@@ -46,6 +46,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   totalFriendsRecord: number = 0
   showFriendsDialog: boolean = false;
 
+  isUserLoggedIn: boolean = false;
 
   // Armazenar as respostas do usuário
   //userAnswers: { questionId: number; answerId: number }[] = [];
@@ -97,6 +98,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const competitionId = this.route.snapshot.params['id'];
     if (competitionId) {
@@ -217,7 +219,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.filtro.page = this.currentPage - 1;
     this.competitionService.getQuestionsByCompetitionId(competitionId, this.filtro).subscribe(
       (dados: IApiResponse<Question>) => {
-        this.questions = dados.content;
+        //this.questions = dados.content;
         this.competition.questions = dados.content;
         this.topics = this.getTopicosFromQuestoes(dados.content);
         this.showLoading = false;
@@ -329,7 +331,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   // Método para capturar a resposta do usuário
   captureUserAnswer(questionId: number, answerId: number | null): void {
-    const question = this.questions.find(q => q.id === questionId);
+    const question = this.competition.questions.find(q => q.id === questionId);
     if (question) {
       let userAnswer: Answer;
 
@@ -385,7 +387,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   get progressPercentage(): number {
-    const totalQuestions = this.questions.length;
+    const totalQuestions = this.competition.questions.length;
 
     // Filtra para contar somente as respostas não nulas
     const answeredCount = this.answers.filter(
@@ -408,7 +410,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   // Método para ir para a próxima questão
   goToNextQuestion() {
-    if (this.currentQuestionIndex < this.questions.length - 1) {
+    if (this.currentQuestionIndex < this.competition.questions.length - 1) {
       this.currentQuestionIndex++;
       this.renderMathExpressions();
       this.renderFunctions();

@@ -448,9 +448,11 @@
           <div class="auth-buttons" *ngIf="!showNavButtons()">
             <a routerLink="/quizzes/new" class="btn btn-primary">Iniciar Quiz</a>
           </div>
-          <img [src]="loggedUser.profileImageUrl" alt="Foto de perfil" class="user-icon" (click)="goToProfile()"
-            *ngIf="!showNavButtons() && loggedUser.profileImageUrl" />
-          <div class="user-icon" (click)="goToProfile()" *ngIf="!showNavButtons()  && !loggedUser.profileImageUrl">
+          <img *ngIf="!showNavButtons() && loggedUser && loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
+            alt="Foto de perfil" class="user-icon" (click)="goToProfile()" />
+
+          <div *ngIf="!showNavButtons() && loggedUser && !loggedUser.profileImageUrl" class="user-icon"
+            (click)="goToProfile()">
             <i class="fas fa-user"></i>
           </div>
           <button class="mobile-toggle" id="mobile-toggle" (click)="toggleMenu()">☰</button>
@@ -464,7 +466,8 @@
     <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
     <ul class="mobile-nav-links">
       <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">Início</a></li>
-      <li><a [class.active]="isActive('/competitions')" routerLink="/competitions" (click)="toggleMenu()">Competições</a></li>
+      <li><a [class.active]="isActive('/competitions')" routerLink="/competitions"
+          (click)="toggleMenu()">Competições</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
       <li><a [class.active]="isActive('/courses')" routerLink="/courses" (click)="toggleMenu()">Cursos</a></li>
