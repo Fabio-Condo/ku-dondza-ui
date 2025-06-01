@@ -43,6 +43,7 @@ export class QuestionViewComponent implements OnInit {
   imagePath = './assets/images/funcao do grau 2.png';
 
   loggedUser: User = new User();
+  isUserLoggedIn: boolean = false;
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
@@ -63,6 +64,7 @@ export class QuestionViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
     const questionId = this.route.snapshot.params['id'];

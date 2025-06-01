@@ -5,6 +5,8 @@ import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Editor } from 'tinymce'; // Importe o tipo Editor
+import { User } from 'src/app/core/model/User';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 declare const tinymce: any;
 
 @Component({
@@ -19,6 +21,8 @@ export class CreateArticleComponent implements OnInit {
   file!: File;
   isTinyMceInitialized: boolean = false; // Flag para verificar se o TinyMCE foi inicializado
 
+  loggedUser: User = new User();
+
   categoryTypes = [
     { label: 'Matemática', value: 'MATH' },
     { label: 'Ciência', value: 'SCIENCE' },
@@ -32,12 +36,14 @@ export class CreateArticleComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private authenticationService: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const articleId = this.route.snapshot.params['id'];
     if (articleId) {
-      if(articleId != 'new') {
+      if (articleId != 'new') {
         this.findById(articleId);
       }
     }
@@ -101,7 +107,7 @@ export class CreateArticleComponent implements OnInit {
       (response) => {
         this.article = response;
         this.messageService.add({ severity: 'success', detail: 'Artigo salvo com sucesso!' });
-        this.router.navigate(['/articles/create', this.article.articleId]); 
+        this.router.navigate(['/articles/create', this.article.articleId]);
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -112,7 +118,7 @@ export class CreateArticleComponent implements OnInit {
   }
 
   findById(id: string) {
-    this.articleService.getArticleByArticleId(id).subscribe(
+    this.articleService.getArticleByArticleId(id, this.loggedUser.id).subscribe(
       (response) => {
         this.article = response;
         // Se o TinyMCE já estiver inicializado, defina o conteúdo diretamente

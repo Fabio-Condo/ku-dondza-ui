@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.checkAuthentication();
     this.scrollToTop();
     this.initializeGoogleAuth();
-    console.log("Olaaa");
   }
 
   scrollToTop() {

@@ -7,7 +7,7 @@ const routes: Routes = [
   { 
     path: 'books', 
     component: BooksComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/users/authentication.service';
@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
   isPopoutVisible = false;
   isMenuActive = false; // Controla a exibição do menu
   unreadNotificationsCount: number = 0;
-  
+
 
   constructor(
     private router: Router,
@@ -33,12 +33,12 @@ export class NavbarComponent implements OnInit {
 
   goToProfile() {
     const userId = this.loggedUser.userId;
-  
+
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/user/profile', userId]);
     });
   }
-  
+
 
   onLogIn(): void {
     this.router.navigate(['/login']);
@@ -58,7 +58,7 @@ export class NavbarComponent implements OnInit {
     //this.isMenuActive = false;
   }
 
-  showNavButtons() {  
+  showNavButtons() {
     return this.router.url === '/home';
   }
 

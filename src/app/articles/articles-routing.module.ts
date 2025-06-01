@@ -9,7 +9,7 @@ const routes: Routes = [
   { 
     path: 'articles', 
     component: ArticlesComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
@@ -18,7 +18,7 @@ const routes: Routes = [
   { 
     path: 'articles/create/:id', 
     component: CreateArticleComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     runGuardsAndResolvers: 'always', // Força a recriação do componente
     //data: { 
     //  roles: ['ROLE_USER'], 
@@ -28,7 +28,7 @@ const routes: Routes = [
   { 
     path: 'articles/:id', 
     component: ViewArticleComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

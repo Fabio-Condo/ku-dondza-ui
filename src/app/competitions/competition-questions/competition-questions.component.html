@@ -207,12 +207,14 @@
                     </div>
 
                     <!-- Contêiner para expressões matemáticas -->
-                    <div id="math-container-{{ currentQuestionIndex }}" *ngIf="competition.questions[currentQuestionIndex].text">
+                    <div id="math-container-{{ currentQuestionIndex }}"
+                        *ngIf="competition.questions[currentQuestionIndex].text">
                         {{ competition.questions[currentQuestionIndex].text }}
                     </div>
 
                     <div class="answer-options">
-                        <label *ngFor="let answer of competition.questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
+                        <label *ngFor="let answer of competition.questions[currentQuestionIndex].answers; let i = index"
+                            [ngClass]="{
                                 'correct-answer': showCorrection && answer.correct,
                                 'incorrect-answer': showCorrection && !answer.correct && isSelected(competition.questions[currentQuestionIndex].id, answer.id!),
                                 'selected-answer': isSelected(competition.questions[currentQuestionIndex].id, answer.id!)
@@ -320,3 +322,16 @@
 
     </div>
 </body>
+
+<div class="popout-overlay" *ngIf="displayModalLogin">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Filtros</h2>
+            <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+        </div>
+
+        <form>
+            <div id="google-signin-button"></div>
+        </form>
+    </div>
+</div>

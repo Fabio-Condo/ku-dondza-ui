@@ -107,9 +107,9 @@
             </div>
 
             <!-- Opções de resposta -->
-            <h2 class="title" style="margin-top: 24px;" *ngIf="isSuperAdmin">Alternativas</h2>
+            <h2 class="title" style="margin-top: 24px;" *ngIf="isUserLoggedIn && isSuperAdmin">Alternativas</h2>
 
-            <div class="answer-options" *ngIf="isSuperAdmin">
+            <div class="answer-options" *ngIf="isUserLoggedIn && isSuperAdmin">
                 <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
                         'correct-answer': answer.correct
                      }">
@@ -126,7 +126,7 @@
             <br>
 
             <!-- Input para mostrar a solução -->
-            <div class="tip" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="tip" [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="tip-input">
                     <h1 class="title">Dicas</h1>
                     <!--
@@ -137,7 +137,7 @@
                     <p class="tip-content scrollable" *ngIf="question.tip"
                         [innerHTML]="getTextoComNegrito(question.tip)">
                     </p>
-                    <div *ngIf="loggedUser.plan === 'FREE'" class="upgrade-overlay">
+                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
                         <button class="upgrade-button">
                             Atualizar para Premium
                         </button>
@@ -148,13 +148,13 @@
             <br>
 
             <!-- Input para mostrar a solução -->
-            <div class="solution" [ngClass]="{'blocked-content': loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="solution" [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="solution-input">
                     <h1 class="title">Resolução</h1>
                     <p class="solution-content scrollable" *ngIf="question.solution"
                         [innerHTML]="getTextoComNegrito(question.solution)">
                     </p>
-                    <div *ngIf="loggedUser.plan === 'FREE'" class="upgrade-overlay">
+                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
                         <button class="upgrade-button">
                             Atualizar para Premium
                         </button>
@@ -165,7 +165,7 @@
             <br>
             <br>
 
-            <div class="card" *ngIf="isSuperAdmin">
+            <div class="card" *ngIf="isUserLoggedIn && isSuperAdmin">
                 <div class="card-header">
                     <div class="card-title">Desempenho Geral</div>
                 </div>
@@ -203,7 +203,7 @@
 
             </div>
 
-            <p class="description" *ngIf="isSuperAdmin">
+            <p class="description" *ngIf="isUserLoggedIn && isSuperAdmin">
                 <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{
                     quizQuestionStatistics.quizzesCount
                     }} quizzes</a>

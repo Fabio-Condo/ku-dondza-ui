@@ -723,7 +723,7 @@
       <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalBooks }}</span>
 
       <div class="actions">
-        <button class="button-add-new" id="add-btn" (click)="onAddNewBook()" *ngIf="isSuperAdmin">
+        <button class="button-add-new" id="add-btn" (click)="onAddNewBook()" *ngIf="isUserLoggedIn && isSuperAdmin">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -741,7 +741,7 @@
       </div>
     </header>
 
-    <button class="fab" (click)="onAddNewBook()" *ngIf="isSuperAdmin">
+    <button class="fab" (click)="onAddNewBook()" *ngIf="isUserLoggedIn && isSuperAdmin">
       <i class="pi pi-plus"></i>
     </button>
 
@@ -751,7 +751,7 @@
         <div class="book-info">
           <div class="book-title-dropdown">
             <h3 class="book-title">{{ book.name }}</h3>
-            <div class="dropdown-container" *ngIf="isSuperAdmin">
+            <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
               <button class="dropdown-btn" (click)="toggleDropdown(book)"><i class="pi pi-ellipsis-h"></i></button>
               <div class="dropdown" *ngIf="book.isAdminMenuOpen">
                 <a (click)="onUpdate(book, file); closeDropdown(book)">Editar</a>
@@ -767,7 +767,7 @@
           <div class="book-meta">
             <span class="badge matematica">{{ book.subject.name }}</span>
             <button class="download-btn" id="filter-btn" [disabled]="book.showLoadingDownload"
-              (click)="download(book, book.fileName)">
+              (click)="onDownload(book)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
@@ -915,5 +915,116 @@
 
       <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
     </form>
+  </div>
+</div>
+
+<!-- Popout -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
+  <div class="popout-container"  style="max-width: 400px;">
+    <div class="popout-header">
+      <h2 class="popout-title">Faça Login para continuar</h2>
+      <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+    </div>
+    <div class="login-side" *ngIf="activeTab === 1">
+
+      <h1>Entrar</h1>
+
+      <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+      <div class="divider" *ngIf="step === 'email'">
+        <span>OU</span>
+      </div>
+
+      <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+        <br>
+
+        <p class="message" *ngIf="step === 'otp'">
+          Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
+        </p>
+
+        <div class="input-group" *ngIf="step === 'email'">
+          <label>Email:</label>
+          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+            email [(ngModel)]="user.email">
+        </div>
+
+        <div class="input-group" *ngIf="step === 'otp'">
+          <label>OTP:</label>
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+            [(ngModel)]="otp">
+        </div>
+
+        <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+          {{ step === 'email' ? 'Login' : 'Verificar' }}
+        </button>
+
+        <p class="message" *ngIf="step === 'email'">
+          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para
+          acessar sua conta se tiver se cadastrado com gmail.
+        </p>
+
+        <div class="signup-link">
+          Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="login-side" *ngIf="activeTab === 2">
+
+      <h1>Cadastrar</h1>
+
+      <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+      <div class="divider" *ngIf="step === 'email'">
+        <span>OU</span>
+      </div>
+
+      <form autocomplete="off" #registerForm="ngForm"
+        (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+        <div class="input-group" *ngIf="step === 'email'">
+          <label for="name">Nome completo</label>
+          <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
+            placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+        </div>
+
+        <div class="input-group" *ngIf="step === 'email'">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+            email [(ngModel)]="user.email">
+        </div>
+
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+        <p class="message" *ngIf="step === 'otp'">
+          Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
+        </p>
+
+        <div class="input-group" *ngIf="step === 'otp'">
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+            [(ngModel)]="otp">
+        </div>
+
+        <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+          {{ step === 'email' ? 'Login' : 'Verificar' }}
+        </button>
+
+        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
+
+        <p class="message" *ngIf="step === 'email'">
+          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para se cadastradar com
+          gmail.
+        </p>
+
+      </form>
+      <div id="google-signin-button"></div>
+      <div class="signup-link">
+        Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
+      </div>
+    </div>
   </div>
 </div>

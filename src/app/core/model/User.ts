@@ -29,7 +29,7 @@ export class User {
   public isAdminMenuOpen: boolean = false;
   
   constructor() {
-
+    this.id = 0;
     this.userId = '';
     this.fullName = '';
     this.email = '';

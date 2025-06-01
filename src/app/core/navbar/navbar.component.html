@@ -441,13 +441,15 @@
           <li><a [class.active]="isActive('/users')" routerLink="/users">Pessoas</a></li>
         </ul>
         <div class="right-section">
-          <div class="auth-buttons" *ngIf="showNavButtons()">
+          <div class="auth-buttons" *ngIf="!loggedUser">
+            <!--<a routerLink="/register" class="btn btn-primary">Cadastre-se</a>-->
             <a routerLink="/login" class="btn btn-outline">Login</a>
-            <a routerLink="/register" class="btn btn-primary">Cadastre-se</a>
           </div>
-          <div class="auth-buttons" *ngIf="!showNavButtons()">
+          <!--
+          <div class="auth-buttons">
             <a routerLink="/quizzes/new" class="btn btn-primary">Iniciar Quiz</a>
           </div>
+          -->
           <img *ngIf="!showNavButtons() && loggedUser && loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
             alt="Foto de perfil" class="user-icon" (click)="goToProfile()" />
 

@@ -38,6 +38,8 @@ export class QuestionsComponent implements OnInit {
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  isUserLoggedIn: boolean = false;
+
   answer?: Answer;
   answers: Array<Answer> = [];
   showAnswerForm = false;
@@ -94,6 +96,7 @@ export class QuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.findAll(0);
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -182,7 +185,7 @@ export class QuestionsComponent implements OnInit {
         this.questions = dados.content
         this.totalRegistros = dados.totalElements;
         this.renderMathExpressions();
-        if(this.totalQuestions == 0){
+        if (this.totalQuestions == 0) {
           this.totalQuestions = dados.totalElements;
         }
         this.showLoading = false;
@@ -412,11 +415,11 @@ export class QuestionsComponent implements OnInit {
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-  
+
     // Formata os minutos e segundos para ter 2 dígitos
     const formattedMinutes = minutes.toString().padStart(2, '0');
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
-  
+
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 

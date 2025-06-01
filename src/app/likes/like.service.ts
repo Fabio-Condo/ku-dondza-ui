@@ -15,8 +15,8 @@ export class LikeService {
 
   constructor(private http: HttpClient) { }
 
-  toggleLike(articleId: number): Observable<Like> {
-    return this.http.post<Like>(`${this.apiUrl}/articles/${articleId}`, {});
+  toggleLike(articleId: number, currentUserId: number): Observable<Like> {
+    return this.http.post<Like>(`${this.apiUrl}/articles/${articleId}/users/${currentUserId}`, { });
   }
 
   checkIfLiked(articleId: number): Observable<boolean> { //boolean
@@ -27,13 +27,13 @@ export class LikeService {
     return this.http.get<number>(`${this.apiUrl}/count/${articleId}`);
   }
 
-  findLikesByArticleId(articleId: number, filter: LikeFilter): Observable<IApiResponse<Like>> {  
+  findLikesByArticleId(articleId: number, filter: LikeFilter): Observable<IApiResponse<Like>> {
 
-    let params = new HttpParams()  
-      .set('page', filter.page)  
+    let params = new HttpParams()
+      .set('page', filter.page)
       .set('size', filter.itemsPerPage)
-      .set('sort', filter.sort);  
-      
+      .set('sort', filter.sort);
+
     return this.http.get<IApiResponse<Like>>(`${this.apiUrl}/articles/${articleId}`, { params });
   }
 

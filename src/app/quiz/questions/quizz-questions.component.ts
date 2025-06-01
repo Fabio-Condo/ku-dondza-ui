@@ -43,6 +43,7 @@ export class QuizzQuestionsComponent implements OnInit {
   showStartScreen: boolean = true;
 
   loggedUser: User = new User();
+  isUserLoggedIn: boolean = false;
 
   imagePath = './assets/images/funcao do grau 2.png';
 
@@ -64,6 +65,7 @@ export class QuizzQuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
     if (quizId) {
@@ -180,12 +182,12 @@ export class QuizzQuestionsComponent implements OnInit {
 
   get progressPercentage(): number {
     const totalQuestions = this.quiz.questions.length;
-  
+
     // Filtra para contar somente as respostas não nulas
     const answeredCount = this.quiz.answers.filter(
       a => a.id !== null && a.id !== undefined
     ).length;
-  
+
     // Calcula o progresso com base nas respostas
     return (answeredCount / totalQuestions) * 100;
   }
@@ -249,17 +251,17 @@ export class QuizzQuestionsComponent implements OnInit {
     setTimeout(() => {
       const questionText = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].text);
       const solutionText = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].solution);
-  
+
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
         mathContainer.innerHTML = questionText;
       }
-  
+
       const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
       if (mathContainerSolution && typeof MathJax !== 'undefined') {
         mathContainerSolution.innerHTML = solutionText;
       }
-  
+
       if (typeof MathJax !== 'undefined') {
         MathJax.typesetPromise().then(() => {
           console.log('MathJax renderizado com sucesso!');
@@ -335,11 +337,11 @@ export class QuizzQuestionsComponent implements OnInit {
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-  
+
     // Formata os minutos e segundos para ter 2 dígitos
     const formattedMinutes = minutes.toString().padStart(2, '0');
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
-  
+
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 

@@ -12,14 +12,19 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private publicUrls = [
     `${this.authenticationService.host}/subjects`,
+    `${this.authenticationService.host}/topics`,
     `${this.authenticationService.host}/submissions`,
+    `${this.authenticationService.host}/online-course`,
+    `${this.authenticationService.host}/online-course-content`,
+    `${this.authenticationService.host}/modules`,
+    `${this.authenticationService.host}/books`,
+    `${this.authenticationService.host}/articles`,
+    `${this.authenticationService.host}/user`,
+    `${this.authenticationService.host}/questions`,
+    `${this.authenticationService.host}/users`,
+    `${this.authenticationService.host}/quizzes`,
     `${this.authenticationService.host}/competitions`,
-    `${this.authenticationService.host}/auth/login`,
-    `${this.authenticationService.host}/auth/google`,
-    `${this.authenticationService.host}/generate-otp`,
-    `${this.authenticationService.host}/validate-otp`,
-    `${this.authenticationService.host}/user/register`
-
+    `${this.authenticationService.host}/auth`,
     // Adicione outras URLs públicas aqui
   ];
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Article } from 'src/app/core/model/Article';
 import { User } from 'src/app/core/model/User';
 import { ArticlesService } from '../articles.service';
@@ -6,12 +6,16 @@ import { LikeService } from 'src/app/likes/like.service';
 import { UserService } from 'src/app/users/user.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Role } from 'src/app/enum/role.enum';
 import { MessageService } from 'primeng/api';
 import { ArticleFilter } from 'src/app/core/interface/ArticleFilter';
 import { LikeFilter } from 'src/app/core/interface/LikeFilter';
 import { Like } from 'src/app/core/model/Like';
+import { IfStmt } from '@angular/compiler';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-articles',
@@ -31,7 +35,18 @@ export class ArticlesComponent implements OnInit {
   displayModalLikes: boolean = false;
 
   loggedUser: User = new User();
+  isUserLoggedIn: boolean = false;
   imagePath = './assets/images/funcao do grau 2.png';
+
+  private subscriptions: Subscription[] = [];
+  displayModalLogin: boolean = false;
+
+  user = new User();
+  activeTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
+
+  action: string = 'Like'; // Like ou Save ou ViewLikes
 
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
@@ -70,6 +85,8 @@ export class ArticlesComponent implements OnInit {
   };
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
     private articleService: ArticlesService,
     private likeService: LikeService,
     private userService: UserService,
@@ -78,6 +95,7 @@ export class ArticlesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll();
     this.scrollToTop();
@@ -97,10 +115,15 @@ export class ArticlesComponent implements OnInit {
       this.filter.userId = 0;
     }
 
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.articleService.findAll(this.filter).subscribe(
+    this.articleService.findAll(this.filter, this.loggedUser.id).subscribe(
       (dados: IApiResponse<Article>) => {
         this.articles = dados.content
         this.totalRecords = dados.totalElements;
@@ -126,10 +149,15 @@ export class ArticlesComponent implements OnInit {
       this.filter.userId = 0;
     }
 
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.showLoading = true;
     this.filter.page++;
 
-    this.articleService.findAll(this.filter).subscribe(
+    this.articleService.findAll(this.filter, this.loggedUser.id).subscribe(
       (data: IApiResponse<Article>) => {
         this.articles = [...this.articles, ...data.content];
 
@@ -222,9 +250,25 @@ export class ArticlesComponent implements OnInit {
     this.displayModalFilter = true;
   }
 
+  onLike(article: Article) {
+    this.selectedArticle = article;
+    if (this.isUserLoggedIn) {
+      this.toggleLike(article);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.action = 'Like';
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
   toggleLike(article: Article): void {
     article.showLoadingLike = true;
-    this.likeService.toggleLike(article.id).subscribe(
+    this.likeService.toggleLike(article.id, this.loggedUser.id).subscribe(
       response => {
         article.likedByUser = !article.likedByUser;
         if (article.likedByUser) {
@@ -239,6 +283,22 @@ export class ArticlesComponent implements OnInit {
         article.showLoadingLike = false;
       }
     );
+  }
+
+  onSave(article: Article) {
+    this.selectedArticle = article;
+    if (this.isUserLoggedIn) {
+      this.toggleSaveArticle(article);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.action = 'Save';
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
   }
 
   toggleSaveArticle(article: Article): void {
@@ -256,12 +316,24 @@ export class ArticlesComponent implements OnInit {
   }
 
   onSelectArticle(article: Article): void {
-    this.displayModalLikes = true;
     this.selectedArticle = article;
-    this.likes = [];
-    this.likeFilter.page = -1; // Reinicia a paginação
-    this.totalLikesRecord = 0; // Reinicia o total de likes
-    this.getLikesByArticleId(article.id);
+    if (this.isUserLoggedIn) {
+      this.displayModalLikes = true;
+      this.selectedArticle = article;
+      this.likes = [];
+      this.likeFilter.page = -1; // Reinicia a paginação
+      this.totalLikesRecord = 0; // Reinicia o total de likes
+      this.getLikesByArticleId(article.id);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.action = 'ViewLikes';
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
   }
 
   getLikesByArticleId(articleId: number): void {
@@ -281,7 +353,7 @@ export class ArticlesComponent implements OnInit {
     );
   }
 
-    onShowMoreLikes(): void {
+  onShowMoreLikes(): void {
     this.getLikesByArticleId(this.selectedArticle.id);
   }
 
@@ -333,6 +405,130 @@ export class ArticlesComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRecords / this.filter.itemsPerPage);
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        this.findAll();
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        this.findAll();
+        this.showLoading = false;
+        this.displayModalLogin = false; this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.ngZone.run(() => {
+          this.findAll();
+          this.showLoading = false;
+          this.displayModalLogin = false;
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
   }
 
   public get isAdmin(): boolean {

@@ -701,7 +701,7 @@
             <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalCourses }}</span>
 
             <div class="actions">
-                <button class="button-add-new" id="add-btn" (click)="onAddNewOnlineCourse()" *ngIf="isSuperAdmin">
+                <button class="button-add-new" id="add-btn" (click)="onAddNewOnlineCourse()" *ngIf="isUserLoggedIn && isSuperAdmin">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -719,7 +719,7 @@
             </div>
         </header>
 
-        <button class="fab" (click)="onAddNewOnlineCourse()" *ngIf="isSuperAdmin">
+        <button class="fab" (click)="onAddNewOnlineCourse()" *ngIf="isUserLoggedIn && isSuperAdmin">
             <i class="pi pi-plus"></i>
         </button>
 
@@ -729,7 +729,7 @@
                 <div class="course-info">
                     <div class="course-title-dropdown">
                         <h3 class="course-title">{{ course.name }}</h3>
-                        <div class="dropdown-container" *ngIf="isSuperAdmin">
+                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                             <button class="dropdown-btn" (click)="toggleDropdown(course)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="course.isAdminMenuOpen">

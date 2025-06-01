@@ -14,9 +14,10 @@ export class ArticlesService {
 
     constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
-    findAll(filtro: ArticleFilter): Observable<IApiResponse<Article>> {
+    findAll(filtro: ArticleFilter, currentUserId: number): Observable<IApiResponse<Article>> {
 
         let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString())
             .set('page', filtro.page)
             .set('sort', filtro.sort)
             .set('size', filtro.itemsPerPage);
@@ -67,8 +68,10 @@ export class ArticlesService {
         return this.http.get<Article>(`${this.host}/${id}`, {});
     }
 
-    getArticleByArticleId(aticleId: string): Observable<Article> {
-        return this.http.get<Article>(`${this.host}/find-by-articleId/${aticleId}`, {});
+    getArticleByArticleId(aticleId: string, currentUserId: number): Observable<Article> {
+        let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString());
+        return this.http.get<Article>(`${this.host}/find-by-articleId/${aticleId}`, { params });
     }
 
     excluir(id: number): Observable<void> {

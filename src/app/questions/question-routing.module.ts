@@ -8,7 +8,7 @@ const routes: Routes = [
   { 
     path: 'questions', 
     component: QuestionsComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
@@ -17,7 +17,7 @@ const routes: Routes = [
   { 
     path: 'questions/:id', 
     component: QuestionViewComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

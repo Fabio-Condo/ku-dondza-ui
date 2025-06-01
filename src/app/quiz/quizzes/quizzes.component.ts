@@ -37,6 +37,7 @@ export class QuizzesComponent implements OnInit {
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
   loggedUser: User = new User;
+  isUserLoggedIn: boolean = false;
 
   selectQuizOption: string = 'ALL_QUIZZES';
 
@@ -71,6 +72,7 @@ export class QuizzesComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Quiz page');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.getQuizzes();
     this.carregarDisciplinas();

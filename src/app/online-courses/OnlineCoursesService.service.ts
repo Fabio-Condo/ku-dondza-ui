@@ -31,7 +31,7 @@ export class OnlineCoursesService {
         if (filtro.name) {
             params = params.set('name', filtro.name);
         }
-    
+
         if (filtro.instrutor) {
             params = params.set('instrutor', filtro.instrutor);
         }
@@ -76,8 +76,10 @@ export class OnlineCoursesService {
         return this.http.get<Course>(`${this.host}/${id}`, {});
     }
 
-    getOnlineCourseByOnlineCourseId(onlineCourseId: string): Observable<Course> {
-        return this.http.get<Course>(`${this.host}/find-by-courseId/${onlineCourseId}`, {});
+    getOnlineCourseByOnlineCourseId(onlineCourseId: string, currentUserId: number): Observable<Course> {
+        let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString());
+        return this.http.get<Course>(`${this.host}/find-by-courseId/${onlineCourseId}`, { params });
     }
 
 }

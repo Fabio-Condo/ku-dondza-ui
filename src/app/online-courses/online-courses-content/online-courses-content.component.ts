@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { OnlineCourseContent } from 'src/app/core/model/Online-course-content';
 import { OnlineCoursesService } from '../OnlineCoursesService.service';
@@ -18,6 +18,9 @@ import { Course } from 'src/app/core/model/Course';
 import { UserCourseService } from 'src/app/core/user-courses/UserCourseService';
 import { UserCourse } from 'src/app/core/model/UserCourse';
 import { UserCourseFilter } from 'src/app/core/interface/UserCourseFilter';
+import { Subscription } from 'rxjs';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({
   selector: 'app-online-courses-content',
@@ -56,7 +59,17 @@ export class OnlineCoursesContentComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
   loggedUser: User = new User;
+  isUserLoggedIn: boolean = false;
+
   selectedOnlineCourse = new Course();
+
+  private subscriptions: Subscription[] = [];
+  displayModalLogin: boolean = false;
+
+  user = new User();
+  activeLoginTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
 
   //totalStudents: number = 0;
 
@@ -91,6 +104,8 @@ export class OnlineCoursesContentComponent implements OnInit {
   activeTab: number = 1;
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
     private onlineCoursesService: OnlineCoursesService,
     private moduleService: ModuleService,
     private onlineCoursesContentService: OnlineCoursesContentService,
@@ -104,6 +119,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const onlineCourseId = this.route.snapshot.params['id'];
     if (onlineCourseId) {
@@ -207,14 +223,19 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   getOnlineCourseByOnlineCourseId(onlineCourseId: string) {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
-    this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId).subscribe(
+    this.onlineCoursesService.getOnlineCourseByOnlineCourseId(onlineCourseId, this.loggedUser.id).subscribe(
       (response) => {
         this.course = response;
         this.getStudentsByCourseId(this.course.id);
-        //this.getStudentsByCourseId2(this.course.id);
         if (this.course.modules.length > 0) {
           this.expandedModules = [this.course.modules[0].id];
         }
@@ -321,6 +342,21 @@ export class OnlineCoursesContentComponent implements OnInit {
     )
   }
 
+  onCourseSubscription(course: Course) {
+    this.course = course;
+    if (this.isUserLoggedIn) {
+      this.toggleCourseSubscription(course);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
   toggleCourseSubscription(course: Course): void {
     course.showLoadingSubscription = true;
     this.userCourse.course = course;
@@ -331,7 +367,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
+        course.showLoadingSubscription = false;
       }
     );
   }
@@ -381,23 +417,23 @@ export class OnlineCoursesContentComponent implements OnInit {
     if (!this.course || !this.course.modules) {
       return 0;
     }
-  
+
     return this.course.modules.reduce((total, module) => {
       return total + (module.contents ? module.contents.length : 0);
     }, 0);
   }
-  
+
   getTotalVideos(): number {
     if (!this.course || !this.course.modules) {
       return 0;
     }
-  
+
     return this.course.modules.reduce((total, module) => {
       const videoCount = module.contents?.filter(content => content.contentType === 'VIDEO').length || 0;
       return total + videoCount;
     }, 0);
-  }  
-  
+  }
+
   isModuleExpanded(moduleId: number): boolean {
     return this.expandedModules.includes(moduleId);
   }
@@ -405,7 +441,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   expandAllModules(): void {
     this.expandedModules = this.course.modules.map(m => m.id);
   }
-  
+
   collapseAllModules(): void {
     this.expandedModules = [];
   }
@@ -413,15 +449,15 @@ export class OnlineCoursesContentComponent implements OnInit {
   areAllModulesExpanded(): boolean {
     return this.course?.modules?.every(module => this.expandedModules.includes(module.id));
   }
-  
+
   toggleExpandCollapseAll(): void {
     if (this.areAllModulesExpanded()) {
       this.collapseAllModules();
     } else {
       this.expandAllModules();
     }
-  }  
-  
+  }
+
   toggleModule(moduleId: number): void {
     const index = this.expandedModules.indexOf(moduleId);
     if (index > -1) {
@@ -435,7 +471,7 @@ export class OnlineCoursesContentComponent implements OnInit {
     if (!module || !module.contents) return 0;
     return module.contents.filter((content: any) => content.contentType === 'VIDEO').length;
   }
-  
+
   getFileCount(module: any): number {
     if (!module || !module.contents) return 0;
     return module.contents.filter((content: any) => content.contentType === 'FILE').length;
@@ -451,6 +487,132 @@ export class OnlineCoursesContentComponent implements OnInit {
 
   private getUserRole(): string {
     return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.getOnlineCourseByOnlineCourseId(this.course.onlineCourseId);
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.getOnlineCourseByOnlineCourseId(this.course.onlineCourseId);
+        this.showLoading = false;
+        this.displayModalLogin = false; this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.ngZone.run(() => {
+          this.getOnlineCourseByOnlineCourseId(this.course.onlineCourseId);
+          this.showLoading = false;
+          this.displayModalLogin = false;
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  setActiveLoginTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
   }
 
   private sendErrorNotification(message: string): void {

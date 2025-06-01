@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
@@ -19,6 +19,9 @@ import { evaluate } from 'mathjs'; //npm install mathjs
 import { Role } from 'src/app/enum/role.enum';
 import { SubmissionService } from 'src/app/core/submissions/submission.service';
 import { SubmissionFilter } from 'src/app/core/interface/SubmissionFilter';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -47,6 +50,11 @@ export class CompetitionQuestionsComponent implements OnInit {
   showFriendsDialog: boolean = false;
 
   isUserLoggedIn: boolean = false;
+
+  private subscriptions: Subscription[] = [];
+
+  displayModalLogin: boolean = false;
+
 
   // Armazenar as respostas do usuário
   //userAnswers: { questionId: number; answerId: number }[] = [];
@@ -88,6 +96,8 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
     private competitionService: CompetitionService,
     private submissionService: SubmissionService,
     private userService: UserService,
@@ -261,6 +271,29 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   // Método para submeter as respostas
   submitAnswers() {
+    // Verifica se o usuário fez login
+    if (!this.isUserLoggedIn) {
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    } else {
+      // Calcula os resultados
+      this.calculateResults();
+
+      // Exibe a tela final
+      this.showResultsScreen = true;
+
+      // Salva o quiz, se ainda não foi submetido
+      if (!this.submited) {
+        this.submite();
+      }
+    }
+  }
+
+  // Método para submeter as respostas
+  submitAnswersOld() {
     // Calcula os resultados
     this.calculateResults();
 
@@ -562,6 +595,54 @@ export class CompetitionQuestionsComponent implements OnInit {
   getTextoComNegrito(text: string): string {
     if (!text) return '';
     return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        this.ngZone.run(() => {
+          // Calcula os resultados
+          this.calculateResults();
+
+          // Salva o quiz, se ainda não foi submetido
+          if (!this.submited) {
+            this.submite();
+          }
+
+          this.showLoading = false;
+          this.displayModalLogin = false;
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
   }
 
   public get isAdmin(): boolean {

@@ -9,7 +9,7 @@ const routes: Routes = [
   { 
     path: 'courses', 
     component: OnlineCoursesComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
@@ -18,7 +18,7 @@ const routes: Routes = [
   { 
     path: 'courses/:id', 
     component: OnlineCoursesContentComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

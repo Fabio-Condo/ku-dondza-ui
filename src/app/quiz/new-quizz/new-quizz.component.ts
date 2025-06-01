@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
@@ -16,8 +16,10 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 declare const MathJax: any;
-import { evaluate } from 'mathjs'; //npm install mathjs
+import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { interval, Subscription } from 'rxjs';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { HeaderType } from 'src/app/enum/header-type.enum';
 
 @Component({
   selector: 'app-new-quizz',
@@ -48,6 +50,18 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   formattedTime: string = '00:00'; // Inicializa no formato correto
   remainingTime: number = 0;   // Tempo restante para o quiz
   startTime: number = 0; // Armazena o tempo em que o quiz foi iniciado (timestamp)
+
+  user = new User();
+  activeTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
+
+  private subscriptions: Subscription[] = [];
+
+  displayModalLogin: boolean = false;
+
+  isUserLoggedIn: boolean = false;
+
 
   result: {
     correctAnswers: number;
@@ -87,6 +101,8 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   };
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
     private quizService: QuizService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
@@ -99,6 +115,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -109,7 +126,6 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();// Cancelar o temporizador e submiter o quiz
-      this.submitAnswers();
     }
   }
 
@@ -117,7 +133,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
     this.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
     this.totalTimeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
-    
+
     this.remainingTime = this.timeLimit; // Tempo restante para contagem
     this.startTime = Date.now(); // Armazenar o tempo de início (timestamp)
 
@@ -126,11 +142,11 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         this.timeLimit--;
         this.updateFormattedTime(); // Atualiza o tempo formatado
       } else {
-        this.stopTimer();       
-        this.submitAnswers(); 
-        this.toggleCorrection(); 
+        this.stopTimer();
+        this.submitAnswers();
+        this.toggleCorrection();
         this.scrollToTop();
-        this.showFinalScreen = true; 
+        this.showFinalScreen = true;
         this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
       }
     });
@@ -229,25 +245,39 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
       this.quiz.resultsByTopic[topic].percentage = (correct / total) * 100;
     }
   }
-  
+
   get progressPercentage(): number {
     const totalQuestions = this.quiz.questions.length;
-  
+
     // Filtra para contar somente as respostas não nulas
     const answeredCount = this.submittedAnswers.filter(
       a => a.id !== null && a.id !== undefined
     ).length;
-  
+
     // Calcula o progresso com base nas respostas
     return (answeredCount / totalQuestions) * 100;
   }
-  
+
+  onSubmitAnswers() {
+    if (this.isUserLoggedIn) {
+      this.submitAnswers();
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
   submitAnswers() {
     // Calcular o tempo gasto em segundos
     this.showFinalScreen = true;
     this.calculateResults();
     this.stopTimer();
-    this.scrollToTop(); 
+    this.scrollToTop();
     if (!this.submited) {
       const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
       this.quiz.timeSpent = elapsedTimeInSeconds;
@@ -255,13 +285,14 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     }
   }
 
-  onStopCurrentRunningQuiz(){
+  onStopCurrentRunningQuiz() {
     this.stopTimer();
-    this.scrollToTop(); 
-    this.showFinalScreen = true;
-    if(!this.submited){
-      this.router.navigateByUrl('/quizzes');
+    this.scrollToTop();
+    if (this.isUserLoggedIn && !this.submited) {
+      this.submitAnswers();
+      this.showFinalScreen = true;
     }
+    this.router.navigateByUrl('/quizzes');
   }
 
   startQuiz() {
@@ -305,7 +336,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     this.loadingMessage = "Gerrando questões"
     const selectedTopicIds = this.getSelectedTopicIds();
 
-    if(selectedTopicIds.length == 0){
+    if (selectedTopicIds.length == 0) {
       this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões.!' });
       return;
     }
@@ -509,17 +540,17 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
       if (mathContainer && typeof MathJax !== 'undefined') {
         mathContainer.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].text);
       }
-  
+
       const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
       if (mathContainerSolution && typeof MathJax !== 'undefined') {
         mathContainerSolution.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].solution);
       }
-  
+
       const mathContainerTip = document.getElementById(`math-container-tip-${this.currentQuestionIndex}`);
       if (mathContainerTip && typeof MathJax !== 'undefined') {
         mathContainerTip.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].tip);
       }
-  
+
       // ✅ Renderiza MathJax após todos os elementos atualizados
       if (typeof MathJax !== 'undefined') {
         MathJax.typesetPromise().then(() => {
@@ -596,6 +627,132 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         ctx.stroke();
       });
     }, 0);
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.submitAnswers();
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.submitAnswers();
+        this.showLoading = false;
+        this.displayModalLogin = false; this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.ngZone.run(() => {
+          this.submitAnswers();
+          this.showLoading = false;
+          this.displayModalLogin = false;
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
   }
 
   getDifficultyLevelValue(level: string) {

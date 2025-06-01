@@ -62,6 +62,7 @@ export class OnlineCoursesComponent implements OnInit {
   }
 
   loggedUser: User = new User;
+  isUserLoggedIn: boolean = false;
 
   constructor(
     private onlineCoursesService: OnlineCoursesService,
@@ -70,11 +71,12 @@ export class OnlineCoursesComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private userService: UserService,
     private authenticationService: AuthenticationService,
-    private title: Title, 
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
     this.title.setTitle('Courses page');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll();
     this.getUsersInstrutors();
@@ -151,7 +153,7 @@ export class OnlineCoursesComponent implements OnInit {
       (dados: IApiResponse<Course>) => {
         this.courses = dados.content
         this.totalRegistros = dados.totalElements;
-        if(this.totalCourses == 0){
+        if (this.totalCourses == 0) {
           this.totalCourses = dados.totalElements;
         }
         this.showLoading = false;

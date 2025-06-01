@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { BookFilter } from 'src/app/core/interface/BookFilter';
 import { Book } from 'src/app/core/model/Book';
 import { BooksService } from '../books.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Role } from 'src/app/enum/role.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Subscription } from 'rxjs';
+import { User } from 'src/app/core/model/User';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-books',
@@ -21,6 +26,8 @@ export class BooksComponent implements OnInit {
   totalRegistros: number = 0;
   books: Book[] = [];
   book: Book = new Book();
+  selectedBook: Book = new Book();
+
   displayModalSave: boolean = false;
   isDropdownOpen: boolean = false;
   file!: File;
@@ -28,6 +35,18 @@ export class BooksComponent implements OnInit {
   totalBooks: number = 0;
   displayModalFilter: boolean = false;
   subjects: Subject[] = [];
+
+  private subscriptions: Subscription[] = [];
+
+  displayModalLogin: boolean = false;
+
+  loggedUser: User = new User();
+  isUserLoggedIn: boolean = false;
+
+  user = new User();
+  activeTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
 
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
@@ -42,6 +61,9 @@ export class BooksComponent implements OnInit {
 
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
+    private router: Router,
     private booksService: BooksService,
     private subjectsService: SubjectsService,
     private authenticationService: AuthenticationService,
@@ -50,6 +72,8 @@ export class BooksComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -119,7 +143,7 @@ export class BooksComponent implements OnInit {
       (dados: IApiResponse<Book>) => {
         this.books = dados.content
         this.totalRegistros = dados.totalElements;
-        if(this.totalBooks == 0){
+        if (this.totalBooks == 0) {
           this.totalBooks = dados.totalElements;
         }
         this.showLoading = false;
@@ -204,9 +228,24 @@ export class BooksComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-  download(book: Book, filename: string): void {
+  onDownload(book: Book) {
+    this.selectedBook = book;
+    if (this.isUserLoggedIn) {
+      this.download(book);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  download(book: Book): void {
     book.showLoadingDownload = true;
-    this.booksService.download(book.id, filename).subscribe((data: Blob) => {
+    this.booksService.download(book.id, book.fileName).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
       // Criar um link temporário para o Blob
@@ -214,7 +253,7 @@ export class BooksComponent implements OnInit {
       link.href = window.URL.createObjectURL(blob);
 
       // Definir o atributo "download" com o nome do arquivo
-      link.download = filename;
+      link.download = book.fileName;
 
       // Simular um clique no link para iniciar o download
       link.click();
@@ -277,6 +316,127 @@ export class BooksComponent implements OnInit {
 
   private getUserRole(): string {
     return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        this.download(this.selectedBook);
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        this.download(this.selectedBook);
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.ngZone.run(() => {
+          this.download(this.selectedBook)
+          this.showLoading = false;
+          this.displayModalLogin = false;
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
   }
 
   private sendErrorNotification(message: string): void {

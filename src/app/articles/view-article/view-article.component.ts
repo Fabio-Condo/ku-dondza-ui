@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Article } from 'src/app/core/model/Article';
 import { User } from 'src/app/core/model/User';
 import { ArticlesService } from '../articles.service';
@@ -6,8 +6,11 @@ import { LikeService } from 'src/app/likes/like.service';
 import { UserService } from 'src/app/users/user.service';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-article',
@@ -21,12 +24,25 @@ export class ViewArticleComponent implements OnInit {
   showConfirmDialog: boolean = false;
 
   loggedUser: User = new User;
+  isUserLoggedIn: boolean = false;
 
   showLoading: boolean = false;
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
+  private subscriptions: Subscription[] = [];
+  displayModalLogin: boolean = false;
+
+  user = new User();
+  activeTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
+
+  action: string = 'Like'; // Like ou Save ou ViewLikes
+
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
     private articleService: ArticlesService,
     private likeService: LikeService,
     private userService: UserService,
@@ -37,6 +53,7 @@ export class ViewArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const articleId = this.route.snapshot.params['id'];
     if (articleId) {
@@ -51,10 +68,15 @@ export class ViewArticleComponent implements OnInit {
 
   findById(id: string) {
 
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
-  
-    this.articleService.getArticleByArticleId(id).subscribe(
+
+    this.articleService.getArticleByArticleId(id, this.loggedUser.id).subscribe(
       (response) => {
         this.article = response;
         this.showLoading = false;
@@ -70,9 +92,25 @@ export class ViewArticleComponent implements OnInit {
     );
   }
 
+  onLike(article: Article) {
+    this.selectedArticle = article;
+    if (this.isUserLoggedIn) {
+      this.toggleLike(article);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.action = 'Like';
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
   toggleLike(article: Article): void {
     article.showLoadingLike = true;
-    this.likeService.toggleLike(article.id).subscribe(
+    this.likeService.toggleLike(article.id, this.loggedUser.id).subscribe(
       response => {
         article.likedByUser = !article.likedByUser;
         if (article.likedByUser) {
@@ -89,10 +127,24 @@ export class ViewArticleComponent implements OnInit {
     );
   }
 
+  onSave(article: Article) {
+    this.selectedArticle = article;
+    if (this.isUserLoggedIn) {
+      this.toggleSaveArticle(article);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.action = 'Save';
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
   toggleSaveArticle(article: Article): void {
     article.showLoadingSave = true;
-    console.log(this.loggedUser.id);
-    console.log(article.id);
     this.userService.toggleSaveArticle(this.loggedUser.id, article.id).subscribe(
       response => {
         article.savedByUser = !article.savedByUser;
@@ -105,31 +157,144 @@ export class ViewArticleComponent implements OnInit {
     );
   }
 
-  //addArticleToSavedArticles(article: Article): void {
-  //  this.userService.addArticleToSavedArticles(this.loggedUser.id, article.id).subscribe(() => {
-  //    article.isSaved = true;
-  //  });
-  //}
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
 
-  //removeArticleFromSavedArticles(article: Article): void {
-  //  this.userService.removeArticleFromSavedArticles(this.loggedUser.id, article.id).subscribe(() => {
-  //    article.isSaved = false;
-  //  });
-  //}
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        if (this.action === 'Like') {
+          this.toggleLike(this.selectedArticle)
+        }
+        if (this.action === 'Save') {
+          this.toggleSaveArticle(this.selectedArticle);
+        }
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
 
-  //onRemoveArticle(article: Article): void {
-  //  this.showConfirmDialog = true;
-  //  this.selectedArticle= article;
-  //}
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
 
-  //closeConfirmDialog() {
-  //  this.showConfirmDialog = false;
-  //}
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
 
-  //confirmDialog(article: Article) {
-  //  this.removeArticleFromSavedArticles(article);
-  //  this.closeConfirmDialog();
-  //}
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        if (this.action === 'Like') {
+          this.toggleLike(this.selectedArticle)
+        }
+        if (this.action === 'Save') {
+          this.toggleSaveArticle(this.selectedArticle);
+        }
+        this.showLoading = false;
+        this.displayModalLogin = false; this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.ngZone.run(() => {
+          if (this.action === 'Like') {
+            this.toggleLike(this.selectedArticle)
+          }
+          if (this.action === 'Save') {
+            this.toggleSaveArticle(this.selectedArticle);
+          }
+          this.showLoading = false;
+          this.displayModalLogin = false;
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
+  }
 
   private sendErrorNotification(message: string): void {
     if (message) {
