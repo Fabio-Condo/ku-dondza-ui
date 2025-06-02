@@ -149,8 +149,8 @@
 
             <!-- Caso 2: Competição ativa, usuário logado e já submeteu -->
             <ng-container *ngIf="competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
-                <button class="btn-outline" id="add-btn" (click)="onStart()">
-                    Ver sua submissão
+                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionOnly(loggedUser)">
+                    Ver sua submissão (sem correção)
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -161,7 +161,7 @@
 
             <!-- Caso 3: Competição encerrada, usuário logado e já submeteu -->
             <ng-container *ngIf="!competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
-                <button class="btn-outline" id="add-btn" (click)="onStart()">
+                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionAndCorrection(loggedUser)">
                     Ver sua submissão (com correção)
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -173,8 +173,20 @@
 
             <!-- Caso 4: Competição encerrada, usuário logado e NÃO submeteu -->
             <ng-container *ngIf="!competition.active && isUserLoggedIn && !competition.currentUserHasSubmitted">
+                <button class="btn-outline" id="add-btn" (click)="onShowCorrectionOnly()">
+                    Ver as questões (com correção)
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </ng-container>
+
+            <!-- Caso 5: Competição encerrada, usuário NÃO logado -->
+            <ng-container *ngIf="!competition.active && !isUserLoggedIn">
                 <button class="btn-outline" id="add-btn" (click)="onStart()">
-                    Ver as questões
+                    Ver questões avaliadas
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -183,6 +195,7 @@
                 </button>
             </ng-container>
         </div>
+
 
         <!-- Submissions Section -->
         <div class="submissions-card" *ngIf="showStartScreen">
@@ -201,7 +214,7 @@
 
                         </div>
                     </div>
-                    <button class="btn-details" (click)="onShowUserSubmission(submission.user)"
+                    <button class="btn-details" (click)="onShowUserSubmissionAndCorrection(submission.user)"
                         style="margin-left: 10px;">Ver submissão</button>
 
                     <!--<span class="progress-percent">{{ submission.user.markedContentRate.toFixed(1) }}%</span>-->

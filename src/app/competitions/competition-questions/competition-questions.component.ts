@@ -162,12 +162,45 @@ export class CompetitionQuestionsComponent implements OnInit {
     )
   }
 
-  onShowUserSubmission(participante: User) {
+  onShowUserSubmissionOnly(participante: User) {
     this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
         this.submittedAnswers = this.submission.answers;
-        this.toggleCorrection();
+
+        this.showCorrection = false;
+        this.currentQuestionIndex = 0;
+        this.showResultsScreen = false;
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.scrollToTop();
+
+        this.showStartScreen = false;
+        //this.showResultsScreen = true;
+        this.submited = true;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onShowUserSubmissionAndCorrection(participante: User) {
+    this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
+      (response) => {
+        this.submission = response;
+        this.submittedAnswers = this.submission.answers;
+
+        this.showCorrection = true;
+        this.currentQuestionIndex = 0;
+        this.showResultsScreen = false;
+        // Aguarda a atualização do DOM antes de renderizar MathJax
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.scrollToTop();
+
+        //this.toggleCorrection();
         this.calculateResults();
         this.scrollToTop();
         this.showStartScreen = false;
@@ -179,6 +212,27 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  onShowCorrectionOnly() {
+
+    //this.submittedAnswers = this.submission.answers;
+
+    this.showCorrection = true;
+    this.currentQuestionIndex = 0;
+    this.showResultsScreen = false;
+    // Aguarda a atualização do DOM antes de renderizar MathJax
+    this.renderMathExpressions();
+    this.renderFunctions();
+    this.scrollToTop();
+
+    //this.toggleCorrection();
+    this.calculateResults();
+    this.scrollToTop();
+    this.showStartScreen = false;
+    //this.showResultsScreen = true;
+    this.submited = true;
+
   }
 
   getSubmissionsByCompetitionId(competitionId: number): void {
@@ -436,7 +490,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showCorrection = true;
     this.currentQuestionIndex = 0;
     this.showResultsScreen = false;
-
     // Aguarda a atualização do DOM antes de renderizar MathJax
     this.renderMathExpressions();
 
