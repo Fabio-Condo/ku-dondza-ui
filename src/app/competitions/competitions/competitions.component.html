@@ -11,7 +11,8 @@
             <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalCompetitions }}</span>
 
             <div class="actions">
-                <button class="start-quiz-button" id="add-btn" (click)="onAddNewCompetition()" *ngIf="isUserLoggedIn && isSuperAdmin">
+                <button class="start-quiz-button" id="add-btn" (click)="onAddNewCompetition()"
+                    *ngIf="isUserLoggedIn && isSuperAdmin">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -72,6 +73,15 @@
                                 class="fas fa-circle"></i> {{getStatusValue(competition.active)}}</span>
                         <span *ngIf="!competition.active" class="status-badge status-inactive"><i
                                 class="fas fa-circle"></i> {{getStatusValue(competition.active)}}</span>
+
+                        <span *ngIf="competition.currentUserHasSubmitted" class="status-badge status-submitted"
+                            style="margin-left: 5px;"><i class="fas fa-circle"></i> Fizeste a submissão</span>
+                        <span *ngIf="!competition.currentUserHasSubmitted && isUserLoggedIn" class="status-badge status-not-submitted"
+                            style="margin-left: 5px;"><i class="fas fa-circle"></i> Não fizeste a submissão</span>
+                    </div>
+
+                    <div class="quiz-status">
+
                     </div>
                     <div class="quiz-stats">
                         <div class="stats-left">

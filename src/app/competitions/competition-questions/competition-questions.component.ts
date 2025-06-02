@@ -80,6 +80,11 @@ export class CompetitionQuestionsComponent implements OnInit {
   submissions: Submission[] = [];
   totalRecordSubmissions: number = 0;
 
+  user = new User();
+  activeLoginTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
+
   activeTab: number = 1;
 
   filtro: QuestionFilter = {
@@ -115,6 +120,20 @@ export class CompetitionQuestionsComponent implements OnInit {
       this.getCompetitionByCompetitionId(competitionId);
     }
     this.scrollToTop();
+  }
+
+  onStart() {
+    if (this.isUserLoggedIn) {
+      this.start();
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
   }
 
   start() {
@@ -201,9 +220,15 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   getCompetitionByCompetitionId(competitionId: string) {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.showLoading = true;
     this.loadingMessage = "Carregando dados"
-    this.competitionService.getCompetitionByCompetitionId(competitionId).subscribe(
+    this.competitionService.getCompetitionByCompetitionId(competitionId, this.loggedUser.id).subscribe(
       (response) => {
         this.competition = response;
         this.getQuestionsByCompetitionId(this.competition.id);
@@ -597,6 +622,80 @@ export class CompetitionQuestionsComponent implements OnInit {
     return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   }
 
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        //this.download(this.selectedBook);
+
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        //this.download(this.selectedBook);
+
+        this.showLoading = false;
+        this.displayModalLogin = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
   private async initializeGoogleAuth(): Promise<void> {
     try {
       const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
@@ -622,15 +721,12 @@ export class CompetitionQuestionsComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
-        this.ngZone.run(() => {
-          // Calcula os resultados
-          this.calculateResults();
 
-          // Salva o quiz, se ainda não foi submetido
-          if (!this.submited) {
-            this.submite();
-          }
+        this.ngZone.run(() => {
+
+          //this.download(this.selectedBook)
 
           this.showLoading = false;
           this.displayModalLogin = false;
@@ -643,6 +739,14 @@ export class CompetitionQuestionsComponent implements OnInit {
     });
 
     this.subscriptions.push(sub);
+  }
+
+
+  setActiveLoginTab(tabIndex: number) {
+    this.activeLoginTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
   }
 
   public get isAdmin(): boolean {

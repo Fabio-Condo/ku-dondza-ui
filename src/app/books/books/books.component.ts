@@ -339,8 +339,10 @@ export class BooksComponent implements OnInit {
       next: (response) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        
         this.download(this.selectedBook);
         this.showLoading = false;
         this.displayModalLogin = false;

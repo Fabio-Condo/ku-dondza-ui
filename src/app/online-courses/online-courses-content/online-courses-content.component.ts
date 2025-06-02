@@ -609,7 +609,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   setActiveLoginTab(tabIndex: number) {
-    this.activeTab = tabIndex;
+    this.activeLoginTab = tabIndex;
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM

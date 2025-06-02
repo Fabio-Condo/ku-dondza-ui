@@ -16,9 +16,10 @@ export class CompetitionService {
 
     constructor(private http: HttpClient) { }
 
-    findAll(filter: CompetitionFilter): Observable<IApiResponse<Competition>> {
+    findAll(filter: CompetitionFilter, currentUserId: number): Observable<IApiResponse<Competition>> {
 
         let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString())
             .set('page', filter.page)
             .set('sort', filter.sort)
             .set('size', filter.itemsPerPage);
@@ -57,8 +58,10 @@ export class CompetitionService {
         return this.http.get<Competition>(`${this.host}/${id}`, {});
     }
 
-    getCompetitionByCompetitionId(competitionId: string): Observable<Competition> {
-        return this.http.get<Competition>(`${this.host}/find-by-competitionId/${competitionId}`, {});
+    getCompetitionByCompetitionId(competitionId: string, currentUserId: number): Observable<Competition> {
+        let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString());
+        return this.http.get<Competition>(`${this.host}/find-by-competitionId/${competitionId}`, { params });
     }
 
     add(competition: Competition, topicIds: number[]): Observable<Competition> {

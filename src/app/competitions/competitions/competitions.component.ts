@@ -205,10 +205,16 @@ export class CompetitionsComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.showLoading = true;
     this.loadingMessage = "Carregando dados"
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.competitionService.findAll(this.filtro).subscribe(
+    this.competitionService.findAll(this.filtro, this.loggedUser.id).subscribe(
       (dados: IApiResponse<Competition>) => {
         this.competitions = dados.content;
         dados.content.forEach(competition => {
@@ -226,11 +232,17 @@ export class CompetitionsComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.showLoading = true;
     this.loadingMessage = "Carregando dados"
     this.filtro.page++;
 
-    this.competitionService.findAll(this.filtro).subscribe(
+    this.competitionService.findAll(this.filtro, this.loggedUser.id).subscribe(
       (data: IApiResponse<Competition>) => {
         this.competitions = [...this.competitions, ...data.content];
 
