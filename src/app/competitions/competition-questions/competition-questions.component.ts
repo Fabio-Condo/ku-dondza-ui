@@ -216,7 +216,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onShowCorrectionOnly() {
 
-    //this.submittedAnswers = this.submission.answers;
+    this.submittedAnswers = [];
 
     this.showCorrection = true;
     this.currentQuestionIndex = 0;
