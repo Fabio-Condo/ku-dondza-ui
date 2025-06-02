@@ -934,7 +934,7 @@
                                 <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
                             </button>
 
-                            <div class="dropdown-container">
+                            <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                                 <button class="dropdown-btn"
                                     (click)="article.isAdminMenuOpen = !article.isAdminMenuOpen">
                                     <i class="pi pi-ellipsis-v"></i>

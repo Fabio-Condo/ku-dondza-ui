@@ -7,7 +7,7 @@ const routes: Routes = [
   { 
     path: 'main-panel', 
     component: MainPanelComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
