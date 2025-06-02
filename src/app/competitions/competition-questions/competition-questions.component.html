@@ -209,15 +209,19 @@
                     <div class="submission-progress">
                         <p class="submission-user-name">{{ submission.user.fullName }}</p>
                         <div class="progress-bar">
-
                             <!--<div class="progress-fill" [style.width.%]="submission.user.markedContentRate.toFixed(1)"></div>-->
-
                         </div>
                     </div>
-                    <button class="btn-details" (click)="onShowUserSubmissionAndCorrection(submission.user)"
-                        style="margin-left: 10px;">Ver submissão</button>
 
-                    <!--<span class="progress-percent">{{ submission.user.markedContentRate.toFixed(1) }}%</span>-->
+                    <!-- Competição ativa -->
+                    <button *ngIf="competition.active" class="btn-outline" [disabled]="submission.user.id != loggedUser.id"
+                        (click)="onShowUserSubmissionOnly(submission.user)" style="margin-left: 10px;">Ver</button>
+
+                    <!-- Competição encerrada -->
+                    <button *ngIf="!competition.active" class="btn-outline"
+                        (click)="onShowUserSubmissionAndCorrection(submission.user)"
+                        style="margin-left: 10px;">Ver</button>
+
                 </li>
             </ul>
 
