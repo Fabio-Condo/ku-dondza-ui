@@ -135,14 +135,53 @@
         </div>
 
         <div class="button-container" *ngIf="showStartScreen">
-            <button class="btn-outline" id="add-btn" (click)="onStart()">
-                Iniciar
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </button>
+            <!-- Caso 1: Competição ativa E (usuário não logado OU ainda não submeteu) -->
+            <ng-container *ngIf="competition.active && (!isUserLoggedIn || !competition.currentUserHasSubmitted)">
+                <button class="btn-outline" id="add-btn" (click)="onStart()">
+                    Iniciar
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </ng-container>
+
+            <!-- Caso 2: Competição ativa, usuário logado e já submeteu -->
+            <ng-container *ngIf="competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
+                <button class="btn-outline" id="add-btn" (click)="onStart()">
+                    Ver sua submissão
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </ng-container>
+
+            <!-- Caso 3: Competição encerrada, usuário logado e já submeteu -->
+            <ng-container *ngIf="!competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
+                <button class="btn-outline" id="add-btn" (click)="onStart()">
+                    Ver sua submissão (com correção)
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </ng-container>
+
+            <!-- Caso 4: Competição encerrada, usuário logado e NÃO submeteu -->
+            <ng-container *ngIf="!competition.active && isUserLoggedIn && !competition.currentUserHasSubmitted">
+                <button class="btn-outline" id="add-btn" (click)="onStart()">
+                    Ver as questões
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </ng-container>
         </div>
 
         <!-- Submissions Section -->
