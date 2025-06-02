@@ -701,7 +701,8 @@
             <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalCourses }}</span>
 
             <div class="actions">
-                <button class="button-add-new" id="add-btn" (click)="onAddNewOnlineCourse()" *ngIf="isUserLoggedIn && isSuperAdmin">
+                <button class="button-add-new" id="add-btn" (click)="onAddNewOnlineCourse()"
+                    *ngIf="isUserLoggedIn && isSuperAdmin">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -877,8 +878,11 @@
             <div class="form-group">
                 <label for="option">Filtrar cursos</label>
                 <select id="option" [(ngModel)]="selectCourseOption" (ngModelChange)="findAll()" name="option" required>
-                    <option *ngFor="let option of courseFilterOptions" [value]="option.value">{{ option.label }}
-                    </option>
+                    <ng-container *ngFor="let option of courseFilterOptions">
+                        <option *ngIf="option.value !== 'MY_COURSES' || isUserLoggedIn" [value]="option.value">
+                            {{ option.label }}
+                        </option>
+                    </ng-container>
                 </select>
             </div>
 

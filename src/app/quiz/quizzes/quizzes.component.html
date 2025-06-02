@@ -217,8 +217,11 @@
                 <label for="option">Filtrar Quizzes</label>
                 <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option"
                     required>
-                    <option *ngFor="let option of quizFilterOptions" [value]="option.value">{{ option.label }}
-                    </option>
+                    <ng-container *ngFor="let option of quizFilterOptions">
+                        <option *ngIf="option.value !== 'MY_QUIZZES' || isUserLoggedIn" [value]="option.value">
+                            {{ option.label }}
+                        </option>
+                    </ng-container>
                 </select>
             </div>
             <div class="form-group">

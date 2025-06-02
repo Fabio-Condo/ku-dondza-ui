@@ -1063,8 +1063,11 @@
                 <label for="option">Filtrar artigos</label>
                 <select id="option" [(ngModel)]="selectArticleOption" (ngModelChange)="findAll()" name="option"
                     required>
-                    <option *ngFor="let option of courseFilterOptions" [value]="option.value">{{ option.label }}
-                    </option>
+                    <ng-container *ngFor="let option of courseFilterOptions">
+                        <option *ngIf="option.value !== 'MY_SAVED_ARTICLES' || isUserLoggedIn" [value]="option.value">
+                            {{ option.label }}
+                        </option>
+                    </ng-container>
                 </select>
             </div>
 
