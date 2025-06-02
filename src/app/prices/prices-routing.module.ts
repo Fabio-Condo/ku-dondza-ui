@@ -7,7 +7,7 @@ const routes: Routes = [
   { 
     path: 'prices', 
     component: PricesComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

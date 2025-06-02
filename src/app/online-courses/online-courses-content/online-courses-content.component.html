@@ -374,8 +374,6 @@
 
         <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
 
-        <br>
-
         <p class="message" *ngIf="step === 'otp'">
           Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
         </p>
@@ -402,7 +400,7 @@
         </p>
 
         <div class="signup-link">
-          Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+          Não tem uma conta? <a (click)="setActiveLoginTab(2)">Cadastre-se</a>
         </div>
 
       </form>
@@ -459,7 +457,7 @@
       </form>
       <div id="google-signin-button"></div>
       <div class="signup-link">
-        Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
+        Já tem uma conta? <a (click)="setActiveLoginTab(1); ">Faça login</a>
       </div>
     </div>
   </div>
