@@ -270,12 +270,13 @@ export class ViewArticleComponent implements OnInit {
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.ngZone.run(() => {
-          if (this.action === 'Like') {
-            this.toggleLike(this.selectedArticle)
-          }
-          if (this.action === 'Save') {
-            this.toggleSaveArticle(this.selectedArticle);
-          }
+          this.findById(this.article.articleId);
+        //  if (this.action === 'Like' && !this.article.likedByUser) {
+        //    this.toggleLike(this.article)
+        //  }
+        //  if (this.action === 'Save' && !this.article.savedByUser) {
+        //    this.toggleSaveArticle(this.article);
+        //  }
           this.showLoading = false;
           this.displayModalLogin = false;
         });
