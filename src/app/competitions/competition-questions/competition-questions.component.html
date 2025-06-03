@@ -149,7 +149,7 @@
 
             <!-- Caso 2: Competição ativa, usuário logado e já submeteu -->
             <ng-container *ngIf="competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
-                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionOnly(loggedUser)">
+                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionOnly(loggedUser); disableEditing = true">
                     Ver sua submissão (sem correção)
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -205,7 +205,7 @@
                     <!-- Competição ativa -->
                     <button *ngIf="competition.active" class="btn-outline"
                         [disabled]="submission.user.id != loggedUser.id"
-                        (click)="onShowUserSubmissionOnly(submission.user)" style="margin-left: 10px;">Ver</button>
+                        (click)="onShowUserSubmissionOnly(submission.user); disableEditing = true" style="margin-left: 10px;">Ver</button>
 
                     <!-- Competição encerrada -->
                     <button *ngIf="!competition.active" class="btn-outline"
@@ -270,7 +270,7 @@
                                 [value]="answer.id"
                                 [checked]="isSelected(competition.questions[currentQuestionIndex].id, answer.id!)"
                                 (change)="captureUserAnswer(competition.questions[currentQuestionIndex].id, answer.id!)"
-                                [disabled]="showCorrection" />
+                                [disabled]="showCorrection || disableEditing" />
                             <!--<span>{{ answer.text }}</span>--> <!-- Numeração das opções -->
                             <span [innerHTML]="getTextoComNegrito(answer.text || '')"></span>
                         </label>
@@ -352,7 +352,7 @@
                     </button>
 
                     <button class="pagination-btn submit" id="add-btn"
-                        (click)="submitAnswers(); scrollToTop()"
+                        (click)="submitAnswers(); scrollToTop(); disableEditing = true;"
                         *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.active && !competition.currentUserHasSubmitted">
                         <span>Submeter</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"

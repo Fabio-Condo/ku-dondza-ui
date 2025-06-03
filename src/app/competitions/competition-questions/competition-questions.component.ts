@@ -72,6 +72,10 @@ export class CompetitionQuestionsComponent implements OnInit {
   showStartScreen: boolean = true;
   showResultsScreen: boolean = false;
 
+  // desabilita inputs ou edições
+  disableEditing: boolean = false;
+
+
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
   loggedUser: User = new User();
@@ -360,20 +364,6 @@ export class CompetitionQuestionsComponent implements OnInit {
       if (!this.competition.currentUserHasSubmitted) {
         this.submite();
       }
-    }
-  }
-
-  // Método para submeter as respostas
-  submitAnswersOld() {
-    // Calcula os resultados
-    this.calculateResults();
-
-    // Exibe a tela final
-    this.showResultsScreen = true;
-
-    // Salva o quiz, se ainda não foi submetido
-    if (!this.competition.currentUserHasSubmitted) {
-      this.submite();
     }
   }
 
