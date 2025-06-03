@@ -159,9 +159,10 @@
                 </button>
             </ng-container>
 
-            <!-- Caso 3: Competição encerrada, usuário logado e já submeteu -->
-            <ng-container *ngIf="!competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
-                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionAndCorrection(loggedUser)">
+            <!-- Caso 3: Competição encerrada, usuário logado e disabled se nao submeteu, enabled se submeteu -->
+            <ng-container *ngIf="!competition.active && isUserLoggedIn">
+                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionAndCorrection(loggedUser)"
+                    [disabled]="!competition.currentUserHasSubmitted">
                     Ver sua submissão (com correção)
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -171,19 +172,7 @@
                 </button>
             </ng-container>
 
-            <!-- Caso 4: Competição encerrada, usuário logado e NÃO submeteu -->
-            <ng-container *ngIf="!competition.active && isUserLoggedIn && !competition.currentUserHasSubmitted">
-                <button class="btn-outline" id="add-btn" (click)="onShowCorrectionOnly()">
-                    Ver as questões (com correção)
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </button>
-            </ng-container>
-
-            <!-- Caso 5: Competição encerrada, usuário NÃO logado -->
+            <!-- Caso 4: Competição encerrada, usuário NÃO logado -->
             <ng-container *ngIf="!competition.active && !isUserLoggedIn">
                 <button class="btn-outline" id="add-btn" (click)="onStart()">
                     Ver questões avaliadas
@@ -214,7 +203,8 @@
                     </div>
 
                     <!-- Competição ativa -->
-                    <button *ngIf="competition.active" class="btn-outline" [disabled]="submission.user.id != loggedUser.id"
+                    <button *ngIf="competition.active" class="btn-outline"
+                        [disabled]="submission.user.id != loggedUser.id"
                         (click)="onShowUserSubmissionOnly(submission.user)" style="margin-left: 10px;">Ver</button>
 
                     <!-- Competição encerrada -->
@@ -350,19 +340,9 @@
                         </svg>
                     </button>
                     <!-- Botão para submeter respostas -->
-                    <!-- Botão para submeter respostas -->
-                    <button class="pagination-button"
-                        (click)="submitAnswers(); toggleCorrection(); showResultsScreen = true; scrollToTop()"
-                        *ngIf="currentQuestionIndex === competition.questions.length - 1">
-                        <span *ngIf="!submited">Submeter</span>
-                        <span *ngIf="submited">Resultados</span>
-                        <i style="margin-left: 0.5rem;" class="pi pi-arrow-up"></i>
-                    </button>
-
-                    <!-- Botão para submeter respostas -->
-                    <!--
-                    <button class="btn-outline" id="add-btn" (click)="showStartScreen = true; scrollToTop();"
-                        *ngIf="currentQuestionIndex === competition.questions.length - 1">
+                    <button class="pagination-btn submit" id="add-btn"
+                        (click)="calculateResults(); scrollToTop(); showResultsScreen = true;"
+                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && !competition.active">
                         <span>Resultados</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -370,10 +350,137 @@
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </button>
-                    -->
+
+                    <button class="pagination-btn submit" id="add-btn"
+                        (click)="submitAnswers(); scrollToTop()"
+                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.active && !competition.currentUserHasSubmitted">
+                        <span>Submeter</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+
+                    <button class="pagination-btn submit" id="add-btn"
+                        (click)="showStartScreen = true; scrollToTop()"
+                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.active && competition.currentUserHasSubmitted">
+                        <span>Volta para tela inicial</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+
                 </div>
             </div>
 
+        </div>
+
+        <!-- Tela de resultados -->
+        <div *ngIf="showResultsScreen">
+
+            <div class="quiz-header">
+                <h1 class="title">{{ competition.title }}</h1>
+                <button class="quiz-close-btn" (click)="showStartScreen = true; showResultsScreen = false"
+                    aria-label="Fechar quiz">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Desempenho Geral</div>
+                </div>
+
+                <div class="overview">
+                    <div class="stat-item">
+                        <div class="stat-value primary">{{ competition.questions.length }}</div>
+                        <div class="stat-label">Total de Questões</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value success">{{ result.correctAnswers }}</div>
+                        <div class="stat-label">Acertos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value danger">{{ result.incorrectAnswers + result.nullAnswers }}</div>
+                        <div class="stat-label">Erros</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value success">{{ ((result.correctAnswers / competition.questions.length) *
+                            100).toFixed(1) }}%
+                        </div>
+                        <div class="stat-label">Taxa de Acerto</div>
+                    </div>
+                </div>
+
+                <div class="results-progress-container">
+                    <div class="progress-label">
+                        <div class="progress-title">Taxa de Acerto</div>
+                        <div class="progress-value">{{ ((result.correctAnswers / competition.questions.length) *
+                            100).toFixed(1)}}%
+                        </div>
+                    </div>
+                    <div class="results-progress-bar">
+                        <div class="progress success"
+                            [style.width.%]="((result.correctAnswers / competition.questions.length) * 100).toFixed(1)">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <br>
+
+            <div class="card" *ngIf="competition.resultsByTopic">
+                <div class="card-header">
+                    <div class="card-title">Desempenho por Tópico</div>
+                </div>
+
+                <div class="topics" *ngFor="let topic of competition.topics">
+                    <div class="topic-card" style="margin-bottom: 15px;">
+                        <div class="topic-header">
+                            <div class="topic-title">{{ topic.name }}</div>
+                            <div class="topic-questions">
+                                {{ competition.resultsByTopic[topic.name].total || 0 }} questões
+                            </div>
+                        </div>
+
+                        <div class="topic-stats">
+                            <div class="topic-stat">
+                                <div class="topic-stat-value success">
+                                    {{ competition.resultsByTopic[topic.name].correct || 0 }}
+                                </div>
+                                <div class="topic-stat-label">Acertos</div>
+                            </div>
+                            <div class="topic-stat">
+                                <div class="topic-stat-value danger">
+                                    {{
+                                    (competition.resultsByTopic[topic.name].incorrect || 0) +
+                                    (competition.resultsByTopic[topic.name].nullAnswers || 0)
+                                    }}
+                                </div>
+                                <div class="topic-stat-label">Erros</div>
+                            </div>
+                        </div>
+
+                        <div class="results-progress-container">
+                            <div class="progress-label">
+                                <div class="progress-title">Taxa de Acerto</div>
+                                <div class="progress-value">
+                                    {{ competition.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
+                                </div>
+                            </div>
+                            <div class="results-progress-bar">
+                                <div class="progress success"
+                                    [style.width.%]="competition.resultsByTopic[topic.name].percentage?.toFixed(1)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

@@ -75,7 +75,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
   loggedUser: User = new User();
-  submited: boolean = false;
+  //submited: boolean = false;
 
   submissions: Submission[] = [];
   totalRecordSubmissions: number = 0;
@@ -151,8 +151,9 @@ export class CompetitionQuestionsComponent implements OnInit {
 
     this.submissionService.add(this.submission, userAnswerIds).subscribe(
       (response) => {
-        this.submited = true;
-        this.submission = response
+        this.competition.currentUserHasSubmitted = true;
+        this.submission = response;
+        this.submissions.push(response);
         this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
@@ -176,8 +177,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.scrollToTop();
 
         this.showStartScreen = false;
-        //this.showResultsScreen = true;
-        this.submited = true;
+        //this.competition.currentUserHasSubmitted = true;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -195,17 +195,13 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.showCorrection = true;
         this.currentQuestionIndex = 0;
         this.showResultsScreen = false;
-        // Aguarda a atualização do DOM antes de renderizar MathJax
         this.renderMathExpressions();
         this.renderFunctions();
-        this.scrollToTop();
-
-        //this.toggleCorrection();
         this.calculateResults();
         this.scrollToTop();
+
         this.showStartScreen = false;
-        //this.showResultsScreen = true;
-        this.submited = true;
+        //this.competition.currentUserHasSubmitted = true;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -221,18 +217,14 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showCorrection = true;
     this.currentQuestionIndex = 0;
     this.showResultsScreen = false;
-    // Aguarda a atualização do DOM antes de renderizar MathJax
+
     this.renderMathExpressions();
     this.renderFunctions();
     this.scrollToTop();
 
-    //this.toggleCorrection();
     this.calculateResults();
-    this.scrollToTop();
     this.showStartScreen = false;
-    //this.showResultsScreen = true;
-    this.submited = true;
-
+    //this.competition.currentUserHasSubmitted = true;
   }
 
   getSubmissionsByCompetitionId(competitionId: number): void {
@@ -359,13 +351,13 @@ export class CompetitionQuestionsComponent implements OnInit {
       return;
     } else {
       // Calcula os resultados
-      this.calculateResults();
+      //this.calculateResults();
 
       // Exibe a tela final
-      this.showResultsScreen = true;
+      //this.showResultsScreen = true;
 
       // Salva o quiz, se ainda não foi submetido
-      if (!this.submited) {
+      if (!this.competition.currentUserHasSubmitted) {
         this.submite();
       }
     }
@@ -380,7 +372,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showResultsScreen = true;
 
     // Salva o quiz, se ainda não foi submetido
-    if (!this.submited) {
+    if (!this.competition.currentUserHasSubmitted) {
       this.submite();
     }
   }
@@ -490,9 +482,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.showCorrection = true;
     this.currentQuestionIndex = 0;
     this.showResultsScreen = false;
-    // Aguarda a atualização do DOM antes de renderizar MathJax
     this.renderMathExpressions();
-
     this.renderFunctions();
     this.scrollToTop();
   }
