@@ -71,6 +71,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   showCorrection: boolean = false;
   showStartScreen: boolean = true;
   showResultsScreen: boolean = false;
+  showSubmittedScreen: boolean = false; // nova variável adicionada
 
   // desabilita inputs ou edições
   disableEditing: boolean = false;
@@ -158,7 +159,8 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.competition.currentUserHasSubmitted = true;
         this.submission = response;
         this.submissions.push(response);
-        this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
+        this.showSubmittedScreen = true;
+        //this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
