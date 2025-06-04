@@ -10,6 +10,7 @@ export class Competition {
     title!: string;
     active!: false;
     expiry!: Date;
+    open!: false;
     difficultyLevel!: string;
     currentUserHasSubmitted!: boolean; // Indica se o usuário atual já enviou uma submissão
     timeLimit!: number; // Tempo atribuído em segundos

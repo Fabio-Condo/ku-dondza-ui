@@ -311,8 +311,12 @@ export class CompetitionQuestionsComponent implements OnInit {
       (response) => {
         this.competition = response;
         this.getQuestionsByCompetitionId(this.competition.id);
-        this.getSubmissionsByCompetitionId(this.competition.id);
-        this.getRankingEntries(this.competition.id);
+        if (this.competition.open) {
+          this.getSubmissionsByCompetitionId(this.competition.id);
+        }
+        if (!this.competition.open) {
+          this.getRankingEntries(this.competition.id);
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -810,7 +814,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   goToProfile(userId: string) {
-      this.router.navigate(['/user/profile', userId]);
+    this.router.navigate(['/user/profile', userId]);
   }
 
   public get isAdmin(): boolean {

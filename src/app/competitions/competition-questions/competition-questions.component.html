@@ -125,8 +125,8 @@
                         <div>
                             <p class="meta-label">Status</p>
                             <p class="meta-valor"
-                                [ngClass]="{'ativo': competition.active,'inativo': !competition.active}">
-                                {{ getStatusValue(competition.active) }}
+                                [ngClass]="{'ativo': competition.open,'inativo': !competition.open}">
+                                {{ getStatusValue(competition.open) }}
                             </p>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
 
         <div class="button-container" *ngIf="showStartScreen">
             <!-- Caso 1: Competição ativa E (usuário não logado OU ainda não submeteu) -->
-            <ng-container *ngIf="competition.active && (!isUserLoggedIn || !competition.currentUserHasSubmitted)">
+            <ng-container *ngIf="competition.open && (!isUserLoggedIn || !competition.currentUserHasSubmitted)">
                 <button class="btn-outline" id="add-btn" (click)="onStart()">
                     Iniciar
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -148,7 +148,7 @@
             </ng-container>
 
             <!-- Caso 2: Competição ativa, usuário logado e já submeteu -->
-            <ng-container *ngIf="competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
+            <ng-container *ngIf="competition.open && isUserLoggedIn && competition.currentUserHasSubmitted">
                 <button class="btn-outline" id="add-btn"
                     (click)="onShowUserSubmissionOnly(loggedUser.id); disableEditing = true">
                     Ver sua submissão (sem correção)
@@ -161,7 +161,7 @@
             </ng-container>
 
             <!-- Caso 3: Competição encerrada, usuário logado e disabled se nao submeteu, enabled se submeteu -->
-            <ng-container *ngIf="!competition.active && isUserLoggedIn">
+            <ng-container *ngIf="!competition.open && isUserLoggedIn">
                 <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionAndCorrection(loggedUser.id)"
                     [disabled]="!competition.currentUserHasSubmitted">
                     Ver sua submissão (com correção)
@@ -174,7 +174,7 @@
             </ng-container>
 
             <!-- Caso 4: Competição encerrada, usuário NÃO logado -->
-            <ng-container *ngIf="!competition.active && !isUserLoggedIn">
+            <ng-container *ngIf="!competition.open && !isUserLoggedIn">
                 <button class="btn-outline" id="add-btn" (click)="onStart()">
                     Ver questões avaliadas
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -188,7 +188,7 @@
 
 
         <!-- Submissions Section -->
-        <div class="submissions-card" *ngIf="showStartScreen  && competition.active">
+        <div class="submissions-card" *ngIf="showStartScreen  && competition.open">
             <h2 class="section-title">Submissões</h2>
             <p class="submissions-count">{{ totalRecordSubmissions }} submissões nesta competição</p>
 
@@ -204,13 +204,13 @@
                     </div>
 
                     <!-- Competição ativa -->
-                    <button *ngIf="competition.active" class="btn-outline"
+                    <button *ngIf="competition.open" class="btn-outline"
                         [disabled]="submission.user.id != loggedUser.id"
                         (click)="onShowUserSubmissionOnly(submission.user.id); disableEditing = true"
                         style="margin-left: 10px;">Ver</button>
 
                     <!-- Competição encerrada -->
-                    <button *ngIf="!competition.active" class="btn-outline"
+                    <button *ngIf="!competition.open" class="btn-outline"
                         (click)="onShowUserSubmissionAndCorrection(submission.user.id)"
                         style="margin-left: 10px;">Ver</button>
 
@@ -228,7 +228,7 @@
         </div>
 
         <!-- Ranking Section -->
-        <div class="submissions-card" *ngIf="showStartScreen && !competition.active">
+        <div class="submissions-card" *ngIf="showStartScreen && !competition.open">
             <h2 class="section-title">Ranking</h2>
             <p class="submissions-count">{{ totalRankingEntries }} submissões nesta competição</p>
 
@@ -243,12 +243,12 @@
                     </div>
 
                     <!-- Competição ativa -->
-                    <button *ngIf="competition.active" class="btn-outline" [disabled]="entrie.userId != loggedUser.id"
+                    <button *ngIf="competition.open" class="btn-outline" [disabled]="entrie.userId != loggedUser.id"
                         (click)="onShowUserSubmissionOnly(entrie.userId); disableEditing = true"
                         style="margin-left: 10px;">Ver</button>
 
                     <!-- Competição encerrada -->
-                    <button *ngIf="!competition.active" class="btn-outline"
+                    <button *ngIf="!competition.open" class="btn-outline"
                         (click)="onShowUserSubmissionAndCorrection(entrie.userId)"
                         style="margin-left: 10px;">Ver</button>
 
@@ -382,7 +382,7 @@
                     <!-- Botão para submeter respostas -->
                     <button class="pagination-btn submit" id="add-btn"
                         (click)="calculateResults(); scrollToTop(); showResultsScreen = true;"
-                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && !competition.active">
+                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && !competition.open">
                         <span>Resultados</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -393,7 +393,7 @@
 
                     <button class="pagination-btn submit" id="add-btn"
                         (click)="submitAnswers(); scrollToTop(); disableEditing = true;"
-                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.active && !competition.currentUserHasSubmitted">
+                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.open && !competition.currentUserHasSubmitted">
                         <span>Submeter</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -403,7 +403,7 @@
                     </button>
 
                     <button class="pagination-btn submit" id="add-btn" (click)="showStartScreen = true; scrollToTop()"
-                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.active && competition.currentUserHasSubmitted">
+                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.open && competition.currentUserHasSubmitted">
                         <span>Volta para tela inicial</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
