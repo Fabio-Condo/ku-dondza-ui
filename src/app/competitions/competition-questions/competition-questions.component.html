@@ -98,7 +98,7 @@
                         </svg>
                         <div>
                             <p class="meta-label">Encerramento</p>
-                            <p class="meta-valor">{{ competition.expiry | date: 'short' }}</p>
+                            <p class="meta-valor">{{ competition.expiry | date:'dd/MM/yyyy HH:mm' }}</p>
                         </div>
                     </div>
 
@@ -124,8 +124,7 @@
                         </svg>
                         <div>
                             <p class="meta-label">Status</p>
-                            <p class="meta-valor"
-                                [ngClass]="{'ativo': competition.open,'inativo': !competition.open}">
+                            <p class="meta-valor" [ngClass]="{'ativo': competition.open,'inativo': !competition.open}">
                                 {{ getStatusValue(competition.open) }}
                             </p>
                         </div>
@@ -194,12 +193,18 @@
 
             <ul class="submissions-list">
                 <li *ngFor="let submission of submissions" class="submission-item">
-                    <img (click)="goToProfile(submission.user.userId)" [src]="submission.user.profileImageUrl" [alt]="submission.user.fullName"
-                        class="submission-user-avatar" />
+                    <img (click)="goToProfile(submission.user.userId)" [src]="submission.user.profileImageUrl"
+                        [alt]="submission.user.fullName" class="submission-user-avatar" />
                     <div class="submission-progress">
-                        <p (click)="goToProfile(submission.user.userId)" class="submission-user-name">{{ submission.user.fullName }}</p>
+                        <p (click)="goToProfile(submission.user.userId)" class="submission-user-name">{{
+                            submission.user.fullName }}</p>
                         <div class="progress-bar">
                             <!--<div class="progress-fill" [style.width.%]="submission.user.markedContentRate.toFixed(1)"></div>-->
+                        </div>
+                        <div class="progress-meta">
+                            <span class="progress-date">
+                                {{ submission.submittedAt | date:'dd/MM/yyyy HH:mm' }}
+                            </span>
                         </div>
                     </div>
 
@@ -234,11 +239,20 @@
 
             <ul class="submissions-list">
                 <li *ngFor="let entrie of rankingEntries" class="submission-item">
-                    <img (click)="goToProfile(entrie.userCode)" [src]="entrie.profileImageUrl" [alt]="entrie.userName" class="submission-user-avatar" />
+                    <img (click)="goToProfile(entrie.userCode)" [src]="entrie.profileImageUrl" [alt]="entrie.userName"
+                        class="submission-user-avatar" />
                     <div class="submission-progress">
                         <p (click)="goToProfile(entrie.userCode)" class="submission-user-name">{{ entrie.userName }}</p>
                         <div class="progress-bar">
                             <div class="progress-fill" [style.width.%]="(entrie.accuracyRate) * 100"></div>
+                        </div>
+                        <div class="progress-meta">
+                            <span class="progress-date">
+                                {{ entrie.submittedAt | date:'dd/MM/yyyy HH:mm' }}
+                            </span>
+                            <span class="progress-rate">
+                                {{ (entrie.accuracyRate * 100) | number:'1.1-1' }}%
+                            </span>
                         </div>
                     </div>
 
