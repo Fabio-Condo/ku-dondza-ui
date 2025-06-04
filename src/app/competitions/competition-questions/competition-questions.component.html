@@ -150,7 +150,7 @@
             <!-- Caso 2: Competição ativa, usuário logado e já submeteu -->
             <ng-container *ngIf="competition.active && isUserLoggedIn && competition.currentUserHasSubmitted">
                 <button class="btn-outline" id="add-btn"
-                    (click)="onShowUserSubmissionOnly(loggedUser); disableEditing = true">
+                    (click)="onShowUserSubmissionOnly(loggedUser.id); disableEditing = true">
                     Ver sua submissão (sem correção)
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -162,7 +162,7 @@
 
             <!-- Caso 3: Competição encerrada, usuário logado e disabled se nao submeteu, enabled se submeteu -->
             <ng-container *ngIf="!competition.active && isUserLoggedIn">
-                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionAndCorrection(loggedUser)"
+                <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionAndCorrection(loggedUser.id)"
                     [disabled]="!competition.currentUserHasSubmitted">
                     Ver sua submissão (com correção)
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -188,16 +188,16 @@
 
 
         <!-- Submissions Section -->
-        <div class="submissions-card" *ngIf="showStartScreen">
+        <div class="submissions-card" *ngIf="showStartScreen  && competition.active">
             <h2 class="section-title">Submissões</h2>
             <p class="submissions-count">{{ totalRecordSubmissions }} submissões nesta competição</p>
 
             <ul class="submissions-list">
                 <li *ngFor="let submission of submissions" class="submission-item">
-                    <img [src]="submission.user.profileImageUrl" [alt]="submission.user.fullName"
+                    <img (click)="goToProfile(submission.user.userId)" [src]="submission.user.profileImageUrl" [alt]="submission.user.fullName"
                         class="submission-user-avatar" />
                     <div class="submission-progress">
-                        <p class="submission-user-name">{{ submission.user.fullName }}</p>
+                        <p (click)="goToProfile(submission.user.userId)" class="submission-user-name">{{ submission.user.fullName }}</p>
                         <div class="progress-bar">
                             <!--<div class="progress-fill" [style.width.%]="submission.user.markedContentRate.toFixed(1)"></div>-->
                         </div>
@@ -206,12 +206,12 @@
                     <!-- Competição ativa -->
                     <button *ngIf="competition.active" class="btn-outline"
                         [disabled]="submission.user.id != loggedUser.id"
-                        (click)="onShowUserSubmissionOnly(submission.user); disableEditing = true"
+                        (click)="onShowUserSubmissionOnly(submission.user.id); disableEditing = true"
                         style="margin-left: 10px;">Ver</button>
 
                     <!-- Competição encerrada -->
                     <button *ngIf="!competition.active" class="btn-outline"
-                        (click)="onShowUserSubmissionAndCorrection(submission.user)"
+                        (click)="onShowUserSubmissionAndCorrection(submission.user.id)"
                         style="margin-left: 10px;">Ver</button>
 
                 </li>
@@ -221,6 +221,44 @@
             <div class="load-more-container">
                 <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreSubmissions()"
                     [disabled]="submissions.length === totalRecordSubmissions && totalRecordSubmissions > 0">
+                    Buscar mais
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Ranking Section -->
+        <div class="submissions-card" *ngIf="showStartScreen && !competition.active">
+            <h2 class="section-title">Ranking</h2>
+            <p class="submissions-count">{{ totalRankingEntries }} submissões nesta competição</p>
+
+            <ul class="submissions-list">
+                <li *ngFor="let entrie of rankingEntries" class="submission-item">
+                    <img (click)="goToProfile(entrie.userCode)" [src]="entrie.profileImageUrl" [alt]="entrie.userName" class="submission-user-avatar" />
+                    <div class="submission-progress">
+                        <p (click)="goToProfile(entrie.userCode)" class="submission-user-name">{{ entrie.userName }}</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" [style.width.%]="(entrie.accuracyRate) * 100"></div>
+                        </div>
+                    </div>
+
+                    <!-- Competição ativa -->
+                    <button *ngIf="competition.active" class="btn-outline" [disabled]="entrie.userId != loggedUser.id"
+                        (click)="onShowUserSubmissionOnly(entrie.userId); disableEditing = true"
+                        style="margin-left: 10px;">Ver</button>
+
+                    <!-- Competição encerrada -->
+                    <button *ngIf="!competition.active" class="btn-outline"
+                        (click)="onShowUserSubmissionAndCorrection(entrie.userId)"
+                        style="margin-left: 10px;">Ver</button>
+
+                </li>
+            </ul>
+
+            <!-- Load-more -->
+            <div class="load-more-container">
+                <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreRankingEntries()"
+                    [disabled]="rankingEntries.length === totalRankingEntries && totalRankingEntries > 0">
                     Buscar mais
                 </button>
             </div>

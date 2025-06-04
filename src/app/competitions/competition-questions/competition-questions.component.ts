@@ -22,6 +22,8 @@ import { SubmissionFilter } from 'src/app/core/interface/SubmissionFilter';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Subscription } from 'rxjs';
+import { RankingDTO } from 'src/app/core/interface/RankingDTO';
+import { RankingFilter } from 'src/app/core/interface/RankingFilter';
 
 
 @Component({
@@ -34,7 +36,6 @@ export class CompetitionQuestionsComponent implements OnInit {
   competition: Competition = new Competition();
   //questions: Question[] = [];
   topics: Topic[] = [];
-  participants: User[] = [];
   submission: Submission = new Submission();
 
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
@@ -43,11 +44,6 @@ export class CompetitionQuestionsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   answers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
-
-  friends: User[] = [];
-  currentPageFriends: number = 1;
-  totalFriendsRecord: number = 0
-  showFriendsDialog: boolean = false;
 
   isUserLoggedIn: boolean = false;
 
@@ -85,6 +81,9 @@ export class CompetitionQuestionsComponent implements OnInit {
   submissions: Submission[] = [];
   totalRecordSubmissions: number = 0;
 
+  rankingEntries: RankingDTO[] = [];
+  totalRankingEntries: number = 0;
+
   user = new User();
   activeLoginTab: number = 1;
   step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
@@ -100,6 +99,12 @@ export class CompetitionQuestionsComponent implements OnInit {
 
 
   submissionFilter: SubmissionFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
+
+  rankingFilter: RankingFilter = {
     page: -1,
     itemsPerPage: 2,
     sort: 'id,asc',
@@ -169,8 +174,8 @@ export class CompetitionQuestionsComponent implements OnInit {
     )
   }
 
-  onShowUserSubmissionOnly(participante: User) {
-    this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
+  onShowUserSubmissionOnly(userId: number) {
+    this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
         this.submittedAnswers = this.submission.answers;
@@ -192,8 +197,8 @@ export class CompetitionQuestionsComponent implements OnInit {
     );
   }
 
-  onShowUserSubmissionAndCorrection(participante: User) {
-    this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
+  onShowUserSubmissionAndCorrection(userId: number) {
+    this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
         this.submittedAnswers = this.submission.answers;
@@ -255,6 +260,28 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.getSubmissionsByCompetitionId(this.competition.id);
   }
 
+  getRankingEntries(competitionId: number): void {
+    this.loadingMessage = "Buscando o ranking..."
+    this.showLoading = true;
+    this.rankingFilter.page++;
+    this.submissionService.getRanking(competitionId, this.rankingFilter).subscribe(
+
+      (dados: IApiResponse<RankingDTO>) => {
+        this.rankingEntries = [...this.rankingEntries, ...dados.content];
+        this.totalRankingEntries = dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onGetMoreRankingEntries(): void {
+    this.getRankingEntries(this.competition.id);
+  }
+
   getSubmissionByUserAndCompetition(participante: User) {
     this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
       (response) => {
@@ -285,9 +312,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.competition = response;
         this.getQuestionsByCompetitionId(this.competition.id);
         this.getSubmissionsByCompetitionId(this.competition.id);
-        //if (this.competition.isParticipant && this.competition.status == 'FINISHED') {
-        //  this.getSubmissionByUserAndCompetition(this.loggedUser);
-        //}
+        this.getRankingEntries(this.competition.id);
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -782,6 +807,10 @@ export class CompetitionQuestionsComponent implements OnInit {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  goToProfile(userId: string) {
+      this.router.navigate(['/user/profile', userId]);
   }
 
   public get isAdmin(): boolean {
