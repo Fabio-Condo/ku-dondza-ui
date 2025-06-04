@@ -74,7 +74,7 @@ export class CompetitionService {
 
     update(competition: Competition): Observable<Competition> {
 
-        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, { });
+        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, {});
     }
 
     excluir(id: number): Observable<void> {

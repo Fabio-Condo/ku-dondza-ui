@@ -46,47 +46,19 @@ export class CompetitionsComponent implements OnInit {
 
   activeTab: number = 1;
 
-  totalRegistrosParticipants: number = 0
-  totalRegistrosParticipantRequests: number = 0
-
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   filtro: CompetitionFilter = {
     page: 0,
     itemsPerPage: 5,
-    sort: 'id,asc'
+    sort: 'id,desc'
   };
-
-  filtroParticipants: IUserFilter = {
-    page: -1,
-    itemsPerPage: 2,
-    sort: 'id,asc',
-  }
-
-  filtroParticipantRequests: IUserFilter = {
-    page: -1,
-    itemsPerPage: 2,
-    sort: 'id,asc',
-  }
 
   difficultyLevels = [
     { label: 'EASY', value: 'EASY' },
     { label: 'MEDIUM', value: 'MEDIUM' },
     { label: 'HARD', value: 'HARD' },
-  ];
-
-  competitionStatuses = [
-    { label: 'PLANEANDO', value: 'PLANNING' },
-    { label: 'EM ANDAMENTO', value: 'ONGOING' },
-    { label: 'FINALIZADO', value: 'FINISHED' },
-    { label: 'CANCELEDO', value: 'CANCELED' }
-  ];
-
-  positions = [
-    { label: '1º lugar', value: 'FIRST_PLACE' },
-    { label: '2º lugar', value: 'SECOND_PLACE' },
-    { label: '3º lugar', value: 'THIRD_PLACE' }
   ];
 
   @ViewChild('tabela') grid: any;
