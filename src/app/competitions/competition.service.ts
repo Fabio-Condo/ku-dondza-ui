@@ -72,13 +72,9 @@ export class CompetitionService {
         return this.http.post<Competition>(this.host, competition, { params });
     }
 
-    update(competition: Competition, topicIds: number[], generateQuestions: boolean): Observable<Competition> {
+    update(competition: Competition): Observable<Competition> {
 
-        const params = new HttpParams()
-            .set('generateQuestions', generateQuestions)
-            .set('topicIds', topicIds.join(','));
-
-        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, { params });
+        return this.http.put<Competition>(`${this.host}/${competition.id}`, competition, { });
     }
 
     excluir(id: number): Observable<void> {

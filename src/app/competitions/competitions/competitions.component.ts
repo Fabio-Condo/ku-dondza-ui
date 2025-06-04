@@ -32,8 +32,6 @@ export class CompetitionsComponent implements OnInit {
   isDropdownOpen: boolean = false;
   displayModalFilter: boolean = false;
 
-  generateQuestions: boolean = false;
-
   // Dados das competições
   competitions: Competition[] = [];
   competition: Competition = new Competition();
@@ -116,10 +114,6 @@ export class CompetitionsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  toggleGenerateQuesions(): void {
-    this.generateQuestions = !this.generateQuestions;
-  }
-
   get editing() {
     return Boolean(this.competition.id);
   }
@@ -150,8 +144,7 @@ export class CompetitionsComponent implements OnInit {
 
   update(competitionForm: NgForm) {
     this.showLoading = true;
-    const selectedTopicIds = this.getSelectedTopicIds();
-    this.competitionService.update(this.competition, selectedTopicIds, this.generateQuestions).subscribe(
+    this.competitionService.update(this.competition).subscribe(
       (response) => {
         this.competition = response;
         this.showLoading = false;
@@ -252,22 +245,6 @@ export class CompetitionsComponent implements OnInit {
         });
         this.totalRegistros = data.totalElements;
         this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  getTopicsByCompetitionId(competitionId: number): void {
-    this.competitionService.getTopicsByCompetitionId(competitionId).subscribe(
-      (data: Topic[]) => {
-        // Mapear os tópicos e adicionar o estado 'selected'
-        this.topics = data.map(topic => ({
-          ...topic,
-          selected: topic.selected = true
-        }));
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -399,7 +376,6 @@ export class CompetitionsComponent implements OnInit {
   // Métodos para abrir o modal
   onUpdateCompetition(competition: Competition): void {
     this.competition = competition;
-    this.getTopicsByCompetitionId(competition.id);
     this.displayModalSave = true;
   }
 

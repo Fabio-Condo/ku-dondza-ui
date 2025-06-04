@@ -75,9 +75,9 @@
                                 class="fas fa-circle"></i> {{getStatusValue(competition.open)}}</span>
 
                         <span *ngIf="competition.currentUserHasSubmitted" class="status-badge status-submitted"
-                            style="margin-left: 5px;"><i class="fas fa-circle"></i> Fizeste a submissão</span>
+                            style="margin-left: 5px;"><i class="fas fa-circle"></i> Fez a submissão</span>
                         <span *ngIf="!competition.currentUserHasSubmitted && isUserLoggedIn" class="status-badge status-not-submitted"
-                            style="margin-left: 5px;"><i class="fas fa-circle"></i> Não fizeste a submissão</span>
+                            style="margin-left: 5px;"><i class="fas fa-circle"></i> Não fez a submissão</span>
                     </div>
 
                     <div class="quiz-status">
@@ -217,13 +217,7 @@
                     [(ngModel)]="competition.title">
             </div>
 
-            <div class="toggle-container">
-                <label for="generateQuestions">Modificar tópicos e questões</label>
-                <input id="generateQuestions" type="checkbox" [checked]="generateQuestions"
-                    (change)="toggleGenerateQuesions()" />
-            </div>
-
-            <div class="form-group" *ngIf="generateQuestions">
+            <div class="form-group" *ngIf="!editing">
                 <label for="difficultyLevel">Nivel de dificuldade</label>
                 <select id="difficultyLevel" [(ngModel)]="competition.difficultyLevel" name="difficultyLevel" required>
                     <option value="" disabled selected>Selecione o nivel</option>
@@ -231,11 +225,11 @@
                 </select>
             </div>
 
-            <div class="form-group" *ngIf="generateQuestions">
+            <div class="form-group" *ngIf="!editing">
                 <label for="subject">Disciplina</label>
                 <select id="subject" [(ngModel)]="competition.subject.id"
                     (change)="getTopicsBySubjectId(competition.subject.id)"
-                    [disabled]="showLoading && generateQuestions" name="subject" required>
+                    [disabled]="showLoading" name="subject" required>
                     <option value="" disabled selected>Selecione a disciplina</option>
                     <option *ngFor="let subject of subjects" [ngValue]="subject.id">
                         {{ subject.name }}
@@ -243,7 +237,7 @@
                 </select>
             </div>
 
-            <div class="form-group" *ngIf="generateQuestions">
+            <div class="form-group" *ngIf="competition.subject.id && !editing">
                 <label>Selecione os Tópicos</label>
                 <ul class="topics-list">
                     <li *ngFor="let topic of topics" class="topic-item">
