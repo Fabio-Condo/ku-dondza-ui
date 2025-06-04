@@ -185,6 +185,18 @@
             </ng-container>
         </div>
 
+        <div class="ranking-info pending" *ngIf="showStartScreen  && competition.open">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+            </svg>
+
+            <div class="ranking-info-text">
+                <strong>Ranking indisponível no momento.</strong>
+                O ranking e a correção estarão disponíveis após o término da competição em
+                <strong>{{ competition.expiry | date:'dd/MM/yyyy HH:mm' }}</strong>.
+            </div>
+        </div>
 
         <!-- Submissions Section -->
         <div class="submissions-card" *ngIf="showStartScreen  && competition.open">
@@ -231,6 +243,18 @@
             </div>
 
         </div>
+
+        <div class="ranking-info done" *ngIf="showStartScreen && !competition.open">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+            </svg>
+            <div class="ranking-info-text">
+                <strong>Ranking disponível.</strong>
+                A pontuação foi determinada pela taxa de acerto. Em caso de empate, foi considerada a data da submissão.
+            </div>
+        </div>
+
 
         <!-- Ranking Section -->
         <div class="submissions-card" *ngIf="showStartScreen && !competition.open">
