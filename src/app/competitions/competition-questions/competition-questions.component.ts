@@ -163,6 +163,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   submite() {
+    this.showLoading = true;
     this.submission.user = this.loggedUser;
     this.submission.competition = this.competition;
     this.submission.answers = this.submittedAnswers;
@@ -174,6 +175,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.submission = response;
         this.submissions.push(response);
         this.showSubmittedScreen = true;
+        this.showLoading = false;
         //this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
