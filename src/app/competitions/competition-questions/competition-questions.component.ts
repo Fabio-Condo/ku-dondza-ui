@@ -164,6 +164,8 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   submite() {
     this.showLoading = true;
+    this.loadingMessage = "Submetendo respostas..."
+
     this.submission.user = this.loggedUser;
     this.submission.competition = this.competition;
     this.submission.answers = this.submittedAnswers;
