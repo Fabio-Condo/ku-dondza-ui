@@ -227,6 +227,19 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="data">Escolha data e hora:</label>
+                <input type="datetime-local" id="data" name="data" [(ngModel)]="competition.expiry">
+            </div>
+
+            <div class="form-group">
+                <label for="active">Status</label>
+                <select id="active" [(ngModel)]="competition.active" name="active" required>
+                    <option value="" disabled selected>Selecione o status</option>
+                    <option *ngFor="let status of statusOptions" [value]="status.value">{{ status.label }}</option>
+                </select>
+            </div>
+
             <div class="form-group" *ngIf="!editing">
                 <label for="difficultyLevel">Nivel de dificuldade</label>
                 <select id="difficultyLevel" [(ngModel)]="competition.difficultyLevel" name="difficultyLevel" required>

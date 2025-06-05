@@ -55,6 +55,11 @@ export class CompetitionsComponent implements OnInit {
     sort: 'id,desc'
   };
 
+  statusOptions = [
+    { label: 'Ativo', value: true },
+    { label: 'Inativo', value: false },
+  ];
+
   difficultyLevels = [
     { label: 'EASY', value: 'EASY' },
     { label: 'MEDIUM', value: 'MEDIUM' },
