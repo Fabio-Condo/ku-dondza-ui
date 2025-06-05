@@ -8,6 +8,8 @@ import { Question } from '../core/model/Question';
 import { Topic } from '../core/model/Topic';
 import { Competition } from '../core/model/Competition';
 import { CompetitionFilter } from '../core/interface/CompetitionFilter';
+import { UserFilter } from '../core/interface/UserFilter';
+import { User } from '../core/model/User';
 
 
 @Injectable({ providedIn: 'root' })
@@ -109,6 +111,17 @@ export class CompetitionService {
 
     countQuestionsByCompetitionId(competitionId: number): Observable<number> {
         return this.http.get<number>(`${this.host}/${competitionId}/questions/total`, {});
+    }
+
+
+    getAllowedUsersByCompetitionId(competitionId: number, filtro: UserFilter): Observable<IApiResponse<User>> {
+
+        let params = new HttpParams()
+            .set('page', filtro.pagina)
+            .set('sort', filtro.ordenamento)
+            .set('size', filtro.itensPorPagina);
+
+        return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/allowed-users`, { params });
     }
 
 }

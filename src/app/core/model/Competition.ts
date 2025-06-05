@@ -7,11 +7,12 @@ import { User } from "./User";
 export class Competition {
     id!: number;
     competitionId!: string;
-    title!: string;
+    competitionType!: string;
     active!: false;
     expiry!: Date;
     open!: false;
     difficultyLevel!: string;
+    currentUserAllowedToSubmit!: boolean; 
     currentUserHasSubmitted!: boolean; // Indica se o usuário atual já enviou uma submissão
     timeLimit!: number; // Tempo atribuído em segundos
     timeSpent!: number; // Tempo gasto em segundos

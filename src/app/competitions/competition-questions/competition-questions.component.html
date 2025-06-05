@@ -34,8 +34,8 @@
                             <path d="M8 6h2" />
                         </svg>
                         <div>
-                            <p class="meta-label">Titulo</p>
-                            <p class="meta-valor">{{ competition.title }}</p>
+                            <p class="meta-label">Tipo</p>
+                            <p class="meta-valor">{{ getCompetitionTypeValue(competition.competitionType) }}</p>
                         </div>
                     </div>
                     <div class="meta-item">
@@ -136,7 +136,8 @@
         <div class="button-container" *ngIf="showStartScreen">
             <!-- Caso 1: Competição ativa E (usuário não logado OU ainda não submeteu) -->
             <ng-container *ngIf="competition.open && (!isUserLoggedIn || !competition.currentUserHasSubmitted)">
-                <button class="btn-outline" id="add-btn" (click)="onStart()">
+                <button class="btn-outline" id="add-btn" (click)="onStart()"
+                    [disabled]="!competition.currentUserAllowedToSubmit">
                     Iniciar
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -150,7 +151,7 @@
             <ng-container *ngIf="competition.open && isUserLoggedIn && competition.currentUserHasSubmitted">
                 <button class="btn-outline" id="add-btn"
                     (click)="onShowUserSubmissionOnly(loggedUser.id); disableEditing = true">
-                    Ver sua submissão (sem correção)
+                    Ver sua submissão
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -163,7 +164,7 @@
             <ng-container *ngIf="!competition.open && isUserLoggedIn">
                 <button class="btn-outline" id="add-btn" (click)="onShowUserSubmissionAndCorrection(loggedUser.id)"
                     [disabled]="!competition.currentUserHasSubmitted">
-                    Ver sua submissão (com correção)
+                    Ver sua submissão
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -244,6 +245,33 @@
 
         </div>
 
+        <!-- Submissions Section -->
+        <div class="submissions-card" *ngIf="showStartScreen">
+            <h2 class="section-title">Usuários permitidos</h2>
+            <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição</p>
+
+            <ul class="submissions-list">
+                <li *ngFor="let allowedUser of allowedUsers" class="submission-item">
+                    <img (click)="goToProfile(allowedUser.userId)" [src]="allowedUser.profileImageUrl"
+                        [alt]="allowedUser.fullName" class="submission-user-avatar" />
+                    <div class="submission-progress">
+                        <p (click)="goToProfile(allowedUser.userId)" class="submission-user-name">{{
+                            allowedUser.fullName }}</p>
+                    </div>
+
+                </li>
+            </ul>
+
+            <!-- Load-more -->
+            <div class="load-more-container">
+                <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreSubmissions()"
+                    [disabled]="allowedUsers.length === totalRecordAllowedUsers && totalRecordAllowedUsers > 0">
+                    Buscar mais
+                </button>
+            </div>
+
+        </div>
+
         <div class="ranking-info done" *ngIf="showStartScreen && !competition.open">
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -308,7 +336,7 @@
                 <div class="question-card">
 
                     <div class="quiz-header">
-                        <h1 class="title">{{ competition.title }}</h1>
+                        <h1 class="title">{{ getCompetitionTypeValue(competition.competitionType) }}</h1>
                         <button class="quiz-close-btn" (click)="showStartScreen = true;" aria-label="Fechar quiz">
                             <i class="pi pi-times"></i>
                         </button>
@@ -459,7 +487,7 @@
         <div *ngIf="showResultsScreen">
 
             <div class="quiz-header">
-                <h1 class="title">{{ competition.title }}</h1>
+                <h1 class="title">{{ getCompetitionTypeValue(competition.competitionType) }}</h1>
                 <button class="quiz-close-btn" (click)="showStartScreen = true; showResultsScreen = false"
                     aria-label="Fechar quiz">
                     <i class="pi pi-times"></i>

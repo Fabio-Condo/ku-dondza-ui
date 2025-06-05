@@ -24,6 +24,7 @@ import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Subscription } from 'rxjs';
 import { RankingDTO } from 'src/app/core/interface/RankingDTO';
 import { RankingFilter } from 'src/app/core/interface/RankingFilter';
+import { UserFilter } from 'src/app/core/interface/UserFilter';
 
 
 @Component({
@@ -37,6 +38,9 @@ export class CompetitionQuestionsComponent implements OnInit {
   //questions: Question[] = [];
   topics: Topic[] = [];
   submission: Submission = new Submission();
+
+  allowedUsers: User[] = [];
+  totalRecordAllowedUsers: number = 0;
 
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
@@ -97,7 +101,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     sort: 'id,asc'
   };
 
-
   submissionFilter: SubmissionFilter = {
     page: -1,
     itemsPerPage: 2,
@@ -109,6 +112,12 @@ export class CompetitionQuestionsComponent implements OnInit {
     itemsPerPage: 2,
     sort: 'id,asc',
   }
+
+  userFilter: UserFilter = {
+    pagina: -1,
+    itensPorPagina: 2,
+    ordenamento: 'id,asc'
+  };
 
   constructor(
     private ngZone: NgZone,
@@ -317,6 +326,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         if (!this.competition.open) {
           this.getRankingEntries(this.competition.id);
         }
+        this.getAllowedUsersByCompetitionId(this.competition.id);
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -346,6 +356,28 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  getAllowedUsersByCompetitionId(competitionId: number): void {
+    this.loadingMessage = "Buscando participantes permitidos..."
+    this.showLoading = true;
+    this.userFilter.pagina++;
+
+    this.competitionService.getAllowedUsersByCompetitionId(competitionId, this.userFilter).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.allowedUsers = [...this.allowedUsers, ...dados.content];
+        this.totalRecordAllowedUsers = dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onGetMoreAllowedUsers(): void {
+    this.getAllowedUsersByCompetitionId(this.competition.id);
   }
 
   getTopicosFromQuestoes(questoes: Question[]): Topic[] {
@@ -558,6 +590,18 @@ export class CompetitionQuestionsComponent implements OnInit {
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
 
     return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  getCompetitionTypeValue(level: string) {
+    switch (level) {
+      case 'KNOWLEDGE_CUP':
+        return 'Copa do Conhecimento';
+      case 'SCHOOL_LEAGUE':
+        return 'Liga Escolar do Saber';
+      case 'GENIUS_TOURNAMENT':
+        return 'Torneio dos Gênios';
+    }
+    return '';
   }
 
   getDifficultyLevelValue(level: string) {
@@ -804,7 +848,6 @@ export class CompetitionQuestionsComponent implements OnInit {
 
     this.subscriptions.push(sub);
   }
-
 
   setActiveLoginTab(tabIndex: number) {
     this.activeLoginTab = tabIndex;

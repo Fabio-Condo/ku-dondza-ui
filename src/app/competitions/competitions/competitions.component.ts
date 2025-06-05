@@ -61,6 +61,12 @@ export class CompetitionsComponent implements OnInit {
     { label: 'HARD', value: 'HARD' },
   ];
 
+  competitionTypes = [
+    { label: 'Copa do Conhecimento', value: 'KNOWLEDGE_CUP' },
+    { label: 'Liga Escolar do Saber', value: 'SCHOOL_LEAGUE' },
+    { label: 'Torneio dos Gênios', value: 'GENIUS_TOURNAMENT' },
+  ];
+
   @ViewChild('tabela') grid: any;
 
   constructor(
@@ -309,6 +315,18 @@ export class CompetitionsComponent implements OnInit {
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
 
     return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  getCompetitionTypeValue(level: string) {
+    switch (level) {
+      case 'KNOWLEDGE_CUP':
+        return 'Copa do Conhecimento';
+      case 'SCHOOL_LEAGUE':
+        return 'Liga Escolar do Saber';
+      case 'GENIUS_TOURNAMENT':
+        return 'Torneio dos Gênios';
+    }
+    return '';
   }
 
   getDifficultyLevelValue(level: string) {

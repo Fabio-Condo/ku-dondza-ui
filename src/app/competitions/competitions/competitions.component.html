@@ -40,7 +40,8 @@
                     <div class="quiz-header">
                         <div>
                             <span class="badge matematica">{{ competition.subject.name }}</span>
-                            <h2 class="quiz-title">{{ competition.title }}</h2>
+                            <h2 class="quiz-title">{{ getCompetitionTypeValue(competition.competitionType) }}</h2>
+
                             <div class="topic-tags">
                                 <span class="topic-tag" *ngFor="let topic of competition.topics">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -69,15 +70,21 @@
                         </div>
                     </div>
                     <div class="quiz-status">
-                        <span *ngIf="competition.open" class="status-badge status-active"><i
-                                class="fas fa-circle"></i> {{getStatusValue(competition.open)}}</span>
+                        <span *ngIf="competition.open" class="status-badge status-active"><i class="fas fa-circle"></i>
+                            {{getStatusValue(competition.open)}}</span>
                         <span *ngIf="!competition.open" class="status-badge status-inactive"><i
                                 class="fas fa-circle"></i> {{getStatusValue(competition.open)}}</span>
 
                         <span *ngIf="competition.currentUserHasSubmitted" class="status-badge status-submitted"
                             style="margin-left: 5px;"><i class="fas fa-circle"></i> Fez a submissão</span>
-                        <span *ngIf="!competition.currentUserHasSubmitted && isUserLoggedIn" class="status-badge status-not-submitted"
-                            style="margin-left: 5px;"><i class="fas fa-circle"></i> Não fez a submissão</span>
+                        <span
+                            *ngIf="!competition.currentUserHasSubmitted && isUserLoggedIn && competition.currentUserAllowedToSubmit"
+                            class="status-badge status-not-submitted" style="margin-left: 5px;"><i
+                                class="fas fa-circle"></i> Não fez a submissão</span>
+                        <span
+                            *ngIf="!competition.currentUserHasSubmitted && isUserLoggedIn && !competition.currentUserAllowedToSubmit"
+                            class="status-badge status-not-allowed" style="margin-left: 5px;"><i
+                                class="fas fa-circle"></i> Não és permitido a submeter</span>
                     </div>
 
                     <div class="quiz-status">
@@ -211,10 +218,13 @@
         <hr class="header-divider">
 
         <form autocomplete="off" #courseForm="ngForm" (ngSubmit)="save(courseForm)">
+
             <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" ngModel #title="ngModel" required minlength="1"
-                    [(ngModel)]="competition.title">
+                <label for="competitionType">Tipo de competição</label>
+                <select id="competitionType" [(ngModel)]="competition.competitionType" name="competitionType" required>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option *ngFor="let type of competitionTypes" [value]="type.value">{{ type.label }}</option>
+                </select>
             </div>
 
             <div class="form-group" *ngIf="!editing">
@@ -228,8 +238,8 @@
             <div class="form-group" *ngIf="!editing">
                 <label for="subject">Disciplina</label>
                 <select id="subject" [(ngModel)]="competition.subject.id"
-                    (change)="getTopicsBySubjectId(competition.subject.id)"
-                    [disabled]="showLoading" name="subject" required>
+                    (change)="getTopicsBySubjectId(competition.subject.id)" [disabled]="showLoading" name="subject"
+                    required>
                     <option value="" disabled selected>Selecione a disciplina</option>
                     <option *ngFor="let subject of subjects" [ngValue]="subject.id">
                         {{ subject.name }}
@@ -267,6 +277,14 @@
         </div>
 
         <form>
+            <div class="form-group">
+                <label for="competitionType">Tipo de competição</label>
+                <select id="competitionType" [(ngModel)]="filtro.competitionType" name="competitionType" required>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option *ngFor="let type of competitionTypes" [value]="type.value">{{ type.label }}</option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="difficultyLevel">Nivel de dificuldade</label>
                 <select id="difficultyLevel" [(ngModel)]="filtro.difficultyLevel" (change)="findAll()"
