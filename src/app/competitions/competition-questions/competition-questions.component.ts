@@ -36,7 +36,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   competition: Competition = new Competition();
   //questions: Question[] = [];
-  topics: Topic[] = [];
+  //topics: Topic[] = [];
   submission: Submission = new Submission();
 
   allowedUsers: User[] = [];
@@ -325,15 +325,11 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.competitionService.getCompetitionByCompetitionId(competitionId, this.loggedUser.id).subscribe(
       (response) => {
         this.competition = response;
-        this.getQuestionsByCompetitionId(this.competition.id);
-        if (this.competition.open) {
-          this.getSubmissionsByCompetitionId(this.competition.id);
-        }
-        if (!this.competition.open) {
-          this.getRankingEntries(this.competition.id);
-        }
+        this.competition.topics = this.getTopicosFromQuestoes(this.competition.questions);
+        this.getSubmissionsByCompetitionId(this.competition.id);
+        this.getRankingEntries(this.competition.id);
         this.getAllowedUsersByCompetitionId(this.competition.id);
-        if(!this.competition.open){
+        if (!this.competition.open) {
           this.activeTabButton = "ranking";
         }
         this.showLoading = false;
@@ -344,24 +340,6 @@ export class CompetitionQuestionsComponent implements OnInit {
         } else {
           this.sendErrorNotification(errorResponse.error.message);
         }
-        this.showLoading = false;
-      }
-    );
-  }
-
-  getQuestionsByCompetitionId(competitionId: number): void {
-    this.showLoading = true;
-    this.filtro.page = this.currentPage - 1;
-    this.competitionService.getQuestionsByCompetitionId(competitionId, this.filtro).subscribe(
-      (dados: IApiResponse<Question>) => {
-        //this.questions = dados.content;
-        this.competition.questions = dados.content;
-        this.topics = this.getTopicosFromQuestoes(dados.content);
-        this.showLoading = false;
-        this.renderMathExpressions();
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
     );

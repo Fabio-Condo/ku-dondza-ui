@@ -59,7 +59,7 @@
                         </svg>
                         <div>
                             <p class="meta-label">Tópicos</p>
-                            <p class="meta-valor">{{ competition.totalTopics }}</p>
+                            <p class="meta-valor">{{ competition.topics.length }}</p>
                         </div>
                     </div>
 
@@ -254,7 +254,7 @@
         </div>
 
         <!-- Submissions Section -->
-        <div class="submissions-card" *ngIf="showStartScreen && competition.open && activeTabButton === 'submissions'">
+        <div class="submissions-card" *ngIf="showStartScreen && activeTabButton === 'submissions'">
             <h2 class="section-title">Submissões</h2>
             <p class="submissions-count">{{ totalRecordSubmissions }} submissões nesta competição</p>
 
@@ -300,48 +300,64 @@
         </div>
 
         <!-- Ranking Section -->
-        <div class="submissions-card" *ngIf="showStartScreen && !competition.open && activeTabButton === 'ranking'">
-            <h2 class="section-title">Ranking</h2>
-            <p class="submissions-count">{{ totalRankingEntries }} submissões nesta competição</p>
+        <div class="submissions-card" *ngIf="showStartScreen && activeTabButton === 'ranking'">
+            <div *ngIf="!competition.open">
+                <h2 class="section-title">Ranking</h2>
+                <p class="submissions-count">{{ totalRankingEntries }} submissões nesta competição</p>
 
-            <ul class="submissions-list">
-                <li *ngFor="let entrie of rankingEntries" class="submission-item">
-                    <img (click)="goToProfile(entrie.userCode)" [src]="entrie.profileImageUrl" [alt]="entrie.userName"
-                        class="submission-user-avatar" />
-                    <div class="submission-progress">
-                        <p (click)="goToProfile(entrie.userCode)" class="submission-user-name">{{ entrie.userName }}</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" [style.width.%]="(entrie.accuracyRate) * 100"></div>
+                <ul class="submissions-list">
+                    <li *ngFor="let entrie of rankingEntries" class="submission-item">
+                        <img (click)="goToProfile(entrie.userCode)" [src]="entrie.profileImageUrl"
+                            [alt]="entrie.userName" class="submission-user-avatar" />
+                        <div class="submission-progress">
+                            <p (click)="goToProfile(entrie.userCode)" class="submission-user-name">{{ entrie.userName }}
+                            </p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" [style.width.%]="(entrie.accuracyRate) * 100"></div>
+                            </div>
+                            <div class="progress-meta">
+                                <span class="progress-date">
+                                    {{ entrie.submittedAt | date:'dd/MM/yyyy HH:mm' }}
+                                </span>
+                                <span class="progress-rate">
+                                    {{ (entrie.accuracyRate * 100) | number:'1.1-1' }}%
+                                </span>
+                            </div>
                         </div>
-                        <div class="progress-meta">
-                            <span class="progress-date">
-                                {{ entrie.submittedAt | date:'dd/MM/yyyy HH:mm' }}
-                            </span>
-                            <span class="progress-rate">
-                                {{ (entrie.accuracyRate * 100) | number:'1.1-1' }}%
-                            </span>
-                        </div>
-                    </div>
 
-                    <!-- Competição ativa -->
-                    <button *ngIf="competition.open" class="btn-outline" [disabled]="entrie.userId != loggedUser.id"
-                        (click)="onShowUserSubmissionOnly(entrie.userId); disableEditing = true"
-                        style="margin-left: 10px;">Ver</button>
+                        <!-- Competição ativa -->
+                        <button *ngIf="competition.open" class="btn-outline" [disabled]="entrie.userId != loggedUser.id"
+                            (click)="onShowUserSubmissionOnly(entrie.userId); disableEditing = true"
+                            style="margin-left: 10px;">Ver</button>
 
-                    <!-- Competição encerrada -->
-                    <button *ngIf="!competition.open" class="btn-outline"
-                        (click)="onShowUserSubmissionAndCorrection(entrie.userId)"
-                        style="margin-left: 10px;">Ver</button>
+                        <!-- Competição encerrada -->
+                        <button *ngIf="!competition.open" class="btn-outline"
+                            (click)="onShowUserSubmissionAndCorrection(entrie.userId)"
+                            style="margin-left: 10px;">Ver</button>
 
-                </li>
-            </ul>
+                    </li>
+                </ul>
 
-            <!-- Load-more -->
-            <div class="load-more-container">
-                <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreRankingEntries()"
-                    [disabled]="rankingEntries.length === totalRankingEntries && totalRankingEntries > 0">
-                    Buscar mais
-                </button>
+                <!-- Load-more -->
+                <div class="load-more-container">
+                    <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreRankingEntries()"
+                        [disabled]="rankingEntries.length === totalRankingEntries && totalRankingEntries > 0">
+                        Buscar mais
+                    </button>
+                </div>
+            </div>
+
+            <div class="ranking-info pending" *ngIf="competition.open">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+                </svg>
+
+                <div class="ranking-info-text">
+                    <strong>Ranking e correção indisponíveis no momento.</strong>
+                    O ranking e a correção estarão disponíveis após o término da competição em
+                    <strong>{{ competition.expiry | date:'dd/MM/yyyy HH:mm' }}</strong>.
+                </div>
             </div>
 
         </div>
