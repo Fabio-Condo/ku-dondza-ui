@@ -186,6 +186,7 @@
             </ng-container>
         </div>
 
+        <!--
         <div class="ranking-info pending" *ngIf="showStartScreen  && competition.open">
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -199,8 +200,61 @@
             </div>
         </div>
 
+        <div class="ranking-info done" *ngIf="showStartScreen && !competition.open">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+            </svg>
+            <div class="ranking-info-text">
+                <strong>Ranking e correção disponíveis.</strong>
+                A pontuação foi determinada pela taxa de acerto. Em caso de empate, foi considerada a data da submissão.
+            </div>
+        </div>
+        -->
+
+        <div class="tab-header" *ngIf="showStartScreen">
+            <button class="tab-button" data-tab="settings" (click)="activeTabButton = 'submissions'"
+                [class.active]="activeTabButton === 'submissions'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M12 11v6" />
+                    <path d="M9 14l3-3 3 3" />
+                </svg>
+                Submissões
+            </button>
+            <button class="tab-button" data-tab="analytics" data-tab="analytics" (click)="activeTabButton = 'ranking'"
+                [class.active]="activeTabButton === 'ranking'">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 6V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M16.24 7.76L14.12 9.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M18 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                Ranking
+            </button>
+            <button class="tab-button active" data-tab="dashboard" (click)="activeTabButton = 'allowedUsers'"
+                [class.active]="activeTabButton === 'allowedUsers'">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M20.59 22C20.59 18.13 16.74 15 12 15C7.26 15 3.41 18.13 3.41 22" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M16 12L18 14L22 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                Usuários Permitidos
+            </button>
+        </div>
+
         <!-- Submissions Section -->
-        <div class="submissions-card" *ngIf="showStartScreen  && competition.open">
+        <div class="submissions-card" *ngIf="showStartScreen && competition.open && activeTabButton === 'submissions'">
             <h2 class="section-title">Submissões</h2>
             <p class="submissions-count">{{ totalRecordSubmissions }} submissões nesta competição</p>
 
@@ -246,7 +300,7 @@
         </div>
 
         <!-- Ranking Section -->
-        <div class="submissions-card" *ngIf="showStartScreen && !competition.open">
+        <div class="submissions-card" *ngIf="showStartScreen && !competition.open && activeTabButton === 'ranking'">
             <h2 class="section-title">Ranking</h2>
             <p class="submissions-count">{{ totalRankingEntries }} submissões nesta competição</p>
 
@@ -292,8 +346,8 @@
 
         </div>
 
-                <!-- Submissions Section -->
-        <div class="submissions-card" *ngIf="showStartScreen">
+        <!-- Submissions Section -->
+        <div class="submissions-card" *ngIf="showStartScreen && activeTabButton === 'allowedUsers'">
             <h2 class="section-title">Usuários permitidos</h2>
             <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição</p>
 
@@ -311,23 +365,12 @@
 
             <!-- Load-more -->
             <div class="load-more-container">
-                <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreSubmissions()"
+                <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreAllowedUsers()"
                     [disabled]="allowedUsers.length === totalRecordAllowedUsers && totalRecordAllowedUsers > 0">
                     Buscar mais
                 </button>
             </div>
 
-        </div>
-
-        <div class="ranking-info done" *ngIf="showStartScreen && !competition.open">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
-            </svg>
-            <div class="ranking-info-text">
-                <strong>Ranking e correção disponíveis.</strong>
-                A pontuação foi determinada pela taxa de acerto. Em caso de empate, foi considerada a data da submissão.
-            </div>
         </div>
 
         <div *ngIf="!showStartScreen && !showResultsScreen && !showSubmittedScreen">

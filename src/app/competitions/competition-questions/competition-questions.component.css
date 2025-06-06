@@ -975,6 +975,59 @@ pre {
     border: 1px solid #f1f5f9;
 }
 
+/***********************/
+.tab-header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    background: #f3f4f6;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tab-button {
+    padding: 0.5rem;
+    text-align: center;
+    background: none;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.tab-button:hover::before {
+    opacity: 1;
+}
+
+.tab-button:hover {
+    transform: translateY(-2px);
+}
+
+.tab-button.active {
+    background: white;
+    color: var(--color-black);
+}
+
+.tab-button.active::before {
+    opacity: 0;
+}
+
+.tab-icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    fill: currentColor;
+}
+
+.tab-button:hover .tab-icon {
+    transform: scale(1.1);
+}
+
+.tab-button.active .tab-icon {
+    transform: scale(1.05);
+}
+
 .submissions-count {
     font-size: 0.875rem;
     color: #64748b;
