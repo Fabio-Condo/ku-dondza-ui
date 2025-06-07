@@ -191,6 +191,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onShowUserSubmissionOnly(userId: number) {
     this.showLoading = true;
+    this.loadingMessage = "Carregando as respostas..."
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
@@ -216,6 +217,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onShowUserSubmissionAndCorrection(userId: number) {
     this.showLoading = true;
+    this.loadingMessage = "Carregando as respostas..."
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
