@@ -137,7 +137,7 @@
             <!-- Caso 1: Competição ativa E (usuário não logado OU ainda não submeteu) -->
             <ng-container *ngIf="competition.open && (!isUserLoggedIn || !competition.currentUserHasSubmitted)">
                 <button class="btn-outline" id="add-btn" (click)="onStart()"
-                    [disabled]="!competition.currentUserAllowedToSubmit">
+                    [disabled]="isUserLoggedIn && !competition.currentUserAllowedToSubmit">
                     Iniciar
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
