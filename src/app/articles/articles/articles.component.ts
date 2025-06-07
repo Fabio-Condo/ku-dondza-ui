@@ -429,8 +429,10 @@ export class ArticlesComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
         this.findAll();
         this.showLoading = false;
         this.displayModalLogin = false;
@@ -464,9 +466,10 @@ export class ArticlesComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
-
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
         this.findAll();
         this.showLoading = false;
         this.displayModalLogin = false; this.showLoading = false;
@@ -501,11 +504,10 @@ export class ArticlesComponent implements OnInit {
 
     const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
       next: (response: HttpResponse<User>) => {
-
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
-
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 

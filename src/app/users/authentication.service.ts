@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';   //npm install @auth0/angular-jwt
 import { User } from '../core/model/User';
 
@@ -30,9 +30,9 @@ export class AuthenticationService {
   }
 
   generateOtp(email: string): Observable<void> {
-    return this.http.post<void>(`${this.host}/auth/generate-otp`, email );
+    return this.http.post<void>(`${this.host}/auth/generate-otp`, email);
   }
-  
+
   validateOtp(email: string, otp: string): Observable<HttpResponse<User>> {
     return this.http.post<User>(`${this.host}/auth/validate-otp?email=${email}&otp=${otp}`, {}, {
       observe: 'response'
@@ -54,7 +54,7 @@ export class AuthenticationService {
   public register(user: User): Observable<User> {
     return this.http.post<User>(`${this.host}/user/register`, user);
   }
-  
+
   public logOut(): void {
     this.token = null;
     this.loggedInUsername = null;
@@ -108,4 +108,13 @@ export class AuthenticationService {
     // Verifique se há alguma interseção entre as funções do usuário e as funções necessárias
     return requiredRoles.some(role => this.getUserFromLocalCache().role.includes(role));
   }
+
+  // Para enviar o estado de login, se alguem fez login ou nao, e assim atualizo a navbar
+  private loginStatus = new BehaviorSubject<boolean>(this.isUserLoggedIn());
+  loginStatus$ = this.loginStatus.asObservable();
+
+  notifyLoginStatus(loggedIn: boolean) {
+    this.loginStatus.next(loggedIn);
+  }
+
 }

@@ -133,6 +133,7 @@ export class ProfileComponent implements OnInit {
 
   onLogOut(): void {
     this.authenticationService.logOut();
+    this.authenticationService.notifyLoginStatus(false);
     this.router.navigate(['/home']);
   }
 

@@ -379,7 +379,6 @@ export class CompetitionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-
   getPosition(prize: string): string {
     switch (prize) {
       case 'FIRST_PLACE':

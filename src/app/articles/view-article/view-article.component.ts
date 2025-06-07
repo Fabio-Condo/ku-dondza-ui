@@ -179,8 +179,10 @@ export class ViewArticleComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
         if (this.action === 'Like') {
           this.toggleLike(this.selectedArticle)
         }
@@ -219,9 +221,10 @@ export class ViewArticleComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
-
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
         if (this.action === 'Like') {
           this.toggleLike(this.selectedArticle)
         }
@@ -261,22 +264,21 @@ export class ViewArticleComponent implements OnInit {
 
     const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
       next: (response: HttpResponse<User>) => {
-
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
-
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.ngZone.run(() => {
           this.findById(this.article.articleId);
-        //  if (this.action === 'Like' && !this.article.likedByUser) {
-        //    this.toggleLike(this.article)
-        //  }
-        //  if (this.action === 'Save' && !this.article.savedByUser) {
-        //    this.toggleSaveArticle(this.article);
-        //  }
+          //  if (this.action === 'Like' && !this.article.likedByUser) {
+          //    this.toggleLike(this.article)
+          //  }
+          //  if (this.action === 'Save' && !this.article.savedByUser) {
+          //    this.toggleSaveArticle(this.article);
+          //  }
           this.showLoading = false;
           this.displayModalLogin = false;
         });

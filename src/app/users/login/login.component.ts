@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.router.navigateByUrl('/main-panel');
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -109,6 +110,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.router.navigateByUrl('/main-panel');
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -144,6 +146,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.router.navigateByUrl('/main-panel');
       },
       error: (errorResponse: HttpErrorResponse) => {

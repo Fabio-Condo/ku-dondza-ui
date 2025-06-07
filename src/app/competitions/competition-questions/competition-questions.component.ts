@@ -729,10 +729,9 @@ export class CompetitionQuestionsComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        //this.download(this.selectedBook);
 
         this.showLoading = false;
         this.displayModalLogin = false;
@@ -766,10 +765,9 @@ export class CompetitionQuestionsComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        //this.download(this.selectedBook);
 
         this.showLoading = false;
         this.displayModalLogin = false;
@@ -806,13 +804,11 @@ export class CompetitionQuestionsComponent implements OnInit {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.ngZone.run(() => {
-
-          //this.download(this.selectedBook)
-
           this.showLoading = false;
           this.displayModalLogin = false;
         });
