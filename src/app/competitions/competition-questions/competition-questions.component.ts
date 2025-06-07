@@ -190,6 +190,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   onShowUserSubmissionOnly(userId: number) {
+    this.showLoading = true;
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
@@ -204,6 +205,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
         this.showStartScreen = false;
         //this.competition.currentUserHasSubmitted = true;
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -213,6 +215,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   onShowUserSubmissionAndCorrection(userId: number) {
+    this.showLoading = true;
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
@@ -228,6 +231,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
         this.showStartScreen = false;
         //this.competition.currentUserHasSubmitted = true;
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
