@@ -191,7 +191,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onShowUserSubmissionOnly(userId: number) {
     this.showLoading = true;
-    this.loadingMessage = "Carregando as respostas..."
+    this.loadingMessage = "Carregando respostas..."
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
@@ -217,7 +217,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onShowUserSubmissionAndCorrection(userId: number) {
     this.showLoading = true;
-    this.loadingMessage = "Carregando as respostas..."
+    this.loadingMessage = "Carregando respostas..."
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
@@ -260,8 +260,8 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   getSubmissionsByCompetitionId(competitionId: number): void {
-    this.loadingMessage = "Buscando alunos..."
     this.showLoading = true;
+    this.loadingMessage = "Buscando alunos..."
     this.submissionFilter.page++;
     this.submissionService.getSubmissionsByCompetitionId(competitionId, this.submissionFilter).subscribe(
 
@@ -282,8 +282,8 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   getRankingEntries(competitionId: number): void {
-    this.loadingMessage = "Buscando o ranking..."
     this.showLoading = true;
+    this.loadingMessage = "Buscando o ranking..."
     this.rankingFilter.page++;
     this.submissionService.getRanking(competitionId, this.rankingFilter).subscribe(
 
@@ -301,22 +301,6 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onGetMoreRankingEntries(): void {
     this.getRankingEntries(this.competition.id);
-  }
-
-  getSubmissionByUserAndCompetition(participante: User) {
-    this.submissionService.getSubmissionByUserAndCompetition(participante.id, this.competition.id).subscribe(
-      (response) => {
-        this.submission = response;
-        this.submittedAnswers = this.submission.answers;
-        //this.submittedAnswers.forEach(submission => {
-        //  console.log(submission.text);
-        //});
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
   }
 
   getCompetitionByCompetitionId(competitionId: string) {

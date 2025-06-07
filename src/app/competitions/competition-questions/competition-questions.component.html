@@ -301,6 +301,16 @@
 
         <!-- Ranking Section -->
         <div class="submissions-card" *ngIf="showStartScreen && activeTabButton === 'ranking'">
+            
+            <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+                <div class="loading-indicator">
+                    <div class="spinner"></div>
+                    <div class="loading-text">
+                        {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                    </div>
+                </div>
+            </div>
+
             <div *ngIf="!competition.open">
                 <h2 class="section-title">Ranking</h2>
                 <p class="submissions-count">{{ totalRankingEntries }} submissões nesta competição</p>
