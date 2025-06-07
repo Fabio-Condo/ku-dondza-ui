@@ -46,7 +46,6 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-
   onLogIn(): void {
     this.router.navigate(['/login']);
   }

@@ -183,6 +183,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
         this.ngZone.run(() => {
           this.router.navigateByUrl('/main-panel');
         });

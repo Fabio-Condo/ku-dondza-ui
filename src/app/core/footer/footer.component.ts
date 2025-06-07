@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Role } from 'src/app/enum/role.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { User } from '../model/User';
 
 @Component({
   selector: 'app-footer',
@@ -10,6 +11,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 export class FooterComponent implements OnInit {
 
   isUserLoggedIn: boolean = false;
+  loggedUser: User = new User();
 
   constructor(
     private authenticationService: AuthenticationService
@@ -17,6 +19,12 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
   }
 
 }
