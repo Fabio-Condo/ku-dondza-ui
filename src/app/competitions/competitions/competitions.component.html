@@ -30,7 +30,7 @@
             </div>
         </header>
 
-        <button class="fab" [routerLink]="['/quizzes/new/']">
+        <button class="fab" (click)="onAddNewCompetition()"  *ngIf="isUserLoggedIn && isSuperAdmin">
             <i class="pi pi-plus"></i>
         </button>
 

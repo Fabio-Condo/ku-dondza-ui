@@ -364,27 +364,41 @@
 
         <!-- Submissions Section -->
         <div class="submissions-card" *ngIf="showStartScreen && activeTabButton === 'allowedUsers'">
-            <h2 class="section-title">Usuários permitidos</h2>
-            <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição</p>
+            <div
+                *ngIf="competition.competitionType === 'SCHOOL_LEAGUE' || competition.competitionType === 'GENIUS_TOURNAMENT'">
+                <h2 class="section-title">Usuários permitidos</h2>
+                <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição</p>
 
-            <ul class="submissions-list">
-                <li *ngFor="let allowedUser of allowedUsers" class="submission-item">
-                    <img (click)="goToProfile(allowedUser.userId)" [src]="allowedUser.profileImageUrl"
-                        [alt]="allowedUser.fullName" class="submission-user-avatar" />
-                    <div class="submission-progress">
-                        <p (click)="goToProfile(allowedUser.userId)" class="submission-user-name">{{
-                            allowedUser.fullName }}</p>
-                    </div>
+                <ul class="submissions-list">
+                    <li *ngFor="let allowedUser of allowedUsers" class="submission-item">
+                        <img (click)="goToProfile(allowedUser.userId)" [src]="allowedUser.profileImageUrl"
+                            [alt]="allowedUser.fullName" class="submission-user-avatar" />
+                        <div class="submission-progress">
+                            <p (click)="goToProfile(allowedUser.userId)" class="submission-user-name">{{
+                                allowedUser.fullName }}</p>
+                        </div>
 
-                </li>
-            </ul>
+                    </li>
+                </ul>
 
-            <!-- Load-more -->
-            <div class="load-more-container">
-                <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreAllowedUsers()"
-                    [disabled]="allowedUsers.length === totalRecordAllowedUsers && totalRecordAllowedUsers > 0">
-                    Buscar mais
-                </button>
+                <!-- Load-more -->
+                <div class="load-more-container">
+                    <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreAllowedUsers()"
+                        [disabled]="allowedUsers.length === totalRecordAllowedUsers && totalRecordAllowedUsers > 0">
+                        Buscar mais
+                    </button>
+                </div>
+            </div>
+
+            <div class="ranking-info pending" *ngIf="competition.competitionType === 'KNOWLEDGE_CUP'">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+                </svg>
+
+                <div class="ranking-info-text">
+                    <strong>Todos os usuários podem participar,</strong> sem necessidade de convite ou autorização prévia. Basta acessar e submeter suas respostas dentro do prazo.
+                </div>
             </div>
 
         </div>
