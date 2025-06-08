@@ -166,7 +166,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   submite() {
     this.showLoading = true;
-    this.loadingMessage = "Submetendo respostas..."
+    this.loadingMessage = "Submetendo respostas"
 
     this.submission.user = this.loggedUser;
     this.submission.competition = this.competition;
@@ -191,7 +191,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onShowUserSubmissionOnly(userId: number) {
     this.showLoading = true;
-    this.loadingMessage = "Carregando respostas..."
+    this.loadingMessage = "Carregando respostas"
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
@@ -217,7 +217,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onShowUserSubmissionAndCorrection(userId: number) {
     this.showLoading = true;
-    this.loadingMessage = "Carregando respostas..."
+    this.loadingMessage = "Carregando respostas"
     this.submissionService.getSubmissionByUserAndCompetition(userId, this.competition.id).subscribe(
       (response) => {
         this.submission = response;
@@ -261,7 +261,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   getSubmissionsByCompetitionId(competitionId: number): void {
     this.showLoading = true;
-    this.loadingMessage = "Buscando alunos..."
+    this.loadingMessage = "Buscando respostas"
     this.submissionFilter.page++;
     this.submissionService.getSubmissionsByCompetitionId(competitionId, this.submissionFilter).subscribe(
 
@@ -283,7 +283,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   getRankingEntries(competitionId: number): void {
     this.showLoading = true;
-    this.loadingMessage = "Buscando o ranking..."
+    this.loadingMessage = "Buscando o ranking"
     this.rankingFilter.page++;
     this.submissionService.getRanking(competitionId, this.rankingFilter).subscribe(
 
@@ -336,7 +336,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   getAllowedUsersByCompetitionId(competitionId: number): void {
-    this.loadingMessage = "Buscando participantes permitidos..."
+    this.loadingMessage = "Buscando participantes permitidos"
     this.showLoading = true;
     this.userFilter.pagina++;
 

@@ -292,7 +292,7 @@
         <form>
             <div class="form-group">
                 <label for="competitionType">Tipo de competição</label>
-                <select id="competitionType" [(ngModel)]="filtro.competitionType" name="competitionType" required>
+                <select id="competitionType" [(ngModel)]="filtro.competitionType" (change)="findAll()" name="competitionType" required>
                     <option value="" disabled selected>Selecione o tipo</option>
                     <option *ngFor="let type of competitionTypes" [value]="type.value">{{ type.label }}</option>
                 </select>

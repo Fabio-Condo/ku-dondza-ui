@@ -38,6 +38,10 @@ export class CompetitionService {
             params = params.set('subject', filter.subject);
         }
 
+        if (filter.competitionType) {
+            params = params.set('competitionType', filter.competitionType);
+        }
+
         if (filter.difficultyLevel) {
             params = params.set('difficultyLevel', filter.difficultyLevel);
         }

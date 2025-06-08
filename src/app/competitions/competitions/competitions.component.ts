@@ -61,9 +61,9 @@ export class CompetitionsComponent implements OnInit {
   ];
 
   difficultyLevels = [
-    { label: 'EASY', value: 'EASY' },
-    { label: 'MEDIUM', value: 'MEDIUM' },
-    { label: 'HARD', value: 'HARD' },
+    { label: 'Fácil', value: 'EASY' },
+    { label: 'Médio', value: 'MEDIUM' },
+    { label: 'Dificil', value: 'HARD' },
   ];
 
   competitionTypes = [
