@@ -90,7 +90,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     { label: '2', value: 2 },
     { label: '3', value: 3 },
     { label: '4', value: 4 },
-    { label: 'ALL', value: 1000000 },
+    //{ label: 'ALL', value: 1000000 },
 
   ];
 
