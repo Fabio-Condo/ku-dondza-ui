@@ -128,4 +128,12 @@ export class CompetitionService {
         return this.http.get<IApiResponse<User>>(`${this.host}/${competitionId}/allowed-users`, { params });
     }
 
+    addAllowedUserToCompetition(competitionId: number, userId: number): Observable<User> {
+        return this.http.post<User>(`${this.host}/${competitionId}/allowed-users/${userId}`, {});
+    }
+
+    removeAllowedUserFromCompetition(competitionId: number, userId: number): Observable<User> {
+        return this.http.delete<User>(`${this.host}/${competitionId}/allowed-users/${userId}`);
+    }
+
 }

@@ -41,10 +41,10 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   allowedUsers: User[] = [];
   totalRecordAllowedUsers: number = 0;
+  currentPage: number = 1;
 
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
-  currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   answers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
@@ -55,6 +55,10 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   displayModalLogin: boolean = false;
 
+  allUsers: User[] = [];
+  displayModalUsers: boolean = false;
+  selectedUser: User = new User();
+  totalUsers: number = 0;
 
   // Armazenar as respostas do usuário
   //userAnswers: { questionId: number; answerId: number }[] = [];
@@ -119,6 +123,12 @@ export class CompetitionQuestionsComponent implements OnInit {
     pagina: -1,
     itensPorPagina: 2,
     ordenamento: 'id,asc'
+  };
+
+  allUsersFilter: IUserFilter = {
+    page: 0,
+    itemsPerPage: 2,
+    sort: 'id,asc'
   };
 
   constructor(
@@ -355,6 +365,84 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   onGetMoreAllowedUsers(): void {
     this.getAllowedUsersByCompetitionId(this.competition.id);
+  }
+
+  findAllUsers(): void {
+    this.loadingMessage = "Buscando usuários"
+    this.showLoading = true;
+    this.allUsersFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+
+    this.userService.findAll(this.allUsersFilter).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.allUsers = dados.content;
+        this.totalUsers = dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  getMoreUsers(): void {
+    this.loadingMessage = "Buscando usuários"
+    this.showLoading = true;
+    this.allUsersFilter.page++;
+
+    this.userService.findAll(this.allUsersFilter).subscribe(
+      (dados: IApiResponse<User>) => {
+        this.allUsers = [...this.allUsers, ...dados.content];
+        this.totalUsers = dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onGetMoreUsers(): void {
+    this.getMoreUsers();
+  }
+
+  onAddParticipante(): void {
+    this.displayModalUsers = true;
+    this.findAllUsers();
+  }
+
+  addAllowedUserToCompetition(user: User) {
+    this.loadingMessage = "Adicionando usuário"
+    this.showLoading = true;
+    this.competitionService.addAllowedUserToCompetition(this.competition.id, user.id).subscribe(
+      (addedUser: User) => {
+        // Atualiza a lista apenas se o usuário ainda não estiver nela
+        if (!this.allowedUsers.find(u => u.id === addedUser.id)) {
+          this.allowedUsers.push(addedUser);
+        }
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
+  removeAllowedUserFromCompetition(user: User) {
+    this.loadingMessage = "Removendo usuário"
+    this.showLoading = true;
+    this.competitionService.removeAllowedUserFromCompetition(this.competition.id, user.id).subscribe(
+      (removedUser: User) => {
+        this.allowedUsers = this.allowedUsers.filter(u => u.id !== user.id); // correção aqui
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   getTopicosFromQuestoes(questoes: Question[]): Topic[] {

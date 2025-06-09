@@ -366,8 +366,15 @@
         <div class="submissions-card" *ngIf="showStartScreen && activeTabButton === 'allowedUsers'">
             <div
                 *ngIf="competition.competitionType === 'SCHOOL_LEAGUE' || competition.competitionType === 'GENIUS_TOURNAMENT'">
-                <h2 class="section-title">Usuários permitidos</h2>
-                <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição</p>
+                <div class="submissions-header">
+                    <div>
+                        <h2 class="section-title">Usuários permitidos</h2>
+                        <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição
+                        </p>
+                    </div>
+                    <button class="btn-outline" *ngIf="!isSuperAdmin"
+                        (click)="onAddParticipante()">Adicionar</button>
+                </div>
 
                 <ul class="submissions-list">
                     <li *ngFor="let allowedUser of allowedUsers" class="submission-item">
@@ -376,7 +383,14 @@
                         <div class="submission-progress">
                             <p (click)="goToProfile(allowedUser.userId)" class="submission-user-name">{{
                                 allowedUser.fullName }}</p>
+                            <div class="progress-bar">
+                                <!--<div class="progress-fill" [style.width.%]="submission.user.markedContentRate.toFixed(1)"></div>-->
+                            </div>
                         </div>
+                        <!-- Competição encerrada -->
+                        <button class="btn-outline" *ngIf="!isSuperAdmin"
+                            (click)="removeAllowedUserFromCompetition(allowedUser)"
+                            style="margin-left: 10px;">Remover</button>
 
                     </li>
                 </ul>
@@ -397,7 +411,8 @@
                 </svg>
 
                 <div class="ranking-info-text">
-                    <strong>Todos os usuários podem participar,</strong> sem necessidade de convite ou autorização prévia. Basta acessar e submeter suas respostas dentro do prazo.
+                    <strong>Todos os usuários podem participar,</strong> sem necessidade de convite ou autorização
+                    prévia. Basta acessar e submeter suas respostas dentro do prazo.
                 </div>
             </div>
 
@@ -794,6 +809,34 @@
             <div class="signup-link">
                 Já tem uma conta? <a (click)="setActiveLoginTab(1); ">Faça login</a>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalUsers">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Selecione os participantes</h2>
+            <button class="close-button" (click)="displayModalUsers = false">&times;</button>
+        </div>
+
+        <div class="users-container">
+            <div class="user-item" *ngFor="let user of allUsers">
+                <div class="user-avatar">
+                    <img [src]="user.profileImageUrl" [alt]="user.fullName" class="avatar-img">
+                </div>
+                <div class="user-info">
+                    <div class="user-name">{{ user.fullName }}</div>
+                </div>
+                <button class="add-user-btn" (click)="addAllowedUserToCompetition(user)">Adicionar</button>
+            </div>
+        </div>
+
+        <div class="load-more-users-container">
+            <button class="load-more-users-btn" (click)="onGetMoreUsers()"
+                [disabled]="allUsers.length === totalUsers && totalUsers > 0">
+                <span>Carregar mais</span>
+            </button>
         </div>
     </div>
 </div>
