@@ -372,8 +372,7 @@
                         <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição
                         </p>
                     </div>
-                    <button class="btn-outline" *ngIf="isSuperAdmin"
-                        (click)="onAddParticipante()">Adicionar</button>
+                    <button class="btn-outline" *ngIf="isSuperAdmin" (click)="onAddParticipante()">Adicionar</button>
                 </div>
 
                 <ul class="submissions-list">
@@ -821,6 +820,13 @@
         </div>
 
         <div class="users-container">
+
+            <div class="form-group">
+                <label for="fullName">Pesquisa</label>
+                <input type="text" name="fullName" ngModel #fullName="ngModel" placeholder="Nome" required minlength="1"
+                    [(ngModel)]="allUsersFilter.fullName" (ngModelChange)="findAllUsers()">
+            </div>
+
             <div class="user-item" *ngFor="let user of allUsers">
                 <div class="user-avatar">
                     <img [src]="user.profileImageUrl" [alt]="user.fullName" class="avatar-img">
