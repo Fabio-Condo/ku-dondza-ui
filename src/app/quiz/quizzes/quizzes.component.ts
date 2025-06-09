@@ -50,8 +50,8 @@ export class QuizzesComponent implements OnInit {
 
   difficultyLevels = [
     { label: 'Fácil', value: 'EASY' },
-    { label: 'Médio', value: 'MEDIUM' },
-    { label: 'Dificil', value: 'HARD' },
+    //{ label: 'Médio', value: 'MEDIUM' },
+    //{ label: 'Dificil', value: 'HARD' },
   ];
 
   filter: QuizFilter = {

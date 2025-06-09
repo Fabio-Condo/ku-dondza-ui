@@ -82,8 +82,8 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
   difficultyLevels = [
     { label: 'Fácil', value: 'EASY' },
-    { label: 'Médio', value: 'MEDIUM' },
-    { label: 'Dificil', value: 'HARD' },
+    //{ label: 'Médio', value: 'MEDIUM' },
+    //{ label: 'Dificil', value: 'HARD' },
   ];
 
   limitsPerTopic = [

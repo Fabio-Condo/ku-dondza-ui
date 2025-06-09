@@ -83,6 +83,19 @@ export class FaqComponent implements OnInit {
           question: 'Como funciona o ranking?',
           answer: 'O ranking é atualizado em tempo real baseado na pontuação e tempo de conclusão. Você pode acompanhar sua posição e ver os melhores colocados na tabela de classificação.',
           open: false
+        },
+        {
+          question: 'Quais são os tipos de competições disponíveis?',
+          answer: `Atualmente, existem três tipos de competições disponíveis na plataforma:
+
+• **Copa do Conhecimento** – Competição aberta a todos os usuários cadastrados. Qualquer pessoa pode participar sem necessidade de convite ou autorização.
+
+• **Liga Escolar do Saber** – Voltada para alunos de instituições escolares específicas. A participação depende de autorização prévia da organização da competição.
+
+• **Torneio dos Gênios** – Competição especial e seletiva. Apenas usuários convidados ou autorizados podem participar.
+
+Cada tipo de competição pode ter regras e critérios próprios, então leia sempre as instruções específicas antes de participar.`,
+          open: false
         }
       ]
     },
