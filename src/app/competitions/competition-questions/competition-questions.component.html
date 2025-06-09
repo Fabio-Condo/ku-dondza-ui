@@ -470,7 +470,7 @@
                     <br>
 
                     <!-- Input para mostrar dica e solução -->
-                    <div class="tip" *ngIf="!showCorrection"
+                    <div class="tip" *ngIf="competition.open"
                         [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                         <div class="tip-input">
                             <button class="solution-button"
@@ -490,7 +490,7 @@
                         </div>
                     </div>
 
-                    <div class="solution"
+                    <div class="solution" *ngIf="!competition.open"
                         [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                         <div class="solution-input">
                             <button class="solution-button"
