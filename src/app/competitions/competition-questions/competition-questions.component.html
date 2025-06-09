@@ -215,7 +215,7 @@
         <div class="tab-header" *ngIf="showStartScreen">
             <button class="tab-button" data-tab="settings" (click)="activeTabButton = 'submissions'"
                 [class.active]="activeTabButton === 'submissions'">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                     <line x1="3" y1="6" x2="21" y2="6" />
@@ -249,7 +249,7 @@
                     <path d="M16 12L18 14L22 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
-                Usuários Permitidos
+                Permitidos
             </button>
         </div>
 
@@ -390,7 +390,6 @@
                         <button class="btn-outline" *ngIf="isSuperAdmin"
                             (click)="removeAllowedUserFromCompetition(allowedUser)"
                             style="margin-left: 10px;">Remover</button>
-
                     </li>
                 </ul>
 
