@@ -372,7 +372,7 @@
                         <p class="submissions-count">{{ totalRecordAllowedUsers }} usuários permitidos nesta competição
                         </p>
                     </div>
-                    <button class="btn-outline" *ngIf="!isSuperAdmin"
+                    <button class="btn-outline" *ngIf="isSuperAdmin"
                         (click)="onAddParticipante()">Adicionar</button>
                 </div>
 
@@ -388,7 +388,7 @@
                             </div>
                         </div>
                         <!-- Competição encerrada -->
-                        <button class="btn-outline" *ngIf="!isSuperAdmin"
+                        <button class="btn-outline" *ngIf="isSuperAdmin"
                             (click)="removeAllowedUserFromCompetition(allowedUser)"
                             style="margin-left: 10px;">Remover</button>
 
