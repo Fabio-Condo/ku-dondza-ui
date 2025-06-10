@@ -292,7 +292,7 @@
             <!-- Load-more -->
             <div class="load-more-container">
                 <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreSubmissions()"
-                    [disabled]="submissions.length === totalRecordSubmissions && totalRecordSubmissions > 0">
+                    [disabled]="(submissions.length === totalRecordSubmissions && totalRecordSubmissions > 0) || submissions.length === 0">
                     Buscar mais
                 </button>
             </div>
@@ -341,8 +341,8 @@
 
                 <!-- Load-more -->
                 <div class="load-more-container">
-                    <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreRankingEntries()"
-                        [disabled]="rankingEntries.length === totalRankingEntries && totalRankingEntries > 0">
+                    <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreRankingEntries()" [disabled]="(rankingEntries.length === totalRankingEntries && totalRankingEntries > 0) ||
+                        rankingEntries.length === 0">
                         Buscar mais
                     </button>
                 </div>
@@ -395,8 +395,8 @@
 
                 <!-- Load-more -->
                 <div class="load-more-container">
-                    <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreAllowedUsers()"
-                        [disabled]="allowedUsers.length === totalRecordAllowedUsers && totalRecordAllowedUsers > 0">
+                    <button class="btn-load-more" id="load-more-btn" (click)="onGetMoreAllowedUsers()" [disabled]="(allowedUsers.length === totalRecordAllowedUsers && totalRecordAllowedUsers > 0) ||
+                        allowedUsers.length === 0">
                         Buscar mais
                     </button>
                 </div>
