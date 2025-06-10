@@ -30,7 +30,7 @@
             </div>
         </header>
 
-        <button class="fab" (click)="onAddNewCompetition()"  *ngIf="isUserLoggedIn && isSuperAdmin">
+        <button class="fab" (click)="onAddNewCompetition()" *ngIf="isUserLoggedIn && isSuperAdmin">
             <i class="pi pi-plus"></i>
         </button>
 
@@ -43,7 +43,8 @@
                             <h2 class="quiz-title">{{ getCompetitionTypeValue(competition.competitionType) }}</h2>
 
                             <div class="topic-tags">
-                                <span class="topic-tag" *ngFor="let topic of competition.topics">
+                                <span class="topic-tag"
+                                    *ngFor="let topic of showAllTopicsMap[competition.id] ? competition.topics : competition.topics.slice(0, 5)">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path
@@ -53,6 +54,11 @@
                                     </svg>
                                     {{ topic.name }}
                                 </span>
+
+                                <button class="tag-toggle-button" *ngIf="competition.topics.length > 5"
+                                    (click)="toggleTopics(competition.id)">
+                                    {{ showAllTopicsMap[competition.id] ? 'Ver menos tópicos' : 'Ver todos os tópicos' }}
+                                </button>
                             </div>
                         </div>
                         <div>
@@ -292,7 +298,8 @@
         <form>
             <div class="form-group">
                 <label for="competitionType">Tipo de competição</label>
-                <select id="competitionType" [(ngModel)]="filtro.competitionType" (change)="findAll()" name="competitionType" required>
+                <select id="competitionType" [(ngModel)]="filtro.competitionType" (change)="findAll()"
+                    name="competitionType" required>
                     <option value="" disabled selected>Selecione o tipo</option>
                     <option *ngFor="let type of competitionTypes" [value]="type.value">{{ type.label }}</option>
                 </select>

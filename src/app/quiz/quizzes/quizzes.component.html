@@ -40,8 +40,10 @@
                         <div>
                             <span class="badge matematica">{{ quiz.subject.name }}</span>
                             <h2 class="quiz-title">{{ quiz.title }}</h2>
+
                             <div class="topic-tags">
-                                <span class="topic-tag" *ngFor="let topic of quiz.topics">
+                                <span class="topic-tag"
+                                    *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 5)">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path
@@ -51,6 +53,11 @@
                                     </svg>
                                     {{ topic.name }}
                                 </span>
+
+                                <button class="tag-toggle-button" *ngIf="quiz.topics.length > 5"
+                                    (click)="toggleTopics(quiz.id)">
+                                    {{ showAllTopicsMap[quiz.id] ? 'Ver menos tópicos' : 'Ver todos os tópicos' }}
+                                </button>
                             </div>
                         </div>
                         <div>

@@ -34,6 +34,8 @@ export class QuizzesComponent implements OnInit {
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
+  showAllTopicsMap: { [competitionId: number]: boolean } = {};
+
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
   loggedUser: User = new User;
@@ -142,6 +144,10 @@ export class QuizzesComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  toggleTopics(quizId: number): void {
+    this.showAllTopicsMap[quizId] = !this.showAllTopicsMap[quizId];
   }
 
   carregarDisciplinas() {

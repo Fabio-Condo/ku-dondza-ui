@@ -39,6 +39,8 @@ export class CompetitionsComponent implements OnInit {
   topics: Topic[] = [];
   subjects: Subject[] = [];
 
+  showAllTopicsMap: { [competitionId: number]: boolean } = {};
+
   loggedUser: User = new User;
   isUserLoggedIn: boolean = false;
 
@@ -193,10 +195,6 @@ export class CompetitionsComponent implements OnInit {
     this.competitionService.findAll(this.filtro, this.loggedUser.id).subscribe(
       (dados: IApiResponse<Competition>) => {
         this.competitions = dados.content;
-        dados.content.forEach(competition => {
-          //this.countQuestionsByCompetitionId(competition);
-          //this.countParticipantsByCompetitionId(competition);
-        });
         this.totalRegistros = dados.totalElements;
         this.showLoading = false;
       },
@@ -221,11 +219,6 @@ export class CompetitionsComponent implements OnInit {
     this.competitionService.findAll(this.filtro, this.loggedUser.id).subscribe(
       (data: IApiResponse<Competition>) => {
         this.competitions = [...this.competitions, ...data.content];
-
-        data.content.forEach(competition => {
-          //this.countQuestionsByCompetitionId(competition);
-          //this.countParticipantsByCompetitionId(competition);
-        });
         this.totalRegistros = data.totalElements;
         this.showLoading = false;
       },
@@ -234,6 +227,10 @@ export class CompetitionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  toggleTopics(competitionId: number): void {
+    this.showAllTopicsMap[competitionId] = !this.showAllTopicsMap[competitionId];
   }
 
   // Método para carregar as disciplinas
