@@ -57,7 +57,8 @@
 
                                 <button class="tag-toggle-button" *ngIf="competition.topics.length > 5"
                                     (click)="toggleTopics(competition.id)">
-                                    {{ showAllTopicsMap[competition.id] ? 'Ver menos tópicos' : 'Ver todos os tópicos' }}
+                                    {{ showAllTopicsMap[competition.id] ? 'Ver menos tópicos' : 'Ver todos os tópicos'
+                                    }}
                                 </button>
                             </div>
                         </div>
@@ -322,11 +323,13 @@
                 </select>
             </div>
 
+            <!--
             <div class="form-group">
                 <label for="title">Titulo</label>
                 <input type="title" name="title" ngModel #title="ngModel" minlength="1" [(ngModel)]="filtro.title"
                     (ngModelChange)="findAll()">
             </div>
+            -->
 
             <hr class="header-divider">
 

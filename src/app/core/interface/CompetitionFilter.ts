@@ -1,6 +1,5 @@
 export interface CompetitionFilter {
     searchParam?: string;
-    title?: string;
     subject?: number;
     competitionType?: string;
     difficultyLevel?: string;

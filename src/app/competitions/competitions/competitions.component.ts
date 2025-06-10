@@ -356,8 +356,8 @@ export class CompetitionsComponent implements OnInit {
   // Método para limpar campos
   limparCampos() {
     this.filtro.searchParam = "";
-    this.filtro.title = "";
     this.filtro.subject = undefined;
+    this.filtro.competitionType = undefined;
     this.filtro.difficultyLevel = undefined;
     this.filtro.page = 0;
     this.filtro.itemsPerPage = 10;
