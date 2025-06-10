@@ -99,7 +99,8 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   activeTab: number = 1;
 
-  activeTabButton: 'submissions' | 'allowedUsers' | 'ranking' = 'submissions';
+  //activeTabButton: 'submissions' | 'allowedUsers' | 'ranking' = 'submissions';
+  activeTabButton: string = 'submissions';
 
   filtro: QuestionFilter = {
     page: 0,
@@ -326,9 +327,9 @@ export class CompetitionQuestionsComponent implements OnInit {
       (response) => {
         this.competition = response;
         this.competition.topics = this.getTopicosFromQuestoes(this.competition.questions);
-        this.getSubmissionsByCompetitionId(this.competition.id);
         this.getRankingEntries(this.competition.id);
-        this.getAllowedUsersByCompetitionId(this.competition.id);
+        //this.getSubmissionsByCompetitionId(this.competition.id);
+        //this.getAllowedUsersByCompetitionId(this.competition.id);
         if (!this.competition.open) {
           this.activeTabButton = "ranking";
         }
@@ -443,6 +444,22 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  setActiveTab(tab: string) {
+    this.activeTabButton = tab;
+
+    if (tab === 'submissions' && this.submissions.length === 0) {
+      this.getSubmissionsByCompetitionId(this.competition.id);
+    }
+
+    if (tab === 'ranking' && this.rankingEntries.length === 0 && !this.competition.open) {
+      this.getRankingEntries(this.competition.id);
+    }
+
+    if (tab === 'allowedUsers' && this.allowedUsers.length === 0 && (this.competition.competitionType === 'SCHOOL_LEAGUE' || this.competition.competitionType === 'GENIUS_TOURNAMENT')) {
+      this.getAllowedUsersByCompetitionId(this.competition.id);
+    }
   }
 
   getTopicosFromQuestoes(questoes: Question[]): Topic[] {
@@ -637,9 +654,9 @@ export class CompetitionQuestionsComponent implements OnInit {
     }
   }
 
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
-  }
+  //setActiveTab(tabIndex: number) {
+  //  this.activeTab = tabIndex;
+  //}
 
   // Método para rolar a página para o topo
   scrollToTop() {
