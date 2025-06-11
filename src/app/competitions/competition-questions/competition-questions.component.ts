@@ -102,7 +102,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   activeTab: number = 1;
 
   //activeTabButton: 'submissions' | 'allowedUsers' | 'ranking' = 'submissions';
-  activeTabButton: string = 'submissions';
+  activeTabButton: string = 'ranking';
 
   filtro: QuestionFilter = {
     page: 0,
@@ -333,9 +333,9 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.getRankingEntries(this.competition.id);
         //this.getSubmissionsByCompetitionId(this.competition.id);
         //this.getAllowedUsersByCompetitionId(this.competition.id);
-        if (!this.competition.open) {
-          this.activeTabButton = "ranking";
-        }
+        //if (!this.competition.open) {
+        //  this.activeTabButton = "ranking";
+        //}
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -702,6 +702,10 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   getPosition(position: string): string {
     return `${position}º lugar`;
+  }
+
+  getPositionValue(position: number): string {
+    return `${position}º`;
   }
 
   getCompetitionTypeValue(level: string) {
