@@ -235,6 +235,44 @@
             </div>
 
             <div class="form-group">
+                <div class="prizes-container">
+                    <div class="header-section">
+                        <label>Prémios</label>
+                        <a href="javascript:;" class="add-btn" (click)="getReadyNewPrize()">
+                            <i class="pi pi-plus"></i>
+                        </a>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Posição</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let prize of competition.prizes; let rowIndex = index">
+                                    <td>{{ prize.description }}</td>
+                                    <td>{{ getPosition(prize.position!) }}</td>
+                                    <td class="actions">
+                                        <a href="javascript:;" (click)="getReadEditPrize(prize, rowIndex)"
+                                            class="edit-btn">E</a>
+                                        <a href="javascript:;" (click)="removePrize(rowIndex)" class="remove-btn">R</a>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="competition.prizes.length === 0">
+                                    <td colspan="3" class="text-center">Sem prémios</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="data">Escolha data e hora:</label>
                 <input type="datetime-local" id="data" name="data" [(ngModel)]="competition.expiry">
             </div>
@@ -334,6 +372,35 @@
             <hr class="header-divider">
 
             <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
+        </form>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="showPrizeForm && prize">
+
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{editingPrize ? 'Editando' : 'Novo'}}</h2>
+            <button class="close-btn" (click)="showPrizeForm = false">&times;</button>
+        </div>
+
+        <form autocomplete="off" #frmPrize="ngForm" (ngSubmit)="confirmPrize(frmPrize)">
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="description" name="description" ngModel #description="ngModel" required minlength="1"
+                    [(ngModel)]="prize.description" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Position</label>
+                <select id="type" [(ngModel)]="prize.position" name="type" required>
+                    <option *ngFor="let position of positions" [value]="position.value">{{ position.label }}</option>
+                </select>
+            </div>
+
+            <hr class="header-divider">
+
+            <button type="submit" class="submit-button" [disabled]="frmPrize.invalid">Adicionar</button>
         </form>
     </div>
 </div>

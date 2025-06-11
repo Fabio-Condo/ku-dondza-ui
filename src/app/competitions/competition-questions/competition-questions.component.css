@@ -241,7 +241,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px 0;
+    margin: 40px 0;
 }
 
 .btn-start {
@@ -989,6 +989,7 @@ pre {
     background: #f3f4f6;
     padding: 0.25rem;
     border-radius: 0.5rem;
+    margin-top: 4rem;
     margin-bottom: 1rem;
 }
 
@@ -1800,6 +1801,64 @@ pre {
     cursor: not-allowed;
 }
 
+.awards-card {
+    position: sticky;
+    top: 1.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #f1f5f9;
+}
+
+.awards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.award-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.award-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.award-icon.gold {
+    fill: #fbbf24;
+}
+
+.award-icon.silver {
+    fill: #9ca3af;
+}
+
+.award-icon.bronze {
+    fill: #d97706;
+}
+
+.award-info h3 {
+    color: #1a202c;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.award-info p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
 @media (max-width: 900px) {
     .container {
         margin-top: 45px;
@@ -1828,5 +1887,11 @@ pre {
     .tab-icon {
         width: 0.7rem;
         height: 0.7rem;
+    }
+
+    .award-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
     }
 }

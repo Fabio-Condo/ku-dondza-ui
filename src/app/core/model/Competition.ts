@@ -1,3 +1,4 @@
+import { Prize } from "./Prize";
 import { Question } from "./Question";
 import { Subject } from "./Subject";
 import { Submission } from "./Submission";
@@ -12,7 +13,7 @@ export class Competition {
     expiry!: Date;
     open!: false;
     difficultyLevel!: string;
-    currentUserAllowedToSubmit!: boolean; 
+    currentUserAllowedToSubmit!: boolean;
     currentUserHasSubmitted!: boolean; // Indica se o usuário atual já enviou uma submissão
     timeLimit!: number; // Tempo atribuído em segundos
     timeSpent!: number; // Tempo gasto em segundos
@@ -24,6 +25,7 @@ export class Competition {
     topics: Topic[] = [];
     questions: Question[] = [];
     submissions: Submission[] = [];
+    prizes: Prize[] = [];
 
     // Adicionando a propriedade resultsByTopic
     resultsByTopic: {

@@ -15,6 +15,7 @@ import { TopicService } from 'src/app/topics/topicsService.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Role } from 'src/app/enum/role.enum';
+import { Prize } from 'src/app/core/model/Prize';
 
 @Component({
   selector: 'app-competitions',
@@ -48,6 +49,11 @@ export class CompetitionsComponent implements OnInit {
 
   activeTab: number = 1;
 
+  prize?: Prize;
+  prizes: Array<Prize> = [];
+  prizeIndex?: number;
+  showPrizeForm = false;
+
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -72,6 +78,12 @@ export class CompetitionsComponent implements OnInit {
     { label: 'Copa do Conhecimento', value: 'KNOWLEDGE_CUP' },
     { label: 'Liga Escolar do Saber', value: 'SCHOOL_LEAGUE' },
     { label: 'Torneio dos Gênios', value: 'GENIUS_TOURNAMENT' },
+  ];
+
+  positions = [
+    { label: '1º lugar', value: 1 },
+    { label: '2º lugar', value: 2 },
+    { label: '3º lugar', value: 3 }
   ];
 
   @ViewChild('tabela') grid: any;
@@ -233,6 +245,37 @@ export class CompetitionsComponent implements OnInit {
     this.showAllTopicsMap[competitionId] = !this.showAllTopicsMap[competitionId];
   }
 
+  //Prizes
+  getReadyNewPrize() {
+    this.showPrizeForm = true;
+    this.prize = new Prize();
+    this.prizeIndex = this.competition.prizes.length;
+  }
+
+  confirmPrize(frm: NgForm) {
+    this.competition.prizes[this.prizeIndex!] = this.clonePrize(this.prize!);
+    this.showPrizeForm = false;
+    frm.reset();
+  }
+
+  clonePrize(prize: Prize): Prize {
+    return new Prize(prize.id, prize.description, prize.position);
+  }
+
+  get editingPrize() {  // show the title in modal
+    return this.prize && this.prize?.id;
+  }
+
+  removePrize(index: number) {
+    this.competition.prizes.splice(index, 1);
+  }
+
+  getReadEditPrize(prize: Prize, index: number) {
+    this.prize = this.clonePrize(prize);
+    this.showPrizeForm = true;
+    this.prizeIndex = index;
+  }
+
   // Método para carregar as disciplinas
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
@@ -376,17 +419,8 @@ export class CompetitionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-  getPosition(prize: string): string {
-    switch (prize) {
-      case 'FIRST_PLACE':
-        return '1º lugar';
-      case 'SECOND_PLACE':
-        return '2º lugar';
-      case 'THIRD_PLACE':
-        return '3º lugar';
-      default:
-        return `${prize}º lugar`;
-    }
+  getPosition(position: string): string {
+    return `${position}º lugar`;
   }
 
   setActiveTab(tabIndex: number) {

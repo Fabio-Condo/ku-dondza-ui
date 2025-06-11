@@ -186,6 +186,24 @@
             </ng-container>
         </div>
 
+        <div class="awards-card" *ngIf="showStartScreen">
+            <h2 class="section-title">Prémios</h2>
+
+            <div class="awards-grid">
+                <div class="award-item" *ngFor="let prize of competition.prizes"
+                    [ngClass]="getPrizeClass(prize.position!)">
+                    <svg class="award-icon" [ngClass]="getPrizeClass(prize.position!)" viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="7" />
+                        <polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88" />
+                    </svg>
+                    <div class="award-info">
+                        <h3>{{ getPosition(prize.position!) }}</h3>
+                        <p>{{ prize.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="tab-header" *ngIf="showStartScreen">
             <button class="tab-button" data-tab="settings" (click)="setActiveTab('submissions')"
                 [class.active]="activeTabButton === 'submissions'">

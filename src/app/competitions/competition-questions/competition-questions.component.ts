@@ -25,6 +25,8 @@ import { Subscription } from 'rxjs';
 import { RankingDTO } from 'src/app/core/interface/RankingDTO';
 import { RankingFilter } from 'src/app/core/interface/RankingFilter';
 import { UserFilter } from 'src/app/core/interface/UserFilter';
+import { PrizeAssignmentsService } from 'src/app/core/prize-assignments/prize-assignments.service';
+import { PrizeAssignment } from 'src/app/core/model/PrizeAssignment';
 
 
 @Component({
@@ -138,6 +140,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     private competitionService: CompetitionService,
     private submissionService: SubmissionService,
     private userService: UserService,
+    private prizeAssignmentsService: PrizeAssignmentsService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -446,6 +449,20 @@ export class CompetitionQuestionsComponent implements OnInit {
     );
   }
 
+  assignPrize(userId: number) {
+    this.loadingMessage = "Adicionando o prémio"
+    this.showLoading = true;
+    this.prizeAssignmentsService.assignPrize(this.competition.id, userId).subscribe(
+      (prizeAssigned: PrizeAssignment) => {
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
   setActiveTab(tab: string) {
     this.activeTabButton = tab;
 
@@ -672,6 +689,19 @@ export class CompetitionQuestionsComponent implements OnInit {
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
 
     return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  getPrizeClass(position: string | number): string {
+    switch (+position) {
+      case 1: return 'gold';
+      case 2: return 'silver';
+      case 3: return 'bronze';
+      default: return 'honorable';
+    }
+  }
+
+  getPosition(position: string): string {
+    return `${position}º lugar`;
   }
 
   getCompetitionTypeValue(level: string) {
