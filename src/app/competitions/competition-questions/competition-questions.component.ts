@@ -49,7 +49,7 @@ export class CompetitionQuestionsComponent implements OnInit {
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
-  answers: Array<Answer> = [];
+  //answers: Array<Answer> = [];
   currentQuestionIndex: number = 0;
 
   isUserLoggedIn: boolean = false;
@@ -662,7 +662,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     const totalQuestions = this.competition.questions.length;
 
     // Filtra para contar somente as respostas não nulas
-    const answeredCount = this.answers.filter(
+    const answeredCount = this.submittedAnswers.filter(
       a => a.id !== null && a.id !== undefined
     ).length;
 
