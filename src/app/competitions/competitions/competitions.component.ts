@@ -419,7 +419,7 @@ export class CompetitionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-  getPosition(position: string): string {
+  getPosition(position: number): string {
     return `${position}º lugar`;
   }
 

@@ -27,6 +27,7 @@ import { RankingFilter } from 'src/app/core/interface/RankingFilter';
 import { UserFilter } from 'src/app/core/interface/UserFilter';
 import { PrizeAssignmentsService } from 'src/app/core/prize-assignments/prize-assignments.service';
 import { PrizeAssignment } from 'src/app/core/model/PrizeAssignment';
+import { Prize } from 'src/app/core/model/Prize';
 
 
 @Component({
@@ -56,6 +57,12 @@ export class CompetitionQuestionsComponent implements OnInit {
   private subscriptions: Subscription[] = [];
 
   displayModalLogin: boolean = false;
+
+  displayModalAssignPrize: boolean = false;
+  //prizeAssignment: PrizeAssignment = new PrizeAssignment();
+  //prizes: Prize[] = [];
+  selectedPrize: Prize = new Prize();
+  selectedEntry: RankingDTO = new RankingDTO();
 
   allUsers: User[] = [];
   displayModalUsers: boolean = false;
@@ -336,6 +343,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         //if (!this.competition.open) {
         //  this.activeTabButton = "ranking";
         //}
+        //this.prizes = this.competition.prizes;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -449,10 +457,21 @@ export class CompetitionQuestionsComponent implements OnInit {
     );
   }
 
-  assignPrize(userId: number) {
+  onAssignPrize(entry: RankingDTO) {
+    this.selectedEntry = entry;
+    this.displayModalAssignPrize = true;
+  }
+
+  assignPrize() {
+
+    if (this.selectedEntry.position != this.selectedPrize.position) {
+      this.sendErrorNotification("A posição do usuário não corresponde à posição do prémio.");
+      return;
+    }
+
     this.loadingMessage = "Adicionando o prémio"
     this.showLoading = true;
-    this.prizeAssignmentsService.assignPrize(this.competition.id, userId).subscribe(
+    this.prizeAssignmentsService.assignPrize(this.selectedPrize.id!, this.selectedEntry.userId).subscribe(
       (prizeAssigned: PrizeAssignment) => {
         this.showLoading = false;
       },
@@ -700,7 +719,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     }
   }
 
-  getPosition(position: string): string {
+  getPosition(position: number): string {
     return `${position}º lugar`;
   }
 

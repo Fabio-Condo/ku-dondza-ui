@@ -12,10 +12,11 @@ export class PrizeAssignmentsService {
     constructor(private http: HttpClient) { }
 
     assignPrize(prizeId: number, userId: number): Observable<PrizeAssignment> {
-        let params = new HttpParams()
-            .set('prizeId', prizeId)
-            .set('userId', userId);
-        return this.http.post<PrizeAssignment>(`${this.host}/assign`, { params });
+        const params = new HttpParams()
+            .set('prizeId', prizeId.toString())
+            .set('userId', userId.toString());
+
+        return this.http.post<PrizeAssignment>(`${this.host}/assign`, null, { params });
     }
 
 }
