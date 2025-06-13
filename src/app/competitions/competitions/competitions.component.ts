@@ -141,6 +141,7 @@ export class CompetitionsComponent implements OnInit {
 
   update(competitionForm: NgForm) {
     this.showLoading = true;
+    this.competition.timeLimit = this.competition.questions.reduce((sum, question) => sum + question.timeLimit, 0);
     this.competitionService.update(this.competition).subscribe(
       (response) => {
         this.competition = response;
