@@ -419,7 +419,11 @@
                 <div class="question-card">
 
                     <div class="quiz-header">
-                        <h1 class="title">{{ getCompetitionTypeValue(competition.competitionType) }}</h1>
+                        <div>
+                            <h1 class="title">{{ getCompetitionTypeValue(competition.competitionType) }}</h1>
+                            <span *ngIf="submission.id">{{ submission.user.fullName }}</span>
+                            <span *ngIf="!submission.id">{{ loggedUser.fullName }}</span>
+                        </div>
                         <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
                             <i class="pi pi-times"></i>
                         </button>
@@ -573,7 +577,11 @@
         <div *ngIf="showResultsScreen">
 
             <div class="quiz-header">
-                <h1 class="title">{{ getCompetitionTypeValue(competition.competitionType) }}</h1>
+                <div>
+                    <h1 class="title">{{ getCompetitionTypeValue(competition.competitionType) }}</h1>
+                    <span *ngIf="submission.id">{{ submission.user.fullName }}</span>
+                    <span *ngIf="!submission.id">{{ loggedUser.fullName }}</span>
+                </div>
                 <button class="quiz-close-btn" (click)="showStartScreen = true; showResultsScreen = false"
                     aria-label="Fechar quiz">
                     <i class="pi pi-times"></i>

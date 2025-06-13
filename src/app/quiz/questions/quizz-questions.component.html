@@ -222,7 +222,11 @@
         <div class="question-card">
 
           <div class="quiz-header">
-            <h1 class="title">{{ quiz.title }}</h1>
+            <div>
+              <h1 class="title">{{ quiz.title }}</h1>
+              <span *ngIf="quiz.user.id">{{ quiz.user.fullName }}</span>
+              <span *ngIf="!quiz.user.id">{{ loggedUser.fullName }}</span>
+            </div>
             <button class="quiz-close-btn" (click)="showStartScreen = true;" aria-label="Fechar quiz">
               <i class="pi pi-times"></i>
             </button>
@@ -268,7 +272,8 @@
           <br>
 
           <!-- Input para mostrar dica e solução -->
-          <div class="solution" [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+          <div class="solution"
+            [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
             <div class="solution-input">
               <button class="solution-button"
                 (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
