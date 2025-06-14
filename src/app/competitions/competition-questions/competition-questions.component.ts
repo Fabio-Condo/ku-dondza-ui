@@ -262,10 +262,10 @@ export class CompetitionQuestionsComponent implements OnInit {
   onStopCurrentRunningQuiz() {
     this.stopTimer();
     this.scrollToTop();
-    if (this.isUserLoggedIn) {
-      this.submitAnswers();
-      this.showStartScreen = true;
-    }
+    //if (this.isUserLoggedIn) {
+    //  this.submitAnswers();
+    //  this.showStartScreen = true;
+    //}
     this.showSubmittedScreen = false;
     this.showStartScreen = true;
   }
