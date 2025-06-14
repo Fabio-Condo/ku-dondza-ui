@@ -294,7 +294,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.submissionService.add(this.submission, userAnswerIds).subscribe(
       (response) => {
         this.submission = response;
-        this.submissions.push(response);
         this.showSubmittedScreen = true;
         this.showLoading = false;
         //this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
@@ -316,7 +315,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.submissionService.update(this.submission.id, userAnswerIds).subscribe(
       (response) => {
         this.submission = response;
-        this.submissions.push(response);
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
