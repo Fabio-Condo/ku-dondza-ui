@@ -414,7 +414,7 @@
 
         </div>
 
-        <div *ngIf="!showStartScreen && !showResultsScreen && !showSubmittedScreen">
+        <div *ngIf="!showStartScreen && !showResultsScreen">
             <div *ngIf="currentQuestionIndex < competition.questions.length">
                 <div class="question-card">
 
@@ -547,6 +547,7 @@
                         </svg>
                     </button>
 
+                    <!--
                     <button class="pagination-btn submit" id="add-btn"
                         (click)="submitAnswers(); scrollToTop(); disableEditing = true;"
                         *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.open && !competition.currentUserHasSubmitted">
@@ -557,9 +558,10 @@
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </button>
+                    -->
 
                     <button class="pagination-btn submit" id="add-btn" (click)="showStartScreen = true; scrollToTop()"
-                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.open && competition.currentUserHasSubmitted">
+                        *ngIf="(currentQuestionIndex === competition.questions.length - 1) && competition.open">
                         <span>Volta para tela inicial</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -690,31 +692,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Tela de feedback de submissão -->
-        <div *ngIf="showSubmittedScreen" class="confirmation-screen">
-            <div class="submission-status" id="submissionStatus">
-
-                <div class="status-icon submitted" id="statusIcon">
-                    ✓
-                </div>
-
-                <h2 class="status-title" id="statusTitle">Submissão Realizada!</h2>
-
-                <p class="status-description" id="statusDescription">
-                    Sua participação na competição foi enviada com sucesso. Você pode acompanhar o andamento através do
-                    seu painel.
-                </p>
-
-                <div class="button-container">
-                    <button class="btn-outline" style="align-items: center;"
-                        (click)="showStartScreen = true; showSubmittedScreen = false">
-                        Tela inicial
-                    </button>
-                </div>
-
             </div>
         </div>
 

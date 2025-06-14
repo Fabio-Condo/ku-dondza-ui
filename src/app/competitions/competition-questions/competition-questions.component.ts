@@ -84,7 +84,6 @@ export class CompetitionQuestionsComponent implements OnInit {
   showCorrection: boolean = false;
   showStartScreen: boolean = true;
   showResultsScreen: boolean = false;
-  showSubmittedScreen: boolean = false; // nova variável adicionada
 
   // desabilita inputs ou edições
   disableEditing: boolean = false;
@@ -266,7 +265,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     //  this.submitAnswers();
     //  this.showStartScreen = true;
     //}
-    this.showSubmittedScreen = false;
     this.showStartScreen = true;
   }
 
@@ -294,7 +292,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.submissionService.add(this.submission, userAnswerIds).subscribe(
       (response) => {
         this.submission = response;
-        this.showSubmittedScreen = true;
         this.showLoading = false;
         //this.messageService.add({ severity: 'success', detail: 'Sumissão feita com sucesso!' });
       },
