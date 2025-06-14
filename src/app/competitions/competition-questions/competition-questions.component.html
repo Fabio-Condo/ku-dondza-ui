@@ -574,12 +574,12 @@
             </div>
 
             <button class="fab fab-save" (click)="onSave()"
-                *ngIf="submission.user.id == loggedUser.id && competition.open">
+                *ngIf="competition.open">
                 <i class="pi pi-save"></i>
             </button>
 
             <button class="fab fab-disable" (click)="toggleDisableEditing()"
-                *ngIf="submission.user.id == loggedUser.id && competition.open">
+                *ngIf="competition.open">
                 <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
                 <i *ngIf="!disableEditing" class="pi pi-lock"></i>
             </button>
