@@ -321,7 +321,7 @@ export class CompetitionQuestionsComponent implements OnInit {
     )
   }
 
-  toggleDisableEditing(){
+  toggleDisableEditing() {
     this.disableEditing = !this.disableEditing;
   }
 
