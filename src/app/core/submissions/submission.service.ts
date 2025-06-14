@@ -46,6 +46,15 @@ export class SubmissionService {
         return this.http.post<Submission>(`${this.host}`, submission, { params });
     }
 
+    update(submissionId: number, userAnswerIds: any[]): Observable<Submission> {
+
+        const params = new HttpParams()
+            .set('submissionId', submissionId)
+            .set('userAnswerIds', userAnswerIds.join(','));
+
+        return this.http.put<Submission>(`${this.host}`, null, { params });
+    }
+
     getSubmissionByUserAndCompetition(userId: number, competitionId: number): Observable<Submission> {
         return this.http.get<Submission>(`${this.host}/user/${userId}/competition/${competitionId}`);
     }

@@ -262,12 +262,24 @@ export class CompetitionQuestionsComponent implements OnInit {
   onStopCurrentRunningQuiz() {
     this.stopTimer();
     this.scrollToTop();
-    if (this.isUserLoggedIn && !this.competition.currentUserHasSubmitted) {
+    if (this.isUserLoggedIn) {
       this.submitAnswers();
       this.showStartScreen = true;
     }
     this.showSubmittedScreen = false;
     this.showStartScreen = true;
+  }
+
+  get editing() {
+    return Boolean(this.submission.id)
+  }
+
+  onSave() {
+    if (this.editing) {
+      this.update()
+    } else {
+      this.submite()
+    }
   }
 
   submite() {
@@ -281,7 +293,6 @@ export class CompetitionQuestionsComponent implements OnInit {
 
     this.submissionService.add(this.submission, userAnswerIds).subscribe(
       (response) => {
-        this.competition.currentUserHasSubmitted = true;
         this.submission = response;
         this.submissions.push(response);
         this.showSubmittedScreen = true;
@@ -293,6 +304,30 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     )
+  }
+
+  update() {
+    this.showLoading = true;
+    this.loadingMessage = "Atualizando respostas"
+
+    this.submission.answers = this.submittedAnswers;
+    const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
+
+    this.submissionService.update(this.submission.id, userAnswerIds).subscribe(
+      (response) => {
+        this.submission = response;
+        this.submissions.push(response);
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    )
+  }
+
+  toggleDisableEditing(){
+    this.disableEditing = !this.disableEditing;
   }
 
   onShowUserSubmissionOnly(userId: number) {
@@ -315,7 +350,6 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
 
         this.showStartScreen = false;
-        //this.competition.currentUserHasSubmitted = true;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -346,7 +380,6 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
 
         this.showStartScreen = false;
-        //this.competition.currentUserHasSubmitted = true;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -370,7 +403,6 @@ export class CompetitionQuestionsComponent implements OnInit {
 
     this.calculateResults();
     this.showStartScreen = false;
-    //this.competition.currentUserHasSubmitted = true;
   }
 
   getSubmissionsByCompetitionId(competitionId: number): void {
@@ -637,11 +669,15 @@ export class CompetitionQuestionsComponent implements OnInit {
       //this.showResultsScreen = true;
 
       // Salva o quiz, se ainda não foi submetido
-      if (!this.competition.currentUserHasSubmitted) {
-        const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
-        this.submission.timeSpent = elapsedTimeInSeconds;
-        this.submite();
-      }
+      //if (!this.competition.currentUserHasSubmitted) {
+      //  const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
+      //  this.submission.timeSpent = elapsedTimeInSeconds;
+      //  this.submite();
+      //}
+
+      const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
+      this.submission.timeSpent = elapsedTimeInSeconds;
+      this.onSave();
     }
   }
 

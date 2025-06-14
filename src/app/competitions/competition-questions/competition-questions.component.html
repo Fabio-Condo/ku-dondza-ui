@@ -571,6 +571,11 @@
                 </div>
             </div>
 
+            <button class="fab" (click)="toggleDisableEditing()" *ngIf="submission.user.id == loggedUser.id && competition.open">
+                <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
+                <i *ngIf="!disableEditing" class="pi pi-lock"></i>
+            </button>
+
         </div>
 
         <!-- Tela de resultados -->
