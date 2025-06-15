@@ -299,6 +299,22 @@ export class ViewArticleComponent implements OnInit {
     }, 100); // Espera para o botão estar no DOM
   }
 
+  getCategoryTypeLabel(type: string) {
+    switch (type) {
+      case 'MATH':
+        return 'Matemática';
+      case 'SCIENCE':
+        return 'Ciência';
+      case 'HISTORY':
+        return 'História';
+      case 'LANGUAGE':
+        return 'Língua';
+      case 'TECHNOLOGY':
+        return 'Tecnologia';
+    }
+    return '';
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
