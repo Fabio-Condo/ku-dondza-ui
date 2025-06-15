@@ -699,6 +699,34 @@
             font-weight: 500;
         }
 
+        .fab {
+            display: flex;
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .fab-like {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .fab-save {
+            bottom: 84px;
+            color: white;
+            background-color: #06d6a0;
+        }
+
         /* Responsividade */
         @media (max-width: 900px) {
             .container {
@@ -825,6 +853,18 @@
 
         <!-- Conteúdo do Blog -->
         <div class="blog-content" [innerHTML]="article.content"></div>
+
+        <button class="fab fab-like" (click)="onLike(article)" [class.liked]="article.likedByUser">
+            <i class="pi" *ngIf="!article.showLoadingLike"
+                [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
+            <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+        </button>
+
+        <button class="fab fab-save" (click)="onSave(article)" [class.saved]="article.savedByUser">
+                <i class="pi" *ngIf="!article.showLoadingSave"
+                    [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+        </button>
 
         <!-- Seção de Interação (Like e Save) -->
         <div class="interaction-section">
