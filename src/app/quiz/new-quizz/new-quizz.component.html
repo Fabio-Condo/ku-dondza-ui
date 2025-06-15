@@ -147,7 +147,7 @@
               <input type="radio" name="question-{{ questions[currentQuestionIndex].id }}" [value]="answer.id"
                 [checked]="isSelected(questions[currentQuestionIndex].id, answer.id!)"
                 (change)="captureUserAnswer(questions[currentQuestionIndex].id, answer.id!)"
-                [disabled]="showCorrection" />
+                [disabled]="showCorrection || disableEditing" />
               <!--<span>{{ answer.text }}</span>-->
               <span [innerHTML]="getTextoComNegrito(answer.text || '')"></span>
 
@@ -232,6 +232,12 @@
           </button>
         </div>
       </div>
+
+      <button class="fab fab-disable" (click)="toggleDisableEditing()" *ngIf="!showCorrection">
+        <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
+        <i *ngIf="!disableEditing" class="pi pi-lock"></i>
+      </button>
+
     </div>
 
     <button *ngIf="showFinalScreen" class="go-back-btn" routerLink="/quizzes">

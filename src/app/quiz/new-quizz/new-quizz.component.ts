@@ -62,6 +62,9 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
   isUserLoggedIn: boolean = false;
 
+  // desabilita inputs ou edições
+  disableEditing: boolean = false;
+
 
   result: {
     correctAnswers: number;
@@ -288,10 +291,10 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   onStopCurrentRunningQuiz() {
     this.stopTimer();
     this.scrollToTop();
-    if (this.isUserLoggedIn && !this.submited) {
-      this.submitAnswers();
-      this.showFinalScreen = true;
-    }
+    //if (this.isUserLoggedIn && !this.submited) {
+    //  this.submitAnswers();
+    //  this.showFinalScreen = true;
+    //}
     this.router.navigateByUrl('/quizzes');
   }
 
@@ -753,6 +756,10 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  toggleDisableEditing() {
+    this.disableEditing = !this.disableEditing;
   }
 
   getDifficultyLevelValue(level: string) {
