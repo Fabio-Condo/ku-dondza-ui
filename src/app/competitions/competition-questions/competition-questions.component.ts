@@ -190,7 +190,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.updateFormattedTime(); // Atualiza o tempo formatado
       } else {
         this.stopTimer();
-        this.submitAnswers();
+        //this.submitAnswers();
         this.scrollToTop();
         this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
       }
