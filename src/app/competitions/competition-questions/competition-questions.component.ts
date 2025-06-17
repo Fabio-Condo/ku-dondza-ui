@@ -110,13 +110,6 @@ export class CompetitionQuestionsComponent implements OnInit {
   //activeTabButton: 'submissions' | 'allowedUsers' | 'ranking' = 'submissions';
   activeTabButton: string = 'ranking';
 
-  timerSubscription!: Subscription;
-  totalTimeLimit: number = 0;
-  timeLimit: number = 0;
-  formattedTime: string = '00:00'; // Inicializa no formato correto
-  remainingTime: number = 0;   // Tempo restante para o quiz
-  startTime: number = 0; // Armazena o tempo em que o quiz foi iniciado (timestamp)
-
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 105,
@@ -170,72 +163,6 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
-  ngOnDestroy(): void {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();// Cancelar o temporizador e submiter o quiz
-    }
-  }
-
-  startTimer(): void {
-
-    this.timeLimit = this.competition.questions.reduce((sum, question) => sum + question.timeLimit, 0);
-    this.totalTimeLimit = this.competition.questions.reduce((sum, question) => sum + question.timeLimit, 0);
-
-    this.remainingTime = this.timeLimit; // Tempo restante para contagem
-    this.startTime = Date.now(); // Armazenar o tempo de início (timestamp)
-
-    this.timerSubscription = interval(1000).subscribe(() => {
-      if (this.timeLimit > 0) {
-        this.timeLimit--;
-        this.updateFormattedTime(); // Atualiza o tempo formatado
-      } else {
-        this.stopTimer();
-        //this.submitAnswers();
-        this.scrollToTop();
-        this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
-      }
-    });
-  }
-
-  updateFormattedTime(): void {
-    const minutes = Math.floor(this.timeLimit / 60);
-    const seconds = this.timeLimit % 60;
-    this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
-  }
-
-  padZero(value: number): string {
-    return value < 10 ? `0${value}` : `${value}`;
-  }
-
-  stopTimer(): void {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();// Cancelar o temporizador
-    }
-  }
-
-  gettimeLimitValue(type: number) {
-    switch (type) {
-      case 60:
-        return '01:00';
-      case 120:
-        return '02:00';
-      case 180:
-        return '03:00';
-    }
-    return '00:00';
-  }
-
-  formatTime(seconds: number): string {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-
-    // Formata os minutos e segundos para ter 2 dígitos
-    const formattedMinutes = minutes.toString().padStart(2, '0');
-    const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
-
-    return `${formattedMinutes}:${formattedSeconds}`;
-  }
-
   onStart() {
     if (this.isUserLoggedIn) {
       this.start();
@@ -251,25 +178,19 @@ export class CompetitionQuestionsComponent implements OnInit {
   }
 
   start() {
-    this.startTimer();
     this.showStartScreen = false;
     this.showResultsScreen = false;
     this.renderMathExpressions();
     this.renderFunctions();
   }
 
-  onStopCurrentRunningQuiz() {
-    this.stopTimer();
-    this.scrollToTop();
-    //if (this.isUserLoggedIn) {
-    //  this.submitAnswers();
-    //  this.showStartScreen = true;
-    //}
-    this.showStartScreen = true;
-  }
-
   get editing() {
     return Boolean(this.submission.id)
+  }
+
+  onStopCurrentRunningQuiz() {
+    this.scrollToTop();
+    this.showStartScreen = true;
   }
 
   onSave() {
@@ -340,10 +261,6 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.renderFunctions();
         this.scrollToTop();
 
-        const minutes = Math.floor(this.submission.timeSpent / 60);
-        const seconds = this.submission.timeSpent % 60;
-        this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
-
         this.showStartScreen = false;
         this.showLoading = false;
       },
@@ -369,10 +286,6 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.renderFunctions();
         this.calculateResults();
         this.scrollToTop();
-
-        const minutes = Math.floor(this.submission.timeSpent / 60);
-        const seconds = this.submission.timeSpent % 60;
-        this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
 
         this.showStartScreen = false;
         this.showLoading = false;
@@ -647,7 +560,6 @@ export class CompetitionQuestionsComponent implements OnInit {
 
   // Método para submeter as respostas
   submitAnswers() {
-    this.stopTimer();
 
     // Verifica se o usuário fez login
     if (!this.isUserLoggedIn) {
@@ -669,9 +581,6 @@ export class CompetitionQuestionsComponent implements OnInit {
       //  this.submission.timeSpent = elapsedTimeInSeconds;
       //  this.submite();
       //}
-
-      const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
-      this.submission.timeSpent = elapsedTimeInSeconds;
       this.onSave();
     }
   }

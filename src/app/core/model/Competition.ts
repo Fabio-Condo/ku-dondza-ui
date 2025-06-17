@@ -15,7 +15,6 @@ export class Competition {
     difficultyLevel!: string;
     currentUserAllowedToSubmit!: boolean;
     currentUserHasSubmitted!: boolean; // Indica se o usuário atual já enviou uma submissão
-    timeLimit!: number; // Tempo atribuído em segundos
     limitPerTopic!: number;
 
     subject = new Subject();
