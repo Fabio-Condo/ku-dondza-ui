@@ -157,6 +157,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   updateContent() {
+    this.loadingMessage = "Atualizando o conteúdo";
     this.showLoading = true;
     this.onlineCoursesContentService.update(this.onlineCourseContent, this.courseContentFile).subscribe(
       response => {
@@ -172,6 +173,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   addNewContent() {
+    this.loadingMessage = "Adicionando o conteúdo";
     this.showLoading = true;
     this.onlineCoursesContentService.save(this.onlineCourseContent, this.courseContentFile).subscribe(
       response => {
@@ -187,6 +189,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   updateModule() {
+    this.loadingMessage = "Atualizando o módulo";
     this.showLoading = true;
     this.modulo.onlineCourse = this.course;
     this.moduleService.update(this.modulo).subscribe(
@@ -203,6 +206,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   addNewModule() {
+    this.loadingMessage = "Adicionando o módulo";
     this.showLoading = true;
     this.modulo.onlineCourse = this.course;
     this.moduleService.save(this.modulo).subscribe(
@@ -296,7 +300,7 @@ export class OnlineCoursesContentComponent implements OnInit {
   }
 
   getStudentsByCourseId(onlineCourseId: number): void {
-    this.loadingMessage = "Buscando alunos..."
+    this.loadingMessage = "Buscando alunos"
     this.showLoading = true;
     this.filtroStudents.page++;
     this.userCourseService.getEnrolledUsersByCourseId(onlineCourseId, this.filtroStudents).subscribe(
