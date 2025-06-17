@@ -195,4 +195,33 @@ export class UserService {
     return this.http.put<User>(`${this.host}/${userId}/saved-articles/${articleId}/toggle`, {});
   }
 
+  findAllWithPermissionCheck(filtro: IUserFilter, competitionId: number): Observable<IApiResponse<User>> {
+    let params = new HttpParams()
+      .set('page', filtro.page)
+      .set('sort', filtro.sort)
+      .set('size', filtro.itemsPerPage);
+
+    if (filtro.searchParam) {
+      params = params.set('searchParam', filtro.searchParam);
+    }
+
+    if (filtro.fullName) {
+      params = params.set('fullName', filtro.fullName);
+    }
+
+    if (filtro.email) {
+      params = params.set('email', filtro.email);
+    }
+
+    if (filtro.role) {
+      params = params.set('role', filtro.role);
+    }
+
+    if (filtro.userType) {
+      params = params.set('userType', filtro.userType);
+    }
+
+    return this.http.get<IApiResponse<User>>(`${this.host}/with-permission-check/competitions/${competitionId}`, { params });
+  }
+
 }

@@ -19,6 +19,7 @@ export class User {
   public authorities: [];
   public subjectsInterests: Subject[] = [];
   public markedContentRate: number;
+  public allowedUser: boolean;
 
   //public isFriend: boolean = false;
   //public currentUserSentFriendRequest: boolean = false;
@@ -45,6 +46,7 @@ export class User {
     this.plan = '';
     this.authorities = [];
     this.markedContentRate = 0;
+    this.allowedUser = false;
   }
 
 }

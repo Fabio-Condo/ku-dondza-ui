@@ -809,7 +809,7 @@
             <div class="form-group">
                 <label for="fullName">Pesquisa</label>
                 <input type="text" name="fullName" ngModel #fullName="ngModel" placeholder="Nome" required minlength="1"
-                    [(ngModel)]="allUsersFilter.fullName" (ngModelChange)="findAllUsers()">
+                    [(ngModel)]="allUsersFilter.fullName" (ngModelChange)="findAllUsersWithPermissionCheck()">
             </div>
 
             <div class="user-item" *ngFor="let user of allUsers">
@@ -819,12 +819,12 @@
                 <div class="user-info">
                     <div class="user-name">{{ user.fullName }}</div>
                 </div>
-                <button class="add-user-btn" (click)="addAllowedUserToCompetition(user)">Adicionar</button>
+                <button [disabled]="user.allowedUser" class="add-user-btn" (click)="addAllowedUserToCompetition(user)">Adicionar</button>
             </div>
         </div>
 
         <div class="load-more-users-container">
-            <button class="load-more-users-btn" (click)="onGetMoreUsers()"
+            <button class="load-more-users-btn" (click)="onGetMoreUsersWithPermissionCheck()"
                 [disabled]="allUsers.length === totalUsers && totalUsers > 0">
                 <span>Carregar mais</span>
             </button>

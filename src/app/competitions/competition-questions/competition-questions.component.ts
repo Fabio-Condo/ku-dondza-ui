@@ -412,12 +412,12 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.getAllowedUsersByCompetitionId(this.competition.id);
   }
 
-  findAllUsers(): void {
+  findAllUsersWithPermissionCheck(): void {
     this.loadingMessage = "Buscando usuários"
     this.showLoading = true;
     this.allUsersFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
-    this.userService.findAll(this.allUsersFilter).subscribe(
+    this.userService.findAllWithPermissionCheck(this.allUsersFilter, this.competition.id).subscribe(
       (dados: IApiResponse<User>) => {
         this.allUsers = dados.content;
         this.totalUsers = dados.totalElements;
@@ -430,12 +430,12 @@ export class CompetitionQuestionsComponent implements OnInit {
     );
   }
 
-  getMoreUsers(): void {
+  GetMoreUsersWithPermissionCheck(): void {
     this.loadingMessage = "Buscando usuários"
     this.showLoading = true;
     this.allUsersFilter.page++;
 
-    this.userService.findAll(this.allUsersFilter).subscribe(
+    this.userService.findAllWithPermissionCheck(this.allUsersFilter, this.competition.id).subscribe(
       (dados: IApiResponse<User>) => {
         this.allUsers = [...this.allUsers, ...dados.content];
         this.totalUsers = dados.totalElements;
@@ -448,13 +448,13 @@ export class CompetitionQuestionsComponent implements OnInit {
     );
   }
 
-  onGetMoreUsers(): void {
-    this.getMoreUsers();
+  onGetMoreUsersWithPermissionCheck(): void {
+    this.GetMoreUsersWithPermissionCheck();
   }
 
   onAddParticipante(): void {
     this.displayModalUsers = true;
-    this.findAllUsers();
+    this.findAllUsersWithPermissionCheck();
   }
 
   addAllowedUserToCompetition(user: User) {
