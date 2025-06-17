@@ -251,7 +251,8 @@ export class QuestionViewComponent implements OnInit {
   }
 
   getTextoComNegrito(text: string): string {
-    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    return textoComNegrito.replace(/\n/g, '<br>');
   }
 
   public get isAdmin(): boolean {

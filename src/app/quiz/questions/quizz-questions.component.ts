@@ -249,17 +249,19 @@ export class QuizzQuestionsComponent implements OnInit {
 
   renderMathExpressions(): void {
     setTimeout(() => {
-      const questionText = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].text);
-      const solutionText = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].solution);
-
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
-        mathContainer.innerHTML = questionText;
+        mathContainer.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].text);
       }
 
       const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
       if (mathContainerSolution && typeof MathJax !== 'undefined') {
-        mathContainerSolution.innerHTML = solutionText;
+        mathContainerSolution.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].solution);
+      }
+
+      const mathContainerTip = document.getElementById(`math-container-tip-${this.currentQuestionIndex}`);
+      if (mathContainerTip && typeof MathJax !== 'undefined') {
+        mathContainerTip.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].tip);
       }
 
       if (typeof MathJax !== 'undefined') {
@@ -370,8 +372,8 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getTextoComNegrito(text: string): string {
-    if (!text) return '';
-    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    return textoComNegrito.replace(/\n/g, '<br>');
   }
 
   private sendErrorNotification(message: string): void {

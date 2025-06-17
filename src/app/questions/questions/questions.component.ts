@@ -436,8 +436,8 @@ export class QuestionsComponent implements OnInit {
   }
 
   getTextoComNegrito(text: string): string {
-    if (!text) return '';
-    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    return textoComNegrito.replace(/\n/g, '<br>');
   }
 
   limparCampos() {
