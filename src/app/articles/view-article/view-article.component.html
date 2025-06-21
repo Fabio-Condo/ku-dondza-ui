@@ -717,14 +717,14 @@
         }
 
         .fab-like {
-            background-color: #4361ee;
-            color: white;
+            background-color: white;
+            color: #f25c54;
         }
 
         .fab-save {
             bottom: 84px;
-            color: white;
-            background-color: #06d6a0;
+            background-color: white;
+            color: black;
         }
 
         /* Responsividade */
@@ -863,9 +863,9 @@
         </button>
 
         <button class="fab fab-save" (click)="onSave(article)" [class.saved]="article.savedByUser">
-                <i class="pi" *ngIf="!article.showLoadingSave"
-                    [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
-                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+            <i class="pi" *ngIf="!article.showLoadingSave"
+                [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+            <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
         </button>
 
         <!-- Seção de Interação (Like e Save) -->

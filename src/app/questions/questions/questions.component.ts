@@ -132,6 +132,7 @@ export class QuestionsComponent implements OnInit {
       (question) => {
         this.question = question;
         this.showLoading = false;
+        this.findAll();
         this.messageService.add({ severity: 'success', detail: 'Question added successfully' });
         questionForm.reset(); // Reseta o formulário
       },
