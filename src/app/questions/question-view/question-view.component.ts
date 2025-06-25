@@ -250,9 +250,15 @@ export class QuestionViewComponent implements OnInit {
     return '';
   }
 
-  getTextoComNegrito(text: string): string {
-    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    return textoComNegrito.replace(/\n/g, '<br>');
+  getFormattedText(text: string): string {
+    // Negrito: **texto** → <strong>texto</strong>
+    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto* → <em>texto</em>
+    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    // Quebras de linha: \n → <br>
+    return textoFormatado.replace(/\n/g, '<br>');
   }
 
   public get isAdmin(): boolean {

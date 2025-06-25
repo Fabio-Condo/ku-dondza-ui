@@ -251,17 +251,17 @@ export class QuizzQuestionsComponent implements OnInit {
     setTimeout(() => {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
-        mathContainer.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].text);
+        mathContainer.innerHTML = this.getFormattedText(this.quiz.questions[this.currentQuestionIndex].text);
       }
 
       const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
       if (mathContainerSolution && typeof MathJax !== 'undefined') {
-        mathContainerSolution.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].solution);
+        mathContainerSolution.innerHTML = this.getFormattedText(this.quiz.questions[this.currentQuestionIndex].solution);
       }
 
       const mathContainerTip = document.getElementById(`math-container-tip-${this.currentQuestionIndex}`);
       if (mathContainerTip && typeof MathJax !== 'undefined') {
-        mathContainerTip.innerHTML = this.getTextoComNegrito(this.quiz.questions[this.currentQuestionIndex].tip);
+        mathContainerTip.innerHTML = this.getFormattedText(this.quiz.questions[this.currentQuestionIndex].tip);
       }
 
       if (typeof MathJax !== 'undefined') {
@@ -371,9 +371,15 @@ export class QuizzQuestionsComponent implements OnInit {
     return '';
   }
 
-  getTextoComNegrito(text: string): string {
-    const textoComNegrito = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    return textoComNegrito.replace(/\n/g, '<br>');
+  getFormattedText(text: string): string {
+    // Negrito: **texto** → <strong>texto</strong>
+    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto* → <em>texto</em>
+    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    // Quebras de linha: \n → <br>
+    return textoFormatado.replace(/\n/g, '<br>');
   }
 
   private sendErrorNotification(message: string): void {
