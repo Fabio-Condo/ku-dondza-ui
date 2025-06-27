@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from '../model/User';
+import { Role } from 'src/app/enum/role.enum';
 
 @Component({
   selector: 'app-navbar',
@@ -66,6 +67,18 @@ export class NavbarComponent implements OnInit {
 
   showNavButtons() {
     return this.router.url === '/home';
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {

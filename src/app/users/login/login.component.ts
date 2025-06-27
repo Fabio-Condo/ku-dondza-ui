@@ -79,7 +79,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
-        this.router.navigateByUrl('/main-panel');
+        //this.router.navigateByUrl('/main-panel');
+        this.router.navigateByUrl('/quizzes');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -111,7 +112,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
-        this.router.navigateByUrl('/main-panel');
+        //this.router.navigateByUrl('/main-panel');
+        this.router.navigateByUrl('/quizzes');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -147,7 +149,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
-        this.router.navigateByUrl('/main-panel');
+        //this.router.navigateByUrl('/main-panel');
+        this.router.navigateByUrl('/quizzes');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -185,7 +188,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
         this.ngZone.run(() => {
-          this.router.navigateByUrl('/main-panel');
+          //this.router.navigateByUrl('/main-panel');
+          this.router.navigateByUrl('/quizzes');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -199,7 +203,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private checkAuthentication(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/main-panel');
+      //this.router.navigateByUrl('/main-panel');
+      this.router.navigateByUrl('/quizzes');
     }
   }
 

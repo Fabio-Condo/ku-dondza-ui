@@ -119,6 +119,7 @@ export class ProfileComponent implements OnInit {
       this.userService.updateProfilePhoto(this.currentUser.email, this.fileToUpload).subscribe(
         response => {
           this.user = response;
+          this.authenticationService.addUserToLocalCache(response);
         },
         error => {
           console.error('Upload failed', error);
