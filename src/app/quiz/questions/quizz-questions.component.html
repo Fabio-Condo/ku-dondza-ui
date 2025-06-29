@@ -230,6 +230,7 @@
               -->
               <h1 class="title">{{ quiz.user.fullName }}</h1>
               <h1 *ngIf="!quiz.user.id" class="title">{{ quiz.user.fullName }}</h1>
+              <span>{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</span>
             </div>
             <button class="quiz-close-btn" (click)="showStartScreen = true;" aria-label="Fechar quiz">
               <i class="pi pi-times"></i>
