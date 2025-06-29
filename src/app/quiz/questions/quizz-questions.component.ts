@@ -240,7 +240,7 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   startQuiz() {
-    this.showStartScreen = false; // Oculta a tela inicial
+    this.showStartScreen = !this.showStartScreen; // Oculta a tela inicial
     this.currentQuestionIndex = 0; // Começa na primeira questão
     this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
     this.renderFunctions();
