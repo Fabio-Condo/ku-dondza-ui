@@ -459,9 +459,9 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   toggleCorrection() {
-    this.showCorrection = true;
+    this.showCorrection = !this.showCorrection;
     this.currentQuestionIndex = 0;
-    this.showFinalScreen = false;
+    this.showFinalScreen = !this.showFinalScreen;
 
     // Aguarda a atualização do DOM antes de renderizar MathJax
     this.renderMathExpressions();

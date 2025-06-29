@@ -306,8 +306,7 @@
             </svg>
             Anterior
           </button>
-          <button class="pagination-btn next" (click)="goToNextQuestion()"
-            *ngIf="currentQuestionIndex !== quiz.questions.length - 1">
+          <button class="pagination-btn next" (click)="goToNextQuestion()" [disabled]="currentQuestionIndex === quiz.questions.length - 1">
             Próxima
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -315,6 +314,7 @@
             </svg>
           </button>
           <!-- Botão para submeter respostas -->
+          <!-- 
           <button class="btn-outline" id="add-btn" (click)="showStartScreen = true; scrollToTop();"
             *ngIf="currentQuestionIndex === quiz.questions.length - 1">
             <span>Resultados</span>
@@ -324,6 +324,7 @@
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
+          -->
         </div>
       </div>
 
