@@ -223,9 +223,13 @@
 
           <div class="quiz-header">
             <div>
+              <!--
               <h1 class="title">{{ quiz.title }}</h1>
               <span *ngIf="quiz.user.id">{{ quiz.user.fullName }}</span>
               <span *ngIf="!quiz.user.id">{{ loggedUser.fullName }}</span>
+              -->
+              <h1 class="title">{{ quiz.user.fullName }}</h1>
+              <h1 *ngIf="!quiz.user.id" class="title">{{ quiz.user.fullName }}</h1>
             </div>
             <button class="quiz-close-btn" (click)="showStartScreen = true;" aria-label="Fechar quiz">
               <i class="pi pi-times"></i>

@@ -30,10 +30,12 @@
         <form autocomplete="off" #courseForm="ngForm">
 
           <!-- Campo de Descrição -->
+          <!-- 
           <div class="form-group">
             <label for="title">Titulo</label>
             <input type="text" id="title" name="title" [(ngModel)]="quiz.title" required />
           </div>
+          -->
 
           <div class="form-group">
             <label for="difficultyLevel">Nivel de dificuldade</label>
@@ -103,8 +105,12 @@
 
           <div class="quiz-header">
             <div>
+              <!--
               <h1 class="title">{{ quiz.title }}</h1>
               <span *ngIf="isUserLoggedIn">{{ loggedUser.fullName }}</span>
+              -->
+              <h1 class="title">{{ loggedUser.fullName }}</h1>
+
             </div>
             <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
               <i class="pi pi-times"></i>
