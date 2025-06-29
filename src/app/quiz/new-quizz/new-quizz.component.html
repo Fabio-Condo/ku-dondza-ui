@@ -109,7 +109,8 @@
               <h1 class="title">{{ quiz.title }}</h1>
               <span *ngIf="isUserLoggedIn">{{ loggedUser.fullName }}</span>
               -->
-              <h1 class="title">{{ loggedUser.fullName }}</h1>
+              <h1 class="title" *ngIf="isUserLoggedIn">{{ loggedUser.fullName }}</h1>
+              <h1 class="title" *ngIf="!isUserLoggedIn">Usuário desconhecido</h1>
               <span *ngIf="quiz.submittedAt">{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</span>
               <span *ngIf="!quiz.submittedAt"> Decorrendo... </span>
 
@@ -242,7 +243,8 @@
         </div>
       </div>
 
-      <button class="fab fab-save" (click)="onSubmitAnswers()" *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !submited">
+      <button class="fab fab-save" (click)="onSubmitAnswers()"
+        *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !submited">
         <i class="pi pi-save"></i>
       </button>
 
