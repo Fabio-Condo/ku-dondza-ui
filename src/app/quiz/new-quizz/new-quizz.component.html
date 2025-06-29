@@ -228,6 +228,7 @@
             </svg>
           </button>
           <!-- Botão para submeter respostas -->
+          <!-- 
           <button class="pagination-btn submit" id="add-btn" (click)="onSubmitAnswers()"
             *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !submited">
             Submeter
@@ -237,8 +238,13 @@
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
+          -->
         </div>
       </div>
+
+      <button class="fab fab-save" (click)="onSubmitAnswers()" *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !submited">
+        <i class="pi pi-save"></i>
+      </button>
 
       <button class="fab fab-disable" (click)="toggleDisableEditing()" *ngIf="!showCorrection">
         <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
@@ -462,15 +468,15 @@
 
 <button class="fab fab-disable" (click)="toggleCorrection()"
   *ngIf="showCorrection || (!showStartScreen && showFinalScreen)">
-  <svg *ngIf="!showFinalScreen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
+  <svg *ngIf="!showFinalScreen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <line x1="18" y1="20" x2="18" y2="10"></line>
     <line x1="12" y1="20" x2="12" y2="4"></line>
     <line x1="6" y1="20" x2="6" y2="14"></line>
   </svg>
 
-  <svg *ngIf="showFinalScreen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
+  <svg *ngIf="showFinalScreen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <line x1="8" y1="6" x2="21" y2="6"></line>
     <line x1="8" y1="12" x2="21" y2="12"></line>
     <line x1="8" y1="18" x2="21" y2="18"></line>
