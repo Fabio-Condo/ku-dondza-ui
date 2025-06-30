@@ -26,10 +26,6 @@ export class QuizService {
       params = params.set('searchParam', filter.searchParam);
     }
 
-    if (filter.title) {
-      params = params.set('title', filter.title);
-    }
-
     if (filter.subject) {
       params = params.set('subject', filter.subject);
     }

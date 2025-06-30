@@ -287,7 +287,6 @@ export class QuizzesComponent implements OnInit {
 
   limparCampos() {
     this.filter.searchParam = "";
-    this.filter.title = "";
     this.filter.subject = undefined;
     this.filter.difficultyLevel = undefined;
     this.selectQuizOption = 'ALL_QUIZZES';
