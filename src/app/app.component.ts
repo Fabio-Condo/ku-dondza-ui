@@ -10,16 +10,20 @@ export class AppComponent {
 
   constructor(
     private router: Router
-  ) {}
-  
+  ) { }
+
   title = 'post-app';
 
-  showNavbar() {  
+  showNavbar() {
     return this.router.url !== '/login' && this.router.url !== '/register';
     //return this.router.url !== '/login';
   }
 
-  showFooter() {  
+  showFooter() {
     return this.router.url !== '/pagina-nao-encontrada' && this.router.url !== '/pagina-nao-autorizada';
+  }
+
+  showMobileFooter() {
+    return this.router.url == '/quizzes' || this.router.url == '/questions' || this.router.url == '/articles';
   }
 }
