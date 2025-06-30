@@ -10,7 +10,8 @@
 
     <div class="container">
 
-        <button class="go-back-btn" routerLink="/users">
+        <!-- routerLink="/users" -->
+        <button class="go-back-btn" routerLink="/quizzes">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 12H5"></path>
@@ -53,10 +54,12 @@
                         <i class="fas fa-envelope"></i>
                         <span>{{ user.email }}</span>
                     </div>
+                    <!--
                     <div class="detail-item">
                         <i class="fas fa-calendar"></i>
                         <span>Membro desde Março 2024</span>
                     </div>
+                    -->
                     <button class="btn-outline" id="logout-btn" (click)="onLogOut()"
                         *ngIf="currentUser.userId == user.userId">
                         <i class="fas fa-sign-out-alt"></i>
