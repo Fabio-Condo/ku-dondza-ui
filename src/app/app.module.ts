@@ -45,10 +45,12 @@ import { AboutUsModule } from './about-us/about-us.module';
 import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
 import { CompetitionRoutingModule } from './competitions/competition-routing.module';
 import { CompetitionsModule } from './competitions/competitions.module';
+import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    MobileFooterComponent,
   ],
   imports: [
     BrowserModule,
