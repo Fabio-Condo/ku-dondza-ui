@@ -268,6 +268,7 @@ export class PaginaNaoEncontradaComponent implements OnInit {
   }
 
   voltarParaHome(): void {
-    this.router.navigate(['/']);
+    //this.router.navigate(['/']);
+    this.router.navigate(['/quizzes']);
   }
 }
