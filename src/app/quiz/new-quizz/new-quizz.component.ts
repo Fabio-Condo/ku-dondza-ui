@@ -30,7 +30,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   quiz: Quiz = new Quiz();
   questions: Question[] = [];
   topics: Topic[] = [];
-  selectedTopics: Topic[] = [];
+  //selectedTopics: Topic[] = [];
   subjects: Subject[] = [];
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
   showLoading: boolean = false;

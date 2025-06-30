@@ -89,7 +89,7 @@
             </ul>
           </div>
 
-          <button class="start-button" (click)="getQuestions()" [disabled]="topics.length === 0 ">
+          <button class="start-button" (click)="getQuestions()" [disabled]="getSelectedTopicIds().length === 0 || showLoading || showGetSubjectLoading">
             <span>Gerar questões</span>
           </button>
 
