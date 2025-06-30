@@ -843,7 +843,7 @@
                 <label for="course">Tópico</label>
                 <select id="course" name="course" [(ngModel)]="question.topic.id" [disabled]="!selectedSubject"
                     required>
-                    <option value="" disabled selected>Selecione o curso</option>
+                    <option value="" disabled selected>Selecione o tópico</option>
                     <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
             </div>
@@ -1023,7 +1023,7 @@
                 <label for="course">Tópico</label>
                 <select id="course" name="course" [(ngModel)]="filtro.topic" [disabled]="!selectedSubject"
                     (change)="findAll()" required>
-                    <option value="" disabled selected>Selecione o curso</option>
+                    <option value="" disabled selected>Selecione o tópico</option>
                     <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
             </div>
