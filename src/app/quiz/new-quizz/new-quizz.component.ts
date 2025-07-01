@@ -308,12 +308,16 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   carregarDisciplinas() {
+    this.loadingMessage = "Obtendo disciplinas";
+    this.showLoading = true;
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
         this.subjects = dados;
+        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     });
   }
