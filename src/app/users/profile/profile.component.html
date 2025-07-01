@@ -51,7 +51,7 @@
                             <span>São Paulo, Brasil</span>
                         </div>
                         -->
-                        <div class="detail-item" *ngIf="isSuperAdmin">
+                        <div class="detail-item" *ngIf="isSuperAdmin ||currentUser.userId == user.userId">
                             <i class="fas fa-envelope"></i>
                             <span>{{ user.email }}</span>
                         </div>
