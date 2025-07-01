@@ -139,10 +139,10 @@
             </div>
             -->
 
-            <br>
+            <br *ngIf="!showCorrection">
 
             <!-- Input para mostrar a solução -->
-            <div class="tip"
+            <div class="tip" *ngIf="!showCorrection"
                 [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="tip-input">
                     <h1 class="title">Dicas</h1>
@@ -161,7 +161,7 @@
                 </div>
             </div>
 
-            <br>
+            <br *ngIf="showCorrection">
 
             <!-- Input para mostrar a solução -->
             <div class="solution" *ngIf="showCorrection"
