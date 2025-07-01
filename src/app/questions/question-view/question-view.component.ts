@@ -39,6 +39,7 @@ export class QuestionViewComponent implements OnInit {
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  showCorrection: boolean = false;
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
 
@@ -77,6 +78,24 @@ export class QuestionViewComponent implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  // Armazena as respostas do usuário
+  selectedAnswers: { [questionId: number]: number } = {};
+
+  /**
+   * Verifica se a resposta foi selecionada pelo usuário
+   */
+  isSelected(questionId: number, answerId: number): boolean {
+    return this.selectedAnswers[questionId] === answerId;
+  }
+
+  /**
+   * Captura a resposta do usuário ao selecionar uma opção
+   */
+  captureUserAnswer(questionId: number, answerId: number): void {
+    this.selectedAnswers[questionId] = answerId;
+  }
+
 
   findById(id: string) {
     this.loadingMessage = "Carregando dados"
