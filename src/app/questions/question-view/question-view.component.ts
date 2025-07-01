@@ -39,6 +39,8 @@ export class QuestionViewComponent implements OnInit {
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  selectedAnswers: { [questionId: number]: number } = {}
+
   showCorrection: boolean = false;
   showSolution: boolean = true;
   imagePath = './assets/images/funcao do grau 2.png';
@@ -78,24 +80,6 @@ export class QuestionViewComponent implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  // Armazena as respostas do usuário
-  selectedAnswers: { [questionId: number]: number } = {};
-
-  /**
-   * Verifica se a resposta foi selecionada pelo usuário
-   */
-  isSelected(questionId: number, answerId: number): boolean {
-    return this.selectedAnswers[questionId] === answerId;
-  }
-
-  /**
-   * Captura a resposta do usuário ao selecionar uma opção
-   */
-  captureUserAnswer(questionId: number, answerId: number): void {
-    this.selectedAnswers[questionId] = answerId;
-  }
-
 
   findById(id: string) {
     this.loadingMessage = "Carregando dados"
@@ -169,6 +153,29 @@ export class QuestionViewComponent implements OnInit {
     return '';
   }
 
+  toggleSolution() {
+    this.showSolution = !this.showSolution;
+    this.renderMathExpressions();
+  }
+
+  isSelected(questionId: number, answerId: number): boolean {
+    return this.selectedAnswers[questionId] === answerId;
+  }
+
+  captureUserAnswer(questionId: number, answerId: number): void {
+    this.selectedAnswers[questionId] = answerId;
+  }
+
+  hasUserSelected(questionId: number): boolean {
+    return this.selectedAnswers.hasOwnProperty(questionId);
+  }
+
+  onShowCorrection() {
+    this.showCorrection = !this.showCorrection;
+    this.renderMathExpressions();
+    this.renderFunctions();
+  }
+
   // Método para renderizar expressões matemáticas
   renderMathExpressions(): void {
     this.showLatexLoading = true;
@@ -176,12 +183,6 @@ export class QuestionViewComponent implements OnInit {
       MathJax.typesetPromise();
     }, 0);
     this.showLatexLoading = false;
-  }
-
-  // Método para alternar a visibilidade da solução
-  toggleSolution() {
-    this.showSolution = !this.showSolution;
-    this.renderMathExpressions();
   }
 
   renderFunctions() {

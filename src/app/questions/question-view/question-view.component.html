@@ -233,7 +233,7 @@
     </div>
 </body>
 
-<button class="fab fab-disable" (click)="showCorrection = !showCorrection">
+<button class="fab" (click)="onShowCorrection()" [disabled]="!hasUserSelected(question.id)">
     <i class="pi pi-check-square"></i>
 </button>
 
