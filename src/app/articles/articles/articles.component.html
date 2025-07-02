@@ -490,7 +490,7 @@
             border-radius: 12px;
             padding: 24px;
             width: 90%;
-            max-width: 500px;
+            max-width: 400px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             animation: slideIn 0.3s ease-out;
         }
@@ -849,6 +849,14 @@
             .card-title {
                 font-size: 17px;
             }
+
+            .popout-container {
+                padding: 24px;
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                border-radius: 0px;
+            }
         }
     </style>
 </head>
@@ -1124,14 +1132,14 @@
 
 <!-- Popout -->
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
-    <div class="popout-container" style="max-width: 400px;">
-        <div class="popout-header">
-            <h2 class="popout-title">Faça Login para continuar</h2>
-            <button class="close-button" (click)="displayModalLogin = false">&times;</button>
-        </div>
+    <div class="popout-container">
+
         <div class="login-side" *ngIf="activeTab === 1">
 
-            <h1>Entrar</h1>
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Entre para continuar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -1164,7 +1172,7 @@
                 </button>
 
                 <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
                     acessar sua conta se tiver se cadastrado com gmail.
                 </p>
 
@@ -1178,7 +1186,10 @@
 
         <div class="login-side" *ngIf="activeTab === 2">
 
-            <h1>Cadastrar</h1>
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Cadastre-se para continuar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -1218,7 +1229,7 @@
                 <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
 
                 <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para se
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
                     cadastradar com
                     gmail.
                 </p>
