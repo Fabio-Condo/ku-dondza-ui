@@ -308,7 +308,10 @@
 
         <div class="login-side" *ngIf="activeTab === 2">
 
-            <h1>Cadastrar</h1>
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Cadastrar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
