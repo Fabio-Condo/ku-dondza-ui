@@ -353,14 +353,14 @@
 
 <!-- Popout -->
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
-  <div class="popout-container" style="max-width: 400px;">
-    <div class="popout-header">
-      <h2 class="popout-title">Faça Login para continuar</h2>
-      <button class="close-button" (click)="displayModalLogin = false">&times;</button>
-    </div>
-    <div class="login-side" *ngIf="activeLoginTab === 1">
+  <div class="popout-container">
 
-      <h1>Entrar</h1>
+    <div class="login-side" *ngIf="activeTab === 1">
+
+      <div style="display: flex; justify-content: space-between;">
+        <h1>Entre para continuar</h1>
+        <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+      </div>
 
       <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -393,21 +393,24 @@
         </button>
 
         <p class="message" *ngIf="step === 'email'">
-          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para
+          Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
           acessar sua conta se tiver se cadastrado com gmail.
         </p>
 
         <div class="signup-link">
-          Não tem uma conta? <a (click)="setActiveLoginTab(2)">Cadastre-se</a>
+          Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
         </div>
 
       </form>
 
     </div>
 
-    <div class="login-side" *ngIf="activeLoginTab === 2">
+    <div class="login-side" *ngIf="activeTab === 2">
 
-      <h1>Cadastrar</h1>
+      <div style="display: flex; justify-content: space-between;">
+        <h1>Cadastre-se para continuar</h1>
+        <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+      </div>
 
       <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -447,7 +450,7 @@
         <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
 
         <p class="message" *ngIf="step === 'email'">
-          Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para se
+          Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
           cadastradar com
           gmail.
         </p>
@@ -455,7 +458,7 @@
       </form>
       <div id="google-signin-button"></div>
       <div class="signup-link">
-        Já tem uma conta? <a (click)="setActiveLoginTab(1); ">Faça login</a>
+        Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
       </div>
     </div>
   </div>

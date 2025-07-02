@@ -562,13 +562,11 @@
                 </div>
             </div>
 
-            <button class="fab fab-save" (click)="onSave()"
-                *ngIf="competition.open">
+            <button class="fab fab-save" (click)="onSave()" *ngIf="competition.open">
                 <i class="pi pi-save"></i>
             </button>
 
-            <button class="fab fab-disable" (click)="toggleDisableEditing()"
-                *ngIf="competition.open">
+            <button class="fab fab-disable" (click)="toggleDisableEditing()" *ngIf="competition.open">
                 <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
                 <i *ngIf="!disableEditing" class="pi pi-lock"></i>
             </button>
@@ -690,13 +688,13 @@
 <!-- Popout -->
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
     <div class="popout-container" style="max-width: 400px;">
-        <div class="popout-header">
-            <h2 class="popout-title">Faça Login para continuar</h2>
-            <button class="close-button" (click)="displayModalLogin = false">&times;</button>
-        </div>
+
         <div class="login-side" *ngIf="activeLoginTab === 1">
 
-            <h1>Entrar</h1>
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Entre para continuar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -729,7 +727,7 @@
                 </button>
 
                 <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
                     acessar sua conta se tiver se cadastrado com gmail.
                 </p>
 
@@ -743,7 +741,10 @@
 
         <div class="login-side" *ngIf="activeLoginTab === 2">
 
-            <h1>Cadastrar</h1>
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Cadastre-se para continuar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -783,7 +784,7 @@
                 <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
 
                 <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu <br> e-mail. Ou, você pode usar google para se
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
                     cadastradar com
                     gmail.
                 </p>
@@ -819,7 +820,8 @@
                 <div class="user-info">
                     <div class="user-name">{{ user.fullName }}</div>
                 </div>
-                <button [disabled]="user.allowedUser" class="add-user-btn" (click)="addAllowedUserToCompetition(user)">Adicionar</button>
+                <button [disabled]="user.allowedUser" class="add-user-btn"
+                    (click)="addAllowedUserToCompetition(user)">Adicionar</button>
             </div>
         </div>
 
