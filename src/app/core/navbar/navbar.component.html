@@ -467,15 +467,15 @@
   <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
     <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
     <ul class="mobile-nav-links">
-      <li ><a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">Início</a></li>
-      <li ><a [class.active]="isActive('/competitions')" routerLink="/competitions"
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">Início</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/competitions')" routerLink="/competitions"
           (click)="toggleMenu()">Competições</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
-      <li ><a [class.active]="isActive('/courses')" routerLink="/courses" (click)="toggleMenu()">Cursos</a></li>
-      <li ><a [class.active]="isActive('/books')" routerLink="/books" (click)="toggleMenu()">Livros</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/courses')" routerLink="/courses" (click)="toggleMenu()">Cursos</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/books')" routerLink="/books" (click)="toggleMenu()">Livros</a></li>
       <li><a [class.active]="isActive('/articles')" routerLink="/articles" (click)="toggleMenu()">Artigos</a></li>
-      <li ><a [class.active]="isActive('/users')" routerLink="/users" (click)="toggleMenu()">Pessoas</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/users')" routerLink="/users" (click)="toggleMenu()">Pessoas</a></li>
     </ul>
     <div class="mobile-auth-buttons" *ngIf="showNavButtons()">
       <a routerLink="/login" class="btn btn-white">Login</a>
