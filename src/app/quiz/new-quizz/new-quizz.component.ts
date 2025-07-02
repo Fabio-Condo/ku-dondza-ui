@@ -145,12 +145,14 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         this.timeLimit--;
         this.updateFormattedTime(); // Atualiza o tempo formatado
       } else {
-        this.stopTimer();
-        this.submitAnswers();
-        this.toggleCorrection();
-        this.scrollToTop();
-        this.showFinalScreen = true;
-        this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
+        if (this.isUserLoggedIn) {
+          this.stopTimer();
+          this.submitAnswers();
+          this.toggleCorrection();
+          this.scrollToTop();
+          this.showFinalScreen = true;
+          this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
+        }
       }
     });
   }

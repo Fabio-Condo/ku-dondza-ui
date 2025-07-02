@@ -10,6 +10,8 @@ import { GoogleAuthService } from '../google-auth-service.service';
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
+declare let gtag: Function;
+
 
 @Component({
   selector: 'app-login',
@@ -79,6 +81,12 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
+
+        // Evento de login no Google Analytics
+        gtag('event', 'login', {
+          method: 'google'
+        });
+
         //this.router.navigateByUrl('/main-panel');
         this.router.navigateByUrl('/quizzes');
       },
@@ -112,6 +120,12 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
+
+        // Evento de login no Google Analytics
+        gtag('event', 'login', {
+          method: 'google'
+        });
+
         //this.router.navigateByUrl('/main-panel');
         this.router.navigateByUrl('/quizzes');
       },
@@ -149,6 +163,12 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
+
+        // Evento de login no Google Analytics
+        gtag('event', 'login', {
+          method: 'google'
+        });
+
         //this.router.navigateByUrl('/main-panel');
         this.router.navigateByUrl('/quizzes');
       },
@@ -187,6 +207,12 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.saveToken(token);
         this.authenticationService.addUserToLocalCache(response.body);
         this.authenticationService.notifyLoginStatus(true);
+
+        // Evento de login no Google Analytics
+        gtag('event', 'login', {
+          method: 'google'
+        });
+
         this.ngZone.run(() => {
           //this.router.navigateByUrl('/main-panel');
           this.router.navigateByUrl('/quizzes');
