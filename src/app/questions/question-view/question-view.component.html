@@ -255,13 +255,13 @@
 <!-- Popout -->
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
     <div class="popout-container" style="max-width: 400px;">
-        <div class="popout-header">
-            <h2 class="popout-title">Faça Login para continuar</h2>
-            <button class="close-button" (click)="displayModalLogin = false">&times;</button>
-        </div>
+
         <div class="login-side" *ngIf="activeTab === 1">
 
-            <h1>Entrar</h1>
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Entrar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
