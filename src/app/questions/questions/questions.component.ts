@@ -16,6 +16,7 @@ import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Role } from 'src/app/enum/role.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { MathExpression } from 'src/app/core/model/MathExpression';
+import { Title } from '@angular/platform-browser';
 declare const MathJax: any;
 
 @Component({
@@ -92,10 +93,12 @@ export class QuestionsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Questions page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.findAll(0);
     this.carregarDisciplinas();

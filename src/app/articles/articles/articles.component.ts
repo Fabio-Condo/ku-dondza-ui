@@ -16,6 +16,7 @@ import { IfStmt } from '@angular/compiler';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { Subscription } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-articles',
@@ -91,10 +92,12 @@ export class ArticlesComponent implements OnInit {
     private likeService: LikeService,
     private userService: UserService,
     private messageService: MessageService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Articles page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll();

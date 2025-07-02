@@ -20,7 +20,7 @@ export class AppComponent {
     });
   }
 
-  title = 'post-app';
+  title = 'dikahub';
 
   showNavbar() {
     return this.router.url !== '/login' && this.router.url !== '/register';

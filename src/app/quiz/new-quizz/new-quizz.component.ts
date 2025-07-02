@@ -20,6 +20,7 @@ import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { interval, Subscription } from 'rxjs';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { HeaderType } from 'src/app/enum/header-type.enum';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-new-quizz',
@@ -114,10 +115,12 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Create new quiz page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.carregarDisciplinas();

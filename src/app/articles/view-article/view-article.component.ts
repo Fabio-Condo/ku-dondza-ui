@@ -11,6 +11,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Subscription } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-article',
@@ -50,9 +51,11 @@ export class ViewArticleComponent implements OnInit {
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private router: Router,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Article view page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const articleId = this.route.snapshot.params['id'];

@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Editor } from 'tinymce'; // Importe o tipo Editor
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Title } from '@angular/platform-browser';
 declare const tinymce: any;
 
 @Component({
@@ -36,10 +37,12 @@ export class CreateArticleComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private title: Title
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Create new article page');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const articleId = this.route.snapshot.params['id'];
     if (articleId) {
