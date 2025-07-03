@@ -178,6 +178,7 @@ export class QuestionViewComponent implements OnInit {
 
     this.questionService.getQuestionsByTopicId(this.question.topic.id).subscribe(
       (dados: Question[]) => {
+        // Remove a questão atual
         dados = dados.filter(q => q.questionId !== this.question.questionId);
         this.questions = this.shuffleQuestions(dados);
         this.currentQuestionIndex = 0;
