@@ -239,7 +239,7 @@
     </div>
 </body>
 
-<button class="fab" (click)="onViewSolution()" [disabled]="!hasUserSelected(question.id)">
+<button class="fab" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)">
     <i class="pi pi-check-square"></i>
 </button>
 
