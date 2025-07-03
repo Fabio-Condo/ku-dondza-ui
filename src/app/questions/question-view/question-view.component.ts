@@ -160,6 +160,10 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onGenerateNextQuestion() {
+
+    this.selectedAnswers = []; // Limpa as respostas selecionadas para a nova questão
+    this.showCorrection = false;
+
     // Se já carregamos as questões, vamos para a próxima
     if (this.questions.length > 0) {
       this.mostrarProximaQuestao();
