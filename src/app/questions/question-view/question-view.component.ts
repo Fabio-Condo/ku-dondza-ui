@@ -182,6 +182,7 @@ export class QuestionViewComponent implements OnInit {
         this.currentQuestionIndex = 0;
         this.showLoading = false;
         this.question = this.questions[0]; // Mostra a primeira questão
+        this.router.navigate(['/questions', this.question.questionId], { replaceUrl: true });
         this.renderMathExpressions();
         this.renderFunctions();
         this.scrollToTop();
@@ -197,12 +198,17 @@ export class QuestionViewComponent implements OnInit {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
       this.question = this.questions[this.currentQuestionIndex];
+      this.router.navigate(['/questions', this.question.questionId], { replaceUrl: true });
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
     } else {
       this.sendErrorNotification("Você chegou ao fim das questões deste tópico.");
     }
+  }
+
+  get acabouQuestoes(): boolean {
+    return this.currentQuestionIndex >= this.questions.length - 1;
   }
 
   // Opcional: para embaralhar a ordem
