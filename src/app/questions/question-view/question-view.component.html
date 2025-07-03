@@ -240,7 +240,8 @@
 </body>
 
 <button class="fab" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)">
-    <i class="pi pi-check-square"></i>
+    <i *ngIf="!showCorrection" class="pi pi-eye"></i>
+    <i *ngIf="showCorrection" class="pi pi-eye-slash"></i>
 </button>
 
 <div class="popout-overlay" *ngIf="displayModalViewQuizzes">
