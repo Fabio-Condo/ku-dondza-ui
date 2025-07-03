@@ -220,6 +220,12 @@
 
             </div>
 
+            <div class="next-question-button-container">
+                <button class="btn-outline next-question-button" id="filter-btn" (click)="onGenerateNextQuestion()">
+                    Próximo do mesmo tópico
+                </button>
+            </div>
+
             <p class="description" *ngIf="isUserLoggedIn && isSuperAdmin">
                 <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{
                     quizQuestionStatistics.quizzesCount

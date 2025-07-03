@@ -53,6 +53,10 @@ export class QuestionService {
     return this.http.get<Question[]>(`${this.baseUrl}/by-topics`, { params });
   }
 
+  getQuestionsByTopicId(topicId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.baseUrl}/topics/${topicId}`, { });
+  }
+
   findAll(): Observable<IApiResponse<Question>> {
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}`, {});
   }

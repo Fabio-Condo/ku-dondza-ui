@@ -32,6 +32,9 @@ export class QuestionViewComponent implements OnInit {
   question: Question = new Question();
   quizQuestionStatistics: QuizQuestionStatisticsDTO = new QuizQuestionStatisticsDTO();
 
+  questions: Question[] = [];
+  currentQuestionIndex = 0;
+
   showLoading: boolean = false;
   showLatexLoading: boolean = false;
 
@@ -154,6 +157,51 @@ export class QuestionViewComponent implements OnInit {
   onViewQuizzesByQuestion(): void {
     this.getQuizzesByQuestionId();
     this.displayModalViewQuizzes = true;
+  }
+
+  onGenerateNextQuestion() {
+    // Se já carregamos as questões, vamos para a próxima
+    if (this.questions.length > 0) {
+      this.mostrarProximaQuestao();
+    } else {
+      this.getQuestionsByTopicId();
+    }
+  }
+
+  getQuestionsByTopicId(): void {
+    this.loadingMessage = "Buscando questões...";
+    this.showLoading = true;
+
+    this.questionService.getQuestionsByTopicId(this.question.topic.id).subscribe(
+      (dados: Question[]) => {
+        this.questions = this.embaralharQuestoes(dados); // opcional
+        this.currentQuestionIndex = 0;
+        this.showLoading = false;
+        this.question = this.questions[0]; // Mostra a primeira questão
+        this.renderMathExpressions();
+        this.renderFunctions();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  mostrarProximaQuestao() {
+    if (this.currentQuestionIndex < this.questions.length - 1) {
+      this.currentQuestionIndex++;
+      this.question = this.questions[this.currentQuestionIndex];
+      this.renderMathExpressions();
+      this.renderFunctions();
+    } else {
+      this.sendErrorNotification("Você chegou ao fim das questões deste tópico.");
+    }
+  }
+
+  // Opcional: para embaralhar a ordem
+  embaralharQuestoes(lista: Question[]): Question[] {
+    return lista.sort(() => Math.random() - 0.5);
   }
 
   gettimeLimitValue(seconds: number) {
