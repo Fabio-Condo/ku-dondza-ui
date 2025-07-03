@@ -180,6 +180,7 @@ export class QuestionViewComponent implements OnInit {
         this.question = this.questions[0]; // Mostra a primeira questão
         this.renderMathExpressions();
         this.renderFunctions();
+        this.scrollToTop();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -194,6 +195,7 @@ export class QuestionViewComponent implements OnInit {
       this.question = this.questions[this.currentQuestionIndex];
       this.renderMathExpressions();
       this.renderFunctions();
+      this.scrollToTop();
     } else {
       this.sendErrorNotification("Você chegou ao fim das questões deste tópico.");
     }
