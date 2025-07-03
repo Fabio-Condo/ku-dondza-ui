@@ -166,19 +166,19 @@ export class QuestionViewComponent implements OnInit {
 
     // Se já carregamos as questões, vamos para a próxima
     if (this.questions.length > 0) {
-      this.mostrarProximaQuestao();
+      this.showNextQuestion();
     } else {
       this.getQuestionsByTopicId();
     }
   }
 
   getQuestionsByTopicId(): void {
-    this.loadingMessage = "Buscando questões...";
+    this.loadingMessage = "Buscando questões";
     this.showLoading = true;
 
     this.questionService.getQuestionsByTopicId(this.question.topic.id).subscribe(
       (dados: Question[]) => {
-        this.questions = this.embaralharQuestoes(dados); // opcional
+        this.questions = this.shuffleQuestions(dados);
         this.currentQuestionIndex = 0;
         this.showLoading = false;
         this.question = this.questions[0]; // Mostra a primeira questão
@@ -194,7 +194,7 @@ export class QuestionViewComponent implements OnInit {
     );
   }
 
-  mostrarProximaQuestao() {
+  showNextQuestion() {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
       this.question = this.questions[this.currentQuestionIndex];
@@ -207,13 +207,13 @@ export class QuestionViewComponent implements OnInit {
     }
   }
 
-  get acabouQuestoes(): boolean {
+  get QuestionsEnded(): boolean {
     return this.currentQuestionIndex >= this.questions.length - 1;
   }
 
-  // Opcional: para embaralhar a ordem
-  embaralharQuestoes(lista: Question[]): Question[] {
-    return lista.sort(() => Math.random() - 0.5);
+  // Embaralhar a ordem
+  shuffleQuestions(questions: Question[]): Question[] {
+    return questions.sort(() => Math.random() - 0.5);
   }
 
   gettimeLimitValue(seconds: number) {
