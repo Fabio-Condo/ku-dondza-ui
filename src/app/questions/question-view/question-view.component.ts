@@ -161,7 +161,6 @@ export class QuestionViewComponent implements OnInit {
 
   onGenerateNextQuestion() {
 
-    //this.selectedAnswers = []; // Limpa as respostas selecionadas para a nova questão
     this.showCorrection = false;
 
     // Se já carregamos as questões, vamos para a próxima
@@ -178,12 +177,24 @@ export class QuestionViewComponent implements OnInit {
 
     this.questionService.getQuestionsByTopicId(this.question.topic.id).subscribe(
       (dados: Question[]) => {
-        // Remove a questão atual
-        //dados = dados.filter(q => q.questionId !== this.question.questionId);
-        this.questions = this.shuffleQuestions(dados);
-        this.currentQuestionIndex = 0;
+        // Separa a questão atual
+        const questaoAtual = this.question;
+
+        // Remove a questão atual da lista para não embaralhá-la junto
+        const outrasQuestoes = dados.filter(q => q.questionId !== questaoAtual.questionId);
+
+        // Embaralha as outras
+        const embaralhadas = this.shuffleQuestions(outrasQuestoes);
+
+        // Junta a questão atual + embaralhadas
+        this.questions = [questaoAtual, ...embaralhadas];
+
+        // Atualiza a posição atual
+        this.currentQuestionIndex = 1;
+        this.question = this.questions[1]; // Mostra a segunda questão (a atual)
         this.showLoading = false;
-        this.question = this.questions[0]; // Mostra a primeira questão
+
+        // Navega e renderiza
         this.router.navigate(['/questions', this.question.questionId], { replaceUrl: true });
         this.renderMathExpressions();
         this.renderFunctions();
