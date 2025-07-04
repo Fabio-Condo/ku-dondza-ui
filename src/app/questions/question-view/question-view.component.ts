@@ -191,7 +191,7 @@ export class QuestionViewComponent implements OnInit {
 
         // Atualiza a posição atual
         this.currentQuestionIndex = 1;
-        this.question = this.questions[1]; // Mostra a segunda questão (a atual)
+        this.question = this.questions[1]; // Mostra a segunda questão (a segunda após a atual)
         this.showLoading = false;
 
         // Navega e renderiza
