@@ -4,14 +4,9 @@ import { QuestionService } from '../question.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
-import { QuestionStatisticsService } from '../question-statistics.service';
-import { QuizQuestionStatisticsDTO } from 'src/app/core/model/QuizQuestionStatisticsDTO';
 import { QuizService } from 'src/app/quiz/quiz.service';
 import { Quiz } from 'src/app/core/model/Quiz';
-import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
-declare const MathJax: any;
-import { evaluate } from 'mathjs'; //npm install mathjs
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 import { Role } from 'src/app/enum/role.enum';
@@ -20,6 +15,8 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Title } from '@angular/platform-browser';
 
+declare const MathJax: any;
+import { evaluate } from 'mathjs'; //npm install mathjs
 
 
 @Component({
@@ -30,7 +27,6 @@ import { Title } from '@angular/platform-browser';
 export class QuestionViewComponent implements OnInit {
 
   question: Question = new Question();
-  quizQuestionStatistics: QuizQuestionStatisticsDTO = new QuizQuestionStatisticsDTO();
 
   questions: Question[] = [];
   currentQuestionIndex = 0;
@@ -76,7 +72,6 @@ export class QuestionViewComponent implements OnInit {
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
     private questionService: QuestionService,
-    private questionStatisticsService: QuestionStatisticsService,
     private quizService: QuizService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -107,7 +102,6 @@ export class QuestionViewComponent implements OnInit {
     this.questionService.getQuestionByQuestionId(id).subscribe(
       (response) => {
         this.question = response;
-        this.getQuizStatisticsByQuestionId(this.question.id);
         this.renderMathExpressions();
         this.renderFunctions();
         this.showLoading = false;
@@ -121,42 +115,6 @@ export class QuestionViewComponent implements OnInit {
         }
       }
     );
-  }
-
-  getQuizStatisticsByQuestionId(id: number) {
-    this.questionStatisticsService.getQuizStatisticsByQuestionId(id).subscribe(
-      (response) => {
-        this.quizQuestionStatistics = response;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 400) {
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        } else {
-          this.sendErrorNotification(errorResponse.error.message);
-        }
-      }
-    );
-  }
-
-  getQuizzesByQuestionId(page: number = 0): void {
-    this.showLoading = true;
-    this.quizFilter.page = this.currentPageQuizzes - 1; // Ajuste para o padrão de paginação começando em 0
-    this.quizService.getQuizzesByQuestionId(this.question.id, this.quizFilter).subscribe(
-      (data: IApiResponse<Quiz>) => {
-        this.quizzes = data.content;
-        this.totalRecordsQuizzes = data.totalElements;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onViewQuizzesByQuestion(): void {
-    this.getQuizzesByQuestionId();
-    this.displayModalViewQuizzes = true;
   }
 
   onGenerateNextQuestion() {

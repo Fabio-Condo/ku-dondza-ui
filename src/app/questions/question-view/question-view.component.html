@@ -182,44 +182,6 @@
             <br>
             <br>
 
-            <div class="card" *ngIf="isUserLoggedIn && isSuperAdmin">
-                <div class="card-header">
-                    <div class="card-title">Desempenho Geral</div>
-                </div>
-
-                <div class="overview">
-                    <div class="stat-item">
-                        <div class="stat-value primary">{{ quizQuestionStatistics.quizzesCount }}</div>
-                        <div class="stat-label">Total de Quizzes</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value success">{{ quizQuestionStatistics.totalCorrectAnswers }}</div>
-                        <div class="stat-label">Acertos</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value danger">{{ quizQuestionStatistics.totalIncorrectAnswers }}</div>
-                        <div class="stat-label">Erros</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value success">{{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %
-                        </div>
-                        <div class="stat-label">Taxa de Acerto</div>
-                    </div>
-                </div>
-
-                <div class="results-progress-container">
-                    <div class="progress-label">
-                        <div class="progress-title">Taxa de Acerto</div>
-                        <div class="progress-value">{{ quizQuestionStatistics.accuracyRate.toFixed(1) }} %</div>
-                    </div>
-                    <div class="results-progress-bar">
-                        <div class="progress success" [style.width.%]="quizQuestionStatistics.accuracyRate.toFixed(1)">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
             <div class="study-hint">
                 💡 <strong>Estudo livre</strong> – navegue entre os exercícios deste tópico e aprenda no seu ritmo.
             </div>
@@ -240,12 +202,6 @@
                     </svg>
                 </button>
             </div>
-
-            <p class="description" *ngIf="isUserLoggedIn && isSuperAdmin">
-                <a (click)="onViewQuizzesByQuestion()" class="view-button">Ver os {{
-                    quizQuestionStatistics.quizzesCount
-                    }} quizzes</a>
-            </p>
 
             <br>
             <br>
