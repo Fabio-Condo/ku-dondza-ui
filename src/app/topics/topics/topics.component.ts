@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { TopicFilter } from 'src/app/core/interface/TopicFilter';
@@ -31,6 +32,10 @@ export class TopicsComponent implements OnInit {
   displayModalView: boolean = false;
   isDropdownOpen: boolean = false;
 
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
+  isUserLoggedIn: boolean = false;
+
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -46,9 +51,12 @@ export class TopicsComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Questions page');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.findAll();
     this.carregarDisciplinas();
     this.buscarTotal();
@@ -179,6 +187,10 @@ export class TopicsComponent implements OnInit {
     });
   }
 
+  onFilter(): void {
+    this.displayModalFilter = true;
+  }
+
   onUpdateTopic(topic: Topic): void {
     this.topic = topic;
     this.displayModalSave = true;
@@ -224,6 +236,13 @@ export class TopicsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  limparCampos() {
+    this.filtro.searchParam = "";
+    this.filtro.name = "";
+    this.filtro.subject = undefined;
+    this.findAll();
   }
 
   public get isAdmin(): boolean {

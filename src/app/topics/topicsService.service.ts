@@ -23,6 +23,14 @@ export class TopicService {
             params = params.set('searchParam', filtro.searchParam);
         }
 
+        if (filtro.subject) {
+            params = params.set('subject', filtro.subject);
+        }
+
+        if (filtro.name) {
+            params = params.set('name', filtro.name);
+        }
+
         return this.http.get<IApiResponse<Topic>>(`${this.host}/filter`, { params });
     }
 

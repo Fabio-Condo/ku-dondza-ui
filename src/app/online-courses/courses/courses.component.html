@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Competições</title>
+    <title>Cálculo Diferencial e Integral I</title>
     <style>
         * {
             margin: 0;
@@ -12,242 +12,285 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fafafa;
             min-height: 100vh;
-            color: #333;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 40px 20px;
         }
 
         .header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid #4361ee;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4361ee, #7209b7);
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            color: #1a1a1a;
+            font-size: 2.8rem;
             font-weight: 700;
-            color: #4361ee;
-            margin-bottom: 0.5rem;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
 
-        .header p {
-            font-size: 1.1rem;
+        .header .subtitle {
             color: #666;
-        }
-
-        .competitions-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .competition-card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .competition-card:hover {
-            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.15);
-            border-color: #4361ee;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .competition-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            margin: 0;
-        }
-
-        .status-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-active {
-            background: #4361ee;
-            color: white;
-        }
-
-        .status-inactive {
-            background: #dc3545;
-            color: white;
-        }
-
-        .card-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        .main-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-label {
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .info-value {
             font-size: 1.1rem;
-            color: #333;
-            font-weight: 600;
+            margin-bottom: 24px;
+            font-weight: 500;
         }
 
-        .difficulty-level {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .difficulty-dots {
-            display: flex;
-            gap: 0.3rem;
-        }
-
-        .difficulty-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #e0e0e0;
-        }
-
-        .difficulty-dot.filled {
-            background: #4361ee;
-        }
-
-        .stats-sidebar {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid #4361ee;
-        }
-
-        .stats-title {
-            font-size: 1rem;
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 1rem;
+        .header .description {
+            color: #4a4a4a;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 800px;
         }
 
         .stats-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
         }
 
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .stat-card {
+            background: white;
+            padding: 32px 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .stat-label {
-            font-size: 0.9rem;
-            color: #666;
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(67, 97, 238, 0.1);
         }
 
         .stat-number {
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 3rem;
+            font-weight: 800;
             color: #4361ee;
+            margin-bottom: 12px;
+            line-height: 1;
         }
 
-        .topics-section {
-            grid-column: 1 / -1;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .topics-title {
-            font-size: 0.9rem;
+        .stat-label {
             color: #666;
+            font-size: 0.95rem;
             font-weight: 500;
-            margin-bottom: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .topics-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+        .main-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            border: 1px solid #f0f0f0;
+            margin-bottom: 40px;
         }
 
-        .topic-tag {
-            background: #4361ee;
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
+        .section-title {
+            color: #1a1a1a;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 32px;
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+            border-radius: 2px;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .lesson-item:hover {
+            background: #f1f3f4;
+            border-color: #4361ee;
+            transform: translateX(4px);
+        }
+
+        .lesson-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content {
+            flex: 1;
+        }
+
+        .lesson-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+        }
+
+        .lesson-duration {
+            color: #666;
+            font-size: 0.9rem;
             font-weight: 500;
         }
 
-        .expiry-info {
-            color: #dc3545;
-            font-weight: 600;
+        .lesson-actions {
+            display: flex;
+            gap: 12px;
         }
 
-        .expiry-info.valid {
-            color: #28a745;
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #4361ee;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3651d4;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-large {
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            width: 100%;
+            justify-content: center;
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-large:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(67, 97, 238, 0.3);
+        }
+
+        .exercise-section {
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            border: 1px solid #f0f0f0;
+        }
+
+        .exercise-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .exercise-description {
+            color: #666;
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         @media (max-width: 768px) {
-            .card-content {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .main-info {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+            .container {
+                padding: 20px;
             }
             
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
-
-            .card-header {
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .lesson-item {
                 flex-direction: column;
-                align-items: flex-start;
+                text-align: center;
+                padding: 24px;
+            }
+            
+            .lesson-icon {
+                margin-right: 0;
+                margin-bottom: 16px;
+            }
+            
+            .lesson-actions {
+                margin-top: 16px;
             }
         }
     </style>
@@ -255,169 +298,203 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Competições</h1>
-            <p>Lista de competições disponíveis</p>
+            <h1>Cálculo Diferencial e Integral I</h1>
+            <p class="subtitle">Matemática • 2º Semestre • Prof. Dr. João Silva</p>
+            <p class="description">
+                Disciplina fundamental que aborda os conceitos básicos do cálculo diferencial e integral, 
+                incluindo limites, derivadas, integrais e suas aplicações em problemas práticos. 
+                Essencial para estudantes de engenharia, física e matemática.
+            </p>
         </div>
 
-        <div class="competitions-list" id="competitionsList">
-            <!-- As competições serão inseridas aqui via JavaScript -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Exercícios</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Aulas</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h2 class="section-title">Conteúdo das Aulas</h2>
+            
+            <div class="lesson-item">
+                <div class="lesson-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="#4361ee"/>
+                    </svg>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-title">Introdução aos Limites</div>
+                    <div class="lesson-duration">45 minutos</div>
+                </div>
+                <div class="lesson-actions">
+                    <a href="#" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Assistir
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lesson-item">
+                <div class="lesson-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 9H9H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-title">Exercícios - Limites Fundamentais</div>
+                    <div class="lesson-duration">Lista com 12 exercícios</div>
+                </div>
+                <div class="lesson-actions">
+                    <a href="#" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        Ver PDF
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lesson-item">
+                <div class="lesson-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="#4361ee"/>
+                    </svg>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-title">Derivadas - Conceitos Básicos</div>
+                    <div class="lesson-duration">52 minutos</div>
+                </div>
+                <div class="lesson-actions">
+                    <a href="#" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Assistir
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lesson-item">
+                <div class="lesson-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="#4361ee"/>
+                    </svg>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-title">Regras de Derivação</div>
+                    <div class="lesson-duration">38 minutos</div>
+                </div>
+                <div class="lesson-actions">
+                    <a href="#" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Assistir
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lesson-item">
+                <div class="lesson-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 9H9H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-title">Formulário de Derivadas</div>
+                    <div class="lesson-duration">Material de apoio</div>
+                </div>
+                <div class="lesson-actions">
+                    <a href="#" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        Ver PDF
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lesson-item">
+                <div class="lesson-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="#4361ee"/>
+                    </svg>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-title">Integrais Indefinidas</div>
+                    <div class="lesson-duration">41 minutos</div>
+                </div>
+                <div class="lesson-actions">
+                    <a href="#" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Assistir
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="exercise-section">
+            <h3 class="exercise-title">Pronto para Praticar?</h3>
+            <p class="exercise-description">
+                Teste seus conhecimentos com exercícios práticos e desafios interativos. 
+                Aprenda fazendo e consolide seu aprendizado.
+            </p>
+            <button class="btn-large">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 11H15M9 15H15M17 21L12 16L7 21V5C7 4.46957 7.21071 3.96086 7.58579 3.58579C7.96086 3.21071 8.46957 3 9 3H15C15.5304 3 16.0391 3.21071 16.4142 3.58579C16.7893 3.96086 17 4.46957 17 5V21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Iniciar Exercícios
+            </button>
         </div>
     </div>
-
-    <script>
-        // Dados de exemplo das competições
-        const competitions = [
-            {
-                title: "Desafio de Algoritmos Avançados",
-                expiry: "2025-06-15",
-                active: true,
-                difficultyLevel: 4,
-                subject: "Ciência da Computação",
-                questions: 25,
-                submissions: 1247,
-                topics: ["Estruturas de Dados", "Grafos", "Programação Dinâmica", "Algoritmos"]
-            },
-            {
-                title: "Competição de Machine Learning",
-                expiry: "2025-07-20",
-                active: true,
-                difficultyLevel: 5,
-                subject: "Inteligência Artificial",
-                questions: 15,
-                submissions: 892,
-                topics: ["Deep Learning", "Neural Networks", "Computer Vision", "NLP"]
-            },
-            {
-                title: "Hackathon de Desenvolvimento Web",
-                expiry: "2025-05-25",
-                active: false,
-                difficultyLevel: 3,
-                subject: "Desenvolvimento",
-                questions: 18,
-                submissions: 2156,
-                topics: ["React", "Node.js", "MongoDB", "CSS", "JavaScript"]
-            },
-            {
-                title: "Desafio de Matemática Aplicada",
-                expiry: "2025-08-10",
-                active: true,
-                difficultyLevel: 4,
-                subject: "Matemática",
-                questions: 30,
-                submissions: 634,
-                topics: ["Cálculo", "Álgebra Linear", "Estatística", "Probabilidade"]
-            },
-            {
-                title: "Competição de Cybersecurity",
-                expiry: "2025-06-30",
-                active: true,
-                difficultyLevel: 5,
-                subject: "Segurança",
-                questions: 20,
-                submissions: 578,
-                topics: ["Ethical Hacking", "Cryptography", "Network Security", "Forensics"]
-            },
-            {
-                title: "Desafio de Data Science",
-                expiry: "2025-04-15",
-                active: false,
-                difficultyLevel: 3,
-                subject: "Ciência de Dados",
-                questions: 22,
-                submissions: 1893,
-                topics: ["Python", "Pandas", "Matplotlib", "SQL", "Statistics"]
-            }
-        ];
-
-        function getDifficultyDots(level) {
-            let dots = '';
-            for (let i = 1; i <= 5; i++) {
-                const filled = i <= level ? 'filled' : '';
-                dots += `<div class="difficulty-dot ${filled}"></div>`;
-            }
-            return dots;
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const isExpired = date < now;
-            const className = isExpired ? 'expiry-info' : 'expiry-info valid';
-            
-            return `<span class="${className}">${date.toLocaleDateString('pt-BR')}</span>`;
-        }
-
-        function createCompetitionCard(competition) {
-            return `
-                <div class="competition-card">
-                    <div class="card-header">
-                        <h3 class="competition-title">${competition.title}</h3>
-                        <div class="status-badge ${competition.active ? 'status-active' : 'status-inactive'}">
-                            ${competition.active ? 'Ativa' : 'Encerrada'}
-                        </div>
-                    </div>
-
-                    <div class="card-content">
-                        <div class="main-info">
-                            <div class="info-item">
-                                <span class="info-label">Matéria</span>
-                                <span class="info-value">${competition.subject}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Encerramento</span>
-                                <span class="info-value">${formatDate(competition.expiry)}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Dificuldade</span>
-                                <div class="difficulty-level">
-                                    <div class="difficulty-dots">
-                                        ${getDifficultyDots(competition.difficultyLevel)}
-                                    </div>
-                                    <span class="info-value">${competition.difficultyLevel}/5</span>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Total de Questões</span>
-                                <span class="info-value">${competition.questions}</span>
-                            </div>
-                        </div>
-
-                        <div class="stats-sidebar">
-                            <div class="stats-title">Estatísticas</div>
-                            <div class="stats-grid">
-                                <div class="stat-item">
-                                    <span class="stat-label">Submissões</span>
-                                    <span class="stat-number">${competition.submissions.toLocaleString()}</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Questões</span>
-                                    <span class="stat-number">${competition.questions}</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Tópicos</span>
-                                    <span class="stat-number">${competition.topics.length}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="topics-section">
-                            <div class="topics-title">Tópicos</div>
-                            <div class="topics-list">
-                                ${competition.topics.map(topic => `<span class="topic-tag">${topic}</span>`).join('')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderCompetitions() {
-            const list = document.getElementById('competitionsList');
-            list.innerHTML = competitions.map(createCompetitionCard).join('');
-        }
-
-        // Renderizar as competições quando a página carregar
-        document.addEventListener('DOMContentLoaded', renderCompetitions);
-    </script>
 </body>
 </html>

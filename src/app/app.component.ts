@@ -32,7 +32,7 @@ export class AppComponent {
   }
 
   showMobileFooter() {
-    return this.router.url == '/quizzes' || this.router.url == '/questions' || this.router.url == '/courses'
+    return this.router.url == '/quizzes' || this.router.url == '/questions' || this.router.url == '/topics' || this.router.url == '/courses'
       || this.router.url == '/books' || this.router.url == '/articles' || this.router.url == '/competitions' || this.router.url == '/users';
   }
 }
