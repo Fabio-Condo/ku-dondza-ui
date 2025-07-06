@@ -3,6 +3,7 @@ import { Subject } from "./Subject";
 
 export class Topic {
     id!: number;
+    topicId!: string;
     name!: string;
     description!: string;
     subject = new Subject();
