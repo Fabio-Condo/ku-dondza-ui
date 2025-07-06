@@ -46,6 +46,10 @@ export class TopicService {
         return this.http.get<Topic>(`${this.host}/${id}`, {});
     }
 
+    getTopicByTopicId(topicId: string): Observable<Topic> {
+        return this.http.get<Topic>(`${this.host}/find-by-topicId/${topicId}`, {});
+    }
+
     add(topic: Topic): Observable<Topic> {
         return this.http.post<Topic>(this.host, topic, {});
     }

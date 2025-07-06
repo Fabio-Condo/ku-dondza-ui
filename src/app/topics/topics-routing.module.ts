@@ -1,18 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticationGuard } from '../security/Guard/authentication.guard';
 import { TopicsComponent } from './topics/topics.component';
+import { TopicViewComponent } from './topic-view/topic-view.component';
 
 const routes: Routes = [
-  { 
-    path: 'topics', 
+  {
+    path: 'topics',
     component: TopicsComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard],
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
     //} 
-  }
+  },
+  {
+    path: 'topics/:id',
+    component: TopicViewComponent,
+    //canActivate: [AuthenticationGuard], 
+    //data: { 
+    //  roles: ['ROLE_USER'], 
+    //  requiresRoleCheck: true
+    //} 
+  },
 ];
 
 @NgModule({
