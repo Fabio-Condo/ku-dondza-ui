@@ -202,6 +202,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.page++;
 

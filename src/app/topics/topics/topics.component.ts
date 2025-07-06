@@ -132,6 +132,7 @@ export class TopicsComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.topicService.filter(this.filtro).subscribe(
@@ -148,6 +149,7 @@ export class TopicsComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina++;
 
