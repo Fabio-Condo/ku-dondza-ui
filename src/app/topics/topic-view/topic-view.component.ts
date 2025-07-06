@@ -51,6 +51,12 @@ export class TopicViewComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  startQuestions() {
+    console.log("Iniciando as perguntas do tópico");
+    this.router.navigate(['/questions', '575f8d9b-f924-42d3-9f23-944c6614653b']);
+    //this.router.navigate(['/questions', this.topic.questions[0].questionId]);
+  }
+
   findById(id: string) {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
