@@ -109,6 +109,12 @@ export class QuestionsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  goToQuestion(questionId: string) {
+    this.router.navigate(['/questions', questionId], {
+      state: { from: 'questions' }
+    });
+  }
+
   get editing() {
     return Boolean(this.question.id);
   }

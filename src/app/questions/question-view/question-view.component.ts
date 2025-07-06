@@ -59,6 +59,9 @@ export class QuestionViewComponent implements OnInit {
   step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
   otp: string = '';
 
+  origem: string = '';
+  topicId: string = '';
+
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
@@ -90,10 +93,26 @@ export class QuestionViewComponent implements OnInit {
       this.findById(questionId);
     }
     this.scrollToTop();
+
+    //const navigation = this.router.getCurrentNavigation();
+    //this.origem = navigation?.extras.state?.['from'] || 'topics'; // fallback
+
+    this.route.queryParams.subscribe(params => {
+      this.origem = params['from'];
+      this.topicId = params['topicId'];
+    });
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  goBack(): void {
+    if (this.origem === 'topics' && this.topicId) {
+      this.router.navigate(['/topics', this.topicId]);
+    } else {
+      this.router.navigate(['/questions']);
+    }
   }
 
   findById(id: string) {

@@ -52,7 +52,12 @@ export class TopicViewComponent implements OnInit {
   }
 
   startQuestions() {
-    this.router.navigate(['/questions', this.topic.questions[0].questionId]);
+    this.router.navigate(['/questions', this.topic.questions[0].questionId], {
+      queryParams: {
+        from: 'topics',
+        topicId: this.route.snapshot.paramMap.get('id')  // o ID do tópico atual
+      }
+    });
   }
 
   findById(id: string) {
