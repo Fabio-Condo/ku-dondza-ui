@@ -52,7 +52,6 @@ export class TopicViewComponent implements OnInit {
   }
 
   startQuestions() {
-    //this.router.navigate(['/questions', '575f8d9b-f924-42d3-9f23-944c6614653b']);
     this.router.navigate(['/questions', this.topic.questions[0].questionId]);
   }
 
