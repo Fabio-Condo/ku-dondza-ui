@@ -94,9 +94,6 @@ export class QuestionViewComponent implements OnInit {
     }
     this.scrollToTop();
 
-    //const navigation = this.router.getCurrentNavigation();
-    //this.origem = navigation?.extras.state?.['from'] || 'topics'; // fallback
-
     this.route.queryParams.subscribe(params => {
       this.origem = params['from'];
       this.topicId = params['topicId'];
