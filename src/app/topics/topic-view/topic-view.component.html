@@ -683,7 +683,8 @@
                     </button>
 
                     <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
-                        <button class="dropdown-btn btn btn-outline" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i
+                        <button class="dropdown-btn btn btn-outline"
+                            (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i
                                 class="pi pi-ellipsis-h"></i></button>
                         <div class="dropdown" *ngIf="content.isAdminMenuOpen">
                             <a
@@ -692,8 +693,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+            <p *ngIf="topic.contents.length == 0">Sem conteúdo para este tópico</p>
+
         </div>
 
         <!-- Informações sobre conteúdo futuro -->
