@@ -70,6 +70,12 @@
             margin-bottom: 40px;
         }
 
+        .main-content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .section-title {
             color: var(--color-text);
             font-size: 1.8rem;
@@ -155,8 +161,19 @@
             transform: translateY(-2px);
         }
 
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
         .btn-secondary {
             background: #6c757d;
+            background: transparent;
             color: white;
         }
 
@@ -519,13 +536,6 @@
                 flex-shrink: 0;
             }
 
-            .btn {
-                padding: 8px 16px;
-                font-size: 0.85rem;
-                min-width: 80px;
-                justify-content: center;
-            }
-
             .exercise-section {
                 padding: 24px;
                 margin: 0 0px;
@@ -613,49 +623,28 @@
         </div>
         -->
 
-        <!--
         <div class="main-content">
-            <h2 class="section-title">Conteúdo do Tópico</h2>
 
-            <div class="lesson-item">
-                <div class="lesson-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5V19L19 12L8 5Z" fill="#4361ee" />
+            <div class="main-content-header">
+                <h2 class="section-title">Conteúdo</h2>
+                <button class="btn btn-outline" (click)="onAddNewTopicContent()" *ngIf="isUserLoggedIn && isSuperAdmin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                </div>
-                <div class="lesson-content">
-                    <div class="lesson-title">Introdução aos Limites</div>
-                    <div class="lesson-duration">45 minutos</div>
-                </div>
-                <div class="lesson-actions">
-                    <a href="#" class="btn btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
-                        </svg>
-                        Assistir
-                    </a>
-                    <a href="#" class="btn btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
-                        </svg>
-                        Ver PDF
-                    </a>
-                    <a href="#" class="btn btn-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </a>
-                </div>
-                
+                </button>
             </div>
 
-            <div class="lesson-item">
+            <div class="lesson-item" *ngFor="let content of topic.contents">
                 <div class="lesson-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg *ngIf="content.contentType == 'VIDEO'" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="#4361ee" />
+                    </svg>
+
+                    <svg *ngIf="content.contentType == 'FILE'" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
                             stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -670,13 +659,45 @@
                     </svg>
                 </div>
                 <div class="lesson-content">
-                    <div class="lesson-title">Exercícios - Limites Fundamentais</div>
-                    <div class="lesson-duration">Lista com 12 exercícios</div>
+                    <div class="lesson-title">{{ content.description }}</div>
+                    <div class="lesson-duration">{{ content.time }} minutos</div>
                 </div>
+                <div class="lesson-actions">
+                    <a href="#" class="btn btn-outline" *ngIf="content.contentType == 'VIDEO'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+                        </svg>
+                        Assistir
+                    </a>
+
+                    <button href="#" class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
+                        [disabled]="content.showLoadingDownload" (click)="download(content, content.fileName)">
+                        <svg *ngIf="!content.showLoadingDownload" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner"
+                            style="color: #4361ee;"></i>
+                    </button>
+
+                    <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
+                        <button class="dropdown-btn btn btn-outline" (click)="content.isAdminMenuOpen = !content.isAdminMenuOpen"><i
+                                class="pi pi-ellipsis-h"></i></button>
+                        <div class="dropdown" *ngIf="content.isAdminMenuOpen">
+                            <a
+                                (click)="onUpdateTopicContent(content, topicContentFile); content.isAdminMenuOpen = false">Editar</a>
+                            <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = false">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        -->
 
+        <!-- Informações sobre conteúdo futuro -->
+        <!-- 
         <div class="future-content-info">
             <i class="pi pi-info-circle"></i>
             <span>
@@ -684,7 +705,7 @@
                 materiais de apoio para você aprender melhor este tópico!
             </span>
         </div>
-
+        -->
 
         <div class="exercise-section">
             <h3 class="exercise-title">Pronto Para Praticar?</h3>
@@ -703,3 +724,47 @@
 </body>
 
 </html>
+
+<!-- Modal de Adicionar/Editar Aula -->
+<div class="popout-overlay" *ngIf="displayModalSaveContent">
+    <div class="popout-container">
+
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
+            <button class="close-button" (click)="displayModalSaveContent = false">&times;</button>
+        </div>
+
+        <form autocomplete="off" #courseForm="ngForm">
+            <div class="form-group">
+                <label for="type">Tipo</label>
+                <select id="type" [(ngModel)]="topicContent.contentType" name="type" required>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option *ngFor="let type of contentType" [value]="type.value">{{ type.label }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
+                    [(ngModel)]="topicContent.description">
+            </div>
+            <div class="form-group" *ngIf="topicContent.contentType === 'VIDEO'">
+                <label for="time">Tempo do video</label>
+                <input type="text" name="time" ngModel #time="ngModel" required minlength="1"
+                    [(ngModel)]="topicContent.time">
+            </div>
+            <div class="form-group">
+                <input type="file" (change)="onTopicContentFileSelected($event)" name="file" accept="application/**"
+                    class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="position">Posição</label>
+                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                    [(ngModel)]="topicContent.position">
+            </div>
+
+            <button type="submit" class="submit-button" (click)="saveContent()">{{ showLoading ? 'Loading...' : 'Salvar'
+                }}</button>
+
+        </form>
+    </div>
+</div>
