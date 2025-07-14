@@ -50,7 +50,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private checkAuthentication(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/main-panel');
+      //this.router.navigateByUrl('/main-panel');
+      this.router.navigateByUrl('/quizzes');
     }
   }
 
