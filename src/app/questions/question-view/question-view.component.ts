@@ -54,6 +54,8 @@ export class QuestionViewComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   displayModalLogin: boolean = false;
 
+  showComments: boolean = false;
+
   user = new User();
   activeTab: number = 1;
   step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
@@ -102,6 +104,15 @@ export class QuestionViewComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  toggleComments() {
+    this.showComments = !this.showComments;
+  }
+
+  addComment() {
+    // lógica para adicionar comentário
+    console.log("Comentário adicionado");
   }
 
   goBack(): void {

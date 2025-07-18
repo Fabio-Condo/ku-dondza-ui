@@ -187,14 +187,16 @@
             </div>
 
             <div class="navigation-buttons text-center">
-                <button class="pagination-btn prev" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
+                <button class="pagination-btn prev" (click)="goToPreviousQuestion()"
+                    [disabled]="currentQuestionIndex === 0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                     Anterior
                 </button>
-                <button class="pagination-btn next" (click)="onGenerateNextQuestion()" [disabled]="currentQuestionIndex === questions.length - 1">
+                <button class="pagination-btn next" (click)="onGenerateNextQuestion()"
+                    [disabled]="currentQuestionIndex === questions.length - 1">
                     Próxima
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -209,6 +211,10 @@
         </div>
     </div>
 </body>
+
+<button class="fab fab-comments" (click)="toggleComments()" *ngIf="isSuperAdmin || isUserLoggedIn">
+    <i class="pi pi-comments"></i>
+</button>
 
 <button class="fab" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)">
     <i *ngIf="!showCorrection" class="pi pi-eye"></i>
@@ -338,6 +344,63 @@
             <div id="google-signin-button"></div>
             <div class="signup-link">
                 Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popout de comentários -->
+<div class="comments-overlay" *ngIf="showComments">
+    <div class="comments-popup">
+        <div class="comments-header">
+            <h2 class="comments-title">Comentários dos Alunos</h2>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="comments-count">3</div>
+                <button class="close-btn" (click)="toggleComments()">×</button>
+            </div>
+        </div>
+
+        <div class="comment-form">
+            <textarea class="comment-input"
+                placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..."></textarea>
+            <button class="btn btn-primary" (click)="addComment()" style="margin-top: 12px;">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
+                </svg>
+                Publicar Comentário
+            </button>
+        </div>
+
+        <div class="comment">
+            <div class="comment-header">
+                <div class="comment-author">Ana Silva</div>
+                <div class="comment-date">há 2 horas</div>
+            </div>
+            <div class="comment-text">
+                Excelente exercício! Inicialmente esqueci de converter km/h para m/s, mas a dica ajudou muito. A
+                aplicação da equação de Torricelli ficou bem clara na resolução. 🚗💨
+            </div>
+        </div>
+
+        <div class="comment">
+            <div class="comment-header">
+                <div class="comment-author">João Pereira</div>
+                <div class="comment-date">há 5 horas</div>
+            </div>
+            <div class="comment-text">
+                Tenho uma dúvida: por que não podemos usar a equação v = v₀ + at? Não temos o tempo, mas poderíamos
+                calcular primeiro? 🤔
+            </div>
+        </div>
+
+        <div class="comment">
+            <div class="comment-header">
+                <div class="comment-author">Maria Santos</div>
+                <div class="comment-date">ontem</div>
+            </div>
+            <div class="comment-text">
+                João Pereira Você pode usar essa equação sim! Seria necessário primeiro encontrar o tempo usando Δs =
+                v₀t + ½at², mas é mais direto usar Torricelli quando não precisamos do tempo. Ótima pergunta! 👍
             </div>
         </div>
     </div>
