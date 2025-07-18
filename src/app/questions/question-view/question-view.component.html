@@ -212,13 +212,13 @@
     </div>
 </body>
 
-<button class="fab fab-comments" (click)="toggleComments()" *ngIf="isUserLoggedIn && isSuperAdmin">
-    <i class="pi pi-comments"></i>
-</button>
-
-<button class="fab" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)">
+<button class="fab fab-view" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)"  >
     <i *ngIf="!showCorrection" class="pi pi-eye"></i>
     <i *ngIf="showCorrection" class="pi pi-eye-slash"></i>
+</button>
+
+<button class="fab"(click)="toggleComments()" *ngIf="isUserLoggedIn && isSuperAdmin">
+    <i class="pi pi-comments"></i>
 </button>
 
 <div class="popout-overlay" *ngIf="displayModalViewQuizzes">
