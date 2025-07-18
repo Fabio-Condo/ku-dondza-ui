@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -39,6 +39,10 @@ export class TopicViewComponent implements OnInit {
   displayModalSaveContent: boolean = false;
   topicContent: TopicContent = new TopicContent();
   topicContentFile!: File;
+
+  showLesson: boolean = false;
+  selectedContent!: TopicContent;
+  @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
 
   user = new User();
   activeTab: number = 1;
@@ -218,6 +222,21 @@ export class TopicViewComponent implements OnInit {
         this.initializeGoogleAuth();
       }, 100); // Espera para o botão estar no DOM
       return;
+    }
+  }
+
+  onSelectContent(content: TopicContent): void {
+    this.showLesson = true;
+    this.selectedContent = content;
+
+    // Verifique se a referência ao vídeo foi inicializada corretamente
+    if (this.videoPlayer) {
+      const videoElement = this.videoPlayer.nativeElement as HTMLVideoElement;
+
+      // Forçar atualização do vídeo, redefinindo o `src` e recarregando
+      videoElement.src = content.urlFile;
+      videoElement.load();
+      videoElement.play();
     }
   }
 

@@ -671,7 +671,7 @@
                     <div class="lesson-duration">{{ content.time }} minutos</div>
                 </div>
                 <div class="lesson-actions">
-                    <a href="#" class="btn btn-outline" *ngIf="content.contentType == 'VIDEO'">
+                    <a (click)="onSelectContent(content)" class="btn btn-outline" *ngIf="content.contentType == 'VIDEO'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                         </svg>
@@ -888,6 +888,19 @@
             <div class="signup-link">
                 Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Vídeo -->
+<div *ngIf="showLesson">
+    <div class="vidio-popout-overlay">
+        <button class="vidio-close-btn" (click)="showLesson = false">&times;</button>
+        <div *ngIf="selectedContent">
+            <video class="video" #videoPlayer controls>
+                <source [src]="selectedContent.urlFile" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </div>
 </div>
