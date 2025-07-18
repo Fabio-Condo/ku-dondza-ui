@@ -484,8 +484,52 @@
             border-radius: 4px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(67, 97, 238, 0.5);
+        .load-more-container {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .comments-info {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .btn-load-more {
+            background: rgba(67, 97, 238, 0.1);
+            color: #4361ee;
+            border: 2px solid rgba(67, 97, 238, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-load-more:hover {
+            background: rgba(67, 97, 238, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn-load-more:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(67, 97, 238, 0.3);
+            border-top: 2px solid #4361ee;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -642,6 +686,18 @@
                     João Pereira Você pode usar essa equação sim! Seria necessário primeiro encontrar o tempo usando Δs = v₀t + ½at², mas é mais direto usar Torricelli quando não precisamos do tempo. Ótima pergunta! 👍
                 </div>
             </div>
+
+            <div class="load-more-container">
+                <button class="btn btn-secondary" onclick="loadMoreComments()" id="loadMoreBtn">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    Carregar mais comentários
+                </button>
+                <div class="comments-info">
+                    <span>Mostrando 3 de 12 comentários</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -658,6 +714,41 @@
 
     <script>
         let selectedOption = null;
+        let totalComments = 12;
+        let displayedComments = 3;
+
+        const additionalComments = [
+            {
+                author: "Pedro Costa",
+                date: "há 1 dia",
+                text: "Muito bom! Só uma observação: é importante sempre verificar se o resultado faz sentido fisicamente. Uma desaceleração de 6,25 m/s² é bem razoável para um carro. 🚗"
+            },
+            {
+                author: "Sofia Oliveira",
+                date: "há 2 dias",
+                text: "Professor, poderia fazer um exercício similar mas com movimento em plano inclinado? Seria interessante ver como a inclinação afeta os cálculos."
+            },
+            {
+                author: "Rafael Mendes",
+                date: "há 3 dias",
+                text: "Excelente! Uma dica para quem está estudando: sempre faça um desenho da situação antes de começar os cálculos. Ajuda muito na visualização! 📐"
+            },
+            {
+                author: "Carla Fernandes",
+                date: "há 4 dias",
+                text: "Tive dificuldade na conversão de unidades no início, mas depois que entendi o processo ficou mais fácil. Muito obrigada pela explicação detalhada!"
+            },
+            {
+                author: "Lucas Barbosa",
+                date: "há 5 dias",
+                text: "Interessante como a física do dia a dia pode ser aplicada em problemas matemáticos. Isso me ajuda a entender melhor os conceitos! 🧠"
+            },
+            {
+                author: "Beatriz Lima",
+                date: "há 1 semana",
+                text: "Gostaria de saber se existe alguma fórmula prática para calcular a distância de frenagem em diferentes condições de pista (seca, molhada, etc.)."
+            }
+        ];
 
         function selectOption(element, letter) {
             document.querySelectorAll('.option').forEach(option => {
@@ -690,6 +781,72 @@
         function toggleComments() {
             const overlay = document.getElementById('commentsOverlay');
             overlay.classList.toggle('show');
+        }
+
+        function loadMoreComments() {
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const commentsInfo = document.querySelector('.comments-info');
+            
+            // Show loading state
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.innerHTML = `
+                <div class="loading-spinner"></div>
+                Carregando...
+            `;
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                const commentsToLoad = Math.min(3, additionalComments.length - (displayedComments - 3));
+                
+                for (let i = 0; i < commentsToLoad; i++) {
+                    const commentIndex = displayedComments - 3 + i;
+                    if (commentIndex < additionalComments.length) {
+                        const comment = additionalComments[commentIndex];
+                        const commentDiv = document.createElement('div');
+                        commentDiv.className = 'comment';
+                        commentDiv.innerHTML = `
+                            <div class="comment-header">
+                                <div class="comment-author">${comment.author}</div>
+                                <div class="comment-date">${comment.date}</div>
+                            </div>
+                            <div class="comment-text">${comment.text}</div>
+                        `;
+                        
+                        // Add animation
+                        commentDiv.style.opacity = '0';
+                        commentDiv.style.transform = 'translateY(20px)';
+                        
+                        const loadMoreContainer = document.querySelector('.load-more-container');
+                        loadMoreContainer.parentNode.insertBefore(commentDiv, loadMoreContainer);
+                        
+                        // Animate in
+                        setTimeout(() => {
+                            commentDiv.style.transition = 'all 0.5s ease';
+                            commentDiv.style.opacity = '1';
+                            commentDiv.style.transform = 'translateY(0)';
+                        }, i * 100);
+                    }
+                }
+                
+                displayedComments += commentsToLoad;
+                
+                // Update info text
+                commentsInfo.innerHTML = `<span>Mostrando ${displayedComments} de ${totalComments} comentários</span>`;
+                
+                // Update or hide load more button
+                if (displayedComments >= totalComments) {
+                    loadMoreBtn.style.display = 'none';
+                    commentsInfo.innerHTML += '<br><span style="color: #4361ee; font-weight: 600;">Todos os comentários foram carregados! 🎉</span>';
+                } else {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.innerHTML = `
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Carregar mais comentários
+                    `;
+                }
+            }, 1000);
         }
 
         function addComment() {
@@ -728,6 +885,14 @@
                 </svg>
                 Comentários (${currentCount + 1})
             `;
+            
+            // Update totals
+            totalComments++;
+            displayedComments++;
+            
+            // Update info text
+            const commentsInfo = document.querySelector('.comments-info');
+            commentsInfo.innerHTML = `<span>Mostrando ${displayedComments} de ${totalComments} comentários</span>`;
             
             commentDiv.style.opacity = '0';
             commentDiv.style.transform = 'translateY(-10px)';

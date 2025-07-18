@@ -1105,6 +1105,59 @@ pre {
     fill: currentColor;
 }
 
+.load-more-container {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(67, 97, 238, 0.1);
+}
+
+.comments-info {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.btn-load-more {
+    background: rgba(67, 97, 238, 0.1);
+    color: #4361ee;
+    border: 2px solid rgba(67, 97, 238, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.btn-load-more:hover {
+    background: rgba(67, 97, 238, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
+}
+
+.btn-load-more:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(67, 97, 238, 0.3);
+    border-top: 2px solid #4361ee;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .btn-primary {
     /*background: linear-gradient(135deg, #4361ee, #7c3aed);*/
     background: #4361ee;
