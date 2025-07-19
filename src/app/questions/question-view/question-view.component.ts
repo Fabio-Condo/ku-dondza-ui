@@ -58,6 +58,8 @@ export class QuestionViewComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   displayModalLogin: boolean = false;
+  action: 'solution' | 'comment' = 'solution';;
+
 
   comment: Comment = new Comment();
   comments: Comment[] = [];
@@ -256,6 +258,7 @@ export class QuestionViewComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
+      this.action = 'solution';
       this.displayModalLogin = true;
       setTimeout(() => {
         this.initializeGoogleAuth();
@@ -425,7 +428,12 @@ export class QuestionViewComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-        this.togleCorrection();
+        if (this.action === 'solution') {
+          this.togleCorrection();
+        }
+        if (this.action === 'comment') {
+          this.showComments = true;
+        }
         this.showLoading = false;
         this.displayModalLogin = false;
       },
@@ -462,7 +470,12 @@ export class QuestionViewComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-        this.togleCorrection();
+        if (this.action === 'solution') {
+          this.togleCorrection();
+        }
+        if (this.action === 'comment') {
+          this.showComments = true;
+        }
         this.showLoading = false;
         this.displayModalLogin = false;
       },
@@ -503,7 +516,12 @@ export class QuestionViewComponent implements OnInit {
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.ngZone.run(() => {
-          this.togleCorrection();
+          if (this.action === 'solution') {
+            this.togleCorrection();
+          }
+          if (this.action === 'comment') {
+            this.showComments = true;
+          }
           this.showLoading = false;
           this.displayModalLogin = false;
         });
@@ -574,6 +592,22 @@ export class QuestionViewComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  onComment(commentForm: NgForm) {
+    if (this.isUserLoggedIn) {
+      this.addNewComment(commentForm);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.action = 'comment';
+      this.showComments = false;
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
   }
 
   excluir(comment: Comment) {
