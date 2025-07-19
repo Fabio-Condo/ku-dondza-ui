@@ -77,7 +77,7 @@ export class QuestionViewComponent implements OnInit {
 
   commentFilter: CommentFilter = {
     page: -1,
-    itemsPerPage: 2,
+    itemsPerPage: 25,
     sort: 'id,asc',
   }
 
@@ -537,6 +537,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   addNewComment(commentForm: NgForm) {
+    this.loadingMessage = "Adicioando comentário";
     this.showLoading = true;
     this.comment.user = this.loggedUser;
     this.comment.question = this.question;
@@ -544,7 +545,7 @@ export class QuestionViewComponent implements OnInit {
       (response) => {
         this.comment = response;
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Comment adicionado com sucesso!' });
+        this.messageService.add({ severity: 'success', detail: 'Comentário adicionado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -554,12 +555,15 @@ export class QuestionViewComponent implements OnInit {
   }
 
   updateComment(commentForm: NgForm) {
+    this.loadingMessage = "Atualizando comentário";
     this.showLoading = true;
+    this.comment.user = this.loggedUser;
+    this.comment.question = this.question;
     this.commentService.update(this.comment).subscribe(
       (response) => {
         this.comment = response;
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Comment alterado com sucesso!' });
+        this.messageService.add({ severity: 'success', detail: 'Comentário alterado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -569,8 +573,13 @@ export class QuestionViewComponent implements OnInit {
   }
 
   excluir(comment: Comment) {
+    this.loadingMessage = "Excluíndo comentário";
+    this.showLoading = true;
     this.commentService.excluir(comment.id).subscribe(() => {
-      this.messageService.add({ severity: 'success', detail: 'Comment excluído com sucesso!' });
+      this.showLoading = false;
+      this.comments = this.comments.filter(c => c.id !== comment.id);
+      this.totalRecordComments--;
+      this.messageService.add({ severity: 'success', detail: 'Comentário excluído com sucesso!' });
     },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
