@@ -371,9 +371,9 @@
             <div *ngFor="let comment of comments" class="comment">
                 <div class="comment-header">
                     <div class="comment-author">{{ comment.user.fullName }}</div>
-                    <div *ngIf="comment.user.id === loggedUser.id" style="display: flex; justify-content: space-between;align-items: center;">
-                        <div class="comment-date">{{ comment.createdAt | date:'dd/MM/yyyy HH:mm'}}</div>
-                        <div class="comment-actions">
+                    <div style="display: flex; justify-content: space-between;align-items: center;">
+                        <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
+                        <div class="comment-actions" *ngIf="comment.user.id === loggedUser.id">
                             <button class="comment-menu-button" (click)="toggleMenu(comment.id)"> ⋮ </button>
                             <!-- Menu dropdown -->
                             <div class="comment-menu" *ngIf="openedMenuId === comment.id">

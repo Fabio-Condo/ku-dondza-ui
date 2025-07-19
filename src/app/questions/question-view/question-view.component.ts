@@ -672,6 +672,36 @@ export class QuestionViewComponent implements OnInit {
     this.getComments(this.question.id);
   }
 
+  formatarTempoRelativo(data: Date | string): string {
+    const agora = new Date();
+    const comentarioData = new Date(data);
+    const diffMs = agora.getTime() - comentarioData.getTime();
+    const diffSegundos = Math.floor(diffMs / 1000);
+    const diffMinutos = Math.floor(diffSegundos / 60);
+    const diffHoras = Math.floor(diffMinutos / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffSegundos < 60) {
+      return 'agora mesmo';
+    } else if (diffMinutos < 60) {
+      return `há ${diffMinutos} minuto${diffMinutos > 1 ? 's' : ''}`;
+    } else if (diffHoras < 24) {
+      return `há ${diffHoras} hora${diffHoras > 1 ? 's' : ''}`;
+    } else if (diffDias === 1) {
+      return 'ontem';
+    } else if (diffDias < 7) {
+      return `há ${diffDias} dia${diffDias > 1 ? 's' : ''}`;
+    } else if (diffDias < 30) {
+      const semanas = Math.floor(diffDias / 7);
+      return `há ${semanas} semana${semanas > 1 ? 's' : ''}`;
+    } else if (diffDias < 365) {
+      const meses = Math.floor(diffDias / 30);
+      return `há ${meses} mês${meses > 1 ? 'es' : ''}`;
+    } else {
+      const anos = Math.floor(diffDias / 365);
+      return `há ${anos} ano${anos > 1 ? 's' : ''}`;
+    }
+  }
 
   private sendErrorNotification(message: string): void {
     if (message) {
