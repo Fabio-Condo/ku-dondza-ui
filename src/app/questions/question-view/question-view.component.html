@@ -212,12 +212,12 @@
     </div>
 </body>
 
-<button class="fab fab-view" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)"  >
+<button class="fab fab-view" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)">
     <i *ngIf="!showCorrection" class="pi pi-eye"></i>
     <i *ngIf="showCorrection" class="pi pi-eye-slash"></i>
 </button>
 
-<button class="fab"(click)="toggleComments()" *ngIf="isUserLoggedIn && isSuperAdmin">
+<button class="fab" (click)="toggleComments()" *ngIf="isUserLoggedIn && isSuperAdmin">
     <i class="pi pi-comments"></i>
 </button>
 
@@ -349,9 +349,10 @@
     </div>
 </div>
 
-<!-- Popout de comentários -->
 <div class="comments-overlay" *ngIf="showComments">
     <div class="comments-popup">
+
+        <!-- Header fixo -->
         <div class="comments-header">
             <h2 class="comments-title">Comentários</h2>
             <div style="display: flex; align-items: center; gap: 12px;">
@@ -360,57 +361,61 @@
             </div>
         </div>
 
-        <div class="comment-form">
+        <!-- Conteúdo scrollável (comentários) -->
+        <div class="comments-scrollable">
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-author">Ana Silva</div>
+                    <div class="comment-date">há 2 horas</div>
+                </div>
+                <div class="comment-text">
+                    Excelente exercício! Inicialmente esqueci de converter km/h para m/s, mas a dica ajudou muito. A
+                    aplicação da equação de Torricelli ficou bem clara na resolução. 🚗💨
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-author">João Pereira</div>
+                    <div class="comment-date">há 5 horas</div>
+                </div>
+                <div class="comment-text">
+                    Tenho uma dúvida: por que não podemos usar a equação v = v₀ + at? Não temos o tempo, mas poderíamos
+                    calcular primeiro? 🤔
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-author">Maria Santos</div>
+                    <div class="comment-date">ontem</div>
+                </div>
+                <div class="comment-text">
+                    João Pereira Você pode usar essa equação sim! Seria necessário primeiro encontrar o tempo usando Δs
+                    =
+                    v₀t + ½at², mas é mais direto usar Torricelli quando não precisamos do tempo. Ótima pergunta! 👍
+                </div>
+            </div>
+
+            <div class="load-more-container">
+                <button class="btn-load-more" id="load-more-btn">
+                    Buscar mais
+                </button>
+            </div>
+        </div>
+
+        <!-- Formulário fixo -->
+        <div class="comment-form-fixed">
             <textarea class="comment-input"
                 placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..."></textarea>
             <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
-                <button class="btn btn-primary" (click)="addComment()" style="margin-top: 12px;">
+                <button class="btn btn-primary" (click)="addComment()">
                     <svg class="icon" viewBox="0 0 24 24">
                         <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
                     </svg>
                     Publicar
                 </button>
             </div>
-        </div>
-
-        <div class="comment">
-            <div class="comment-header">
-                <div class="comment-author">Ana Silva</div>
-                <div class="comment-date">há 2 horas</div>
-            </div>
-            <div class="comment-text">
-                Excelente exercício! Inicialmente esqueci de converter km/h para m/s, mas a dica ajudou muito. A
-                aplicação da equação de Torricelli ficou bem clara na resolução. 🚗💨
-            </div>
-        </div>
-
-        <div class="comment">
-            <div class="comment-header">
-                <div class="comment-author">João Pereira</div>
-                <div class="comment-date">há 5 horas</div>
-            </div>
-            <div class="comment-text">
-                Tenho uma dúvida: por que não podemos usar a equação v = v₀ + at? Não temos o tempo, mas poderíamos
-                calcular primeiro? 🤔
-            </div>
-        </div>
-
-        <div class="comment">
-            <div class="comment-header">
-                <div class="comment-author">Maria Santos</div>
-                <div class="comment-date">ontem</div>
-            </div>
-            <div class="comment-text">
-                João Pereira Você pode usar essa equação sim! Seria necessário primeiro encontrar o tempo usando Δs =
-                v₀t + ½at², mas é mais direto usar Torricelli quando não precisamos do tempo. Ótima pergunta! 👍
-            </div>
-        </div>
-
-        <!-- Load-more -->
-        <div class="load-more-container">
-            <button class="btn-load-more" id="load-more-btn">
-                Buscar mais
-            </button>
         </div>
 
     </div>
