@@ -24,6 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
     `${this.authenticationService.host}/users`,
     `${this.authenticationService.host}/quizzes`,
     `${this.authenticationService.host}/competitions`,
+    `${this.authenticationService.host}/comments`,
     `${this.authenticationService.host}/main-panel`,
     `${this.authenticationService.host}/auth`,
     // Adicione outras URLs públicas aqui
