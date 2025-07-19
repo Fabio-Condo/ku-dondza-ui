@@ -1,11 +1,12 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from '../question.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
 import { QuizService } from 'src/app/quiz/quiz.service';
 import { Quiz } from 'src/app/core/model/Quiz';
+import { Comment } from 'src/app/core/model/Comment';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
@@ -17,6 +18,10 @@ import { Title } from '@angular/platform-browser';
 
 declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
+import { NgForm } from '@angular/forms';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { CommentService } from 'src/app/comments/comment.service';
+import { CommentFilter } from 'src/app/core/interface/ArticleFilter copy';
 
 
 @Component({
@@ -54,6 +59,9 @@ export class QuestionViewComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   displayModalLogin: boolean = false;
 
+  comment: Comment = new Comment();
+  comments: Comment[] = [];
+  totalRecordComments: number = 0;
   showComments: boolean = false;
 
   user = new User();
@@ -67,6 +75,12 @@ export class QuestionViewComponent implements OnInit {
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
+  commentFilter: CommentFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
+
   quizFilter: QuizFilter = {
     page: 0,
     itemsPerPage: 5,
@@ -77,7 +91,8 @@ export class QuestionViewComponent implements OnInit {
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
     private questionService: QuestionService,
-    private quizService: QuizService,
+    private commentService: CommentService,
+    private confirmationService: ConfirmationService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -110,11 +125,6 @@ export class QuestionViewComponent implements OnInit {
     this.showComments = !this.showComments;
   }
 
-  addComment() {
-    // lógica para adicionar comentário
-    console.log("Comentário adicionado");
-  }
-
   goBack(): void {
     if (this.origem === 'topics' && this.topicId) {
       this.router.navigate(['/topics', this.topicId]);
@@ -132,6 +142,7 @@ export class QuestionViewComponent implements OnInit {
         this.renderMathExpressions();
         this.renderFunctions();
         this.showLoading = false;
+        this.getComments(this.question.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
@@ -512,6 +523,94 @@ export class QuestionViewComponent implements OnInit {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
   }
+
+  get editing() {
+    return Boolean(this.comment.id);
+  }
+
+  save(commentForm: NgForm) {
+    if (this.editing) {
+      this.updateComment(commentForm);
+    } else {
+      this.addNewComment(commentForm);
+    }
+  }
+
+  addNewComment(commentForm: NgForm) {
+    this.showLoading = true;
+    this.comment.user = this.loggedUser;
+    this.comment.question = this.question;
+    this.commentService.add(this.comment).subscribe(
+      (response) => {
+        this.comment = response;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Comment adicionado com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  updateComment(commentForm: NgForm) {
+    this.showLoading = true;
+    this.commentService.update(this.comment).subscribe(
+      (response) => {
+        this.comment = response;
+        this.showLoading = false;
+        this.messageService.add({ severity: 'success', detail: 'Comment alterado com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  excluir(comment: Comment) {
+    this.commentService.excluir(comment.id).subscribe(() => {
+      this.messageService.add({ severity: 'success', detail: 'Comment excluído com sucesso!' });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  confirmarExclusao(comment: Comment): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.excluir(comment);
+      }
+    });
+  }
+
+  getComments(questionId: number): void {
+    this.loadingMessage = "Carregando dados"
+    this.showLoading = true;
+    this.commentFilter.page++;
+    this.commentService.getCommentsByQuestion(questionId, this.commentFilter).subscribe(
+      (dados: IApiResponse<Comment>) => {
+        //this.comments = dados.content;
+        this.comments = [...this.comments, ...dados.content];
+        this.totalRecordComments = dados.totalElements;
+
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onShowMoreComments(): void {
+    this.getComments(this.question.id);
+  }
+
 
   private sendErrorNotification(message: string): void {
     if (message) {
