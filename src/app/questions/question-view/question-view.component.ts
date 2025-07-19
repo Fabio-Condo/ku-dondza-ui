@@ -66,6 +66,8 @@ export class QuestionViewComponent implements OnInit {
   totalRecordComments: number = 0;
   showComments: boolean = false;
 
+  openedMenuId: number | null = null;
+
   user = new User();
   activeTab: number = 1;
   step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
@@ -607,6 +609,14 @@ export class QuestionViewComponent implements OnInit {
         this.initializeGoogleAuth();
       }, 100); // Espera para o botão estar no DOM
       return;
+    }
+  }
+
+  toggleMenu(commentId: number): void {
+    if (this.openedMenuId === commentId) {
+      this.openedMenuId = null;
+    } else {
+      this.openedMenuId = commentId;
     }
   }
 
