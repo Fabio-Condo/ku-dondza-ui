@@ -545,6 +545,10 @@ export class QuestionViewComponent implements OnInit {
       (response) => {
         this.comment = response;
         this.showLoading = false;
+        this.comments.unshift(this.comment); // Adiciona o novo comentário no início da lista
+        this.totalRecordComments++;
+        this.comment = new Comment(); // Reseta o objeto de comentário
+        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
         this.messageService.add({ severity: 'success', detail: 'Comentário adicionado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
