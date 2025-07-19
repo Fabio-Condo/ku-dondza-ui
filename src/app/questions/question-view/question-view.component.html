@@ -377,8 +377,8 @@
                             <button class="comment-menu-button" (click)="toggleMenu(comment.id)"> ⋮ </button>
                             <!-- Menu dropdown -->
                             <div class="comment-menu" *ngIf="openedMenuId === comment.id">
-                                <button>Editar</button>
-                                <button>Eliminar</button>
+                                <button (click)="onUpdateComment(comment)">Editar</button>
+                                <button (click)="confirmarExclusao(comment)">Eliminar</button>
                             </div>
                         </div>
                     </div>

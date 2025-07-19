@@ -598,7 +598,7 @@ export class QuestionViewComponent implements OnInit {
 
   onComment(commentForm: NgForm) {
     if (this.isUserLoggedIn) {
-      this.addNewComment(commentForm);
+      this.save(commentForm);
     }
 
     if (!this.isUserLoggedIn) {
@@ -610,6 +610,10 @@ export class QuestionViewComponent implements OnInit {
       }, 100); // Espera para o botão estar no DOM
       return;
     }
+  }
+
+  onUpdateComment(comment: Comment): void {
+    this.comment = comment;
   }
 
   toggleMenu(commentId: number): void {
