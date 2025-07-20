@@ -130,6 +130,8 @@ export class QuestionViewComponent implements OnInit {
 
   toggleComments() {
     this.showComments = !this.showComments;
+    this.comments = [];
+    this.commentFilter.page = -1;
     this.getComments(this.question.id);
   }
 
@@ -216,8 +218,6 @@ export class QuestionViewComponent implements OnInit {
       this.currentQuestionIndex--;
       this.question = this.questions[this.currentQuestionIndex];
       this.router.navigate(['/questions', this.question.questionId], { replaceUrl: true });
-      this.comments = [];
-      this.commentFilter.page = -1;
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
@@ -229,8 +229,6 @@ export class QuestionViewComponent implements OnInit {
       this.currentQuestionIndex++;
       this.question = this.questions[this.currentQuestionIndex];
       this.router.navigate(['/questions', this.question.questionId], { replaceUrl: true });
-      this.comments = [];
-      this.commentFilter.page = -1;
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
