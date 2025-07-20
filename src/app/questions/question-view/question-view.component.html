@@ -371,22 +371,33 @@
             <div *ngFor="let comment of comments" class="comment">
                 <div class="comment-header">
                     <div class="comment-author">{{ comment.user.fullName }}</div>
-                    <div style="display: flex; justify-content: space-between;align-items: center;">
-                        <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
-                        <div class="comment-actions" *ngIf="comment.user.id === loggedUser.id">
-                            <button class="comment-menu-button" (click)="toggleMenu(comment.id)"> ⋮ </button>
-                            <!-- Menu dropdown -->
-                            <div class="comment-menu" *ngIf="openedMenuId === comment.id">
-                                <button (click)="onUpdateComment(comment)">Editar</button>
-                                <button (click)="confirmarExclusao(comment)">Eliminar</button>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
                 </div>
+
                 <div class="comment-text">
                     {{ comment.content }}
                 </div>
+
+                <!-- Ações de comentário -->
+                <div class="comment-footer">
+                    <button class="comment-action">
+                        Gosto
+                        <span>· {{ 10 }}</span>
+                    </button>
+                    <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
+                        class="comment-action">Editar</button>
+                    <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
+                        class="comment-action">Eliminar</button>
+                    <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin">
+                        <button class="comment-menu-button" (click)="toggleMenu(comment.id)"> ⋮ </button>
+                        <!-- Menu dropdown -->
+                        <div class="comment-menu" *ngIf="openedMenuId === comment.id">
+                            <button (click)="confirmarExclusao(comment)">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <!-- Botão carregar mais -->
             <div class="load-more-container" *ngIf="comments.length !== 0">
