@@ -13,9 +13,10 @@ export class CommentService {
 
     constructor(private http: HttpClient) { }
 
-    getCommentsByQuestion(questionId: number, filter: CommentFilter): Observable<IApiResponse<Comment>> {
+    getCommentsByQuestion(questionId: number, currentUserId: number, filter: CommentFilter): Observable<IApiResponse<Comment>> {
         let params = new HttpParams()
             .set('questionId', questionId.toString())
+            .set('currentUserId', currentUserId.toString())
             .set('page', filter.page)
             .set('sort', filter.sort)
             .set('size', filter.itemsPerPage);

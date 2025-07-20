@@ -380,9 +380,9 @@
 
                 <!-- Ações de comentário -->
                 <div class="comment-footer">
-                    <button class="comment-action">
-                        Gosto
-                        <span>· {{ 10 }}</span>
+                    <button class="comment-action" (click)="onLike(comment)">
+                        <span [ngClass]="{ 'liked': comment.likedByUser }">Gosto</span>
+                        <span>· {{ 0 }}</span>
                     </button>
                     <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
                         class="comment-action">Editar</button>

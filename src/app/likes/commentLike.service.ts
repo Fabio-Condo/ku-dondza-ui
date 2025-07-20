@@ -9,7 +9,7 @@ import { CommentLikeFilter } from '../core/interface/CommentLikeFilter';
 @Injectable({
   providedIn: 'root'
 })
-export class LikeService {
+export class CommentLikeService {
 
   private apiUrl = environment.apiUrl + '/comment-likes';
 

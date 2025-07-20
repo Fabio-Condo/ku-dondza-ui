@@ -22,6 +22,7 @@ import { NgForm } from '@angular/forms';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { CommentService } from 'src/app/comments/comment.service';
 import { CommentFilter } from 'src/app/core/interface/ArticleFilter copy';
+import { CommentLikeService } from 'src/app/likes/commentLike.service';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class QuestionViewComponent implements OnInit {
   comments: Comment[] = [];
   totalRecordComments: number = 0;
   showComments: boolean = false;
+  selectedComment: Comment = new Comment();
 
   private editarFoco = false;
 
@@ -99,6 +101,7 @@ export class QuestionViewComponent implements OnInit {
     private googleAuthService: GoogleAuthService,
     private questionService: QuestionService,
     private commentService: CommentService,
+    private commentLikeService: CommentLikeService,
     private confirmationService: ConfirmationService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -126,6 +129,41 @@ export class QuestionViewComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  onLike(comment: Comment) {
+    this.selectedComment = comment;
+    if (this.isUserLoggedIn) {
+      this.toggleLike(comment);
+    }
+
+    if (!this.isUserLoggedIn) {
+      //this.action = 'Like';
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  toggleLike(comment: Comment): void {
+    comment.showLoadingLike = true;
+    this.commentLikeService.toggleLike(comment.id, this.loggedUser.id).subscribe(
+      response => {
+        comment.likedByUser = !comment.likedByUser;
+        if (comment.likedByUser) {
+          comment.numberOfLikes = comment.numberOfLikes + 1;
+        } else {
+          comment.numberOfLikes = comment.numberOfLikes - 1;
+        }
+        comment.showLoadingLike = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        comment.showLoadingLike = false;
+      }
+    );
   }
 
   toggleComments() {
@@ -664,10 +702,16 @@ export class QuestionViewComponent implements OnInit {
   }
 
   getComments(questionId: number): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.commentFilter.page++;
-    this.commentService.getCommentsByQuestion(questionId, this.commentFilter).subscribe(
+    this.commentService.getCommentsByQuestion(questionId, this.loggedUser.id, this.commentFilter).subscribe(
       (dados: IApiResponse<Comment>) => {
         //this.comments = dados.content;
         this.comments = [...this.comments, ...dados.content];

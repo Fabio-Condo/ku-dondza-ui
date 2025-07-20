@@ -7,4 +7,9 @@ export class Comment {
     createdAt!: Date;
     question = new Question();
     user = new User();
+
+    likedByUser: boolean = false;
+    numberOfLikes: number = 0;
+
+    showLoadingLike: boolean = false;
 }
