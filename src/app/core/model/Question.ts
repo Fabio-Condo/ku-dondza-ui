@@ -17,6 +17,7 @@ export class Question {
     difficultyLevel!: string;
     topic = new Topic();
     answers: Answer[] = [];
+    numberOfComments: number = 0;
 
     isAdminMenuOpen: boolean = false;
     showSolution: boolean = false;
