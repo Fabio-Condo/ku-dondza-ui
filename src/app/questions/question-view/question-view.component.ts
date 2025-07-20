@@ -60,11 +60,14 @@ export class QuestionViewComponent implements OnInit {
   displayModalLogin: boolean = false;
   action: 'solution' | 'comment' = 'solution';;
 
-
   comment: Comment = new Comment();
   comments: Comment[] = [];
   totalRecordComments: number = 0;
   showComments: boolean = false;
+
+  private editarFoco = false;
+
+  @ViewChild('editInput') editInputRef!: ElementRef;
 
   openedMenuId: number | null = null;
 
@@ -614,6 +617,14 @@ export class QuestionViewComponent implements OnInit {
 
   onUpdateComment(comment: Comment): void {
     this.comment = comment;
+    this.editarFoco = true;
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.editarFoco && this.editInputRef) {
+      this.editInputRef.nativeElement.focus();
+      this.editarFoco = false;
+    }
   }
 
   toggleMenu(commentId: number): void {
