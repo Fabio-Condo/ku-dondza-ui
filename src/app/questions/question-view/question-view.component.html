@@ -418,10 +418,17 @@
 
         <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
             <div class="comment-form-fixed">
-                <textarea #editInput class="comment-input" name="content" [(ngModel)]="comment.content"
-                    placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..." required>
-                </textarea>
+                <div class="comment-input-wrapper">
+                    <!-- Ícone do usuário -->
+                    <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User" class="comment-avatar" />
 
+                    <!-- Campo de comentário -->
+                    <textarea #editInput class="comment-input" name="content" [(ngModel)]="comment.content"
+                        placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..." required>
+                    </textarea>
+                </div>
+
+                <!-- Botão -->
                 <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
                     <button type="submit" class="btn btn-primary" [disabled]="commentForm.invalid || showLoading">
                         <svg class="icon" viewBox="0 0 24 24">
