@@ -173,20 +173,13 @@ export class QuestionViewComponent implements OnInit {
   onGetComments() {
     this.comments = [];
     this.commentFilter.page = -1;
-    this.getComments(this.question.id);
-    this.showComments = true;
-    document.body.classList.add('no-scroll');
-  }
 
-  onGetComments2222() {
-    this.comments = [];
-    this.commentFilter.page = -1;
-    this.showComments = true;
-    document.body.classList.add('no-scroll');
-
-    if (this.comments.length > 0) {
+    if (this.question.numberOfComments > 0) {
       this.getComments(this.question.id);
     }
+
+    this.showComments = true;
+    document.body.classList.add('no-scroll');
   }
 
   onCloseComments() {
