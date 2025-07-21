@@ -619,7 +619,6 @@ export class QuestionViewComponent implements OnInit {
         this.totalRecordComments++;
         this.comment = new Comment(); // Reseta o objeto de comentário
         commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
-        this.messageService.add({ severity: 'success', detail: 'Comentário adicionado com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -637,7 +636,8 @@ export class QuestionViewComponent implements OnInit {
       (response) => {
         this.comment = response;
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Comentário alterado com sucesso!' });
+        this.comment = new Comment(); // Reseta o objeto de comentário
+        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
