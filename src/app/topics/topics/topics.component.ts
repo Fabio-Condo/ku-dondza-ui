@@ -189,8 +189,14 @@ export class TopicsComponent implements OnInit {
     });
   }
 
-  onFilter(): void {
-    this.displayModalFilter = true;
+  toggleFilter(): void {
+    this.displayModalFilter = !this.displayModalFilter;
+
+    if (this.displayModalFilter) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
 
   onUpdateTopic(topic: Topic): void {

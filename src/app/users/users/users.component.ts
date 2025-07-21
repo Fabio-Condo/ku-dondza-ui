@@ -130,8 +130,14 @@ export class UsersComponent implements OnInit {
     this.displayModalSave = true;
   }
 
-  onFilter(): void {
-    this.displayModalFilter = true;
+  toggleFilter(): void {
+    this.displayModalFilter = !this.displayModalFilter;
+
+    if (this.displayModalFilter) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
 
   findAll(pagina: number = 0): void {

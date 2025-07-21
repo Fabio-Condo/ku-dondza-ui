@@ -287,8 +287,14 @@ export class OnlineCoursesComponent implements OnInit {
     this.findAll();
   }
 
-  onFilter(): void {
-    this.displayModalFilter = true;
+  toggleFilter(): void {
+    this.displayModalFilter = !this.displayModalFilter;
+
+    if (this.displayModalFilter) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
 
   public get isAdmin(): boolean {

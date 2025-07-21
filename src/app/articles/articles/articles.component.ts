@@ -249,8 +249,14 @@ export class ArticlesComponent implements OnInit {
     this.closeDeleteConfirmDialog();
   }
 
-  onFilter(): void {
-    this.displayModalFilter = true;
+  toggleFilter(): void {
+    this.displayModalFilter = !this.displayModalFilter;
+
+    if (this.displayModalFilter) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
 
   onLike(article: Article) {
