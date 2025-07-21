@@ -112,7 +112,6 @@ export class QuestionViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Question view page');
-    document.body.classList.remove('no-scroll'); // Alivia o scroll
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
@@ -126,6 +125,10 @@ export class QuestionViewComponent implements OnInit {
       this.origem = params['from'];
       this.topicId = params['topicId'];
     });
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
   }
 
   scrollToTop() {

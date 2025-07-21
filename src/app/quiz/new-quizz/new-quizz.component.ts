@@ -121,7 +121,6 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle('Create new quiz page');
-    document.body.classList.remove('no-scroll'); // Alivia o scroll
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.carregarDisciplinas();

@@ -71,7 +71,6 @@ export class TopicViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Topic view page');
-    document.body.classList.remove('no-scroll'); // Alivia o scroll
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 

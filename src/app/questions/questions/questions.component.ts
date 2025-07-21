@@ -99,11 +99,14 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Questions page');
-    document.body.classList.remove('no-scroll'); // Alivia o scroll
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.findAll(0);
     this.carregarDisciplinas();
     this.scrollToTop();
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
   }
 
   scrollToTop() {
