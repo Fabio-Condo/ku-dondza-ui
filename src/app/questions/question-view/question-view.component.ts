@@ -171,6 +171,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onGetComments() {
+    this.comment.content = this.comment.content.trim(); // Garantir que sempre esteja vazio
     this.comments = [];
     this.commentFilter.page = -1;
     this.totalRecordComments = 0
