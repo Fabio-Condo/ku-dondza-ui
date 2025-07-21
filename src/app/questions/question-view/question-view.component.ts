@@ -171,6 +171,14 @@ export class QuestionViewComponent implements OnInit {
     this.commentFilter.page = -1;
     this.getComments(this.question.id);
     this.showComments = true;
+    document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll'); // também adiciona no <html>
+  }
+
+  onCloseComments() {
+    this.showComments = false;
+    document.body.classList.remove('no-scroll');
+    document.documentElement.classList.remove('no-scroll');
   }
 
   goBack(): void {
