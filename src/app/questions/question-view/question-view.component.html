@@ -369,32 +369,39 @@
                 Nenhum comentário ainda. Seja o primeiro a compartilhar sua dúvida ou insight! 💬
             </div>
 
-            <div *ngFor="let comment of comments" class="comment">
-                <div class="comment-header">
-                    <div class="comment-author">{{ comment.user.fullName }}</div>
-                    <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
-                </div>
+            <div *ngFor="let comment of comments" class="comment-wrapper">
+                <img [src]="comment.user.profileImageUrl" alt="User" class="comment-avatar" />
 
-                <div class="comment-text">
-                    {{ comment.content }}
-                </div>
+                <div class="comment">
+                    <!-- Cabeçalho -->
+                    <div class="comment-header">
+                        <div class="comment-author">{{ comment.user.fullName }}</div>
+                        <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
+                    </div>
 
-                <!-- Ações de comentário -->
-                <div class="comment-footer">
-                    <button class="comment-action" (click)="onLike(comment)">
-                        <span *ngIf="!comment.showLoadingLike" [ngClass]="{ 'liked': comment.likedByUser }">Gosto</span>
-                        <span *ngIf="!comment.showLoadingLike">· {{ comment.numberOfLikes }}</span>
-                        <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner"></i>
-                    </button>
-                    <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
-                        class="comment-action">Editar</button>
-                    <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
-                        class="comment-action">Eliminar</button>
-                    <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin">
-                        <button class="comment-menu-button" (click)="toggleMenu(comment.id)"> ⋮ </button>
-                        <!-- Menu dropdown -->
-                        <div class="comment-menu" *ngIf="openedMenuId === comment.id">
-                            <button (click)="confirmarExclusao(comment)">Eliminar</button>
+                    <!-- Texto -->
+                    <div class="comment-text">
+                        {{ comment.content }}
+                    </div>
+
+                    <!-- Rodapé -->
+                    <div class="comment-footer">
+                        <button class="comment-action" (click)="onLike(comment)">
+                            <span *ngIf="!comment.showLoadingLike"
+                                [ngClass]="{ 'liked': comment.likedByUser }">Gosto</span>
+                            <span *ngIf="!comment.showLoadingLike">· {{ comment.numberOfLikes }}</span>
+                            <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+                        </button>
+                        <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
+                            class="comment-action">Editar</button>
+                        <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
+                            class="comment-action">Eliminar</button>
+
+                        <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin">
+                            <button class="comment-menu-button" (click)="toggleMenu(comment.id)">⋮</button>
+                            <div class="comment-menu" *ngIf="openedMenuId === comment.id">
+                                <button (click)="confirmarExclusao(comment)">Eliminar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
