@@ -166,11 +166,11 @@ export class QuestionViewComponent implements OnInit {
     );
   }
 
-  toggleComments() {
-    this.showComments = !this.showComments;
+  onGetComments() {
     this.comments = [];
     this.commentFilter.page = -1;
     this.getComments(this.question.id);
+    this.showComments = true;
   }
 
   goBack(): void {
