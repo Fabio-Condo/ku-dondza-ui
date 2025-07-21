@@ -170,6 +170,10 @@ export class QuestionViewComponent implements OnInit {
     );
   }
 
+  onContentChange(content: string) {
+    this.comment.content = content.trimStart();
+  }
+
   onGetComments() {
     this.comment.content = this.comment.content.trim(); // Garantir que sempre esteja vazio
     this.comments = [];
