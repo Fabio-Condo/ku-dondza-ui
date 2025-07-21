@@ -112,6 +112,7 @@ export class QuestionViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Question view page');
+    document.body.classList.remove('no-scroll'); // Alivia o scroll
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
@@ -172,6 +173,17 @@ export class QuestionViewComponent implements OnInit {
     this.getComments(this.question.id);
     this.showComments = true;
     document.body.classList.add('no-scroll');
+  }
+
+  onGetComments2222() {
+    this.comments = [];
+    this.commentFilter.page = -1;
+    this.showComments = true;
+    document.body.classList.add('no-scroll');
+
+    if (this.comments.length > 0) {
+      this.getComments(this.question.id);
+    }
   }
 
   onCloseComments() {
