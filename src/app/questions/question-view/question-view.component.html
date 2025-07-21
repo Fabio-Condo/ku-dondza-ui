@@ -420,22 +420,20 @@
             <div class="comment-form-fixed">
                 <div class="comment-input-wrapper">
                     <!-- Ícone do usuário -->
-                    <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User" class="comment-avatar" />
+                    <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User"
+                        class="comment-avatar" />
 
                     <!-- Campo de comentário -->
-                    <textarea #editInput class="comment-input" name="content" [(ngModel)]="comment.content"
-                        placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..." required>
-                    </textarea>
-                </div>
+                    <div class="comment-textarea-container">
+                        <textarea #editInput class="comment-input" name="content" [(ngModel)]="comment.content"
+                            placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..." required>
+                        </textarea>
 
-                <!-- Botão -->
-                <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
-                    <button type="submit" class="btn btn-primary" [disabled]="commentForm.invalid || showLoading">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
-                        </svg>
-                        Publicar
-                    </button>
+                        <!-- Botão de envio -->
+                        <button type="button" class="send-button" [disabled]="commentForm.invalid || showLoading">
+                            <i class="pi pi-send"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>

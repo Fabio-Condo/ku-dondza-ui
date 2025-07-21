@@ -1083,6 +1083,11 @@ pre {
     margin-bottom: 32px;
 }
 
+.comment-textarea-container {
+    position: relative;
+    width: 100%;
+}
+
 .comment-input {
     width: 100%;
     padding: 16px;
@@ -1107,7 +1112,7 @@ pre {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-} 
+}
 
 .comment {
     background: rgba(255, 255, 255, 0.8);
@@ -1210,6 +1215,29 @@ pre {
     padding: 20px 0;
 }
 
+.send-button {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    color: #4361ee;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.send-button:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+}
+
+.send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Botão "Carregar mais" */
 .load-more-container {
     display: flex;
@@ -1232,28 +1260,11 @@ pre {
     cursor: not-allowed;
 }
 
-.btn-primary {
-    /*background: linear-gradient(135deg, #4361ee, #7c3aed);*/
-    background: #4361ee;
-    color: white;
-    box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(67, 97, 238, 0.4);
-}
-
-.btn-primary:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
 .icon {
     width: 18px;
     height: 18px;
     fill: currentColor;
-}  
+}
 
 
 @media (max-width: 900px) {
