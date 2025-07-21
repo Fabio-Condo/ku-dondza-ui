@@ -427,7 +427,7 @@
                     <div class="comment-textarea-container">
                         <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput
                             class="comment-input" name="content" [(ngModel)]="comment.content"
-                            (ngModelChange)="onContentChange($event)"
+                            (ngModelChange)="onContentChange($event)" (input)="autoResize(editInput)"
                             placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..."
                             required></textarea>
 

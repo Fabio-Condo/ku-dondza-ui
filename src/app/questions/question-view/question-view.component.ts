@@ -174,6 +174,12 @@ export class QuestionViewComponent implements OnInit {
     this.comment.content = content.trimStart();
   }
 
+  autoResize(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto'; // reseta para recalcular corretamente
+    const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
+    textarea.style.height = `${newHeight}px`;
+  }
+
   onGetComments() {
     this.comment.content = this.comment.content.trim(); // Garantir que sempre esteja vazio
     this.comments = [];
