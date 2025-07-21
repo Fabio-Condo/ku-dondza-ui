@@ -449,6 +449,7 @@ export class ArticlesComponent implements OnInit {
         this.findAll();
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -487,6 +488,7 @@ export class ArticlesComponent implements OnInit {
         this.showLoading = false;
         this.displayModalLogin = false; this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -528,6 +530,7 @@ export class ArticlesComponent implements OnInit {
           this.findAll();
           this.showLoading = false;
           this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {

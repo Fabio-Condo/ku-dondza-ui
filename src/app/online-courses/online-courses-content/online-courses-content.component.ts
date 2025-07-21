@@ -128,6 +128,10 @@ export class OnlineCoursesContentComponent implements OnInit {
     this.scrollToTop();
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
+  }
+
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
   }
@@ -522,6 +526,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.getOnlineCourseByOnlineCourseId(this.course.onlineCourseId);
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -560,6 +565,7 @@ export class OnlineCoursesContentComponent implements OnInit {
         this.showLoading = false;
         this.displayModalLogin = false; this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -601,6 +607,7 @@ export class OnlineCoursesContentComponent implements OnInit {
           this.getOnlineCourseByOnlineCourseId(this.course.onlineCourseId);
           this.showLoading = false;
           this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {

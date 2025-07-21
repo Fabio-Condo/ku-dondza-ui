@@ -63,6 +63,10 @@ export class TopicsComponent implements OnInit {
     this.scrollToTop();
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
+  }
+
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

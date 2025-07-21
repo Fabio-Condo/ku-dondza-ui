@@ -130,6 +130,8 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
+
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();// Cancelar o temporizador e submiter o quiz
     }
@@ -272,6 +274,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     }
 
     if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
       this.displayModalLogin = true;
       setTimeout(() => {
         this.initializeGoogleAuth();
@@ -676,6 +679,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
         this.submitAnswers();
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -712,8 +716,8 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
 
         this.submitAnswers();
         this.showLoading = false;
-        this.displayModalLogin = false; this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -755,6 +759,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
           this.submitAnswers();
           this.showLoading = false;
           this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -771,6 +776,11 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  onCloseLoginPopout() {
+    this.displayModalLogin = false;
+    document.body.classList.remove('no-scroll');
   }
 
   toggleDisableEditing() {

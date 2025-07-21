@@ -81,6 +81,10 @@ export class TopicViewComponent implements OnInit {
     this.scrollToTop();
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
+  }
+
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -217,6 +221,7 @@ export class TopicViewComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
       this.displayModalLogin = true;
       setTimeout(() => {
         this.initializeGoogleAuth();
@@ -301,6 +306,7 @@ export class TopicViewComponent implements OnInit {
 
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -337,6 +343,7 @@ export class TopicViewComponent implements OnInit {
 
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -377,6 +384,7 @@ export class TopicViewComponent implements OnInit {
         this.ngZone.run(() => {
           this.showLoading = false;
           this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -393,6 +401,11 @@ export class TopicViewComponent implements OnInit {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  onCloseLoginPopout() {
+    this.displayModalLogin = false;
+    document.body.classList.remove('no-scroll');
   }
 
   private sendErrorNotification(message: string): void {

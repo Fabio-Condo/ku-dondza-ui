@@ -71,6 +71,7 @@ export class QuestionViewComponent implements OnInit {
 
   @ViewChild('editInput') editInputRef!: ElementRef;
 
+
   openedMenuId: number | null = null;
 
   user = new User();
@@ -325,12 +326,14 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onViewSolution() {
+
     if (this.isUserLoggedIn) {
       this.togleCorrection();
     }
 
     if (!this.isUserLoggedIn) {
       this.action = 'solution';
+      document.body.classList.add('no-scroll');
       this.displayModalLogin = true;
       setTimeout(() => {
         this.initializeGoogleAuth();
@@ -508,6 +511,7 @@ export class QuestionViewComponent implements OnInit {
         }
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -550,6 +554,7 @@ export class QuestionViewComponent implements OnInit {
         }
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -596,6 +601,7 @@ export class QuestionViewComponent implements OnInit {
           }
           this.showLoading = false;
           this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -612,6 +618,11 @@ export class QuestionViewComponent implements OnInit {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  onCloseLoginPopout() {
+    this.displayModalLogin = false;
+    document.body.classList.remove('no-scroll');
   }
 
   get editing() {

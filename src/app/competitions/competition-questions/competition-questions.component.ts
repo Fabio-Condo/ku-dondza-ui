@@ -163,6 +163,10 @@ export class CompetitionQuestionsComponent implements OnInit {
     this.scrollToTop();
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
+  }
+
   onStart() {
     if (this.isUserLoggedIn) {
       this.start();
@@ -927,6 +931,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -963,6 +968,7 @@ export class CompetitionQuestionsComponent implements OnInit {
 
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -1003,6 +1009,7 @@ export class CompetitionQuestionsComponent implements OnInit {
         this.ngZone.run(() => {
           this.showLoading = false;
           this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {

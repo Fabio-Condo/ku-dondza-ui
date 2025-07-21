@@ -357,6 +357,7 @@ export class BooksComponent implements OnInit {
         this.download(this.selectedBook);
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -394,6 +395,7 @@ export class BooksComponent implements OnInit {
         this.download(this.selectedBook);
         this.showLoading = false;
         this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -435,6 +437,7 @@ export class BooksComponent implements OnInit {
           this.download(this.selectedBook)
           this.showLoading = false;
           this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {
