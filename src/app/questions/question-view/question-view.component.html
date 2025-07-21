@@ -408,7 +408,7 @@
             </div>
 
             <!-- Botão carregar mais -->
-            <div class="load-more-container" *ngIf="comments.length < totalRecordComments">
+            <div class="load-more-container" *ngIf="comments.length < totalRecordComments && totalRecordComments > 0">
                 <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreComments()">
                     Buscar mais
                 </button>
@@ -430,7 +430,7 @@
                         </textarea>
 
                         <!-- Botão de envio -->
-                        <button type="submit"  class="send-button" [disabled]="commentForm.invalid || showLoading">
+                        <button type="submit" class="send-button" [disabled]="commentForm.invalid || showLoading">
                             <i class="pi pi-send"></i>
                         </button>
                     </div>

@@ -173,6 +173,7 @@ export class QuestionViewComponent implements OnInit {
   onGetComments() {
     this.comments = [];
     this.commentFilter.page = -1;
+    this.totalRecordComments = 0
 
     if (this.question.numberOfComments > 0) {
       this.getComments(this.question.id);
