@@ -242,6 +242,7 @@ export class QuizzQuestionsComponent implements OnInit {
           this.calculateResults();
         }
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+        this.router.navigate(['/quizzes', this.quiz.quizId, 'questions'], { replaceUrl: true });
         this.showStartScreen = true
       },
       (errorResponse: HttpErrorResponse) => {
