@@ -13,8 +13,10 @@
         </div>
         <div class="profile-picture">
             <img id="profile-photo" src="{{user.profileImageUrl}}" alt="Foto do Perfil">
+            <!--
             <label *ngIf="currentUser.userId == user.userId" for="profile-upload" class="upload-button">Trocar
                 Foto</label>
+            -->   
             <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)" type="file"
                 id="profile-upload" class="upload-input" accept="image/*">
         </div>
