@@ -309,13 +309,15 @@
 
           <div class="quiz-header">
             <div>
+
+              <h1 *ngIf="quiz.user.id" class="title">{{ quiz.user.fullName }}</h1>
+              <h1 *ngIf="!quiz.user.id && isUserLoggedIn" class="title">{{ loggedUser.fullName }}</h1>
+              <h1 *ngIf="!quiz.user.id && !isUserLoggedIn" class="title">Usuário desconhecido</h1>
+
               <!--
-              <h1 class="title">{{ quiz.title }}</h1>
-              <span *ngIf="quiz.user.id">{{ quiz.user.fullName }}</span>
-              <span *ngIf="!quiz.user.id">{{ loggedUser.fullName }}</span>
-              -->
               <h1 class="title">{{ quiz.user.fullName }}</h1>
               <h1 *ngIf="!quiz.user.id" class="title">{{ quiz.user.fullName }}</h1>
+              -->
               <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }}</span>
               <!--
               <span>{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</span>
