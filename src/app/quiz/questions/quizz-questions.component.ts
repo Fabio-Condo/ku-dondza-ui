@@ -42,7 +42,9 @@ export class QuizzQuestionsComponent implements OnInit {
   questions: Question[] = [];
   subjects: Subject[] = [];
   showGetSubjectLoading: boolean = false;
-  //submited: boolean = false;
+  
+  // desabilita inputs ou edições
+  disableEditing: boolean = false;
 
   timerSubscription!: Subscription;
   totalTimeLimit: number = 0;
@@ -535,6 +537,10 @@ export class QuizzQuestionsComponent implements OnInit {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();// Cancelar o temporizador
     }
+  }
+
+  toggleDisableEditing() {
+    this.disableEditing = !this.disableEditing;
   }
 
   renderMathExpressions(): void {
