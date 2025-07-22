@@ -10,6 +10,73 @@
       </div>
     </div>
 
+    <!-- Tela de inicair quiz -->
+    <div *ngIf="showInitQuizScreen" class="start-screen">
+      <div class="start-screen-content">
+
+        <div class="quiz-header">
+
+          <button class="go-back-btn" routerLink="/quizzes">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5"></path>
+              <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            Voltar
+          </button>
+        </div>
+
+        <form autocomplete="off" #courseForm="ngForm">
+
+          <div class="form-group">
+            <label for="difficultyLevel">Nivel de dificuldade</label>
+            <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
+              <option value="" disabled selected>Selecione o nivel</option>
+              <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="limitPerTopic">Nº de questões por tópico</label>
+            <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
+              <option value="" disabled selected>Selecione o limite</option>
+              <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
+            </select>
+          </div>
+
+          <!-- Seleção de Disciplina -->
+          <div class="form-group">
+            <label for="subject">Disciplina</label>
+            <select id="subject" [(ngModel)]="quiz.subject" (change)="getTopicsBySubjectId(quiz.subject.id)"
+              [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
+              <option value="" disabled selected>Selecione a disciplina</option>
+              <option *ngFor="let subject of subjects" [ngValue]="subject">
+                {{ subject.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group" *ngIf="quiz.subject.id">
+            <label>Selecione os Tópicos</label>
+            <ul class="topics-list">
+              <li *ngFor="let topic of topics" class="topic-item">
+                <label>
+                  <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
+                  <span class="custom-checkbox"></span>
+                  <span class="topic-name">{{ topic.name }}</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <button class="start-button" (click)="getQuestions()"
+            [disabled]="getSelectedTopicIds().length === 0 || showLoading || showGetSubjectLoading">
+            <span>Gerar questões</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
     <button *ngIf="showStartScreen" class="go-back-btn" routerLink="/quizzes">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -254,16 +321,18 @@
               <span>{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</span>
               -->
             </div>
-            <button class="quiz-close-btn" (click)="showStartScreen = true;" aria-label="Fechar quiz">
+            <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
               <i class="pi pi-times"></i>
             </button>
           </div>
 
           <div class="progress-container">
-            <p class="question-number">{{ formatTime(quiz.timeLimit - quiz.timeSpent) }}</p>
+            <p class="question-number" *ngIf="!quiz.id">{{ formattedTime }}</p>
+            <p class="question-number" *ngIf="quiz.id">{{ formatTime(quiz.timeLimit - quiz.timeSpent) }}</p>
             <div class="progress-bar-container">
               <!--<div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'"></div>-->
-              <div class="progress-bar" [style.width]="progressPercentage + '%'"></div>
+              <div class="progress-bar" *ngIf="quiz.id" [style.width]="progressPercentage + '%'"></div>
+              <div class="progress-bar" *ngIf="!quiz.id" [style.width]="progressPercentage2 + '%'"></div>
             </div>
             <p class="question-number">{{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}</p>
           </div>
@@ -299,7 +368,27 @@
           <br>
 
           <!-- Input para mostrar dica e solução -->
-          <div class="solution"
+          <div class="tip" *ngIf="!showCorrection"
+            [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="tip-input">
+              <button class="solution-button"
+                (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
+                <h1 class="title">Dicas</h1>
+                <svg [class.rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="24"
+                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <p id="math-container-tip-{{ currentQuestionIndex }}" class="tip-content scrollable"
+                *ngIf="quiz.questions[currentQuestionIndex].tip && quiz.questions[currentQuestionIndex].showTip">
+                {{ quiz.questions[currentQuestionIndex].tip }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Input para mostrar dica e solução -->
+          <div class="solution" *ngIf="showCorrection"
             [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
             <div class="solution-input">
               <button class="solution-button"
@@ -356,7 +445,138 @@
   </div>
 </body>
 
-<button class="fab fab-disable" (click)="startQuiz()">
+<button class="fab fab-save" (click)="onSubmitAnswers()"
+  *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !quiz.id">
+  <i class="pi pi-save"></i>
+</button>
+
+<button class="fab fab-disable" (click)="startCorretion()" *ngIf="showStartScreen">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <line x1="8" y1="6" x2="21" y2="6"></line>
+    <line x1="8" y1="12" x2="21" y2="12"></line>
+    <line x1="8" y1="18" x2="21" y2="18"></line>
+    <circle cx="3" cy="6" r="1"></circle>
+    <circle cx="3" cy="12" r="1"></circle>
+    <circle cx="3" cy="18" r="1"></circle>
+  </svg>
+</button>
+
+<!-- Popout -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
+  <div class="popout-container">
+
+    <div class="login-side" *ngIf="activeTab === 1">
+
+      <div style="display: flex; justify-content: space-between;">
+        <h1>Entre para continuar</h1>
+        <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+      </div>
+
+      <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+      <div class="divider" *ngIf="step === 'email'">
+        <span>OU</span>
+      </div>
+
+      <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+        <p class="message" *ngIf="step === 'otp'">
+          Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
+        </p>
+
+        <div class="input-group" *ngIf="step === 'email'">
+          <label>Email:</label>
+          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+            email [(ngModel)]="user.email">
+        </div>
+
+        <div class="input-group" *ngIf="step === 'otp'">
+          <label>OTP:</label>
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+            [(ngModel)]="otp">
+        </div>
+
+        <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+          {{ step === 'email' ? 'Login' : 'Verificar' }}
+        </button>
+
+        <p class="message" *ngIf="step === 'email'">
+          Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
+          acessar sua conta se tiver se cadastrado com gmail.
+        </p>
+
+        <div class="signup-link">
+          Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="login-side" *ngIf="activeTab === 2">
+
+      <div style="display: flex; justify-content: space-between;">
+        <h1>Cadastre-se para continuar</h1>
+        <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+      </div>
+
+      <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+      <div class="divider" *ngIf="step === 'email'">
+        <span>OU</span>
+      </div>
+
+      <form autocomplete="off" #registerForm="ngForm"
+        (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+        <div class="input-group" *ngIf="step === 'email'">
+          <label for="name">Nome completo</label>
+          <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
+            placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+        </div>
+
+        <div class="input-group" *ngIf="step === 'email'">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
+            email [(ngModel)]="user.email">
+        </div>
+
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+        <p class="message" *ngIf="step === 'otp'">
+          Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
+        </p>
+
+        <div class="input-group" *ngIf="step === 'otp'">
+          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+            [(ngModel)]="otp">
+        </div>
+
+        <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+          {{ step === 'email' ? 'Login' : 'Verificar' }}
+        </button>
+
+        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
+
+        <p class="message" *ngIf="step === 'email'">
+          Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
+          cadastradar com
+          gmail.
+        </p>
+
+      </form>
+      <div id="google-signin-button"></div>
+      <div class="signup-link">
+        Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<button class="fab fab-disable" (click)="startCorretion()">
   <svg *ngIf="!showStartScreen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <line x1="18" y1="20" x2="18" y2="10"></line>
@@ -374,3 +594,4 @@
     <circle cx="3" cy="18" r="1"></circle>
   </svg>
 </button>
+-->

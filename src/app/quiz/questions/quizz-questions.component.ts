@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
@@ -12,6 +12,14 @@ import { evaluate } from 'mathjs'; //npm install mathjs
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
+import { TopicService } from 'src/app/topics/topicsService.service';
+import { QuestionService } from 'src/app/questions/question.service';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Subject } from 'src/app/core/model/Subject';
+import { Answer } from 'src/app/core/model/Answer';
+import { interval, Subscription } from 'rxjs';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 
 
 @Component({
@@ -28,6 +36,29 @@ export class QuizzQuestionsComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
+
+  showInitQuizScreen: boolean = false; // Variável para controlar a exibição da tela inicial do quiz
+  submittedAnswers: Answer[] = []; // Lista de respostas do usuário
+  questions: Question[] = [];
+  subjects: Subject[] = [];
+  showGetSubjectLoading: boolean = false;
+  //submited: boolean = false;
+
+  timerSubscription!: Subscription;
+  totalTimeLimit: number = 0;
+  timeLimit: number = 0;
+  formattedTime: string = '00:00'; // Inicializa no formato correto
+  remainingTime: number = 0;   // Tempo restante para o quiz
+  startTime: number = 0; // Armazena o tempo em que o quiz foi iniciado (timestamp)
+
+  user = new User();
+  activeTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
+
+  displayModalLogin: boolean = false;
+
+  private subscriptions: Subscription[] = [];
 
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
@@ -49,6 +80,19 @@ export class QuizzQuestionsComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
+  difficultyLevels = [
+    { label: 'Fácil', value: 'EASY' },
+    //{ label: 'Médio', value: 'MEDIUM' },
+    //{ label: 'Dificil', value: 'HARD' },
+  ];
+
+  limitsPerTopic = [
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    //{ label: 'ALL', value: 1000000 },
+  ];
+
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 5,
@@ -56,8 +100,13 @@ export class QuizzQuestionsComponent implements OnInit {
   };
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
     private sanitizer: DomSanitizer,
     private quizService: QuizService,
+    private topicService: TopicService,
+    private questionService: QuestionService,
+    private subjectsService: SubjectsService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -70,15 +119,162 @@ export class QuizzQuestionsComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
-    if (quizId) {
+    if (quizId && quizId !== 'new') {
       this.getQuizByQuizId(quizId);
     }
+    if (quizId && quizId == 'new') {
+      this.onInitQuiz();
+    }
     this.scrollToTop();
-    this.showCorrection = true;
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
+
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();// Cancelar o temporizador e submiter o quiz
+    }
+  }
+
+  onInitQuiz() {
+    this.carregarDisciplinas();
+    this.showInitQuizScreen = true;
+    this.showStartScreen = false;
+    this.showCorrection = false;
+    this.quiz.difficultyLevel = 'EASY';
+    this.quiz.limitPerTopic = 2;
+  }
+
+  carregarDisciplinas() {
+    this.loadingMessage = "Obtendo disciplinas";
+    this.showLoading = true;
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados;
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  getTopicsBySubjectId(subjectId: number): void {
+    this.loadingMessage = "Obtendo tópicos"
+    this.showLoading = true;
+    this.topicService.getBySubjectId(subjectId).subscribe(
+      (dados: Topic[]) => {
+        this.quiz.questions = [];
+        this.topics = [];
+        this.topics = dados;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  getQuestions(): void {
+    this.loadingMessage = "Gerrando questões"
+    const selectedTopicIds = this.getSelectedTopicIds();
+
+    if (selectedTopicIds.length == 0) {
+      this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões.!' });
+      return;
+    }
+
+    this.showLoading = true;
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
+      (dados: Question[]) => {
+        this.questions = dados;
+        this.quiz.questions = this.questions;
+        this.showLoading = false;
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.startQuiz();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  // Método para alternar a seleção de um tópico
+  toggleTopic(topic: Topic): void {
+    topic.selected = !topic.selected;
+  }
+
+  getSelectedTopics(): Topic[] {
+    return this.topics.filter(topic => topic.selected);
+  }
+
+  getSelectedTopicIds(): number[] {
+    return this.topics.filter(topic => topic.selected).map(topic => topic.id);
+  }
+
+  saveQuiz() {
+    this.loadingMessage = "Salvando o quiz"
+    this.showLoading = true;
+    this.quiz.topics = this.getSelectedTopics();
+
+    const questionIds = this.quiz.questions.map(question => question.id);
+    const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
+
+    this.quiz.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+    this.quiz.user = this.loggedUser;
+
+    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds).subscribe(
+      (response) => {
+        this.showLoading = false;
+        this.quiz = response;
+        //this.getQuizByQuizId(this.quiz.quizId);
+
+        this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
+        if (this.quiz.answers) {
+          this.calculateResults();
+        }
+        this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+        this.showStartScreen = true
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  onSubmitAnswers() {
+    if (this.isUserLoggedIn) {
+      this.submitAnswers();
+    }
+
+    if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  submitAnswers() {
+    this.calculateResults();
+    this.stopTimer();
+    this.scrollToTop();
+    if (!this.quiz.id) {
+      const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
+      this.quiz.timeSpent = elapsedTimeInSeconds;
+      this.saveQuiz();
+    }
   }
 
   getQuizByQuizId(quizId: string) {
@@ -194,6 +390,18 @@ export class QuizzQuestionsComponent implements OnInit {
     return (answeredCount / totalQuestions) * 100;
   }
 
+  get progressPercentage2(): number {
+    const totalQuestions = this.quiz.questions.length;
+
+    // Filtra para contar somente as respostas não nulas
+    const answeredCount = this.submittedAnswers.filter(
+      a => a.id !== null && a.id !== undefined
+    ).length;
+
+    // Calcula o progresso com base nas respostas
+    return (answeredCount / totalQuestions) * 100;
+  }
+
   goToPreviousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
@@ -212,41 +420,120 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
-  captureUserAnswer(questionId: number, answerId: number) {
-    const question = this.quiz.questions.find((q) => q.id === questionId);
-    const selectedAnswer = question?.answers.find((a) => a.id === answerId);
+  // Método para capturar a resposta do usuário
+  captureUserAnswer(questionId: number, answerId: number | null): void {
 
-    if (selectedAnswer) {
-      const existingSubmittedAnswerIndex = this.quiz.answers.findIndex(
-        (a) => a.question.id === questionId
-      );
+    const question = this.questions.find(q => q.id === questionId);
+    if (question) {
+      let userAnswer: Answer;
 
-      if (existingSubmittedAnswerIndex !== -1) {
-        // Atualiza a resposta existente
-        this.quiz.answers[existingSubmittedAnswerIndex] = selectedAnswer;
+      if (answerId !== null) {
+        const answer = question.answers.find(a => a.id === answerId);
+        if (answer) {
+          userAnswer = {
+            id: answer.id,
+            text: answer.text,
+            correct: answer.correct,
+            question: question
+          };
+        } else {
+          return; // Resposta inválida
+        }
       } else {
-        // Adiciona uma nova resposta
-        this.quiz.answers.push(selectedAnswer);
+        // Resposta nula (não respondida)
+        userAnswer = {
+          id: -1, // ID inválido para indicar resposta nula
+          text: 'Não respondida',
+          correct: false,
+          question: question
+        };
       }
 
-      // Recalcula os resultados após capturar a resposta
-      this.calculateResults();
+      // Atualiza ou adiciona a resposta
+      const existingAnswerIndex = this.submittedAnswers.findIndex(a => a.question?.id === questionId);
+      if (existingAnswerIndex !== -1) {
+        this.submittedAnswers[existingAnswerIndex] = userAnswer;
+      } else {
+        this.submittedAnswers.push(userAnswer);
+      }
     }
   }
 
+  // Método para verificar se uma resposta foi selecionada
   isSelected(questionId: number, answerId: number): boolean {
-    const submittedAnswer = this.quiz.answers.find(
-      (a) => a.question.id === questionId
-    );
-    return submittedAnswer ? submittedAnswer.id === answerId : false;
+    const source = !this.quiz.id ? this.submittedAnswers : this.quiz.answers;
+    const userAnswer = source.find(a => a.question?.id === questionId);
+    return userAnswer ? userAnswer.id === answerId : false;
+  }
+
+  onStopCurrentRunningQuiz() {
+    if (!this.quiz.id) {
+      this.stopTimer();
+      this.scrollToTop();
+      this.router.navigateByUrl('/quizzes');
+    }
+    this.showStartScreen = true;
   }
 
   startQuiz() {
-    this.showStartScreen = !this.showStartScreen; // Oculta a tela inicial
+    this.showInitQuizScreen = false; // Oculta a tela inicial do quiz
+    this.showStartScreen = false; // Oculta a tela de início do quiz
+    this.showCorrection = false; // Garante que a correção não seja exibida ao iniciar o quiz
     this.currentQuestionIndex = 0; // Começa na primeira questão
     this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
     this.renderFunctions();
     this.scrollToTop();
+    this.startTimer();
+  }
+
+  startCorretion() {
+    this.showInitQuizScreen = false; // Oculta a tela inicial do quiz
+    this.showStartScreen = false; // Oculta a tela de início do quiz
+    this.showCorrection = true; // Garante que a correção não seja exibida ao iniciar o quiz
+    this.currentQuestionIndex = 0; // Começa na primeira questão
+    this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+    this.renderFunctions();
+    this.scrollToTop();
+  }
+
+  startTimer(): void {
+
+    this.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+    this.totalTimeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+
+    this.remainingTime = this.timeLimit; // Tempo restante para contagem
+    this.startTime = Date.now(); // Armazenar o tempo de início (timestamp)
+
+    this.timerSubscription = interval(1000).subscribe(() => {
+      if (this.timeLimit > 0) {
+        this.timeLimit--;
+        this.updateFormattedTime(); // Atualiza o tempo formatado
+      } else {
+        if (this.isUserLoggedIn) {
+          this.stopTimer();
+          this.submitAnswers();
+          this.showCorrection = true; // Exibe a correção
+          this.scrollToTop();
+          this.messageService.add({ severity: 'success', detail: 'O Tempo esgotou e a sbumissão foi feita com sucesso!' });
+        }
+      }
+    });
+  }
+
+  updateFormattedTime(): void {
+    const minutes = Math.floor(this.timeLimit / 60);
+    const seconds = this.timeLimit % 60;
+    this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
+  }
+
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
+  stopTimer(): void {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();// Cancelar o temporizador
+    }
   }
 
   renderMathExpressions(): void {
@@ -382,6 +669,139 @@ export class QuizzQuestionsComponent implements OnInit {
 
     // Quebras de linha: \n → <br>
     return textoFormatado.replace(/\n/g, '<br>');
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.submitAnswers();
+        this.showLoading = false;
+        this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.submitAnswers();
+        this.showLoading = false;
+        this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.ngZone.run(() => {
+          this.submitAnswers();
+          this.showLoading = false;
+          this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
+  }
+
+  onCloseLoginPopout() {
+    this.displayModalLogin = false;
+    document.body.classList.remove('no-scroll');
   }
 
   private sendErrorNotification(message: string): void {
