@@ -32,8 +32,10 @@
                         <i *ngIf="!user.profileImageUrl" class="fas fa-user" style="font-size: 3rem;"></i>
                         <img *ngIf="user.profileImageUrl" src="{{user.profileImageUrl}}" id="profile-photo" type="file"
                             alt="Foto do Perfil">
+                        <!--    
                         <label *ngIf="currentUser.userId == user.userId" for="profile-upload"
                             class="upload-button">Trocar</label>
+                        -->   
                         <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)"
                             type="file" id="profile-upload" class="upload-input" accept="image/*">
                     </div>
