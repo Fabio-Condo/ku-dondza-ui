@@ -230,7 +230,23 @@ export class TopicViewComponent implements OnInit {
     }
   }
 
-  onSelectContent(content: TopicContent): void {
+  onSelectContent(content: TopicContent) {
+    //this.selectedContent = content;
+    if (this.isUserLoggedIn) {
+      this.selectContent(content);
+    }
+
+    if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  selectContent(content: TopicContent): void {
     this.showLesson = true;
     this.selectedContent = content;
 
