@@ -1,12 +1,13 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { QuizService } from '../quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Topic } from 'src/app/core/model/Topic';
+import { Comment } from 'src/app/core/model/Comment';
 declare const MathJax: any;
 import { evaluate } from 'mathjs'; //npm install mathjs
 import { AuthenticationService } from 'src/app/users/authentication.service';
@@ -20,6 +21,12 @@ import { Answer } from 'src/app/core/model/Answer';
 import { interval, Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { CommentLikeService } from 'src/app/likes/commentLike.service';
+import { CommentService } from 'src/app/comments/comment.service';
+import { CommentFilter } from 'src/app/core/interface/ArticleFilter copy';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { NgForm } from '@angular/forms';
+import { Role } from 'src/app/enum/role.enum';
 
 
 @Component({
@@ -32,7 +39,6 @@ export class QuizzQuestionsComponent implements OnInit {
   topics: Topic[] = [];
 
   showLoading: boolean = false;
-  isAdmin: boolean = true;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
@@ -42,7 +48,7 @@ export class QuizzQuestionsComponent implements OnInit {
   questions: Question[] = [];
   subjects: Subject[] = [];
   showGetSubjectLoading: boolean = false;
-  
+
   // desabilita inputs ou edições
   disableEditing: boolean = false;
 
@@ -61,6 +67,19 @@ export class QuizzQuestionsComponent implements OnInit {
   displayModalLogin: boolean = false;
 
   private subscriptions: Subscription[] = [];
+
+  selectedQuestion: Question = new Question();
+  comment: Comment = new Comment();
+  comments: Comment[] = [];
+  totalRecordComments: number = 0;
+  showComments: boolean = false;
+  selectedComment: Comment = new Comment();
+
+  openedMenuId: number | null = null;
+
+  private editarFoco = false;
+
+  @ViewChild('editInput') editInputRef!: ElementRef;
 
   loadingMessage = "Carregando"; // Alterar dinamicamente
 
@@ -95,6 +114,12 @@ export class QuizzQuestionsComponent implements OnInit {
     //{ label: 'ALL', value: 1000000 },
   ];
 
+  commentFilter: CommentFilter = {
+    page: -1,
+    itemsPerPage: 25,
+    sort: 'id,asc',
+  }
+
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 5,
@@ -108,7 +133,10 @@ export class QuizzQuestionsComponent implements OnInit {
     private quizService: QuizService,
     private topicService: TopicService,
     private questionService: QuestionService,
+    private commentService: CommentService,
+    private commentLikeService: CommentLikeService,
     private subjectsService: SubjectsService,
+    private confirmationService: ConfirmationService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -678,6 +706,18 @@ export class QuizzQuestionsComponent implements OnInit {
     return textoFormatado.replace(/\n/g, '<br>');
   }
 
+  public get (): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
+  }
+
   sendOtp() {
     this.showLoading = true;
     //const email = this.otpForm.value.email!;
@@ -809,6 +849,236 @@ export class QuizzQuestionsComponent implements OnInit {
   onCloseLoginPopout() {
     this.displayModalLogin = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  get editing() {
+    return Boolean(this.comment.id);
+  }
+
+  save(commentForm: NgForm) {
+    if (this.editing) {
+      this.updateComment(commentForm);
+    } else {
+      this.addNewComment(commentForm);
+    }
+  }
+
+  addNewComment(commentForm: NgForm) {
+    this.loadingMessage = "Adicioando comentário";
+    this.showLoading = true;
+    this.comment.user = this.loggedUser;
+    this.comment.question = this.selectedQuestion;
+    this.commentService.add(this.comment).subscribe(
+      (response) => {
+        this.comment = response;
+        this.showLoading = false;
+        this.comments.unshift(this.comment); // Adiciona o novo comentário no início da lista
+        this.totalRecordComments++;
+        this.comment = new Comment(); // Reseta o objeto de comentário
+        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  updateComment(commentForm: NgForm) {
+    this.loadingMessage = "Atualizando comentário";
+    this.showLoading = true;
+    this.comment.user = this.loggedUser;
+    this.comment.question = this.selectedQuestion;
+    this.commentService.update(this.comment).subscribe(
+      (response) => {
+        this.comment = response;
+        this.showLoading = false;
+        this.comment = new Comment(); // Reseta o objeto de comentário
+        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onComment(commentForm: NgForm) {
+    if (this.isUserLoggedIn) {
+      this.save(commentForm);
+    }
+
+    if (!this.isUserLoggedIn) {
+      //this.action = 'comment';
+      this.showComments = false;
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  onUpdateComment(comment: Comment): void {
+    this.comment = comment;
+    this.editarFoco = true;
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.editarFoco && this.editInputRef) {
+      this.editInputRef.nativeElement.focus();
+      this.editarFoco = false;
+    }
+  }
+
+  toggleMenu(commentId: number): void {
+    if (this.openedMenuId === commentId) {
+      this.openedMenuId = null;
+    } else {
+      this.openedMenuId = commentId;
+    }
+  }
+
+  excluir(comment: Comment) {
+    this.loadingMessage = "Excluíndo comentário";
+    this.showLoading = true;
+    this.commentService.excluir(comment.id).subscribe(() => {
+      this.showLoading = false;
+      this.comments = this.comments.filter(c => c.id !== comment.id);
+      this.totalRecordComments--;
+      this.messageService.add({ severity: 'success', detail: 'Comentário excluído com sucesso!' });
+    },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  confirmarExclusao(comment: Comment): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.excluir(comment);
+      }
+    });
+  }
+
+  getComments(questionId: number): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
+    this.loadingMessage = "Carregando dados"
+    this.showLoading = true;
+    this.commentFilter.page++;
+    this.commentService.getCommentsByQuestion(questionId, this.loggedUser.id, this.commentFilter).subscribe(
+      (dados: IApiResponse<Comment>) => {
+        //this.comments = dados.content;
+        this.comments = [...this.comments, ...dados.content];
+        this.totalRecordComments = dados.totalElements;
+
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onShowMoreComments(): void {
+    this.getComments(this.selectedQuestion.id);
+  }
+
+  onLike(comment: Comment) {
+    this.selectedComment = comment;
+    if (this.isUserLoggedIn) {
+      this.toggleLike(comment);
+    }
+
+    if (!this.isUserLoggedIn) {
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  toggleLike(comment: Comment): void {
+    comment.showLoadingLike = true;
+    this.commentLikeService.toggleLike(comment.id, this.loggedUser.id).subscribe(
+      response => {
+        comment.likedByUser = !comment.likedByUser;
+        if (comment.likedByUser) {
+          comment.numberOfLikes = comment.numberOfLikes + 1;
+        } else {
+          comment.numberOfLikes = comment.numberOfLikes - 1;
+        }
+        comment.showLoadingLike = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        comment.showLoadingLike = false;
+      }
+    );
+  }
+
+  autoResize(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto'; // reseta para recalcular corretamente
+    const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
+    textarea.style.height = `${newHeight}px`;
+  }
+
+  onGetComments(question: Question) {
+    this.selectedQuestion = question;
+    this.comments = [];
+    this.commentFilter.page = -1;
+    this.totalRecordComments = 0
+
+    this.getComments(this.selectedQuestion.id);
+
+    this.showComments = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseComments() {
+    this.showComments = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  formatarTempoRelativo(data: Date | string): string {
+    const agora = new Date();
+    const comentarioData = new Date(data);
+    const diffMs = agora.getTime() - comentarioData.getTime();
+    const diffSegundos = Math.floor(diffMs / 1000);
+    const diffMinutos = Math.floor(diffSegundos / 60);
+    const diffHoras = Math.floor(diffMinutos / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffSegundos < 60) {
+      return 'agora mesmo';
+    } else if (diffMinutos < 60) {
+      return `há ${diffMinutos} minuto${diffMinutos > 1 ? 's' : ''}`;
+    } else if (diffHoras < 24) {
+      return `há ${diffHoras} hora${diffHoras > 1 ? 's' : ''}`;
+    } else if (diffDias === 1) {
+      return 'ontem';
+    } else if (diffDias < 7) {
+      return `há ${diffDias} dia${diffDias > 1 ? 's' : ''}`;
+    } else if (diffDias < 30) {
+      const semanas = Math.floor(diffDias / 7);
+      return `há ${semanas} semana${semanas > 1 ? 's' : ''}`;
+    } else if (diffDias < 365) {
+      const meses = Math.floor(diffDias / 30);
+      return `há ${meses} mês${meses > 1 ? 'es' : ''}`;
+    } else {
+      const anos = Math.floor(diffDias / 365);
+      return `há ${anos} ano${anos > 1 ? 's' : ''}`;
+    }
   }
 
   private sendErrorNotification(message: string): void {

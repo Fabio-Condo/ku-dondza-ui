@@ -136,70 +136,6 @@ export class QuestionViewComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  onLike(comment: Comment) {
-    this.selectedComment = comment;
-    if (this.isUserLoggedIn) {
-      this.toggleLike(comment);
-    }
-
-    if (!this.isUserLoggedIn) {
-      //this.action = 'Like';
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
-    }
-  }
-
-  toggleLike(comment: Comment): void {
-    comment.showLoadingLike = true;
-    this.commentLikeService.toggleLike(comment.id, this.loggedUser.id).subscribe(
-      response => {
-        comment.likedByUser = !comment.likedByUser;
-        if (comment.likedByUser) {
-          comment.numberOfLikes = comment.numberOfLikes + 1;
-        } else {
-          comment.numberOfLikes = comment.numberOfLikes - 1;
-        }
-        comment.showLoadingLike = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        comment.showLoadingLike = false;
-      }
-    );
-  }
-
-  onContentChange(content: string) {
-    this.comment.content = content.trimStart();
-  }
-
-  autoResize(textarea: HTMLTextAreaElement): void {
-    textarea.style.height = 'auto'; // reseta para recalcular corretamente
-    const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
-    textarea.style.height = `${newHeight}px`;
-  }
-
-  onGetComments() {
-    this.comment.content = this.comment.content.trim(); // Garantir que sempre esteja vazio
-    this.comments = [];
-    this.commentFilter.page = -1;
-    this.totalRecordComments = 0
-
-    if (this.question.numberOfComments > 0) {
-      this.getComments(this.question.id);
-    }
-
-    this.showComments = true;
-    document.body.classList.add('no-scroll');
-  }
-
-  onCloseComments() {
-    this.showComments = false;
-    document.body.classList.remove('no-scroll');
-  }
-
   goBack(): void {
     if (this.origem === 'topics' && this.topicId) {
       this.router.navigate(['/topics', this.topicId]);
@@ -765,6 +701,65 @@ export class QuestionViewComponent implements OnInit {
 
   onShowMoreComments(): void {
     this.getComments(this.question.id);
+  }
+
+  onLike(comment: Comment) {
+    this.selectedComment = comment;
+    if (this.isUserLoggedIn) {
+      this.toggleLike(comment);
+    }
+
+    if (!this.isUserLoggedIn) {
+      //this.action = 'Like';
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  toggleLike(comment: Comment): void {
+    comment.showLoadingLike = true;
+    this.commentLikeService.toggleLike(comment.id, this.loggedUser.id).subscribe(
+      response => {
+        comment.likedByUser = !comment.likedByUser;
+        if (comment.likedByUser) {
+          comment.numberOfLikes = comment.numberOfLikes + 1;
+        } else {
+          comment.numberOfLikes = comment.numberOfLikes - 1;
+        }
+        comment.showLoadingLike = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        comment.showLoadingLike = false;
+      }
+    );
+  }
+
+  autoResize(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto'; // reseta para recalcular corretamente
+    const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
+    textarea.style.height = `${newHeight}px`;
+  }
+
+  onGetComments() {
+    this.comments = [];
+    this.commentFilter.page = -1;
+    this.totalRecordComments = 0
+
+    if (this.question.numberOfComments > 0) {
+      this.getComments(this.question.id);
+    }
+
+    this.showComments = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseComments() {
+    this.showComments = false;
+    document.body.classList.remove('no-scroll');
   }
 
   formatarTempoRelativo(data: Date | string): string {
