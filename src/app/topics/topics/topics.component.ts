@@ -55,7 +55,7 @@ export class TopicsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('Questions page');
+    this.title.setTitle('Topics page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.findAll();
     this.carregarDisciplinas();
