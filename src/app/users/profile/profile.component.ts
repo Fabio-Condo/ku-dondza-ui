@@ -10,6 +10,7 @@ import { UserService } from '../user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Role } from 'src/app/enum/role.enum';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -41,9 +42,11 @@ export class ProfileComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private subjectsService: SubjectsService,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Profile user page');
     this.currentUser = this.authenticationService.getUserFromLocalCache();
     const userId = this.route.snapshot.params['userId'];
     if (userId) {

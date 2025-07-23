@@ -73,7 +73,7 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Pesquisa do usuário');
+    this.title.setTitle('Users page');
     this.currentUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.scrollToTop();

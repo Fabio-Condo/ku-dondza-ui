@@ -16,6 +16,7 @@ import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Role } from 'src/app/enum/role.enum';
 import { Prize } from 'src/app/core/model/Prize';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-competitions',
@@ -96,9 +97,11 @@ export class CompetitionsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private errorHandler: ErrorHandlerService,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Competitions page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);

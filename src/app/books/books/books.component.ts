@@ -14,6 +14,7 @@ import { User } from 'src/app/core/model/User';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-books',
@@ -69,9 +70,11 @@ export class BooksComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Books page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);

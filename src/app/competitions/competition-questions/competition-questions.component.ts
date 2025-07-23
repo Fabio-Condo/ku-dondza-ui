@@ -28,6 +28,7 @@ import { UserFilter } from 'src/app/core/interface/UserFilter';
 import { PrizeAssignmentsService } from 'src/app/core/prize-assignments/prize-assignments.service';
 import { PrizeAssignment } from 'src/app/core/model/PrizeAssignment';
 import { Prize } from 'src/app/core/model/Prize';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -150,10 +151,12 @@ export class CompetitionQuestionsComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Competition Questions');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const competitionId = this.route.snapshot.params['id'];
