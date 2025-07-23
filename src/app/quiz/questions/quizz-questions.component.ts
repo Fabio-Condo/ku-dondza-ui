@@ -23,10 +23,10 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { CommentLikeService } from 'src/app/likes/commentLike.service';
 import { CommentService } from 'src/app/comments/comment.service';
-import { CommentFilter } from 'src/app/core/interface/ArticleFilter copy';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { NgForm } from '@angular/forms';
 import { Role } from 'src/app/enum/role.enum';
+import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 
 
 @Component({

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Comment } from '../core/model/Comment';
 import { IApiResponse } from '../core/interface/IApiResponse';
-import { CommentFilter } from '../core/interface/ArticleFilter copy';
+import { CommentFilter } from '../core/interface/CommentFilter';
 
 
 @Injectable({ providedIn: 'root' })

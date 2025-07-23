@@ -21,7 +21,7 @@ import { evaluate } from 'mathjs'; //npm install mathjs
 import { NgForm } from '@angular/forms';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { CommentService } from 'src/app/comments/comment.service';
-import { CommentFilter } from 'src/app/core/interface/ArticleFilter copy';
+import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { CommentLikeService } from 'src/app/likes/commentLike.service';
 
 
