@@ -227,14 +227,13 @@ export class QuestionViewComponent implements OnInit {
       this.toggleSaveQuestion(this.question);
     }
 
-    //if (!this.isUserLoggedIn) {
-    //  this.action = 'Save';
-    //  this.displayModalLogin = true;
-    //  setTimeout(() => {
-    //    this.initializeGoogleAuth();
-    //  }, 100); // Espera para o botão estar no DOM
-    //  return;
-    //}
+    if (!this.isUserLoggedIn) {
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
   }
 
   toggleSaveQuestion(question: Question): void {
@@ -413,189 +412,6 @@ export class QuestionViewComponent implements OnInit {
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
 
     return `${formattedMinutes}:${formattedSeconds}`;
-  }
-
-  getDifficultyLevelValue(level: string) {
-    switch (level) {
-      case 'EASY':
-        return 'Fácil';
-      case 'MEDIUM':
-        return 'Médio';
-      case 'HARD':
-        return 'Dificil';
-    }
-    return '';
-  }
-
-  getFormattedText(text: string): string {
-    // Negrito: **texto** → <strong>texto</strong>
-    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-
-    // Itálico: *texto* → <em>texto</em>
-    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
-
-    // Quebras de linha: \n → <br>
-    return textoFormatado.replace(/\n/g, '<br>');
-  }
-
-  public get isAdmin(): boolean {
-    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  public get isSuperAdmin(): boolean {
-    return this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  private getUserRole(): string {
-    return this.authenticationService.getUserFromLocalCache().role;
-  }
-
-  sendOtp() {
-    this.showLoading = true;
-    //const email = this.otpForm.value.email!;
-    this.authenticationService.generateOtp(this.user.email).subscribe({
-      next: () => {
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  validateOtp() {
-    this.showLoading = true;
-    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        if (this.action === 'solution') {
-          this.togleCorrection();
-        }
-        if (this.action === 'comment') {
-          this.showComments = true;
-        }
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  startRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
-      next: (response) => {
-        console.log(response.body)
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  completeRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        if (this.action === 'solution') {
-          this.togleCorrection();
-        }
-        if (this.action === 'comment') {
-          this.showComments = true;
-        }
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
-      setupButton((credential) => this.handleGoogleCredential(credential));
-    } catch (error) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
-  private handleGoogleCredential(googleCredential: string): void {
-    this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá";
-      this.showLoading = true;
-    });
-
-    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.ngZone.run(() => {
-          if (this.action === 'solution') {
-            this.togleCorrection();
-          }
-          if (this.action === 'comment') {
-            this.showComments = true;
-          }
-          this.showLoading = false;
-          this.displayModalLogin = false;
-          document.body.classList.remove('no-scroll');
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(sub);
-  }
-
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
-    setTimeout(() => {
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
-  }
-
-  onCloseLoginPopout() {
-    this.displayModalLogin = false;
-    document.body.classList.remove('no-scroll');
   }
 
   get editing() {
@@ -828,6 +644,189 @@ export class QuestionViewComponent implements OnInit {
       const anos = Math.floor(diffDias / 365);
       return `há ${anos} ano${anos > 1 ? 's' : ''}`;
     }
+  }
+
+  getDifficultyLevelValue(level: string) {
+    switch (level) {
+      case 'EASY':
+        return 'Fácil';
+      case 'MEDIUM':
+        return 'Médio';
+      case 'HARD':
+        return 'Dificil';
+    }
+    return '';
+  }
+
+  getFormattedText(text: string): string {
+    // Negrito: **texto** → <strong>texto</strong>
+    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto* → <em>texto</em>
+    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    // Quebras de linha: \n → <br>
+    return textoFormatado.replace(/\n/g, '<br>');
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        if (this.action === 'solution') {
+          this.togleCorrection();
+        }
+        if (this.action === 'comment') {
+          this.showComments = true;
+        }
+        this.showLoading = false;
+        this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        if (this.action === 'solution') {
+          this.togleCorrection();
+        }
+        if (this.action === 'comment') {
+          this.showComments = true;
+        }
+        this.showLoading = false;
+        this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.ngZone.run(() => {
+          if (this.action === 'solution') {
+            this.togleCorrection();
+          }
+          if (this.action === 'comment') {
+            this.showComments = true;
+          }
+          this.showLoading = false;
+          this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
+  }
+
+  onCloseLoginPopout() {
+    this.displayModalLogin = false;
+    document.body.classList.remove('no-scroll');
   }
 
   private sendErrorNotification(message: string): void {
