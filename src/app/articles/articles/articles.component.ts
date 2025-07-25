@@ -56,7 +56,7 @@ export class ArticlesComponent implements OnInit {
 
   selectArticleOption: string = 'ALL_ARTICLES';
 
-  courseFilterOptions = [
+  articleFilterOptions = [
     { label: 'Mostrar todos artigos', value: 'ALL_ARTICLES' },
     { label: 'Mostrar artigos salvos', value: 'MY_SAVED_ARTICLES' },
   ];

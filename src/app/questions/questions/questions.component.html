@@ -717,8 +717,6 @@
                         -->
                         <p *ngIf="question.text" [innerHTML]="getFormattedText(question.text)"></p>
 
-                    </div>
-                    <div class="card-footer">
                         <span class="comment-number">
                             <!--
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -732,6 +730,21 @@
                             -->
                             {{ question.numberOfComments }} Comentários
                         </span>
+
+                    </div>
+                    <div class="card-footer">
+                        <button (click)="onSave(question)" class="action-btn bookmark-button"
+                            [class.liked]="question.savedByUser" aria-label="Salvar artigo">
+                            <!-- Ícone de bookmark (normal ou preenchido) -->
+                            <i class="pi" *ngIf="!question.showLoadingSave"
+                                [ngClass]="question.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
+                            </i>
+
+                            <!-- Ícone de carregamento -->
+                            <i *ngIf="question.showLoadingSave" class="pi pi-spin pi-spinner">
+                            </i>
+                        </button>
+
                         <button class="view-button" (click)="goToQuestion(question.questionId)">
                             Visualizar
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1009,6 +1022,18 @@
         </div>
 
         <form>
+            <div class="form-group">
+                <label for="option">Filtrar artigos</label>
+                <select id="option" [(ngModel)]="selectQuestionOption" (ngModelChange)="findAll()" name="option"
+                    required>
+                    <ng-container *ngFor="let option of questionFilterOptions">
+                        <option *ngIf="option.value !== 'MY_SAVED_QUESTIONS' || isUserLoggedIn" [value]="option.value">
+                            {{ option.label }}
+                        </option>
+                    </ng-container>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="subject">Disciplina</label>
                 <select id="subject" name="subject" [(ngModel)]="filtro.subject" [(ngModel)]="selectedSubject"

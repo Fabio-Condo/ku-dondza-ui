@@ -145,9 +145,15 @@ export class QuestionViewComponent implements OnInit {
   }
 
   findById(id: string) {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
-    this.questionService.getQuestionByQuestionId(id).subscribe(
+    this.questionService.getQuestionByQuestionId(id, this.loggedUser.id).subscribe(
       (response) => {
         this.question = response;
         this.renderMathExpressions();

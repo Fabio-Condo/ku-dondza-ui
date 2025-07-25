@@ -935,9 +935,8 @@
                                 -->
                             </div>
 
-
                             <button (click)="onSave(article)" class="action-btn bookmark-button"
-                                [class.liked]="article.likedByUser" aria-label="Salvar artigo">
+                                [class.liked]="article.savedByUser" aria-label="Salvar artigo">
                                 <i class="pi" *ngIf="!article.showLoadingSave"
                                     [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
                                 <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
@@ -1072,7 +1071,7 @@
                 <label for="option">Filtrar artigos</label>
                 <select id="option" [(ngModel)]="selectArticleOption" (ngModelChange)="findAll()" name="option"
                     required>
-                    <ng-container *ngFor="let option of courseFilterOptions">
+                    <ng-container *ngFor="let option of articleFilterOptions">
                         <option *ngIf="option.value !== 'MY_SAVED_ARTICLES' || isUserLoggedIn" [value]="option.value">
                             {{ option.label }}
                         </option>

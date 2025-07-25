@@ -195,6 +195,10 @@ export class UserService {
     return this.http.put<User>(`${this.host}/${userId}/saved-articles/${articleId}/toggle`, {});
   }
 
+  toggleSaveQuestion(userId: number, questionId: number): Observable<User> {
+    return this.http.put<User>(`${this.host}/${userId}/saved-questions/${questionId}/toggle`, {});
+  }
+
   findAllWithPermissionCheck(filtro: IUserFilter, competitionId: number): Observable<IApiResponse<User>> {
     let params = new HttpParams()
       .set('page', filtro.page)

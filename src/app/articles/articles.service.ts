@@ -34,7 +34,7 @@ export class ArticlesService {
             params = params.set('category', filtro.category);
         }
 
-        // ✅ Envia o userId se estiver definido
+        // Envia o userId se estiver definido
         if (filtro.userId) {
             params = params.set('userId', filtro.userId.toString());
         }

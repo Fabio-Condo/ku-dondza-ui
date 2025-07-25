@@ -17,6 +17,8 @@ import { Role } from 'src/app/enum/role.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { MathExpression } from 'src/app/core/model/MathExpression';
 import { Title } from '@angular/platform-browser';
+import { UserService } from 'src/app/users/user.service';
+import { User } from 'src/app/core/model/User';
 declare const MathJax: any;
 
 @Component({
@@ -34,11 +36,13 @@ export class QuestionsComponent implements OnInit {
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   question: Question = new Question();
+  selectedQuestion: Question = new Question();
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
 
   answer?: Answer;
@@ -67,6 +71,13 @@ export class QuestionsComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
+  selectQuestionOption: string = 'ALL_QUESTIONS';
+
+  questionFilterOptions = [
+    { label: 'Mostrar todos artigos', value: 'ALL_QUESTIONS' },
+    { label: 'Mostrar artigos salvos', value: 'MY_SAVED_QUESTIONS' },
+  ];
+
   timeLimits = [
     { label: '1 minutos', value: '60' },
     { label: '2 minutos', value: '120' },
@@ -89,6 +100,7 @@ export class QuestionsComponent implements OnInit {
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
     private topicService: TopicService,
+    private userService: UserService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -100,6 +112,7 @@ export class QuestionsComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('Questions page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -190,11 +203,24 @@ export class QuestionsComponent implements OnInit {
 
   // Método de carregamento de questões
   findAll(pagina: number = 0): void {
+    if (this.selectQuestionOption == 'MY_SAVED_QUESTIONS') {
+      this.filtro.userId = this.loggedUser.id;
+    }
+
+    if (this.selectQuestionOption == 'ALL_QUESTIONS') {
+      this.filtro.userId = 0;
+    }
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
-    this.questionService.getQuestions(this.filtro).subscribe(
+    this.questionService.getQuestions(this.filtro, this.loggedUser.id).subscribe(
       (dados: IApiResponse<Question>) => {
         this.questions = dados.content
         this.totalRegistros = dados.totalElements;
@@ -212,11 +238,24 @@ export class QuestionsComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+    if (this.selectQuestionOption == 'MY_SAVED_QUESTIONS') {
+      this.filtro.userId = this.loggedUser.id;
+    }
+
+    if (this.selectQuestionOption == 'ALL_QUESTIONS') {
+      this.filtro.userId = 0;
+    }
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.page++;
 
-    this.questionService.getQuestions(this.filtro).subscribe(
+    this.questionService.getQuestions(this.filtro, this.loggedUser.id).subscribe(
       (data: IApiResponse<Question>) => {
         this.questions = [...this.questions, ...data.content];
         this.totalRegistros = data.totalElements;
@@ -406,6 +445,36 @@ export class QuestionsComponent implements OnInit {
         }
       );
     }
+  }
+
+  onSave(question: Question) {
+    this.selectedQuestion = question;
+    if (this.isUserLoggedIn) {
+      this.toggleSaveQuestion(question);
+    }
+
+    //if (!this.isUserLoggedIn) {
+    //  this.action = 'Save';
+    //  this.displayModalLogin = true;
+    //  setTimeout(() => {
+    //    this.initializeGoogleAuth();
+    //  }, 100); // Espera para o botão estar no DOM
+    //  return;
+    //}
+  }
+
+  toggleSaveQuestion(question: Question): void {
+    question.showLoadingSave = true;
+    this.userService.toggleSaveQuestion(this.loggedUser.id, question.id).subscribe(
+      response => {
+        question.savedByUser = !question.savedByUser;
+        question.showLoadingSave = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        question.showLoadingSave = false;
+      }
+    );
   }
 
   // Métodos de paginação

@@ -13,9 +13,10 @@ export class QuestionService {
 
   constructor(private http: HttpClient) { }
 
-  getQuestions(filter: QuestionFilter): Observable<IApiResponse<Question>> {
+  getQuestions(filter: QuestionFilter, currentUserId: number): Observable<IApiResponse<Question>> {
 
     let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString())
       .set('page', filter.page)
       .set('sort', filter.sort)
       .set('size', filter.itemsPerPage);
@@ -36,6 +37,11 @@ export class QuestionService {
       params = params.set('text', filter.text);
     }
 
+    // Envia o userId se estiver definido
+    if (filter.userId) {
+      params = params.set('userId', filter.userId.toString());
+    }
+
     return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/filter`, { params });
   }
 
@@ -54,7 +60,7 @@ export class QuestionService {
   }
 
   getQuestionsByTopicId(topicId: number): Observable<Question[]> {
-    return this.http.get<Question[]>(`${this.baseUrl}/topics/${topicId}`, { });
+    return this.http.get<Question[]>(`${this.baseUrl}/topics/${topicId}`, {});
   }
 
   findAll(): Observable<IApiResponse<Question>> {
@@ -69,8 +75,10 @@ export class QuestionService {
     return this.http.get<Question>(`${this.baseUrl}/${id}`, {});
   }
 
-  getQuestionByQuestionId(questionId: string): Observable<Question> {
-    return this.http.get<Question>(`${this.baseUrl}/find-by-questionId/${questionId}`, {});
+  getQuestionByQuestionId(questionId: string, currentUserId: number): Observable<Question> {
+        let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString());
+    return this.http.get<Question>(`${this.baseUrl}/find-by-questionId/${questionId}`, {params});
   }
 
   add(question: Question): Observable<Question> {

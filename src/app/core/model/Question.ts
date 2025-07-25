@@ -8,7 +8,7 @@ export class Question {
     questionId!: string;
     text!: string;
     timeLimit!: number; // Tempo em segundos
-    timeRemaining!: number; 
+    timeRemaining!: number;
     mathExpressions: MathExpression[] = []; // Alterado para uma lista de expressões
     tip!: string;
     solution!: string;
@@ -22,4 +22,7 @@ export class Question {
     isAdminMenuOpen: boolean = false;
     showSolution: boolean = false;
     showTip: boolean = false;
+
+    savedByUser: boolean = false;
+    showLoadingSave: boolean = false;
 }
