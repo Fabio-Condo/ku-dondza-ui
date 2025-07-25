@@ -23,6 +23,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { CommentService } from 'src/app/comments/comment.service';
 import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { CommentLikeService } from 'src/app/likes/commentLike.service';
+import { UserService } from 'src/app/users/user.service';
 
 
 @Component({
@@ -103,6 +104,7 @@ export class QuestionViewComponent implements OnInit {
     private questionService: QuestionService,
     private commentService: CommentService,
     private commentLikeService: CommentLikeService,
+    private userService: UserService,
     private confirmationService: ConfirmationService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -216,6 +218,35 @@ export class QuestionViewComponent implements OnInit {
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
+      }
+    );
+  }
+
+  onSave() {
+    if (this.isUserLoggedIn) {
+      this.toggleSaveQuestion(this.question);
+    }
+
+    //if (!this.isUserLoggedIn) {
+    //  this.action = 'Save';
+    //  this.displayModalLogin = true;
+    //  setTimeout(() => {
+    //    this.initializeGoogleAuth();
+    //  }, 100); // Espera para o botão estar no DOM
+    //  return;
+    //}
+  }
+
+  toggleSaveQuestion(question: Question): void {
+    question.showLoadingSave = true;
+    this.userService.toggleSaveQuestion(this.loggedUser.id, question.id).subscribe(
+      response => {
+        question.savedByUser = !question.savedByUser;
+        question.showLoadingSave = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        question.showLoadingSave = false;
       }
     );
   }

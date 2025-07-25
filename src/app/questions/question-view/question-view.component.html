@@ -74,7 +74,21 @@
 
         <br>
 
-        <h2 class="title">Questão</h2>
+        <div class="bookmark-section">
+            <h2 class="title">Questão</h2>
+            <button (click)="onSave()" class="action-btn bookmark-button" [class.liked]="question.savedByUser"
+                aria-label="Salvar artigo">
+                <!-- Ícone de bookmark (normal ou preenchido) -->
+                <i class="pi" *ngIf="!question.showLoadingSave"
+                    [ngClass]="question.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
+                </i>
+
+                <!-- Ícone de carregamento -->
+                <i *ngIf="question.showLoadingSave" class="pi pi-spin pi-spinner">
+                </i>
+            </button>
+        </div>
+
 
         <div class="question-card">
             <!-- Cabeçalho da pergunta -->
