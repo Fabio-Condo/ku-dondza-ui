@@ -553,6 +553,10 @@ export class QuestionsComponent implements OnInit {
     this.filtro.text = "";
     this.filtro.subject = undefined;
     this.filtro.topic = undefined;
+    this.filtro.page = 0;
+    this.filtro.itemsPerPage = 10;
+    this.filtro.sort = "id,desc";
+    this.selectQuestionOption = 'ALL_QUESTIONS';
     this.findAll();
   }
 
