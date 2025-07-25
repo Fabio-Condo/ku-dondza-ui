@@ -60,7 +60,7 @@ export class QuestionViewComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   displayModalLogin: boolean = false;
-  action: 'solution' | 'comment' = 'solution';;
+  action: 'solution' | 'comment' | 'save' = 'solution';
 
   comment: Comment = new Comment();
   comments: Comment[] = [];
@@ -223,11 +223,14 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onSave() {
+
     if (this.isUserLoggedIn) {
-      this.toggleSaveQuestion(this.question);
+      this.toggleSaveQuestion();
     }
 
     if (!this.isUserLoggedIn) {
+      this.action = 'save';
+      document.body.classList.add('no-scroll');
       this.displayModalLogin = true;
       setTimeout(() => {
         this.initializeGoogleAuth();
@@ -236,16 +239,16 @@ export class QuestionViewComponent implements OnInit {
     }
   }
 
-  toggleSaveQuestion(question: Question): void {
-    question.showLoadingSave = true;
-    this.userService.toggleSaveQuestion(this.loggedUser.id, question.id).subscribe(
+  toggleSaveQuestion(): void {
+    this.question.showLoadingSave = true;
+    this.userService.toggleSaveQuestion(this.loggedUser.id, this.question.id).subscribe(
       response => {
-        question.savedByUser = !question.savedByUser;
-        question.showLoadingSave = false;
+        this.question.savedByUser = !this.question.savedByUser;
+        this.question.showLoadingSave = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        question.showLoadingSave = false;
+        this.question.showLoadingSave = false;
       }
     );
   }
@@ -707,6 +710,8 @@ export class QuestionViewComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
+        this.findById(this.question.questionId);
+
         if (this.action === 'solution') {
           this.togleCorrection();
         }
@@ -796,7 +801,13 @@ export class QuestionViewComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
+
         this.ngZone.run(() => {
+          this.findById(this.question.questionId);
+          //if (this.action === 'save' && !this.question.savedByUser) {
+          //  this.toggleSaveQuestion();
+          //  this.question.savedByUser = !this.question.savedByUser;
+          //}
           if (this.action === 'solution') {
             this.togleCorrection();
           }
