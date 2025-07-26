@@ -1211,7 +1211,7 @@
 
                         <div class="bookmark-section">
                             <button (click)="onSave(question)" class="action-btn bookmark-button"
-                                [class.liked]="question.savedByUser" aria-label="Salvar artigo">
+                                [class.saved]="question.savedByUser" aria-label="Salvar artigo">
 
                                 <!-- Ícone de bookmark (normal ou preenchido) -->
                                 <i class="pi" *ngIf="!question.showLoadingSave"
@@ -1222,14 +1222,14 @@
                                 <i *ngIf="question.showLoadingSave" class="pi pi-spin pi-spinner"></i>
 
                                 <!-- Texto de carregamento -->
-                                <span *ngIf="question.showLoadingSave" class="loading-text" style="margin-left: 5px;">
+                                <span *ngIf="question.showLoadingSave" class="save-loading-text" style="margin-left: 5px;">
                                     {{ question.savedByUser ? 'Removendo...' : 'Guardando...' }}
                                 </span>
                             </button>
 
-                            <div class="separator"></div>
+                            <div class="separator" *ngIf="!question.showLoadingSave"></div>
 
-                            <span class="comment-number">
+                            <span class="comment-number" *ngIf="!question.showLoadingSave">
                                 {{ question.numberOfComments }} Comentários
                             </span>
                         </div>

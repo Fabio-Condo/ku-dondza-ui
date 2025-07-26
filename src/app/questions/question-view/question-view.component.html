@@ -76,16 +76,22 @@
 
         <div class="bookmark-section">
             <h2 class="title">Questão</h2>
-            <button (click)="onSave()" class="action-btn bookmark-button" [class.liked]="question.savedByUser"
+
+            <button (click)="onSave()" class="action-btn bookmark-button" [class.saved]="question.savedByUser"
                 aria-label="Salvar artigo">
+
                 <!-- Ícone de bookmark (normal ou preenchido) -->
                 <i class="pi" *ngIf="!question.showLoadingSave"
                     [ngClass]="question.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
                 </i>
 
                 <!-- Ícone de carregamento -->
-                <i *ngIf="question.showLoadingSave" class="pi pi-spin pi-spinner">
-                </i>
+                <i *ngIf="question.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+
+                <!-- Texto de carregamento -->
+                <span *ngIf="question.showLoadingSave" class="save-loading-text" style="margin-left: 5px;">
+                    {{ question.savedByUser ? 'Removendo...' : 'Guardando...' }}
+                </span>
             </button>
         </div>
 
