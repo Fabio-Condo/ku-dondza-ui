@@ -402,17 +402,27 @@
                     <!-- Rodapé -->
                     <div class="comment-footer">
                         <button class="comment-action" (click)="onLike(comment)">
-                            <span *ngIf="!comment.showLoadingLike"
-                                [ngClass]="{ 'liked': comment.likedByUser }">Gosto</span>
-                            <span *ngIf="!comment.showLoadingLike">· {{ comment.numberOfLikes }}</span>
-                            <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+                            <!-- Quando não está carregando -->
+                            <ng-container *ngIf="!comment.showLoadingLike; else loadingLike">
+                                <span [ngClass]="{ 'liked': comment.likedByUser }">Gosto</span>
+                                <span>· {{ comment.numberOfLikes }}</span>
+                            </ng-container>
+
+                            <!-- Quando está carregando -->
+                            <ng-template #loadingLike>
+                                <i class="pi pi-spin pi-spinner"></i>
+                                <span class="like-loading-text" style="margin-left: 4px;">
+                                    {{ comment.likedByUser ? 'Removendo curtida...' : 'Curtindo...' }}
+                                </span>
+                            </ng-template>
                         </button>
-                        <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
+
+                        <button *ngIf="comment.user.id === loggedUser.id && !comment.showLoadingLike" (click)="onUpdateComment(comment)"
                             class="comment-action">Editar</button>
-                        <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
+                        <button *ngIf="comment.user.id === loggedUser.id && !comment.showLoadingLike" (click)="confirmarExclusao(comment)"
                             class="comment-action">Eliminar</button>
 
-                        <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin">
+                        <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin && !comment.showLoadingLike">
                             <button class="comment-menu-button" (click)="toggleMenu(comment.id)">⋮</button>
                             <div class="comment-menu" *ngIf="openedMenuId === comment.id">
                                 <button (click)="confirmarExclusao(comment)">Eliminar</button>
