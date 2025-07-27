@@ -76,4 +76,8 @@ export class QuizService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }
 
+  toggleAnonymous(id: number, status: boolean): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}/anonymous`, status, {});
+  }
+
 }

@@ -189,6 +189,23 @@ export class QuizzesComponent implements OnInit {
     )
   }
 
+  toggleAnonymousStatus(quiz: Quiz): void {
+    this.loadingMessage = "Alterando status anônimo";
+    this.showLoading = true;
+    const newStatus = !quiz.anonymous;
+
+    this.quizService.toggleAnonymous(quiz.id, newStatus).subscribe({
+      next: () => {
+        quiz.anonymous = newStatus;
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      },
+    });
+  }
+
   toggleFilter(): void {
     this.displayModalFilter = !this.displayModalFilter;
 
