@@ -171,6 +171,10 @@ export class TopicsComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.topics.length >= this.totalRegistros && this.totalRegistros > 0;
+  }
+
   buscarTotal() {
     this.topicService.buscarTotal().subscribe(
       (total) => {
