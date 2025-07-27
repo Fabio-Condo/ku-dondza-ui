@@ -1,57 +1,244 @@
-
+<!DOCTYPE html>
+<html lang="pt-br">
 
 <head>
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Dikahub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .footer {
+            background: white;
+            border-top: 1px solid #e9ecef;
+            padding: 2rem 1rem 1.5rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: #495057;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .footer-links a:hover {
+            color: #4361ee;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .social-links a {
+            color: #6c757d;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-links a.facebook:hover {
+            background: #1877f2;
+            color: white;
+        }
+
+        .social-links a.twitter:hover {
+            background: #1da1f2;
+            color: white;
+        }
+
+        .social-links a.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        .social-links a.linkedin:hover {
+            background: #0077b5;
+            color: white;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
+        }
+
+        .whatsapp-btn:hover {
+            background: #20ba5a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #e9ecef;
+            padding-top: 1rem;
+            text-align: center;
+        }
+
+        .copyright {
+            color: #6c757d;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .brand-name {
+            color: #4361ee;
+            font-weight: 700;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .footer-links a {
+                font-size: 13px;
+            }
+
+            .social-links {
+                gap: 0.8rem;
+            }
+
+            .whatsapp-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer {
+                padding: 1.5rem 0.8rem 1rem;
+            }
+
+            .footer-links {
+                gap: 1rem;
+                flex-direction: column;
+            }
+
+            .footer-links a {
+                padding: 0.3rem 0;
+            }
+
+            .social-links {
+                gap: 0.6rem;
+            }
+
+            .social-links a {
+                font-size: 14px;
+                width: 36px;
+                height: 36px;
+                padding: 8px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <!--
+        <div class="main-content">
+        <p>Conteúdo principal da página...</p>
+    </div>
+    -->
 
-    <footer class="footer" >
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <nav class="footer-links">
+                    <a routerLink="/home">Início</a>
+                    <a routerLink="/about-us">Sobre Nós</a>
+                    <a routerLink="/prices">Preços</a>
+                    <a routerLink="/faq">FAQ</a>
+                    <a routerLink="/privacy-policy">Políticas de Privacidade</a>
+                    <a href="#" class="whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </nav>
 
-        <hr>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                        class="facebook" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                        class="twitter" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                        class="instagram" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                        class="linkedin" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
 
-        <div class="container">
-
-            <div class="row">
-                <div class="footer-col">
-                    <h4>empresa</h4>
-                    <ul>
-                        <li><a routerLink="/about-us">sobre nós</a></li>
-                        <li><a routerLink="/privacy-policy">politicas de privacidade</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Suporte</h4>
-                    <ul>
-                        <li><a routerLink="/faq">FAQ</a></li>
-                        <li><a routerLink="/prices">preços</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Links úteis</h4>
-                    <ul>
-                        <li><a *ngIf="!isUserLoggedIn" routerLink="/home">tela principal</a></li>
-                        <li><a *ngIf="isUserLoggedIn && isSuperAdmin" routerLink="/disciplinas">disciplinas e tópicos</a></li>
-                        <li><a *ngIf="isUserLoggedIn && isSuperAdmin" routerLink="/users">users</a></li>
-                        <li><a routerLink="/whatsapp-group">grupo do whatsapp</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>siga - nos</h4>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div style="padding: 0 15px">
-                    <h2 class="logo" style="color: var(--color-primary); margin-top: 20px;">Dikahub</h2>
-                    <p style="font-size: 0.85rem;">© 2025 Dikahub, Inc. All rights reserved. &nbsp;&nbsp;</p>
-                </div>            
+            <div class="footer-bottom">
+                <p class="copyright">
+                    <span class="brand-name">Dikahub</span>© 2025 Dikahub, Inc. All rights reserved.
+                </p>
             </div>
         </div>
     </footer>
-
 </body>
+
+</html>
