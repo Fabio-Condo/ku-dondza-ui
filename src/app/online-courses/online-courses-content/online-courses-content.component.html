@@ -74,7 +74,7 @@
               [disabled]="course.currentUserSubscribed">
               <i *ngIf="!course.currentUserSubscribed && !course.showLoadingSubscription" class="fas fa-plus"></i>
               <span *ngIf="!course.currentUserSubscribed && !course.showLoadingSubscription">Inscrever-se</span>
-              <i *ngIf="!course.currentUserSubscribed && course.showLoadingSubscription" class="pi pi-spin pi-spinner"
+              <i *ngIf="!course.currentUserSubscribed && course.showLoadingSubscription" class="pi pi-spin pi-spinner-dotted"
                 style="color: white;"></i>
               <span *ngIf="course.currentUserSubscribed && course.currentUserSubscribed">Inscrito</span>
             </button>
@@ -143,7 +143,7 @@
                         [disabled]="!course.currentUserSubscribed" *ngIf="!content.showLoadingMarked" />
                       <label [for]="'visible-checkbox-' + content.id" [class.checked]="content.markedByUser"
                         [title]="content.markedByUser ? 'Desmarcar como assistido' : 'Marcar como assistido'">
-                        <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner"
+                        <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
                           style="color: #4361ee; font-size: 22px;"></i>
                       </label>
                     </div>
@@ -182,7 +182,7 @@
                           stroke-linecap="round" stroke-linejoin="round">
                           <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
                         </svg>
-                        <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner"
+                        <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
                           style="color: #4361ee;"></i>
                       </button>
 

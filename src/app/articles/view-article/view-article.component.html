@@ -867,13 +867,13 @@
         <button class="fab fab-like" (click)="onLike(article)" [class.liked]="article.likedByUser">
             <i class="pi" *ngIf="!article.showLoadingLike"
                 [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
-            <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+            <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
         </button>
 
         <button class="fab fab-save" (click)="onSave(article)" [class.saved]="article.savedByUser">
             <i class="pi" *ngIf="!article.showLoadingSave"
                 [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
-            <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+            <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
         </button>
 
         <!-- Seção de Interação (Like e Save) -->
@@ -882,7 +882,7 @@
             <button (click)="onLike(article)" class="like-button" [class.liked]="article.likedByUser">
                 <i class="pi" *ngIf="!article.showLoadingLike"
                     [ngClass]="article.likedByUser ? 'pi-heart-fill' : 'pi-heart'"></i>
-                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+                <i *ngIf="article.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
                 <span class="like-count">{{ article.numberOfLikes }}</span>
             </button>
 
@@ -890,7 +890,7 @@
             <button (click)="onSave(article)" class="save-button" [class.saved]="article.savedByUser">
                 <i class="pi" *ngIf="!article.showLoadingSave"
                     [ngClass]="article.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
-                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner"></i>
+                <i *ngIf="article.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
             </button>
         </div>
     </div>
