@@ -29,6 +29,15 @@
         <form autocomplete="off" #courseForm="ngForm">
 
           <div class="form-group">
+            <label for="difficultyLevel">Modo</label>
+            <select id="difficultyLevel" [(ngModel)]="quiz.anonymous" name="difficultyLevel" required>
+              <option value="" disabled selected>Escolha o modo</option>
+              <option *ngFor="let anonymous of anonymousOptions" [value]="anonymous.value">{{ anonymous.label }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label for="difficultyLevel">Nivel de dificuldade</label>
             <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
               <option value="" disabled selected>Selecione o nivel</option>
@@ -164,7 +173,9 @@
             </svg>
             <div>
               <p class="meta-label">Usuário</p>
-              <p class="meta-valor">{{ quiz.user.fullName }}</p>
+              <p class="meta-valor">
+                {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
+              </p>
             </div>
           </div>
 
@@ -310,18 +321,19 @@
           <div class="quiz-header">
             <div>
 
+              <!--
               <h1 *ngIf="quiz.user.id" class="title">{{ quiz.user.fullName }}</h1>
               <h1 *ngIf="!quiz.user.id && isUserLoggedIn" class="title">{{ loggedUser.fullName }}</h1>
               <h1 *ngIf="!quiz.user.id && !isUserLoggedIn" class="title">Usuário desconhecido</h1>
+              -->
 
-              <!--
-              <h1 class="title">{{ quiz.user.fullName }}</h1>
-              <h1 *ngIf="!quiz.user.id" class="title">{{ quiz.user.fullName }}</h1>
-              -->
+              <h1 *ngIf="quiz.anonymous" class="title">Usuário Anônimo</h1>
+              <h1 *ngIf="!quiz.anonymous && quiz.user?.id" class="title">{{ quiz.user.fullName }}</h1>
+              <h1 *ngIf="!quiz.anonymous && !quiz.user?.id && isUserLoggedIn" class="title">{{ loggedUser.fullName }}</h1>
+              <h1 *ngIf="!quiz.anonymous && !quiz.user?.id && !isUserLoggedIn" class="title">Usuário desconhecido</h1>
+
               <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }}</span>
-              <!--
-              <span>{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</span>
-              -->
+
             </div>
             <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
               <i class="pi pi-times"></i>
@@ -442,7 +454,8 @@
         </div>
       </div>
 
-      <button class="fab fab-primary" (click)="onGetComments(quiz.questions[currentQuestionIndex])" *ngIf="showCorrection">
+      <button class="fab fab-primary" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
+        *ngIf="showCorrection">
         <i class="pi pi-comments"></i>
         <span style="font-size: 0.8rem;">{{ quiz.questions[currentQuestionIndex].numberOfComments }}</span>
       </button>
@@ -662,9 +675,8 @@
           <!-- Campo de comentário -->
           <div class="comment-textarea-container">
             <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput class="comment-input"
-              name="content" [(ngModel)]="comment.content"
-              (input)="autoResize(editInput)" placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..."
-              required></textarea>
+              name="content" [(ngModel)]="comment.content" (input)="autoResize(editInput)"
+              placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..." required></textarea>
 
             <!-- Botão de envio -->
             <button type="submit" class="send-button" [disabled]="commentForm.invalid || showLoading">

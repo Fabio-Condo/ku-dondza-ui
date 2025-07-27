@@ -100,6 +100,11 @@ export class QuizzQuestionsComponent implements OnInit {
   imagePath = './assets/images/funcao do grau 2.png';
 
   @ViewChild('tabela') grid: any;
+  
+  anonymousOptions = [
+    { label: 'Mostrar meu nome nos resultados', value: false },
+    { label: 'Fazer como anônimo', value: true },
+  ];
 
   difficultyLevels = [
     { label: 'Fácil', value: 'EASY' },
@@ -706,7 +711,7 @@ export class QuizzQuestionsComponent implements OnInit {
     return textoFormatado.replace(/\n/g, '<br>');
   }
 
-  public get (): boolean {
+  public get(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
 

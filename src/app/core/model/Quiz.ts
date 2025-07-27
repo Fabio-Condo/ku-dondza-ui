@@ -13,6 +13,7 @@ export class Quiz {
     timeSpent!: number; // Tempo gasto em segundos
     difficultyLevel!: string;
     limitPerTopic!: number;
+    anonymous!: boolean;
     subject = new Subject();
     user = new User();
     topics: Topic[] = [];
