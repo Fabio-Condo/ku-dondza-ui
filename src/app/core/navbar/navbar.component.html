@@ -488,7 +488,7 @@
       <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/users')" routerLink="/users"
           (click)="toggleMenu()">Pessoas</a></li>
     </ul>
-    <div class="mobile-auth-buttons" *ngIf="showNavButtons()">
+    <div class="mobile-auth-buttons" *ngIf="!loggedUser">
       <a routerLink="/login" class="btn btn-white">Login</a>
       <a routerLink="/login" class="btn btn-outline">Cadastre-se</a>
     </div>
