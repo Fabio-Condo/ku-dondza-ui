@@ -329,7 +329,7 @@
               -->
 
               <h1 class="title">
-                {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user?.fullName ||
+                {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName ||
                 (isUserLoggedIn ? loggedUser.fullName : 'Usuário desconhecido') }}
 
                 <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id">(tú)</span>
