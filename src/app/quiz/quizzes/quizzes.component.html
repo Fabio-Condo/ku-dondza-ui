@@ -77,11 +77,12 @@
                             <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
 
                             <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id"
-                                (click)="toggleAnonymousStatus(quiz)" class="anon-toggle">
+                                (click)="toggleAnonymousStatus(quiz)" class="anon-toggle"
+                                [ngClass]="quiz.anonymous ? 'anon-active' : 'anon-inactive'"
+                                title="{{ quiz.anonymous ? 'Modo anônimo ativado' : 'Mostrar meu nome' }}">
                                 <i [class]="'pi ' + (quiz.anonymous ? 'pi-eye-slash' : 'pi-eye')"></i>
                                 {{ quiz.anonymous ? 'Anônimo' : 'Visível' }} 
                             </span>
-
                         </div>
 
                         <div class="topic-tags">
