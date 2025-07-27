@@ -36,8 +36,11 @@ export class NavbarComponent implements OnInit {
       this.loggedUser = this.authenticationService.getUserFromLocalCache();
     });
 
-    if (this.isUserLoggedIn) {
+    if (!this.isUserLoggedIn) {
       this.authenticationService.notifyLoginStatus(false);
+    }
+    if (this.isUserLoggedIn) {
+      this.authenticationService.notifyLoginStatus(true);
     }
   }
 
