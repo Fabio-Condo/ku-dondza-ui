@@ -282,6 +282,10 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.questions.length >= this.totalRegistros && this.totalRegistros > 0;
+  }
+
   toggleFilter(): void {
     this.displayModalFilter = !this.displayModalFilter;
 

@@ -150,6 +150,10 @@ export class QuizzesComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.quizzes.length >= this.totalRecords && this.totalRecords > 0;
+  }
+
   toggleTopics(quizId: number): void {
     this.showAllTopicsMap[quizId] = !this.showAllTopicsMap[quizId];
   }
