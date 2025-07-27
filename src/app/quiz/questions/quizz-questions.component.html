@@ -175,6 +175,7 @@
               <p class="meta-label">Usuário</p>
               <p class="meta-valor">
                 {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
+                <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id">(tú)</span>
               </p>
             </div>
           </div>
@@ -327,10 +328,12 @@
               <h1 *ngIf="!quiz.user.id && !isUserLoggedIn" class="title">Usuário desconhecido</h1>
               -->
 
-              <h1 *ngIf="quiz.anonymous" class="title">Usuário Anônimo</h1>
-              <h1 *ngIf="!quiz.anonymous && quiz.user?.id" class="title">{{ quiz.user.fullName }}</h1>
-              <h1 *ngIf="!quiz.anonymous && !quiz.user?.id && isUserLoggedIn" class="title">{{ loggedUser.fullName }}</h1>
-              <h1 *ngIf="!quiz.anonymous && !quiz.user?.id && !isUserLoggedIn" class="title">Usuário desconhecido</h1>
+              <h1 class="title">
+                {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user?.fullName ||
+                (isUserLoggedIn ? loggedUser.fullName : 'Usuário desconhecido') }}
+
+                <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id">(tú)</span>
+              </h1>
 
               <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }}</span>
 

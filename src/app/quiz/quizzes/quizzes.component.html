@@ -74,6 +74,7 @@
                         -->
                         <div class="quiz-title">
                             {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
+                            <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id">(tú)</span>
                         </div>
 
                         <div class="topic-tags">
