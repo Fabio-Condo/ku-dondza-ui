@@ -182,6 +182,10 @@ export class UsersComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.users.length >= this.totalUsersRecord && this.totalUsersRecord > 0;
+  }
+
   onDeleteUder(username: string): void {
     this.subscriptions.push(
       this.userService.deleteUser(username).subscribe(

@@ -195,6 +195,10 @@ export class OnlineCoursesComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.courses.length >= this.totalRegistros && this.totalRegistros > 0;
+  }
+
   toggleDropdown(course: Course) {
     course.isAdminMenuOpen = !course.isAdminMenuOpen
   }

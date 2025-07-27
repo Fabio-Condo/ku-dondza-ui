@@ -180,6 +180,10 @@ export class BooksComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.books.length >= this.totalRegistros && this.totalRegistros > 0;
+  }
+
   excluir(book: Book) {
     this.booksService.excluir(book.id!).subscribe(() => {
       this.findAll();

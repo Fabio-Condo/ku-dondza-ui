@@ -254,6 +254,10 @@ export class CompetitionsComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.competitions.length >= this.totalRegistros && this.totalRegistros > 0;
+  }
+
   toggleTopics(competitionId: number): void {
     this.showAllTopicsMap[competitionId] = !this.showAllTopicsMap[competitionId];
   }

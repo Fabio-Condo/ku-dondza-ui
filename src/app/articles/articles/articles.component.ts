@@ -178,6 +178,10 @@ export class ArticlesComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.articles.length >= this.totalRecords && this.totalRecords > 0;
+  }
+
   applyFilters(): void {
     this.filter.page = -1; // Reinicia a paginação
     this.articles = []; // Limpa a lista de artigos
