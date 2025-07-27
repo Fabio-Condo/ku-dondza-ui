@@ -642,7 +642,7 @@
             <button class="comment-action" (click)="onLike(comment)">
               <span *ngIf="!comment.showLoadingLike" [ngClass]="{ 'liked': comment.likedByUser }">Gosto</span>
               <span *ngIf="!comment.showLoadingLike">· {{ comment.numberOfLikes }}</span>
-              <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner"></i>
+              <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
             </button>
             <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
               class="comment-action">Editar</button>
