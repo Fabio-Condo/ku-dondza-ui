@@ -74,7 +74,8 @@
                         -->
                         <div class="quiz-title">
                             {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
-                            <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
+                            <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id"></span>
+                            <span *ngIf="quiz.user.id == loggedUser.id">(tú) </span>
 
                             <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
                                 (click)="toggleAnonymousStatus(quiz)" class="anon-toggle"
