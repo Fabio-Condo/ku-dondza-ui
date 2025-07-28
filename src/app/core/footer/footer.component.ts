@@ -27,7 +27,7 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  entrarNoGrupo() {
+  enterOnGroup() {
     window.open('https://chat.whatsapp.com/B95NsSxUWFYETIMvKBRynV?mode=ac_t', '_blank');
   }
 
