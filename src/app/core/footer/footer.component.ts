@@ -27,6 +27,10 @@ export class FooterComponent implements OnInit {
     });
   }
 
+  entrarNoGrupo() {
+    window.open('https://chat.whatsapp.com/B95NsSxUWFYETIMvKBRynV?mode=ac_t', '_blank');
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
