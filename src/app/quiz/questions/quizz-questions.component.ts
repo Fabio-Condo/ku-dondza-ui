@@ -100,7 +100,7 @@ export class QuizzQuestionsComponent implements OnInit {
   imagePath = './assets/images/funcao do grau 2.png';
 
   @ViewChild('tabela') grid: any;
-  
+
   anonymousOptions = [
     { label: 'Mostrar meu nome nos resultados', value: false },
     { label: 'Fazer como anônimo', value: true },
@@ -180,6 +180,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showInitQuizScreen = true;
     this.showStartScreen = false;
     this.showCorrection = false;
+    this.quiz.anonymous = true;
     this.quiz.difficultyLevel = 'EASY';
     this.quiz.limitPerTopic = 2;
   }
