@@ -23,6 +23,7 @@ export class Quiz {
     accuracyRate: number = 0;
     totalQuestions: number = 0;
     isAdminMenuOpen: boolean = false;
+    showLoadingSave: boolean = false;
 
     // Adicionando a propriedade resultsByTopic
     resultsByTopic: {

@@ -190,18 +190,18 @@ export class QuizzesComponent implements OnInit {
   }
 
   toggleAnonymousStatus(quiz: Quiz): void {
-    this.loadingMessage = "Alterando status anônimo";
-    this.showLoading = true;
+    quiz.showLoadingSave = true;
+
     const newStatus = !quiz.anonymous;
 
     this.quizService.toggleAnonymous(quiz.id, newStatus).subscribe({
       next: () => {
         quiz.anonymous = newStatus;
-        this.showLoading = false;
+        quiz.showLoadingSave = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
+        quiz.showLoadingSave = false;
       },
     });
   }

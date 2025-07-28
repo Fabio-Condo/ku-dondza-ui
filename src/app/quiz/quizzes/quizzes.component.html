@@ -76,12 +76,20 @@
                             {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
                             <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
 
-                            <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id"
+                            <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
                                 (click)="toggleAnonymousStatus(quiz)" class="anon-toggle"
                                 [ngClass]="quiz.anonymous ? 'anon-active' : 'anon-inactive'"
                                 title="{{ quiz.anonymous ? 'Modo anônimo ativado' : 'Mostrar meu nome' }}">
                                 <i [class]="'pi ' + (quiz.anonymous ? 'pi-eye-slash' : 'pi-eye')"></i>
-                                {{ quiz.anonymous ? 'Anônimo' : 'Visível' }} 
+                                {{ quiz.anonymous ? 'Anônimo' : 'Visível' }}
+                            </span>
+
+                            <!-- Ícone de carregamento -->
+                            <i *ngIf="quiz.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
+
+                            <!-- Texto de carregamento -->
+                            <span *ngIf="quiz.showLoadingSave" class="save-loading-text" style="margin-left: 5px;">
+                                {{ quiz.anonymous ? 'Removendo...' : 'Guardando...' }}
                             </span>
                         </div>
 
