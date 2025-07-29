@@ -5,8 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Topic } from 'src/app/core/model/Topic';
 import { User } from 'src/app/core/model/User';
-import { QuestionService } from 'src/app/questions/question.service';
-import { QuizService } from 'src/app/quiz/quiz.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { TopicService } from '../topicsService.service';
 import { TopicContent } from 'src/app/core/model/Topic-content';
@@ -189,7 +187,7 @@ export class TopicViewComponent implements OnInit {
 
   download(content: TopicContent, filename: string): void {
     content.showLoadingDownload = true;
-    this.topicContentService.download(content.id, filename).subscribe((data: Blob) => {
+    this.topicContentService.download(content.id, filename, this.loggedUser.id).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
       // Criar um link temporário para o Blob
@@ -209,7 +207,12 @@ export class TopicViewComponent implements OnInit {
     },
       (errorResponse: HttpErrorResponse) => {
         content.showLoadingDownload = false;
-        this.sendErrorNotification(errorResponse.error.message);
+
+        if (errorResponse.status === 429) {
+          this.sendErrorNotification("Você atingiu o limite de downloads. Tente novamente em instantes.");
+        } else {
+          this.sendErrorNotification(errorResponse.error?.message || "Erro ao fazer o download.");
+        }
       }
     );
   }

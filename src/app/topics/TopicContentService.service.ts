@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { OnlineCourseContent } from '../core/model/Online-course-content';
@@ -47,7 +47,14 @@ export class TopicContentService {
         return this.http.get<number>(`${this.host}/total`, {});
     }
 
-    download(id: number, filename: string): Observable<Blob> {
-        return this.http.get(`${this.host}/download/${id}/${filename}`, { responseType: 'blob' });
+    download(id: number, filename: string, currentUserId: number): Observable<Blob> {
+        let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString());
+
+        return this.http.get(`${this.host}/download/${id}/${filename}`, {
+            responseType: 'blob',
+            params: params
+        });
     }
+
 }
