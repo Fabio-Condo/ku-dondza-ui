@@ -370,7 +370,10 @@
 
         <!-- Header fixo -->
         <div class="comments-header">
-            <h2 class="comments-title">Comentários</h2>
+            <div>
+                <h2 class="comments-title">Comentários</h2>
+                <span style="font-size: 0.75rem;">Comentários sobre este exercício</span>
+            </div>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div class="comments-count">{{ comments.length }}</div>
                 <button class="close-btn" (click)="onCloseComments()">×</button>
@@ -417,10 +420,10 @@
                             </ng-template>
                         </button>
 
-                        <button *ngIf="comment.user.id === loggedUser.id && !comment.showLoadingLike" (click)="onUpdateComment(comment)"
-                            class="comment-action">Editar</button>
-                        <button *ngIf="comment.user.id === loggedUser.id && !comment.showLoadingLike" (click)="confirmarExclusao(comment)"
-                            class="comment-action">Eliminar</button>
+                        <button *ngIf="comment.user.id === loggedUser.id && !comment.showLoadingLike"
+                            (click)="onUpdateComment(comment)" class="comment-action">Editar</button>
+                        <button *ngIf="comment.user.id === loggedUser.id && !comment.showLoadingLike"
+                            (click)="confirmarExclusao(comment)" class="comment-action">Eliminar</button>
 
                         <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin && !comment.showLoadingLike">
                             <button class="comment-menu-button" (click)="toggleMenu(comment.id)">⋮</button>
