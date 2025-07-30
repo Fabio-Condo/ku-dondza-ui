@@ -44,8 +44,8 @@ export class QuizzesComponent implements OnInit {
   selectQuizOption: string = 'ALL_QUIZZES';
 
   quizFilterOptions = [
-    { label: 'Mostrar todos quizzes', value: 'ALL_QUIZZES' },
-    { label: 'Mostrar meus quizzes', value: 'MY_QUIZZES' },
+    { label: 'Mostrar todos', value: 'ALL_QUIZZES' },
+    { label: 'Mostrar seus', value: 'MY_QUIZZES' },
   ];
 
   @ViewChild('table') grid: any;
