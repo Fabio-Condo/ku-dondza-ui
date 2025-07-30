@@ -150,7 +150,7 @@ export class QuizzQuestionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('Quiz view page');
+    this.title.setTitle('Test view page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
