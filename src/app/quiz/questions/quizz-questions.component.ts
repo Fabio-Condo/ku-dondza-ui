@@ -880,6 +880,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showLoading = false;
         this.comments.unshift(this.comment); // Adiciona o novo comentário no início da lista
         this.totalRecordComments++;
+        this.quiz.questions[this.currentQuestionIndex].numberOfComments++;
         this.comment = new Comment(); // Reseta o objeto de comentário
         commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
       },
@@ -952,6 +953,7 @@ export class QuizzQuestionsComponent implements OnInit {
       this.showLoading = false;
       this.comments = this.comments.filter(c => c.id !== comment.id);
       this.totalRecordComments--;
+      this.quiz.questions[this.currentQuestionIndex].numberOfComments--;
       this.messageService.add({ severity: 'success', detail: 'Comentário excluído com sucesso!' });
     },
       (errorResponse: HttpErrorResponse) => {
