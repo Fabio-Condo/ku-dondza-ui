@@ -85,8 +85,8 @@ export class QuestionsComponent implements OnInit {
   selectQuestionOption: string = 'ALL_QUESTIONS';
 
   questionFilterOptions = [
-    { label: 'Mostrar todos artigos', value: 'ALL_QUESTIONS' },
-    { label: 'Mostrar artigos salvos', value: 'MY_SAVED_QUESTIONS' },
+    { label: 'Mostrar todos', value: 'ALL_QUESTIONS' },
+    { label: 'Mostrar salvos', value: 'MY_SAVED_QUESTIONS' },
   ];
 
   timeLimits = [
