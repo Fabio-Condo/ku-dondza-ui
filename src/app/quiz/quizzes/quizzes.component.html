@@ -133,8 +133,12 @@
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <polyline points="12 6 12 12 16 14"></polyline>
                                 </svg>
-                                {{ formatTime(quiz.timeSpent) }} / {{ formatTime(quiz.timeLimit) }}
-
+                                <span *ngIf="quiz.timeLimit > quiz.timeSpent">
+                                    {{ formatTime(quiz.timeSpent) }} / {{formatTime(quiz.timeLimit) }}
+                                </span>
+                                <span *ngIf="quiz.timeLimit <= quiz.timeSpent">
+                                    {{ formatTime(quiz.timeLimit) }} / {{formatTime(quiz.timeLimit) }}
+                                </span>
                             </div>
                             <div class="stat-item">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
