@@ -102,8 +102,8 @@ export class QuizzQuestionsComponent implements OnInit {
   @ViewChild('tabela') grid: any;
 
   anonymousOptions = [
-    { label: 'Mostrar meu nome nos resultados', value: false },
     { label: 'Fazer como anônimo', value: true },
+    { label: 'Mostrar meu nome', value: false },
   ];
 
   difficultyLevels = [
