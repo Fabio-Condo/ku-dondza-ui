@@ -137,6 +137,20 @@
             gap: 12px;
         }
 
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .btn {
             padding: 10px 20px;
             border: none;
@@ -671,7 +685,8 @@
                     <div class="lesson-duration">{{ content.time }} minutos</div>
                 </div>
                 <div class="lesson-actions">
-                    <a (click)="onSelectContent(content)" class="btn btn-outline" *ngIf="content.contentType == 'VIDEO'">
+                    <a (click)="onSelectContent(content)" class="btn btn-outline"
+                        *ngIf="content.contentType == 'VIDEO'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                         </svg>
