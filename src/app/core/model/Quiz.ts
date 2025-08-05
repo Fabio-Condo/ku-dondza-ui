@@ -13,7 +13,7 @@ export class Quiz {
     timeSpent!: number; // Tempo gasto em segundos
     difficultyLevel!: string;
     limitPerTopic!: number;
-    anonymous!: boolean;
+    anonymous: boolean = false; // Define se o quiz é anônimo
     subject = new Subject();
     user = new User();
     topics: Topic[] = [];

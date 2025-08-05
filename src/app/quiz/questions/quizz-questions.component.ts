@@ -235,6 +235,10 @@ export class QuizzQuestionsComponent implements OnInit {
         this.renderMathExpressions();
         this.renderFunctions();
         this.startQuiz();
+
+        if (this.isUserLoggedIn) {
+          this.quiz.user = this.loggedUser;
+        }
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
