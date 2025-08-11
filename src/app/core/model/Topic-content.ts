@@ -10,6 +10,9 @@ export class TopicContent {
     topic = new Topic();
     position!: number;
 
+    markedByUser: boolean = false; // Marcado como assistido
+
+    showLoadingMarked: boolean = false;
     showLoadingDownload: boolean = false;
     isAdminMenuOpen: boolean = false;
 }

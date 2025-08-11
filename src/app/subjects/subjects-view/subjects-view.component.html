@@ -1,0 +1,326 @@
+<body>
+
+    <div class="container">
+
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="go-back-btn" routerLink="/subjects">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5"></path>
+                <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            Voltar
+        </button>
+
+        <div class="grid-container">
+            <!-- Course Info & Modules -->
+            <div class="course-section">
+
+                <div class="course-header">
+                    <div class="course-info">
+                        <h1 class="course-title">{{ subject.name }}</h1>
+                        <div class="course-meta">
+                            <!--
+                <div class="author">
+                  <div class="author-avatar">
+                    <img [src]="course.instrutor.profileImageUrl" [alt]="course.instrutor.fullName" class="author-avatar" />
+                  </div>
+                  <div class="author-name">{{ course.instrutor.fullName }}</div>
+                </div>
+                -->
+                            <div class="course-stats">
+                                <div class="stat">
+                                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                    <span>{{ 30 }} topics</span>
+                                </div>
+                                <div class="stat">
+                                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>{{ 10 }} aulas</span>
+                                </div>
+                                <div class="stat">
+                                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span>{{ 20 }} ficheiros</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="course-description">{{ subject.description }}</p>
+                    </div>
+                    <div class="course-actions">
+                        <button (click)="toggleSubjectSubscription(subject)" class="btn btn-primary"
+                            [disabled]="subject.currentUserSubscribed">
+                            <i *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription"
+                                class="fas fa-plus"></i>
+                            <span
+                                *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrever-se</span>
+                            <i *ngIf="!subject.currentUserSubscribed && subject.showLoadingSubscription"
+                                class="pi pi-spin pi-spinner-dotted" style="color: white;"></i>
+                            <span *ngIf="subject.currentUserSubscribed && subject.currentUserSubscribed">Inscrito</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modules Section -->
+                <div class="card modules-card">
+
+                    <div class="section-header">
+                        <h2 class="section-title">Módulos</h2>
+                        <div class="actions">
+                            <button class="btn btn-outline add-module-btn" (click)="toggleExpandCollapseAll()">
+                                {{ areAllTopicsExpanded() ? 'Recolher todos' : 'Expandir todos' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="modules-list">
+                        <div *ngFor="let module of subject.topics" class="module-item"
+                            [class.expanded]="isTopicExpanded(module.id)">
+                            <div class="module-header" (click)="toggleModule(module.id)">
+                                <div>
+                                    <h3 class="module-title">{{ module.name }}</h3>
+                                    <span class="lesson-count">
+                                        {{ getVideoCount(module) }} vídeo{{ getVideoCount(module) !== 1 ? 's' : '' }},
+                                        {{ getFileCount(module) }} ficheiro{{ getFileCount(module) !== 1 ? 's' : '' }}
+                                    </span>
+                                </div>
+                                <div class="module-info">
+                                    <svg class="chevron-icon" [class.rotated]="isTopicExpanded(module.id)" width="24"
+                                        height="24" [class.expanded]="isTopicExpanded(module.id)" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div *ngIf="isTopicExpanded(module.id)" class="lessons-container">
+                                <ul class="lessons-list">
+                                    <li *ngFor="let content of module.contents" class="lesson-item">
+                                        <div class="custom-checkbox-visible">
+                                            <input type="checkbox" class="styled-checkbox"
+                                                [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
+                                                (change)="toggleMarkedContent(content)"
+                                                [disabled]="!subject.currentUserSubscribed"
+                                                *ngIf="!content.showLoadingMarked" />
+                                            <label [for]="'visible-checkbox-' + content.id"
+                                                [class.checked]="content.markedByUser"
+                                                [title]="content.markedByUser ? 'Desmarcar como assistido' : 'Marcar como assistido'">
+                                                <i *ngIf="content.showLoadingMarked"
+                                                    class="pi pi-spin pi-spinner-dotted"
+                                                    style="color: #4361ee; font-size: 22px;"></i>
+                                            </label>
+                                        </div>
+
+                                        <div class="lesson-content">
+                                            <div>
+                                                <button class="lesson-title-button"
+                                                    [disabled]="!subject.currentUserSubscribed || content.contentType === 'FILE'"
+                                                    (click)="onSelectContent(content)">{{ content.description }}
+                                                </button>
+                                                <div class="lesson-meta">
+                                                    <svg class="play-icon" *ngIf="content.contentType == 'VIDEO'"
+                                                        className="w-4 h-4 text-indigo-500" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                                            strokeWidth="2"
+                                                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                                            strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <svg class="play-icon" *ngIf="content.contentType == 'FILE'"
+                                                        className="w-4 h-4 text-indigo-500" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                                            strokeWidth="2"
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    <span class="lesson-duration"
+                                                        *ngIf="content.contentType !== 'FILE'">{{ content.time }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="lesson-actions">
+
+                                            <button class="download-btn" *ngIf="content.contentType == 'FILE'"
+                                                [disabled]="content.showLoadingDownload || !subject.currentUserSubscribed"
+                                                (click)="download(content, content.fileName)">
+                                                <svg *ngIf="!content.showLoadingDownload"
+                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
+                                                </svg>
+                                                <i *ngIf="content.showLoadingDownload"
+                                                    class="pi pi-spin pi-spinner-dotted" style="color: #4361ee;"></i>
+                                            </button>
+
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-circle">70%</div>
+                    <h3>Progresso Geral</h3>
+                    <p>Continue estudando para completar a disciplina</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<!-- Modal de Vídeo -->
+<div *ngIf="showLesson">
+    <div class="vidio-popout-overlay">
+        <button class="vidio-close-btn" (click)="showLesson = false">&times;</button>
+        <div *ngIf="selectedTopicContent">
+            <video class="video" #videoPlayer controls>
+                <source [src]="selectedTopicContent.urlFile" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+</div>
+
+<!-- Popout -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
+    <div class="popout-container">
+
+        <div class="login-side" *ngIf="activeTab === 1">
+
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Entre para continuar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
+
+            <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+            <div class="divider" *ngIf="step === 'email'">
+                <span>OU</span>
+            </div>
+
+            <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+
+                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+                <p class="message" *ngIf="step === 'otp'">
+                    Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
+                </p>
+
+                <div class="input-group" *ngIf="step === 'email'">
+                    <label>Email:</label>
+                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
+                        required email [(ngModel)]="user.email">
+                </div>
+
+                <div class="input-group" *ngIf="step === 'otp'">
+                    <label>OTP:</label>
+                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+                        [(ngModel)]="otp">
+                </div>
+
+                <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+                    {{ step === 'email' ? 'Login' : 'Verificar' }}
+                </button>
+
+                <p class="message" *ngIf="step === 'email'">
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
+                    acessar sua conta se tiver se cadastrado com gmail.
+                </p>
+
+                <div class="signup-link">
+                    Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="login-side" *ngIf="activeTab === 2">
+
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Cadastre-se para continuar</h1>
+                <button class="close-button" (click)="displayModalLogin = false">&times;</button>
+            </div>
+
+            <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+            <div class="divider" *ngIf="step === 'email'">
+                <span>OU</span>
+            </div>
+
+            <form autocomplete="off" #registerForm="ngForm"
+                (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+                <div class="input-group" *ngIf="step === 'email'">
+                    <label for="name">Nome completo</label>
+                    <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
+                        placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+                </div>
+
+                <div class="input-group" *ngIf="step === 'email'">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
+                        required email [(ngModel)]="user.email">
+                </div>
+
+                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+                <p class="message" *ngIf="step === 'otp'">
+                    Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
+                </p>
+
+                <div class="input-group" *ngIf="step === 'otp'">
+                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+                        [(ngModel)]="otp">
+                </div>
+
+                <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+                    {{ step === 'email' ? 'Login' : 'Verificar' }}
+                </button>
+
+                <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
+
+                <p class="message" *ngIf="step === 'email'">
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
+                    cadastradar com
+                    gmail.
+                </p>
+
+            </form>
+            <div id="google-signin-button"></div>
+            <div class="signup-link">
+                Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
+            </div>
+        </div>
+    </div>
+</div>

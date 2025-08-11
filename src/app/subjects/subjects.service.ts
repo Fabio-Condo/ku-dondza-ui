@@ -32,8 +32,8 @@ export class SubjectsService {
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
 
-    if (filtro.searchParam) {
-      params = params.set('searchParam', filtro.searchParam);
+    if (filtro.name) {
+      params = params.set('name', filtro.name);
     }
 
     return this.http.get<IApiResponse<Subject>>(`${this.host}/filter`, { params });
@@ -41,6 +41,16 @@ export class SubjectsService {
 
   getById(id: number): Observable<Subject> {
     return this.http.get<Subject>(`${this.host}/${id}`, {});
+  }
+
+  //getSubjectBySubjectId2(subjectId: string): Observable<Subject> {
+  //  return this.http.get<Subject>(`${this.host}/find-by-subjectId/${subjectId}`, {});
+  //}
+
+  getSubjectBySubjectId(subjectId: string, currentUserId: number): Observable<Subject> {
+    let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString());
+    return this.http.get<Subject>(`${this.host}/find-by-subjectId/${subjectId}`, { params });
   }
 
   add(subject: Subject): Observable<Subject> {

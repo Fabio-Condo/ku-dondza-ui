@@ -59,7 +59,6 @@ export class TopicsComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.findAll();
     this.carregarDisciplinas();
-    this.buscarTotal();
     this.scrollToTop();
   }
 
@@ -143,6 +142,9 @@ export class TopicsComponent implements OnInit {
       (dados: IApiResponse<Topic>) => {
         this.topics = dados.content;
         this.totalRegistros = dados.totalElements;
+        if (this.totalTopics == 0) {
+          this.totalTopics = dados.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

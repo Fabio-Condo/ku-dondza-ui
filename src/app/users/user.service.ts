@@ -187,6 +187,10 @@ export class UserService {
     return this.http.post<User>(`${this.host}/${email}/cover-photo`, formData);
   }
 
+  toggleMarkedTopicContent(userId: number, topicContentId: number): Observable<User> {
+    return this.http.put<User>(`${this.host}/${userId}/marked-topic-contents/${topicContentId}/toggle`, {});
+  }
+
   toggleMarkedContent(userId: number, onlineCourseContentId: number): Observable<User> {
     return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
   }

@@ -1,149 +1,856 @@
-<div class="container" style="margin-top: 70px;">
-    <div style="display:inline;">
-        <h1 class="title">Disciplinas e tópicos</h1>
-    </div>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-    <p class="title-description">
-        Descubra a diversidade de cursos disponíveis em Moçambique, incluindo detalhes da instituição que oferece.
-    </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios por Disciplina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <div class="flex">
-        <div>
-            <span class="pagination-info ml-auto"> Mostrando {{ totalRegistros }} dos {{ totalSubjects }}</span>
+        body {
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            margin-top: 75px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .title {
+            display: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4361ee;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        .load-more-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .btn-load-more {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-load-more:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-load-more:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Cores por disciplina */
+        .matematica {
+            background-color: #e0e7ff;
+            color: #4361ee;
+        }
+
+        /*
+        .matematica {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        */
+
+        .fisica {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .biologia {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .historia {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .quimica {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Badges dificuldade */
+        .easy {
+            background-color: #d1fae5;
+            color: #047857;
+        }
+
+        .medium {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        .hard {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .time {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .time svg {
+            margin-right: 6px;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topic {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        /* Container do texto */
+        .exercise {
+            position: relative;
+            overflow: hidden;
+            max-height: 4.8em;
+            color: #64748b;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* Efeito de transparência no final do texto */
+        .exercise::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 1.6em;
+            /* Altura de uma linha */
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .view-button {
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            transition: all 0.2s ease;
+            color: #2d3748;
+            gap: 8px;
+        }
+
+        .view-button:hover {
+            color: #4361ee;
+        }
+
+        .button-add-new {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .fab {
+            display: none;
+            position: fixed;
+            bottom: 75px;
+            right: 16px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-info {
+            color: #718096;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        .pagination-btn {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background-color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover {
+            background-color: #f8fafc;
+        }
+
+        .pagination-btn.active {
+            background-color: #4c6ef5;
+            color: white;
+            border-color: #4c6ef5;
+        }
+
+        .pagination-btn.prev,
+        .pagination-btn.next {
+            width: auto;
+            padding: 0 15px;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .popout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popout-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 600px;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .popout-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-black);
+            margin: 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: var(--color-black);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* Loading Container - Versão Moderna */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            /* Fundo escuro mais moderno */
+            backdrop-filter: blur(8px);
+            /* Efeito de desfoque */
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .loading-container.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-indicator {
+            display: flex;
+            flex-direction: column;
+            /* Empilha os elementos */
+            align-items: center;
+            gap: 20px;
+            padding: 30px 40px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(0);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .loading-container.visible .loading-indicator {
+            transform: translateY(0);
+        }
+
+        /* Spinner moderno com gradiente */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .spinner::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #4c6ef5;
+            /* Cor primária */
+            border-left-color: #ec4899;
+            /* Gradiente para roxo */
+            animation: spin 1s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite;
+        }
+
+        .spinner::after {
+            content: "";
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #ec4899;
+            /* Rosa */
+            border-left-color: #4c6ef5;
+            /* Roxo */
+            animation: spin 1.5s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite reverse;
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* Efeito de pulsação no texto */
+        .loading-text span {
+            display: inline-block;
+            opacity: 0.8;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-text span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-text span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Animações */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Versão para componente Angular (código de referência) */
+        .code-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        pre {
+            white-space: pre-wrap;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                margin-top: 60px;
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+
+            .pagination {
+                display: none;
+            }
+
+            .card-header {
+                padding: 10px 10px;
+            }
+
+            .card-body {
+                padding: 10px;
+            }
+
+            .load-more-container {
+                display: flex;
+            }
+
+            .title {
+                display: flex;
+            }
+
+            .fab {
+                display: flex;
+            }
+
+            .pagination-info {
+                display: none;
+            }
+
+            .title-container {
+                display: none;
+            }
+
+            .button-add-new {
+                display: none;
+            }
+
+            .topic {
+                font-size: 17px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title-container">
+            <h1>Disciplinas</h1>
+            <p class="subtitle">Explore as diferentes disciplinas</p>
         </div>
-        <div class="input-group">
-            <div class="input-container">
-                <i class="pi pi-search input-icon"></i> <!-- Ícone de pesquisa -->
-                <input type="text" id="input" class="transparent-input" (ngModelChange)="findAll()" placeholder="Pesquisa">
+
+        <header>
+            <div class="title">Disciplinas</div>
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalSubjects }}</span>
+
+            <div class="actions">
+                <button class="button-add-new" id="add-btn" *ngIf="isUserLoggedIn && isSuperAdmin"
+                    (click)="onAddNewSubject()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Novo
+                </button>
+                <button class="btn-outline" id="filter-btn" (click)="toggleFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Filtrar
+                </button>
             </div>
-            <button class="add-new-btn" (click)="onAddNewSubject()" *ngIf="isSuperAdmin">
-                <i class="pi pi-plus"></i> Adicionar
-            </button>
-            <button class="filter-btn">
-                <i class="pi pi-filter"></i> Filtrar
-            </button>
-        </div>
-    </div>
+        </header>
 
-    <table class="card-table">
-        <tbody>
-            <tr *ngFor="let subject of subjects">
-                <td>
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="content">
-                                <p class="title">{{ subject.name }}</p>
-                                <p class="details">12 tópicos</p>
-                            </div>
-                            <div class="dropdown-container" *ngIf="isSuperAdmin">
-                                <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i class="pi pi-ellipsis-v"></i></button>
-                                <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
-                                    <a (click)="onUpdateSubject(subject); closeDropdown(subject)">Editar</a>
-                                    <a (click)="confirmarExclusao(subject); closeDropdown(subject)" >Eliminar</a>
-                                </div>
-                            </div>
-                            <div class="button-container">
-                                <button class="btn btn-primary" (click)="onView(subject)">Ver</button>
-                            </div>
+        <button class="fab" (click)="onAddNewSubject()" *ngIf="isUserLoggedIn && isSuperAdmin">
+            <i class="pi pi-plus"></i>
+        </button>
 
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
-            <!-- Indicador de carregamento -->
-            <tr *ngIf="showLoading">
-                <td>
-                    <div class="card">
-                        <div class="loading-indicator">
-                            <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem;"></i>&nbsp;&nbsp;
-                            Carregando...
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
-            <!-- Mensagem "Nenhum item encontrado" -->
-            <tr *ngIf="!showLoading && subjects.length === 0">
-                <td>
-                    <div class="card">
-                        <span class="no-items-message">
-                            Nenhum item encontrado
+        <div class="cards-container">
+            <!-- Card 1 -->
+            <div class="card" *ngFor="let subject of subjects">
+                <div class="card-header">
+                    <span class="badge matematica">{{ subject.name }}</span>
+                    <div>
+                        <!--
+                        <span class="badge easy">
+                            aaaa
                         </span>
+                        -->
+                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
+                            <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i
+                                    class="pi pi-ellipsis-v"></i></button>
+                            <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
+                                <a (click)="onUpdateSubject(subject); closeDropdown(subject)">Editar</a>
+                                <a (click)="confirmarExclusao(subject); closeDropdown(subject)">Eliminar</a>
+                            </div>
+                        </div>
                     </div>
-                </td>
-            </tr>
+                </div>
+                <div class="card-body">
+                    <div class="topic">{{ subject.name }}</div>
+                    <div class="exercise">
+                        <p class="exercise-description"> {{ subject.description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="time">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                </path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                            {{ subjects.length }} tópicos
+                        </span>
 
-        </tbody>
-    </table>
-
-    <!-- Botão "Carregar mais" -->
-    <div class="load-more">
-        <button (click)="loadMore()" class="btn-load-more">Buscar mais</button>
-    </div>
-
-    <!-- Paginação -->
-    <div class="pagination-controls">
-        <span class="pagination-info mr-auto"></span>
-
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-            <i class="pi pi-chevron-left"></i> Anterior
-        </button>
-        <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
-            Próximo <i class="pi pi-chevron-right"></i>
-        </button>
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option" [selected]="option === filtro.itensPorPagina">
-                {{ option }}
-            </option>
-        </select>
-    </div>
-
-</div>
-
-<div class="overlay" *ngIf="displayModalView">
-    <div class="dialog" style="width: 600px;">
-
-        <div class="dialog-header">
-            <h2>Ver</h2>
-            <button class="close-btn" (click)="displayModalView = false">&times;</button>
+                        <button class="view-button" [routerLink]="['/subjects', subject.subjectId]">
+                            Visualizar
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      
-        <hr class="header-divider">
 
-        <p class="course-name">{{ subject.name }}</p>
-
-        <p class="course-name">Tópicos</p>
-
-        <p class="details" *ngFor="let topic of subject.topics" style="margin-left: 10px;">
-            <i class="pi pi-check"style="font-size: 0.7rem; font-weight: bold; margin-left: 0.3rem; color: #28a745;"></i>
-            {{ topic.name }}
-        </p>
-
-    </div>
-</div>
-
-<div class="overlay" *ngIf="displayModalSave">
-    <div class="dialog">
-        <div class="dialog-header">
-            <h2>{{ editing ? 'Editando' : 'Adicionando Nova' }}</h2>
-            <button class="close-btn" (click)="displayModalSave = false">&times;</button>
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
+            </div>
         </div>
-      
-        <hr class="header-divider">
+
+        <div *ngIf="!showLoading && subjects.length === 0">
+            <div class="card">
+                <span class="no-items-message">
+                    Nenhum item encontrado
+                </span>
+            </div>
+        </div>
+
+        <!-- Load-more -->
+        <div class="load-more-container">
+            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
+                Buscar mais
+            </button>
+        </div>
+
+        <!-- Paginação -->
+        <div class="pagination">
+            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalSubjects }}</span>
+            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Anterior
+            </button>
+            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+            <button class="pagination-btn next" (click)="nextPage()"
+                [disabled]="currentPage === totalPages() || showLoading">
+                Próxima
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<div class="popout-overlay" *ngIf="displayModalSave">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editing ? 'Editando Tópico' : 'Adicionando Novo Tópico' }}</h2>
+            <button class="close-button" (click)="displayModalSave = false">&times;</button>
+        </div>
 
         <form autocomplete="off" #subjectForm="ngForm" (ngSubmit)="save(subjectForm)">
+
             <div class="form-group">
-                <label for="courseName">Nome</label>
-                <input type="text" id="courseName" name="name" ngModel #name="ngModel" required minlength="1" [(ngModel)]="subject.name">
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" ngModel #name="ngModel" required minlength="1"
+                    [(ngModel)]="subject.name">
             </div>
 
-            <hr class="header-divider">
-
-            <div class="dialog-footer">
-                <button type="submit" [disabled]="subjectForm.invalid" class="btn">{{ showLoading ? 'Loading...' : 'Salvar' }}</button>
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <textarea id="description" type="text" name="description" ngModel #description="ngModel" required
+                    minlength="1" [(ngModel)]="subject.description" required></textarea>
             </div>
+
+            <button class="submit-button" type="submit" [disabled]="subjectForm.invalid" class="btn">
+                {{ showLoading ? 'Loading...' :'Salvar' }}
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalFilter">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">Filtros</h2>
+            <button class="close-button" (click)="toggleFilter()">&times;</button>
+        </div>
+
+        <form>
+
+            <div class="form-group">
+                <label for="text">Nome</label>
+                <input type="text" name="text" ngModel #text="ngModel" minlength="1" [(ngModel)]="filtro.name"
+                    (ngModelChange)="findAll()">
+            </div>
+
+            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
         </form>
     </div>
 </div>

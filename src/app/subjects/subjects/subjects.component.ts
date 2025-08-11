@@ -5,11 +5,10 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { SubjectFilter } from 'src/app/core/interface/SubjectFilter';
-import { TopicService } from 'src/app/topics/topicsService.service';
-import { Topic } from 'src/app/core/model/Topic';
 import { NgForm } from '@angular/forms';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Role } from 'src/app/enum/role.enum';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-subjects',
@@ -21,15 +20,17 @@ export class SubjectsComponent implements OnInit {
   subjects: Subject[] = [];
   subject: Subject = new Subject();
   selectedSubject: Subject = new Subject();
-  topics: Topic[] = [];
 
   showLoading: boolean = false;
   totalRegistros: number = 0;
   totalSubjects: number = 0;
   displayModalSave: boolean = false;
   displayModalFilter: boolean = false;
-  displayModalView: boolean = false;
   isDropdownOpen: boolean = false;
+
+  isUserLoggedIn: boolean = false;
+
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
 
   // Paginação
   currentPage: number = 1;
@@ -42,15 +43,16 @@ export class SubjectsComponent implements OnInit {
 
   constructor(
     private subjectsService: SubjectsService,
-    private topicService: TopicService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Topics page');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.findAll();
-    this.buscarTotal();
     this.scrollToTop();
   }
 
@@ -123,12 +125,16 @@ export class SubjectsComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.subjectsService.filter(this.filtro).subscribe(
       (dados: IApiResponse<Subject>) => {
         this.subjects = dados.content;
         this.totalRegistros = dados.totalElements;
+        if (this.totalSubjects == 0) {
+          this.totalSubjects = dados.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -139,6 +145,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina++;
 
@@ -156,6 +163,20 @@ export class SubjectsComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.subjects.length >= this.totalRegistros && this.totalRegistros > 0;
+  }
+
+  toggleFilter(): void {
+    this.displayModalFilter = !this.displayModalFilter;
+
+    if (this.displayModalFilter) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }
+
   buscarTotal() {
     this.subjectsService.buscarTotal().subscribe(
       (total) => {
@@ -163,21 +184,6 @@ export class SubjectsComponent implements OnInit {
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
-  }
-
-  getTopicsBySubjectId(subjectId: number): void {
-    this.topicService.getBySubjectId(subjectId).subscribe(
-      (dados: Topic[]) => {
-        this.subject.topics = [];
-        this.topics = [];
-        this.subject.topics = dados;
-        this.topics = dados;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
       }
     );
   }
@@ -190,13 +196,6 @@ export class SubjectsComponent implements OnInit {
   onAddNewSubject(): void {
     this.subject = new Subject();
     this.displayModalSave = true;
-  }
-
-  onView(subject: Subject): void {
-    this.getTopicsBySubjectId(subject.id);
-    this.selectedSubject = subject;
-    this.selectedSubject.topics = this.topics;
-    this.displayModalView = true;
   }
 
   toggleDropdown(subject: Subject) {
@@ -229,6 +228,12 @@ export class SubjectsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+  }
+
+  limparCampos() {
+    this.filtro.searchParam = "";
+    this.filtro.name = "";
+    this.findAll();
   }
 
   public get isAdmin(): boolean {
