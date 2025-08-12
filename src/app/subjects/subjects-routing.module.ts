@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: 'subjects',
     component: SubjectsComponent,
-    canActivate: [AuthenticationGuard],
+    //canActivate: [AuthenticationGuard],
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

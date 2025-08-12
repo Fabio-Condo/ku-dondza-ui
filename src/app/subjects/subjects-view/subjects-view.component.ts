@@ -147,7 +147,18 @@ export class SubjectsViewComponent {
   }
 
   onSubjectSubscription(subject: Subject) {
-    this.subject = this.subject;
+
+    if (subject.currentUserSubscribed) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Já inscrito',
+        detail: 'Você já está inscrito nesta disciplina.',
+        life: 3000
+      });
+      return;
+    }
+
+    this.subject = subject;
     if (this.isUserLoggedIn) {
       this.toggleSubjectSubscription(subject);
     }
@@ -341,6 +352,7 @@ export class SubjectsViewComponent {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
+        this.getSubjectBySubjectId(this.subject.subjectId);
         this.showLoading = false;
         this.displayModalLogin = false;
         document.body.classList.remove('no-scroll');
@@ -378,6 +390,7 @@ export class SubjectsViewComponent {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
+        this.getSubjectBySubjectId(this.subject.subjectId);
         this.showLoading = false;
         this.displayModalLogin = false;
         document.body.classList.remove('no-scroll');
@@ -419,6 +432,7 @@ export class SubjectsViewComponent {
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.ngZone.run(() => {
+          this.getSubjectBySubjectId(this.subject.subjectId);
           this.showLoading = false;
           this.displayModalLogin = false;
           document.body.classList.remove('no-scroll');

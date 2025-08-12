@@ -539,30 +539,44 @@ button:disabled {
 }
 
 .progress-card {
-  background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
-  color: white;
-  padding: 25px;
-  border-radius: 12px;
-  text-align: center;
+    background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
 }
 
 .progress-circle {
-  --progress: 0;
-  --angle: calc((var(--progress) / 100) * 360deg);
+    --progress: 0;
+    --angle: calc((var(--progress) / 100) * 360deg);
 
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: conic-gradient(
-    white 0deg var(--angle),
-    rgba(255, 255, 255, 0.3) var(--angle) 360deg
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 15px;
-  font-size: 1.2rem;
-  font-weight: bold;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(white 0deg var(--angle),
+            rgba(255, 255, 255, 0.3) var(--angle) 360deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.progress-card h3 {
+    color: white;
+
+}
+
+.progress-card p {
+    color: white;
+}
+
+.progress-percentage {
+    color: blue;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /*
@@ -1248,58 +1262,58 @@ pre {
 }
 
 .custom-checkbox-visible {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .styled-checkbox {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #4361ee;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s ease-in-out;
-    background-color: #fff;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #4361ee;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  background-color: #fff;
 }
 
 .styled-checkbox:checked {
-    background-color: #4361ee;
+  background-color: #4361ee;
 }
 
 .styled-checkbox:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .styled-checkbox:checked::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 7px;
-    width: 5px;
-    height: 10px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 7px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 /* Ícone ao lado do checkbox */
 .custom-checkbox-visible label {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    color: #444;
-    transition: color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #444;
+  transition: color 0.2s;
 }
 
 .custom-checkbox-visible label.checked {
-    color: #4361ee;
+  color: #4361ee;
 }
 
 .custom-checkbox-visible label .pi {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 

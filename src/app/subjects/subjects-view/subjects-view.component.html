@@ -28,49 +28,23 @@
                     <div class="course-info">
                         <h1 class="course-title">{{ subject.name }}</h1>
                         <div class="course-meta">
-                            <!--
-                <div class="author">
-                  <div class="author-avatar">
-                    <img [src]="course.instrutor.profileImageUrl" [alt]="course.instrutor.fullName" class="author-avatar" />
-                  </div>
-                  <div class="author-name">{{ course.instrutor.fullName }}</div>
-                </div>
-                -->
                             <div class="course-stats">
                                 <div class="stat">
-                                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="9" cy="7" r="4"></circle>
-                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                        </path>
+                                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                     </svg>
                                     <span>{{ 30 }} topics</span>
-                                </div>
-                                <div class="stat">
-                                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span>{{ 10 }} aulas</span>
-                                </div>
-                                <div class="stat">
-                                    <svg width="16" height="16" className="w-4 h-4 text-indigo-500" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    <span>{{ 20 }} ficheiros</span>
                                 </div>
                             </div>
                         </div>
                         <p class="course-description">{{ subject.description }}</p>
                     </div>
                     <div class="course-actions">
-                        <button (click)="toggleSubjectSubscription(subject)" class="btn btn-primary"
+                        <button (click)="onSubjectSubscription(subject)" class="btn btn-primary"
                             [disabled]="subject.currentUserSubscribed">
                             <i *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription"
                                 class="fas fa-plus"></i>
@@ -187,26 +161,19 @@
                     </div>
                 </div>
 
-                <!--
-                <div class="progress-card">
-                    <div class="progress-circle">70%</div>
-                    <h3>Progresso Geral</h3>
-                    <p>Continue estudando para completar a disciplina</p>
-                </div>
-                -->
-
-                <div class="progress-card">
-                    <div *ngIf="subject?.currentUserMarkedContentRate != null" class="progress-circle"
+                <div class="progress-card" *ngIf="isUserLoggedIn && subject.currentUserSubscribed">
+                    <div class="progress-circle" *ngIf="subject?.currentUserMarkedContentRate != null"
                         [style.--progress]="subject.currentUserMarkedContentRate">
-                        {{ subject.currentUserMarkedContentRate.toFixed(1) }}%
+                        <span class="progress-percentage">{{ subject.currentUserMarkedContentRate.toFixed(1) }}%</span>
                     </div>
                     <h3>Progresso Geral</h3>
                     <p>Continue estudando para completar a disciplina</p>
                 </div>
 
+                <br>
 
                 <!-- Students Section -->
-                <div class="students-section">
+                <div class="students-section" *ngIf="isUserLoggedIn && isSuperAdmin">
                     <div class="card students-card">
                         <h2 class="section-title">Alunos Inscritos</h2>
                         <p class="students-count">{{ totalRegistrosStudents }} alunos neste curso</p>
