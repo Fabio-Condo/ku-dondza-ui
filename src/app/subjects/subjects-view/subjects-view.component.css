@@ -539,26 +539,31 @@ button:disabled {
 }
 
 .progress-card {
-    background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
-    color: white;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
+  background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
 }
 
 .progress-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: conic-gradient(white 0deg 252deg, rgba(255, 255, 255, 0.3) 252deg 360deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
+  --progress: 0;
+  --angle: calc((var(--progress) / 100) * 360deg);
 
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(
+    white 0deg var(--angle),
+    rgba(255, 255, 255, 0.3) var(--angle) 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
 
 /*
   @media (min-width: 1024px) {

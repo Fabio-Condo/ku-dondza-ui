@@ -55,14 +55,14 @@ export class UserSubjectSubscriptionService {
         return this.http.get<boolean>(`${this.host}/check-enrollment`, { params });
     }
 
-    getEnrolledUsersBySubjectId(courseId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
+    getEnrolledUsersBySubjectId(subjectId: number, filtro: IUserFilter): Observable<IApiResponse<User>> {
 
         let params = new HttpParams()
             .set('page', filtro.page)
             .set('sort', filtro.sort)
             .set('size', filtro.itemsPerPage);
 
-        return this.http.get<IApiResponse<User>>(`${this.host}/${courseId}/enrolled-users`, { params });
+        return this.http.get<IApiResponse<User>>(`${this.host}/${subjectId}/enrolled-users`, { params });
     }
 
 }

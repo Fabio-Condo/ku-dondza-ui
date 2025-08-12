@@ -96,19 +96,19 @@
                     </div>
 
                     <div class="modules-list">
-                        <div *ngFor="let module of subject.topics" class="module-item"
-                            [class.expanded]="isTopicExpanded(module.id)">
-                            <div class="module-header" (click)="toggleModule(module.id)">
+                        <div *ngFor="let topic of subject.topics" class="module-item"
+                            [class.expanded]="isTopicExpanded(topic.id)">
+                            <div class="module-header" (click)="toggleModule(topic.id)">
                                 <div>
-                                    <h3 class="module-title">{{ module.name }}</h3>
+                                    <h3 class="module-title">{{ topic.name }}</h3>
                                     <span class="lesson-count">
-                                        {{ getVideoCount(module) }} vídeo{{ getVideoCount(module) !== 1 ? 's' : '' }},
-                                        {{ getFileCount(module) }} ficheiro{{ getFileCount(module) !== 1 ? 's' : '' }}
+                                        {{ getVideoCount(topic) }} vídeo{{ getVideoCount(topic) !== 1 ? 's' : '' }},
+                                        {{ getFileCount(topic) }} ficheiro{{ getFileCount(topic) !== 1 ? 's' : '' }}
                                     </span>
                                 </div>
                                 <div class="module-info">
-                                    <svg class="chevron-icon" [class.rotated]="isTopicExpanded(module.id)" width="24"
-                                        height="24" [class.expanded]="isTopicExpanded(module.id)" viewBox="0 0 24 24"
+                                    <svg class="chevron-icon" [class.rotated]="isTopicExpanded(topic.id)" width="24"
+                                        height="24" [class.expanded]="isTopicExpanded(topic.id)" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <path d="M6 9l6 6 6-6" />
@@ -116,9 +116,9 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="isTopicExpanded(module.id)" class="lessons-container">
+                            <div *ngIf="isTopicExpanded(topic.id)" class="lessons-container">
                                 <ul class="lessons-list">
-                                    <li *ngFor="let content of module.contents" class="lesson-item">
+                                    <li *ngFor="let content of topic.contents" class="lesson-item">
                                         <div class="custom-checkbox-visible">
                                             <input type="checkbox" class="styled-checkbox"
                                                 [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
@@ -187,10 +187,55 @@
                     </div>
                 </div>
 
+                <!--
                 <div class="progress-card">
                     <div class="progress-circle">70%</div>
                     <h3>Progresso Geral</h3>
                     <p>Continue estudando para completar a disciplina</p>
+                </div>
+                -->
+
+                <div class="progress-card">
+                    <div *ngIf="subject?.currentUserMarkedContentRate != null" class="progress-circle"
+                        [style.--progress]="subject.currentUserMarkedContentRate">
+                        {{ subject.currentUserMarkedContentRate.toFixed(1) }}%
+                    </div>
+                    <h3>Progresso Geral</h3>
+                    <p>Continue estudando para completar a disciplina</p>
+                </div>
+
+
+                <!-- Students Section -->
+                <div class="students-section">
+                    <div class="card students-card">
+                        <h2 class="section-title">Alunos Inscritos</h2>
+                        <p class="students-count">{{ totalRegistrosStudents }} alunos neste curso</p>
+
+                        <ul class="students-list">
+                            <li *ngFor="let student of students" class="student-item">
+                                <img [src]="student.profileImageUrl" [alt]="student.fullName" class="student-avatar" />
+                                <div class="student-progress">
+                                    <p class="student-name">{{ student.fullName }}</p>
+                                    <div class="progress-bar">
+
+                                        <div class="progress-fill"
+                                            [style.width.%]="student.markedContentRate.toFixed(1)"></div>
+
+                                    </div>
+                                </div>
+                                <span class="progress-percent">{{ student.markedContentRate.toFixed(1) }}%</span>
+                            </li>
+                        </ul>
+
+                        <!-- Load-more -->
+                        <div class="load-more-container">
+                            <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreStudents()"
+                                [disabled]="(students.length === totalRegistrosStudents && totalRegistrosStudents > 0) || students.length === 0">
+                                Buscar mais
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
 
             </div>

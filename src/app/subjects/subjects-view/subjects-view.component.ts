@@ -16,6 +16,8 @@ import { TopicContentService } from 'src/app/topics/TopicContentService.service'
 import { UserSubjectSubscription } from 'src/app/core/model/UserSubjectSubscription';
 import { UserSubjectSubscriptionService } from '../user-subjects-subscription.service';
 import { UserService } from 'src/app/users/user.service';
+import { IUserFilter } from 'src/app/core/interface/IUserFilter';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 
 @Component({
   selector: 'app-subjects-view',
@@ -52,6 +54,15 @@ export class SubjectsViewComponent {
   private subscriptions: Subscription[] = [];
 
   displayModalLogin: boolean = false;
+
+  students: User[] = [];
+  totalRegistrosStudents: number = 0;
+
+  filtroStudents: IUserFilter = {
+    page: -1,
+    itemsPerPage: 2,
+    sort: 'id,asc',
+  }
 
   constructor(
     private ngZone: NgZone,
@@ -102,6 +113,9 @@ export class SubjectsViewComponent {
         this.subject = response;
         if (this.subject.topics.length > 0) {
           this.expandedTopics = [this.subject.topics[0].id];
+        }
+        if (this.isUserLoggedIn && this.isSuperAdmin) {
+          this.getStudentsBySubjectId(this.subject.id);
         }
         this.showLoading = false;
       },
@@ -265,6 +279,28 @@ export class SubjectsViewComponent {
   getFileCount(topic: any): number {
     if (!topic || !topic.contents) return 0;
     return topic.contents.filter((content: any) => content.contentType === 'FILE').length;
+  }
+
+  getStudentsBySubjectId(subjectId: number): void {
+    this.loadingMessage = "Buscando alunos"
+    this.showLoading = true;
+    this.filtroStudents.page++;
+    this.userSubjectSubscriptionService.getEnrolledUsersBySubjectId(subjectId, this.filtroStudents).subscribe(
+
+      (dados: IApiResponse<User>) => {
+        this.students = [...this.students, ...dados.content];
+        this.totalRegistrosStudents = dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onShowMoreStudents(): void {
+    this.getStudentsBySubjectId(this.subject.id);
   }
 
   public get isAdmin(): boolean {
