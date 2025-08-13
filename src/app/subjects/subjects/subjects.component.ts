@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Role } from 'src/app/enum/role.enum';
 import { Title } from '@angular/platform-browser';
+import { User } from 'src/app/core/model/User';
 
 @Component({
   selector: 'app-subjects',
@@ -28,6 +29,7 @@ export class SubjectsComponent implements OnInit {
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
 
+  loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
@@ -50,8 +52,9 @@ export class SubjectsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('Topics page');
+    this.title.setTitle('Subjects page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll();
     this.scrollToTop();
   }
@@ -125,10 +128,16 @@ export class SubjectsComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.subjectsService.filter(this.filtro).subscribe(
+    this.subjectsService.filter(this.filtro, this.loggedUser.id).subscribe(  
       (dados: IApiResponse<Subject>) => {
         this.subjects = dados.content;
         this.totalRegistros = dados.totalElements;
@@ -145,11 +154,17 @@ export class SubjectsComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina++;
 
-    this.subjectsService.filter(this.filtro).subscribe(
+    this.subjectsService.filter(this.filtro, this.loggedUser.id).subscribe(
       (data: IApiResponse<Subject>) => {
         this.subjects = [...this.subjects, ...data.content];
 

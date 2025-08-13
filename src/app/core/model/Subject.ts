@@ -6,6 +6,7 @@ export class Subject {
     description!: string;
     subjectId!: string;
     topics: Topic[] = [];
+    totalTopics!: number;
     currentUserMarkedContentRate!: number;
 
     currentUserSubscribed: boolean = false;

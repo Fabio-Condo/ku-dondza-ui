@@ -26,8 +26,9 @@ export class SubjectsService {
     return this.http.get<Subject[]>(this.host, {});
   }
 
-  filter(filtro: SubjectFilter): Observable<IApiResponse<Subject>> {
+  filter(filtro: SubjectFilter, currentUserId: number): Observable<IApiResponse<Subject>> {
     let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString())
       .set('page', filtro.pagina)
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
