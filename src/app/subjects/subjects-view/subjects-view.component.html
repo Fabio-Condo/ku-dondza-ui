@@ -28,6 +28,7 @@
                     <div class="course-info">
                         <h1 class="course-title">{{ subject.name }}</h1>
                         <div class="course-meta">
+                            <!--
                             <div class="course-stats">
                                 <div class="stat">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -40,6 +41,7 @@
                                     <span>{{ 30 }} topics</span>
                                 </div>
                             </div>
+                            -->
                         </div>
                         <p class="course-description">{{ subject.description }}</p>
                     </div>
@@ -61,7 +63,7 @@
                 <div class="card modules-card">
 
                     <div class="section-header">
-                        <h2 class="section-title">Módulos</h2>
+                        <h2 class="section-title">Tópicos</h2>
                         <div class="actions">
                             <button class="btn btn-outline add-module-btn" (click)="toggleExpandCollapseAll()">
                                 {{ areAllTopicsExpanded() ? 'Recolher todos' : 'Expandir todos' }}
@@ -91,71 +93,73 @@
                             </div>
 
                             <div *ngIf="isTopicExpanded(topic.id)" class="lessons-container">
-                                <ul class="lessons-list">
-                                    <li *ngFor="let content of topic.contents" class="lesson-item">
-                                        <div class="custom-checkbox-visible">
+
+                                <div class="lesson-item" *ngFor="let content of topic.contents">
+                                    <!--
+                                    <div class="lesson-icon">
+                                        <svg *ngIf="content.contentType == 'VIDEO'" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <path d="M8 5V19L19 12L8 5Z" fill="#4361ee" />
+                                        </svg>
+                                        <svg *ngIf="content.contentType == 'FILE'" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <path
+                                                d="M14 2H6C5.47 2 4.96 2.21 4.59 2.59C4.21 2.96 4 3.47 4 4V20C4 20.53 4.21 21.04 4.59 21.41C4.96 21.79 5.47 22 6 22H18C18.53 22 19.04 21.79 19.41 21.41C19.79 21.04 20 20.53 20 20V8L14 2Z"
+                                                stroke="#dc3545" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path d="M14 2V8H20" stroke="#dc3545" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M16 13H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path d="M16 17H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path d="M10 9H9H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+                                    </div>
+                                    -->
+
+                                    <div class="lesson-content">
+                                        <div class="lesson-title-with-check">
                                             <input type="checkbox" class="styled-checkbox"
                                                 [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
                                                 (change)="toggleMarkedContent(content)"
-                                                [disabled]="!subject.currentUserSubscribed"
-                                                *ngIf="!content.showLoadingMarked" />
-                                            <label [for]="'visible-checkbox-' + content.id"
-                                                [class.checked]="content.markedByUser"
-                                                [title]="content.markedByUser ? 'Desmarcar como assistido' : 'Marcar como assistido'">
-                                                <i *ngIf="content.showLoadingMarked"
-                                                    class="pi pi-spin pi-spinner-dotted"
-                                                    style="color: #4361ee; font-size: 22px;"></i>
-                                            </label>
-                                        </div>
-
-                                        <div class="lesson-content">
-                                            <div>
-                                                <button class="lesson-title-button"
-                                                    [disabled]="!subject.currentUserSubscribed || content.contentType === 'FILE'"
-                                                    (click)="onSelectContent(content)">{{ content.description }}
-                                                </button>
-                                                <div class="lesson-meta">
-                                                    <svg class="play-icon" *ngIf="content.contentType == 'VIDEO'"
-                                                        className="w-4 h-4 text-indigo-500" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                                            strokeWidth="2"
-                                                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                                            strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
-                                                    <svg class="play-icon" *ngIf="content.contentType == 'FILE'"
-                                                        className="w-4 h-4 text-indigo-500" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                                            strokeWidth="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-                                                    <span class="lesson-duration"
-                                                        *ngIf="content.contentType !== 'FILE'">{{ content.time }}</span>
+                                                [disabled]="!subject.currentUserSubscribed || content.showLoadingMarked" />
+                                            <div style="margin-left: 5px;">
+                                                <label>{{ content.description }}</label>
+                                                <div class="lesson-duration">
+                                                    <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula | {{ content.time }} minutos</span>
+                                                    <span *ngIf="content.contentType == 'FILE'">Ficheiro para
+                                                        baixar</span>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="lesson-actions">
+                                    <div class="lesson-actions">
+                                        <a (click)="onSelectContent(content)" class="btn btn-outline"
+                                            *ngIf="content.contentType == 'VIDEO'">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                                <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+                                            </svg>
+                                        </a>
 
-                                            <button class="download-btn" *ngIf="content.contentType == 'FILE'"
-                                                [disabled]="content.showLoadingDownload || !subject.currentUserSubscribed"
-                                                (click)="download(content, content.fileName)">
-                                                <svg *ngIf="!content.showLoadingDownload"
-                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14" />
-                                                </svg>
-                                                <i *ngIf="content.showLoadingDownload"
-                                                    class="pi pi-spin pi-spinner-dotted" style="color: #4361ee;"></i>
-                                            </button>
+                                        <button class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
+                                            [disabled]="content.showLoadingDownload"
+                                            (click)="download(content, content.fileName)">
+                                            <svg *ngIf="!content.showLoadingDownload" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none">
+                                                <path
+                                                    d="M21 15V19C21 19.53 20.79 20.04 20.41 20.41C20.04 20.79 19.53 21 19 21H5C4.47 21 3.96 20.79 3.59 20.41C3.21 20.04 3 19.53 3 19V15M7 10L12 15L17 10M12 15V3"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                            <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                                                style="color: #4361ee;"></i>
+                                        </button>
+                                    </div>
+                                </div>
 
-                                        </div>
-
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
