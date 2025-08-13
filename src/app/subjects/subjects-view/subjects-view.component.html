@@ -123,12 +123,15 @@
                                         <div class="lesson-title-with-check">
                                             <input type="checkbox" class="styled-checkbox"
                                                 [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
-                                                (change)="toggleMarkedContent(content)"
+                                                (change)="toggleMarkedContent(content)" *ngIf="!content.showLoadingMarked"
                                                 [disabled]="!subject.currentUserSubscribed || content.showLoadingMarked" />
+                                            <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
+                                                style="color: #4361ee; font-size: 18px;"></i>
                                             <div style="margin-left: 5px;">
                                                 <label>{{ content.description }}</label>
                                                 <div class="lesson-duration">
-                                                    <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula | {{ content.time }} minutos</span>
+                                                    <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula | {{
+                                                        content.time }} minutos</span>
                                                     <span *ngIf="content.contentType == 'FILE'">Ficheiro para
                                                         baixar</span>
                                                 </div>
