@@ -79,7 +79,7 @@ export class SubjectsViewComponent {
   ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('Topic view page');
+    this.title.setTitle('Subject view page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
