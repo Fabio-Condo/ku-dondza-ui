@@ -192,6 +192,7 @@ export class SubjectsViewComponent {
     this.userService.toggleMarkedTopicContent(this.loggedUser.id, content.id).subscribe(
       response => {
         content.markedByUser = !content.markedByUser;
+        this.subject.currentUserMarkedContentRate = response.markedContentRate;
         content.showLoadingMarked = false;
       },
       (errorResponse: HttpErrorResponse) => {
