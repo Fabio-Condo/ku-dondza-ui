@@ -337,7 +337,7 @@
 
               <h1 class="title">
                 {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName ? quiz.user.fullName : 'Nome não disponível') }}
-                <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
+                <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id || !quiz.id">(tú) </span>
               </h1>
 
               <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }}</span>
