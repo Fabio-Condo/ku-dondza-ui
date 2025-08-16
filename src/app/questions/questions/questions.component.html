@@ -313,6 +313,12 @@
             z-index: 1000;
         }
 
+        .fab-view {
+            bottom: 75px;
+            color: white;
+            background-color: #06d6a0;
+        }
+
         /* Paginação */
         .pagination {
             display: flex;
@@ -1596,10 +1602,12 @@
                 <div class="answer-options">
                     <label *ngFor="let answer of selectedQuestion.answers; let i = index" [ngClass]="{
                         'correct-answer': showCorrection && answer.correct,
-                        'incorrect-answer': showCorrection && !answer.correct }">
+                        'incorrect-answer': showCorrection && !answer.correct && isSelected(selectedQuestion.id, answer.id!)
+                    }">
                         <span class="num">{{ i + 1 }}</span>
                         <input type="radio" name="question-{{ selectedQuestion.id }}" [value]="answer.id"
-                            [disabled]="showCorrection" />
+                            [checked]="isSelected(selectedQuestion.id, answer.id!)"
+                            (change)="captureUserAnswer(selectedQuestion.id, answer.id!)" [disabled]="showCorrection" />
 
                         <p *ngIf="answer.text" [innerHTML]="getFormattedText(answer.text)"></p>
                     </label>
@@ -1650,3 +1658,8 @@
         </form>
     </div>
 </div>
+
+<button class="fab fab-view" (click)="onViewSolution()" *ngIf="hasUserSelected(selectedQuestion.id) && displayModalPriview">
+    <i *ngIf="!showCorrection" class="pi pi-eye"></i>
+    <i *ngIf="showCorrection" class="pi pi-eye-slash"></i>
+</button>

@@ -68,9 +68,11 @@ export class QuestionsComponent implements OnInit {
   selectedSubject?: number;
   topics: Topic[] = [];
 
+  selectedAnswers: { [questionId: number]: number } = {}
+
   // Armazenar as respostas do usuário
-  userAnswers: { questionId: number; answerId: number }[] = [];
-  result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
+  //userAnswers: { questionId: number; answerId: number }[] = [];
+  //result: { correctAnswers: number; incorrectAnswers: number } = { correctAnswers: 0, incorrectAnswers: 0 };
   showCorrection: boolean = false;
 
   correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
@@ -335,6 +337,7 @@ export class QuestionsComponent implements OnInit {
     if (this.displayModalPriview) {
       document.body.classList.add('no-scroll');
     } else {
+      this.showCorrection = false;
       document.body.classList.remove('no-scroll');
     }
   }
@@ -726,6 +729,40 @@ export class QuestionsComponent implements OnInit {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  togleCorrection() {
+    this.showCorrection = !this.showCorrection;
+    this.renderMathExpressions();
+    this.renderFunctions();
+  }
+
+  onViewSolution() {
+
+    if (this.isUserLoggedIn) {
+      this.togleCorrection();
+    }
+
+    if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  isSelected(questionId: number, answerId: number): boolean {
+    return this.selectedAnswers[questionId] === answerId;
+  }
+
+  captureUserAnswer(questionId: number, answerId: number): void {
+    this.selectedAnswers[questionId] = answerId;
+  }
+
+  hasUserSelected(questionId: number): boolean {
+    return this.selectedAnswers.hasOwnProperty(questionId);
   }
 
   renderFunctions() {
