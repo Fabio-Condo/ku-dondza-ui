@@ -731,7 +731,7 @@ export class QuestionsComponent implements OnInit {
   renderFunctions() {
     setTimeout(() => {
       const canvas = this.canvas?.nativeElement;
-      if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
+      if (!canvas || !this.selectedQuestion.mathExpressions || this.selectedQuestion.mathExpressions.length === 0) return;
 
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
@@ -769,7 +769,7 @@ export class QuestionsComponent implements OnInit {
       // Cores para múltiplos gráficos
       const colors = ['blue', 'red', 'green', 'orange', 'purple'];
 
-      this.question.mathExpressions.forEach((express, index) => {
+      this.selectedQuestion.mathExpressions.forEach((express, index) => {
         ctx.beginPath();
         ctx.strokeStyle = colors[index % colors.length];
         ctx.lineWidth = 2;
