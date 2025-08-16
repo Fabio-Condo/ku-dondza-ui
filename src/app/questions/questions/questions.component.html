@@ -1138,17 +1138,23 @@
                                 {{ question.numberOfComments }} Comentários
                             </span>
                         </div>
+                        <div class="bookmark-section">
+                            <button class="view-button" (click)="priviewQuestion(question)"
+                                *ngIf="isUserLoggedIn && isSuperAdmin">
+                                Visualizar
+                            </button>
 
-                        <button class="view-button" (click)="priviewQuestion(question)"
-                            *ngIf="isUserLoggedIn && isSuperAdmin">view</button>
-                        <button class="view-button" (click)="goToQuestion(question.questionId)">
-                            Visualizar
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </button>
+                            <div class="separator"></div>
+
+                            <button class="view-button" (click)="goToQuestion(question.questionId)">
+                                Iniciar
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
+                        </div>
                         <!--
                         <a class="view-button" [href]="'/questions/' + question.questionId" target="_blank" rel="noopener noreferrer">
                             Visualizar noutra aba
