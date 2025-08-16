@@ -19,7 +19,6 @@
             Voltar
         </button>
 
-        <!-- Metadados da questão -->
         <div class="questao-meta">
             <div class="meta-grid">
                 <div class="meta-item">
@@ -81,15 +80,12 @@
             <button (click)="onSave()" class="action-btn bookmark-button" [class.saved]="question.savedByUser"
                 aria-label="Salvar artigo">
 
-                <!-- Ícone de bookmark (normal ou preenchido) -->
                 <i class="pi" *ngIf="!question.showLoadingSave"
                     [ngClass]="question.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
                 </i>
 
-                <!-- Ícone de carregamento -->
                 <i *ngIf="question.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
 
-                <!-- Texto de carregamento -->
                 <span *ngIf="question.showLoadingSave" class="save-loading-text" style="margin-left: 5px;">
                     {{ question.savedByUser ? 'Removendo...' : 'Guardando...' }}
                 </span>
@@ -98,23 +94,9 @@
 
 
         <div class="question-card">
-            <!-- Cabeçalho da pergunta -->
             <div class="question-header">
-
-                <!--
-                <h1>
-                    <i class="pi pi-arrow-left" routerLink="/questions" style="margin-right: 5px; cursor: pointer;"></i>
-                    {{ question.topic.name }}
-                </h1>
-                <br>
-                <span class="badge matematica">{{ question.topic.subject.name }}</span>
-                <span class="badge easy" style="margin-left: 5px;">
-                    {{ getDifficultyLevelValue(question.difficultyLevel) }}
-                </span>
-                -->
             </div>
 
-            <!-- Corpo da pergunta -->
             <div class="question-body">
 
                 <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile"
@@ -122,12 +104,10 @@
                 <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
                     <canvas #canvas width="400" height="400"></canvas>
                 </div>
-                <!-- <p *ngIf="question.text">{{ question.text }}</p> -->
                 <p *ngIf="question.text" [innerHTML]="getFormattedText(question.text)"></p>
 
             </div>
 
-            <!-- Opções de resposta -->
             <h2 class="title" style="margin-top: 24px;">Alternativas</h2>
 
             <div class="answer-options">
@@ -143,22 +123,6 @@
                     <p *ngIf="answer.text" [innerHTML]="getFormattedText(answer.text)"></p>
                 </label>
             </div>
-
-            <!--
-            <div class="answer-options">
-                <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
-              'correct-answer': showCorrection && answer.correct,
-              'incorrect-answer': showCorrection && !answer.correct && isSelected(question.id, answer.id!),
-              'selected-answer': isSelected(question.id, answer.id!)
-            }">
-                    <span class="num">{{ i + 1 }}</span>
-                    <input type="radio" name="question-{{ question.id }}" [value]="answer.id"
-                        [checked]="isSelected(question.id, answer.id!)"
-                        (change)="captureUserAnswer(question.id, answer.id!)" [disabled]="showCorrection" />
-                    <span [innerHTML]="getFormattedText(answer.text || '')"></span>
-                </label>
-            </div>
-            -->
 
             <br *ngIf="!showCorrection">
 
