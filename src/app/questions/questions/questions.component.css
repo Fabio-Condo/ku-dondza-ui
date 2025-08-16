@@ -202,3 +202,199 @@
     height: 20px;
     background-color: #ccc;
 }
+
+
+.question-card {
+    background-color: var(--color-background);
+    border-radius: 12px;
+    transform: translateY(-5px);
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-5px);
+}
+
+.question-header {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.title {
+    font-size: 20px;
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: 600;
+    margin: 10px 0 15px;
+}
+
+.question-text {
+    font-size: 18px;
+    color: var(--color-text);
+    line-height: 1.6;
+    margin: 0 0 20px;
+}
+
+.question-title {
+    font-size: 20px;
+    color: var(--color-text);
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+
+.question-image {
+    max-width: 60%;
+    height: auto;
+    border-radius: 12px;
+    margin-top: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: none;
+}
+
+/* Opções de resposta */
+.answer-options {
+    margin-top: 25px;
+}
+
+.answer-options label {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    margin: 10px 0;
+    border: 2px solid #d0d7e2;
+    border-radius: 10px;
+    background-color: #f4f6fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.answer-options label .num {
+    background-color: #4361ee;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    flex-shrink: 0;
+    /* Impede que o botão diminua quando o conteúdo crescer */
+}
+
+.answer-options label:hover {
+    background: linear-gradient(135deg, #edf0f9, #ffffff);
+    border-color: #4361ee;
+    transform: translateX(5px);
+}
+
+.answer-options input[type="radio"] {
+    margin-right: 15px;
+    accent-color: #4361ee;
+}
+
+.answer-options label.selected-answer {
+    border-color: #4361ee;
+    background-color: #e0e7ff;
+    transition: all 0.3s ease;
+}
+
+.answer-options label.correct-answer {
+    background-color: #e1f8ec;
+    border-color: #22c55e;
+    color: #166534;
+}
+
+.answer-options label.correct-answer::after {
+    content: '✔';
+    color: #22c55e;
+    font-size: 18px;
+    position: absolute;
+    right: 15px;
+}
+
+.answer-options label.incorrect-answer {
+    background-color: #fdecec;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.answer-options label.incorrect-answer::after {
+    content: '✖';
+    color: #ef4444;
+    font-size: 18px;
+    position: absolute;
+    right: 15px;
+}
+
+/* Container da solução com efeito glassmorphism */
+.tip {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fffbeb;
+    border: 1px solid #fbd38d;
+}
+
+.tip-content.scrollable {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.solution {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #dbeafe;
+    border: 1px solid #3b82f6;
+}
+
+.solution-content.scrollable {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.blocked-content {
+    filter: blur(5px);
+    pointer-events: none;
+    position: relative;
+}
+
+.blocked-content .upgrade-button {
+    position: absolute;
+    pointer-events: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #4361ee;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

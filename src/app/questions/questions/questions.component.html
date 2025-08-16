@@ -615,7 +615,8 @@
         }
 
         .popout-container,
-        .login-popout-container {
+        .login-popout-container,
+        .priview-container {
             background: white;
             border-radius: 12px;
             padding: 24px;
@@ -1118,6 +1119,16 @@
                 border-radius: 0px;
             }
 
+            .priview-container {
+                padding: 10px;
+                width: 100%;
+                height: 100%;
+                max-width: 500px;
+                max-height: 600px;
+                overflow-y: auto;
+                border-radius: 0px;
+            }
+
             .fab {
                 display: flex;
             }
@@ -1235,6 +1246,8 @@
                             </span>
                         </div>
 
+                        <button class="view-button" (click)="priviewQuestion(question)"
+                            *ngIf="isUserLoggedIn && isSuperAdmin">view</button>
                         <button class="view-button" (click)="goToQuestion(question.questionId)">
                             Visualizar
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1662,5 +1675,96 @@
                 Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPriview">
+    <div class="priview-container">
+
+        <div class="popout-header">
+            <h2 class="popout-title">Priview</h2>
+            <button class="close-button" (click)="togglePriview()">&times;</button>
+        </div>
+
+        <form>
+
+            <div class="question-card">
+                <div class="question-header">
+                </div>
+
+                <div class="question-body">
+
+                    <img *ngIf="selectedQuestion.urlFile && selectedQuestion.mathExpressions.length == 0"
+                        [src]="selectedQuestion.urlFile" alt="Gráfico de funções" class="question-image">
+                    <div class="graph-container"
+                        *ngIf="!selectedQuestion.urlFile && selectedQuestion.mathExpressions.length > 0">
+                        <canvas #canvas width="400" height="400"></canvas>
+                    </div>
+                    <p *ngIf="selectedQuestion.text" [innerHTML]="getFormattedText(selectedQuestion.text)"></p>
+
+                </div>
+
+                <h2 class="title" style="margin-top: 24px;">Alternativas</h2>
+
+                <div class="answer-options">
+                    <label *ngFor="let answer of selectedQuestion.answers; let i = index" [ngClass]="{
+                        'correct-answer': showCorrection && answer.correct,
+                        'incorrect-answer': showCorrection && !answer.correct }">
+                        <span class="num">{{ i + 1 }}</span>
+                        <input type="radio" name="question-{{ selectedQuestion.id }}" [value]="answer.id"
+                            [disabled]="showCorrection" />
+
+                        <p *ngIf="answer.text" [innerHTML]="getFormattedText(answer.text)"></p>
+                    </label>
+                </div>
+
+                <br>
+
+                <!-- Input para mostrar a solução -->
+                <div class="tip"
+                    [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+                    <div class="tip-input">
+                        <h1 class="title">Dica</h1>
+                        <p class="tip-content scrollable" *ngIf="selectedQuestion.tip"
+                            [innerHTML]="getFormattedText(selectedQuestion.tip)">
+                        </p>
+                        <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
+                            <button class="upgrade-button">
+                                Atualizar para Premium
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <!-- Input para mostrar a solução -->
+                <div class="solution"
+                    [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+                    <div class="solution-input">
+                        <h1 class="title">Resolução</h1>
+                        <p class="solution-content scrollable" *ngIf="selectedQuestion.solution"
+                            [innerHTML]="getFormattedText(selectedQuestion.solution)">
+                        </p>
+                        <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
+                            <button class="upgrade-button">
+                                Atualizar para Premium
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
+            </div>
+
+            <button type="submit" class="submit-button">Reset</button>
+
+            <br>
+            <br>
+            <br>
+            <br>
+        </form>
     </div>
 </div>

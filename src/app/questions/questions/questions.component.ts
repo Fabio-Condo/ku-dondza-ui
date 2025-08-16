@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -22,7 +22,9 @@ import { User } from 'src/app/core/model/User';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Subscription } from 'rxjs';
+import { evaluate } from 'mathjs'; //npm install mathjs
 declare const MathJax: any;
+
 
 @Component({
   selector: 'app-questions',
@@ -36,6 +38,7 @@ export class QuestionsComponent implements OnInit {
   totalRegistros: number = 0;
   showLoading: boolean = false;
   displayModalSave: boolean = false;
+  displayModalPriview: boolean = false;
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   question: Question = new Question();
@@ -79,6 +82,8 @@ export class QuestionsComponent implements OnInit {
   activeTab: number = 1;
   step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
   otp: string = '';
+
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   @ViewChild('tabela') grid: any;
 
@@ -314,6 +319,24 @@ export class QuestionsComponent implements OnInit {
   onAddNewQuestion(): void {
     this.question = new Question();
     this.displayModalSave = true;
+  }
+
+  priviewQuestion(question: Question): void {
+    this.selectedQuestion = question;
+    this.displayModalPriview = true;
+
+    this.renderMathExpressions();
+    this.renderFunctions();
+  }
+
+  togglePriview(): void {
+    this.displayModalPriview = !this.displayModalPriview;
+
+    if (this.displayModalPriview) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
 
   excluir(question: Question) {
@@ -703,6 +726,68 @@ export class QuestionsComponent implements OnInit {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  renderFunctions() {
+    setTimeout(() => {
+      const canvas = this.canvas?.nativeElement;
+      if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const scaleX = width / 20;
+      const scaleY = height / 20;
+
+      // Desenha os eixos
+      ctx.beginPath();
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.stroke();
+
+      // Adiciona os números nos eixos
+      ctx.font = '12px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        let y = height / 2 - i * scaleY;
+        if (i !== 0) {
+          ctx.fillText(i.toString(), x, height / 2 + 15);
+          ctx.fillText(i.toString(), width / 2 - 15, y + 5);
+        }
+      }
+
+      // Cores para múltiplos gráficos
+      const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+      this.question.mathExpressions.forEach((express, index) => {
+        ctx.beginPath();
+        ctx.strokeStyle = colors[index % colors.length];
+        ctx.lineWidth = 2;
+
+        for (let x = -10; x <= 10; x += 0.1) {
+          try {
+            let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
+            let screenX = width / 2 + x * scaleX;
+            let screenY = height / 2 - y * scaleY;
+            if (x === -10) ctx.moveTo(screenX, screenY);
+            else ctx.lineTo(screenX, screenY);
+          } catch (error) {
+            console.error(`Erro ao avaliar ${express.expression!}:`, error);
+          }
+        }
+        ctx.stroke();
+      });
+    }, 0);
   }
 
   private sendErrorNotification(message: string): void {
