@@ -38,11 +38,13 @@ export class QuestionsComponent implements OnInit {
   totalRegistros: number = 0;
   showLoading: boolean = false;
   displayModalSave: boolean = false;
+  displayModalgenerateFromAI: boolean = false;
   displayModalPriview: boolean = false;
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
   question: Question = new Question();
-  selectedQuestion: Question = new Question();
+  //selectedQuestion: Question = new Question();
+  //generatedQuestion: Question = new Question();
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
@@ -323,8 +325,30 @@ export class QuestionsComponent implements OnInit {
     this.displayModalSave = true;
   }
 
+  onGenerateFromAI(): void {
+    this.question = new Question();
+    this.displayModalgenerateFromAI = true;
+  }
+
+  generateFromAI(): void {
+    this.loadingMessage = "Gerrando questão";
+    this.showLoading = true;
+    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.question.difficultyLevel).subscribe(
+      (question) => {
+        this.question = question;
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   priviewQuestion(question: Question): void {
-    this.selectedQuestion = question;
+    this.question = question;
     this.displayModalPriview = true;
 
     this.renderMathExpressions();
@@ -491,7 +515,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   onSave(question: Question) {
-    this.selectedQuestion = question;
+    this.question = question;
     if (this.isUserLoggedIn) {
       this.toggleSaveQuestion(question);
     }
@@ -768,7 +792,7 @@ export class QuestionsComponent implements OnInit {
   renderFunctions() {
     setTimeout(() => {
       const canvas = this.canvas?.nativeElement;
-      if (!canvas || !this.selectedQuestion.mathExpressions || this.selectedQuestion.mathExpressions.length === 0) return;
+      if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
 
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
@@ -806,7 +830,7 @@ export class QuestionsComponent implements OnInit {
       // Cores para múltiplos gráficos
       const colors = ['blue', 'red', 'green', 'orange', 'purple'];
 
-      this.selectedQuestion.mathExpressions.forEach((express, index) => {
+      this.question.mathExpressions.forEach((express, index) => {
         ctx.beginPath();
         ctx.strokeStyle = colors[index % colors.length];
         ctx.lineWidth = 2;

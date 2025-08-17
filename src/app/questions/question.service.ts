@@ -76,9 +76,9 @@ export class QuestionService {
   }
 
   getQuestionByQuestionId(questionId: string, currentUserId: number): Observable<Question> {
-        let params = new HttpParams()
+    let params = new HttpParams()
       .set('currentUserId', currentUserId.toString());
-    return this.http.get<Question>(`${this.baseUrl}/find-by-questionId/${questionId}`, {params});
+    return this.http.get<Question>(`${this.baseUrl}/find-by-questionId/${questionId}`, { params });
   }
 
   add(question: Question): Observable<Question> {
@@ -91,6 +91,13 @@ export class QuestionService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
+  }
+
+  generateAdvancedQuestionFromAI(topicId: number, difficultyLevel: string): Observable<Question> {
+    const params = new HttpParams()
+      .set('topicId', topicId.toString())
+      .set('difficultyLevel', difficultyLevel);
+    return this.http.get<Question>(`${this.baseUrl}/generate-from-ai`, { params });
   }
 
   updateQuestionImage(id: number, file: File): Observable<Question> {
