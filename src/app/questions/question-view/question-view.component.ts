@@ -359,7 +359,27 @@ export class QuestionViewComponent implements OnInit {
       const scaleX = width / 20;
       const scaleY = height / 20;
 
-      // Desenha os eixos
+      // Desenha a grade cartesiana (quadradinhos)
+      ctx.beginPath();
+      ctx.strokeStyle = '#ddd'; // cor cinza clara
+      ctx.lineWidth = 0.5;
+
+      // Linhas verticais
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+
+      // Linhas horizontais
+      for (let i = -10; i <= 10; i++) {
+        let y = height / 2 - i * scaleY;
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      // 🔹 Desenha os eixos principais
       ctx.beginPath();
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 1;
