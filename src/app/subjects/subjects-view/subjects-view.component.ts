@@ -202,6 +202,22 @@ export class SubjectsViewComponent {
     );
   }
 
+  onDownload(content: TopicContent, filename: string) {
+    //this.selectedContent = content;
+    if (this.isUserLoggedIn) {
+      this.download(content, filename);
+    }
+
+    if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
   download(content: TopicContent, filename: string): void {
     content.showLoadingDownload = true;
     this.topicContentService.download(content.id, filename, this.loggedUser.id).subscribe((data: Blob) => {
