@@ -123,7 +123,7 @@
                                         </a>
 
                                         <button class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                                            [disabled]="content.showLoadingDownload"
+                                            [disabled]="content.showLoadingDownload || (isUserLoggedIn && !subject.currentUserSubscribed)"
                                             (click)="onDownload(content, content.fileName)">
                                             <svg *ngIf="!content.showLoadingDownload" width="16" height="16"
                                                 viewBox="0 0 24 24" fill="none">
