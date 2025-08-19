@@ -275,59 +275,6 @@ button {
   margin: 40px 0;
 }
 
-.btn-start {
-  position: relative;
-  padding: 12px 30px;
-  background: #4361ee;
-  color: var(--color-white);
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 30px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-  margin-top: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn-start:hover {
-  background: #4361ee;
-  color: var(--color-black);
-  transform: scale(1.05);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-.btn-start:active {
-  transform: scale(0.95);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.1s;
-}
-
-.btn-start:focus {
-  outline: 2px solid #4361ee;
-  outline-offset: 2px;
-}
-
-.btn-start::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300%;
-  height: 300%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%);
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.5s, opacity 0.5s;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.btn-start:hover::after {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-}
-
 /* Container da solução com efeito glassmorphism */
 .solution-header {
   display: flex;
@@ -399,47 +346,6 @@ button {
   color: var(--color-text);
   margin: 70px 0 20px;
   font-weight: 600;
-}
-
-/*  For small tablets and mobile phones */
-@media screen and (max-width: 992px) {
-  .title {
-    padding: 0px;
-  }
-}
-
-/* Responsividade */
-@media (min-width: 768px) {
-  .question-graph {
-    max-width: 500px;
-    margin: 20px auto;
-  }
-}
-
-/* Ajustes para dispositivos pequenos (telas menores que 768px) */
-@media (max-width: 768px) {
-
-  .question-text {
-    font-size: 14px;
-  }
-
-  .submit-button,
-  .start-button,
-  .restart-button {
-    width: 100%;
-    padding: 10px;
-  }
-
-  .start-button {
-    width: 100%;
-    padding: 10px;
-    font-size: 0.9rem;
-  }
-
-  .btn-start {
-    font-size: 1rem;
-    padding: 10px 20px;
-  }
 }
 
 /* Botão "Saiba mais" */
@@ -1100,15 +1006,14 @@ pre {
 
 .start-button {
   display: inline-block;
-  padding: 12px 24px;
+  padding: 14px 24px;
   width: 100%;
   margin-top: 20px;
   position: relative;
   padding: var(--btn-padding);
   background: #4361ee;
   color: var(--color-white);
-  font-size: 1.3rem;
-  font-weight: bold;
+  font-size: 1.1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -1792,6 +1697,29 @@ pre {
 }
 
 @media (max-width: 768px) {
+
+  .question-graph {
+    max-width: 500px;
+    margin: 20px auto;
+  }
+
+  .question-text {
+    font-size: 14px;
+  }
+
+  .submit-button,
+  .start-button,
+  .restart-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .start-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.7rem;
+  }
+
   .topics {
     grid-template-columns: 1fr;
   }
