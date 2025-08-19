@@ -345,7 +345,6 @@ export class SubjectsViewComponent {
 
   sendOtp() {
     this.showLoading = true;
-    //const email = this.otpForm.value.email!;
     this.authenticationService.generateOtp(this.user.email).subscribe({
       next: () => {
         this.step = 'otp';
