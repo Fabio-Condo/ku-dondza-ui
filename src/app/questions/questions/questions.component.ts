@@ -521,6 +521,7 @@ export class QuestionsComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
       this.displayModalLogin = true;
       setTimeout(() => {
         this.initializeGoogleAuth();
@@ -753,6 +754,11 @@ export class QuestionsComponent implements OnInit {
     setTimeout(() => {
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
+  }
+
+  onCloseLoginPopout() {
+    this.displayModalLogin = false;
+    document.body.classList.remove('no-scroll');
   }
 
   togleCorrection() {
