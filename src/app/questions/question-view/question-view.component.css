@@ -250,6 +250,8 @@ h1 {
     background: #fff;
     border: 2px solid #4361ee;
     color: #4361ee;
+    justify-content: center;
+    /* texto centralizado */
 }
 
 .btn-prev:hover {
@@ -260,18 +262,19 @@ h1 {
 /* Next Button */
 .btn-next {
     padding: 14px 36px;
-    background: #4361ee;
+    background: linear-gradient(135deg, #4361ee, #6c47ff);
     color: #fff;
     font-size: 1.1rem;
+    justify-content: center;
+    /* texto centralizado */
 }
 
 .btn-next:hover {
-    background: #3346c2;
     transform: translateX(5px) scale(1.03);
 }
 
-.btn-prev:disabled, 
-.btn-next:disabled{
+.btn-prev:disabled,
+.btn-next:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -1412,5 +1415,23 @@ pre {
 
     .comment-wrapper {
         margin-bottom: 0px;
+    }
+
+    .btn-prev,
+    .btn-next {
+        flex: 1;
+        padding: 10px 0;
+        /* altura menor para mobile */
+        font-size: 0.95rem;
+        border-radius: 10px;
+    }
+
+    /* proporção */
+    .btn-prev {
+        flex: 0.3;
+    }
+
+    .btn-next {
+        flex: 0.7;
     }
 }
