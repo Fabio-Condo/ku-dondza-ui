@@ -233,10 +233,10 @@ export class TopicViewComponent implements OnInit {
     }
   }
 
-  onSelectContent(content: TopicContent) {
+  onPlayVideo(content: TopicContent) {
     //this.selectedContent = content;
     if (this.isUserLoggedIn) {
-      this.selectContent(content);
+      this.playVideo(content);
     }
 
     if (!this.isUserLoggedIn) {
@@ -249,7 +249,7 @@ export class TopicViewComponent implements OnInit {
     }
   }
 
-  selectContent(content: TopicContent): void {
+  playVideo(content: TopicContent): void {
     this.showLesson = true;
     this.selectedContent = content;
 

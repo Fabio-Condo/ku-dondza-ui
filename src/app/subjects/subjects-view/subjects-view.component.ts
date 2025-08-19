@@ -130,8 +130,23 @@ export class SubjectsViewComponent {
     );
   }
 
+  onPlayVideo(content: TopicContent) {
+    //this.selectedContent = content;
+    if (this.isUserLoggedIn) {
+      this.playVideo(content);
+    }
 
-  onSelectContent(content: TopicContent): void {
+    if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  playVideo(content: TopicContent): void {
     this.showLesson = true;
     this.selectedTopicContent = content;
 
