@@ -222,11 +222,18 @@
 
         <div class="login-side" *ngIf="activeTab === 1">
 
-            <div style="display: flex; justify-content: space-between;">
-                <h1>Entre para continuar</h1>
-                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            <div class="popout-header">
+                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
+                <!--<h1>Entre para continuar</h1>-->
             </div>
 
+            <!--
+            <div style="display: flex; justify-content: space-between;">
+                <h1>Cadastre-se para continuar</h1>
+                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            </div>
+            -->
+            
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
             <div class="divider" *ngIf="step === 'email'">
@@ -272,10 +279,17 @@
 
         <div class="login-side" *ngIf="activeTab === 2">
 
+            <div class="popout-header">
+                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
+                <!--<h1>Entre para continuar</h1>-->
+            </div>
+
+            <!--
             <div style="display: flex; justify-content: space-between;">
                 <h1>Cadastre-se para continuar</h1>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
+            -->
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
