@@ -672,8 +672,7 @@
                     <div class="lesson-duration">{{ content.time }} minutos</div>
                 </div>
                 <div class="lesson-actions">
-                    <a (click)="onPlayVideo(content)" class="btn btn-outline"
-                        *ngIf="content.contentType == 'VIDEO'">
+                    <a (click)="onPlayVideo(content)" class="btn btn-outline" *ngIf="content.contentType == 'VIDEO'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                         </svg>
@@ -775,10 +774,17 @@
 
         <div class="login-side" *ngIf="activeTab === 1">
 
+            <div class="popout-header">
+                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
+                <h1>Entre para continuar</h1>
+            </div>
+
+            <!--
             <div style="display: flex; justify-content: space-between;">
                 <h1>Entre para continuar</h1>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
+            -->
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
