@@ -106,6 +106,11 @@ export class QuizzQuestionsComponent implements OnInit {
     { label: 'Mostrar meu nome', value: false },
   ];
 
+  quizTypes = [
+    { label: 'Teste', value: 'TEST' },
+    { label: 'Treino', value: 'TRAINING' },
+  ];
+
   difficultyLevels = [
     { label: 'Fácil', value: 'EASY' },
     //{ label: 'Médio', value: 'MEDIUM' },
@@ -175,6 +180,13 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
+  // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
+  togleCorrection() {
+    this.showCorrection = true;
+    this.renderMathExpressions();
+    this.renderFunctions();
+  }
+
   onInitQuiz() {
     this.carregarDisciplinas();
     this.showInitQuizScreen = true;
@@ -182,6 +194,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showCorrection = false;
     this.quiz.anonymous = true;
     this.quiz.difficultyLevel = 'EASY';
+    this.quiz.type = 'TEST';
     this.quiz.limitPerTopic = 2;
   }
 
@@ -324,6 +337,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuizByQuizId(quizId).subscribe(
       (response) => {
         this.quiz = response;
+        console.log("aaaaaa: " + this.quiz.type)
         this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
         if (this.quiz.answers) {
           this.calculateResults();
@@ -458,6 +472,9 @@ export class QuizzQuestionsComponent implements OnInit {
       this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
       this.renderFunctions();
       this.scrollToTop();
+    }
+    if (!this.quiz.id && this.quiz.type == 'TRAINING') {
+      this.showCorrection = false;
     }
   }
 
