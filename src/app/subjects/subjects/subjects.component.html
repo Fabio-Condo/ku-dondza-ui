@@ -421,31 +421,32 @@
         }
 
         .popout-header {
+            flex-shrink: 0;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 24px;
+            padding: 0px 16px 8px 16px;
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .popout-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--color-black);
-            margin: 0;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 24px;
+        .handle-bar {
+            width: 60px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: #ccc;
+            margin-bottom: 8px;
             cursor: pointer;
-            color: #666;
-            padding: 4px;
-            transition: color 0.2s;
         }
 
-        .close-button:hover {
-            color: var(--color-black);
+        .popout-header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            text-align: center;
+            color: #333;
         }
 
         .form-group {
@@ -646,6 +647,21 @@
                 display: flex;
             }
 
+            .popout-container {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                padding: 24px;
+                width: 100%;
+                max-width: 100%;
+                height: 60%;
+                border-top-left-radius: 16px;
+                border-top-right-radius: 16px;
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
+                overflow-y: auto;
+            }
+
             .fab {
                 display: flex;
             }
@@ -837,9 +853,10 @@
 
 <div class="popout-overlay" *ngIf="displayModalFilter">
     <div class="popout-container">
+
         <div class="popout-header">
-            <h2 class="popout-title">Filtros</h2>
-            <button class="close-button" (click)="toggleFilter()">&times;</button>
+            <div class="handle-bar" (click)="toggleFilter()"></div>
+            <!--<h1>Entre para continuar</h1>-->
         </div>
 
         <form>
