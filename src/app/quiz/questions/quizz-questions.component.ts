@@ -180,13 +180,6 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
-  // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
-  togleCorrection() {
-    this.showCorrection = true;
-    this.renderMathExpressions();
-    this.renderFunctions();
-  }
-
   onInitQuiz() {
     this.carregarDisciplinas();
     this.showInitQuizScreen = true;
@@ -196,6 +189,19 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.difficultyLevel = 'EASY';
     this.quiz.type = 'TEST';
     this.quiz.limitPerTopic = 2;
+  }
+
+  // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
+  togleCorrection() {
+    this.showCorrection = true;
+    this.renderMathExpressions();
+    this.renderFunctions();
+  }
+
+  isCurrentQuestionAnswered(questionId: number): boolean {
+    return this.submittedAnswers.some(
+      (answer: Answer) => answer.question?.id === questionId
+    );
   }
 
   carregarDisciplinas() {
