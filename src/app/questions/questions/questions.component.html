@@ -411,32 +411,32 @@
         }
 
         .popout-header {
+            flex-shrink: 0;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 24px;
-            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+            padding: 0px 16px 8px 16px;
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .popout-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--color-black);
-            margin: 0;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 24px;
+        .handle-bar {
+            width: 60px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: #ccc;
+            margin-bottom: 8px;
             cursor: pointer;
-            color: #666;
-            padding: 4px;
-            transition: color 0.2s;
         }
 
-        .close-button:hover {
-            color: var(--color-black);
+        .popout-header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            text-align: center;
+            color: #333;
         }
 
         .form-group {
@@ -1006,6 +1006,7 @@
                 display: flex;
             }
 
+            .popout-container,
             .login-popout-container {
                 position: fixed;
                 bottom: 10;
@@ -1435,9 +1436,10 @@
 
 <div class="popout-overlay" *ngIf="displayModalFilter">
     <div class="popout-container">
+
         <div class="popout-header">
-            <h2 class="popout-title">Filtros</h2>
-            <button class="close-button" (click)="toggleFilter()">&times;</button>
+            <div class="handle-bar" (click)="toggleFilter()"></div>
+            <!--<h1>Entre para continuar</h1>-->
         </div>
 
         <form>
@@ -1488,9 +1490,9 @@
 
         <div class="login-side" *ngIf="activeTab === 1">
 
-            <div style="display: flex; justify-content: space-between;">
-                <h1>Entre para continuar</h1>
-                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            <div class="popout-header">
+                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
+                <!--<h1>Entre para continuar</h1>-->
             </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
@@ -1538,9 +1540,9 @@
 
         <div class="login-side" *ngIf="activeTab === 2">
 
-            <div style="display: flex; justify-content: space-between;">
-                <h1>Cadastre-se para continuar</h1>
-                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            <div class="popout-header">
+                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
+                <!--<h1>Entre para continuar</h1>-->
             </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
