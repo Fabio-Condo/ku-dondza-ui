@@ -470,7 +470,7 @@
       </div>
 
       <button class="fab fab-primary" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
-        *ngIf="showCorrection">
+        *ngIf="quiz.id && showCorrection">
         <i class="pi pi-comments"></i>
         <span style="font-size: 0.8rem;">{{ quiz.questions[currentQuestionIndex].numberOfComments }}</span>
       </button>
