@@ -107,8 +107,8 @@ export class QuizzQuestionsComponent implements OnInit {
   ];
 
   quizTypes = [
-    { label: 'Teste', value: 'TEST' },
-    { label: 'Treino', value: 'TRAINING' },
+    { label: 'Modo Avaliação', value: 'TEST' },
+    { label: 'Modo Treino', value: 'TRAINING' },
   ];
 
   difficultyLevels = [
@@ -732,6 +732,16 @@ export class QuizzQuestionsComponent implements OnInit {
         return 'Médio';
       case 'HARD':
         return 'Dificil';
+    }
+    return '';
+  }
+
+  getQuizTypeValue(type: string) {
+    switch (type) {
+      case 'TEST':
+        return 'Modo avaliação';
+      case 'TRAINING':
+        return 'Modo treino';
     }
     return '';
   }
