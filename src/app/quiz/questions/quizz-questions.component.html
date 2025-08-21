@@ -458,8 +458,17 @@
             </svg>
             Anterior
           </button>
-
+          <!--
           <button class="btn btn-next" (click)="goToNextQuestion()" [disabled]="currentQuestionIndex === quiz.questions.length - 1 || (!quiz.id && !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id))">
+            Próxima
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+          -->
+
+          <button class="btn btn-next" (click)="goToNextQuestion()"
+            [disabled]="currentQuestionIndex === quiz.questions.length - 1 || (!quiz.id && !showCorrection && quiz.type === 'TRAINING') || (!quiz.id && !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id))">
             Próxima
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M9 18l6-6-6-6" />
