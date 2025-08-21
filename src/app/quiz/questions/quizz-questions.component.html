@@ -481,7 +481,7 @@
 </body>
 
 <button class="fab fab-save" (click)="onSubmitAnswers()"
-  *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !quiz.id">
+  *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !quiz.id" [disabled]="!isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)">
   <i class="pi pi-save"></i>
 </button>
 
