@@ -204,6 +204,14 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
+  allQuestionsAnswered(): boolean {
+    // Para cada questão, verificamos se existe uma resposta correspondente no array submittedAnswers
+    return this.questions.every(q => 
+      this.submittedAnswers.some(a => a.question.id === q.id)
+    );
+  }
+
+
   carregarDisciplinas() {
     this.loadingMessage = "Obtendo disciplinas";
     this.showLoading = true;
