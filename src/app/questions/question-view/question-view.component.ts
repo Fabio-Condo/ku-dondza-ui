@@ -24,6 +24,7 @@ import { CommentService } from 'src/app/comments/comment.service';
 import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { CommentLikeService } from 'src/app/likes/commentLike.service';
 import { UserService } from 'src/app/users/user.service';
+import { Answer } from 'src/app/core/model/Answer';
 
 
 @Component({
@@ -49,7 +50,9 @@ export class QuestionViewComponent implements OnInit {
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
-  selectedAnswers: { [questionId: number]: number } = {}
+  //selectedAnswers: { [questionId: number]: number } = {}
+  submittedAnswers: Answer[] = []; // Lista de respostas do usuário
+  
 
   showCorrection: boolean = false;
   showSolution: boolean = true;
@@ -158,6 +161,7 @@ export class QuestionViewComponent implements OnInit {
     this.questionService.getQuestionByQuestionId(id, this.loggedUser.id).subscribe(
       (response) => {
         this.question = response;
+        this.questions.unshift(this.question); // Adiciona a questão recebida na primeira posição da lista
         this.renderMathExpressions();
         this.renderFunctions();
         this.showLoading = false;
@@ -179,7 +183,7 @@ export class QuestionViewComponent implements OnInit {
     this.showCorrection = false;
 
     // Se já carregamos as questões, vamos para a próxima
-    if (this.questions.length > 0) {
+    if (this.questions.length > 1) {
       this.showNextQuestion();
     } else {
       this.getQuestionsByTopicId();
@@ -261,6 +265,12 @@ export class QuestionViewComponent implements OnInit {
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
+
+      if(this.isCurrentQuestionAnswered(this.question.id)){
+        this.showCorrection = true;
+      }else{  
+        this.showCorrection = false;
+      }
     }
   }
 
@@ -272,6 +282,12 @@ export class QuestionViewComponent implements OnInit {
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
+
+      if(this.isCurrentQuestionAnswered(this.question.id)){
+        this.showCorrection = true;
+      }else{  
+        this.showCorrection = false;
+      }
     } else {
       this.sendErrorNotification("Você chegou ao fim das questões deste tópico.");
     }
@@ -300,6 +316,26 @@ export class QuestionViewComponent implements OnInit {
     return '';
   }
 
+
+
+  //isSelected(questionId: number, answerId: number): boolean {
+  //  return this.selectedAnswers[questionId] === answerId;
+  //}
+
+  //captureUserAnswer(questionId: number, answerId: number): void {
+  //  this.selectedAnswers[questionId] = answerId;
+  //}
+
+  //hasUserSelected(questionId: number): boolean {
+  //  return this.selectedAnswers.hasOwnProperty(questionId);
+  //}
+
+  //togleCorrection() {
+  //  this.showCorrection = !this.showCorrection;
+  //  this.renderMathExpressions();
+  //  this.renderFunctions();
+  //}
+
   onViewSolution() {
 
     if (this.isUserLoggedIn) {
@@ -317,22 +353,62 @@ export class QuestionViewComponent implements OnInit {
     }
   }
 
-  isSelected(questionId: number, answerId: number): boolean {
-    return this.selectedAnswers[questionId] === answerId;
-  }
-
-  captureUserAnswer(questionId: number, answerId: number): void {
-    this.selectedAnswers[questionId] = answerId;
-  }
-
-  hasUserSelected(questionId: number): boolean {
-    return this.selectedAnswers.hasOwnProperty(questionId);
-  }
-
+  // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
   togleCorrection() {
-    this.showCorrection = !this.showCorrection;
+    this.showCorrection = true;
     this.renderMathExpressions();
     this.renderFunctions();
+  }
+
+    // Método para capturar a resposta do usuário
+  captureUserAnswer(questionId: number, answerId: number | null): void {
+
+    const question = this.questions.find(q => q.id === questionId);
+    if (question) {
+      let userAnswer: Answer;
+
+      if (answerId !== null) {
+        const answer = question.answers.find(a => a.id === answerId);
+        if (answer) {
+          userAnswer = {
+            id: answer.id,
+            text: answer.text,
+            correct: answer.correct,
+            question: question
+          };
+        } else {
+          return; // Resposta inválida
+        }
+      } else {
+        // Resposta nula (não respondida)
+        userAnswer = {
+          id: -1, // ID inválido para indicar resposta nula
+          text: 'Não respondida',
+          correct: false,
+          question: question
+        };
+      }
+
+      // Atualiza ou adiciona a resposta
+      const existingAnswerIndex = this.submittedAnswers.findIndex(a => a.question?.id === questionId);
+      if (existingAnswerIndex !== -1) {
+        this.submittedAnswers[existingAnswerIndex] = userAnswer;
+      } else {
+        this.submittedAnswers.push(userAnswer);
+      }
+    }
+  }
+
+  // Método para verificar se uma resposta foi selecionada
+  isSelected(questionId: number, answerId: number): boolean {
+    const userAnswer = this.submittedAnswers.find(a => a.question?.id === questionId);
+    return userAnswer ? userAnswer.id === answerId : false;
+  }
+  
+  isCurrentQuestionAnswered(questionId: number): boolean {
+    return this.submittedAnswers.some(
+      (answer: Answer) => answer.question?.id === questionId
+    );
   }
 
   // Método para renderizar expressões matemáticas

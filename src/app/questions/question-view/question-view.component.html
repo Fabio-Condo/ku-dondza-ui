@@ -176,7 +176,7 @@
                 </button>
 
                 <button class="btn btn-next" (click)="onGenerateNextQuestion()"
-                    [disabled]="currentQuestionIndex === questions.length - 1">
+                    [disabled]="questions.length > 1 && currentQuestionIndex === questions.length - 1">
                     Próxima
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path d="M9 18l6-6-6-6" />
@@ -191,9 +191,8 @@
     </div>
 </body>
 
-<button class="fab fab-view" (click)="onViewSolution()" *ngIf="hasUserSelected(question.id)">
-    <i *ngIf="!showCorrection" class="pi pi-eye"></i>
-    <i *ngIf="showCorrection" class="pi pi-eye-slash"></i>
+<button class="fab fab-view" (click)="onViewSolution()" *ngIf="!showCorrection && isCurrentQuestionAnswered(question.id)">
+    <i class="pi pi-eye"></i>
 </button>
 
 <button class="fab" (click)="onGetComments()">
