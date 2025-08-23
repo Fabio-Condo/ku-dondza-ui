@@ -13,6 +13,7 @@ import { Role } from 'src/app/enum/role.enum';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Subscription } from 'rxjs';
+import { Question } from 'src/app/core/model/Question';
 
 @Component({
   selector: 'app-topic-view',
@@ -88,12 +89,21 @@ export class TopicViewComponent implements OnInit {
   }
 
   startQuestions() {
+
+    // Embaralhar primeiro
+    this.shuffleQuestions(this.topic.questions);
+
     this.router.navigate(['/questions', this.topic.questions[0].questionId], {
       queryParams: {
         from: 'topics',
         topicId: this.route.snapshot.paramMap.get('id')  // o ID do tópico atual
       }
     });
+  }
+
+  // Embaralhar a ordem
+  shuffleQuestions(questions: Question[]): Question[] {
+    return questions.sort(() => Math.random() - 0.5);
   }
 
   findById(id: string) {

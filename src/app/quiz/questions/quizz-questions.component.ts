@@ -211,7 +211,6 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
-
   carregarDisciplinas() {
     this.loadingMessage = "Obtendo disciplinas";
     this.showLoading = true;
