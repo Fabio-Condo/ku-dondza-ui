@@ -266,7 +266,7 @@ export class QuestionViewComponent implements OnInit {
       this.renderFunctions();
       this.scrollToTop();
 
-      if(this.isCurrentQuestionAnswered(this.question.id)){
+      if(this.isCurrentQuestionAnswered(this.question.id) && this.question.verified){
         this.showCorrection = true;
       }else{  
         this.showCorrection = false;
@@ -283,7 +283,7 @@ export class QuestionViewComponent implements OnInit {
       this.renderFunctions();
       this.scrollToTop();
 
-      if(this.isCurrentQuestionAnswered(this.question.id)){
+      if(this.isCurrentQuestionAnswered(this.question.id) && this.question.verified){
         this.showCorrection = true;
       }else{  
         this.showCorrection = false;
@@ -356,6 +356,7 @@ export class QuestionViewComponent implements OnInit {
   // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
   togleCorrection() {
     this.showCorrection = true;
+    this.question.verified = true; // Marca como verificada pelo usuário (para mostrar dica/solução automaticamente)
     this.renderMathExpressions();
     this.renderFunctions();
   }

@@ -23,6 +23,7 @@ export class Question {
     showSolution: boolean = false;
     showTip: boolean = false;
 
+    verified: boolean = false; // Indica se o user verificou a questão, para mostrar a dica ou solução automaticamente
     savedByUser: boolean = false;
     showLoadingSave: boolean = false;
 }
