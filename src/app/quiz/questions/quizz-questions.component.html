@@ -481,7 +481,7 @@
   </div>
 </body>
 
-<button class="fab fab-save" (click)="onSubmitAnswers()"
+<button class="fab fab-save" (click)="onSubmitAnswers()" [ngStyle]="{ bottom: quiz.type === 'TEST' ? '84px' : '16px' }"
   *ngIf="currentQuestionIndex === quiz.questions.length - 1 && !quiz.id" [disabled]="!allQuestionsAnswered()">
   <i class="pi pi-save"></i>
 </button>
