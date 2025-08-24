@@ -194,6 +194,7 @@ export class QuizzQuestionsComponent implements OnInit {
   // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
   togleCorrection() {
     this.showCorrection = true;
+    this.quiz.questions[this.currentQuestionIndex].verified = true; // Marca como verificada pelo usuário (para mostrar dica/solução automaticamente)
     this.renderMathExpressions();
     this.renderFunctions();
   }
