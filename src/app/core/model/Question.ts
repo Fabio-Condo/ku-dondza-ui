@@ -12,6 +12,7 @@ export class Question {
     mathExpressions: MathExpression[] = []; // Alterado para uma lista de expressões
     tip!: string;
     solution!: string;
+    validated: boolean = false;
     fileName!: string;
     urlFile!: string;
     difficultyLevel!: string;
@@ -26,4 +27,5 @@ export class Question {
     verified: boolean = false; // Indica se o user verificou a questão, para mostrar a dica ou solução automaticamente
     savedByUser: boolean = false;
     showLoadingSave: boolean = false;
+    showLoadingValidation: boolean = false;
 }

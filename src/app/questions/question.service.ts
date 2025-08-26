@@ -93,6 +93,10 @@ export class QuestionService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }
 
+  toggleValidated(id: number, status: boolean): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}/validated`, status, {});
+  }
+
   generateAdvancedQuestionFromAI(topicId: number, difficultyLevel: string): Observable<Question> {
     const params = new HttpParams()
       .set('topicId', topicId.toString())

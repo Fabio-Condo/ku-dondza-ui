@@ -1677,6 +1677,24 @@
 
                 <br>
                 <br>
+
+                <div>
+                    <button *ngIf="isUserLoggedIn && isSuperAdmin"
+                            (click)="toggleValidatedStatus(question)"
+                            [ngClass]="question.validated ? 'btn-validated' : 'btn-not-validated'">
+                        <i [class]="'pi ' + (question.showLoadingValidation ? 'pi-spin pi-spinner-dotted' : (question.validated ? 'pi-check' : 'pi-times'))">
+                        </i>
+
+                        <span style="margin-left: 5px;">
+                            {{ question.showLoadingValidation 
+                                ? (question.validated ? 'Invalidando...' : 'Validando...') 
+                                : (question.validated ? 'Validado' : 'Não validado') }}
+                        </span>
+                    </button>
+                </div>
+
+                <br>
+                <br>
                 <br>
                 <br>
 

@@ -767,6 +767,23 @@ export class QuestionsComponent implements OnInit {
     this.renderFunctions();
   }
 
+  toggleValidatedStatus(question: Question): void {
+    question.showLoadingValidation = true;
+
+    const newStatus = !question.validated;
+
+    this.questionService.toggleValidated(question.id, newStatus).subscribe({
+      next: () => {
+        question.validated = newStatus;
+        question.showLoadingValidation = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        question.showLoadingValidation = false;
+      },
+    });
+  }
+
   onViewSolution() {
 
     if (this.isUserLoggedIn) {
