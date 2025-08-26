@@ -59,15 +59,18 @@ export class QuizService {
     return this.http.get<Quiz>(`${this.baseUrl}/${id}`, {});
   }
 
-  getQuizByQuizId(quizId: string): Observable<Quiz> {
-    return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, {});
+  getQuizByQuizId(quizId: string, currentUserId: number): Observable<Quiz> {
+    let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString());
+    return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, { params });
   }
 
-  saveQuiz(quiz: Quiz, questionIds: number[], userAnswerIds: any[]): Observable<Quiz> {
+  saveQuiz(quiz: Quiz, questionIds: number[], userAnswerIds: any[], currentUserId: number): Observable<Quiz> {
 
     const params = new HttpParams()
       .set('questionIds', questionIds.join(','))
-      .set('userAnswerIds', userAnswerIds.join(','));
+      .set('userAnswerIds', userAnswerIds.join(','))
+      .set('currentUserId', currentUserId.toString());
 
     return this.http.post<Quiz>(`${this.baseUrl}`, quiz, { params });
   }

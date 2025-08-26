@@ -470,6 +470,13 @@
         </div>
       </div>
 
+      <button class="fab fab-save-as-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])" *ngIf="quiz.id && showCorrection && isUserLoggedIn">
+        <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
+          [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
+        </i>
+        <i *ngIf="quiz.questions[currentQuestionIndex].showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
+      </button>
+
       <button class="fab fab-primary" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
         *ngIf="quiz.id && showCorrection">
         <i class="pi pi-comments"></i>

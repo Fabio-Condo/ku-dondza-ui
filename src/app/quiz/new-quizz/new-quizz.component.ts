@@ -387,6 +387,12 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
   }
 
   saveQuiz() {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Salvando o quiz"
     this.showLoading = true;
     this.quiz.topics = this.getSelectedTopics();
@@ -397,7 +403,7 @@ export class NewQuizzComponent implements OnInit, OnDestroy {
     this.quiz.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
     this.quiz.user = this.loggedUser;
 
-    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds).subscribe(
+    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds, this.loggedUser.id).subscribe(
       (response) => {
         this.showLoading = false;
         this.submited = true;

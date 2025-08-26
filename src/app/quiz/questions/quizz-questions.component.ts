@@ -27,6 +27,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { NgForm } from '@angular/forms';
 import { Role } from 'src/app/enum/role.enum';
 import { CommentFilter } from 'src/app/core/interface/CommentFilter';
+import { UserService } from 'src/app/users/user.service';
 
 
 @Component({
@@ -145,6 +146,7 @@ export class QuizzQuestionsComponent implements OnInit {
     private questionService: QuestionService,
     private commentService: CommentService,
     private commentLikeService: CommentLikeService,
+    private userService: UserService,
     private subjectsService: SubjectsService,
     private confirmationService: ConfirmationService,
     private authenticationService: AuthenticationService,
@@ -288,6 +290,12 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   saveQuiz() {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Salvando o quiz"
     this.showLoading = true;
     this.quiz.topics = this.getSelectedTopics();
@@ -298,7 +306,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
     this.quiz.user = this.loggedUser;
 
-    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds).subscribe(
+    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds, this.loggedUser.id).subscribe(
       (response) => {
         this.showLoading = false;
         this.quiz = response;
@@ -345,24 +353,61 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
+  onSaveQuestion(question: Question) {
+    if (this.isUserLoggedIn) {
+      this.toggleSaveQuestion(question);
+    }
+
+    if (!this.isUserLoggedIn) {
+      //this.action = 'save';
+      document.body.classList.add('no-scroll');
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  toggleSaveQuestion(question: Question): void {
+    question.showLoadingSave = true;
+    this.userService.toggleSaveQuestion(this.loggedUser.id, question.id).subscribe(
+      response => {
+        question.savedByUser = !question.savedByUser;
+        question.showLoadingSave = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        question.showLoadingSave = false;
+      }
+    );
+  }
+
   getQuizByQuizId(quizId: string) {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.showLoading = true;
     this.loadingMessage = "Carregando dados"
-    this.quizService.getQuizByQuizId(quizId).subscribe(
+
+    this.quizService.getQuizByQuizId(quizId, this.loggedUser.id).subscribe(
       (response) => {
+
         this.quiz = response;
-        console.log("aaaaaa: " + this.quiz.type)
         this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
         if (this.quiz.answers) {
           this.calculateResults();
         }
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
         this.showLoading = false;
+
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
         if (errorResponse.status == 400) {
-          // BAD_REQUEST
           this.router.navigateByUrl('/pagina-nao-encontrada');
         } else {
           this.sendErrorNotification(errorResponse.error.message);
