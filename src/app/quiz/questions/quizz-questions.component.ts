@@ -290,6 +290,7 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   saveQuiz() {
+
     if (!this.loggedUser) {
       this.loggedUser = new User();
       this.loggedUser.id = 0;
