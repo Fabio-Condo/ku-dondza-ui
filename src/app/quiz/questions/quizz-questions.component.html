@@ -14,10 +14,29 @@
       <div class="quiz-card">
 
         <!-- Header -->
+        <!--
         <div class="quiz-header">
           <button class="go-back-btn" routerLink="/quizzes">
             <i class="pi pi-arrow-left"></i>
             Voltar
+          </button>
+        </div>
+        -->
+
+        <div class="quiz-header" style="margin-bottom: 15px;">
+          <div>
+
+            <!--
+            <h1 class="title">
+              Quizzes
+            </h1>
+            -->
+
+            <span>Personalize o seu quizz</span>
+
+          </div>
+          <button class="quiz-close-btn" routerLink="/quizzes" aria-label="Fechar quiz">
+            <i class="pi pi-times"></i>
           </button>
         </div>
 
@@ -540,10 +559,10 @@
             <div>
 
               <h1 class="title">
-                {{ 
-                  quiz.anonymous 
-                    ? 'Usuário Anônimo' 
-                    : (quiz.user.fullName ? quiz.user.fullName : 'Nome não disponível') 
+                {{
+                quiz.anonymous
+                ? 'Usuário Anônimo'
+                : (quiz.user.fullName ? quiz.user.fullName : 'Nome não disponível')
                 }}
                 <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id">
                   (tú)
@@ -960,4 +979,5 @@
     <circle cx="3" cy="18" r="1"></circle>
   </svg>
 </button>
---> <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
+-->
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">

@@ -1706,6 +1706,7 @@ pre {
 }
 
 /* CREAT QUIZZ V2*/
+/* ===== Animações ===== */
 .animate-step {
   animation: fadeInUp 0.4s ease;
 }
@@ -1715,41 +1716,33 @@ pre {
     opacity: 0;
     transform: translateY(15px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+/* ===== Estrutura de Etapas ===== */
+.step-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.3s ease;
 }
 
-.option-card {
-  background: #f5f5f5;
-  padding: 1rem;
-  border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-  border: 2px solid transparent;
+.step-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
-.option-card:hover {
-  border-color: #4361EE;
+.step-description {
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
-.option-card.selected {
-  background: #4361EE;
-  color: white;
-  border-color: #4361EE;
-}
-
+/* ===== Barra de Progresso ===== */
 .step-progress-bar {
   width: 100%;
   height: 8px;
@@ -1760,45 +1753,13 @@ pre {
 
 .progress {
   height: 100%;
+  width: 0; /* será atualizado via JS */
   background: #4361EE;
   border-radius: 4px;
   transition: width 0.3s ease;
 }
 
-.start-button {
-  background: #4361EE;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.start-button:hover {
-  background: #364fc7;
-}
-
-.step-description {
-  font-size: 0.95rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.step-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  transition: all 0.3s ease;
-}
-
-.step-card:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-}
-
+/* ===== Grid de Opções ===== */
 .options-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1823,15 +1784,15 @@ pre {
 
 .option-card.selected {
   background: #4361EE;
-  color: white;
+  color: #fff;
   border-color: #4361EE;
 }
 
+/* ===== Resumo de Tópicos ===== */
 .topics-summary {
   font-size: 0.9rem;
   font-weight: 500;
   color: #4361EE;
-  /* cor principal */
   margin-bottom: 0.75rem;
 }
 
@@ -1855,7 +1816,6 @@ pre {
   text-decoration: underline;
 }
 
-/* CREAT QUIZZ V2 - END*/
 
 
 @media (max-width: 900px) {
