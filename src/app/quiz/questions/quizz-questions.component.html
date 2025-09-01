@@ -10,7 +10,209 @@
       </div>
     </div>
 
+    <div *ngIf="showInitQuizScreen" class="start-screen">
+      <div class="quiz-card">
+
+        <!-- Header -->
+        <div class="quiz-header">
+          <button class="go-back-btn" routerLink="/quizzes">
+            <i class="pi pi-arrow-left"></i>
+            Voltar
+          </button>
+        </div>
+
+        <!-- Barra de progresso -->
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="stepProgressPercentage"></div>
+        </div>
+
+        <form autocomplete="off" #courseForm="ngForm">
+
+          <!-- Step 1: Modo -->
+          <div class="step-card animate-step">
+            <p class="step-description">Escolha se o quiz será anônimo ou identificado.</p>
+            <div class="options-grid">
+              <div *ngFor="let option of anonymousOptions" (click)="quiz.anonymous = option.value"
+                [class.selected]="quiz.anonymous === option.value" class="option-card">
+                {{ option.label }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Tipo -->
+          <div class="step-card animate-step" *ngIf="quiz.anonymous !== null">
+            <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
+            <div class="options-grid">
+              <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
+                [class.selected]="quiz.type === type.value" class="option-card">
+                {{ type.label }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Dificuldade -->
+          <div class="step-card animate-step" *ngIf="quiz.type">
+            <p class="step-description">Defina o nível de dificuldade das questões.</p>
+            <div class="options-grid">
+              <div *ngFor="let level of difficultyLevels" (click)="quiz.difficultyLevel = level.value"
+                [class.selected]="quiz.difficultyLevel === level.value" class="option-card">
+                {{ level.label }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Disciplina -->
+          <div class="step-card animate-step" *ngIf="quiz.difficultyLevel">
+            <p class="step-description">Escolha a disciplina para este quiz.</p>
+            <div class="options-grid">
+              <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
+                [class.selected]="quiz.subject?.id === subject.id" class="option-card">
+                {{ subject.name }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Tópicos -->
+          <div class="step-card animate-step" *ngIf="quiz.subject?.id && topics.length > 0">
+            <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
+
+            <!-- Botão Selecionar todos -->
+            <div class="select-all" (click)="toggleSelectAllTopics()">
+              <span>
+                {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
+              </span>
+            </div>
+
+            <!-- Total de tópicos selecionados -->
+            <p class="topics-summary">
+              Total de tópicos selecionados: {{ getSelectedTopicIds().length }}
+            </p>
+
+            <div class="options-grid">
+              <div *ngFor="let topic of topics" (click)="toggleTopic(topic)" [class.selected]="topic.selected"
+                class="option-card">
+                {{ topic.name }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6: Limite por tópico -->
+          <div class="step-card animate-step" *ngIf="getSelectedTopicIds().length > 0">
+            <p class="step-description">Escolha o número de questões por tópico.</p>
+            <div class="options-grid">
+              <div *ngFor="let limit of limitsPerTopic" (click)="quiz.limitPerTopic = limit.value"
+                [class.selected]="quiz.limitPerTopic === limit.value" class="option-card">
+                {{ limit.label }}
+              </div>
+            </div>
+          </div>
+
+          <p class="total-questions" *ngIf="quiz.limitPerTopic">
+            Total de questões: {{ getSelectedTopicIds().length * quiz.limitPerTopic }}
+          </p>
+
+          <!-- Botão final -->
+          <div class="form-actions" *ngIf="quiz.limitPerTopic">
+            <button class="start-button" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
+              Gerar Questões
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- 
+    <div *ngIf="showInitQuizScreen" class="start-screen">
+
+      <div class="quiz-card">
+
+        <div class="quiz-header">
+          <button class="go-back-btn" routerLink="/quizzes">
+            <i class="pi pi-arrow-left"></i>
+            Voltar
+          </button>
+          <h2>Configuração do Quiz</h2>
+          <p>Responda passo a passo para gerar suas questões</p>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="stepProgressPercentage"></div>
+        </div>
+
+        <form autocomplete="off" #courseForm="ngForm">
+
+          <div *ngIf="true" class="form-group animate-step">
+            <label for="anonymous">Modo</label>
+            <select id="anonymous" [(ngModel)]="quiz.anonymous" name="anonymous" required>
+              <option [ngValue]="null" disabled>Escolha o modo</option>
+              <option *ngFor="let anonymous of anonymousOptions" [ngValue]="anonymous.value">
+                {{ anonymous.label }}
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="quiz.anonymous !== null" class="form-group animate-step">
+            <label for="type">Tipo</label>
+            <select id="type" [(ngModel)]="quiz.type" name="type" required>
+              <option [ngValue]="null" disabled>Selecione o tipo</option>
+              <option *ngFor="let type of quizTypes" [value]="type.value">{{ type.label }}</option>
+            </select>
+          </div>
+
+          <div *ngIf="quiz.type" class="form-group animate-step">
+            <label for="difficultyLevel">Nível de dificuldade</label>
+            <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
+              <option [ngValue]="null" disabled>Selecione o nível</option>
+              <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+            </select>
+          </div>
+
+          <div *ngIf="quiz.difficultyLevel" class="form-group animate-step">
+            <label for="limitPerTopic">Nº de questões por tópico</label>
+            <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
+              <option [ngValue]="null" disabled>Selecione o limite</option>
+              <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
+            </select>
+          </div>
+
+          <div *ngIf="quiz.limitPerTopic" class="form-group animate-step">
+            <label for="subject">Disciplina</label>
+            <select id="subject" [(ngModel)]="quiz.subject" (ngModelChange)="getTopicsBySubjectId(quiz.subject.id)"
+              [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
+              <option [ngValue]="null" disabled>Selecione a disciplina</option>
+              <option *ngFor="let subject of subjects" [ngValue]="subject">
+                {{ subject.name }}
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="quiz.subject?.id && topics.length > 0" class="form-group animate-step">
+            <label>Selecione os Tópicos</label>
+            <ul class="topics-list">
+              <li *ngFor="let topic of topics" class="topic-item">
+                <label>
+                  <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
+                  <span class="custom-checkbox"></span>
+                  <span class="topic-name">{{ topic.name }}</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="form-actions" *ngIf="getSelectedTopicIds().length > 0">
+            <button class="start-button" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
+              <span>Gerar Questões</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+    -->
+
     <!-- Tela de inicair quiz -->
+    <!-- 
     <div *ngIf="showInitQuizScreen" class="start-screen">
       <div class="start-screen-content">
 
@@ -64,7 +266,6 @@
             </select>
           </div>
 
-          <!-- Seleção de Disciplina -->
           <div class="form-group">
             <label for="subject">Disciplina</label>
             <select id="subject" [(ngModel)]="quiz.subject" (change)="getTopicsBySubjectId(quiz.subject.id)"
@@ -96,6 +297,7 @@
         </form>
       </div>
     </div>
+    -->
 
     <button *ngIf="showStartScreen" class="go-back-btn" routerLink="/quizzes">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -344,11 +546,13 @@
               -->
 
               <h1 class="title">
-                {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName ? quiz.user.fullName : 'Nome não disponível') }}
+                {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName ? quiz.user.fullName : 'Nome não
+                disponível') }}
                 <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id || !quiz.id">(tú) </span>
               </h1>
 
-              <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }} | {{ getQuizTypeValue(quiz.type) }}</span>
+              <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }} | {{
+                getQuizTypeValue(quiz.type) }}</span>
 
             </div>
             <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
@@ -448,19 +652,24 @@
 
         <div class="navigation-buttons text-center">
 
-          <button class="btn btn-verification" [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)" (click)="togleCorrection()" *ngIf="!quiz.id && !showInitQuizScreen && quiz.type === 'TRAINING' && !quiz.questions[currentQuestionIndex].verified">
+          <button class="btn btn-verification"
+            [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)"
+            (click)="togleCorrection()"
+            *ngIf="!quiz.id && !showInitQuizScreen && quiz.type === 'TRAINING' && !quiz.questions[currentQuestionIndex].verified">
             Verificar
             <i class="pi pi-eye"></i>
           </button>
 
-          <button class="btn btn-prev" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0" *ngIf="quiz.id || quiz.type === 'TEST'">
+          <button class="btn btn-prev" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0"
+            *ngIf="quiz.id || quiz.type === 'TEST'">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M15 18l-6-6 6-6" />
             </svg>
             Anterior
           </button>
 
-          <button class="btn btn-next" (click)="goToNextQuestion()" *ngIf="(!quiz.id && quiz.type === 'TRAINING' && quiz.questions[currentQuestionIndex].verified) || (!quiz.id && quiz.type === 'TEST' ) || quiz.id"
+          <button class="btn btn-next" (click)="goToNextQuestion()"
+            *ngIf="(!quiz.id && quiz.type === 'TRAINING' && quiz.questions[currentQuestionIndex].verified) || (!quiz.id && quiz.type === 'TEST' ) || quiz.id"
             [disabled]="currentQuestionIndex === quiz.questions.length - 1 || (!quiz.id && !showCorrection && quiz.type === 'TRAINING') || (!quiz.id && !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id))">
             Próxima
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -470,7 +679,8 @@
         </div>
       </div>
 
-      <button class="fab fab-save-as-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])" *ngIf="quiz.id && showCorrection && isUserLoggedIn">
+      <button class="fab fab-save-as-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
+        *ngIf="quiz.id && showCorrection && isUserLoggedIn">
         <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
           [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
         </i>
@@ -493,7 +703,8 @@
   <i class="pi pi-save"></i>
 </button>
 
-<button class="fab fab-primary" (click)="toggleDisableEditing()" *ngIf="!quiz.id && !showInitQuizScreen && quiz.type == 'TEST'">
+<button class="fab fab-primary" (click)="toggleDisableEditing()"
+  *ngIf="!quiz.id && !showInitQuizScreen && quiz.type == 'TEST'">
   <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
   <i *ngIf="!disableEditing" class="pi pi-lock"></i>
 </button>
@@ -518,7 +729,7 @@
 
       <div class="popout-header">
         <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-          <!--<h1>Entre para continuar</h1>-->
+        <!--<h1>Entre para continuar</h1>-->
       </div>
 
       <!--
@@ -575,7 +786,7 @@
 
       <div class="popout-header">
         <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-          <!--<h1>Entre para continuar</h1>-->
+        <!--<h1>Entre para continuar</h1>-->
       </div>
 
       <!--

@@ -114,8 +114,8 @@ export class QuizzQuestionsComponent implements OnInit {
 
   difficultyLevels = [
     { label: 'Fácil', value: 'EASY' },
-    //{ label: 'Médio', value: 'MEDIUM' },
-    //{ label: 'Dificil', value: 'HARD' },
+    { label: 'Médio', value: 'MEDIUM' },
+    { label: 'Dificil', value: 'HARD' },
   ];
 
   limitsPerTopic = [
@@ -182,15 +182,27 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
+  get stepProgressPercentage(): number {
+    let filled = 0;
+    if (this.quiz.anonymous !== null) filled++;
+    if (this.quiz.type) filled++;
+    if (this.quiz.difficultyLevel) filled++;
+    if (this.quiz.limitPerTopic) filled++;
+    if (this.quiz.subject) filled++;
+    if (this.getSelectedTopicIds().length > 0) filled++;
+
+    return (filled / 6) * 100;
+  }
+
   onInitQuiz() {
     this.carregarDisciplinas();
     this.showInitQuizScreen = true;
     this.showStartScreen = false;
     this.showCorrection = false;
-    this.quiz.anonymous = true;
-    this.quiz.difficultyLevel = 'EASY';
-    this.quiz.type = 'TEST';
-    this.quiz.limitPerTopic = 2;
+    this.quiz.anonymous = null;
+    //this.quiz.difficultyLevel = 'EASY';
+    //this.quiz.type = 'TEST';
+    //this.quiz.limitPerTopic = 2;
   }
 
   // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
@@ -209,7 +221,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   allQuestionsAnswered(): boolean {
     // Para cada questão, verificamos se existe uma resposta correspondente no array submittedAnswers
-    return this.questions.every(q => 
+    return this.questions.every(q =>
       this.submittedAnswers.some(a => a.question.id === q.id)
     );
   }
@@ -276,7 +288,6 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
-  // Método para alternar a seleção de um tópico
   toggleTopic(topic: Topic): void {
     topic.selected = !topic.selected;
   }
@@ -287,6 +298,15 @@ export class QuizzQuestionsComponent implements OnInit {
 
   getSelectedTopicIds(): number[] {
     return this.topics.filter(topic => topic.selected).map(topic => topic.id);
+  }
+
+  areAllTopicsSelected(): boolean {
+    return this.topics.every(topic => topic.selected);
+  }
+
+  toggleSelectAllTopics(): void {
+    const allSelected = this.areAllTopicsSelected();
+    this.topics.forEach(topic => topic.selected = !allSelected);
   }
 
   saveQuiz() {
