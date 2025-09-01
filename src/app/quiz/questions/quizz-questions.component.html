@@ -22,7 +22,7 @@
         </div>
 
         <!-- Barra de progresso -->
-        <div class="progress-bar">
+        <div class="step-progress-bar">
           <div class="progress" [style.width.%]="stepProgressPercentage"></div>
         </div>
 
@@ -539,16 +539,15 @@
           <div class="quiz-header" style="  margin-bottom: 15px;">
             <div>
 
-              <!--
-              <h1 *ngIf="quiz.user.id" class="title">{{ quiz.user.fullName }}</h1>
-              <h1 *ngIf="!quiz.user.id && isUserLoggedIn" class="title">{{ loggedUser.fullName }}</h1>
-              <h1 *ngIf="!quiz.user.id && !isUserLoggedIn" class="title">Usuário desconhecido</h1>
-              -->
-
               <h1 class="title">
-                {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName ? quiz.user.fullName : 'Nome não
-                disponível') }}
-                <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id || !quiz.id">(tú) </span>
+                {{ 
+                  quiz.anonymous 
+                    ? 'Usuário Anônimo' 
+                    : (quiz.user.fullName ? quiz.user.fullName : 'Nome não disponível') 
+                }}
+                <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id">
+                  (tú)
+                </span>
               </h1>
 
               <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }} | {{
@@ -961,4 +960,4 @@
     <circle cx="3" cy="18" r="1"></circle>
   </svg>
 </button>
--->
+--> <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
