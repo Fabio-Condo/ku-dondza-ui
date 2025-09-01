@@ -108,8 +108,8 @@ export class QuizzQuestionsComponent implements OnInit {
   ];
 
   quizTypes = [
-    { label: 'Modo Avaliação', value: 'TEST' },
-    { label: 'Modo Treino', value: 'TRAINING' },
+    { label: 'Avaliação', value: 'TEST' },
+    { label: 'Treino', value: 'TRAINING' },
   ];
 
   difficultyLevels = [
