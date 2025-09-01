@@ -333,6 +333,8 @@ export class QuestionsComponent implements OnInit {
   generateFromAI(): void {
     this.loadingMessage = "Gerrando questão";
     this.showLoading = true;
+    console.log('Gerando questão para o tópico ID:', this.question.topic.id);
+  
     this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.question.difficultyLevel).subscribe(
       (question) => {
         this.question = question;
