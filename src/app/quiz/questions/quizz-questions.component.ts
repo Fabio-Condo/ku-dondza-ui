@@ -221,7 +221,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   allQuestionsAnswered(): boolean {
     // Para cada questão, verificamos se existe uma resposta correspondente no array submittedAnswers
-    return this.questions.every(q =>
+    return this.quiz.questions.every(q =>
       this.submittedAnswers.some(a => a.question.id === q.id)
     );
   }
