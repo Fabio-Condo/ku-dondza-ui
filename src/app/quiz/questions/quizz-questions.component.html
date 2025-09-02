@@ -715,7 +715,7 @@
 </body>
 
 <button class="fab fab-save" (click)="onSubmitAnswers()" [ngStyle]="{ bottom: quiz.type === 'TEST' ? '84px' : '16px' }"
-  *ngIf="!showInitQuizScreen && !quiz.id" [disabled]="!allQuestionsAnswered()">
+  *ngIf="(!showInitQuizScreen && !quiz.id) && allQuestionsAnswered()">
   <i class="pi pi-save"></i>
 </button>
 
