@@ -1639,10 +1639,10 @@
                     </label>
                 </div>
 
-                <br *ngIf="!showCorrection">
+                <br>
 
-                <!-- Input para mostrar a solução -->
-                <div class="tip" *ngIf="!showCorrection"
+                <!-- Input para mostrar a solução  *ngIf="!showCorrection"-->
+                <div class="tip"
                     [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                     <div class="tip-input">
                         <h1 class="title">Dica</h1>
@@ -1657,10 +1657,10 @@
                     </div>
                 </div>
 
-                <br *ngIf="showCorrection">
+                <br>
 
-                <!-- Input para mostrar a solução -->
-                <div class="solution" *ngIf="showCorrection"
+                <!-- Input para mostrar a solução  *ngIf="showCorrection"-->
+                <div class="solution"
                     [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                     <div class="solution-input">
                         <h1 class="title">Resolução</h1>
@@ -1736,6 +1736,11 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label>Descrição extra</label>
+            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1"
+                [(ngModel)]="extraRule" rows="4"></textarea>
+        </div>
 
         <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="save(questionForm)">
             <div class="question-card">

@@ -9,7 +9,6 @@ import { Question } from 'src/app/core/model/Question';
 import { QuestionService } from '../question.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { TopicService } from 'src/app/topics/topicsService.service';
-import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { Topic } from 'src/app/core/model/Topic';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
@@ -47,6 +46,8 @@ export class QuestionsComponent implements OnInit {
   //generatedQuestion: Question = new Question();
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  extraRule: string = "";
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -334,8 +335,8 @@ export class QuestionsComponent implements OnInit {
     this.loadingMessage = "Gerrando questão";
     this.showLoading = true;
     console.log('Gerando questão para o tópico ID:', this.question.topic.id);
-  
-    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.question.difficultyLevel).subscribe(
+
+    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.question.difficultyLevel, this.extraRule).subscribe(
       (question) => {
         this.question = question;
         this.renderMathExpressions();
@@ -352,6 +353,7 @@ export class QuestionsComponent implements OnInit {
   priviewQuestion(question: Question): void {
     this.question = question;
     this.displayModalPriview = true;
+    this.showCorrection = true;
 
     this.renderMathExpressions();
     this.renderFunctions();
