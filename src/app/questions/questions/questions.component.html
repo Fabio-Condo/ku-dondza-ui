@@ -1737,9 +1737,17 @@
         </div>
 
         <div class="form-group">
+            <label for="optionsNumber">Número de opções</label>
+            <select id="optionsNumber" [(ngModel)]="numberOfOptions" name="optionsNumber" required>
+                <option value="" disabled selected>Selecione o número</option>
+                <option *ngFor="let option of numberOfOptionsList" [value]="option.value">{{ option.label }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label>Descrição extra</label>
-            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1"
-                [(ngModel)]="extraRule" rows="4"></textarea>
+            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1" [(ngModel)]="extraRule"
+                rows="4"></textarea>
         </div>
 
         <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="save(questionForm)">

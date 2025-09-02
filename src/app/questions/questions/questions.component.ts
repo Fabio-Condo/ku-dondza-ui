@@ -48,6 +48,8 @@ export class QuestionsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
   extraRule: string = "";
+  numberOfOptions: number = 4;
+
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -109,6 +111,11 @@ export class QuestionsComponent implements OnInit {
     { label: 'Fácil', value: 'EASY' },
     { label: 'Médio', value: 'MEDIUM' },
     { label: 'Dificil', value: 'HARD' },
+  ];
+
+  numberOfOptionsList = [
+    { label: '4 opções', value: 4 },
+    { label: '5 opções', value: 5 },
   ];
 
   filtro: QuestionFilter = {
@@ -334,9 +341,8 @@ export class QuestionsComponent implements OnInit {
   generateFromAI(): void {
     this.loadingMessage = "Gerrando questão";
     this.showLoading = true;
-    console.log('Gerando questão para o tópico ID:', this.question.topic.id);
 
-    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.question.difficultyLevel, this.extraRule).subscribe(
+    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.question.difficultyLevel, this.extraRule, this.numberOfOptions).subscribe(
       (question) => {
         this.question = question;
         this.renderMathExpressions();
