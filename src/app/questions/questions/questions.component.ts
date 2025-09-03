@@ -361,6 +361,12 @@ export class QuestionsComponent implements OnInit {
     );
   }
 
+  onSaveGeneratedQuestionFromAI(): void {
+    this.displayModalgenerateFromAI = false;
+    this.displayModalSave = true;
+    this.onUpdateQuestion(this.question);
+  }
+
   priviewQuestion(question: Question): void {
     this.question = question;
     this.displayModalPriview = true;
