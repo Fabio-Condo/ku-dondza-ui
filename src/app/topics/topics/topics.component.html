@@ -574,6 +574,18 @@
             animation-delay: 0.4s;
         }
 
+        /* Botão do menu dropdown */
+        .dropdown-btn {
+            background-color: transparent;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* End */
+
         /* Animações */
         @keyframes spin {
             0% {
@@ -735,7 +747,7 @@
                         -->
                         <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                             <button class="dropdown-btn" (click)="toggleDropdown(topic)"><i
-                                    class="pi pi-ellipsis-v"></i></button>
+                                    class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="topic.isAdminMenuOpen">
                                 <a (click)="onUpdateTopic(topic); closeDropdown(topic)">Editar</a>
                                 <a (click)="confirmarExclusao(topic); closeDropdown(topic)">Eliminar</a>

@@ -618,6 +618,18 @@
             border: 1px solid #e2e8f0;
         }
 
+        /* Botão do menu dropdown */
+        .dropdown-btn {
+            background-color: transparent;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* End */
+
         @media (max-width: 900px) {
             .container {
                 margin-top: 60px;
@@ -735,7 +747,7 @@
                         -->
                         <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                             <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i
-                                    class="pi pi-ellipsis-v"></i></button>
+                                    class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
                                 <a (click)="onUpdateSubject(subject); closeDropdown(subject)">Editar</a>
                                 <a (click)="confirmarExclusao(subject); closeDropdown(subject)">Eliminar</a>

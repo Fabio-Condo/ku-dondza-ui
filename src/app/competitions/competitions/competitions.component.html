@@ -63,9 +63,6 @@
                             </div>
                         </div>
                         <div>
-                            <span class="badge easy">
-                                {{ getDifficultyLevelValue(competition.difficultyLevel) }}
-                            </span>
                             <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(competition)"><i
                                         class="pi pi-ellipsis-h"></i></button>
@@ -74,6 +71,9 @@
                                     <a (click)="confirmarExclusao(competition); closeDropdown(competition)">Eliminar</a>
                                 </div>
                             </div>
+                            <span class="badge easy">
+                                {{ getDifficultyLevelValue(competition.difficultyLevel) }}
+                            </span>
                         </div>
                     </div>
                     <div class="quiz-status">

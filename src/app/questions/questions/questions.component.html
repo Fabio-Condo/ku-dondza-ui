@@ -1118,9 +1118,6 @@
                 <div class="card-header">
                     <span class="badge matematica">{{ question.topic.subject.name }}</span>
                     <div>
-                        <span class="badge easy">
-                            {{ getDifficultyLevelValue(question.difficultyLevel) }}
-                        </span>
                         <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                     class="pi pi-ellipsis-h"></i></button>
@@ -1130,6 +1127,9 @@
                                 <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
                             </div>
                         </div>
+                        <span class="badge easy">
+                            {{ getDifficultyLevelValue(question.difficultyLevel) }}
+                        </span>
                     </div>
                 </div>
                 <div class="card-body">
