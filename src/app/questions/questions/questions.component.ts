@@ -347,6 +347,11 @@ export class QuestionsComponent implements OnInit {
         this.question = question;
         this.renderMathExpressions();
         this.renderFunctions();
+
+        // Captura a resposta correta (assumindo que a propriedade correta está na classe Question)
+        const correctAnswerObj = this.question.answers.find(answer => answer.correct);
+        this.correctAnswer = correctAnswerObj ? correctAnswerObj.text : undefined; // Armazena o texto da resposta correta
+
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
