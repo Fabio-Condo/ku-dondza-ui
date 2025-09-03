@@ -1125,6 +1125,7 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
+                                <a (click)="priviewQuestion(question); closeDropdown(question)">Visualizar</a>
                                 <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
                                 <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
                             </div>
@@ -1170,13 +1171,6 @@
                             </span>
                         </div>
                         <div class="bookmark-section">
-                            <button class="view-button" (click)="priviewQuestion(question)"
-                                *ngIf="isUserLoggedIn && isSuperAdmin">
-                                Ver aqui
-                            </button>
-
-                            <div class="separator" *ngIf="isUserLoggedIn && isSuperAdmin"></div>
-
                             <button class="view-button" (click)="goToQuestion(question.questionId)">
                                 Visualizar
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1687,7 +1681,7 @@
             <br>
             <br>
 
-            <div  *ngIf="question.id">
+            <div *ngIf="question.id">
                 <button *ngIf="isUserLoggedIn && isSuperAdmin && question.id" (click)="toggleValidatedStatus(question)"
                     [ngClass]="question.validated ? 'btn-validated' : 'btn-not-validated'">
                     <i
@@ -1752,7 +1746,8 @@
 
         <div class="form-group">
             <label>Descrição extra</label>
-            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1" placeholder="Ex: O Exercicio deve avaliar teoria do tema selecionado" [(ngModel)]="extraRule"
+            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1"
+                placeholder="Ex: O Exercicio deve avaliar teoria do tema selecionado" [(ngModel)]="extraRule"
                 rows="4"></textarea>
         </div>
 
