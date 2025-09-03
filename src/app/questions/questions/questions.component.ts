@@ -187,10 +187,10 @@ export class QuestionsComponent implements OnInit {
     this.questionService.add(this.question).subscribe(
       (question) => {
         this.question = question;
-        this.showLoading = false;
         this.findAll();
+        this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Question added successfully' });
-        questionForm.reset(); // Reseta o formulário
+        //questionForm.reset(); // Reseta o formulário
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -211,8 +211,8 @@ export class QuestionsComponent implements OnInit {
     this.questionService.update(this.question).subscribe(
       (question) => {
         this.question = question;
-        this.showLoading = false;
         this.findAll();
+        this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Question updated successfully!' });
       },
       (errorResponse: HttpErrorResponse) => {
@@ -353,6 +353,9 @@ export class QuestionsComponent implements OnInit {
         this.correctAnswer = correctAnswerObj ? correctAnswerObj.text : undefined; // Armazena o texto da resposta correta
 
         this.showLoading = false;
+
+        this.displayModalgenerateFromAI = false;
+        this.priviewQuestion(this.question);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -362,7 +365,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   onSaveGeneratedQuestionFromAI(): void {
-    this.displayModalgenerateFromAI = false;
+    this.displayModalPriview = false;
     this.displayModalSave = true;
     this.onUpdateQuestion(this.question);
   }

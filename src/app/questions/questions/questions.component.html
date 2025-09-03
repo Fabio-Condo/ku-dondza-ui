@@ -319,6 +319,13 @@
             background-color: #06d6a0;
         }
 
+        .fab-generate-from-ai {
+            bottom: 150px;
+            background: #fff;
+            border: 1px solid #4361ee;
+            color: #4361ee;
+        }
+
         /* Paginação */
         .pagination {
             display: flex;
@@ -1097,6 +1104,10 @@
             </div>
         </header>
 
+        <button class="fab fab-generate-from-ai" (click)="onGenerateFromAI()" *ngIf="isUserLoggedIn && isSuperAdmin">
+            <i class="pi pi-cog"></i>
+        </button>
+
         <button class="fab" (click)="onAddNewQuestion()" *ngIf="isUserLoggedIn && isSuperAdmin">
             <i class="pi pi-plus"></i>
         </button>
@@ -1606,100 +1617,95 @@
             <button class="close-button" (click)="togglePriview()">&times;</button>
         </div>
 
-        <form>
 
-            <div class="question-card">
-                <div class="question-header">
+        <div class="question-card">
+            <div class="question-header">
+            </div>
+
+            <div class="question-body">
+
+                <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile"
+                    alt="Gráfico de funções" class="question-image">
+                <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
+                    <canvas #canvas width="400" height="400"></canvas>
                 </div>
+                <p *ngIf="question.text" [innerHTML]="getFormattedText(question.text)"></p>
 
-                <div class="question-body">
+            </div>
 
-                    <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile"
-                        alt="Gráfico de funções" class="question-image">
-                    <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-                        <canvas #canvas width="400" height="400"></canvas>
-                    </div>
-                    <p *ngIf="question.text" [innerHTML]="getFormattedText(question.text)"></p>
+            <h2 class="title" style="margin-top: 24px;">Alternativas</h2>
 
-                </div>
-
-                <h2 class="title" style="margin-top: 24px;">Alternativas</h2>
-
-                <div class="answer-options">
-                    <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
+            <div class="answer-options">
+                <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
                         'correct-answer': showCorrection && answer.correct,
                         'incorrect-answer': showCorrection && !answer.correct && isSelected(question.id, answer.id!)
                     }">
-                        <span class="num">{{ i + 1 }}</span>
-                        <input type="radio" name="question-{{ question.id }}" [value]="answer.id"
-                            [checked]="isSelected(question.id, answer.id!)"
-                            (change)="captureUserAnswer(question.id, answer.id!)" [disabled]="showCorrection" />
+                    <span class="num">{{ i + 1 }}</span>
+                    <input type="radio" name="question-{{ question.id }}" [value]="answer.id"
+                        [checked]="isSelected(question.id, answer.id!)"
+                        (change)="captureUserAnswer(question.id, answer.id!)" [disabled]="showCorrection" />
 
-                        <p *ngIf="answer.text" [innerHTML]="getFormattedText(answer.text)"></p>
-                    </label>
-                </div>
-
-                <br>
-
-                <!-- Input para mostrar a solução  *ngIf="!showCorrection"-->
-                <div class="tip"
-                    [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
-                    <div class="tip-input">
-                        <h1 class="title">Dica</h1>
-                        <p class="tip-content scrollable" *ngIf="question.tip"
-                            [innerHTML]="getFormattedText(question.tip)">
-                        </p>
-                        <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
-                            <button class="upgrade-button">
-                                Atualizar para Premium
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <br>
-
-                <!-- Input para mostrar a solução  *ngIf="showCorrection"-->
-                <div class="solution"
-                    [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
-                    <div class="solution-input">
-                        <h1 class="title">Resolução</h1>
-                        <p class="solution-content scrollable" *ngIf="question.solution"
-                            [innerHTML]="getFormattedText(question.solution)">
-                        </p>
-                        <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
-                            <button class="upgrade-button">
-                                Atualizar para Premium
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <br>
-                <br>
-
-                <div>
-                    <button *ngIf="isUserLoggedIn && isSuperAdmin" (click)="toggleValidatedStatus(question)"
-                        [ngClass]="question.validated ? 'btn-validated' : 'btn-not-validated'">
-                        <i
-                            [class]="'pi ' + (question.showLoadingValidation ? 'pi-spin pi-spinner-dotted' : (question.validated ? 'pi-check' : 'pi-times'))">
-                        </i>
-
-                        <span style="margin-left: 5px;">
-                            {{ question.showLoadingValidation
-                            ? (question.validated ? 'Invalidando...' : 'Validando...')
-                            : (question.validated ? 'Validado' : 'Não validado') }}
-                        </span>
-                    </button>
-                </div>
-
-                <br>
-                <br>
-                <br>
-                <br>
-
+                    <p *ngIf="answer.text" [innerHTML]="getFormattedText(answer.text)"></p>
+                </label>
             </div>
-        </form>
+
+            <br>
+
+            <!-- Input para mostrar a solução  *ngIf="!showCorrection"-->
+            <div class="tip"
+                [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+                <div class="tip-input">
+                    <h1 class="title">Dica</h1>
+                    <p class="tip-content scrollable" *ngIf="question.tip" [innerHTML]="getFormattedText(question.tip)">
+                    </p>
+                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
+                        <button class="upgrade-button">
+                            Atualizar para Premium
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <!-- Input para mostrar a solução  *ngIf="showCorrection"-->
+            <div class="solution"
+                [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+                <div class="solution-input">
+                    <h1 class="title">Resolução</h1>
+                    <p class="solution-content scrollable" *ngIf="question.solution"
+                        [innerHTML]="getFormattedText(question.solution)">
+                    </p>
+                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
+                        <button class="upgrade-button">
+                            Atualizar para Premium
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div  *ngIf="question.id">
+                <button *ngIf="isUserLoggedIn && isSuperAdmin && question.id" (click)="toggleValidatedStatus(question)"
+                    [ngClass]="question.validated ? 'btn-validated' : 'btn-not-validated'">
+                    <i
+                        [class]="'pi ' + (question.showLoadingValidation ? 'pi-spin pi-spinner-dotted' : (question.validated ? 'pi-check' : 'pi-times'))">
+                    </i>
+
+                    <span style="margin-left: 5px;">
+                        {{ question.showLoadingValidation
+                        ? (question.validated ? 'Invalidando...' : 'Validando...')
+                        : (question.validated ? 'Validado' : 'Não validado') }}
+                    </span>
+                </button>
+            </div>
+
+            <button type="submit" class="submit-button" *ngIf="!question.id" (click)="onSaveGeneratedQuestionFromAI()">
+                Adicionar nos campos de salvar
+            </button>
+        </div>
     </div>
 </div>
 
@@ -1746,80 +1752,11 @@
 
         <div class="form-group">
             <label>Descrição extra</label>
-            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1" [(ngModel)]="extraRule"
+            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1" placeholder="Ex: O Exercicio deve avaliar teoria do tema selecionado" [(ngModel)]="extraRule"
                 rows="4"></textarea>
         </div>
 
-        <div class="question-card">
-            <div class="question-header">
-            </div>
-
-            <div class="question-body">
-
-                <img *ngIf="question.urlFile && question.mathExpressions.length == 0" [src]="question.urlFile"
-                    alt="Gráfico de funções" class="question-image">
-                <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-                    <canvas #canvas width="400" height="400"></canvas>
-                </div>
-                <p *ngIf="question.text" [innerHTML]="getFormattedText(question.text)"></p>
-
-            </div>
-
-            <h2 class="title" style="margin-top: 24px;">Alternativas</h2>
-
-            <div class="answer-options">
-                <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
-                        'correct-answer': showCorrection && answer.correct,
-                        'incorrect-answer': showCorrection && !answer.correct && isSelected(question.id, answer.id!)
-                    }">
-                    <span class="num">{{ i + 1 }}</span>
-                    <input type="radio" name="question-{{ question.id }}" [value]="answer.id"
-                        [checked]="isSelected(question.id, answer.id!)"
-                        (change)="captureUserAnswer(question.id, answer.id!)" [disabled]="showCorrection" />
-
-                    <p *ngIf="answer.text" [innerHTML]="getFormattedText(answer.text)"></p>
-                </label>
-            </div>
-
-            <br>
-
-            <!-- Input para mostrar a solução -->
-            <div class="tip" *ngIf="question.tip">
-                <div class="tip-input">
-                    <h1 class="title">Dica</h1>
-                    <p class="tip-content scrollable" *ngIf="question.tip" [innerHTML]="getFormattedText(question.tip)">
-                    </p>
-                </div>
-            </div>
-
-            <br>
-
-            <!-- Input para mostrar a solução -->
-            <div class="solution" *ngIf="question.solution">
-                <div class="solution-input">
-                    <h1 class="title">Resolução</h1>
-                    <p class="solution-content scrollable" *ngIf="question.solution"
-                        [innerHTML]="getFormattedText(question.solution)">
-                    </p>
-                </div>
-            </div>
-
-        </div>
-
-        <!--
-            <button *ngIf="question" class="submit-button" type="submit" [disabled]="questionForm.invalid" class="btn">
-                {{ showLoading ? 'Loading...' :'Salvar' }}
-            </button>
-            -->
-
-        <button type="submit" class="submit-button" *ngIf="question.text" (click)="onSaveGeneratedQuestionFromAI()">
-            Adicionar nos campos de salvar
-        </button>
-
-        <br>
-
         <button type="submit" class="submit-button" (click)="generateFromAI()">Gerar questão</button>
-
 
     </div>
 </div>
