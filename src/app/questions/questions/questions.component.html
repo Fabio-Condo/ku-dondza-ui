@@ -418,32 +418,31 @@
         }
 
         .popout-header {
-            flex-shrink: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            padding: 0px 16px 8px 16px;
-            background-color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            margin-bottom: 24px;
         }
 
-        .handle-bar {
-            width: 60px;
-            height: 4px;
-            border-radius: 2px;
-            background-color: #ccc;
-            margin-bottom: 8px;
-            cursor: pointer;
-        }
-
-        .popout-header h1 {
-            font-size: 1rem;
+        .popout-title {
+            font-size: 24px;
             font-weight: 600;
+            color: var(--color-black);
             margin: 0;
-            text-align: center;
-            color: #333;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: var(--color-black);
         }
 
         .form-group {
@@ -1013,11 +1012,10 @@
                 display: flex;
             }
 
+            /*
             .popout-container,
             .login-popout-container {
                 position: fixed;
-                /*bottom: 10;*/
-                /*bottom: 0;*/
                 left: 0;
                 padding: 24px;
                 width: 100%;
@@ -1038,6 +1036,26 @@
                 max-height: 100%;
                 overflow-y: auto;
                 border-radius: 0px;
+            }
+            */
+
+            .priview-container {
+                width: 95%;
+                padding: 10px;
+                max-width: 100%;
+                max-height: 80vh;
+                border-radius: 8px;
+                overflow-y: auto;
+            }
+
+            .tip,
+            .solution,
+            .questao-meta {
+                padding: 10px;
+            }
+
+            .answer-options label {
+                padding-left: 10px
             }
 
             .fab {
@@ -1248,7 +1266,8 @@
 <!-- Modal para Adicionar ou Editar Perguntas -->
 <div class="popout-overlay" *ngIf="displayModalSave">
     <div class="popout-container">
-        <div class="popout-header">
+
+        <div class="popout-header" style="margin-bottom: 0px;">
             <h2 class="popout-title">{{ editing ? 'Editando Questão' : 'Adicionando Nova Questão' }}</h2>
             <button class="close-button" (click)="displayModalSave = false">&times;</button>
         </div>
@@ -1443,9 +1462,9 @@
 <div class="popout-overlay" *ngIf="displayModalFilter">
     <div class="popout-container">
 
-        <div class="popout-header">
-            <div class="handle-bar" (click)="toggleFilter()"></div>
-            <!--<h1>Entre para continuar</h1>-->
+        <div class="popout-header" style="margin-bottom: 0px;">
+            <h2 class="popout-title">Filtrar</h2>
+            <button class="close-button" (click)="toggleFilter()">&times;</button>
         </div>
 
         <form>
@@ -1496,9 +1515,9 @@
 
         <div class="login-side" *ngIf="activeTab === 1">
 
-            <div class="popout-header">
-                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-                <!--<h1>Entre para continuar</h1>-->
+            <div class="popout-header" style="margin-bottom: 0px;">
+                <h2 class="popout-title">Entre para continuar</h2>
+                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
@@ -1546,9 +1565,9 @@
 
         <div class="login-side" *ngIf="activeTab === 2">
 
-            <div class="popout-header">
-                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-                <!--<h1>Entre para continuar</h1>-->
+            <div class="popout-header" style="margin-bottom: 0px;">
+                <h2 class="popout-title">Entre para continuar</h2>
+                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
