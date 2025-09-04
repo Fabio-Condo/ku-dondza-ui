@@ -421,7 +421,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 0px;
         }
 
         .popout-title {
@@ -1012,33 +1012,8 @@
                 display: flex;
             }
 
-            /*
             .popout-container,
-            .login-popout-container {
-                position: fixed;
-                left: 0;
-                padding: 24px;
-                width: 100%;
-                max-width: 100%;
-                height: 80%;
-                border-top-left-radius: 16px;
-                border-top-right-radius: 16px;
-                border-bottom-left-radius: 0px;
-                border-bottom-right-radius: 0px;
-                overflow-y: auto;
-            }
-
-            .priview-container {
-                padding: 10px;
-                width: 100%;
-                height: 100%;
-                max-width: 100%;
-                max-height: 100%;
-                overflow-y: auto;
-                border-radius: 0px;
-            }
-            */
-
+            .login-popout-container,
             .priview-container {
                 width: 95%;
                 padding: 10px;
@@ -1046,6 +1021,16 @@
                 max-height: 80vh;
                 border-radius: 8px;
                 overflow-y: auto;
+            }
+
+            .popout-title {
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .close-button {
+                font-size: 20px;
+                padding: 8px;
             }
 
             .tip,
@@ -1267,8 +1252,8 @@
 <div class="popout-overlay" *ngIf="displayModalSave">
     <div class="popout-container">
 
-        <div class="popout-header" style="margin-bottom: 0px;">
-            <h2 class="popout-title">{{ editing ? 'Editando Questão' : 'Adicionando Nova Questão' }}</h2>
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
             <button class="close-button" (click)="displayModalSave = false">&times;</button>
         </div>
 
@@ -1462,7 +1447,7 @@
 <div class="popout-overlay" *ngIf="displayModalFilter">
     <div class="popout-container">
 
-        <div class="popout-header" style="margin-bottom: 0px;">
+        <div class="popout-header">
             <h2 class="popout-title">Filtrar</h2>
             <button class="close-button" (click)="toggleFilter()">&times;</button>
         </div>
@@ -1515,7 +1500,7 @@
 
         <div class="login-side" *ngIf="activeTab === 1">
 
-            <div class="popout-header" style="margin-bottom: 0px;">
+            <div class="popout-header">
                 <h2 class="popout-title">Entre para continuar</h2>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
@@ -1565,7 +1550,7 @@
 
         <div class="login-side" *ngIf="activeTab === 2">
 
-            <div class="popout-header" style="margin-bottom: 0px;">
+            <div class="popout-header">
                 <h2 class="popout-title">Entre para continuar</h2>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
@@ -1625,15 +1610,15 @@
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPriview">
     <div class="priview-container">
 
-        <div class="popout-header" style="margin-bottom: 0px;">
+        <div class="popout-header">
             <h2 class="popout-title">Prévisualização</h2>
             <button class="close-button" (click)="togglePriview()">&times;</button>
         </div>
 
 
         <div class="question-card">
-            <div class="question-header">
-            </div>
+
+            <br>
 
             <div class="question-body">
 
@@ -1725,8 +1710,8 @@
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalgenerateFromAI">
     <div class="priview-container">
 
-        <div class="popout-header" style="margin-bottom: 0px;">
-            <h2 class="popout-title">Assistência com GPT IA</h2>
+        <div class="popout-header">
+            <h2 class="popout-title">Gerar com IA</h2>
             <button class="close-button" (click)="displayModalgenerateFromAI = false">&times;</button>
         </div>
 
