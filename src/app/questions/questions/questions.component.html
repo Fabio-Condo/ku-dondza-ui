@@ -1196,7 +1196,7 @@
 
                         <div class="bookmark-section">
                             <button (click)="onSave(question)" class="action-btn bookmark-button"
-                                [class.saved]="question.savedByUser" aria-label="Salvar artigo">
+                                [class.saved]="question.savedByUser" aria-label="Salvar questão">
 
                                 <!-- Ícone de bookmark (normal ou preenchido) -->
                                 <i class="pi" *ngIf="!question.showLoadingSave"
@@ -1500,7 +1500,7 @@
 
         <form>
             <div class="form-group">
-                <label for="option">Filtrar artigos</label>
+                <label for="option">Visibilidade</label>
                 <select id="option" [(ngModel)]="selectQuestionOption" (ngModelChange)="findAll()" name="option"
                     required>
                     <ng-container *ngFor="let option of questionFilterOptions">
