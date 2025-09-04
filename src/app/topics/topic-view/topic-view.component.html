@@ -559,20 +559,23 @@
                 font-size: 1.3rem;
             }
 
-            .login-popout-container {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                padding: 24px;
-                width: 100%;
-                height: 100%;
+            .popout-container {
+                width: 95%;
+                padding: 10px;
                 max-width: 100%;
-                border-radius: 0px;
-                height: 80%;
-                padding: 24px;
-                border-top-left-radius: 16px;
-                border-top-right-radius: 16px;
+                max-height: 70vh;
+                border-radius: 8px;
                 overflow-y: auto;
+            }
+
+            .popout-title {
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .close-button {
+                font-size: 20px;
+                padding: 8px;
             }
         }
     </style>
@@ -770,21 +773,14 @@
 
 <!-- Popout -->
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
-    <div class="login-popout-container">
+    <div class="popout-container">
 
         <div class="login-side" *ngIf="activeTab === 1">
 
             <div class="popout-header">
-                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-                <!--<h1>Entre para continuar</h1>-->
-            </div>
-
-            <!--
-            <div style="display: flex; justify-content: space-between;">
-                <h1>Entre para continuar</h1>
+                <h2 class="popout-title">Entre para continuar</h2>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
-            -->
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -832,16 +828,9 @@
         <div class="login-side" *ngIf="activeTab === 2">
 
             <div class="popout-header">
-                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-                <!--<h1>Entre para continuar</h1>-->
-            </div>
-
-            <!--
-            <div style="display: flex; justify-content: space-between;">
-                <h1>Cadastre-se para continuar</h1>
+                <h2 class="popout-title">Cadastre-se para continuar</h2>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
-            -->
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
