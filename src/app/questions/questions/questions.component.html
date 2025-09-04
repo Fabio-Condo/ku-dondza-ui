@@ -995,7 +995,7 @@
             border: none;
             cursor: pointer;
             padding: 0rem;
-            font-size: 0.9rem;
+            font-size: 1.25rem;
             transition: color 0.3s ease;
             color: #6c757d;
         }
@@ -1008,12 +1008,16 @@
             color: #4361ee;
         }
 
+        .bookmark-button .pi {
+            font-size: 12px;
+        }
+
         .pi.pi-spinner-dotted {
             font-size: 0.9rem;
             color: #4361ee;
         }
 
-        .save-loading-text {
+        .bookmark-button .save-loading-text {
             font-style: italic;
             font-size: 0.9rem;
             color: #4361ee;
@@ -1021,7 +1025,7 @@
 
         .separator {
             width: 1px;
-            height: 20px;
+            height: 15px;
             background-color: #ccc;
         }
 
@@ -1196,7 +1200,8 @@
 
                         <div class="bookmark-section">
                             <button (click)="onSave(question)" class="action-btn bookmark-button"
-                                [class.saved]="question.savedByUser" aria-label="Salvar questão">
+                                style="font-size: 2rem" [class.saved]="question.savedByUser"
+                                aria-label="Salvar questão">
 
                                 <!-- Ícone de bookmark (normal ou preenchido) -->
                                 <i class="pi" *ngIf="!question.showLoadingSave"
