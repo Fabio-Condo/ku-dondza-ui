@@ -421,32 +421,31 @@
         }
 
         .popout-header {
-            flex-shrink: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            padding: 0px 16px 8px 16px;
-            background-color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            margin-bottom: 0px;
         }
 
-        .handle-bar {
-            width: 60px;
-            height: 4px;
-            border-radius: 2px;
-            background-color: #ccc;
-            margin-bottom: 8px;
-            cursor: pointer;
-        }
-
-        .popout-header h1 {
-            font-size: 1rem;
+        .popout-title {
+            font-size: 24px;
             font-weight: 600;
+            color: var(--color-black);
             margin: 0;
-            text-align: center;
-            color: #333;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: var(--color-black);
         }
 
         .form-group {
@@ -660,19 +659,22 @@
             }
 
             .popout-container {
-                position: fixed;
-                /*bottom: 10;*/
-                /*bottom: 0;*/
-                left: 0;
-                padding: 24px;
-                width: 100%;
+                width: 95%;
+                padding: 10px;
                 max-width: 100%;
-                height: 80%;
-                border-top-left-radius: 16px;
-                border-top-right-radius: 16px;
-                border-bottom-left-radius: 0px;
-                border-bottom-right-radius: 0px;
+                max-height: 70vh;
+                border-radius: 8px;
                 overflow-y: auto;
+            }
+
+            .popout-title {
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .close-button {
+                font-size: 20px;
+                padding: 8px;
             }
 
             .fab {
@@ -838,7 +840,7 @@
 <div class="popout-overlay" *ngIf="displayModalSave">
     <div class="popout-container">
         <div class="popout-header">
-            <h2 class="popout-title">{{ editing ? 'Editando Disciplina' : 'Adicionando Nova Disciplina' }}</h2>
+            <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
             <button class="close-button" (click)="displayModalSave = false">&times;</button>
         </div>
 
@@ -868,8 +870,8 @@
     <div class="popout-container">
 
         <div class="popout-header">
-            <div class="handle-bar" (click)="toggleFilter()"></div>
-            <!--<h1>Entre para continuar</h1>-->
+            <h2 class="popout-title">Filtrar</h2>
+            <button class="close-button" (click)="toggleFilter()">&times;</button>
         </div>
 
         <form>

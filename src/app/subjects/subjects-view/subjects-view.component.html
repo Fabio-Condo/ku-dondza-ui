@@ -98,7 +98,8 @@
                                         <div class="lesson-title-with-check">
                                             <input type="checkbox" class="styled-checkbox"
                                                 [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
-                                                (change)="toggleMarkedContent(content)" *ngIf="!content.showLoadingMarked && isUserLoggedIn && subject.currentUserSubscribed"
+                                                (change)="toggleMarkedContent(content)"
+                                                *ngIf="!content.showLoadingMarked && isUserLoggedIn && subject.currentUserSubscribed"
                                                 [disabled]="!subject.currentUserSubscribed || content.showLoadingMarked" />
                                             <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
                                                 style="color: #4361ee; font-size: 18px;"></i>
@@ -213,16 +214,9 @@
         <div class="login-side" *ngIf="activeTab === 1">
 
             <div class="popout-header">
-                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-                <!--<h1>Entre para continuar</h1>-->
-            </div>
-
-            <!--
-            <div style="display: flex; justify-content: space-between;">
-                <h1>Cadastre-se para continuar</h1>
+                <h2 class="popout-title">Entre para continuar</h2>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
-            -->
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
@@ -270,16 +264,9 @@
         <div class="login-side" *ngIf="activeTab === 2">
 
             <div class="popout-header">
-                <div class="handle-bar" (click)="onCloseLoginPopout()"></div>
-                <!--<h1>Entre para continuar</h1>-->
-            </div>
-
-            <!--
-            <div style="display: flex; justify-content: space-between;">
-                <h1>Cadastre-se para continuar</h1>
+                <h2 class="popout-title">Cadastre-se para continuar</h2>
                 <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
             </div>
-            -->
 
             <div id="google-signin-button" *ngIf="step === 'email'"></div>
 
