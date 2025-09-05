@@ -37,8 +37,6 @@ import { PrivacyPolicyRoutingModule } from './privacy-policy/privacy-policy-rout
 import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
 import { AboutUsModule } from './about-us/about-us.module';
 import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
-import { CompetitionRoutingModule } from './competitions/competition-routing.module';
-import { CompetitionsModule } from './competitions/competitions.module';
 import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
 
 @NgModule({
@@ -56,7 +54,6 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     UsersRoutingModule,
     HomeRoutingModule,
     QuizRoutingModule,
-    CompetitionRoutingModule,
     QuestionRoutingModule,
     MainPanelRoutingModule,
     PricesRoutingModule,
@@ -69,7 +66,6 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     UsersModule,
     HomeModule,
     QuizModule,
-    CompetitionsModule,
     QuestionsModule,
     MainPanelModule,
     PricesModule,

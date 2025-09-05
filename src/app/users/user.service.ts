@@ -6,7 +6,6 @@ import { User } from '../core/model/User';
 import { CustomHttpRespone } from '../core/model/custom-http-response';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { IUserFilter } from '../core/interface/IUserFilter';
-import { OnlineCourseFilter } from '../core/interface/OnlineCourseFilter';
 import { Subject } from '../core/model/Subject';
 
 
@@ -168,9 +167,9 @@ export class UserService {
     return this.http.put<User>(`${this.host}/${userId}/marked-topic-contents/${topicContentId}/toggle`, {});
   }
 
-  toggleMarkedContent(userId: number, onlineCourseContentId: number): Observable<User> {
-    return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
-  }
+ // toggleMarkedContent(userId: number, onlineCourseContentId: number): Observable<User> {
+ //   return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
+ // }
 
   toggleSaveQuestion(userId: number, questionId: number): Observable<User> {
     return this.http.put<User>(`${this.host}/${userId}/saved-questions/${questionId}/toggle`, {});

@@ -433,8 +433,6 @@
         <ul class="nav-links">
           <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/main-panel')"
               routerLink="/main-panel">Início</a></li>
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/competitions')"
-              routerLink="/competitions">Competições</a></li>
           <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
           <li><a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a></li>
           <li><a [class.active]="isActive('/topics')" routerLink="/topics">Tópicos</a></li>
@@ -471,8 +469,6 @@
     <ul class="mobile-nav-links">
       <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/main-panel')" routerLink="/main-panel"
           (click)="toggleMenu()">Início</a></li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/competitions')"
-          routerLink="/competitions" (click)="toggleMenu()">Competições</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
       <li><a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a></li>
