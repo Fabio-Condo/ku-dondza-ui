@@ -17,8 +17,6 @@ export class AuthInterceptor implements HttpInterceptor {
     `${this.authenticationService.host}/online-course`,
     `${this.authenticationService.host}/online-course-content`,
     `${this.authenticationService.host}/modules`,
-    `${this.authenticationService.host}/books`,
-    `${this.authenticationService.host}/articles`,
     `${this.authenticationService.host}/user`,
     `${this.authenticationService.host}/questions`,
     `${this.authenticationService.host}/users`,

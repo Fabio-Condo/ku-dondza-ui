@@ -25,16 +25,12 @@ import { QuizModule } from './quiz/quiz.module';
 import { QuizRoutingModule } from './quiz/quiz-routing.module';
 import { QuestionRoutingModule } from './questions/question-routing.module';
 import { QuestionsModule } from './questions/questions.module';
-import { BooksRoutingModule } from './books/books-routing.module';
-import { BooksModule } from './books/books.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SubjectsRoutingModule } from './subjects/subjects-routing.module';
 import { TopicsModule } from './topics/topics.module';
 import { TopicsRoutingModule } from './topics/topics-routing.module';
 import { MainPanelRoutingModule } from './main-panel/main-panel-routing.module';
 import { MainPanelModule } from './main-panel/main-panel.module';
-import { ArticlesModule } from './articles/articles.module';
-import { ArticlesRoutingModule } from './articles/articles-routing.module';
 import { PricesModule } from './prices/prices.module';
 import { PricesRoutingModule } from './prices/prices-routing.module';
 import { FaqRoutingModule } from './faq/faq-routing.module';
@@ -57,7 +53,6 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     HttpClientModule,
     BrowserAnimationsModule,
 
-    BooksRoutingModule,
     SubjectsRoutingModule,
     TopicsRoutingModule,
     OnlineCoursesRoutingModule,
@@ -67,13 +62,11 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     CompetitionRoutingModule,
     QuestionRoutingModule,
     MainPanelRoutingModule,
-    ArticlesRoutingModule,
     PricesRoutingModule,
     FaqRoutingModule,
     PrivacyPolicyRoutingModule,
     AboutUsRoutingModule,
 
-    BooksModule,
     SubjectsModule,
     TopicsModule,
     OnlineCoursesModule,
@@ -83,7 +76,6 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     CompetitionsModule,
     QuestionsModule,
     MainPanelModule,
-    ArticlesModule,
     PricesModule,
     FaqModule,
     PrivacyPolicyModule,
