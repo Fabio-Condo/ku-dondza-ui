@@ -17,8 +17,6 @@ import { AuthenticationGuard } from './security/Guard/authentication.guard';
 import { UserService } from './users/user.service';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthInterceptor } from './security/interceptor/auth.interceptor';
-import { OnlineCoursesModule } from './online-courses/online-courses.module';
-import { OnlineCoursesRoutingModule } from './online-courses/online-courses-routing.module';
 import { HomeModule } from './home/home.module';
 import { HomeRoutingModule } from './home/home-routing.module';
 import { QuizModule } from './quiz/quiz.module';
@@ -55,7 +53,6 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
 
     SubjectsRoutingModule,
     TopicsRoutingModule,
-    OnlineCoursesRoutingModule,
     UsersRoutingModule,
     HomeRoutingModule,
     QuizRoutingModule,
@@ -69,7 +66,6 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
 
     SubjectsModule,
     TopicsModule,
-    OnlineCoursesModule,
     UsersModule,
     HomeModule,
     QuizModule,

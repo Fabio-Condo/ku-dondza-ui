@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { OnlineCourseContent } from '../core/model/Online-course-content';
 import { TopicContent } from '../core/model/Topic-content';
 
 
@@ -39,9 +38,9 @@ export class TopicContentService {
         return this.http.delete<void>(`${this.host}/${id}`, {});
     }
 
-    findById(id: number): Observable<OnlineCourseContent> {
-        return this.http.get<OnlineCourseContent>(`${this.host}/${id}`, {});
-    }
+    //findById(id: number): Observable<OnlineCourseContent> {
+    //    return this.http.get<OnlineCourseContent>(`${this.host}/${id}`, {});
+    //}
 
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});

@@ -439,8 +439,6 @@
           <li><a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a></li>
           <li><a [class.active]="isActive('/topics')" routerLink="/topics">Tópicos</a></li>
           <li><a [class.active]="isActive('/subjects')" routerLink="/subjects">Disciplinas</a></li>
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/courses')"
-              routerLink="/courses">Cursos</a></li>
           <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/users')"
               routerLink="/users">Pessoas</a></li>
         </ul>
@@ -479,8 +477,6 @@
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
       <li><a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a></li>
       <li><a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">Disciplinas</a></li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/courses')" routerLink="/courses"
-          (click)="toggleMenu()">Cursos</a></li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/users')" routerLink="/users"
           (click)="toggleMenu()">Pessoas</a></li>
     </ul>
