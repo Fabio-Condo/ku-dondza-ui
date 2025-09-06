@@ -317,6 +317,7 @@ export class QuestionsComponent implements OnInit {
     this.question = question;
     this.question.id = question.id;
     this.displayModalSave = true;
+    document.body.classList.add('no-scroll');
 
     this.selectedSubject = (this.question.topic.subject) ? this.question.topic.subject.id : undefined;
     if (this.selectedSubject) {
@@ -331,11 +332,23 @@ export class QuestionsComponent implements OnInit {
   onAddNewQuestion(): void {
     this.question = new Question();
     this.displayModalSave = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  closeSavePopout(): void {
+    this.displayModalSave = false;
+    document.body.classList.remove('no-scroll');
   }
 
   onGenerateFromAI(): void {
     this.question = new Question();
     this.displayModalgenerateFromAI = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  closeGenerateFromAiPopout(): void {
+    this.displayModalgenerateFromAI = false;
+    document.body.classList.remove('no-scroll');
   }
 
   generateFromAI(): void {
@@ -374,20 +387,20 @@ export class QuestionsComponent implements OnInit {
     this.question = question;
     this.displayModalPriview = true;
     this.showCorrection = true;
-
     this.renderMathExpressions();
     this.renderFunctions();
   }
 
-  togglePriview(): void {
-    this.displayModalPriview = !this.displayModalPriview;
+  onPriviewQuestion(question: Question): void {
+    this.displayModalPriview = true;
+    this.priviewQuestion(question);
+    document.body.classList.add('no-scroll');
+  }
 
-    if (this.displayModalPriview) {
-      document.body.classList.add('no-scroll');
-    } else {
-      this.showCorrection = false;
-      document.body.classList.remove('no-scroll');
-    }
+  closePriview(): void {
+    this.displayModalPriview = false;
+    this.showCorrection = false;
+    document.body.classList.remove('no-scroll');
   }
 
   excluir(question: Question) {

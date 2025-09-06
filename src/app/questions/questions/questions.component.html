@@ -1175,7 +1175,7 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
-                                <a (click)="priviewQuestion(question); closeDropdown(question)">Visualizar</a>
+                                <a (click)="onPriviewQuestion(question); closeDropdown(question)">Visualizar</a>
                                 <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
                                 <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
                             </div>
@@ -1305,7 +1305,7 @@
 
         <div class="popout-header">
             <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
-            <button class="close-button" (click)="displayModalSave = false">&times;</button>
+            <button class="close-button" (click)="closeSavePopout()">&times;</button>
         </div>
 
         <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="save(questionForm)">
@@ -1663,7 +1663,7 @@
 
         <div class="popout-header">
             <h2 class="popout-title">Prévisualização</h2>
-            <button class="close-button" (click)="togglePriview()">&times;</button>
+            <button class="close-button" (click)="closePriview()">&times;</button>
         </div>
 
 
@@ -1763,7 +1763,7 @@
 
         <div class="popout-header">
             <h2 class="popout-title">Gerar com IA</h2>
-            <button class="close-button" (click)="displayModalgenerateFromAI = false">&times;</button>
+            <button class="close-button" (click)="closeGenerateFromAiPopout()">&times;</button>
         </div>
 
         <div class="form-group">
