@@ -748,18 +748,6 @@ export class QuestionViewComponent implements OnInit {
     }
   }
 
-  getDifficultyLevelValue(level: string) {
-    switch (level) {
-      case 'EASY':
-        return 'Fácil';
-      case 'MEDIUM':
-        return 'Médio';
-      case 'HARD':
-        return 'Dificil';
-    }
-    return '';
-  }
-
   getFormattedText(text: string): string {
     // Negrito: **texto** → <strong>texto</strong>
     let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');

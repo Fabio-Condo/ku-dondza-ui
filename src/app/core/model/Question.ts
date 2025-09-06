@@ -15,7 +15,6 @@ export class Question {
     validated: boolean = false;
     fileName!: string;
     urlFile!: string;
-    difficultyLevel!: string;
     topic = new Topic();
     answers: Answer[] = [];
     numberOfComments: number = 0;

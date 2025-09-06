@@ -791,18 +791,6 @@ export class QuizzQuestionsComponent implements OnInit {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
-  getDifficultyLevelValue(level: string) {
-    switch (level) {
-      case 'EASY':
-        return 'Fácil';
-      case 'MEDIUM':
-        return 'Médio';
-      case 'HARD':
-        return 'Dificil';
-    }
-    return '';
-  }
-
   getQuizTypeValue(type: string) {
     switch (type) {
       case 'TEST':

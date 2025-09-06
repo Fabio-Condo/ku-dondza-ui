@@ -107,12 +107,6 @@ export class QuestionsComponent implements OnInit {
     { label: '3 minutos', value: '180' },
   ];
 
-  difficultyLevels = [
-    { label: 'Fácil', value: 'EASY' },
-    { label: 'Médio', value: 'MEDIUM' },
-    { label: 'Dificil', value: 'HARD' },
-  ];
-
   numberOfOptionsList = [
     { label: '4 opções', value: 4 },
     { label: '5 opções', value: 5 },
@@ -355,7 +349,7 @@ export class QuestionsComponent implements OnInit {
     this.loadingMessage = "Gerrando questão";
     this.showLoading = true;
 
-    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.question.difficultyLevel, this.extraRule, this.numberOfOptions).subscribe(
+    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.extraRule, this.numberOfOptions).subscribe(
       (question) => {
         this.question = question;
         this.renderMathExpressions();

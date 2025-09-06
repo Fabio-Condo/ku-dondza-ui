@@ -11,7 +11,6 @@ export class Quiz {
     submittedAt!: Date;
     timeLimit!: number; // Tempo atribuído em segundos
     timeSpent!: number; // Tempo gasto em segundos
-    difficultyLevel!: string;
     limitPerTopic!: number;
     anonymous: any; // Define se o quiz é anônimo
     type!: string; // "TRAINING" ou "TEST"

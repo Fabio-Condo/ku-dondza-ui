@@ -34,10 +34,6 @@ export class QuizService {
       params = params.set('user', filter.user);
     }
 
-    if (filter.difficultyLevel) {
-      params = params.set('difficultyLevel', filter.difficultyLevel);
-    }
-
     return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/filter`, { params });
   }
 

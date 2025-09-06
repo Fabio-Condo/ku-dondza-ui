@@ -128,183 +128,6 @@
       </div>
     </div>
 
-    <!-- 
-    <div *ngIf="showInitQuizScreen" class="start-screen">
-
-      <div class="quiz-card">
-
-        <div class="quiz-header">
-          <button class="go-back-btn" routerLink="/quizzes">
-            <i class="pi pi-arrow-left"></i>
-            Voltar
-          </button>
-          <h2>Configuração do Quiz</h2>
-          <p>Responda passo a passo para gerar suas questões</p>
-        </div>
-
-        <div class="progress-bar">
-          <div class="progress" [style.width.%]="stepProgressPercentage"></div>
-        </div>
-
-        <form autocomplete="off" #courseForm="ngForm">
-
-          <div *ngIf="true" class="form-group animate-step">
-            <label for="anonymous">Modo</label>
-            <select id="anonymous" [(ngModel)]="quiz.anonymous" name="anonymous" required>
-              <option [ngValue]="null" disabled>Escolha o modo</option>
-              <option *ngFor="let anonymous of anonymousOptions" [ngValue]="anonymous.value">
-                {{ anonymous.label }}
-              </option>
-            </select>
-          </div>
-
-          <div *ngIf="quiz.anonymous !== null" class="form-group animate-step">
-            <label for="type">Tipo</label>
-            <select id="type" [(ngModel)]="quiz.type" name="type" required>
-              <option [ngValue]="null" disabled>Selecione o tipo</option>
-              <option *ngFor="let type of quizTypes" [value]="type.value">{{ type.label }}</option>
-            </select>
-          </div>
-
-          <div *ngIf="quiz.type" class="form-group animate-step">
-            <label for="difficultyLevel">Nível de dificuldade</label>
-            <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
-              <option [ngValue]="null" disabled>Selecione o nível</option>
-              <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
-            </select>
-          </div>
-
-          <div *ngIf="quiz.difficultyLevel" class="form-group animate-step">
-            <label for="limitPerTopic">Nº de questões por tópico</label>
-            <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
-              <option [ngValue]="null" disabled>Selecione o limite</option>
-              <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
-            </select>
-          </div>
-
-          <div *ngIf="quiz.limitPerTopic" class="form-group animate-step">
-            <label for="subject">Disciplina</label>
-            <select id="subject" [(ngModel)]="quiz.subject" (ngModelChange)="getTopicsBySubjectId(quiz.subject.id)"
-              [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
-              <option [ngValue]="null" disabled>Selecione a disciplina</option>
-              <option *ngFor="let subject of subjects" [ngValue]="subject">
-                {{ subject.name }}
-              </option>
-            </select>
-          </div>
-
-          <div *ngIf="quiz.subject?.id && topics.length > 0" class="form-group animate-step">
-            <label>Selecione os Tópicos</label>
-            <ul class="topics-list">
-              <li *ngFor="let topic of topics" class="topic-item">
-                <label>
-                  <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
-                  <span class="custom-checkbox"></span>
-                  <span class="topic-name">{{ topic.name }}</span>
-                </label>
-              </li>
-            </ul>
-          </div>
-
-          <div class="form-actions" *ngIf="getSelectedTopicIds().length > 0">
-            <button class="start-button" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
-              <span>Gerar Questões</span>
-            </button>
-          </div>
-
-        </form>
-      </div>
-    </div>
-    -->
-
-    <!-- Tela de inicair quiz -->
-    <!-- 
-    <div *ngIf="showInitQuizScreen" class="start-screen">
-      <div class="start-screen-content">
-
-        <div class="quiz-header">
-
-          <button class="go-back-btn" routerLink="/quizzes">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 12H5"></path>
-              <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-            Voltar
-          </button>
-        </div>
-
-        <form autocomplete="off" #courseForm="ngForm">
-
-          <div class="form-group">
-            <label for="anonymous">Modo</label>
-            <select id="anonymous" [ngModel]="quiz.anonymous"
-              (ngModelChange)="quiz.anonymous = $event === 'true' || $event === true" name="anonymous" required>
-              <option value="" disabled selected>Escolha o modo</option>
-              <option *ngFor="let anonymous of anonymousOptions" [value]="anonymous.value">
-                {{ anonymous.label }}
-              </option>
-            </select>
-
-          </div>
-
-          <div class="form-group">
-            <label for="type">Tipo</label>
-            <select id="type" [(ngModel)]="quiz.type" name="type" required>
-              <option value="" disabled selected>Selecione o tipo</option>
-              <option *ngFor="let type of quizTypes" [value]="type.value">{{ type.label }}</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="difficultyLevel">Nivel de dificuldade</label>
-            <select id="difficultyLevel" [(ngModel)]="quiz.difficultyLevel" name="difficultyLevel" required>
-              <option value="" disabled selected>Selecione o nivel</option>
-              <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="limitPerTopic">Nº de questões por tópico</label>
-            <select id="limitPerTopic" [(ngModel)]="quiz.limitPerTopic" name="limitPerTopic" required>
-              <option value="" disabled selected>Selecione o limite</option>
-              <option *ngFor="let limit of limitsPerTopic" [value]="limit.value">{{ limit.label }}</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="subject">Disciplina</label>
-            <select id="subject" [(ngModel)]="quiz.subject" (change)="getTopicsBySubjectId(quiz.subject.id)"
-              [disabled]="showLoading || showGetSubjectLoading" name="subject" required>
-              <option value="" disabled selected>Selecione a disciplina</option>
-              <option *ngFor="let subject of subjects" [ngValue]="subject">
-                {{ subject.name }}
-              </option>
-            </select>
-          </div>
-
-          <div class="form-group" *ngIf="quiz.subject.id && topics.length > 0">
-            <label>Selecione os Tópicos</label>
-            <ul class="topics-list">
-              <li *ngFor="let topic of topics" class="topic-item">
-                <label>
-                  <input type="checkbox" [checked]="topic.selected" (change)="toggleTopic(topic)" />
-                  <span class="custom-checkbox"></span>
-                  <span class="topic-name">{{ topic.name }}</span>
-                </label>
-              </li>
-            </ul>
-          </div>
-
-          <button class="start-button" (click)="getQuestions()"
-            [disabled]="getSelectedTopicIds().length === 0 || showLoading || showGetSubjectLoading">
-            <span>Gerar Questões</span>
-          </button>
-        </form>
-      </div>
-    </div>
-    -->
-
     <button *ngIf="showStartScreen" class="go-back-btn" routerLink="/quizzes">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -342,18 +165,6 @@
             <div>
               <p class="meta-label">Tópicos</p>
               <p class="meta-valor">{{ topics.length }}</p>
-            </div>
-          </div>
-
-          <div class="meta-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 3v18h18"></path>
-              <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
-            </svg>
-            <div>
-              <p class="meta-label">Dificuldade</p>
-              <p class="meta-valor">{{ getDifficultyLevelValue(quiz.difficultyLevel) }}</p>
             </div>
           </div>
 
@@ -556,7 +367,7 @@
                 </span>
               </h1>
 
-              <span>{{ quiz.subject.name }} | {{ getDifficultyLevelValue(quiz.difficultyLevel) }} | {{
+              <span>{{ quiz.subject.name }} | {{
                 getQuizTypeValue(quiz.type) }}</span>
 
             </div>

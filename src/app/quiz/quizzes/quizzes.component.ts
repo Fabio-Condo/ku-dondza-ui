@@ -50,12 +50,6 @@ export class QuizzesComponent implements OnInit {
 
   @ViewChild('table') grid: any;
 
-  difficultyLevels = [
-    { label: 'Fácil', value: 'EASY' },
-    //{ label: 'Médio', value: 'MEDIUM' },
-    //{ label: 'Dificil', value: 'HARD' },
-  ];
-
   filter: QuizFilter = {
     page: 0,
     itemsPerPage: 5,
@@ -304,22 +298,9 @@ export class QuizzesComponent implements OnInit {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
-  getDifficultyLevelValue(level: string) {
-    switch (level) {
-      case 'EASY':
-        return 'Fácil';
-      case 'MEDIUM':
-        return 'Médio';
-      case 'HARD':
-        return 'Dificil';
-    }
-    return '';
-  }
-
   limparCampos() {
     this.filter.searchParam = "";
     this.filter.subject = undefined;
-    this.filter.difficultyLevel = undefined;
     this.selectQuizOption = 'ALL_QUIZZES';
     this.getQuizzes();
   }
