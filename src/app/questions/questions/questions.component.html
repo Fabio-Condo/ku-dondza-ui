@@ -1171,13 +1171,16 @@
                 <div class="card-header">
                     <span class="badge matematica">{{ question.topic.subject.name }}</span>
                     <div>
-                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
+                        <div class="dropdown-container">
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
-                                <a (click)="onPriviewQuestion(question); closeDropdown(question)">Visualizar</a>
-                                <a (click)="onUpdateQuestion(question); closeDropdown(question)">Editar</a>
-                                <a (click)="confirmarExclusao(question); closeDropdown(question)">Eliminar</a>
+                                <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
+                                <a (click)="onPriviewQuestion(question); closeDropdown(question)">Visualizar daqui</a>
+                                <a (click)="onUpdateQuestion(question); closeDropdown(question)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
+                                <a (click)="confirmarExclusao(question); closeDropdown(question)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
                             </div>
                         </div>
                     </div>

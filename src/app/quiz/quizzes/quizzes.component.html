@@ -54,11 +54,13 @@
                 <div class="quiz-header">
                     <span class="badge matematica">{{ quiz.subject.name }}</span>
                     <div>
-                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
+                        <div class="dropdown-container">
                             <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
-                                <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)">Eliminar</a>
+                                <a [routerLink]="['/quizzes', quiz.quizId, 'questions']">Visualizar</a>
+                                <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
                             </div>
                         </div>
                     </div>

@@ -747,12 +747,13 @@
                             aaaa
                         </span>
                         -->
-                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
+                        <div class="dropdown-container">
                             <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
-                                <a (click)="onUpdateSubject(subject); closeDropdown(subject)">Editar</a>
-                                <a (click)="confirmarExclusao(subject); closeDropdown(subject)">Eliminar</a>
+                                <a [routerLink]="['/subjects', subject.subjectId]">Visualizar</a>
+                                <a (click)="onUpdateSubject(subject); closeDropdown(subject)" *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
+                                <a (click)="confirmarExclusao(subject); closeDropdown(subject)" *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
                             </div>
                         </div>
                     </div>
