@@ -1176,7 +1176,8 @@
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
                                 <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
-                                <a (click)="onPriviewQuestion(question); closeDropdown(question)">Visualizar daqui</a>
+                                <a (click)="onPriviewQuestion(question); closeDropdown(question)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Visualizar daqui</a>
                                 <a (click)="onUpdateQuestion(question); closeDropdown(question)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
                                 <a (click)="confirmarExclusao(question); closeDropdown(question)"
