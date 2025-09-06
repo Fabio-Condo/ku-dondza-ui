@@ -67,19 +67,8 @@
             </div>
           </div>
 
-          <!-- Step 3: Dificuldade -->
+          <!-- Step 3: Disciplina -->
           <div class="step-card animate-step" *ngIf="quiz.type">
-            <p class="step-description">Defina o nível de dificuldade das questões.</p>
-            <div class="options-grid">
-              <div *ngFor="let level of difficultyLevels" (click)="quiz.difficultyLevel = level.value"
-                [class.selected]="quiz.difficultyLevel === level.value" class="option-card">
-                {{ level.label }}
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 4: Disciplina -->
-          <div class="step-card animate-step" *ngIf="quiz.difficultyLevel">
             <p class="step-description">Escolha a disciplina para este quiz.</p>
             <div class="options-grid">
               <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
@@ -89,7 +78,7 @@
             </div>
           </div>
 
-          <!-- Step 5: Tópicos -->
+          <!-- Step 4: Tópicos -->
           <div class="step-card animate-step" *ngIf="quiz.subject?.id && topics.length > 0">
             <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
 
@@ -113,7 +102,7 @@
             </div>
           </div>
 
-          <!-- Step 6: Limite por tópico -->
+          <!-- Step 5: Limite por tópico -->
           <div class="step-card animate-step" *ngIf="getSelectedTopicIds().length > 0">
             <p class="step-description">Escolha o número de questões por tópico.</p>
             <div class="options-grid">

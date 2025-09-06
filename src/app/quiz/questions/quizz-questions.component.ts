@@ -112,12 +112,6 @@ export class QuizzQuestionsComponent implements OnInit {
     { label: 'Treino', value: 'TRAINING' },
   ];
 
-  difficultyLevels = [
-    { label: 'Fácil', value: 'EASY' },
-    //{ label: 'Médio', value: 'MEDIUM' },
-    //{ label: 'Dificil', value: 'HARD' },
-  ];
-
   limitsPerTopic = [
     { label: '2', value: 2 },
     { label: '3', value: 3 },
@@ -187,7 +181,6 @@ export class QuizzQuestionsComponent implements OnInit {
     let filled = 0;
     if (this.quiz.anonymous !== null) filled++;
     if (this.quiz.type) filled++;
-    if (this.quiz.difficultyLevel) filled++;
     if (this.quiz.limitPerTopic) filled++;
     if (this.quiz.subject) filled++;
     if (this.getSelectedTopicIds().length > 0) filled++;
@@ -269,7 +262,7 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     this.showLoading = true;
-    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.limitPerTopic).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
         this.quiz.questions = this.questions;
