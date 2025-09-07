@@ -215,6 +215,11 @@ export class UsersComponent implements OnInit {
   }
 
   toggleDropdown(user: User) {
+    this.users.forEach(u => {
+      if (u !== user) {
+        u.isAdminMenuOpen = false;
+      }
+    });
     user.isAdminMenuOpen = !user.isAdminMenuOpen
   }
 
