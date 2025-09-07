@@ -225,7 +225,12 @@ export class TopicsComponent implements OnInit {
   }
 
   toggleDropdown(topic: Topic) {
-    topic.isAdminMenuOpen = !topic.isAdminMenuOpen
+    this.topics.forEach(t => {
+      if (t !== topic) {
+        t.isAdminMenuOpen = false;
+      }
+    });
+    topic.isAdminMenuOpen = !topic.isAdminMenuOpen;
   }
 
   closeDropdown(topic: Topic) {

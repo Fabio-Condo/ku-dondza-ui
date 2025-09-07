@@ -164,7 +164,12 @@ export class QuizzesComponent implements OnInit {
   }
 
   toggleDropdown(quiz: Quiz) {
-    quiz.isAdminMenuOpen = !quiz.isAdminMenuOpen
+    this.quizzes.forEach(q => {
+      if (q !== quiz) {
+        q.isAdminMenuOpen = false;
+      }
+    });
+    quiz.isAdminMenuOpen = !quiz.isAdminMenuOpen;
   }
 
   closeDropdown(quiz: Quiz) {

@@ -137,7 +137,7 @@ export class SubjectsComponent implements OnInit {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.subjectsService.filter(this.filtro, this.loggedUser.id).subscribe(  
+    this.subjectsService.filter(this.filtro, this.loggedUser.id).subscribe(
       (dados: IApiResponse<Subject>) => {
         this.subjects = dados.content;
         this.totalRegistros = dados.totalElements;
@@ -214,7 +214,12 @@ export class SubjectsComponent implements OnInit {
   }
 
   toggleDropdown(subject: Subject) {
-    subject.isAdminMenuOpen = !subject.isAdminMenuOpen
+    this.subjects.forEach(s => {
+      if (s !== subject) {
+        s.isAdminMenuOpen = false;
+      }
+    });
+    subject.isAdminMenuOpen = !subject.isAdminMenuOpen;
   }
 
   closeDropdown(subject: Subject) {
