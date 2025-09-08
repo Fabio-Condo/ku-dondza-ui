@@ -927,7 +927,7 @@
 
         <!-- Ação -->
         <div class="popout-actions">
-            <button class="btn-subscription" (click)="onSubjectSubscription()">
+            <button class="btn-subscription" (click)="onSubjectSubscription()" [disabled]="topic.subject.currentUserSubscribed">
                 <span
                     *ngIf="!topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrever-se
                     Agora</span>
