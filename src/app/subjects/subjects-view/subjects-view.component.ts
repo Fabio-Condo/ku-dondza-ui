@@ -34,6 +34,8 @@ export class SubjectsViewComponent {
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
 
+  displayModalSubscriptionInfo: boolean = false;
+
   userSubjectSubscription: UserSubjectSubscription = new UserSubjectSubscription();
 
   showLesson: boolean = false;
@@ -147,6 +149,12 @@ export class SubjectsViewComponent {
   }
 
   playVideo(content: TopicContent): void {
+
+    if (!this.subject.currentUserSubscribed) {
+      this.displayModalSubscriptionInfo = true;
+      return;
+    }
+
     this.showLesson = true;
     this.selectedTopicContent = content;
 
@@ -234,6 +242,12 @@ export class SubjectsViewComponent {
   }
 
   download(content: TopicContent, filename: string): void {
+
+    if (!this.subject.currentUserSubscribed) {
+      this.displayModalSubscriptionInfo = true;
+      return;
+    }
+
     content.showLoadingDownload = true;
     this.topicContentService.download(content.id, filename, this.loggedUser.id).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });

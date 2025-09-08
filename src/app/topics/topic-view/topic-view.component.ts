@@ -233,7 +233,6 @@ export class TopicViewComponent implements OnInit {
 
     if (!this.topic.subject.currentUserSubscribed) {
       this.displayModalSubscriptionInfo = true;
-      //this.sendErrorNotification("Você precisa estar inscrito no curso para acessar este conteúdo.");
       return;
     }
 
@@ -303,7 +302,7 @@ export class TopicViewComponent implements OnInit {
   playVideo(content: TopicContent): void {
 
     if (!this.topic.subject.currentUserSubscribed) {
-      this.sendErrorNotification("Você precisa estar inscrito no curso para acessar este conteúdo.");
+      this.displayModalSubscriptionInfo = true;
       return;
     }
 

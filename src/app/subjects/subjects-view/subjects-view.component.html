@@ -124,7 +124,7 @@
                                         </a>
 
                                         <button class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                                            [disabled]="content.showLoadingDownload || (isUserLoggedIn && !subject.currentUserSubscribed)"
+                                            [disabled]="content.showLoadingDownload"
                                             (click)="onDownload(content, content.fileName)">
                                             <svg *ngIf="!content.showLoadingDownload" width="16" height="16"
                                                 viewBox="0 0 24 24" fill="none">
@@ -317,5 +317,39 @@
                 Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="popout-overlay" *ngIf="displayModalSubscriptionInfo" (click)="displayModalSubscriptionInfo = false">
+    <div class="popout-container" (click)="$event.stopPropagation()">
+
+        <!-- Header -->
+        <div class="popout-header">
+            <h2 class="popout-title">Conteúdo Exclusivo</h2>
+            <button class="close-button" (click)="displayModalSubscriptionInfo = false">&times;</button>
+        </div>
+
+        <!-- Corpo -->
+        <div class="popout-body">
+            <p>
+                Para acessar este material da disciplina, você precisa estar inscrito no curso.<br />
+                <strong>Desbloqueie todo o conteúdo e potencialize seu aprendizado!</strong>
+            </p>
+        </div>
+
+        <!-- Ação -->
+        <div class="popout-actions">
+            <button class="btn-subscription" (click)="onSubjectSubscription(subject)"
+                [disabled]="subject.currentUserSubscribed">
+                <span
+                    *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrever-se
+                    Agora</span>
+                <span
+                    *ngIf="!subject.currentUserSubscribed && subject.showLoadingSubscription">Inscrevendo...</span>
+                <span
+                    *ngIf="subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrito</span>
+            </button>
+        </div>
+
     </div>
 </div>
