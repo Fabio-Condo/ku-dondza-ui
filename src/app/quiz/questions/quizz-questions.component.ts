@@ -103,13 +103,29 @@ export class QuizzQuestionsComponent implements OnInit {
   @ViewChild('tabela') grid: any;
 
   anonymousOptions = [
-    { label: 'Fazer como anônimo', value: true },
-    { label: 'Mostrar meu nome', value: false },
+    {
+      label: 'Fazer como anônimo',
+      value: true,
+      description: 'Seu nome não será mostrado durante nem após o quiz.'
+    },
+    {
+      label: 'Mostrar meu nome',
+      value: false,
+      description: 'Seu nome ficará visível nas tentativas e resultados do quiz.'
+    },
   ];
 
   quizTypes = [
-    { label: 'Avaliação', value: 'TEST' },
-    { label: 'Treino', value: 'TRAINING' },
+    {
+      label: 'Avaliação',
+      value: 'TEST',
+      description: 'Você só vê a correção no fim, após submeter todo o teste.'
+    },
+    {
+      label: 'Treino',
+      value: 'TRAINING',
+      description: 'Você vê a correção de cada questão imediatamente após responder.'
+    },
   ];
 
   limitsPerTopic = [
@@ -185,7 +201,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (this.quiz.subject) filled++;
     if (this.getSelectedTopicIds().length > 0) filled++;
 
-    return (filled / 6) * 100;
+    return (filled / 5) * 100;
   }
 
   onInitQuiz() {

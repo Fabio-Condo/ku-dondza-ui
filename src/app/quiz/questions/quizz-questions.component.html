@@ -36,14 +36,17 @@
         <form autocomplete="off" #courseForm="ngForm">
 
           <!-- Step 1: Modo -->
+          <!-- Step 1: Modo -->
           <div class="step-card animate-step">
             <p class="step-description">Escolha se o quiz será anônimo ou identificado.</p>
             <div class="options-grid">
               <div *ngFor="let option of anonymousOptions" (click)="quiz.anonymous = option.value"
                 [class.selected]="quiz.anonymous === option.value" class="option-card">
-                {{ option.label }}
+                <h3>{{ option.label }}</h3>
+                <p class="option-description">{{ option.description }}</p>
               </div>
             </div>
+            <p class="info-note">⚠️ Você poderá alterar esta opção depois do quiz.</p>
           </div>
 
           <!-- Step 2: Tipo -->
@@ -52,7 +55,8 @@
             <div class="options-grid">
               <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
                 [class.selected]="quiz.type === type.value" class="option-card">
-                {{ type.label }}
+                <h3>{{ type.label }}</h3>
+                <p class="option-description">{{ type.description }}</p>
               </div>
             </div>
           </div>
