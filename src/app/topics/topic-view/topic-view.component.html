@@ -907,3 +907,35 @@
         </div>
     </div>
 </div>
+
+<div class="popout-overlay" *ngIf="displayModalSubscriptionInfo" (click)="displayModalSubscriptionInfo = false">
+    <div class="popout-container" (click)="$event.stopPropagation()">
+
+        <!-- Header -->
+        <div class="popout-header">
+            <h2 class="popout-title">Conteúdo Exclusivo</h2>
+            <button class="close-button" (click)="displayModalSubscriptionInfo = false">&times;</button>
+        </div>
+
+        <!-- Corpo -->
+        <div class="popout-body">
+            <p>
+                Para acessar este material da disciplina, você precisa estar inscrito no curso.<br />
+                <strong>Desbloqueie todo o conteúdo e potencialize seu aprendizado!</strong>
+            </p>
+        </div>
+
+        <!-- Ação -->
+        <div class="popout-actions">
+            <button class="btn-subscription" (click)="onSubjectSubscription()">
+                <span
+                    *ngIf="!topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrever-se
+                    Agora</span>
+                <span
+                    *ngIf="!topic.subject.currentUserSubscribed && topic.subject.showLoadingSubscription">Inscrevendo...</span>
+                <span *ngIf="topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrito</span>
+            </button>
+        </div>
+
+    </div>
+</div>
