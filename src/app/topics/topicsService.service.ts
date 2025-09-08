@@ -46,8 +46,14 @@ export class TopicService {
         return this.http.get<Topic>(`${this.host}/${id}`, {});
     }
 
-    getTopicByTopicId(topicId: string): Observable<Topic> {
-        return this.http.get<Topic>(`${this.host}/find-by-topicId/${topicId}`, {});
+    //getTopicByTopicId(topicId: string): Observable<Topic> {
+    //    return this.http.get<Topic>(`${this.host}/find-by-topicId/${topicId}`, {});
+    //}
+
+    getTopicByTopicId(topicId: string, currentUserId: number): Observable<Topic> {
+        let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString());
+        return this.http.get<Topic>(`${this.host}/find-by-topicId/${topicId}`, { params });
     }
 
     add(topic: Topic): Observable<Topic> {

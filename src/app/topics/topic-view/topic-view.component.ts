@@ -107,9 +107,16 @@ export class TopicViewComponent implements OnInit {
   }
 
   findById(id: string) {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
-    this.topicService.getTopicByTopicId(id).subscribe(
+
+    this.topicService.getTopicByTopicId(id, this.loggedUser.id).subscribe(
       (response) => {
         this.topic = response;
         this.showLoading = false;
@@ -196,6 +203,12 @@ export class TopicViewComponent implements OnInit {
   }
 
   download(content: TopicContent, filename: string): void {
+
+    if (!this.topic.subject.currentUserSubscribed) {
+      this.sendErrorNotification("Você precisa estar inscrito no curso para acessar este conteúdo.");
+      return;
+    }
+
     content.showLoadingDownload = true;
     this.topicContentService.download(content.id, filename, this.loggedUser.id).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
@@ -260,6 +273,12 @@ export class TopicViewComponent implements OnInit {
   }
 
   playVideo(content: TopicContent): void {
+
+    if (!this.topic.subject.currentUserSubscribed) {
+      this.sendErrorNotification("Você precisa estar inscrito no curso para acessar este conteúdo.");
+      return;
+    }
+
     this.showLesson = true;
     this.selectedContent = content;
 
