@@ -11,16 +11,7 @@
             <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
 
             <div class="actions">
-                <!--
-                <button class="start-quiz-button" id="add-btn" [routerLink]="['/quizzes/new/']">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Iniciar
-                </button>
-                -->
+
                 <button class="start-quiz-button" id="add-btn" [routerLink]="['/quizzes', 'new', 'questions']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,12 +34,6 @@
             <i class="pi pi-plus"></i>
         </button>
 
-        <!--
-        <button class="fab" [routerLink]="['/quizzes/new/']">
-            <i class="pi pi-plus"></i>
-        </button>
-        -->
-
         <div class="cards-container">
             <div class="card" *ngFor="let quiz of quizzes">
                 <div class="quiz-header">
@@ -67,10 +52,7 @@
                 </div>
                 <div class="quiz-content">
                     <div>
-                        <!--
-                        <div class="quiz-title">{{ quiz.title }}</div>
-                        <span style="color: #94a3b8; font-size: 14px;">{{ quiz.user.fullName }}</span>
-                        -->
+
                         <div class="quiz-title">
                             {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
                             <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id"></span>
@@ -113,17 +95,6 @@
                         </div>
                     </div>
 
-                    <!--
-                    <div class="user-container">
-                        <img src="{{quiz.user.profileImageUrl}}" alt="Foto de perfil" class="user-avatar"
-                            *ngIf="quiz.user.profileImageUrl">
-                        <div class="user-avatar" *ngIf="!quiz.user.profileImageUrl">
-                            <i class="fas fa-user" style="font-size: 0.5rem;"></i>
-                        </div>
-                        <span>{{ quiz.user.fullName }}</span>
-                    </div>
-                    -->
-
                     <div class="quiz-stats">
                         <div class="stats-left">
                             <div class="stat-item">
@@ -148,18 +119,7 @@
                                 </svg>
                                 {{ quiz.totalQuestions }} questões
                             </div>
-                            <!--
-                            <div class="stat-item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                                1 participante (Tú)
-                            </div>
-                            -->
+
                         </div>
                         <div class="stat-item score">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -241,15 +201,6 @@
                 </svg>
             </button>
         </div>
-
-        <!--
-        <select class="select-itens-por-pagina" (change)="changePageSize($event)">
-            <option *ngFor="let option of opcoesItensPorPagina" [value]="option"
-                [selected]="option === filter.itemsPerPage">
-                {{ option }}
-            </option>
-        </select>
-        -->
 
     </div>
 </body>

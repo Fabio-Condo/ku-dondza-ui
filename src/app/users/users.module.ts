@@ -18,7 +18,6 @@ import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { LoginComponent } from './login/login.component';
-import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -28,7 +27,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     UsersComponent,
     LoginComponent,
-    UserProfileViewComponent,
     ProfileComponent,
   ],
   imports: [

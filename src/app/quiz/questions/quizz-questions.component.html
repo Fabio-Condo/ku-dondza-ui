@@ -13,16 +13,6 @@
     <div *ngIf="showInitQuizScreen" class="start-screen">
       <div class="quiz-card">
 
-        <!-- Header -->
-        <!--
-        <div class="quiz-header">
-          <button class="go-back-btn" routerLink="/quizzes">
-            <i class="pi pi-arrow-left"></i>
-            Voltar
-          </button>
-        </div>
-        -->
-
         <div class="quiz-header" style="margin-bottom: 15px;">
           <div>
 
@@ -213,37 +203,11 @@
               </p>
             </div>
           </div>
-
-          <!--
-          <div class="meta-item">
-            <img [src]="quiz.user.profileImageUrl" alt="Foto de perfil" class="student-avatar"
-              *ngIf="quiz.user.profileImageUrl" />
-            <div class="student-avatar" *ngIf="!quiz.user.profileImageUrl">
-              <i class="fas fa-user"></i>
-            </div>
-            <div>
-              <div class="student-name">{{ quiz.user.fullName }}</div>
-            </div>
-          </div>
-          -->
         </div>
       </div>
 
       <br>
       <br>
-
-      <!-- 
-      <div class="button-container">
-        <button class="btn-outline" id="add-btn" (click)="startQuiz()">
-          Correção
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </button>
-      </div>
-      -->
 
       <div class="card">
         <div class="card-header">
@@ -280,19 +244,6 @@
               [style.width.%]="((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)"></div>
           </div>
         </div>
-
-        <!--
-        <div class="results-progress-container">
-          <div class="progress-label">
-            <div class="progress-title">Taxa de Erro</div>
-            <div class="progress-value">{{ (100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1)
-          }}%</div>
-          </div>
-          <div class="results-progress-bar">
-            <div class="progress danger" [style.width.%]="(100 - (result.correctAnswers / quiz.questions.length) * 100).toFixed(1)"></div>
-          </div>
-        </div>
-        -->
 
       </div>
 
@@ -739,29 +690,7 @@
         </div>
       </div>
     </form>
-
-
   </div>
 </div>
 
-<!--
-<button class="fab fab-primary" (click)="startCorretion()">
-  <svg *ngIf="!showStartScreen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="18" y1="20" x2="18" y2="10"></line>
-    <line x1="12" y1="20" x2="12" y2="4"></line>
-    <line x1="6" y1="20" x2="6" y2="14"></line>
-  </svg>
-
-  <svg *ngIf="showStartScreen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="8" y1="6" x2="21" y2="6"></line>
-    <line x1="8" y1="12" x2="21" y2="12"></line>
-    <line x1="8" y1="18" x2="21" y2="18"></line>
-    <circle cx="3" cy="6" r="1"></circle>
-    <circle cx="3" cy="12" r="1"></circle>
-    <circle cx="3" cy="18" r="1"></circle>
-  </svg>
-</button>
--->
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
