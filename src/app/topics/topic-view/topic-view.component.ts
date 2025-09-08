@@ -350,6 +350,10 @@ export class TopicViewComponent implements OnInit {
     content.isAdminMenuOpen = !content.isAdminMenuOpen;
   }
 
+  closeDropdown(content: TopicContent) {
+    content.isAdminMenuOpen = false;
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }

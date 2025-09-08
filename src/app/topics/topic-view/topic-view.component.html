@@ -709,8 +709,8 @@
                                 class="pi pi-ellipsis-h"></i></button>
                         <div class="dropdown" *ngIf="content.isAdminMenuOpen">
                             <a
-                                (click)="onUpdateTopicContent(content, topicContentFile); content.isAdminMenuOpen = false">Editar</a>
-                            <a (click)="confirmarExclusao(content); content.isAdminMenuOpen = false">Excluir</a>
+                                (click)="onUpdateTopicContent(content, topicContentFile); closeDropdown(content)">Editar</a>
+                            <a (click)="confirmarExclusao(content); closeDropdown(content)">Excluir</a>
                         </div>
                     </div>
                 </div>
