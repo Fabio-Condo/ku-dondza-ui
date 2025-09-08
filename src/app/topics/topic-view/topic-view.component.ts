@@ -341,6 +341,15 @@ export class TopicViewComponent implements OnInit {
     )
   }
 
+  toggleDropdown(content: TopicContent) {
+    this.topic.contents.forEach(t => {
+      if (t !== content) {
+        t.isAdminMenuOpen = false;
+      }
+    });
+    content.isAdminMenuOpen = !content.isAdminMenuOpen;
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
