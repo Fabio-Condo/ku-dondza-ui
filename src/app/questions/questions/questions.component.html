@@ -1129,6 +1129,15 @@
             <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalQuestions }}</span>
 
             <div class="actions">
+                <button (click)="onGenerateFromJson()" class="button-add-new" id="add-btn"
+                    *ngIf="isUserLoggedIn && isSuperAdmin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Gerrar com Json
+                </button>
                 <button (click)="onGenerateFromAI()" class="button-add-new" id="add-btn"
                     *ngIf="isUserLoggedIn && isSuperAdmin">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -1733,6 +1742,26 @@
                 Adicionar nos campos de salvar
             </button>
         </div>
+    </div>
+</div>
+
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalgenerateFromJson">
+    <div class="priview-container">
+
+        <div class="popout-header">
+            <h2 class="popout-title">Gerar com json</h2>
+            <button class="close-button" (click)="closeGenerateFromJsonPopout()">&times;</button>
+        </div>
+
+        <div class="form-group">
+            <label>Json</label>
+            <textarea id="text" name="rule" ngModel #rule="ngModel" minlength="1"
+                placeholder="Ex: O Exercicio deve avaliar teoria do tema selecionado" [(ngModel)]="jsonInput"
+                rows="20"></textarea>
+        </div>
+
+        <button type="submit" class="submit-button" (click)="onGenerateQuestionFromJsonInput()">Gerar questão</button>
+
     </div>
 </div>
 

@@ -38,6 +38,7 @@ export class QuestionsComponent implements OnInit {
   showLoading: boolean = false;
   displayModalSave: boolean = false;
   displayModalgenerateFromAI: boolean = false;
+  displayModalgenerateFromJson: boolean = false;
   displayModalPriview: boolean = false;
   displayModalFilter: boolean = false;
   isDropdownOpen: boolean = false;
@@ -50,6 +51,7 @@ export class QuestionsComponent implements OnInit {
   extraRule: string = "";
   numberOfOptions: number = 4;
 
+  jsonInput: string = '';
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -397,6 +399,94 @@ export class QuestionsComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
+  onGenerateFromJson(): void {
+    this.question = new Question();
+    this.displayModalgenerateFromJson = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  closeGenerateFromJsonPopout(): void {
+    this.displayModalgenerateFromJson = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  onGenerateQuestionFromJsonInput(): void {
+    try {
+      const parsed = JSON.parse(this.jsonInput); // converte string -> objeto
+      this.question = this.convertFromJson(parsed); // guarda na variável da classe
+
+      this.renderMathExpressions();
+      this.renderFunctions();
+
+      // Captura a resposta correta (assumindo que a propriedade correta está na classe Question)
+      const correctAnswerObj = this.question.answers.find(answer => answer.correct);
+      this.correctAnswer = correctAnswerObj ? correctAnswerObj.text : undefined; // Armazena o texto da resposta correta
+
+      this.showLoading = false;
+
+      this.displayModalgenerateFromJson = false;
+      this.priviewQuestion(this.question);
+
+    } catch (e) {
+      console.error('Erro ao fazer parse do JSON:', e);
+    }
+  }
+
+  // Função robusta para converter $...$ -> \( ... \) e $$...$$ -> \[ ... \]
+  // Preserva \$ escapados.
+  private convertLatexDollarsToBrackets(text: string): string {
+    if (typeof text !== 'string' || text.length === 0) return text;
+
+    // Protege sequências escapadas '\$' para não as converter
+    const ESC = '__ESCAPED_DOLLAR__';
+    text = text.replace(/\\\$/g, ESC);
+
+    // Primeiro trata $$...$$ -> \[ ... \] (display math)
+    text = text.replace(/\$\$([\s\S]*?)\$\$/g, (_match, inner) => {
+      return `\\[${inner}\\]`;
+    });
+
+    // Depois trata $...$ -> \( ... \) (inline math)
+    text = text.replace(/\$([\s\S]*?)\$/g, (_match, inner) => {
+      return `\\(${inner}\\)`;
+    });
+
+    // Restaura os \$ originais
+    return text.replace(new RegExp(ESC, 'g'), '$');
+  }
+
+  convertFromJson(jsonData: any): Question {
+    if (!jsonData || typeof jsonData !== 'object') {
+      throw new Error('JSON inválido: não é um objeto');
+    }
+
+    // Verifica existência dos campos obrigatórios (não apenas falsy)
+    if (typeof jsonData.text === 'undefined' ||
+      typeof jsonData.solution === 'undefined' ||
+      typeof jsonData.answers === 'undefined') {
+      throw new Error('JSON inválido: campos obrigatórios ausentes (text, solution, answers)');
+    }
+
+    if (!Array.isArray(jsonData.answers) || jsonData.answers.length === 0) {
+      throw new Error('JSON inválido: answers deve ser um array não vazio');
+    }
+
+    const question = new Question();
+
+    // Converte com segurança (garante strings)
+    question.text = this.convertLatexDollarsToBrackets(String(jsonData.text));
+    question.tip = this.convertLatexDollarsToBrackets(String(jsonData.tip ?? ''));
+    question.solution = this.convertLatexDollarsToBrackets(String(jsonData.solution));
+    question.timeLimit = 60;
+
+    question.answers = jsonData.answers.map((answer: any) => ({
+      text: this.convertLatexDollarsToBrackets(String(answer.text ?? '')),
+      correct: Boolean(answer.correct)
+    }));
+
+    return question;
+  }
+
   excluir(question: Question) {
     this.questionService.delete(question.id).subscribe(() => {
       if (this.grid.first === 0) {
@@ -421,12 +511,18 @@ export class QuestionsComponent implements OnInit {
   }
 
   getTopicsBySubjectId() {
+
+    this.loadingMessage = "Carregando tópicos"
+    this.showLoading = true;
+
     this.topicService.getBySubjectId(this.selectedSubject!).subscribe({
       next: (dados) => {
         this.topics = dados;
+        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     });
   }
@@ -938,4 +1034,40 @@ export class QuestionsComponent implements OnInit {
     }
   }
 }
+
+
+// Para gerar question atravez do json
+/*
+
+{
+  "text": "Um jato de água descreve uma parábola cuja altura (em metros) em função da distância horizontal x (em metros) é dada por \\(h(x) = -2x^2 + 8x + 1\\). Determine *a altura máxima* atingida pelo jato e *a posição horizontal* onde isso ocorre. Justifique o raciocínio.",
+  "tip": "Calcule primeiro a abscissa do vértice com \\(x_v = -\\frac{b}{2a}\\) e depois avalie a função nesse valor.",
+  "solution": "Dados: \\(a = -2\\), \\(b = 8\\), \\(c = 1\\). A abscissa do vértice é \\(x_v = -\\frac{b}{2a} = -\\frac{8}{2\\cdot(-2)} = 2\\). Avaliando a parábola em \\(x = 2\\): \\(h(2) = -2\\cdot 2^2 + 8\\cdot 2 + 1 = -8 + 16 + 1 = 9\\). Portanto, a altura máxima é **9 metros** e ocorre em \\(x = 2\\) metros.",
+  "answers": [
+    {
+      "text": "A altura máxima é \\(5\\) metros e ocorre em \\(x = 1\\) metro.",
+      "correct": false
+    },
+    {
+      "text": "A altura máxima é **9 metros** e ocorre em \\(x = 2\\) metros.",
+      "correct": true
+    },
+    {
+      "text": "A altura máxima é \\(3\\) metros e ocorre em \\(x = 4\\) metros.",
+      "correct": false
+    },
+    {
+      "text": "A altura máxima é \\(9\\) metros e ocorre em \\(x = -2\\) metros.",
+      "correct": false
+    }
+  ],
+  "mathExpressions": [
+    {
+      "expression": "-2x^2+8x+1"
+    }
+  ]
+}
+
+*/
+
 
