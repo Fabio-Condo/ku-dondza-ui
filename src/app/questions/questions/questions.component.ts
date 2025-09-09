@@ -1040,12 +1040,12 @@ export class QuestionsComponent implements OnInit {
 /*
 
 {
-  "text": "Um jato de água descreve uma parábola cuja altura (em metros) em função da distância horizontal x (em metros) é dada por \\(h(x) = -2x^2 + 8x + 1\\). Determine *a altura máxima* atingida pelo jato e *a posição horizontal* onde isso ocorre. Justifique o raciocínio.",
-  "tip": "Calcule primeiro a abscissa do vértice com \\(x_v = -\\frac{b}{2a}\\) e depois avalie a função nesse valor.",
-  "solution": "Dados: \\(a = -2\\), \\(b = 8\\), \\(c = 1\\). A abscissa do vértice é \\(x_v = -\\frac{b}{2a} = -\\frac{8}{2\\cdot(-2)} = 2\\). Avaliando a parábola em \\(x = 2\\): \\(h(2) = -2\\cdot 2^2 + 8\\cdot 2 + 1 = -8 + 16 + 1 = 9\\). Portanto, a altura máxima é **9 metros** e ocorre em \\(x = 2\\) metros.",
+  "text": "Um jato de água descreve uma parábola cuja altura (em metros) em função da distância horizontal x (em metros) é dada por \\(h(x) = -2x^2 + 8x + 1\\). Determine **a altura máxima** atingida pelo jato e *a posição horizontal* onde isso ocorre. Justifique o raciocínio.",
+  "tip": "Calcule primeiro a abscissa do vértice com \\(x_v = -\\frac{b}{2a}\\) e depois avalie a função nesse valor. Lembre que, se \\(a<0\\), o vértice é um ponto de máximo.",
+  "solution": "Dados: \\(a = -2\\), \\(b = 8\\), \\(c = 1\\). A abscissa do vértice é \\(x_v = -\\frac{b}{2a} = -\\frac{8}{2\\cdot(-2)} = 2\\). Como \\(a<0\\) a parábola é côncava para baixo, portanto o vértice corresponde a um máximo. Avaliando a função em \\(x=2\\): \\(h(2) = -2\\cdot 2^2 + 8\\cdot 2 + 1 = -8 + 16 + 1 = 9\\). Portanto a altura máxima é **9 metros** e ocorre em \\(x = 2\\) metros.",
   "answers": [
     {
-      "text": "A altura máxima é \\(5\\) metros e ocorre em \\(x = 1\\) metro.",
+      "text": "A altura máxima é \\(7\\) metros e ocorre em \\(x = 1\\) metro.",
       "correct": false
     },
     {
@@ -1053,7 +1053,11 @@ export class QuestionsComponent implements OnInit {
       "correct": true
     },
     {
-      "text": "A altura máxima é \\(3\\) metros e ocorre em \\(x = 4\\) metros.",
+      "text": "A altura máxima é \\(1\\) metro e ocorre em \\(x = 4\\) metros.",
+      "correct": false
+    },
+    {
+      "text": "A altura máxima é \\(8{,}5\\) metros e ocorre em \\(x = 1.5\\) metros.",
       "correct": false
     },
     {
@@ -1067,6 +1071,33 @@ export class QuestionsComponent implements OnInit {
     }
   ]
 }
+
+
+Regras para gerar o JSON:
+Responda somente com JSON válido — nada antes nem depois do JSON.
+O JSON deve ser sintaticamente válido (parseável em Java).
+Todos os campos do JSON são obrigatórios.
+Exatamente 5 alternativas em "answers" — uma correta e as restantes incorretas.
+"mathExpressions" é opcional e só deve ser incluído quando o enunciado exigir interpretação gráfica ou análise visual de uma função/equação.
+Para LaTeX, não use o símbolo $.
+Para conteúdo inline, use exatamente \\(...\\).
+Para conteúdo em bloco, use exatamente \\[...\\].
+Para todo LaTeX presente no JSON (enunciado, dica, solução, respostas e expressões), não use $; use \\(...\\) para inline e \\[...\\] para bloco, tal como indicado.
+Para colocar texto em negrito, envolva com dois asteriscos. Exemplo: **Texto em negrito.**
+Para colocar texto em itálico, envolva com um asterisco. Exemplo: *texto em italico.*
+Para saltar linha / iniciar novo parágrafo, utilize Enter criando uma linha em branco; não use a sequência \n.
+Valores monetários: se mencionar dinheiro, represente-o apenas em metical (MT).
+Regras específicas para "mathExpressions" (se usado):
+As variáveis nas expressões devem ser apenas em função de x.
+Não utilize notação de função como f(x)=2x+5; escreva apenas 2x+5.
+As expressões devem ser não redundantes — evite escrever a mesma função em formas diferentes.
+Exemplo inválido: -2x^2+12x-10 e -2(x-3)^2+8 (são a mesma função em formas diferentes).
+A questão deve ser inteligente e não trivial:
+Deve exigir raciocínio do aluno, não mera memorização.
+As alternativas incorretas devem ser plausíveis (não óbvias).
+O enunciado deve contextualizar bem o problema.
+A solução deve explicar o raciocínio passo a passo.
+Para intervalos (por exemplo: [0,1], ]0,1[, ]0,1], [0,1[), utilize apenas colchetes [ ]; nunca use parênteses ().
 
 */
 
