@@ -1098,6 +1098,7 @@ As alternativas incorretas devem ser plausíveis (não óbvias).
 O enunciado deve contextualizar bem o problema.
 A solução deve explicar o raciocínio passo a passo.
 Para intervalos (por exemplo: [0,1], ]0,1[, ]0,1], [0,1[), utilize apenas colchetes [ ]; nunca use parênteses ().
+Para saltar de linha use \n\n1
 
 */
 
