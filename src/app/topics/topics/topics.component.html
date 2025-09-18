@@ -752,9 +752,9 @@
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="topic.isAdminMenuOpen">
                                 <a (click)="copyLink(topic.topicId); closeDropdown(topic)">Copiar link</a>
-                                <a (click)="shareOnSocial('whatsapp', topic.topicId)">Partilhar no WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', topic.topicId)">Partilhar no Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', topic.topicId)">Partilhar no LinkedIn</a>
+                                <a (click)="shareOnSocial('whatsapp', topic.topicId); closeDropdown(topic)">Partilhar no WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', topic.topicId); closeDropdown(topic)">Partilhar no Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', topic.topicId); closeDropdown(topic)">Partilhar no LinkedIn</a>
                                 <a [routerLink]="['/topics', topic.topicId]">Visualizar</a>
                                 <a (click)="onUpdateTopic(topic); closeDropdown(topic)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
