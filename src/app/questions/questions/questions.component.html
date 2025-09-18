@@ -1196,6 +1196,11 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
+                                <a (click)="shareOnSocial('whatsapp', question.questionId)" *ngIf="isUserLoggedIn && isSuperAdmin">WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', question.questionId)" *ngIf="isUserLoggedIn && isSuperAdmin">Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', question.questionId)" *ngIf="isUserLoggedIn && isSuperAdmin">LinkedIn</a>
+                                <a (click)="copyLink(question.questionId); closeDropdown(question)" *ngIf="isUserLoggedIn && isSuperAdmin">Copiar link</a>
+
                                 <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
                                 <a (click)="onPriviewQuestion(question); closeDropdown(question)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Visualizar daqui</a>
