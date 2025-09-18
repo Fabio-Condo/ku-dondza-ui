@@ -303,6 +303,39 @@ export class QuizzesComponent implements OnInit {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
+  shareOnSocial(network: string, quizzId: string): void {
+    const baseUrl = `${window.location.origin}/quizzes/${quizzId}/questions`; // link do item
+    let url = '';
+
+    switch (network) {
+      case 'whatsapp':
+        url = `https://api.whatsapp.com/send?text=${encodeURIComponent('Olha isto: ' + baseUrl)}`;
+        break;
+
+      case 'facebook':
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(baseUrl)}`;
+        break;
+
+      case 'linkedin':
+        url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(baseUrl)}`;
+        break;
+    }
+
+    if (url) {
+      window.open(url, '_blank'); // abre numa nova aba
+    }
+  }
+
+  copyLink(quizzId: string): void {
+    const link = window.location.href; // pega a URL atual, ou pode ser um link específico
+
+    navigator.clipboard.writeText(link + `/${quizzId}/questions`).then(() => {
+      console.log(`Link do item ${quizzId} copiado!`);
+    }).catch(err => {
+      console.error("Erro ao copiar link: ", err);
+    });
+  }
+
   limparCampos() {
     this.filter.searchParam = "";
     this.filter.subject = undefined;

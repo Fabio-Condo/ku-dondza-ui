@@ -155,7 +155,8 @@
         .card {
             background-color: white;
             border-radius: 12px;
-            overflow: hidden;
+            /*overflow: hidden;*/
+            overflow: visible;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: box-shadow 0.3s ease, transform 0.2s ease;
             border: 1px solid #f1f5f9;
@@ -163,7 +164,6 @@
 
         .card:hover {
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
         }
 
         .card-header {
@@ -746,9 +746,15 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
+                                <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
+                                <a (click)="shareOnSocial('whatsapp', subject.subjectId)">Partilhar no WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', subject.subjectId)">Partilhar no Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', subject.subjectId)">Partilhar no LinkedIn</a>
                                 <a [routerLink]="['/subjects', subject.subjectId]">Visualizar</a>
-                                <a (click)="onUpdateSubject(subject); closeDropdown(subject)" *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
-                                <a (click)="confirmarExclusao(subject); closeDropdown(subject)" *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
+                                <a (click)="onUpdateSubject(subject); closeDropdown(subject)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
+                                <a (click)="confirmarExclusao(subject); closeDropdown(subject)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
                             </div>
                         </div>
                     </div>

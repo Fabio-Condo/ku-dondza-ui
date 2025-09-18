@@ -268,6 +268,39 @@ export class TopicsComponent implements OnInit {
     this.findAll();
   }
 
+  shareOnSocial(network: string, topicId: string): void {
+    const baseUrl = `${window.location.origin}/topics/${topicId}`; // link do item
+    let url = '';
+
+    switch (network) {
+      case 'whatsapp':
+        url = `https://api.whatsapp.com/send?text=${encodeURIComponent('Olha isto: ' + baseUrl)}`;
+        break;
+
+      case 'facebook':
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(baseUrl)}`;
+        break;
+
+      case 'linkedin':
+        url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(baseUrl)}`;
+        break;
+    }
+
+    if (url) {
+      window.open(url, '_blank'); // abre numa nova aba
+    }
+  }
+
+  copyLink(topicId: string): void {
+    const link = window.location.href; // pega a URL atual, ou pode ser um link específico
+
+    navigator.clipboard.writeText(link + `/${topicId}`).then(() => {
+      console.log(`Link do item ${topicId} copiado!`);
+    }).catch(err => {
+      console.error("Erro ao copiar link: ", err);
+    });
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }

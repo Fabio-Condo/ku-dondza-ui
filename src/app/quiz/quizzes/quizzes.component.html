@@ -43,6 +43,10 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
+                                <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
+                                <a (click)="shareOnSocial('whatsapp', quiz.quizId)">Partilhar no WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', quiz.quizId)">Partilhar no Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', quiz.quizId)">Partilhar no LinkedIn</a>
                                 <a [routerLink]="['/quizzes', quiz.quizId, 'questions']">Visualizar</a>
                                 <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
