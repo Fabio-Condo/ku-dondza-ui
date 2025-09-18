@@ -155,7 +155,8 @@
         .card {
             background-color: white;
             border-radius: 12px;
-            overflow: hidden;
+            /*overflow: hidden;*/
+            overflow: visible;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: box-shadow 0.3s ease, transform 0.2s ease;
             border: 1px solid #f1f5f9;
@@ -163,8 +164,8 @@
 
         .card:hover {
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
         }
+
 
         .card-header {
             padding: 10px 20px;
@@ -1196,11 +1197,14 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(question)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
-                                <a (click)="shareOnSocial('whatsapp', question.questionId)" *ngIf="isUserLoggedIn && isSuperAdmin">Partilhar no WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', question.questionId)" *ngIf="isUserLoggedIn && isSuperAdmin">Partilhar no Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', question.questionId)" *ngIf="isUserLoggedIn && isSuperAdmin">Partilhar no LinkedIn</a>
-                                <a (click)="copyLink(question.questionId); closeDropdown(question)" *ngIf="isUserLoggedIn && isSuperAdmin">Copiar link</a>
-
+                                <a (click)="copyLink(question.questionId); closeDropdown(question)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Copiar link</a>
+                                <a (click)="shareOnSocial('whatsapp', question.questionId)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Partilhar no WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', question.questionId)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Partilhar no Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', question.questionId)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Partilhar no LinkedIn</a>
                                 <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
                                 <a (click)="onPriviewQuestion(question); closeDropdown(question)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Visualizar daqui</a>
