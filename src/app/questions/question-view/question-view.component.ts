@@ -52,7 +52,7 @@ export class QuestionViewComponent implements OnInit {
 
   //selectedAnswers: { [questionId: number]: number } = {}
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
-  
+
 
   showCorrection: boolean = false;
   showSolution: boolean = true;
@@ -266,9 +266,9 @@ export class QuestionViewComponent implements OnInit {
       this.renderFunctions();
       this.scrollToTop();
 
-      if(this.isCurrentQuestionAnswered(this.question.id) && this.question.verified){
+      if (this.isCurrentQuestionAnswered(this.question.id) && this.question.verified) {
         this.showCorrection = true;
-      }else{  
+      } else {
         this.showCorrection = false;
       }
     }
@@ -283,9 +283,9 @@ export class QuestionViewComponent implements OnInit {
       this.renderFunctions();
       this.scrollToTop();
 
-      if(this.isCurrentQuestionAnswered(this.question.id) && this.question.verified){
+      if (this.isCurrentQuestionAnswered(this.question.id) && this.question.verified) {
         this.showCorrection = true;
-      }else{  
+      } else {
         this.showCorrection = false;
       }
     } else {
@@ -361,7 +361,7 @@ export class QuestionViewComponent implements OnInit {
     this.renderFunctions();
   }
 
-    // Método para capturar a resposta do usuário
+  // Método para capturar a resposta do usuário
   captureUserAnswer(questionId: number, answerId: number | null): void {
 
     const question = this.questions.find(q => q.id === questionId);
@@ -405,7 +405,7 @@ export class QuestionViewComponent implements OnInit {
     const userAnswer = this.submittedAnswers.find(a => a.question?.id === questionId);
     return userAnswer ? userAnswer.id === answerId : false;
   }
-  
+
   isCurrentQuestionAnswered(questionId: number): boolean {
     return this.submittedAnswers.some(
       (answer: Answer) => answer.question?.id === questionId
@@ -715,6 +715,52 @@ export class QuestionViewComponent implements OnInit {
   onCloseComments() {
     this.showComments = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  toggleDropdown(question: Question) {
+    this.questions.forEach(q => {
+      if (q !== question) {
+        q.isAdminMenuOpen = false;
+      }
+    });
+    question.isAdminMenuOpen = !question.isAdminMenuOpen;
+  }
+
+  closeDropdown(question: Question) {
+    question.isAdminMenuOpen = false;
+  }
+
+  shareOnSocial(network: string, questionId: string): void {
+    const baseUrl = window.location.href; // link do item
+    let url = '';
+
+    switch (network) {
+      case 'whatsapp':
+        url = `https://api.whatsapp.com/send?text=${encodeURIComponent('Olha isto: ' + baseUrl)}`;
+        break;
+
+      case 'facebook':
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(baseUrl)}`;
+        break;
+
+      case 'linkedin':
+        url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(baseUrl)}`;
+        break;
+    }
+
+    if (url) {
+      window.open(url, '_blank'); // abre numa nova aba
+    }
+  }
+
+  copyLink(questionId: string): void {
+    const link = window.location.href; // pega a URL atual, ou pode ser um link específico
+
+    navigator.clipboard.writeText(link).then(() => {
+      console.log(`Link do item ${questionId} copiado!`);
+    }).catch(err => {
+      console.error("Erro ao copiar link: ", err);
+    });
   }
 
   formatarTempoRelativo(data: Date | string): string {
