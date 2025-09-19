@@ -131,7 +131,7 @@
         </svg>
         Voltar
       </button>
-      <div class="dropdown-container">
+      <div *ngIf="showStartScreen" class="dropdown-container">
         <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-h"></i></button>
         <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
           <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
