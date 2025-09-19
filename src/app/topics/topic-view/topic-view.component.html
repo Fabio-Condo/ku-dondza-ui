@@ -22,6 +22,12 @@
             margin-top: 50px;
         }
 
+        .header-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -607,14 +613,28 @@
             </div>
         </div>
 
-        <button class="go-back-btn" routerLink="/topics">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5"></path>
-                <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-            Voltar
-        </button>
+        <div class="header-buttons">
+            <button class="go-back-btn" routerLink="/topics">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"></path>
+                    <path d="M12 19l-7-7 7-7"></path>
+                </svg>
+                Voltar
+            </button>
+            <div class="dropdown-container">
+                <button class="dropdown-btn" (click)="toggleDropdown(topic)"><i class="pi pi-ellipsis-h"></i></button>
+                <div class="dropdown" *ngIf="topic.isAdminMenuOpen">
+                    <a (click)="copyLink(topic.topicId); closeDropdown(topic)">Copiar link</a>
+                    <a (click)="shareOnSocial('whatsapp', topic.topicId); closeDropdown(topic)">Partilhar no
+                        WhatsApp</a>
+                    <a (click)="shareOnSocial('facebook', topic.topicId); closeDropdown(topic)">Partilhar no
+                        Facebook</a>
+                    <a (click)="shareOnSocial('linkedin', topic.topicId); closeDropdown(topic)">Partilhar no
+                        LinkedIn</a>
+                </div>
+            </div>
+        </div>
 
         <div class="topic-header">
             <div class="topic-info">
@@ -705,12 +725,12 @@
                     </button>
 
                     <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
-                        <button class="dropdown-btn btn btn-outline" (click)="toggleDropdown(content)"><i
+                        <button class="dropdown-btn btn btn-outline" (click)="toggleTopicContentDropdown(content)"><i
                                 class="pi pi-ellipsis-h"></i></button>
                         <div class="dropdown" *ngIf="content.isAdminMenuOpen">
                             <a
-                                (click)="onUpdateTopicContent(content, topicContentFile); closeDropdown(content)">Editar</a>
-                            <a (click)="confirmarExclusao(content); closeDropdown(content)">Excluir</a>
+                                (click)="onUpdateTopicContent(content, topicContentFile); closeTopicContentDropdown(content)">Editar</a>
+                            <a (click)="confirmarExclusao(content); closeTopicContentDropdown(content)">Excluir</a>
                         </div>
                     </div>
                 </div>
@@ -926,13 +946,15 @@
 
         <!-- Ação -->
         <div class="popout-actions">
-            <button class="btn-subscription" (click)="onSubjectSubscription()" [disabled]="topic.subject.currentUserSubscribed">
+            <button class="btn-subscription" (click)="onSubjectSubscription()"
+                [disabled]="topic.subject.currentUserSubscribed">
                 <span
                     *ngIf="!topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrever-se
                     Agora</span>
                 <span
                     *ngIf="!topic.subject.currentUserSubscribed && topic.subject.showLoadingSubscription">Inscrevendo...</span>
-                <span *ngIf="topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrito</span>
+                <span
+                    *ngIf="topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrito</span>
             </button>
         </div>
 

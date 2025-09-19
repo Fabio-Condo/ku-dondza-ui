@@ -718,11 +718,6 @@ export class QuestionViewComponent implements OnInit {
   }
 
   toggleDropdown(question: Question) {
-    this.questions.forEach(q => {
-      if (q !== question) {
-        q.isAdminMenuOpen = false;
-      }
-    });
     question.isAdminMenuOpen = !question.isAdminMenuOpen;
   }
 

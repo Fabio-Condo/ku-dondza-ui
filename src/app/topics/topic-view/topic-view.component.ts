@@ -341,7 +341,7 @@ export class TopicViewComponent implements OnInit {
     )
   }
 
-  toggleDropdown(content: TopicContent) {
+  toggleTopicContentDropdown(content: TopicContent) {
     this.topic.contents.forEach(t => {
       if (t !== content) {
         t.isAdminMenuOpen = false;
@@ -350,7 +350,7 @@ export class TopicViewComponent implements OnInit {
     content.isAdminMenuOpen = !content.isAdminMenuOpen;
   }
 
-  closeDropdown(content: TopicContent) {
+  closeTopicContentDropdown(content: TopicContent) {
     content.isAdminMenuOpen = false;
   }
 
@@ -494,6 +494,47 @@ export class TopicViewComponent implements OnInit {
   onCloseLoginPopout() {
     this.displayModalLogin = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  toggleDropdown(topic: Topic) {
+    topic.isAdminMenuOpen = !topic.isAdminMenuOpen;
+  }
+
+  closeDropdown(topic: Topic) {
+    topic.isAdminMenuOpen = false;
+  }
+
+  shareOnSocial(network: string, topicId: string): void {
+    const baseUrl = window.location.href; // link do item
+    let url = '';
+
+    switch (network) {
+      case 'whatsapp':
+        url = `https://api.whatsapp.com/send?text=${encodeURIComponent('Olha isto: ' + baseUrl)}`;
+        break;
+
+      case 'facebook':
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(baseUrl)}`;
+        break;
+
+      case 'linkedin':
+        url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(baseUrl)}`;
+        break;
+    }
+
+    if (url) {
+      window.open(url, '_blank'); // abre numa nova aba
+    }
+  }
+
+  copyLink(topicId: string): void {
+    const link = window.location.href; // pega a URL atual, ou pode ser um link específico
+
+    navigator.clipboard.writeText(link).then(() => {
+      console.log(`Link do item ${topicId} copiado!`);
+    }).catch(err => {
+      console.error("Erro ao copiar link: ", err);
+    });
   }
 
   private sendErrorNotification(message: string): void {

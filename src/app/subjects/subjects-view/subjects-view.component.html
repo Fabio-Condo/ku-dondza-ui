@@ -11,14 +11,28 @@
             </div>
         </div>
 
-        <button class="go-back-btn" routerLink="/subjects">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5"></path>
-                <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-            Voltar
-        </button>
+        <div class="header-buttons">
+            <button class="go-back-btn" routerLink="/subjects">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"></path>
+                    <path d="M12 19l-7-7 7-7"></path>
+                </svg>
+                Voltar
+            </button>
+            <div class="dropdown-container">
+                <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i class="pi pi-ellipsis-h"></i></button>
+                <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
+                    <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
+                    <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no
+                        WhatsApp</a>
+                    <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no
+                        Facebook</a>
+                    <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no
+                        LinkedIn</a>
+                </div>
+            </div>
+        </div>
 
         <div class="grid-container">
             <!-- Course Info & Modules -->
@@ -341,13 +355,10 @@
         <div class="popout-actions">
             <button class="btn-subscription" (click)="onSubjectSubscription(subject)"
                 [disabled]="subject.currentUserSubscribed">
-                <span
-                    *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrever-se
+                <span *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrever-se
                     Agora</span>
-                <span
-                    *ngIf="!subject.currentUserSubscribed && subject.showLoadingSubscription">Inscrevendo...</span>
-                <span
-                    *ngIf="subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrito</span>
+                <span *ngIf="!subject.currentUserSubscribed && subject.showLoadingSubscription">Inscrevendo...</span>
+                <span *ngIf="subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrito</span>
             </button>
         </div>
 
