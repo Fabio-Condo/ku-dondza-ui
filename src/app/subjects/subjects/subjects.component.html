@@ -621,7 +621,7 @@
         .dropdown-btn {
             background-color: transparent;
             display: inline-block;
-            padding: 4px 10px;
+            padding: 0px 0px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
@@ -747,9 +747,12 @@
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
                                 <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
-                                <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no LinkedIn</a>
+                                <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar
+                                    no WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar
+                                    no Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar
+                                    no LinkedIn</a>
                                 <a [routerLink]="['/subjects', subject.subjectId]">Visualizar</a>
                                 <a (click)="onUpdateSubject(subject); closeDropdown(subject)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
