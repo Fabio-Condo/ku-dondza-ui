@@ -304,7 +304,7 @@ export class QuizzesComponent implements OnInit {
   }
 
   shareOnSocial(network: string, quizzId: string): void {
-    const baseUrl = `${window.location.origin}/quizzes/${quizzId}/questions`; // link do item
+    const baseUrl = `${window.location.origin}/quizzes/${quizzId}`; // link do item
     let url = '';
 
     switch (network) {
@@ -329,7 +329,7 @@ export class QuizzesComponent implements OnInit {
   copyLink(quizzId: string): void {
     const link = window.location.href; // pega a URL atual, ou pode ser um link específico
 
-    navigator.clipboard.writeText(link + `/${quizzId}/questions`).then(() => {
+    navigator.clipboard.writeText(link + `/${quizzId}`).then(() => {
       console.log(`Link do item ${quizzId} copiado!`);
     }).catch(err => {
       console.error("Erro ao copiar link: ", err);

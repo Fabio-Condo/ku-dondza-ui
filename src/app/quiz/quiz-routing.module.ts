@@ -15,7 +15,7 @@ const routes: Routes = [
     //} 
   },
   { 
-    path: 'quizzes/:id/questions', 
+    path: 'quizzes/:id', 
     component: QuizzQuestionsComponent,
     //canActivate: [AuthenticationGuard], 
     //data: { 

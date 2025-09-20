@@ -12,7 +12,7 @@
 
             <div class="actions">
 
-                <button class="start-quiz-button" id="add-btn" [routerLink]="['/quizzes', 'new', 'questions']">
+                <button class="start-quiz-button" id="add-btn" [routerLink]="['/quizzes', 'new']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -30,7 +30,7 @@
             </div>
         </header>
 
-        <button class="fab" [routerLink]="['/quizzes', 'new', 'questions']">
+        <button class="fab" [routerLink]="['/quizzes', 'new']">
             <i class="pi pi-plus"></i>
         </button>
 
@@ -47,7 +47,7 @@
                                 <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
                                 <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
                                 <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
-                                <a [routerLink]="['/quizzes', quiz.quizId, 'questions']">Visualizar</a>
+                                <a [routerLink]="['/quizzes', quiz.quizId]">Visualizar</a>
                                 <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
                             </div>
@@ -148,7 +148,7 @@
                             <!--Submetido em: {{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}-->
                             Data: {{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}
                         </div>
-                        <button class="start-button" [routerLink]="['/quizzes', quiz.quizId, 'questions']">
+                        <button class="start-button" [routerLink]="['/quizzes', quiz.quizId]">
                             Visualizar
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
