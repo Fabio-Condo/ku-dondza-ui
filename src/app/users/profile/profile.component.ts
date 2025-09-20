@@ -21,6 +21,8 @@ export class ProfileComponent implements OnInit {
 
   user: User = new User();
   currentUser: User = new User();
+  isUserLoggedIn: boolean = false;
+
   displayModalSave: boolean = false;
 
   selectedInterest: Subject = new Subject();
@@ -47,6 +49,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Profile user page');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.currentUser = this.authenticationService.getUserFromLocalCache();
     const userId = this.route.snapshot.params['userId'];
     if (userId) {
