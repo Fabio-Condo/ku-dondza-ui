@@ -51,6 +51,12 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  onLogOut(): void {
+    this.authenticationService.logOut();
+    this.authenticationService.notifyLoginStatus(false);
+    this.router.navigate(['/home']);
+  }
+
   isActive(url: string): boolean {
     return this.router.isActive(url, true);
   }
