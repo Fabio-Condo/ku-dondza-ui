@@ -67,6 +67,9 @@ export class QuizzQuestionsComponent implements OnInit {
 
   displayModalLogin: boolean = false;
 
+  displayModalQuestionsList: boolean = false;
+
+
   private subscriptions: Subscription[] = [];
 
   selectedQuestion: Question = new Question();
@@ -1256,6 +1259,26 @@ export class QuizzQuestionsComponent implements OnInit {
     }).catch(err => {
       console.error("Erro ao copiar link: ", err);
     });
+  }
+
+  onShowQuestionList() {
+    this.displayModalQuestionsList = true;
+    this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+    this.renderFunctions();
+  }
+
+  onCloseQuestionList() {
+    this.displayModalQuestionsList = false;
+  }
+
+  goToQuestion(index: number) {
+    if (index >= 0 && index < this.quiz.questions.length) {
+      this.currentQuestionIndex = index;
+      this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+      this.renderFunctions();
+      this.scrollToTop();
+      this.displayModalQuestionsList = false;
+    }
   }
 
   private sendErrorNotification(message: string): void {
