@@ -67,7 +67,7 @@ export class QuizzesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('Tests page');
+    this.title.setTitle('Quizzes page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.getQuizzes();
