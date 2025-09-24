@@ -53,6 +53,10 @@ export class QuizzQuestionsComponent implements OnInit {
   // desabilita inputs ou edições
   disableEditing: boolean = false;
 
+  // mostra opções adicionais
+  showOptions: boolean = false;
+
+
   timerSubscription!: Subscription;
   totalTimeLimit: number = 0;
   timeLimit: number = 0;
@@ -688,6 +692,10 @@ export class QuizzQuestionsComponent implements OnInit {
 
   toggleDisableEditing() {
     this.disableEditing = !this.disableEditing;
+  }
+
+  toggleShowOptions() {
+    this.showOptions = !this.showOptions;
   }
 
   renderMathExpressions(): void {

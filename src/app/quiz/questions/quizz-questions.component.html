@@ -465,7 +465,8 @@
         </div>
       </div>
 
-      <button class="fab fab-question-list" (click)="onShowQuestionList()" *ngIf="quiz.id && showCorrection && (isUserLoggedIn && isSuperAdmin)">
+      <button class="fab fab-question-list" (click)="onShowQuestionList()"
+        *ngIf="quiz.id && showCorrection && showOptions && (isUserLoggedIn && isSuperAdmin)">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -478,17 +479,21 @@
       </button>
 
       <button class="fab fab-save-as-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
-        *ngIf="quiz.id && showCorrection && isUserLoggedIn">
+        *ngIf="quiz.id && showCorrection && showOptions && isUserLoggedIn">
         <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
           [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
         </i>
         <i *ngIf="quiz.questions[currentQuestionIndex].showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
       </button>
 
-      <button class="fab fab-primary" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
-        *ngIf="quiz.id && showCorrection">
+      <button class="fab fab-show-comments" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
+        *ngIf="quiz.id && showCorrection && showOptions">
         <i class="pi pi-comments"></i>
         <span style="font-size: 0.8rem;">{{ quiz.questions[currentQuestionIndex].numberOfComments }}</span>
+      </button>
+
+      <button class="fab fab-primary" (click)="toggleShowOptions()">
+        <i class="pi pi-ellipsis-h"></i>
       </button>
 
     </div>
@@ -740,7 +745,7 @@
         <span [innerHTML]="getFormattedText(question.text || '')"></span>
       </div>
     </div>
-    
+
   </div>
 </div>
 
