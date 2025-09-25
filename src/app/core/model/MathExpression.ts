@@ -2,12 +2,13 @@ import { Question } from "./Question";
 
 export class MathExpression {
     id?: number;
+    name?: string;
     expression?: string;
-    name?: string = 'f(x)';
     question = new Question();
 
-    constructor(id?: number, expression?: string) {
+    constructor(id?: number, name?: string, expression?: string) {
         this.id = id;
+        this.name = name;
         this.expression = expression;
     }
 }

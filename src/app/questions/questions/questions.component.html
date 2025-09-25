@@ -1197,9 +1197,12 @@
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="question.isAdminMenuOpen">
                                 <a (click)="copyLink(question.questionId); closeDropdown(question)">Copiar link</a>
-                                <a (click)="shareOnSocial('whatsapp', question.questionId); closeDropdown(question)">Partilhar no WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', question.questionId); closeDropdown(question)">Partilhar no Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar no LinkedIn</a>
+                                <a (click)="shareOnSocial('whatsapp', question.questionId); closeDropdown(question)">Partilhar
+                                    no WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', question.questionId); closeDropdown(question)">Partilhar
+                                    no Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar
+                                    no LinkedIn</a>
                                 <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
                                 <a (click)="onPriviewQuestion(question); closeDropdown(question)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Visualizar daqui</a>
@@ -1370,12 +1373,14 @@
                     <table class="responsive-table">
                         <thead>
                             <tr>
+                                <th>Nome</th>
                                 <th>Expressão matemática</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let mathExpress of question.mathExpressions; let rowIndex = index">
+                                <td>{{ mathExpress.name }}</td>
                                 <td>{{ mathExpress.expression }}</td>
                                 <td class="actions">
                                     <a href="javascript:;" (click)="getReadyMathExpressionEdit(mathExpress, rowIndex)"
@@ -1466,6 +1471,11 @@
         </div>
 
         <form autocomplete="off" #frmExpression="ngForm" (ngSubmit)="confirmMathExpression(frmExpression)">
+            <div class="form-group">
+                <label>Nome</label>
+                <textarea id="nome" name="nome" ngModel #nome="ngModel" required minlength="1"
+                    [(ngModel)]="mathExpression.name" rows="4"></textarea>
+            </div>
             <div class="form-group">
                 <label>Expressão</label>
                 <textarea id="expression" name="expression" ngModel #expression="ngModel" required minlength="1"
