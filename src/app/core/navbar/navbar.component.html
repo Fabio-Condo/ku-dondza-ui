@@ -451,15 +451,19 @@
           </div>
           -->
           <div class="dropdown-container" *ngIf="isUserLoggedIn">
-            <button class="dropdown-btn" style="cursor: pointer;" (click)="toggleDropdown()">
+            <button class="dropdown-btn"
+              style="cursor: pointer; display: flex; align-items: center; justify-content: center;"
+              (click)="toggleDropdown()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
+                <circle cx="12" cy="6" r="2" fill="currentColor" />
+                <circle cx="12" cy="12" r="2" fill="currentColor" />
+                <circle cx="12" cy="18" r="2" fill="currentColor" />
               </svg>
             </button>
             <div class="dropdown" *ngIf="isDropdownOpen">
               <a (click)="onLogOut(); toggleDropdown()">Saír</a>
               <a (click)="goToProfile(); toggleDropdown()">Perfil</a>
+              <a (click)="toggleDropdown()">Feichar</a>
             </div>
           </div>
           <!--
