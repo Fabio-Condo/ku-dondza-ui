@@ -445,8 +445,20 @@
             <!--<a routerLink="/register" class="btn btn-primary">Cadastre-se</a>-->
             <a routerLink="/login" class="btn btn-outline">Login</a>
           </div>
+          <!--
           <div class="auth-buttons" *ngIf="loggedUser">
             <a (click)="onLogOut()" class="btn btn-outline">Logout</a>
+          </div>
+          -->
+          <div class="dropdown-container" *ngIf="isUserLoggedIn">
+            <button class="dropdown-btn" style="cursor: pointer;" (click)="toggleDropdown()">
+              Eu
+            <!--  <i class="pi pi-ellipsis-h"></i> -->
+            </button>
+            <div class="dropdown" *ngIf="isDropdownOpen">
+              <a (click)="onLogOut(); toggleDropdown()">Saír</a>
+              <a (click)="goToProfile(); toggleDropdown()">Perfil</a>
+            </div>
           </div>
           <!--
           <div class="auth-buttons">

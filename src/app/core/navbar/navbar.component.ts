@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   isPopoutVisible = false;
   isMenuActive = false; // Controla a exibição do menu
   unreadNotificationsCount: number = 0;
+  isDropdownOpen = false;
 
 
   constructor(
@@ -55,6 +56,10 @@ export class NavbarComponent implements OnInit {
     this.authenticationService.logOut();
     this.authenticationService.notifyLoginStatus(false);
     this.router.navigate(['/home']);
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   isActive(url: string): boolean {
