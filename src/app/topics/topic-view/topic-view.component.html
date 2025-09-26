@@ -663,17 +663,6 @@
                             -->
                             <span>{{ topic.subject.name }}</span>
                         </div>
-                        <div class="stat" *ngIf="isUserLoggedIn && isSuperAdmin">
-                            <!--
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                <circle cx="12" cy="17" r="1" />
-                            </svg>
-                            -->
-                            <span>{{ topic.questions.length }} exercícios</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -682,7 +671,7 @@
         <div class="main-content">
 
             <div class="main-content-header">
-                <h2 class="section-title">Conteúdo</h2>
+                <h2 class="section-title">Conteúdo ({{ topic.contents.length }})</h2>
                 <button class="btn add-topic-btn" (click)="onAddNewTopicContent()"
                     *ngIf="isUserLoggedIn && isSuperAdmin">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -760,7 +749,7 @@
                 Aprenda fazendo e consolide seu aprendizado.
             </p>
             <button class="btn-large" (click)="startQuestions()">
-                Iniciar Exercícios
+                Iniciar Exercícios ({{ topic.questions.length }})
             </button>
         </div>
 
