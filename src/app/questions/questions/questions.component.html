@@ -1210,6 +1210,10 @@
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
                                 <a (click)="confirmarExclusao(question); closeDropdown(question)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
+                                <a (click)="onSave(question); closeDropdown(question)">
+                                    <span *ngIf="question.savedByUser">Remover dos favoritos</span>
+                                    <span *ngIf="!question.savedByUser">Guardar nos favoritos</span>
+                                </a>
                             </div>
                         </div>
                     </div>

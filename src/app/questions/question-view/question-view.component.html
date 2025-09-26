@@ -30,6 +30,10 @@
                         Facebook</a>
                     <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar no
                         LinkedIn</a>
+                    <a (click)="onSave(); closeDropdown(question)">
+                        <span *ngIf="question.savedByUser">Remover dos favoritos</span>
+                        <span *ngIf="!question.savedByUser">Guardar nos favoritos</span>
+                    </a>
                 </div>
             </div>
         </div>
