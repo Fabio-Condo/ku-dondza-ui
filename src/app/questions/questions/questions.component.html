@@ -319,6 +319,13 @@
             background-color: #06d6a0;
         }
 
+        .fab-generate-from-ai {
+            bottom: 150px;
+            background: #fff;
+            border: 1px solid #4361ee;
+            color: #4361ee;
+        }
+
         .fab-generate-from-json {
             bottom: 225px;
             background: #fff;
@@ -326,8 +333,8 @@
             color: #4361ee;
         }
 
-        .fab-generate-from-ai {
-            bottom: 150px;
+        .fab-add {
+            bottom: 300px;
             background: #fff;
             border: 1px solid #4361ee;
             color: #4361ee;
@@ -1173,17 +1180,21 @@
             </div>
         </header>
 
+        <button class="fab fab-add" (click)="onAddNewQuestion()" *ngIf="isUserLoggedIn && isSuperAdmin && showOptions">
+            <i class="pi pi-plus"></i>
+        </button>
+
         <button class="fab fab-generate-from-json" (click)="onGenerateFromJson()"
-            *ngIf="isUserLoggedIn && isSuperAdmin">
+            *ngIf="isUserLoggedIn && isSuperAdmin && showOptions">
             <i class="pi pi-code"></i>
         </button>
 
-        <button class="fab fab-generate-from-ai" (click)="onGenerateFromAI()" *ngIf="isUserLoggedIn && isSuperAdmin">
+        <button class="fab fab-generate-from-ai" (click)="onGenerateFromAI()" *ngIf="isUserLoggedIn && isSuperAdmin && showOptions">
             <i class="pi pi-cog"></i>
         </button>
 
-        <button class="fab" (click)="onAddNewQuestion()" *ngIf="isUserLoggedIn && isSuperAdmin">
-            <i class="pi pi-plus"></i>
+        <button class="fab" (click)="toggleShowOptions()" *ngIf="isUserLoggedIn && isSuperAdmin">
+            <i class="pi pi-ellipsis-h"></i>
         </button>
 
         <div class="cards-container">

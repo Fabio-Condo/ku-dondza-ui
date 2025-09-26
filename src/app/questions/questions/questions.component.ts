@@ -87,6 +87,9 @@ export class QuestionsComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   displayModalLogin: boolean = false;
 
+  // mostra opções adicionais
+  showOptions: boolean = false;
+
   user = new User();
   activeTab: number = 1;
   step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
@@ -674,6 +677,10 @@ export class QuestionsComponent implements OnInit {
         question.showLoadingSave = false;
       }
     );
+  }
+
+  toggleShowOptions() {
+    this.showOptions = !this.showOptions;
   }
 
   // Métodos de paginação
