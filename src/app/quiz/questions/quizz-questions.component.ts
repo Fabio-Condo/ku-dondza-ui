@@ -730,6 +730,7 @@ export class QuizzQuestionsComponent implements OnInit {
       const canvas = this.canvas?.nativeElement;
       if (!canvas || !this.quiz.questions[this.currentQuestionIndex].mathExpressions || this.quiz.questions[this.currentQuestionIndex].mathExpressions.length === 0) return;
 
+
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
@@ -740,19 +741,16 @@ export class QuizzQuestionsComponent implements OnInit {
       const scaleX = width / 20;
       const scaleY = height / 20;
 
-      // Desenha a grade cartesiana (quadradinhos)
+      // Desenha a grade cartesiana
       ctx.beginPath();
-      ctx.strokeStyle = '#ddd'; // cor cinza clara
+      ctx.strokeStyle = '#ddd';
       ctx.lineWidth = 0.5;
 
-      // Linhas verticais
       for (let i = -10; i <= 10; i++) {
         let x = width / 2 + i * scaleX;
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
       }
-
-      // Linhas horizontais
       for (let i = -10; i <= 10; i++) {
         let y = height / 2 - i * scaleY;
         ctx.moveTo(0, y);
@@ -760,7 +758,7 @@ export class QuizzQuestionsComponent implements OnInit {
       }
       ctx.stroke();
 
-      // Desenha os eixos
+      // Eixos principais
       ctx.beginPath();
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 1;
@@ -770,7 +768,7 @@ export class QuizzQuestionsComponent implements OnInit {
       ctx.lineTo(width / 2, height);
       ctx.stroke();
 
-      // Adiciona os números nos eixos
+      // Números dos eixos
       ctx.font = '12px Arial';
       ctx.fillStyle = 'black';
       ctx.textAlign = 'center';
@@ -803,6 +801,17 @@ export class QuizzQuestionsComponent implements OnInit {
           }
         }
         ctx.stroke();
+
+        // Adiciona legenda no gráfico
+        ctx.fillStyle = colors[index % colors.length];
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText(
+          //express.name || express.expression || `f${index + 1}(x)`,
+          express.name || `f${index + 1}(x)`,
+          10,
+          20 + index * 20
+        );
       });
     }, 0);
   }
