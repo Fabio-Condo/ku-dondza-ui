@@ -172,7 +172,8 @@
                                         Teste seus conhecimentos com exercícios práticos e desafios interativos.
                                         Aprenda fazendo e consolide seu aprendizado.
                                     </p>
-                                    <button class="btn-exercise">
+                                    <button class="btn-exercise" (click)="startPractice(topic)"
+                                        [disabled]="!isUserLoggedIn || !subject.currentUserSubscribed || topic.questions.length === 0">
                                         Iniciar Exercícios ({{ topic.questions.length }})
                                     </button>
                                 </div>

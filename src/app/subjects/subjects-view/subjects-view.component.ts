@@ -18,6 +18,7 @@ import { UserSubjectSubscriptionService } from '../user-subjects-subscription.se
 import { UserService } from 'src/app/users/user.service';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { Question } from 'src/app/core/model/Question';
 
 @Component({
   selector: 'app-subjects-view',
@@ -348,9 +349,13 @@ export class SubjectsViewComponent {
   }
 
   startPractice(topic: any) {
-    console.log('Iniciando exercícios do tópico:', topic.name);
-    // Aqui você pode navegar para a página de exercícios ou abrir um modal
-    // this.router.navigate(['/exercises', topic.id]);
+    this.shuffleQuestions(topic.questions);
+    this.router.navigate(['/questions', topic.questions[0].questionId]);
+  }
+
+  // Embaralhar a ordem
+  shuffleQuestions(questions: Question[]): Question[] {
+    return questions.sort(() => Math.random() - 0.5);
   }
 
   getVideoCount(topic: any): number {
