@@ -88,7 +88,8 @@
                     <div class="modules-list">
                         <div *ngFor="let topic of subject.topics" class="module-item"
                             [class.expanded]="isTopicExpanded(topic.id)">
-                            <div class="module-header" (click)="toggleModule(topic.id); toggleDescription($event, topic)">
+                            <div class="module-header"
+                                (click)="toggleModule(topic.id); toggleDescription($event, topic)">
                                 <div>
                                     <h3 class="module-title">{{ topic.name }}</h3>
                                     <span class="lesson-count">
@@ -99,11 +100,9 @@
                                     <!-- Descrição resumida -->
                                     <p class="topic-description">
                                         {{ getLimitedDescription(topic) }}
-                                        <!--
-                                        <a href="#" class="toggle-desc" >
-                                            {{ topic.showFullDescription ? 'Ver menos' : 'Ver mais' }}
+                                        <a href="#" class="toggle-desc" [routerLink]="['/topics', topic.topicId]" *ngIf="isTopicExpanded(topic.id)">
+                                            Ver separado
                                         </a>
-                                        -->
                                     </p>
                                 </div>
                                 <div class="module-info">

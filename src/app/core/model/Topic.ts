@@ -13,5 +13,4 @@ export class Topic {
 
     selected: boolean = false; // Adicionamos uma propriedade para controle de seleção
     isAdminMenuOpen: boolean = false;
-    showFullDescription: boolean = false; // Controle para descrição completa ou resumida
 }
