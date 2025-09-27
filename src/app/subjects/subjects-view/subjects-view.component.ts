@@ -328,6 +328,31 @@ export class SubjectsViewComponent {
     }
   }
 
+  getLimitedDescription(topic: any): string {
+    const maxLength = 60;
+    const isExpanded = this.isTopicExpanded(topic.id);
+
+    if (isExpanded) return topic.description;
+
+    if (!topic.description) return '';
+    if (topic.description.length <= maxLength) return topic.description;
+
+    // corta sem quebrar palavras
+    const truncated = topic.description.substr(0, maxLength);
+    return truncated.substr(0, truncated.lastIndexOf(' ')) + '...';
+  }
+
+  toggleDescription(event: Event, topic: any): void {
+    event.preventDefault(); // evita reload da página
+    topic.showFullDescription = !topic.showFullDescription;
+  }
+
+  startPractice(topic: any) {
+    console.log('Iniciando exercícios do tópico:', topic.name);
+    // Aqui você pode navegar para a página de exercícios ou abrir um modal
+    // this.router.navigate(['/exercises', topic.id]);
+  }
+
   getVideoCount(topic: any): number {
     if (!topic || !topic.contents) return 0;
     return topic.contents.filter((content: any) => content.contentType === 'VIDEO').length;

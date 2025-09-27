@@ -88,13 +88,23 @@
                     <div class="modules-list">
                         <div *ngFor="let topic of subject.topics" class="module-item"
                             [class.expanded]="isTopicExpanded(topic.id)">
-                            <div class="module-header" (click)="toggleModule(topic.id)">
+                            <div class="module-header" (click)="toggleModule(topic.id); toggleDescription($event, topic)">
                                 <div>
                                     <h3 class="module-title">{{ topic.name }}</h3>
                                     <span class="lesson-count">
                                         {{ getVideoCount(topic) }} vídeo{{ getVideoCount(topic) !== 1 ? 's' : '' }},
                                         {{ getFileCount(topic) }} ficheiro{{ getFileCount(topic) !== 1 ? 's' : '' }}
                                     </span>
+
+                                    <!-- Descrição resumida -->
+                                    <p class="topic-description">
+                                        {{ getLimitedDescription(topic) }}
+                                        <!--
+                                        <a href="#" class="toggle-desc" >
+                                            {{ topic.showFullDescription ? 'Ver menos' : 'Ver mais' }}
+                                        </a>
+                                        -->
+                                    </p>
                                 </div>
                                 <div class="module-info">
                                     <svg class="chevron-icon" [class.rotated]="isTopicExpanded(topic.id)" width="24"
@@ -153,6 +163,18 @@
                                                 style="color: #4361ee;"></i>
                                         </button>
                                     </div>
+                                </div>
+
+                                <!-- Botão de iniciar exercícios ao final -->
+                                <div class="exercise-section">
+                                    <h3 class="exercise-title">Pronto Para Praticar?</h3>
+                                    <p class="exercise-description">
+                                        Teste seus conhecimentos com exercícios práticos e desafios interativos.
+                                        Aprenda fazendo e consolide seu aprendizado.
+                                    </p>
+                                    <button class="btn-exercise">
+                                        Iniciar Exercícios ({{ topic.questions.length }})
+                                    </button>
                                 </div>
 
                             </div>
