@@ -33,6 +33,9 @@ export class TopicViewComponent implements OnInit {
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
 
+  origem: string = '';
+  topicId: string = '';
+  subjectId: string = '';
 
   private subscriptions: Subscription[] = [];
 
@@ -86,6 +89,11 @@ export class TopicViewComponent implements OnInit {
       this.findById(questionId);
     }
     this.scrollToTop();
+
+    this.route.queryParams.subscribe(params => {
+      this.origem = params['from'];
+      this.subjectId = params['subjectId'];
+    });
   }
 
   ngOnDestroy(): void {
@@ -94,6 +102,14 @@ export class TopicViewComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  goBack(): void {
+    if (this.origem === 'subjects' && this.subjectId) {
+      this.router.navigate(['/subjects', this.subjectId]);
+    } else {
+      this.router.navigate(['/topics']);
+    }
   }
 
   startQuestions() {

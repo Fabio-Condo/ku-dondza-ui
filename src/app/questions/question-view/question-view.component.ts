@@ -85,6 +85,7 @@ export class QuestionViewComponent implements OnInit {
 
   origem: string = '';
   topicId: string = '';
+  subjectId: string = '';
 
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
@@ -130,6 +131,7 @@ export class QuestionViewComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.origem = params['from'];
       this.topicId = params['topicId'];
+      this.subjectId = params['subjectId'];
     });
   }
 
@@ -144,6 +146,8 @@ export class QuestionViewComponent implements OnInit {
   goBack(): void {
     if (this.origem === 'topics' && this.topicId) {
       this.router.navigate(['/topics', this.topicId]);
+    } else if (this.origem === 'subjects' && this.subjectId) {
+      this.router.navigate(['/subjects', this.subjectId]);
     } else {
       this.router.navigate(['/questions']);
     }

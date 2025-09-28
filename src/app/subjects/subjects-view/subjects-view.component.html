@@ -100,7 +100,7 @@
                                     <!-- Descrição resumida -->
                                     <p class="topic-description">
                                         {{ getLimitedDescription(topic) }}
-                                        <a href="#" class="toggle-desc" [routerLink]="['/topics', topic.topicId]" *ngIf="isTopicExpanded(topic.id)">
+                                        <a class="toggle-desc" (click)="goToTopic(topic)" *ngIf="isTopicExpanded(topic.id)">
                                             Ver separado
                                         </a>
                                     </p>

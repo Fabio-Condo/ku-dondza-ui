@@ -348,9 +348,24 @@ export class SubjectsViewComponent {
     topic.showFullDescription = !topic.showFullDescription;
   }
 
+  goToTopic(topic: any): void {
+    this.router.navigate(['/topics', topic.topicId], {
+      queryParams: {
+        from: 'subjects',
+        subjectId: this.route.snapshot.paramMap.get('id')
+      }
+    });
+  }    
+
   startPractice(topic: any) {
     this.shuffleQuestions(topic.questions);
-    this.router.navigate(['/questions', topic.questions[0].questionId]);
+
+    this.router.navigate(['/questions', topic.questions[0].questionId], {
+      queryParams: {
+        from: 'subjects',
+        subjectId: this.route.snapshot.paramMap.get('id')
+      }
+    });
   }
 
   // Embaralhar a ordem
