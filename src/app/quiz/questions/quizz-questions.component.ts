@@ -181,7 +181,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
-    if (quizId && quizId !== 'new') {
+    if (quizId && quizId !== 'new' && quizId !== 'test') {
       this.getQuizByQuizId(quizId);
     }
 
