@@ -197,7 +197,8 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     if (quizId && quizId == 'test' && this.origem === 'subjects' && this.subjectId) {
-      console.log('Iniciando quiz a partir da disciplina com ID:', this.subjectId);
+      this.carregarDisciplinas();
+      this.showLoading = true;
       this.showInitQuizScreen = false;
       this.showStartScreen = false;
       this.showCorrection = false;
