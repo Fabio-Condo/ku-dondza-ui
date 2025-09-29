@@ -73,6 +73,8 @@ export class QuizzQuestionsComponent implements OnInit {
 
   displayModalQuestionsList: boolean = false;
 
+  origem: string = '';
+  subjectId: number = 0;
 
   private subscriptions: Subscription[] = [];
 
@@ -182,10 +184,25 @@ export class QuizzQuestionsComponent implements OnInit {
     if (quizId && quizId !== 'new') {
       this.getQuizByQuizId(quizId);
     }
-    if (quizId && quizId == 'new') {
+
+    this.scrollToTop();
+
+    this.route.queryParams.subscribe(params => {
+      this.origem = params['from'];
+      this.subjectId = params['subjectId'];
+    });
+
+    if (quizId && quizId == 'new' && !this.origem && !this.subjectId) {
       this.onInitQuiz();
     }
-    this.scrollToTop();
+
+    if (quizId && quizId == 'test' && this.origem === 'subjects' && this.subjectId) {
+      console.log('Iniciando quiz a partir da disciplina com ID:', this.subjectId);
+      this.showInitQuizScreen = false;
+      this.showStartScreen = false;
+      this.showCorrection = false;
+      this.StartFinalTest(this.subjectId);
+    }
   }
 
   scrollToTop() {
@@ -275,6 +292,32 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
+  StartFinalTest(subjectId: number): void {
+    this.loadingMessage = "Obtendo tópicos"
+    this.showLoading = true;
+    this.topicService.getBySubjectId(subjectId).subscribe(
+      (dados: Topic[]) => {
+        this.quiz.questions = [];
+        this.topics = [];
+        this.topics = dados;
+
+        this.quiz.anonymous = true;
+        this.quiz.type = 'TEST';
+        this.quiz.limitPerTopic = 2;
+        this.quiz.subject.id = 2;
+
+        this.selectAllTopics();
+        this.getQuestions();
+
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   getQuestions(): void {
     this.loadingMessage = "Gerrando questões"
     const selectedTopicIds = this.getSelectedTopicIds();
@@ -324,6 +367,15 @@ export class QuizzQuestionsComponent implements OnInit {
   toggleSelectAllTopics(): void {
     const allSelected = this.areAllTopicsSelected();
     this.topics.forEach(topic => topic.selected = !allSelected);
+  }
+
+  //selectAllTopics(): void {
+  //  this.topics.forEach(topic => topic.selected = true);
+  //}
+
+  selectAllTopics(): void {
+    if (!this.topics) return;
+    this.topics = this.topics.map(t => ({ ...t, selected: true }));
   }
 
   saveQuiz() {

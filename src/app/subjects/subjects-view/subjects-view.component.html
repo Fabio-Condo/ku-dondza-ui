@@ -100,7 +100,8 @@
                                     <!-- Descrição resumida -->
                                     <p class="topic-description">
                                         {{ getLimitedDescription(topic) }}
-                                        <a class="toggle-desc" (click)="goToTopic(topic)" *ngIf="isTopicExpanded(topic.id)">
+                                        <a class="toggle-desc" (click)="goToTopic(topic)"
+                                            *ngIf="isTopicExpanded(topic.id)">
                                             Ver separado
                                         </a>
                                     </p>
@@ -182,6 +183,18 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Botão de iniciar exercícios ao final -->
+                <div class="exercise-section">
+                    <h3 class="exercise-title">Teste Final</h3>
+                    <p class="exercise-description">
+                        Chegou a hora de colocar em prática tudo o que aprendeu nesta disciplina.
+                        Responda ao teste final para avaliar seus conhecimentos e comprovar seu progresso.
+                    </p>
+                    <button class="btn-exercise" (click)="startFinalTest()">
+                        Iniciar Teste Final
+                    </button>
                 </div>
 
                 <div class="progress-card" *ngIf="isUserLoggedIn && subject.currentUserSubscribed">

@@ -355,7 +355,7 @@ export class SubjectsViewComponent {
         subjectId: this.route.snapshot.paramMap.get('id')
       }
     });
-  }    
+  }
 
   startPractice(topic: any) {
     this.shuffleQuestions(topic.questions);
@@ -364,6 +364,16 @@ export class SubjectsViewComponent {
       queryParams: {
         from: 'subjects',
         subjectId: this.route.snapshot.paramMap.get('id')
+      }
+    });
+  }
+
+  startFinalTest() {
+
+    this.router.navigate(['/quizzes', 'test'], {
+      queryParams: {
+        from: 'subjects',
+        subjectId: this.subject.id
       }
     });
   }
