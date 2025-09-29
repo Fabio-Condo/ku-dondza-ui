@@ -174,8 +174,7 @@
                                         Aprenda fazendo e consolide seu aprendizado.
                                     </p>
                                     -->
-                                    <button class="btn-exercise" (click)="startPractice(topic)"
-                                        [disabled]="!isUserLoggedIn || !subject.currentUserSubscribed || topic.questions.length === 0">
+                                    <button class="btn-exercise" (click)="startPractice(topic)">
                                         Iniciar Exercícios ({{ topic.questions.length }})
                                     </button>
                                 </div>
@@ -186,7 +185,7 @@
                 </div>
 
                 <!-- Botão de iniciar exercícios ao final -->
-                <div class="exercise-section" *ngIf="isUserLoggedIn && isSuperAdmin">
+                <div class="exercise-section">
                     <h3 class="exercise-title">Teste Final</h3>
                     <p class="exercise-description">
                         Chegou a hora de colocar em prática tudo o que aprendeu nesta disciplina.

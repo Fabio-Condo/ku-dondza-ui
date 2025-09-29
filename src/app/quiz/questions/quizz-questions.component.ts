@@ -299,7 +299,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.quiz.anonymous = true;
     this.quiz.type = 'TEST';
-    this.quiz.limitPerTopic = 2;
+    this.quiz.limitPerTopic = 5;
 
     this.topicService.getBySubjectId(subjectId).subscribe(
       (dados: Topic[]) => {
