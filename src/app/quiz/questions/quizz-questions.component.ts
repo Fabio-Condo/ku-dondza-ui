@@ -197,11 +197,21 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     if (quizId && quizId == 'test' && this.origem === 'subjects' && this.subjectId) {
-      this.carregarDisciplinas();
-      this.showLoading = true;
+      //this.carregarDisciplinas();
+
       this.showInitQuizScreen = false;
       this.showStartScreen = false;
       this.showCorrection = false;
+
+      //const selectedSubject = this.subjects.find(s => s.id === this.subjectId);
+      //if (selectedSubject) {
+      //  this.quiz.subject = selectedSubject;
+      //}
+
+      this.quiz.anonymous = true;
+      this.quiz.type = 'TEST';
+      this.quiz.limitPerTopic = 2;
+
       this.StartFinalTest(this.subjectId);
     }
   }
@@ -301,11 +311,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz.questions = [];
         this.topics = [];
         this.topics = dados;
-
-        this.quiz.anonymous = true;
-        this.quiz.type = 'TEST';
-        this.quiz.limitPerTopic = 2;
-        this.quiz.subject.id = 2;
+        this.quiz.subject = this.topics[0].subject;
 
         this.selectAllTopics();
         this.getQuestions();
