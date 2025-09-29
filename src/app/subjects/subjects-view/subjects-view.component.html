@@ -184,6 +184,15 @@
                     </div>
                 </div>
 
+                <div class="progress-card" *ngIf="isUserLoggedIn && subject.currentUserSubscribed">
+                    <div class="progress-circle" *ngIf="subject?.currentUserMarkedContentRate != null"
+                        [style.--progress]="subject.currentUserMarkedContentRate">
+                        <span class="progress-percentage">{{ subject.currentUserMarkedContentRate.toFixed(1) }}%</span>
+                    </div>
+                    <h3>Progresso Geral</h3>
+                    <p>Continue estudando para completar a disciplina</p>
+                </div>
+
                 <!-- Botão de iniciar exercícios ao final -->
                 <div class="exercise-section">
                     <h3 class="exercise-title">Teste Final</h3>
@@ -194,15 +203,6 @@
                     <button class="btn-exercise" (click)="startFinalTest()">
                         Iniciar Teste Final
                     </button>
-                </div>
-
-                <div class="progress-card" *ngIf="isUserLoggedIn && subject.currentUserSubscribed">
-                    <div class="progress-circle" *ngIf="subject?.currentUserMarkedContentRate != null"
-                        [style.--progress]="subject.currentUserMarkedContentRate">
-                        <span class="progress-percentage">{{ subject.currentUserMarkedContentRate.toFixed(1) }}%</span>
-                    </div>
-                    <h3>Progresso Geral</h3>
-                    <p>Continue estudando para completar a disciplina</p>
                 </div>
 
                 <br>
