@@ -310,8 +310,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
         this.selectAllTopics();
         this.getQuestions();
-
-        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
