@@ -119,7 +119,7 @@ export class QuestionsComponent implements OnInit {
 
   filtro: QuestionFilter = {
     page: 0,
-    itemsPerPage: 5,
+    itemsPerPage: 10,
     sort: 'id,desc'
   };
 
