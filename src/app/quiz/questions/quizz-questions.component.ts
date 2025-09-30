@@ -676,8 +676,16 @@ export class QuizzQuestionsComponent implements OnInit {
     if (!this.quiz.id) {
       this.stopTimer();
       this.scrollToTop();
-      this.router.navigateByUrl('/quizzes');
+      //this.router.navigateByUrl('/quizzes');
+      //this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
+
+      if (this.origem === 'subjects' && this.subjectId) {
+      this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
+      } else {
+        this.router.navigateByUrl('/quizzes');
+      }
     }
+
     this.showStartScreen = true;
   }
 
