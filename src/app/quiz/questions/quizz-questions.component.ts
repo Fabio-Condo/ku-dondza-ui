@@ -708,7 +708,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
       // Mostra mensagem apenas se a próxima pergunta não estiver respondida
       const proximaPergunta = this.submittedAnswers[this.currentQuestionIndex];
-      if (!proximaPergunta || proximaPergunta.id === null || proximaPergunta.id === undefined) {
+      if (!this.quiz.id && (!proximaPergunta || proximaPergunta.id === null || proximaPergunta.id === undefined)) {
         this.showProgressMessage();
       }
     }
