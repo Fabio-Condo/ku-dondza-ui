@@ -416,6 +416,11 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
+  getTotalTimeLimit(): number {
+    //return this.quiz.questions.reduce((sum, q) => sum + q.timeLimit, 0);
+    return this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+  }
+
   onSubmitAnswers() {
     if (this.isUserLoggedIn) {
       this.submitAnswers();
@@ -680,7 +685,7 @@ export class QuizzQuestionsComponent implements OnInit {
       //this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
 
       if (this.origem === 'subjects' && this.subjectId) {
-      this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
+        this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
       } else {
         this.router.navigateByUrl('/quizzes');
       }
