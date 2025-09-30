@@ -1911,6 +1911,41 @@ pre {
   /* combina com a cor principal */
 }
 
+.mensagem-progresso {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  animation: fadeInOut 3s ease-in-out forwards;
+  z-index: 1000;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+
 @media (max-width: 900px) {
   .container {
     margin-top: 45px;
