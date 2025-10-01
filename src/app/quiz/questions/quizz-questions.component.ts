@@ -111,6 +111,24 @@ export class QuizzQuestionsComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
+  // Mensagens de acerto
+  correctMessages: string[] = [
+    "Muito bem! 👏",
+    "Acertou, continue assim! ⭐",
+    "Excelente escolha! 🚀",
+    "Perfeito, siga firme 💪",
+    "Você pegou essa! 🔥"
+  ];
+
+  // Mensagens de erro (motivacionais, sem desanimar)
+  incorrectMessages: string[] = [
+    "Não foi dessa vez, tente a próxima! 💡",
+    "Quase lá, continue tentando! 🌟",
+    "Não desista, siga focado 🚀",
+    "Boa tentativa, revise e continue 💪",
+    "Cada tentativa conta, prossiga 👌"
+  ];
+
   // --------------------------
   // MENSAGENS DE PROGRESSO
   // --------------------------
@@ -298,12 +316,35 @@ export class QuizzQuestionsComponent implements OnInit {
     //this.quiz.limitPerTopic = 2;
   }
 
+  showAnswerMessage(arr: string[]) {
+    const index = Math.floor(Math.random() * arr.length);
+    this.currentMessage = arr[index];
+
+    setTimeout(() => {
+      this.currentMessage = null;
+    }, 3000); // some depois de 3 segundos
+  }
+
   // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
   togleCorrection() {
     this.showCorrection = true;
     this.quiz.questions[this.currentQuestionIndex].verified = true; // Marca como verificada pelo usuário (para mostrar dica/solução automaticamente)
     this.renderMathExpressions();
     this.renderFunctions();
+
+    // Mostra mensagem de acerto/erro da pergunta atual (se houver)
+    const perguntaAtual = this.submittedAnswers[this.currentQuestionIndex];
+    if (perguntaAtual && perguntaAtual.id !== undefined) {
+      const question = this.quiz.questions[this.currentQuestionIndex];
+      const selected = question.answers.find(a => a.id === perguntaAtual.id);
+      if (selected) {
+        if (selected.correct) {
+          this.showAnswerMessage(this.correctMessages);
+        } else {
+          this.showAnswerMessage(this.incorrectMessages);
+        }
+      }
+    }
   }
 
   isCurrentQuestionAnswered(questionId: number): boolean {
@@ -699,6 +740,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (!this.quiz.id && this.quiz.type == 'TRAINING') {
       this.showCorrection = false;
     }
+
   }
 
   showProgressMessage() {
