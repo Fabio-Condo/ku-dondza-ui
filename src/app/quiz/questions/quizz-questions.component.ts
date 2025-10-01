@@ -111,85 +111,68 @@ export class QuizzQuestionsComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
-  /*mensagensProgresso = [
-    "Ótimo ritmo, não pare agora! 🚀",
-    "Você já passou da metade 👏",
-    "Faltam só algumas perguntas 💡",
-    "Está indo muito bem até aqui ⭐",
-    "Continue focado, tá quase lá! 💪",
-    "Excelente dedicação 👌"
-  ];
-  */
-
   // --------------------------
   // MENSAGENS DE PROGRESSO
   // --------------------------
 
   currentMessage: string | null = null;
+  lastStage: number = -1;
 
   // Start (0–25%)
   startMessages: string[] = [
-    "Belo começo, continue firme 💪",
-    "Você deu o primeiro passo 👣",
-    "Excelente início, mantenha o ritmo ⭐",
-    "Começo promissor 🔥",
-    "Tá indo bem, siga em frente 🚀",
-    "Primeira etapa concluída, vamos lá 👏",
-    "O aprendizado começou, ótimo! 📚",
-    "Você começou com energia ⚡",
-    "Primeiras respostas já feitas, boa!",
-    "Mandando bem desde o início 👍",
-    "O importante é começar — e você já começou 👌",
-    "Bom arranque, mantenha o ritmo 🏃"
-  ];
+    "Você já começou, isso é o mais importante 👣",
+    "Primeiros passos dados, continue firme 💪",
+    "Início promissor, bora em frente 🚀",
+    "Já está em movimento, ótimo começo ⚡",
+    "Começou bem, mantenha o ritmo ⭐",
+    "Cada jornada começa com um passo, e você já deu o seu 👏",
+    "Primeira parte iniciada, siga com foco 📚",
+    "Belo arranque, continue no fluxo 🌊",
+    "O caminho começou, aproveite a jornada 🛤️",
+    "Ótima decisão em começar, siga em frente 👍"
+  ]
 
   // Mid (25–50%)
   midMessages: string[] = [
-    "Boa, continue avançando 💡",
-    "Você já está ganhando velocidade 🚴",
-    "Mandando bem até aqui 👌",
-    "Excelente dedicação 👏",
-    "Você está se saindo ótimo, bora mais!",
-    "Quase chegando na metade, siga forte 💪",
-    "Está no caminho certo, continue! 🔥",
-    "Muito bom, foco total 🚀",
-    "Progresso constante, parabéns ⭐",
-    "Você já está construindo conhecimento sólido 📚",
-    "Siga firme, tá ficando interessante 👏",
-    "Muito bem, avance mais um pouco!"
-  ];
+    "Você já está no ritmo, continue 📈",
+    "Seguindo bem no caminho, mantenha a constância ⚡",
+    "Está avançando com firmeza 💡",
+    "Quase na metade, foco total 🔥",
+    "Boa cadência, siga sem parar 🚴",
+    "Progresso visível, continue firme ⭐",
+    "Ótimo ritmo, siga nessa energia 👏",
+    "Você está construindo conhecimento passo a passo 📚",
+    "Já percorreu um bom trecho da jornada, continue 🌟",
+    "Mais um pouco e você chega à metade 💪"
+  ]
 
   // Halfway (50–75%)
   halfwayMessages: string[] = [
-    "Você já passou da metade 👏",
-    "Ótimo ritmo, não pare agora 🚀",
-    "Tá dominando! Continue 🔥",
-    "Mais da metade já foi, falta pouco ⭐",
-    "Boa! A reta final está chegando 🏃",
-    "Excelente progresso, mantenha o foco 👌",
-    "Metade vencida, agora é só acelerar 💪",
-    "Você já foi longe, continue assim! 🌟",
-    "Mandando muito bem até aqui 👏",
-    "Persistência está trazendo resultado 🚴",
-    "Metade concluída, parabéns 👏",
-    "Ótima performance, siga firme 🚀"
-  ];
+    "Metade da jornada concluída 👏",
+    "Chegou longe, mantenha a energia 🚀",
+    "Você já percorreu um grande caminho 🌟",
+    "Mais da metade avançada, foco no restante 💡",
+    "Persistência é a chave, continue firme 🔑",
+    "Agora é seguir até o fim, está indo bem 💪",
+    "Grande parte já concluída, não perca o ritmo 🚴",
+    "O esforço está somando, continue constante 📈",
+    "Você está mantendo a disciplina, excelente 👌",
+    "Já passou do meio, siga motivado 🔥"
+  ]
 
   // Almost finished (75–99%)
   finalMessages: string[] = [
-    "Tá quase lá, só mais um pouco! 🔥",
-    "Continue firme, falta pouco 💪",
-    "Você está na reta final 🏁",
-    "Últimos desafios, bora 🚀",
-    "Já fez tanto, não desista agora 👏",
-    "Ótima resistência, finalize com chave de ouro ⭐",
-    "Falta só um empurrãozinho 💡",
-    "Está prestes a concluir, parabéns 👌",
-    "Mais um esforço e já chega lá 💪",
-    "Quase acabando, foco total 🔥",
-    "Finalzinho, você consegue ⭐",
-    "Últimas respostas, dê o seu melhor 🚀"
-  ];
+    "Está quase no fim, falta pouco 🏁",
+    "Última etapa, mantenha o foco 👀",
+    "Já percorreu quase tudo, continue firme 💪",
+    "Últimos passos da jornada 🚶",
+    "Final se aproximando, energia extra agora ⚡",
+    "Só mais um pouco, não pare agora 🚀",
+    "Está prestes a concluir, parabéns pela dedicação 🎯",
+    "A linha de chegada está à vista 🏆",
+    "Última reta, concentre-se e finalize 🌟",
+    "Falta bem pouco, continue até o fim 🔥"
+  ]
 
   anonymousOptions = [
     {
@@ -721,33 +704,37 @@ export class QuizzQuestionsComponent implements OnInit {
   showProgressMessage() {
     const progress = this.progressPercentage2;
 
-    console.log(`Current progress: ${progress}%`);
-
-    // If finished, do not show message
     if (progress >= 100) {
       this.currentMessage = null;
       return;
     }
 
     let messagesToDraw: string[] = [];
+    let stage = -1;
 
     if (progress >= 75) {
       messagesToDraw = this.finalMessages;
+      stage = 3;
     } else if (progress >= 50) {
       messagesToDraw = this.halfwayMessages;
+      stage = 2;
     } else if (progress >= 25) {
       messagesToDraw = this.midMessages;
+      stage = 1;
     } else {
       messagesToDraw = this.startMessages;
+      stage = 0;
     }
 
-    // Draw only from the correct range
-    this.currentMessage = this.getRandomMessage(messagesToDraw);
+    // Só mostra se entrou em uma faixa nova
+    if (stage !== this.lastStage) {
+      this.currentMessage = this.getRandomMessage(messagesToDraw);
+      this.lastStage = stage;
 
-    // Disappear after 3 seconds
-    setTimeout(() => {
-      this.currentMessage = null;
-    }, 3000);
+      setTimeout(() => {
+        this.currentMessage = null;
+      }, 3000);
+    }
   }
 
   getRandomMessage(arr: string[]): string {
