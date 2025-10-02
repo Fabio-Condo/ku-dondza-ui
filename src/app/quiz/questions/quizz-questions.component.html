@@ -10,6 +10,10 @@
       </div>
     </div>
 
+    <div *ngIf="currentMessage" class="progress-message">
+      {{ currentMessage }}
+    </div>
+
     <div *ngIf="showInitQuizScreen" class="start-screen">
       <div class="quiz-card">
 
@@ -350,10 +354,6 @@
             <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
               <i class="pi pi-times"></i>
             </button>
-          </div>
-
-          <div *ngIf="currentMessage" class="mensagem-progresso">
-            {{ currentMessage }}
           </div>
 
           <div class="progress-container">

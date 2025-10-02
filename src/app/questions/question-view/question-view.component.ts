@@ -87,6 +87,25 @@ export class QuestionViewComponent implements OnInit {
   topicId: string = '';
   subjectId: string = '';
 
+  currentMessage: string | null = null;
+
+  // Mensagens de acerto
+  correctMessages: string[] = [
+    "Muito bem! 👏",
+    "Acertou, continue assim! ⭐",
+    "Excelente escolha! 🚀",
+    "Perfeito, siga firme 💪",
+    "Você pegou essa! 🔥"
+  ];
+
+  // Mensagens de erro (motivacionais, sem desanimar)
+  incorrectMessages: string[] = [
+    "Não foi dessa vez, tente a próxima! 💡",
+    "Quase lá, continue tentando! 🌟",
+    "Não desista, siga focado 🚀",
+    "Boa tentativa, revise e continue 💪",
+    "Cada tentativa conta, prossiga 👌"
+  ];
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
@@ -363,6 +382,29 @@ export class QuestionViewComponent implements OnInit {
     this.question.verified = true; // Marca como verificada pelo usuário (para mostrar dica/solução automaticamente)
     this.renderMathExpressions();
     this.renderFunctions();
+
+    // Mostra mensagem de acerto/erro da pergunta atual (se houver)
+    const perguntaAtual = this.submittedAnswers[this.currentQuestionIndex];
+    if (perguntaAtual && perguntaAtual.id !== undefined) {
+      const question = this.questions[this.currentQuestionIndex];
+      const selected = question.answers.find(a => a.id === perguntaAtual.id);
+      if (selected) {
+        if (selected.correct) {
+          this.showAnswerMessage(this.correctMessages);
+        } else {
+          this.showAnswerMessage(this.incorrectMessages);
+        }
+      }
+    }
+  }
+
+  showAnswerMessage(arr: string[]) {
+    const index = Math.floor(Math.random() * arr.length);
+    this.currentMessage = arr[index];
+
+    setTimeout(() => {
+      this.currentMessage = null;
+    }, 3000); // some depois de 3 segundos
   }
 
   // Método para capturar a resposta do usuário
