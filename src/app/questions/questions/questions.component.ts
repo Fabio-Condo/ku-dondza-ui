@@ -49,7 +49,7 @@ export class QuestionsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
   extraRule: string = "";
-  numberOfOptions: number = 4;
+  numberOfOptions: number = 5;
 
   jsonInput: string = '';
 
