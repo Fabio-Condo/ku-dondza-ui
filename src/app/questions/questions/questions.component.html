@@ -1189,7 +1189,8 @@
             <i class="pi pi-code"></i>
         </button>
 
-        <button class="fab fab-generate-from-ai" (click)="onGenerateFromAI()" *ngIf="isUserLoggedIn && isSuperAdmin && showOptions">
+        <button class="fab fab-generate-from-ai" (click)="onGenerateFromAI()"
+            *ngIf="isUserLoggedIn && isSuperAdmin && showOptions">
             <i class="pi pi-cog"></i>
         </button>
 
@@ -1836,6 +1837,14 @@
             <select id="optionsNumber" [(ngModel)]="numberOfOptions" name="optionsNumber" required>
                 <option value="" disabled selected>Selecione o número</option>
                 <option *ngFor="let option of numberOfOptionsList" [value]="option.value">{{ option.label }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="exerciseFormat">Formato</label>
+            <select id="exerciseFormat" [(ngModel)]="exerciseFormat" name="exerciseFormat" required>
+                <option value="" disabled selected>Selecione o formato</option>
+                <option *ngFor="let option of exerciseFormats" [value]="option.value">{{ option.label }}</option>
             </select>
         </div>
 

@@ -50,6 +50,7 @@ export class QuestionsComponent implements OnInit {
 
   extraRule: string = "";
   numberOfOptions: number = 5;
+  exerciseFormat: string = "";
 
   jsonInput: string = '';
 
@@ -115,6 +116,11 @@ export class QuestionsComponent implements OnInit {
   numberOfOptionsList = [
     { label: '4 opções', value: 4 },
     { label: '5 opções', value: 5 },
+  ];
+
+  exerciseFormats = [
+    { label: 'Cálculo direto', value: 'cálculo direto' },
+    { label: 'Problema contextualizado', value: 'problema contextualizado' },
   ];
 
   filtro: QuestionFilter = {
@@ -354,7 +360,7 @@ export class QuestionsComponent implements OnInit {
     this.loadingMessage = "Gerrando questão";
     this.showLoading = true;
 
-    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.extraRule, this.numberOfOptions).subscribe(
+    this.questionService.generateAdvancedQuestionFromAI(this.question.topic.id, this.extraRule, this.numberOfOptions, this.exerciseFormat).subscribe(
       (question) => {
         this.question = question;
         this.renderMathExpressions();

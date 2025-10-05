@@ -96,10 +96,11 @@ export class QuestionService {
     return this.http.put<void>(`${this.baseUrl}/${id}/validated`, status, {});
   }
 
-  generateAdvancedQuestionFromAI(topicId: number, extraRule: string, numberOfOptions: number): Observable<Question> {
+  generateAdvancedQuestionFromAI(topicId: number, extraRule: string, numberOfOptions: number, exerciseFormat: string): Observable<Question> {
     const params = new HttpParams()
       .set('topicId', topicId.toString())
       .set('extraRule', extraRule)
+      .set('exerciseFormat', exerciseFormat)
       .set('numberOfOptions', numberOfOptions.toString());
     return this.http.get<Question>(`${this.baseUrl}/generate-from-ai`, { params });
   }
