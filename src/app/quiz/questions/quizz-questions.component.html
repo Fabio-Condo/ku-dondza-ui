@@ -372,7 +372,7 @@
               <div class="progress-bar" *ngIf="!quiz.id" [style.width]="progressPercentage2 + '%'"></div>
             </div>
 
-            <button class="question-selector-btn" (click)="onShowQuestionList()">
+            <button class="question-selector-btn" [disabled]="!quiz.id" (click)="onShowQuestionList()">
               {{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}
               <span class="arrow">&#9662;</span> <!-- setinha para baixo -->
             </button>
