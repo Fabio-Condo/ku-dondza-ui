@@ -174,26 +174,31 @@
             <br>
             <br>
 
-            <div class="study-hint">
-                Navegue entre os exercícios deste tópico e aprenda no seu ritmo.
+            <div class="study-hint-section">
+                <div class="study-hint">
+                    Navegue entre os exercícios deste tópico e aprenda no seu ritmo.
+                </div>
+
+
+                <div class="navigation-buttons text-center">
+                    <button class="btn btn-prev" (click)="goToPreviousQuestion()"
+                        [disabled]="currentQuestionIndex === 0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                        Anterior
+                    </button>
+
+                    <button class="btn btn-next" (click)="onGenerateNextQuestion()"
+                        [disabled]="questions.length > 1 && currentQuestionIndex === questions.length - 1">
+                        Próxima
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="navigation-buttons text-center">
-                <button class="btn btn-prev" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                    Anterior
-                </button>
-
-                <button class="btn btn-next" (click)="onGenerateNextQuestion()"
-                    [disabled]="questions.length > 1 && currentQuestionIndex === questions.length - 1">
-                    Próxima
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 18l6-6-6-6" />
-                    </svg>
-                </button>
-            </div>
 
             <br>
             <br>
