@@ -1515,6 +1515,7 @@ export class QuizzQuestionsComponent implements OnInit {
       this.renderFunctions();
       this.scrollToTop();
       this.displayModalQuestionsList = false;
+      document.body.classList.remove('no-scroll');
     }
   }
 
