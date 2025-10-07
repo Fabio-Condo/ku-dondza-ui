@@ -1519,6 +1519,30 @@ export class QuizzQuestionsComponent implements OnInit {
     }
   }
 
+  getQuestionStatus(question: any): boolean {
+    // Verifica se a questão tem respostas
+    if (!question?.answers?.length) {
+      return false;
+    }
+
+    // Localiza a resposta do usuário para esta questão
+    const userAnswer = this.quiz.answers?.find(ans => ans.question?.id === question.id);
+
+    if (!userAnswer) {
+      return false;
+    }
+
+    // Procura a resposta correspondente dentro da questão
+    const selectedAnswer = question.answers.find((a: Answer) => a.id === userAnswer.id);
+
+    if (!selectedAnswer) {
+      return false;
+    }
+
+    // Retorna correto ou incorreto
+    return !!selectedAnswer.correct;
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

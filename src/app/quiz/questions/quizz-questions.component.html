@@ -741,14 +741,19 @@
     </div>
 
     <div *ngFor="let question of quiz.questions; let i = index">
-      <div class="question-item" (click)="goToQuestion(i)" *ngIf="question.text"
-        [ngClass]="{ 'selected-question': i === currentQuestionIndex }">
-        <span>{{ i + 1 }}.</span>
-        <span [innerHTML]="getFormattedText(question.text || '')"></span>
+      <div class="question-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
+         'selected-question': i === currentQuestionIndex,
+         'correct-question': getQuestionStatus(question) === true,
+         'incorrect-question': getQuestionStatus(question) === false
+       }">
+
+        <span class="question-number">{{ i + 1 }}</span>
+        <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
       </div>
     </div>
 
   </div>
 </div>
+
 
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
