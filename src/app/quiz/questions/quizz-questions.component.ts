@@ -1500,10 +1500,12 @@ export class QuizzQuestionsComponent implements OnInit {
     this.displayModalQuestionsList = true;
     this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
     this.renderFunctions();
+    document.body.classList.add('no-scroll');
   }
 
   onCloseQuestionList() {
     this.displayModalQuestionsList = false;
+    document.body.classList.remove('no-scroll');
   }
 
   goToQuestion(index: number) {
