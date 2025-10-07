@@ -573,6 +573,15 @@ export class QuizzQuestionsComponent implements OnInit {
       response => {
         question.savedByUser = !question.savedByUser;
         question.showLoadingSave = false;
+
+        // Mensagem de confirmação melhorada
+        this.currentMessage = question.savedByUser
+          ? 'Questão adicionada aos favoritos'
+          : 'Questão removida dos favoritos';
+
+        setTimeout(() => {
+          this.currentMessage = null;
+        }, 3000); // desaparece depois de 3 segundos
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
