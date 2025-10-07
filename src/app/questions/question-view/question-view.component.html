@@ -142,14 +142,16 @@
             <div class="tip" *ngIf="!showCorrection"
                 [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="tip-input">
-                    <h1 class="title">Dica</h1>
-                    <p class="tip-content scrollable" *ngIf="question.tip" [innerHTML]="getFormattedText(question.tip)">
-                    </p>
-                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
-                        <button class="upgrade-button">
-                            Atualizar para Premium
-                        </button>
-                    </div>
+                    <button class="solution-button"
+                        (click)="question.showTip = !question.showTip; this.renderMathExpressions();">
+                        <h1 class="title">Dica</h1>
+                        <svg [class.rotated]="question.showTip" class="chevron-icon" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <p class="tip-content scrollable" *ngIf="question.tip && question.showTip" [innerHTML]="getFormattedText(question.tip)"></p>
                 </div>
             </div>
 
@@ -159,15 +161,18 @@
             <div class="solution" *ngIf="showCorrection"
                 [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
                 <div class="solution-input">
-                    <h1 class="title">Resolução</h1>
-                    <p class="solution-content scrollable" *ngIf="question.solution"
+                    <button class="solution-button"
+                        (click)="question.showSolution = !question.showSolution; this.renderMathExpressions();">
+                        <h1 class="title">Resolução</h1>
+                        <svg [class.rotated]="question.showSolution" class="chevron-icon" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <p class="solution-content scrollable" *ngIf="question.solution && question.showSolution"
                         [innerHTML]="getFormattedText(question.solution)">
                     </p>
-                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
-                        <button class="upgrade-button">
-                            Atualizar para Premium
-                        </button>
-                    </div>
                 </div>
             </div>
 

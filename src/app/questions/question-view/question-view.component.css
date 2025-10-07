@@ -169,20 +169,11 @@ h1 {
 }
 
 /* Container da solução com efeito glassmorphism */
-.tip {
-    margin-top: 25px;
-    padding: 15px;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background-color: #fffbeb;
-    border: 1px solid #fbd38d;
-}
-
-.tip-content.scrollable {
-    max-height: 500px;
-    overflow-y: auto;
+.solution-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
 }
 
 .solution {
@@ -199,6 +190,48 @@ h1 {
 .solution-content.scrollable {
     max-height: 500px;
     overflow-y: auto;
+}
+
+.tip {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fffbeb;
+    border: 1px solid #fbd38d;
+}
+
+.tip-content.scrollable {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Botão de solução */
+.solution-button {
+    background-color: transparent;
+    padding: 0px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chevron-icon {
+    color: var(--color-text);
+    transition: transform 0.2s;
+}
+
+.chevron-icon.rotated {
+    transform: rotate(180deg);
 }
 
 .blocked-content {
