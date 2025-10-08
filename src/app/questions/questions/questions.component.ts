@@ -783,6 +783,10 @@ export class QuestionsComponent implements OnInit {
     return this.authenticationService.getUserFromLocalCache().role;
   }
 
+  getOptionLetter(index: number): string {
+    return String.fromCharCode(65 + index); // 65 = 'A' em ASCII - Mostra A, B, C, ...
+  }
+
   sendOtp() {
     this.showLoading = true;
     //const email = this.otpForm.value.email!;

@@ -1758,7 +1758,7 @@
                         'correct-answer': showCorrection && answer.correct,
                         'incorrect-answer': showCorrection && !answer.correct && isSelected(question.id, answer.id!)
                     }">
-                    <span class="num">{{ i + 1 }}</span>
+                    <span class="num">{{ getOptionLetter(i) }}</span>
                     <input type="radio" name="question-{{ question.id }}" [value]="answer.id"
                         [checked]="isSelected(question.id, answer.id!)"
                         (change)="captureUserAnswer(question.id, answer.id!)" [disabled]="showCorrection" />
