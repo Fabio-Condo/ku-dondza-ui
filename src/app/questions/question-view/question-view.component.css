@@ -92,36 +92,39 @@ h1 {
 }
 
 .answer-options label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 15px;
-  padding: 18px 22px;
-  margin: 12px 0;
-  border: 2px solid #e0e4ec;
-  border-radius: 14px;
-  background: #f9fbff;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.25s ease-in-out;
-  box-shadow: 0 2px 6px rgba(67, 97, 238, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 25px;
+    margin: 10px 0;
+    border: 2px solid #e0e4ec;
+    border-radius: 14px;
+    background: #f9fbff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    max-height: 300px;
+    overflow-y: auto;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 2px 6px rgba(67, 97, 238, 0.05);
 }
 
-/* Círculo da letra */
 .answer-options label .num {
-  background: linear-gradient(135deg, #4361ee, #5a74f5);
-  color: #fff;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 3px 8px rgba(67, 97, 238, 0.3);
-  flex-shrink: 0;
-  transition: all 0.25s ease-in-out;
+    background: linear-gradient(135deg, #4361ee, #5a74f5);
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 3px 8px rgba(67, 97, 238, 0.3);
+    flex-shrink: 0;
+    /* Impede que o botão diminua quando o conteúdo crescer */
 }
 
 .answer-options label:hover {
