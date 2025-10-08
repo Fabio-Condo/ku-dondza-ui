@@ -397,7 +397,7 @@
               'incorrect-answer': showCorrection && !answer.correct && isSelected(quiz.questions[currentQuestionIndex].id, answer.id!),
               'selected-answer': isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)
             }">
-              <span class="num">{{ i + 1 }}</span>
+              <span class="num">{{ getOptionLetter(i) }}</span>
               <input type="radio" name="question-{{ quiz.questions[currentQuestionIndex].id }}" [value]="answer.id"
                 [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"

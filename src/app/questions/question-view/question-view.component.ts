@@ -863,6 +863,10 @@ export class QuestionViewComponent implements OnInit {
     return textoFormatado.replace(/\n/g, '<br>');
   }
 
+  getOptionLetter(index: number): string {
+    return String.fromCharCode(65 + index); // 65 = 'A' em ASCII - Mostra A, B, C, ...
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }

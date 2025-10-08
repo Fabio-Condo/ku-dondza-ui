@@ -127,7 +127,7 @@
                 'incorrect-answer': showCorrection && !answer.correct && isSelected(question.id, answer.id!),
                 'selected-answer': isSelected(question.id, answer.id!)
             }">
-                    <span class="num">{{ i + 1 }}</span>
+                    <span class="num">{{ getOptionLetter(i) }}</span>
                     <input type="radio" name="question-{{ question.id }}" [value]="answer.id"
                         [checked]="isSelected(question.id, answer.id!)"
                         (change)="captureUserAnswer(question.id, answer.id!)" [disabled]="showCorrection" />
@@ -151,7 +151,8 @@
                             <path d="M6 9l6 6 6-6" />
                         </svg>
                     </button>
-                    <p class="tip-content scrollable" *ngIf="question.tip && question.showTip" [innerHTML]="getFormattedText(question.tip)"></p>
+                    <p class="tip-content scrollable" *ngIf="question.tip && question.showTip"
+                        [innerHTML]="getFormattedText(question.tip)"></p>
                 </div>
             </div>
 
