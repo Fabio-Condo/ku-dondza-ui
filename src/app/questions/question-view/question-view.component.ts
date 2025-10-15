@@ -76,7 +76,7 @@ export class QuestionViewComponent implements OnInit {
   @ViewChild('editInput') editInputRef!: ElementRef;
 
   correctSound = new Audio('assets/sounds/correct.wav');
-  wrongSound = new Audio('assets/sounds/wrong.mp3');
+  wrongSound = new Audio('assets/sounds/wrong.wav');
 
   openedMenuId: number | null = null;
 
@@ -418,6 +418,7 @@ export class QuestionViewComponent implements OnInit {
           this.playCorrect();
           this.showAnswerMessage(this.correctMessages);
         } else {
+          this.playWrong();
           this.showAnswerMessage(this.incorrectMessages);
         }
       }
