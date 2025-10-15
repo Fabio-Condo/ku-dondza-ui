@@ -75,6 +75,8 @@ export class QuestionViewComponent implements OnInit {
 
   @ViewChild('editInput') editInputRef!: ElementRef;
 
+  correctSound = new Audio('assets/sounds/correct.wav');
+  wrongSound = new Audio('assets/sounds/wrong.mp3');
 
   openedMenuId: number | null = null;
 
@@ -152,6 +154,10 @@ export class QuestionViewComponent implements OnInit {
       this.topicId = params['topicId'];
       this.subjectId = params['subjectId'];
     });
+
+    // Pré-carrega os sons para evitar atrasos
+    this.correctSound.load();
+    this.wrongSound.load();
   }
 
   ngOnDestroy(): void {
@@ -368,6 +374,16 @@ export class QuestionViewComponent implements OnInit {
   //  this.renderFunctions();
   //}
 
+  playCorrect(): void {
+    this.correctSound.currentTime = 0;
+    this.correctSound.play().catch(() => { });
+  }
+
+  playWrong(): void {
+    this.wrongSound.currentTime = 0;
+    this.wrongSound.play().catch(() => { });
+  }
+
   onViewSolution() {
 
     if (this.isUserLoggedIn) {
@@ -399,6 +415,7 @@ export class QuestionViewComponent implements OnInit {
       const selected = question.answers.find(a => a.id === perguntaAtual.id);
       if (selected) {
         if (selected.correct) {
+          this.playCorrect();
           this.showAnswerMessage(this.correctMessages);
         } else {
           this.showAnswerMessage(this.incorrectMessages);
