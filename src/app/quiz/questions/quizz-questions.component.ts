@@ -76,6 +76,9 @@ export class QuizzQuestionsComponent implements OnInit {
   origem: string = '';
   subjectId: number = 0;
 
+  correctSound = new Audio('assets/sounds/correct.wav');
+  wrongSound = new Audio('assets/sounds/wrong.wav');
+
   private subscriptions: Subscription[] = [];
 
   selectedQuestion: Question = new Question();
@@ -280,6 +283,10 @@ export class QuizzQuestionsComponent implements OnInit {
     if (quizId && quizId == 'test' && this.origem === 'subjects' && this.subjectId) {
       this.StartFinalTest(this.subjectId);
     }
+
+    // Pré-carrega os sons para evitar atrasos
+    this.correctSound.load();
+    this.wrongSound.load();
   }
 
   scrollToTop() {
@@ -325,6 +332,16 @@ export class QuizzQuestionsComponent implements OnInit {
     }, 3000); // some depois de 3 segundos
   }
 
+  playCorrect(): void {
+    this.correctSound.currentTime = 0;
+    this.correctSound.play().catch(() => { });
+  }
+
+  playWrong(): void {
+    this.wrongSound.currentTime = 0;
+    this.wrongSound.play().catch(() => { });
+  }
+
   // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
   togleCorrection() {
     this.showCorrection = true;
@@ -339,8 +356,10 @@ export class QuizzQuestionsComponent implements OnInit {
       const selected = question.answers.find(a => a.id === perguntaAtual.id);
       if (selected) {
         if (selected.correct) {
+          this.playCorrect();
           this.showAnswerMessage(this.correctMessages);
         } else {
+          this.playWrong();
           this.showAnswerMessage(this.incorrectMessages);
         }
       }
