@@ -1404,6 +1404,14 @@
             </div>
 
             <div class="form-group">
+                <label for="difficultyLevel">Nivel</label>
+                <select id="difficultyLevel" [(ngModel)]="question.difficultyLevel" name="difficultyLevel" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="timeLimit">Tempo da questão</label>
                 <select id="timeLimit" [(ngModel)]="question.timeLimit" name="timeLimit" required>
                     <option value="" disabled selected>Selecione o tempo</option>

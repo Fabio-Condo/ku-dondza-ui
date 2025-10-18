@@ -195,6 +195,19 @@ export class QuizzQuestionsComponent implements OnInit {
     "Falta bem pouco, continue até o fim 🔥"
   ]
 
+  difficultyLevels = [
+    {
+      label: 'Iniciante',
+      value: 'BEGINNER',
+      description: 'Quizzes introdutórios para treinar conceitos básicos com dicas e feedback imediato. Ideal para começar a aprender ou revisar conteúdos.'
+    },
+    {
+      label: 'Avançado',
+      value: 'ADVANCED',
+      description: 'Quizzes desafiadores que testam raciocínio e aplicação prática. Sem dicas, pontuação mais alta e tempo reduzido para aumentar o desafio.'
+    }
+  ];
+
   anonymousOptions = [
     {
       label: 'Fazer como anônimo',
@@ -210,14 +223,14 @@ export class QuizzQuestionsComponent implements OnInit {
 
   quizTypes = [
     {
-      label: 'Avaliação',
-      value: 'TEST',
-      description: 'Você só vê a correção no fim, após submeter todo o teste.'
-    },
-    {
       label: 'Treino',
       value: 'TRAINING',
       description: 'Você vê a correção de cada questão imediatamente após responder.'
+    },
+    {
+      label: 'Avaliação',
+      value: 'TEST',
+      description: 'Você só vê a correção no fim, após submeter todo o teste.'
     },
   ];
 
@@ -303,13 +316,14 @@ export class QuizzQuestionsComponent implements OnInit {
 
   get stepProgressPercentage(): number {
     let filled = 0;
+    if (this.quiz.difficultyLevel) filled++;
     if (this.quiz.anonymous !== null) filled++;
     if (this.quiz.type) filled++;
     if (this.quiz.limitPerTopic) filled++;
     if (this.quiz.subject) filled++;
     if (this.getSelectedTopicIds().length > 0) filled++;
 
-    return (filled / 5) * 100;
+    return (filled / 6) * 100;
   }
 
   onInitQuiz() {
@@ -318,7 +332,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showStartScreen = false;
     this.showCorrection = false;
     this.quiz.anonymous = null;
-    //this.quiz.difficultyLevel = 'EASY';
+    //this.quiz.difficultyLevel = 'BEGINNER';
     //this.quiz.type = 'TEST';
     //this.quiz.limitPerTopic = 2;
   }
@@ -451,7 +465,7 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     this.showLoading = true;
-    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.limitPerTopic).subscribe(
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
         this.quiz.questions = this.questions;
@@ -1573,6 +1587,19 @@ export class QuizzQuestionsComponent implements OnInit {
 
     // Retorna correto ou incorreto
     return !!selectedAnswer.correct;
+  }
+
+  selectLevel(level: any) {
+    if (this.isAdvancedDisabled(level)) return; // bloqueia clique
+    this.quiz.difficultyLevel = level.value;
+  }
+
+  isAdvancedDisabled(level: any): boolean {
+    // só aplica a regra para o nível ADVANCED
+    if (level.value !== 'ADVANCED') return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return !this.loggedUser || this.loggedUser.plan === 'FREE';
   }
 
   private sendErrorNotification(message: string): void {

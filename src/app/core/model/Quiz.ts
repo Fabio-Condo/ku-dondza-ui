@@ -14,6 +14,7 @@ export class Quiz {
     limitPerTopic!: number;
     anonymous: any; // Define se o quiz é anônimo
     type!: string; // "TRAINING" ou "TEST"
+    difficultyLevel!: string; // "BEGINNER", "ADVANCED"
     subject = new Subject();
     user = new User();
     topics: Topic[] = [];

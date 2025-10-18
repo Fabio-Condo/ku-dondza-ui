@@ -39,9 +39,25 @@
 
         <form autocomplete="off" #courseForm="ngForm">
 
-          <!-- Step 1: Modo -->
-          <!-- Step 1: Modo -->
+          <!-- Step 0: Tipo -->
           <div class="step-card animate-step">
+            <p class="step-description">Selecione o nível de quiz que deseja criar.</p>
+
+            <div class="options-grid">
+              <div *ngFor="let level of difficultyLevels" (click)="selectLevel(level)"
+                [class.selected]="quiz.difficultyLevel === level.value" [class.disabled]="isAdvancedDisabled(level)"
+                class="option-card">
+                <h3>{{ level.label }}</h3>
+                <p class="option-description">{{ level.description }}</p>
+                <p *ngIf="isAdvancedDisabled(level)" class="lock-message">
+                  🔒 Disponível apenas para usuários Premium
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 1: Modo -->
+          <div class="step-card animate-step" *ngIf="quiz.difficultyLevel">
             <p class="step-description">Escolha se o quiz será anônimo ou identificado.</p>
             <div class="options-grid">
               <div *ngFor="let option of anonymousOptions" (click)="quiz.anonymous = option.value"
@@ -741,10 +757,7 @@
     </div>
 
     <div *ngFor="let question of quiz.questions; let i = index">
-      <div class="question-item"
-           (click)="goToQuestion(i)"
-           *ngIf="question.text"
-           [ngClass]="{
+      <div class="question-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
              'selected-question': i === currentQuestionIndex,
              'correct-question': getQuestionStatus(question) === true,
              'incorrect-question': getQuestionStatus(question) === false

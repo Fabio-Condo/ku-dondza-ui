@@ -115,6 +115,11 @@ export class QuestionsComponent implements OnInit {
     { label: '3 minutos', value: '180' },
   ];
 
+  difficultyLevels = [
+    { label: 'Iniciante', value: 'BEGINNER' },
+    { label: 'Avançado', value: 'ADVANCED' },
+  ];
+
   numberOfOptionsList = [
     { label: '4 opções', value: 4 },
     { label: '5 opções', value: 5 },

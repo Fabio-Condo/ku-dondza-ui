@@ -12,6 +12,7 @@ export class Question {
     mathExpressions: MathExpression[] = []; // Alterado para uma lista de expressões
     tip!: string;
     solution!: string;
+    difficultyLevel!: string; // "BEGINNER", "ADVANCED"
     validated: boolean = false;
     fileName!: string;
     urlFile!: string;
