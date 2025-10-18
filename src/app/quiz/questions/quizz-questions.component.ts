@@ -485,10 +485,23 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
+  selectLevel(level: any) {
+    if (this.isAdvancedLevelDisabled(level)) return; // bloqueia clique
+    this.quiz.difficultyLevel = level.value;
+  }
+
+  isAdvancedLevelDisabled(level: any): boolean {
+    // só aplica a regra para o nível ADVANCED
+    if (level.value !== 'ADVANCED') return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return !this.loggedUser || this.loggedUser.plan === 'FREE';
+  }
+
   toggleTopic(topic: Topic): void {
 
-    // bloqueia clique se o tópico estiver travado
-    if (!topic.unlocked) return;
+    // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
+    if (this.isPremiumTopicDisabled(topic)) return;
 
     topic.selected = !topic.selected;
   }
@@ -517,6 +530,14 @@ export class QuizzQuestionsComponent implements OnInit {
   selectAllTopics(): void {
     if (!this.topics) return;
     this.topics = this.topics.map(t => ({ ...t, selected: true }));
+  }
+
+  // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
+  isPremiumTopicDisabled(topic: Topic): boolean {
+    if (topic.premium) return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return !this.loggedUser || this.loggedUser.plan === 'FREE';
   }
 
   saveQuiz() {
@@ -1591,27 +1612,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
     // Retorna correto ou incorreto
     return !!selectedAnswer.correct;
-  }
-
-  selectLevel(level: any) {
-    if (this.isAdvancedDisabled(level)) return; // bloqueia clique
-    this.quiz.difficultyLevel = level.value;
-  }
-
-  isAdvancedDisabled(level: any): boolean {
-    // só aplica a regra para o nível ADVANCED
-    if (level.value !== 'ADVANCED') return false;
-
-    // desabilita se não estiver logado ou se estiver no plano FREE
-    return !this.loggedUser || this.loggedUser.plan === 'FREE';
-  }
-
-  isAdvancedTopicDisabled(topic: Topic): boolean {
-    // só aplica a regra para o nível ADVANCED
-    if (topic.unlocked) return false;
-
-    // desabilita se não estiver logado ou se estiver no plano FREE
-    return !this.loggedUser || this.loggedUser.plan === 'FREE';
   }
 
   private sendErrorNotification(message: string): void {

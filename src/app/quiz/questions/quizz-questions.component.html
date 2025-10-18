@@ -45,11 +45,11 @@
 
             <div class="options-grid">
               <div *ngFor="let level of difficultyLevels" (click)="selectLevel(level)"
-                [class.selected]="quiz.difficultyLevel === level.value" [class.unlocked]="isAdvancedDisabled(level)"
+                [class.selected]="quiz.difficultyLevel === level.value" [class.unlocked]="isAdvancedLevelDisabled(level)"
                 class="option-card">
                 <h3>{{ level.label }}</h3>
                 <p class="option-description">{{ level.description }}</p>
-                <p *ngIf="isAdvancedDisabled(level)" class="lock-message">
+                <p *ngIf="isAdvancedLevelDisabled(level)" class="lock-message">
                   🔒 Disponível apenas para usuários Premium
                 </p>
               </div>
@@ -111,9 +111,9 @@
 
             <div class="options-grid">
               <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
-                [class.unlocked]="isAdvancedTopicDisabled(topic)" class="option-card">
+                [class.unlocked]="isPremiumTopicDisabled(topic)" class="option-card">
                 <p class="option-description">{{ topic.name }}</p>
-                <p *ngIf="isAdvancedTopicDisabled(topic)" class="lock-message">
+                <p *ngIf="isPremiumTopicDisabled(topic)" class="lock-message">
                   🔒 Disponível apenas para usuários Premium
                 </p>
               </div>
