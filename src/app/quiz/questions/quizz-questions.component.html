@@ -45,7 +45,7 @@
 
             <div class="options-grid">
               <div *ngFor="let level of difficultyLevels" (click)="selectLevel(level)"
-                [class.selected]="quiz.difficultyLevel === level.value" [class.disabled]="isAdvancedDisabled(level)"
+                [class.selected]="quiz.difficultyLevel === level.value" [class.unlocked]="isAdvancedDisabled(level)"
                 class="option-card">
                 <h3>{{ level.label }}</h3>
                 <p class="option-description">{{ level.description }}</p>
@@ -97,7 +97,7 @@
             <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
 
             <!-- Botão Selecionar todos -->
-            <div class="select-all" (click)="toggleSelectAllTopics()">
+            <div class="select-all" (click)="toggleSelectAllTopics()" *ngIf="loggedUser && loggedUser.plan === 'PREMIUM'">
               <span>
                 {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
               </span>
@@ -109,9 +109,12 @@
             </p>
 
             <div class="options-grid">
-              <div *ngFor="let topic of topics" (click)="toggleTopic(topic)" [class.selected]="topic.selected"
-                class="option-card">
-                {{ topic.name }}
+              <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
+                [class.unlocked]="!topic.unlocked" class="option-card">
+                <p class="option-description">{{ topic.name }}</p>
+                <p *ngIf="!topic.unlocked" class="lock-message">
+                  🔒 Disponível apenas para usuários Premium
+                </p>
               </div>
             </div>
           </div>

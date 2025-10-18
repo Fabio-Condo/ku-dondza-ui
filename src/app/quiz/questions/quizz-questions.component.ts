@@ -486,6 +486,10 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   toggleTopic(topic: Topic): void {
+
+    // bloqueia clique se o tópico estiver travado
+    if (!topic.unlocked) return;
+
     topic.selected = !topic.selected;
   }
 

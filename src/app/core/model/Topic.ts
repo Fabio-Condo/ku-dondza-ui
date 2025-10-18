@@ -10,6 +10,7 @@ export class Topic {
     subject = new Subject();
     questions: Question[] = [];
     contents: TopicContent[] = [];
+    unlocked: boolean = false; 
 
     selected: boolean = false; // Adicionamos uma propriedade para controle de seleção
     isAdminMenuOpen: boolean = false;
