@@ -97,7 +97,8 @@
             <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
 
             <!-- Botão Selecionar todos -->
-            <div class="select-all" (click)="toggleSelectAllTopics()" *ngIf="loggedUser && loggedUser.plan === 'PREMIUM'">
+            <div class="select-all" (click)="toggleSelectAllTopics()"
+              *ngIf="loggedUser && loggedUser.plan === 'PREMIUM'">
               <span>
                 {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
               </span>
@@ -110,9 +111,9 @@
 
             <div class="options-grid">
               <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
-                [class.unlocked]="!topic.unlocked" class="option-card">
+                [class.unlocked]="isAdvancedTopicDisabled(topic)" class="option-card">
                 <p class="option-description">{{ topic.name }}</p>
-                <p *ngIf="!topic.unlocked" class="lock-message">
+                <p *ngIf="isAdvancedTopicDisabled(topic)" class="lock-message">
                   🔒 Disponível apenas para usuários Premium
                 </p>
               </div>

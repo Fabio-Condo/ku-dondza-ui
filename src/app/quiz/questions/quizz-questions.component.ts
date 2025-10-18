@@ -1606,6 +1606,14 @@ export class QuizzQuestionsComponent implements OnInit {
     return !this.loggedUser || this.loggedUser.plan === 'FREE';
   }
 
+  isAdvancedTopicDisabled(topic: Topic): boolean {
+    // só aplica a regra para o nível ADVANCED
+    if (topic.unlocked) return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return !this.loggedUser || this.loggedUser.plan === 'FREE';
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });
