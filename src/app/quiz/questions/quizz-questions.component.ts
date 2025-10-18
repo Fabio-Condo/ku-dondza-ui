@@ -199,12 +199,12 @@ export class QuizzQuestionsComponent implements OnInit {
     {
       label: 'Iniciante',
       value: 'BEGINNER',
-      description: 'Quizzes introdutórios para treinar conceitos básicos com dicas e feedback imediato. Ideal para começar a aprender ou revisar conteúdos.'
+      description: 'Quizzes introdutórios para treinar conceitos básicos.'
     },
     {
       label: 'Avançado',
       value: 'ADVANCED',
-      description: 'Quizzes desafiadores que testam raciocínio e aplicação prática. Sem dicas, pontuação mais alta e tempo reduzido para aumentar o desafio.'
+      description: 'Quizzes desafiadores que testam raciocínio e aplicação prática.'
     }
   ];
 
@@ -317,8 +317,8 @@ export class QuizzQuestionsComponent implements OnInit {
   get stepProgressPercentage(): number {
     let filled = 0;
     if (this.quiz.difficultyLevel) filled++;
-    if (this.quiz.anonymous !== null) filled++;
     if (this.quiz.type) filled++;
+    if (this.quiz.anonymous !== null) filled++;
     if (this.quiz.limitPerTopic) filled++;
     if (this.quiz.subject) filled++;
     if (this.getSelectedTopicIds().length > 0) filled++;

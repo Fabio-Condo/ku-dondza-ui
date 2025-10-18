@@ -39,7 +39,7 @@
 
         <form autocomplete="off" #courseForm="ngForm">
 
-          <!-- Step 0: Tipo -->
+          <!-- Step 0: Level -->
           <div class="step-card animate-step">
             <p class="step-description">Selecione o nível de quiz que deseja criar.</p>
 
@@ -56,8 +56,20 @@
             </div>
           </div>
 
-          <!-- Step 1: Modo -->
+          <!-- Step 1: Tipo -->
           <div class="step-card animate-step" *ngIf="quiz.difficultyLevel">
+            <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
+            <div class="options-grid">
+              <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
+                [class.selected]="quiz.type === type.value" class="option-card">
+                <h3>{{ type.label }}</h3>
+                <p class="option-description">{{ type.description }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Modo -->
+          <div class="step-card animate-step" *ngIf="quiz.type">
             <p class="step-description">Escolha se o quiz será anônimo ou identificado.</p>
             <div class="options-grid">
               <div *ngFor="let option of anonymousOptions" (click)="quiz.anonymous = option.value"
@@ -69,20 +81,8 @@
             <p class="info-note">⚠️ Você poderá alterar esta opção depois do quiz.</p>
           </div>
 
-          <!-- Step 2: Tipo -->
-          <div class="step-card animate-step" *ngIf="quiz.anonymous !== null">
-            <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
-            <div class="options-grid">
-              <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
-                [class.selected]="quiz.type === type.value" class="option-card">
-                <h3>{{ type.label }}</h3>
-                <p class="option-description">{{ type.description }}</p>
-              </div>
-            </div>
-          </div>
-
           <!-- Step 3: Disciplina -->
-          <div class="step-card animate-step" *ngIf="quiz.type">
+          <div class="step-card animate-step" *ngIf="quiz.anonymous !== null">
             <p class="step-description">Escolha a disciplina para este quiz.</p>
             <div class="options-grid">
               <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
