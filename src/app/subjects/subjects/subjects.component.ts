@@ -34,6 +34,12 @@ export class SubjectsComponent implements OnInit {
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  categories = [
+    { label: 'Ciências Exatas', value: 'EXACT_SCIENCES' },
+    { label: 'Ciências Humanas', value: 'HUMAN_SCIENCES' },
+    { label: 'Línguas', value: 'LANGUAGES' },
+  ];
+
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
