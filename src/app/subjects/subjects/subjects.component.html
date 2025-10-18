@@ -183,36 +183,19 @@
         }
 
         /* Cores por disciplina */
-        .matematica {
+        .exact-sciences {
             background-color: #e0e7ff;
             color: #4361ee;
         }
 
-        /*
-        .matematica {
-            background-color: #dbeafe;
-            color: #2563eb;
-        }
-        */
-
-        .fisica {
-            background-color: #f3e8ff;
-            color: #7e22ce;
-        }
-
-        .biologia {
+        .human-sciences {
             background-color: #dcfce7;
             color: #16a34a;
         }
 
-        .historia {
-            background-color: #fef3c7;
-            color: #d97706;
-        }
-
-        .quimica {
-            background-color: #fee2e2;
-            color: #dc2626;
+        .languages {
+            background-color: #f3e8ff;
+            color: #7e22ce;
         }
 
         /* Badges dificuldade */
@@ -740,7 +723,10 @@
             <!-- Card 1 -->
             <div class="card" *ngFor="let subject of subjects">
                 <div class="card-header">
-                    <span class="badge matematica">{{ subject.name }}</span>
+                    <span class="badge" [ngClass]="getBadgeClass(subject.category)">
+                        {{ getCategoryValue(subject.category) }}
+                    </span>
+
                     <div>
                         <div class="dropdown-container">
                             <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i
