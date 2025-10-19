@@ -922,7 +922,10 @@ export class QuizzQuestionsComponent implements OnInit {
     this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
     this.renderFunctions();
     this.scrollToTop();
-    this.startTimer();
+
+    if (this.quiz.type === 'TEST') {
+      this.startTimer();
+    }
   }
 
   startCorretion() {

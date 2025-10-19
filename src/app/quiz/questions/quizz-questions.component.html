@@ -377,8 +377,8 @@
           </div>
 
           <div class="progress-container">
-            <p class="question-number" *ngIf="!quiz.id">{{ formattedTime }}</p>
-            <p class="question-number" *ngIf="quiz.id">
+            <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST' }" *ngIf="!quiz.id">{{ formattedTime }}</p>
+            <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST' }" *ngIf="quiz.id">
               <span *ngIf="quiz.timeLimit > quiz.timeSpent">
                 {{ formatTime(quiz.timeLimit - quiz.timeSpent) }}
               </span>
@@ -387,7 +387,6 @@
               </span>
             </p>
             <div class="progress-bar-container">
-              <!--<div class="progress-bar" [style.width]="(currentQuestionIndex + 1) / quiz.questions.length * 100 + '%'"></div>-->
               <div class="progress-bar" *ngIf="quiz.id" [style.width]="progressPercentage + '%'"></div>
               <div class="progress-bar" *ngIf="!quiz.id" [style.width]="progressPercentage2 + '%'"></div>
             </div>
