@@ -45,8 +45,8 @@
 
             <div class="options-grid">
               <div *ngFor="let level of difficultyLevels" (click)="selectLevel(level)"
-                [class.selected]="quiz.difficultyLevel === level.value" [class.unlocked]="isAdvancedLevelDisabled(level)"
-                class="option-card">
+                [class.selected]="quiz.difficultyLevel === level.value"
+                [class.unlocked]="isAdvancedLevelDisabled(level)" class="option-card">
                 <h3>{{ level.label }}</h3>
                 <p class="option-description">{{ level.description }}</p>
                 <p *ngIf="isAdvancedLevelDisabled(level)" class="lock-message">
@@ -429,8 +429,7 @@
           <br>
 
           <!-- Input para mostrar dica e solução -->
-          <div class="tip" *ngIf="!showCorrection"
-            [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+          <div class="tip" *ngIf="!showCorrection">
             <div class="tip-input">
               <button class="solution-button"
                 (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
@@ -449,8 +448,7 @@
           </div>
 
           <!-- Input para mostrar dica e solução -->
-          <div class="solution" *ngIf="showCorrection"
-            [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+          <div class="solution" *ngIf="showCorrection">
             <div class="solution-input">
               <button class="solution-button"
                 (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
@@ -465,6 +463,10 @@
                 *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
+
+              <div *ngIf="(!loggedUser || loggedUser.plan === 'FREE') && quiz.questions[currentQuestionIndex].showSolution" class="locked-solution">
+                <button class="locked-button" (click)="openUpgradeModal()">🔒 Ver mais</button>
+              </div>
             </div>
           </div>
 

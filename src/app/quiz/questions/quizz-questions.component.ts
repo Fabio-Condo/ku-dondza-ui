@@ -456,33 +456,46 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getQuestions(): void {
-    this.loadingMessage = "Gerrando questões"
+    this.loadingMessage = "Gerando questões...";
     const selectedTopicIds = this.getSelectedTopicIds();
 
     if (selectedTopicIds.length == 0) {
-      this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões.!' });
+      this.messageService.add({
+        severity: 'error',
+        detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões!'
+      });
       return;
     }
 
     this.showLoading = true;
-    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
-      (dados: Question[]) => {
-        this.questions = dados;
-        this.quiz.questions = this.questions;
-        this.showLoading = false;
-        this.renderMathExpressions();
-        this.renderFunctions();
-        this.startQuiz();
 
-        if (this.isUserLoggedIn) {
-          this.quiz.user = this.loggedUser;
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic)
+      .subscribe(
+        (dados: Question[]) => {
+          // Se o utilizador não for premium → limitar o texto da solução
+          if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+            dados = dados.map(q => ({
+              ...q,
+              solution: this.limitSolutionSafe(q.solution, 5)
+            }));
+          }
+
+          this.questions = dados;
+          this.quiz.questions = this.questions;
+          this.showLoading = false;
+          this.renderMathExpressions();
+          this.renderFunctions();
+          this.startQuiz();
+
+          if (this.isUserLoggedIn) {
+            this.quiz.user = this.loggedUser;
+          }
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendErrorNotification(errorResponse.error.message);
+          this.showLoading = false;
         }
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
+      );
   }
 
   selectLevel(level: any) {
@@ -1615,6 +1628,49 @@ export class QuizzQuestionsComponent implements OnInit {
 
     // Retorna correto ou incorreto
     return !!selectedAnswer.correct;
+  }
+
+  openUpgradeModal() {
+    // abre modal ou redireciona para plano Premium
+    alert('Conteúdo exclusivo para utilizadores Premium.');
+  }
+
+  // Função que corta e adiciona aviso
+  private limitSolutionSafe(solution: string, maxBlocks: number): string {
+    if (!solution) return '';
+
+    // Regex para encontrar blocos LaTeX (inline e display)
+    const regex = /(\\\[.*?\\\]|\\\(.*?\\\)|\$\$.*?\$\$)/gs;
+    const blocks = solution.split(regex).filter(b => b !== '');
+
+    let preview = '';
+    let count = 0;
+
+    for (let block of blocks) {
+      if (count >= maxBlocks) break;
+
+      preview += block;
+      count++;
+    }
+
+    // Garante que qualquer bloco LaTeX aberto seja fechado
+    preview = this.closeLatexBlocks(preview);
+
+    return `${preview}... <br><br><em>(Resolução completa disponível apenas para utilizadores Premium 🔒)</em>`;
+  }
+
+  private closeLatexBlocks(text: string): string {
+    const inlineOpen = (text.match(/\\\(/g) || []).length;
+    const inlineClose = (text.match(/\\\)/g) || []).length;
+    const displayOpen = (text.match(/\\\[/g) || []).length;
+    const displayClose = (text.match(/\\\]/g) || []).length;
+    const dollarOpen = (text.match(/\$\$/g) || []).length;
+
+    if (inlineOpen > inlineClose) text += '\\)';
+    if (displayOpen > displayClose) text += '\\]';
+    if (dollarOpen % 2 !== 0) text += '$$';
+
+    return text;
   }
 
   private sendErrorNotification(message: string): void {
