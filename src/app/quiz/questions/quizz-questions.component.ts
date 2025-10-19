@@ -225,12 +225,12 @@ export class QuizzQuestionsComponent implements OnInit {
     {
       label: 'Treino',
       value: 'TRAINING',
-      description: 'Você vê a correção de cada questão imediatamente após responder.'
+      description: 'Você vê a correção de cada questão imediatamente após responder. O temporizador fica desativado neste modo.'
     },
     {
       label: 'Avaliação',
       value: 'TEST',
-      description: 'Você só vê a correção no fim, após submeter todo o teste.'
+      description: 'Você só vê a correção no fim, após submeter todo o teste. O temporizador fica ativo e conta o tempo durante a resolução.'
     },
   ];
 
