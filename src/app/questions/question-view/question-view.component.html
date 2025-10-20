@@ -139,8 +139,7 @@
             <br *ngIf="!showCorrection">
 
             <!-- Input para mostrar a solução -->
-            <div class="tip" *ngIf="!showCorrection"
-                [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="tip" *ngIf="!showCorrection">
                 <div class="tip-input">
                     <button class="solution-button"
                         (click)="question.showTip = !question.showTip; this.renderMathExpressions();">
@@ -159,8 +158,7 @@
             <br *ngIf="showCorrection">
 
             <!-- Input para mostrar a solução -->
-            <div class="solution" *ngIf="showCorrection"
-                [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="solution" *ngIf="showCorrection">
                 <div class="solution-input">
                     <button class="solution-button"
                         (click)="question.showSolution = !question.showSolution; this.renderMathExpressions();">

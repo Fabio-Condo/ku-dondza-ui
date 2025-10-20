@@ -190,6 +190,12 @@ export class QuestionViewComponent implements OnInit {
     this.questionService.getQuestionByQuestionId(id, this.loggedUser.id).subscribe(
       (response) => {
         this.question = response;
+
+        // 🔒 Se o utilizador não for Premium → limitar o texto da solução
+        if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+          this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
+        }
+
         this.questions.unshift(this.question); // Adiciona a questão recebida na primeira posição da lista
         this.renderMathExpressions();
         this.renderFunctions();
@@ -225,6 +231,15 @@ export class QuestionViewComponent implements OnInit {
 
     this.questionService.getQuestionsByTopicId(this.question.topic.id).subscribe(
       (dados: Question[]) => {
+
+        // 🔒 Se o utilizador não for Premium → limitar o texto da solução
+        if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+          dados = dados.map(q => ({
+            ...q,
+            solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
+          }));
+        }
+
         // Separa a questão atual
         const questaoAtual = this.question;
 
@@ -1051,6 +1066,44 @@ export class QuestionViewComponent implements OnInit {
   onCloseLoginPopout() {
     this.displayModalLogin = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  // Função que corta e adiciona aviso
+  private limitSolutionSafe(solution: string, maxBlocks: number): string {
+    if (!solution) return '';
+
+    // Regex para encontrar blocos LaTeX (inline e display)
+    const regex = /(\\\[.*?\\\]|\\\(.*?\\\)|\$\$.*?\$\$)/gs;
+    const blocks = solution.split(regex).filter(b => b !== '');
+
+    let preview = '';
+    let count = 0;
+
+    for (let block of blocks) {
+      if (count >= maxBlocks) break;
+
+      preview += block;
+      count++;
+    }
+
+    // Garante que qualquer bloco LaTeX aberto seja fechado
+    preview = this.closeLatexBlocks(preview);
+
+    return `${preview}... <br><br><em>(Resolução completa disponível apenas para utilizadores Premium 🔒)</em>`;
+  }
+
+  private closeLatexBlocks(text: string): string {
+    const inlineOpen = (text.match(/\\\(/g) || []).length;
+    const inlineClose = (text.match(/\\\)/g) || []).length;
+    const displayOpen = (text.match(/\\\[/g) || []).length;
+    const displayClose = (text.match(/\\\]/g) || []).length;
+    const dollarOpen = (text.match(/\$\$/g) || []).length;
+
+    if (inlineOpen > inlineClose) text += '\\)';
+    if (displayOpen > displayClose) text += '\\]';
+    if (dollarOpen % 2 !== 0) text += '$$';
+
+    return text;
   }
 
   private sendErrorNotification(message: string): void {
