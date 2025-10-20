@@ -460,42 +460,38 @@ export class QuizzQuestionsComponent implements OnInit {
     const selectedTopicIds = this.getSelectedTopicIds();
 
     if (selectedTopicIds.length == 0) {
-      this.messageService.add({
-        severity: 'error',
-        detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões!'
-      });
+      this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões!' });
       return;
     }
 
     this.showLoading = true;
 
-    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic)
-      .subscribe(
-        (dados: Question[]) => {
-          // Se o utilizador não for premium → limitar o texto da solução
-          if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
-            dados = dados.map(q => ({
-              ...q,
-              solution: this.limitSolutionSafe(q.solution, 5)
-            }));
-          }
-
-          this.questions = dados;
-          this.quiz.questions = this.questions;
-          this.showLoading = false;
-          this.renderMathExpressions();
-          this.renderFunctions();
-          this.startQuiz();
-
-          if (this.isUserLoggedIn) {
-            this.quiz.user = this.loggedUser;
-          }
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);
-          this.showLoading = false;
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
+      (dados: Question[]) => {
+        // Se o utilizador não for premium → limitar o texto da solução
+        if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+          dados = dados.map(q => ({
+            ...q,
+            solution: this.limitSolutionSafe(q.solution, 5)
+          }));
         }
-      );
+
+        this.questions = dados;
+        this.quiz.questions = this.questions;
+        this.showLoading = false;
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.startQuiz();
+
+        if (this.isUserLoggedIn) {
+          this.quiz.user = this.loggedUser;
+        }
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   selectLevel(level: any) {
@@ -662,30 +658,38 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getQuizByQuizId(quizId: string) {
-
     if (!this.loggedUser) {
       this.loggedUser = new User();
       this.loggedUser.id = 0;
     }
 
     this.showLoading = true;
-    this.loadingMessage = "Carregando dados"
+    this.loadingMessage = "Carregando dados";
 
     this.quizService.getQuizByQuizId(quizId, this.loggedUser.id).subscribe(
       (response) => {
-
         this.quiz = response;
+
+        // 🔒 Se o utilizador não for Premium → limitar o texto da solução
+        if (this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE') {
+          this.quiz.questions = this.quiz.questions.map(q => ({
+            ...q,
+            solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
+          }));
+        }
+
         this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
+
         if (this.quiz.answers) {
           this.calculateResults();
         }
-        this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
-        this.showLoading = false;
 
+        this.renderMathExpressions();
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
-        if (errorResponse.status == 400) {
+        if (errorResponse.status === 400) {
           this.router.navigateByUrl('/pagina-nao-encontrada');
         } else {
           this.sendErrorNotification(errorResponse.error.message);
