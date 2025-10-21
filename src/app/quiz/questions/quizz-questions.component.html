@@ -124,9 +124,12 @@
           <div class="step-card animate-step" *ngIf="getSelectedTopicIds().length > 0">
             <p class="step-description">Escolha o número de questões por tópico.</p>
             <div class="options-grid">
-              <div *ngFor="let limit of limitsPerTopic" (click)="quiz.limitPerTopic = limit.value"
-                [class.selected]="quiz.limitPerTopic === limit.value" class="option-card">
+              <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)"
+                [class.selected]="quiz.limitPerTopic === limit.value" [class.unlocked]="isLockedLimit(limit.value)"
+                class="option-card">
+
                 {{ limit.label }}
+                <span *ngIf="isLockedLimit(limit.value)">🔒</span>
               </div>
             </div>
           </div>

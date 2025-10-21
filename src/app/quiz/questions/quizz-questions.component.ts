@@ -549,6 +549,21 @@ export class QuizzQuestionsComponent implements OnInit {
     return !this.loggedUser || this.loggedUser.plan === 'FREE';
   }
 
+  selectLimitPerTopic(limit: any): void {
+    // Se for utilizador FREE e tentar clicar numa opção bloqueada → mostra aviso
+    if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+      if (limit.value > 3) {
+        return;
+      }
+    }
+    this.quiz.limitPerTopic = limit.value;
+  }
+
+  isLockedLimit(value: number): boolean {
+    return (!this.loggedUser || this.loggedUser.plan === 'FREE') && value > 3;
+  }
+
+
   saveQuiz() {
 
     if (!this.loggedUser) {
