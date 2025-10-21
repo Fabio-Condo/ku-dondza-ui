@@ -876,6 +876,14 @@
                     minlength="1" [(ngModel)]="topic.description" required></textarea>
             </div>
 
+            <div class="form-group">
+                <label for="premium">Nivel</label>
+                <select id="premium" [(ngModel)]="topic.premium" name="premium" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let level of accessLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
             <button class="submit-button" type="submit" [disabled]="topicForm.invalid" class="btn">
                 {{ showLoading ? 'Loading...' :'Salvar' }}
             </button>

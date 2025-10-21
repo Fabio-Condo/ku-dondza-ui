@@ -111,9 +111,9 @@
 
             <div class="options-grid">
               <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
-                [class.unlocked]="isPremiumTopicDisabled(topic)" class="option-card">
+                [class.unlocked]="isPremiumTopic(topic)" class="option-card">
                 <p class="option-description">{{ topic.name }}</p>
-                <p *ngIf="isPremiumTopicDisabled(topic)" class="lock-message">
+                <p *ngIf="isPremiumTopic(topic)" class="lock-message">
                   🔒 Disponível apenas para usuários Premium
                 </p>
               </div>

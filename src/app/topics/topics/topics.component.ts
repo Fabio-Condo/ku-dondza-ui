@@ -36,6 +36,11 @@ export class TopicsComponent implements OnInit {
 
   isUserLoggedIn: boolean = false;
 
+  accessLevels = [
+    { label: 'Premium', value: true },
+    { label: 'Free', value: false },
+  ];
+
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];

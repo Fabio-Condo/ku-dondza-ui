@@ -510,7 +510,7 @@ export class QuizzQuestionsComponent implements OnInit {
   toggleTopic(topic: Topic): void {
 
     // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
-    if (this.isPremiumTopicDisabled(topic)) return;
+    if (this.isPremiumTopic(topic)) return;
 
     topic.selected = !topic.selected;
   }
@@ -542,8 +542,8 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
-  isPremiumTopicDisabled(topic: Topic): boolean {
-    if (topic.premium) return false;
+  isPremiumTopic(topic: Topic): boolean {
+    if (!topic.premium) return false;
 
     // desabilita se não estiver logado ou se estiver no plano FREE
     return !this.loggedUser || this.loggedUser.plan === 'FREE';
