@@ -127,11 +127,14 @@
               <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)"
                 [class.selected]="quiz.limitPerTopic === limit.value" [class.unlocked]="isLockedLimit(limit.value)"
                 class="option-card">
-
                 {{ limit.label }}
                 <span *ngIf="isLockedLimit(limit.value)">🔒</span>
               </div>
             </div>
+            <p class="info-note">
+              ⚠️ O total de questões será igual ao número de tópicos selecionados × número de questões por tópico.
+              Quanto maior o valor, maior será o total de questões.
+            </p>
           </div>
 
           <p class="total-questions" *ngIf="quiz.limitPerTopic">
