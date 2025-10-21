@@ -1068,6 +1068,11 @@ export class QuestionViewComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
+  openUpgradeModal() {
+    // abre modal ou redireciona para plano Premium
+    alert('Conteúdo exclusivo para utilizadores Premium.');
+  }
+
   // Função que corta e adiciona aviso
   private limitSolutionSafe(solution: string, maxBlocks: number): string {
     if (!solution) return '';

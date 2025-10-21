@@ -172,6 +172,14 @@
                     <p class="solution-content scrollable" *ngIf="question.solution && question.showSolution"
                         [innerHTML]="getFormattedText(question.solution)">
                     </p>
+
+                    <br>
+
+                    <p class="lock-message"
+                        *ngIf="(loggedUser.id === 0 || loggedUser.plan === 'FREE') && question.showSolution">
+                        🔒 Resolução completa disponível apenas para utilizadores Premium —
+                        <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
+                    </p>
                 </div>
             </div>
 
