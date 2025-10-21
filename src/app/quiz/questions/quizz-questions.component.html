@@ -464,9 +464,18 @@
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
 
-              <div *ngIf="(!loggedUser || loggedUser.plan === 'FREE') && quiz.questions[currentQuestionIndex].showSolution" class="locked-solution">
+              <br>
+              
+              <p class="lock-message"
+                *ngIf="(loggedUser.id === 0 || loggedUser.plan === 'FREE') && quiz.questions[currentQuestionIndex].showSolution">
+                Resolução completa disponível apenas para utilizadores Premium 🔒 —
+                <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
+              </p>
+              <!--
+              <div *ngIf="(loggedUser.id === 0  || loggedUser.plan === 'FREE') && quiz.questions[currentQuestionIndex].showSolution" class="locked-solution">
                 <button class="locked-button" (click)="openUpgradeModal()">🔒 Ver mais</button>
               </div>
+              -->
             </div>
           </div>
 
