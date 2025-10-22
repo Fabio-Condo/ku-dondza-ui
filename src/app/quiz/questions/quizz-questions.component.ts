@@ -73,6 +73,8 @@ export class QuizzQuestionsComponent implements OnInit {
 
   displayModalQuestionsList: boolean = false;
 
+  displayModalUpgradePlan: boolean = false;
+
   origem: string = '';
   subjectId: number = 0;
 
@@ -1649,9 +1651,17 @@ export class QuizzQuestionsComponent implements OnInit {
     return !!selectedAnswer.correct;
   }
 
+  onUpgradePlan() {
+  }
+
   openUpgradeModal() {
-    // abre modal ou redireciona para plano Premium
-    alert('Conteúdo exclusivo para utilizadores Premium.');
+    this.displayModalUpgradePlan = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseUpgradeModal() {
+    this.displayModalUpgradePlan = false;
+    document.body.classList.remove('no-scroll');
   }
 
   // Função que corta e adiciona aviso
