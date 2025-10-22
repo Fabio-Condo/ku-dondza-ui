@@ -42,6 +42,8 @@ export class QuestionViewComponent implements OnInit {
   showLoading: boolean = false;
   showLatexLoading: boolean = false;
 
+  displayModalUpgradePlan: boolean = false;
+
   quizzes: Quiz[] = [];
   displayModalViewQuizzes: boolean = false;
   totalQuizzes: number = 0;
@@ -1068,9 +1070,17 @@ export class QuestionViewComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
+  onUpgradePlan() {
+  }
+
   openUpgradeModal() {
-    // abre modal ou redireciona para plano Premium
-    alert('Conteúdo exclusivo para utilizadores Premium.');
+    this.displayModalUpgradePlan = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseUpgradeModal() {
+    this.displayModalUpgradePlan = false;
+    document.body.classList.remove('no-scroll');
   }
 
   // Função que corta e adiciona aviso
