@@ -254,8 +254,8 @@
 
         <div class="pricing-container">
             <!-- Gratuito -->
-            <div class="pricing-card" [ngClass]="{'current-plan': loggedUser.plan === 'FREE'}">
-                <div *ngIf="loggedUser.plan === 'FREE'" class="current-badge">Plano Atual</div>
+            <div class="pricing-card" [ngClass]="{'current-plan': isFreeUser()}">
+                <div *ngIf="isFreeUser()" class="current-badge">Plano Atual</div>
                 <div class="plan-header">
                     <h3 class="plan-name">Gratuito</h3>
                     <div class="plan-price free">MT 0</div>
@@ -281,16 +281,16 @@
                     </div>
                 </div>
 
-                <button class="cta-button" [ngClass]="loggedUser.plan === 'FREE' ? 'btn-current' : 'btn-secondary'"
-                    [disabled]="loggedUser.plan === 'FREE'">
-                    {{ loggedUser.plan === 'FREE' ? 'Plano Atual' : 'Escolher Plano' }}
+                <button class="cta-button" [ngClass]="isFreeUser() ? 'btn-current' : 'btn-secondary'"
+                    [disabled]="isFreeUser()">
+                    {{ isFreeUser() ? 'Plano Atual' : 'Escolher Plano' }}
                 </button>
             </div>
 
             <!-- Premium -->
-            <div class="pricing-card" [ngClass]="{'popular': true, 'current-plan': loggedUser.plan === 'PREMIUM'}">
-                <div *ngIf="loggedUser.plan === 'PREMIUM'" class="current-badge">Plano Atual</div>
-                <div *ngIf="loggedUser.plan !== 'PREMIUM'" class="popular-badge">Popular</div>
+            <div class="pricing-card" [ngClass]="{'popular': true, 'current-plan': !isFreeUser()}">
+                <div *ngIf="!isFreeUser()" class="current-badge">Plano Atual</div>
+                <div *ngIf="isFreeUser()" class="popular-badge">Popular</div>
                 <div class="plan-header">
                     <h3 class="plan-name">Premium</h3>
                     <div class="plan-price">MT 299</div>
@@ -316,47 +316,11 @@
                     </div>
                 </div>
 
-                <button class="cta-button" [ngClass]="loggedUser.plan === 'PREMIUM' ? 'btn-current' : 'btn-upgrade'"
-                    [disabled]="loggedUser.plan === 'PREMIUM'">
-                    {{ loggedUser.plan === 'PREMIUM' ? 'Plano Atual' : 'Fazer Upgrade' }}
+                <button class="cta-button" [ngClass]="!isFreeUser() ? 'btn-current' : 'btn-upgrade'"
+                    [disabled]="!isFreeUser()">
+                    {{ !isFreeUser() ? 'Plano Atual' : 'Fazer Upgrade' }}
                 </button>
             </div>
-
-            <!-- Pro -->
-            <!--
-            <div class="pricing-card" [ngClass]="{'current-plan': loggedUser.plan === 'PRO'}">
-                <div *ngIf="loggedUser.plan === 'PRO'" class="current-badge">Plano Atual</div>
-                <div class="plan-header">
-                    <h3 class="plan-name">Pro</h3>
-                    <div class="plan-price">MT 499</div>
-                    <div class="plan-period">por mês</div>
-                </div>
-
-                <div class="features">
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Resolução detalhada de todas as questões com dicas e comentários</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Criação de quizzes avançados e personalizados</span>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon"></div>
-                        <span>Mais exercícios por quiz para reforçar o aprendizado</span>
-                    </div>
-                </div>
-
-                <button class="cta-button" [ngClass]="loggedUser.plan === 'PRO' ? 'btn-current' : 'btn-upgrade'"
-                    [disabled]="loggedUser.plan === 'PRO'">
-                    {{ loggedUser.plan === 'PRO' ? 'Plano Atual' : 'Fazer Upgrade' }}
-                </button>
-            </div>
-            -->
         </div>
     </div>
 </body>

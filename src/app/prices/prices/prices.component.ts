@@ -14,7 +14,7 @@ export class PricesComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private title: Title, 
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +26,13 @@ export class PricesComponent implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     console.log(this.loggedUser.plan);
+  }
+
+  isFreeUser(): boolean {
+    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+
+    const expiresAt = this.loggedUser.expiresAt ? new Date(this.loggedUser.expiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
   }
 
 }
