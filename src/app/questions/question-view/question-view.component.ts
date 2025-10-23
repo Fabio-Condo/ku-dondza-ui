@@ -1078,6 +1078,7 @@ export class QuestionViewComponent implements OnInit {
 
     this.displayModalLogin = true;
     setTimeout(() => {
+      this.displayModalUpgradePlan = false;
       this.initializeGoogleAuth();
     }, 100); // Espera para o botão estar no DOM
   }
