@@ -1136,7 +1136,8 @@ export class QuestionViewComponent implements OnInit {
     // Garante que qualquer bloco LaTeX aberto seja fechado
     preview = this.closeLatexBlocks(preview);
 
-    return `${preview}... <br><br><em>(Resolução completa disponível apenas para utilizadores Premium 🔒)</em>`;
+    //return `${preview}... <br><br><em>(Resolução completa disponível apenas para utilizadores Premium 🔒)</em>`;
+    return `${preview}...`;
   }
 
   private closeLatexBlocks(text: string): string {
