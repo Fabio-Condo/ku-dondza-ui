@@ -566,7 +566,10 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   isFreeUser(): boolean {
-    return !this.loggedUser || this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE';
+    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+
+    const expiresAt = this.loggedUser.expiresAt ? new Date(this.loggedUser.expiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
   }
 
   saveQuiz() {

@@ -16,6 +16,7 @@ export class User {
   public userType!: string;
   public role: string;
   public plan: string;
+  public expiresAt!: Date;
   public authorities: [];
   public subjectsInterests: Subject[] = [];
   public markedContentRate: number;
