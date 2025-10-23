@@ -194,7 +194,7 @@ export class QuestionViewComponent implements OnInit {
         this.question = response;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (!this.loggedUser || this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE') {
+        if (this.isFreeUser()) {
           this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
         }
 
@@ -235,7 +235,7 @@ export class QuestionViewComponent implements OnInit {
       (dados: Question[]) => {
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (!this.loggedUser || this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE') {
+        if (this.isFreeUser()) {
           dados = dados.map(q => ({
             ...q,
             solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
@@ -1115,6 +1115,10 @@ export class QuestionViewComponent implements OnInit {
   onCloseUpgradeModal() {
     this.displayModalUpgradePlan = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  isFreeUser(): boolean {
+    return !this.loggedUser || this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE';
   }
 
   // Função que corta e adiciona aviso

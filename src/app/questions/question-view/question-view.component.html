@@ -176,7 +176,7 @@
                     <br>
 
                     <p class="lock-message"
-                        *ngIf="(loggedUser.id === 0 || loggedUser.plan === 'FREE') && question.showSolution">
+                        *ngIf="isFreeUser() && question.showSolution">
                         🔒 Resolução completa disponível apenas para utilizadores Premium —
                         <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
                     </p>

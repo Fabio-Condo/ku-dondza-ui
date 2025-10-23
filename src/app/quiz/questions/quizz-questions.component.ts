@@ -471,7 +471,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
       (dados: Question[]) => {
         // Se o utilizador não for premium → limitar o texto da solução
-        if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+        if (this.isFreeUser()) {
           dados = dados.map(q => ({
             ...q,
             solution: this.limitSolutionSafe(q.solution, 5)
@@ -506,7 +506,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (level.value !== 'ADVANCED') return false;
 
     // desabilita se não estiver logado ou se estiver no plano FREE
-    return !this.loggedUser || this.loggedUser.plan === 'FREE';
+    return this.isFreeUser();
   }
 
   toggleTopic(topic: Topic): void {
@@ -548,12 +548,12 @@ export class QuizzQuestionsComponent implements OnInit {
     if (!topic.premium) return false;
 
     // desabilita se não estiver logado ou se estiver no plano FREE
-    return !this.loggedUser || this.loggedUser.plan === 'FREE';
+    return this.isFreeUser();
   }
 
   selectLimitPerTopic(limit: any): void {
     // Se for utilizador FREE e tentar clicar numa opção bloqueada → mostra aviso
-    if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+    if (this.isFreeUser()) {
       if (limit.value > 3) {
         return;
       }
@@ -562,9 +562,12 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   isLockedLimit(value: number): boolean {
-    return (!this.loggedUser || this.loggedUser.plan === 'FREE') && value > 3;
+    return this.isFreeUser() && value > 3;
   }
 
+  isFreeUser(): boolean {
+    return !this.loggedUser || this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE';
+  }
 
   saveQuiz() {
 
@@ -688,7 +691,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz = response;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE') {
+        if (this.isFreeUser()) {
           this.quiz.questions = this.quiz.questions.map(q => ({
             ...q,
             solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
