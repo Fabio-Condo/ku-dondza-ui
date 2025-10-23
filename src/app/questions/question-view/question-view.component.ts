@@ -194,7 +194,7 @@ export class QuestionViewComponent implements OnInit {
         this.question = response;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+        if (!this.loggedUser || this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE') {
           this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
         }
 
@@ -235,7 +235,7 @@ export class QuestionViewComponent implements OnInit {
       (dados: Question[]) => {
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (!this.loggedUser || this.loggedUser.plan === 'FREE') {
+        if (!this.loggedUser || this.loggedUser.id === 0 || this.loggedUser.plan === 'FREE') {
           dados = dados.map(q => ({
             ...q,
             solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
@@ -402,20 +402,21 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onViewSolution() {
+    this.togleCorrection();
 
-    if (this.isUserLoggedIn) {
-      this.togleCorrection();
-    }
+    //if (this.isUserLoggedIn) {
+    //  this.togleCorrection();
+    //}
 
-    if (!this.isUserLoggedIn) {
-      this.action = 'solution';
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
-    }
+    //if (!this.isUserLoggedIn) {
+    //  this.action = 'solution';
+    //  document.body.classList.add('no-scroll');
+    //  this.displayModalLogin = true;
+    //  setTimeout(() => {
+    //    this.initializeGoogleAuth();
+    //  }, 100); // Espera para o botão estar no DOM
+    //  return;
+    //}
   }
 
   // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
