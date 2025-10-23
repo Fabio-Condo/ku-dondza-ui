@@ -26,7 +26,6 @@ export class AuthenticationService {
 
   public loginWithGoogle(credential: string): Observable<HttpResponse<User>> {
     return this.http.post<User>(`${this.host}/auth/google`, { idToken: credential }, { observe: 'response' });
-
   }
 
   generateOtp(email: string): Observable<void> {

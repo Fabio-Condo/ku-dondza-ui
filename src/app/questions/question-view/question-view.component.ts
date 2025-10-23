@@ -1070,7 +1070,39 @@ export class QuestionViewComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
-  onUpgradePlan() {
+  onUpgradePlan(): void {
+    if (this.isUserLoggedIn) {
+      this.upgradePlan();
+      return;
+    }
+
+    this.displayModalLogin = true;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
+  }
+
+  upgradePlan() {
+    this.loadingMessage = "Carregando dados"
+    this.showLoading = true;
+
+    this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', 30).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.onCloseUpgradeModal();
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
   }
 
   openUpgradeModal() {

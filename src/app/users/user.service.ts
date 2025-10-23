@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { User } from '../core/model/User';
@@ -115,7 +115,7 @@ export class UserService {
     return this.http.delete<CustomHttpRespone>(`${this.host}/delete/${email}`);
   }
 
-  getUserByUserId(userId: string): Observable<User> {
+  public getUserByUserId(userId: string): Observable<User> {
     return this.http.get<User>(`${this.host}/find-by-user-id/${userId}`, {});
   }
 
@@ -143,6 +143,18 @@ export class UserService {
     return this.http.put<void>(`${this.host}/${email}/notLocked-user`, notLocked, {});
   }
 
+  activatePlan(userId: number, plan: string, days: number = 30): Observable<HttpResponse<User>> {
+    const params = new HttpParams()
+      .set('plan', plan)
+      .set('days', days.toString());
+
+    return this.http.put<User>(
+      `${this.host}/activate-plan/${userId}`,
+      {}, // corpo vazio
+      { params, observe: 'response' } // opções (params e observe)
+    );
+  }
+
   getUserSubjectInterests(userId: number): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.host}/${userId}/interests`);
   }
@@ -167,9 +179,9 @@ export class UserService {
     return this.http.put<User>(`${this.host}/${userId}/marked-topic-contents/${topicContentId}/toggle`, {});
   }
 
- // toggleMarkedContent(userId: number, onlineCourseContentId: number): Observable<User> {
- //   return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
- // }
+  // toggleMarkedContent(userId: number, onlineCourseContentId: number): Observable<User> {
+  //   return this.http.put<User>(`${this.host}/${userId}/marked-contents/${onlineCourseContentId}/toggle`, {});
+  // }
 
   toggleSaveQuestion(userId: number, questionId: number): Observable<User> {
     return this.http.put<User>(`${this.host}/${userId}/saved-questions/${questionId}/toggle`, {});
