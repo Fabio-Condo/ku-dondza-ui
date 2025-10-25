@@ -472,8 +472,7 @@
 
               <br>
 
-              <p class="lock-message"
-                *ngIf="this.isFreeUser() && quiz.questions[currentQuestionIndex].showSolution">
+              <p class="lock-message" *ngIf="this.isFreeUser() && quiz.questions[currentQuestionIndex].showSolution">
                 🔒 Resolução completa disponível apenas para utilizadores Premium —
                 <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
               </p>
@@ -804,6 +803,12 @@
       <button class="close-button" (click)="onCloseUpgradeModal()">&times;</button>
     </div>
 
+    <div class="plan-header">
+      <!--<h3 class="plan-name">Premium</h3>-->
+      <div class="plan-price">MT 299</div>
+      <div class="plan-period">por mês</div>
+    </div>
+
     <!-- Features -->
     <div class="popout-body features">
       <div class="feature">
@@ -829,11 +834,98 @@
       <button class="cta-button btn-upgrade" (click)="onUpgradePlan()">
         Fazer Upgrade Agora
       </button>
-      <p class="plan-price" style="margin-top: 0.5rem; text-align:center;">299 MT/mês</p>
+      <!--<p class="plan-price" style="margin-top: 0.5rem; text-align:center;">299 MT/mês</p>-->
     </div>
 
   </div>
 </div>
 
+<!-- Etapa 2: Escolha de pagamento -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPaymentOptions">
+  <div class="popout-container modern-card">
+
+    <!-- Header -->
+    <div class="popout-header">
+      <h2 class="popout-title">Escolha o método de pagamento</h2>
+      <button class="close-button" (click)="onCloseModalPaymentOptions()">
+        &times;
+      </button>
+    </div>
+
+    <!-- Carteiras Disponíveis -->
+    <div class="wallet-options">
+      <label class="wallet-option" *ngFor="let wallet of userWallets">
+        <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
+        <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
+          <div class="wallet-left">
+            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
+            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
+
+            <div class="wallet-details">
+              <span class="wallet-type">{{ wallet.type }}</span>
+              <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+            </div>
+          </div>
+          <div class="wallet-check">
+            <span class="checkmark" *ngIf="selectedWalletId === wallet.id">✔</span>
+          </div>
+        </div>
+
+      </label>
+    </div>
+
+    <!-- Caso não tenha carteiras -->
+    <div class="upgrade-cta">
+      <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
+        ➕ Adicionar Método de Pagamento
+      </button>
+    </div>
+
+    <!-- Confirmar pagamento -->
+    <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
+      <button class="cta-button btn-upgrade" (click)="upgradePlan()">
+        Fazer Upgrade Agora
+      </button>
+      <p class="plan-price-upgrade">299 MT/mês</p>
+    </div>
+  </div>
+</div>
+
+<!-- Etapa 2: Escolha de pagamento -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalAddPaymentOption">
+  <div class="popout-container pricing-card popular">
+
+    <!-- Header -->
+    <div class="popout-header">
+      <h2 class="plan-name popout-title">Adicione o método de pagamento</h2>
+      <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
+    </div>
+
+    <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+
+      <div class="form-group">
+        <label for="phoneNumber">Número de telefonete</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" ngModel #name="ngModel" required minlength="1"
+          [(ngModel)]="wallet.phoneNumber">
+      </div>
+
+      <div class="form-group">
+        <label for="walletType">Tipo</label>
+        <select id="walletType" [(ngModel)]="wallet.type" name="walletType" required>
+          <option value="" disabled selected>Selecione a categoria</option>
+          <option *ngFor="let type of walletTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+
+      <div class="upgrade-cta">
+        <button class="cta-button btn-upgrade" class="submit-button" type="submit" [disabled]="walletTypeForm.invalid">
+          {{ showLoading ? 'Adicionando...' :'Salvar' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
 
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">

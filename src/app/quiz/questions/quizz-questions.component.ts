@@ -28,6 +28,8 @@ import { NgForm } from '@angular/forms';
 import { Role } from 'src/app/enum/role.enum';
 import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { UserService } from 'src/app/users/user.service';
+import { WalletService } from 'src/app/core/wallets/answers.service';
+import { Wallet } from 'src/app/core/model/Wallet';
 
 
 @Component({
@@ -75,6 +77,10 @@ export class QuizzQuestionsComponent implements OnInit {
 
   displayModalUpgradePlan: boolean = false;
 
+  displayModalPaymentOptions: boolean = false;
+
+  displayModalAddPaymentOption: boolean = false;
+
   origem: string = '';
   subjectId: number = 0;
 
@@ -89,6 +95,10 @@ export class QuizzQuestionsComponent implements OnInit {
   totalRecordComments: number = 0;
   showComments: boolean = false;
   selectedComment: Comment = new Comment();
+
+  wallet: Wallet = new Wallet();
+  userWallets: Wallet[] = [];
+  selectedWalletId: number | null = null;
 
   openedMenuId: number | null = null;
 
@@ -197,6 +207,11 @@ export class QuizzQuestionsComponent implements OnInit {
     "Falta bem pouco, continue até o fim 🔥"
   ]
 
+  walletTypes = [
+    { label: 'MPESA', value: 'MPESA' },
+    { label: 'EMOLA', value: 'EMOLA' },
+  ];
+
   difficultyLevels = [
     {
       label: 'Iniciante',
@@ -259,7 +274,7 @@ export class QuizzQuestionsComponent implements OnInit {
   constructor(
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
-    private sanitizer: DomSanitizer,
+    private walletService: WalletService,
     private quizService: QuizService,
     private topicService: TopicService,
     private questionService: QuestionService,
@@ -1659,7 +1674,8 @@ export class QuizzQuestionsComponent implements OnInit {
 
   onUpgradePlan(): void {
     if (this.isUserLoggedIn) {
-      this.upgradePlan();
+      //this.upgradePlan();
+      this.openModalPaymentOptions();
       return;
     }
 
@@ -1701,6 +1717,67 @@ export class QuizzQuestionsComponent implements OnInit {
   onCloseUpgradeModal() {
     this.displayModalUpgradePlan = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  openModalPaymentOptions() {
+    this.getWalletsByUser(this.loggedUser.id);
+    this.displayModalPaymentOptions = true;
+    this.onCloseUpgradeModal();
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseModalPaymentOptions() {
+    this.displayModalPaymentOptions = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  openModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  getWalletsByUser(userId: number): void {
+    this.loadingMessage = "Obtendo dados"
+    this.showLoading = true;
+    this.walletService.getWalletsByUser(userId).subscribe(
+      (dados: Wallet[]) => {
+        this.userWallets = dados;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  addNewWlletType(walletTypeForm: NgForm) {
+
+    this.wallet.user = this.loggedUser;
+    console.log(this.wallet);
+
+    this.loadingMessage = "Adicionando carteira"
+    this.showLoading = true;
+    this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
+      (response) => {
+        this.wallet = response;
+        this.userWallets.push(this.wallet);
+        this.showLoading = false;
+        this.displayModalAddPaymentOption = false;
+        document.body.classList.remove('no-scroll');
+        walletTypeForm.resetForm();
+        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   // Função que corta e adiciona aviso
