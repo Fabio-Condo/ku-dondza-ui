@@ -877,7 +877,7 @@
     <!-- Caso não tenha carteiras -->
     <div class="upgrade-cta">
       <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
-        ➕ Adicionar Método de Pagamento
+        Adicionar Método de Pagamento
       </button>
     </div>
 
@@ -903,23 +903,41 @@
 
     <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
 
+      <!-- Número de telefone -->
       <div class="form-group">
-        <label for="phoneNumber">Número de telefonete</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" ngModel #name="ngModel" required minlength="1"
-          [(ngModel)]="wallet.phoneNumber">
+        <label for="phoneNumber">Número de telefone</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+          [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
+          required placeholder="Ex: 841234567" class="input-control" />
+
+        <!-- Mensagem de erro -->
+        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+          O número deve ter exatamente 9 dígitos.
+        </small>
+        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
+          Parece que este número não pertence a uma carteira válida. Suportamos apenas <strong>MPESA (84/85)</strong> e
+          <strong>EMOLA (86/87)</strong>.
+        </small>
       </div>
 
-      <div class="form-group">
-        <label for="walletType">Tipo</label>
-        <select id="walletType" [(ngModel)]="wallet.type" name="walletType" required>
-          <option value="" disabled selected>Selecione a categoria</option>
-          <option *ngFor="let type of walletTypes" [value]="type.value">{{ type.label }}</option>
-        </select>
+      <!-- Tipo de carteira detectado automaticamente -->
+      <div class="wallet-detected" *ngIf="wallet.type">
+        <div class="wallet-card">
+          <div class="wallet-left">
+            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
+            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
+
+            <div class="wallet-details">
+              <span class="wallet-type">{{ wallet.type }}</span>
+              <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="upgrade-cta">
-        <button class="cta-button btn-upgrade" class="submit-button" type="submit" [disabled]="walletTypeForm.invalid">
-          {{ showLoading ? 'Adicionando...' :'Salvar' }}
+        <button class="cta-button btn-upgrade" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type">
+          {{ showLoading ? 'Adicionando carteira...' :'Adicionar carteira' }}
         </button>
       </div>
 

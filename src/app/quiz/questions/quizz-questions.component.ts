@@ -1758,19 +1758,41 @@ export class QuizzQuestionsComponent implements OnInit {
 
   addNewWlletType(walletTypeForm: NgForm) {
 
-    this.wallet.user = this.loggedUser;
-    console.log(this.wallet);
+    //this.wallet.user = this.loggedUser;
+
+    this.detectWalletType(); // força atualização e validação
+
+    const phone = this.wallet.phoneNumber || '';
+
+    if (!this.wallet.type) {
+      this.sendErrorNotification("Número inválido: prefixo deve ser 84, 85, 86 ou 87.");
+      return;
+    }
+
+    if (phone.length !== 9) {
+      this.sendErrorNotification("Número inválido: deve conter exatamente 9 dígitos.");
+      return;
+    }
+
+    // Evitar duplicados
+    const exists = this.userWallets.some(
+      w => w.phoneNumber === phone
+    );
+
+    if (exists) {
+      this.sendErrorNotification("Este número já está registado nas suas carteiras.");
+      return;
+    }
 
     this.loadingMessage = "Adicionando carteira"
     this.showLoading = true;
     this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
       (response) => {
+        console.log(response);
         this.wallet = response;
         this.userWallets.push(this.wallet);
         this.showLoading = false;
         this.displayModalAddPaymentOption = false;
-        document.body.classList.remove('no-scroll');
-        walletTypeForm.resetForm();
         //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
@@ -1778,6 +1800,32 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  detectWalletType(): void {
+    const phone = this.wallet.phoneNumber ? this.wallet.phoneNumber.trim() : '';
+
+    // Remove espaços e caracteres não numéricos
+    const digitsOnly = phone.replace(/\D/g, '');
+
+    // Define o telefone limpo
+    this.wallet.phoneNumber = digitsOnly;
+
+    // Validação do tamanho
+    if (digitsOnly.length !== 9) {
+      this.wallet.type = '';
+      return;
+    }
+
+    // Verificação de prefixos válidos
+    const prefix = digitsOnly.substring(0, 2);
+    if (prefix === '84' || prefix === '85') {
+      this.wallet.type = 'MPESA';
+    } else if (prefix === '86' || prefix === '87') {
+      this.wallet.type = 'EMOLA';
+    } else {
+      this.wallet.type = '';
+    }
   }
 
   // Função que corta e adiciona aviso
