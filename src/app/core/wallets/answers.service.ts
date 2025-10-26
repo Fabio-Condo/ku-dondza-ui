@@ -19,10 +19,7 @@ export class WalletService {
         return this.http.post<Wallet>(`${this.host}/user/${userId}/add`, wallet, {});
     }
 
-    //add(userId: number, wallet: Wallet): Observable<Wallet> {
-    //    return this.http.post<Wallet>(`${this.host}/user/${userId}/add`, wallet, {
-    //        headers: { 'Content-Type': 'application/json' }
-    //    });
-    //}
-
+    setDefault(walletId: number): Observable<Wallet> {
+        return this.http.put<Wallet>(`${this.host}/${walletId}/set-default`, {});
+    }
 }

@@ -867,7 +867,11 @@
             </div>
           </div>
           <div class="wallet-check">
-            <span class="checkmark" *ngIf="selectedWalletId === wallet.id">✔</span>
+            <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
+              Definir como principal
+            </button>
+            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+            <!-- <span class="checkmark" *ngIf="selectedWalletId === wallet.id">✔</span> -->
           </div>
         </div>
 

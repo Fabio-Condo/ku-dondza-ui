@@ -4,13 +4,13 @@ export class Wallet {
     id?: number;
     phoneNumber?: string;
     type?: string; // MPESA ou EMOLA
-    isDefault?: boolean;
+    default?: boolean;
     user = new User();
 
     constructor(id?: number, phoneNumber?: string, type?: string, isDefault?: boolean) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.type = type;
-        this.isDefault = isDefault;
+        this.default = isDefault;
     }
 }

@@ -1715,6 +1715,29 @@ export class QuizzQuestionsComponent implements OnInit {
     });
   }
 
+  setDefaultWallet(wallet: Wallet) {
+
+    if (!wallet.id) {
+      this.sendErrorNotification('Carteira inválida: ID não definido');
+      return;
+    }
+
+    this.userWallets.forEach(w => w.default = false); // limpa anterior
+    wallet.default = true;
+
+    this.walletService.setDefault(wallet.id).subscribe({
+      next: (updatedWallet) => {
+        // Atualiza visualmente todas as carteiras
+        this.userWallets.forEach(w => w.default = w.id === updatedWallet.id);
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+
   openUpgradeModal() {
     this.displayModalUpgradePlan = true;
     document.body.classList.add('no-scroll');
