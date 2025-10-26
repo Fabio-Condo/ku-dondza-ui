@@ -1733,12 +1733,10 @@ export class QuizzQuestionsComponent implements OnInit {
 
   openModalAddPaymentOption() {
     this.displayModalAddPaymentOption = true;
-    document.body.classList.add('no-scroll');
   }
 
   onCloseModalAddPaymentOption() {
     this.displayModalAddPaymentOption = false;
-    document.body.classList.remove('no-scroll');
   }
 
   getWalletsByUser(userId: number): void {
