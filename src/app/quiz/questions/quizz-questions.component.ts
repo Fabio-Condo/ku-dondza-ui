@@ -1672,6 +1672,75 @@ export class QuizzQuestionsComponent implements OnInit {
     return !!selectedAnswer.correct;
   }
 
+  getWalletsByUser(userId: number): void {
+    this.loadingMessage = "Obtendo dados"
+    this.showLoading = true;
+    this.walletService.getWalletsByUser(userId).subscribe(
+      (dados: Wallet[]) => {
+        this.userWallets = dados;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  addNewWlletType(walletTypeForm: NgForm) {
+
+    //this.wallet.user = this.loggedUser;
+
+    this.detectWalletType(); // força atualização e validação
+
+    const phone = this.wallet.phoneNumber || '';
+
+    if (!this.wallet.type) {
+      this.sendErrorNotification("Número inválido: prefixo deve ser 84, 85, 86 ou 87.");
+      return;
+    }
+
+    if (phone.length !== 9) {
+      this.sendErrorNotification("Número inválido: deve conter exatamente 9 dígitos.");
+      return;
+    }
+
+    // Evitar duplicados
+    const exists = this.userWallets.some(
+      w => w.phoneNumber === phone
+    );
+
+    if (exists) {
+      this.sendErrorNotification("Este número já está registado nas suas carteiras.");
+      return;
+    }
+
+    // Definir como default se for a primeira carteira
+    if (this.userWallets.length === 0) {
+      this.wallet.default = true;
+    } else {
+      this.wallet.default = false;
+    }
+
+    this.loadingMessage = "Adicionando carteira"
+    this.showLoading = true;
+    this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
+      (response) => {
+        console.log(response);
+        this.wallet = response;
+
+        this.userWallets.push(this.wallet);
+        this.showLoading = false;
+        this.displayModalAddPaymentOption = false;
+        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   onUpgradePlan(): void {
     if (this.isUserLoggedIn) {
       //this.upgradePlan();
@@ -1687,12 +1756,18 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   upgradePlan() {
-    if (this.selectedWalletId === null || this.selectedWalletId === undefined || this.selectedWalletId === 0) {
-      this.sendErrorNotification("Carteira inválida ou não selecionada.");
-      return;
+    // Se não tiver carteira selecionada, pega a default
+    if (!this.selectedWalletId) {
+      const defaultWallet = this.userWallets.find(w => w.default);
+      if (defaultWallet) {
+        this.selectedWalletId = defaultWallet.id!;
+      } else {
+        this.sendErrorNotification("Nenhuma carteira selecionada ou definida como principal.");
+        return;
+      }
     }
 
-    this.loadingMessage = "Carregando dados"
+    this.loadingMessage = "Carregando dados";
     this.showLoading = true;
 
     this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', this.selectedWalletId).subscribe({
@@ -1737,7 +1812,6 @@ export class QuizzQuestionsComponent implements OnInit {
     });
   }
 
-
   openUpgradeModal() {
     this.displayModalUpgradePlan = true;
     document.body.classList.add('no-scroll');
@@ -1766,67 +1840,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
   onCloseModalAddPaymentOption() {
     this.displayModalAddPaymentOption = false;
-  }
-
-  getWalletsByUser(userId: number): void {
-    this.loadingMessage = "Obtendo dados"
-    this.showLoading = true;
-    this.walletService.getWalletsByUser(userId).subscribe(
-      (dados: Wallet[]) => {
-        this.userWallets = dados;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  addNewWlletType(walletTypeForm: NgForm) {
-
-    //this.wallet.user = this.loggedUser;
-
-    this.detectWalletType(); // força atualização e validação
-
-    const phone = this.wallet.phoneNumber || '';
-
-    if (!this.wallet.type) {
-      this.sendErrorNotification("Número inválido: prefixo deve ser 84, 85, 86 ou 87.");
-      return;
-    }
-
-    if (phone.length !== 9) {
-      this.sendErrorNotification("Número inválido: deve conter exatamente 9 dígitos.");
-      return;
-    }
-
-    // Evitar duplicados
-    const exists = this.userWallets.some(
-      w => w.phoneNumber === phone
-    );
-
-    if (exists) {
-      this.sendErrorNotification("Este número já está registado nas suas carteiras.");
-      return;
-    }
-
-    this.loadingMessage = "Adicionando carteira"
-    this.showLoading = true;
-    this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
-      (response) => {
-        console.log(response);
-        this.wallet = response;
-        this.userWallets.push(this.wallet);
-        this.showLoading = false;
-        this.displayModalAddPaymentOption = false;
-        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
   }
 
   detectWalletType(): void {
