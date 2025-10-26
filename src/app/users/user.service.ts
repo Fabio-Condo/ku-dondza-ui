@@ -143,10 +143,10 @@ export class UserService {
     return this.http.put<void>(`${this.host}/${email}/notLocked-user`, notLocked, {});
   }
 
-  activatePlan(userId: number, plan: string, days: number = 30): Observable<HttpResponse<User>> {
+  activatePlan(userId: number, plan: string, walletId: number): Observable<HttpResponse<User>> {
     const params = new HttpParams()
       .set('plan', plan)
-      .set('days', days.toString());
+      .set('walletId', walletId.toString());
 
     return this.http.put<User>(
       `${this.host}/activate-plan/${userId}`,

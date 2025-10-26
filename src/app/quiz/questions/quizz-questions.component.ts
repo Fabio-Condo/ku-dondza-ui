@@ -98,7 +98,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   wallet: Wallet = new Wallet();
   userWallets: Wallet[] = [];
-  selectedWalletId: number | null = null;
+  selectedWalletId: number = 0;
 
   openedMenuId: number | null = null;
 
@@ -1690,7 +1690,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
-    this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', 30).subscribe({
+    this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', this.selectedWalletId).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
@@ -1700,6 +1700,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.onCloseUpgradeModal();
+        this.onCloseModalPaymentOptions();
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
