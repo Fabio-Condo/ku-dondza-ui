@@ -802,7 +802,7 @@
       <h2 class="plan-name popout-title">Atualize para o Plano Premium</h2>
       <button class="close-button" (click)="onCloseUpgradeModal()">&times;</button>
     </div>
-    
+
     <div class="pricing-card">
       <div class="plan-header">
         <!--<h3 class="plan-name">Premium</h3>-->
@@ -856,28 +856,37 @@
 
     <!-- Carteiras Disponíveis -->
     <div class="wallet-options">
-      <label class="wallet-option" *ngFor="let wallet of userWallets">
-        <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
-        <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
-          <div class="wallet-left">
-            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
-            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
+      <!-- Caso existam carteiras -->
+      <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+        <label class="wallet-option" *ngFor="let wallet of userWallets">
+          <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
+          <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
+            <div class="wallet-left">
+              <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
+              <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
 
-            <div class="wallet-details">
-              <span class="wallet-type">{{ wallet.type }}</span>
-              <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+              <div class="wallet-details">
+                <span class="wallet-type">{{ wallet.type }}</span>
+                <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+              </div>
+            </div>
+
+            <div class="wallet-check">
+              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
+                Definir como principal
+              </button>
+              <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
             </div>
           </div>
-          <div class="wallet-check">
-            <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
-              Definir como principal
-            </button>
-            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-            <!-- <span class="checkmark" *ngIf="selectedWalletId === wallet.id">✔</span> -->
-          </div>
-        </div>
+        </label>
+      </ng-container>
 
-      </label>
+      <!-- Caso não existam carteiras -->
+      <ng-template #noWallets>
+        <div class="wallet-card">
+          <p class="empty-text">Você ainda não adicionou nenhuma carteira.</p>
+        </div>
+      </ng-template>
     </div>
 
     <!-- Caso não tenha carteiras -->
