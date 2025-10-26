@@ -1687,6 +1687,11 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   upgradePlan() {
+    if (this.selectedWalletId === null || this.selectedWalletId === undefined || this.selectedWalletId === 0) {
+      this.sendErrorNotification("Carteira inválida ou não selecionada.");
+      return;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
