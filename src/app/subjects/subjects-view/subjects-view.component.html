@@ -105,6 +105,10 @@
                                             Ver separado
                                         </a>
                                     </p>
+
+                                    <p *ngIf="isPremiumTopic(topic) && isTopicExpanded(topic.id)" class="lock-message">
+                                        🔒 Disponível apenas para usuários Premium
+                                    </p>
                                 </div>
                                 <div class="module-info">
                                     <svg class="chevron-icon" [class.rotated]="isTopicExpanded(topic.id)" width="24"
@@ -126,7 +130,7 @@
                                                 [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
                                                 (change)="toggleMarkedContent(content)"
                                                 *ngIf="!content.showLoadingMarked && isUserLoggedIn && subject.currentUserSubscribed"
-                                                [disabled]="!subject.currentUserSubscribed || content.showLoadingMarked" />
+                                                [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed || content.showLoadingMarked" />
                                             <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
                                                 style="color: #4361ee; font-size: 18px;"></i>
                                             <div>
@@ -142,15 +146,16 @@
                                     </div>
 
                                     <div class="lesson-actions">
-                                        <a (click)="onPlayVideo(content)" class="btn btn-outline"
+                                        <button [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed"
+                                            (click)="onPlayVideo(content)" class="btn btn-outline"
                                             *ngIf="content.contentType == 'VIDEO'">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                                 <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                                             </svg>
-                                        </a>
+                                        </button>
 
                                         <button class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                                            [disabled]="content.showLoadingDownload"
+                                            [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed || content.showLoadingMarked"
                                             (click)="onDownload(content, content.fileName)">
                                             <svg *ngIf="!content.showLoadingDownload" width="16" height="16"
                                                 viewBox="0 0 24 24" fill="none">
@@ -174,7 +179,8 @@
                                         Aprenda fazendo e consolide seu aprendizado.
                                     </p>
                                     -->
-                                    <button class="btn-exercise" (click)="startPractice(topic)">
+                                    <button class="btn-exercise" (click)="startPractice(topic)"
+                                        [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed">
                                         Iniciar Exercícios ({{ topic.questions.length }})
                                     </button>
                                 </div>
@@ -200,7 +206,8 @@
                         Chegou a hora de colocar em prática tudo o que aprendeu nesta disciplina.
                         Responda ao teste final para avaliar seus conhecimentos e comprovar seu progresso.
                     </p>
-                    <button class="btn-exercise" (click)="startFinalTest()">
+                    <button class="btn-exercise" (click)="startFinalTest()"
+                        [disabled]="isFreeUser() || !subject.currentUserSubscribed">
                         Iniciar Teste Final
                     </button>
                 </div>

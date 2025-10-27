@@ -98,7 +98,7 @@
 
             <!-- Botão Selecionar todos -->
             <div class="select-all" (click)="toggleSelectAllTopics()"
-              *ngIf="loggedUser && loggedUser.plan === 'PREMIUM'">
+              *ngIf="!isFreeUser()">
               <span>
                 {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
               </span>
@@ -472,7 +472,7 @@
 
               <br>
 
-              <p class="lock-message" *ngIf="this.isFreeUser() && quiz.questions[currentQuestionIndex].showSolution">
+              <p class="lock-message" *ngIf="isFreeUser() && quiz.questions[currentQuestionIndex].showSolution">
                 🔒 Resolução completa disponível apenas para utilizadores Premium —
                 <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
               </p>
