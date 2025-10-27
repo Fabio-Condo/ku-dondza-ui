@@ -1823,7 +1823,11 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   openModalPaymentOptions() {
-    this.getWalletsByUser(this.loggedUser.id);
+
+    if (this.userWallets.length === 0) {
+      this.getWalletsByUser(this.loggedUser.id);
+    }
+
     this.displayModalPaymentOptions = true;
     this.onCloseUpgradeModal();
     document.body.classList.add('no-scroll');
