@@ -709,14 +709,14 @@
                     <div class="lesson-duration">{{ content.time }} minutos</div>
                 </div>
                 <div class="lesson-actions">
-                    <a (click)="onPlayVideo(content)" class="btn btn-outline" *ngIf="content.contentType == 'VIDEO'">
+                    <button (click)="onPlayVideo(content)" class="btn btn-outline" *ngIf="content.contentType == 'VIDEO'" [disabled]="isPremiumTopic(topic) || !topic.subject.currentUserSubscribed">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                         </svg>
-                    </a>
+                    </button>
 
                     <button href="#" class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                        [disabled]="content.showLoadingDownload" (click)="onDownload(content, content.fileName)">
+                        [disabled]="isPremiumTopic(topic) || !topic.subject.currentUserSubscribed || content.showLoadingDownload" (click)="onDownload(content, content.fileName)">
                         <svg *ngIf="!content.showLoadingDownload" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -738,6 +738,9 @@
                     </div>
                 </div>
             </div>
+            <p *ngIf="isPremiumTopic(topic)" class="lock-message">
+                🔒 Disponível para usuários Premium
+            </p>
             <p *ngIf="topic.contents.length == 0">Sem conteúdo para este tópico</p>
 
         </div>
@@ -748,7 +751,7 @@
                 Teste seus conhecimentos com exercícios práticos e desafios interativos.
                 Aprenda fazendo e consolide seu aprendizado.
             </p>
-            <button class="btn-exercise" (click)="startQuestions()">
+            <button class="btn-exercise" (click)="startQuestions()" [disabled]="isPremiumTopic(topic) || !topic.subject.currentUserSubscribed">
                 Iniciar Exercícios ({{ topic.questions.length }})
             </button>
         </div>

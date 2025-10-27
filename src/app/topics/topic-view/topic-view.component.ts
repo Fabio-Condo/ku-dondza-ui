@@ -370,6 +370,21 @@ export class TopicViewComponent implements OnInit {
     content.isAdminMenuOpen = false;
   }
 
+  // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
+  isPremiumTopic(topic: Topic): boolean {
+    if (!topic.premium) return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return this.isFreeUser();
+  }
+
+  isFreeUser(): boolean {
+    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+
+    const expiresAt = this.loggedUser.expiresAt ? new Date(this.loggedUser.expiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
