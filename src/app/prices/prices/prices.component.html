@@ -762,6 +762,16 @@
 
 <body>
     <div class="container">
+
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
+            </div>
+        </div>
+
         <header>
             <h1>Escolha seu plano</h1>
             <p>Comece gratuitamente e evolua conforme suas necessidades</p>
