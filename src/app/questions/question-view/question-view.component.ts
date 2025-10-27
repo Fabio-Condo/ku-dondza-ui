@@ -25,6 +25,8 @@ import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { CommentLikeService } from 'src/app/likes/commentLike.service';
 import { UserService } from 'src/app/users/user.service';
 import { Answer } from 'src/app/core/model/Answer';
+import { Wallet } from 'src/app/core/model/Wallet';
+import { WalletService } from 'src/app/core/wallets/answers.service';
 
 
 @Component({
@@ -42,13 +44,20 @@ export class QuestionViewComponent implements OnInit {
   showLoading: boolean = false;
   showLatexLoading: boolean = false;
 
-  displayModalUpgradePlan: boolean = false;
-
   quizzes: Quiz[] = [];
   displayModalViewQuizzes: boolean = false;
   totalQuizzes: number = 0;
   totalRecordsQuizzes: number = 0
   currentPageQuizzes: number = 1;
+
+  wallet: Wallet = new Wallet();
+  userWallets: Wallet[] = [];
+  selectedWalletId: number = 0;
+
+  displayModalQuestionsList: boolean = false;
+  displayModalUpgradePlan: boolean = false;
+  displayModalPaymentOptions: boolean = false;
+  displayModalAddPaymentOption: boolean = false;
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -129,6 +138,7 @@ export class QuestionViewComponent implements OnInit {
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
     private questionService: QuestionService,
+    private walletService: WalletService,
     private commentService: CommentService,
     private commentLikeService: CommentLikeService,
     private userService: UserService,
@@ -1071,9 +1081,86 @@ export class QuestionViewComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
+  isFreeUser(): boolean {
+    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+
+    const expiresAt = this.loggedUser.expiresAt ? new Date(this.loggedUser.expiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
+  }
+
+  getWalletsByUser(userId: number): void {
+    this.loadingMessage = "Obtendo dados"
+    this.showLoading = true;
+    this.walletService.getWalletsByUser(userId).subscribe(
+      (dados: Wallet[]) => {
+        this.userWallets = dados;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  addNewWlletType(walletTypeForm: NgForm) {
+
+    //this.wallet.user = this.loggedUser;
+
+    this.detectWalletType(); // força atualização e validação
+
+    const phone = this.wallet.phoneNumber || '';
+
+    if (!this.wallet.type) {
+      this.sendErrorNotification("Número inválido: prefixo deve ser 84, 85, 86 ou 87.");
+      return;
+    }
+
+    if (phone.length !== 9) {
+      this.sendErrorNotification("Número inválido: deve conter exatamente 9 dígitos.");
+      return;
+    }
+
+    // Evitar duplicados
+    const exists = this.userWallets.some(
+      w => w.phoneNumber === phone
+    );
+
+    if (exists) {
+      this.sendErrorNotification("Este número já está registado nas suas carteiras.");
+      return;
+    }
+
+    // Definir como default se for a primeira carteira
+    if (this.userWallets.length === 0) {
+      this.wallet.default = true;
+    } else {
+      this.wallet.default = false;
+    }
+
+    this.loadingMessage = "Adicionando carteira"
+    this.showLoading = true;
+    this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
+      (response) => {
+        console.log(response);
+        this.wallet = response;
+
+        this.userWallets.push(this.wallet);
+        this.showLoading = false;
+        this.displayModalAddPaymentOption = false;
+        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   onUpgradePlan(): void {
     if (this.isUserLoggedIn) {
-      this.upgradePlan();
+      //this.upgradePlan();
+      this.openModalPaymentOptions();
       return;
     }
 
@@ -1085,10 +1172,21 @@ export class QuestionViewComponent implements OnInit {
   }
 
   upgradePlan() {
-    this.loadingMessage = "Carregando dados"
+    // Se não tiver carteira selecionada, pega a default
+    if (!this.selectedWalletId) {
+      const defaultWallet = this.userWallets.find(w => w.default);
+      if (defaultWallet) {
+        this.selectedWalletId = defaultWallet.id!;
+      } else {
+        this.sendErrorNotification("Nenhuma carteira selecionada ou definida como principal.");
+        return;
+      }
+    }
+
+    this.loadingMessage = "Carregando dados";
     this.showLoading = true;
 
-    this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', 30).subscribe({
+    this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', this.selectedWalletId).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
@@ -1098,7 +1196,30 @@ export class QuestionViewComponent implements OnInit {
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.onCloseUpgradeModal();
+        this.onCloseModalPaymentOptions();
         this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  setDefaultWallet(wallet: Wallet) {
+
+    if (!wallet.id) {
+      this.sendErrorNotification('Carteira inválida: ID não definido');
+      return;
+    }
+
+    this.userWallets.forEach(w => w.default = false); // limpa anterior
+    wallet.default = true;
+
+    this.walletService.setDefault(wallet.id).subscribe({
+      next: (updatedWallet) => {
+        // Atualiza visualmente todas as carteiras
+        this.userWallets.forEach(w => w.default = w.id === updatedWallet.id);
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -1117,11 +1238,54 @@ export class QuestionViewComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
-  isFreeUser(): boolean {
-    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+  openModalPaymentOptions() {
 
-    const expiresAt = this.loggedUser.expiresAt ? new Date(this.loggedUser.expiresAt) : null;
-    return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
+    if (this.userWallets.length === 0) {
+      this.getWalletsByUser(this.loggedUser.id);
+    }
+
+    this.displayModalPaymentOptions = true;
+    this.onCloseUpgradeModal();
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseModalPaymentOptions() {
+    this.displayModalPaymentOptions = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  openModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = true;
+  }
+
+  onCloseModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = false;
+  }
+
+  detectWalletType(): void {
+    const phone = this.wallet.phoneNumber ? this.wallet.phoneNumber.trim() : '';
+
+    // Remove espaços e caracteres não numéricos
+    const digitsOnly = phone.replace(/\D/g, '');
+
+    // Define o telefone limpo
+    this.wallet.phoneNumber = digitsOnly;
+
+    // Validação do tamanho
+    if (digitsOnly.length !== 9) {
+      this.wallet.type = '';
+      return;
+    }
+
+    // Verificação de prefixos válidos
+    const prefix = digitsOnly.substring(0, 2);
+    if (prefix === '84' || prefix === '85') {
+      this.wallet.type = 'MPESA';
+    } else if (prefix === '86' || prefix === '87') {
+      this.wallet.type = 'EMOLA';
+    } else {
+      this.wallet.type = '';
+    }
   }
 
   // Função que corta e adiciona aviso

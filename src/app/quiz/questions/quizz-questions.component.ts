@@ -72,13 +72,10 @@ export class QuizzQuestionsComponent implements OnInit {
   otp: string = '';
 
   displayModalLogin: boolean = false;
-
+  
   displayModalQuestionsList: boolean = false;
-
   displayModalUpgradePlan: boolean = false;
-
   displayModalPaymentOptions: boolean = false;
-
   displayModalAddPaymentOption: boolean = false;
 
   origem: string = '';
