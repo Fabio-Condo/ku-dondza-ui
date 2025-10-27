@@ -673,6 +673,10 @@
             </div>
         </div>
 
+        <p *ngIf="isPremiumTopic(topic)" class="lock-message">
+            🔒 Disponível para usuários Premium
+        </p>
+
         <div class="main-content">
 
             <div class="main-content-header">
@@ -746,9 +750,6 @@
                     </div>
                 </div>
             </div>
-            <p *ngIf="isPremiumTopic(topic)" class="lock-message">
-                🔒 Disponível para usuários Premium
-            </p>
             <p *ngIf="topic.contents.length == 0">Sem conteúdo para este tópico</p>
 
         </div>
