@@ -316,8 +316,8 @@
                     </div>
                 </div>
 
-                <button class="cta-button" [ngClass]="!isFreeUser() ? 'btn-current' : 'btn-upgrade'"
-                    [disabled]="!isFreeUser()">
+                <button (click)="onUpgradePlan()" class="cta-button"
+                    [ngClass]="!isFreeUser() ? 'btn-current' : 'btn-upgrade'" [disabled]="!isFreeUser()">
                     {{ !isFreeUser() ? 'Plano Atual' : 'Fazer Upgrade' }}
                 </button>
             </div>
@@ -326,3 +326,241 @@
 </body>
 
 </html>
+
+<!-- Popout -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
+    <div class="popout-container">
+
+        <div class="login-side" *ngIf="activeTab === 1">
+
+            <div class="popout-header">
+                <h2 class="popout-title">Cadastre-se para continuar</h2>
+                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            </div>
+
+            <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+            <div class="divider" *ngIf="step === 'email'">
+                <span>OU</span>
+            </div>
+
+            <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+
+                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+                <p class="message" *ngIf="step === 'otp'">
+                    Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
+                </p>
+
+                <div class="input-group" *ngIf="step === 'email'">
+                    <label>Email:</label>
+                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
+                        required email [(ngModel)]="user.email">
+                </div>
+
+                <div class="input-group" *ngIf="step === 'otp'">
+                    <label>OTP:</label>
+                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+                        [(ngModel)]="otp">
+                </div>
+
+                <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+                    {{ step === 'email' ? 'Login' : 'Verificar' }}
+                </button>
+
+                <p class="message" *ngIf="step === 'email'">
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
+                    acessar sua conta se tiver se cadastrado com gmail.
+                </p>
+
+                <div class="signup-link">
+                    Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="login-side" *ngIf="activeTab === 2">
+
+            <div class="popout-header">
+                <h2 class="popout-title">Cadastre-se para continuar</h2>
+                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            </div>
+
+            <div id="google-signin-button" *ngIf="step === 'email'"></div>
+
+            <div class="divider" *ngIf="step === 'email'">
+                <span>OU</span>
+            </div>
+
+            <form autocomplete="off" #registerForm="ngForm"
+                (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+                <div class="input-group" *ngIf="step === 'email'">
+                    <label for="name">Nome completo</label>
+                    <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
+                        placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+                </div>
+
+                <div class="input-group" *ngIf="step === 'email'">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
+                        required email [(ngModel)]="user.email">
+                </div>
+
+                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
+
+                <p class="message" *ngIf="step === 'otp'">
+                    Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
+                </p>
+
+                <div class="input-group" *ngIf="step === 'otp'">
+                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
+                        [(ngModel)]="otp">
+                </div>
+
+                <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+                    {{ step === 'email' ? 'Login' : 'Verificar' }}
+                </button>
+
+                <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
+
+                <p class="message" *ngIf="step === 'email'">
+                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
+                    cadastradar com
+                    gmail.
+                </p>
+
+            </form>
+            <div id="google-signin-button"></div>
+            <div class="signup-link">
+                Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Etapa 2: Escolha de pagamento -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPaymentOptions">
+    <div class="popout-container modern-card">
+
+        <!-- Header -->
+        <div class="popout-header">
+            <h2 class="popout-title">Escolha o método de pagamento</h2>
+            <button class="close-button" (click)="onCloseModalPaymentOptions()">
+                &times;
+            </button>
+        </div>
+
+        <!-- Carteiras Disponíveis -->
+        <div class="wallet-options">
+            <!-- Caso existam carteiras -->
+            <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+                <label class="wallet-option" *ngFor="let wallet of userWallets">
+                    <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
+                    <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
+                        <div class="wallet-left">
+                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                class="wallet-icon" />
+                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                class="wallet-icon" />
+
+                            <div class="wallet-details">
+                                <span class="wallet-type">{{ wallet.type }}</span>
+                                <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+                            </div>
+                        </div>
+
+                        <div class="wallet-check">
+                            <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
+                                Definir como principal
+                            </button>
+                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+                        </div>
+                    </div>
+                </label>
+            </ng-container>
+
+            <!-- Caso não existam carteiras -->
+            <ng-template #noWallets>
+                <div class="wallet-card">
+                    <p class="empty-text">Você ainda não adicionou nenhuma carteira.</p>
+                </div>
+            </ng-template>
+        </div>
+
+        <!-- Caso não tenha carteiras -->
+        <div class="upgrade-cta">
+            <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
+                Adicionar Método de Pagamento
+            </button>
+        </div>
+
+        <!-- Confirmar pagamento -->
+        <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
+            <button class="cta-button btn-upgrade" (click)="upgradePlan()">
+                Fazer Upgrade Agora
+            </button>
+            <p class="plan-price-upgrade">299 MT/mês</p>
+        </div>
+    </div>
+</div>
+
+<!-- Etapa 2: Escolha de pagamento -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalAddPaymentOption">
+    <div class="popout-container pricing-card popular">
+
+        <!-- Header -->
+        <div class="popout-header">
+            <h2 class="plan-name popout-title">Adicione o método de pagamento</h2>
+            <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
+        </div>
+
+        <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+
+            <!-- Número de telefone -->
+            <div class="form-group">
+                <label for="phoneNumber">Número de telefone</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+                    [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" class="input-control" />
+
+                <!-- Mensagem de erro -->
+                <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+                    O número deve ter exatamente 9 dígitos.
+                </small>
+                <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
+                    Parece que este número não pertence a uma carteira válida. Suportamos apenas <strong>MPESA
+                        (84/85)</strong> e
+                    <strong>EMOLA (86/87)</strong>.
+                </small>
+            </div>
+
+            <!-- Tipo de carteira detectado automaticamente -->
+            <div class="wallet-detected" *ngIf="wallet.type">
+                <div class="wallet-card">
+                    <div class="wallet-left">
+                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                            class="wallet-icon" />
+                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                            class="wallet-icon" />
+
+                        <div class="wallet-details">
+                            <span class="wallet-type">{{ wallet.type }}</span>
+                            <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upgrade-cta">
+                <button class="cta-button btn-upgrade" type="submit"
+                    [disabled]="walletTypeForm.invalid || !wallet.type">
+                    {{ showLoading ? 'Adicionando carteira...' :'Adicionar carteira' }}
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
