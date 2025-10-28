@@ -427,7 +427,6 @@
                 [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 [disabled]="showCorrection || disableEditing" />
-              <!--<span>{{ answer.text }}</span>--> <!-- Numeração das opções -->
               <span [innerHTML]="getFormattedText(answer.text || '')"></span>
             </label>
           </div>
