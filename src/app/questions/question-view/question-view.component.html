@@ -10,8 +10,8 @@
             </div>
         </div>
 
-        <div *ngIf="currentMessage" class="progress-message">
-            {{ currentMessage }}
+        <div *ngIf="currentMessage" class="progress-message" [ngClass]="currentMessage.type">
+            {{ currentMessage.text }}
         </div>
 
         <div class="header-buttons">

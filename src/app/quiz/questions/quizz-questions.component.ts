@@ -388,10 +388,10 @@ export class QuizzQuestionsComponent implements OnInit {
       if (selected) {
         if (selected.correct) {
           this.playCorrect();
-          this.showAnswerMessage(this.correctMessages, 'success'); // 💚 verde
+          this.showAnswerMessage(this.correctMessages, 'success');
         } else {
           this.playWrong();
-          this.showAnswerMessage(this.incorrectMessages, 'error'); // ❤️ vermelho
+          this.showAnswerMessage(this.incorrectMessages, 'error');
         }
       }
     }

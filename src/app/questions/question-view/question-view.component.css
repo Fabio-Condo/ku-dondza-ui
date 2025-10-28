@@ -1362,38 +1362,62 @@ pre {
 }
 
 .progress-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #2563eb;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-size: 16px;
-    animation: fadeInOut 3s ease-in-out forwards;
-    z-index: 9999;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  animation: fadeInOut 3s ease-in-out forwards;
+  z-index: 9999;
+  text-align: center;
+  transition: all 0.3s ease;
+  opacity: 0.95;
+}
+
+/* INFO */
+.progress-message.info {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+/* SUCCESS */
+.progress-message.success {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+/* WARNING */
+.progress-message.warning {
+  background: linear-gradient(135deg, #fde047, #facc15);
+  color: #222;
+}
+
+/* ERROR */
+.progress-message.error {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
 }
 
 @keyframes fadeInOut {
-    0% {
-        opacity: 0;
-        transform: translateX(-50%) translateY(20px);
-    }
-
-    10% {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-
-    90% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateX(-50%) translateY(20px);
-    }
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 30px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 30px);
+  }
 }
 
 .pricing-card {

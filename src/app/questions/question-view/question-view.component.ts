@@ -100,7 +100,7 @@ export class QuestionViewComponent implements OnInit {
   topicId: string = '';
   subjectId: string = '';
 
-  currentMessage: string | null = null;
+  currentMessage: { text: string; type: 'info' | 'success' | 'warning' | 'error' } | null = null;
 
   // Mensagens de acerto
   correctMessages: string[] = [
@@ -306,14 +306,14 @@ export class QuestionViewComponent implements OnInit {
         this.question.savedByUser = !this.question.savedByUser;
         this.question.showLoadingSave = false;
 
-        // Mensagem de confirmação melhorada
-        this.currentMessage = this.question.savedByUser
+        // Mensagem de confirmação colorida e animada
+        const message = this.question.savedByUser
           ? 'Questão adicionada aos favoritos'
           : 'Questão removida dos favoritos';
 
-        setTimeout(() => {
-          this.currentMessage = null;
-        }, 3000); // desaparece depois de 3 segundos
+        const type = this.question.savedByUser ? 'success' : 'warning';
+
+        this.showAnswerMessage([message], type);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -444,22 +444,25 @@ export class QuestionViewComponent implements OnInit {
       if (selected) {
         if (selected.correct) {
           this.playCorrect();
-          this.showAnswerMessage(this.correctMessages);
+          this.showAnswerMessage(this.correctMessages, 'success');
         } else {
           this.playWrong();
-          this.showAnswerMessage(this.incorrectMessages);
+          this.showAnswerMessage(this.incorrectMessages, 'error');
         }
       }
     }
   }
 
-  showAnswerMessage(arr: string[]) {
+  showAnswerMessage(arr: string[], type: 'info' | 'success' | 'warning' | 'error' = 'info') {
     const index = Math.floor(Math.random() * arr.length);
-    this.currentMessage = arr[index];
+    this.currentMessage = {
+      text: arr[index],
+      type
+    };
 
     setTimeout(() => {
       this.currentMessage = null;
-    }, 3000); // some depois de 3 segundos
+    }, 3000);
   }
 
   // Método para capturar a resposta do usuário
