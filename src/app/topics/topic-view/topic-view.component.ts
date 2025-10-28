@@ -45,8 +45,6 @@ export class TopicViewComponent implements OnInit {
   topicContent: TopicContent = new TopicContent();
   topicContentFile!: File;
 
-  displayModalSubscriptionInfo: boolean = false;
-
   userSubjectSubscription: UserSubjectSubscription = new UserSubjectSubscription();
 
   showLesson: boolean = false;
@@ -247,13 +245,8 @@ export class TopicViewComponent implements OnInit {
 
   download(content: TopicContent, filename: string): void {
 
-    if (!this.topic.subject.currentUserSubscribed) {
-      this.displayModalSubscriptionInfo = true;
-      return;
-    }
-
     content.showLoadingDownload = true;
-    this.topicContentService.download(content.id, filename, this.loggedUser.id).subscribe((data: Blob) => {
+    this.topicContentService.download(content.id, filename).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
       // Criar um link temporário para o Blob
@@ -284,43 +277,14 @@ export class TopicViewComponent implements OnInit {
   }
 
   onDownload(content: TopicContent, filename: string) {
-    //this.selectedContent = content;
-    if (this.isUserLoggedIn) {
-      this.download(content, filename);
-    }
-
-    if (!this.isUserLoggedIn) {
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
-    }
+    this.download(content, filename);
   }
 
   onPlayVideo(content: TopicContent) {
-    //this.selectedContent = content;
-    if (this.isUserLoggedIn) {
-      this.playVideo(content);
-    }
-
-    if (!this.isUserLoggedIn) {
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
-    }
+    this.playVideo(content);
   }
 
   playVideo(content: TopicContent): void {
-
-    if (!this.topic.subject.currentUserSubscribed) {
-      this.displayModalSubscriptionInfo = true;
-      return;
-    }
 
     this.showLesson = true;
     this.selectedContent = content;

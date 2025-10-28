@@ -720,14 +720,14 @@
                 <div class="lesson-actions">
                     <button (click)="onPlayVideo(content)" class="btn btn-outline"
                         *ngIf="content.contentType == 'VIDEO'"
-                        [disabled]="isPremiumTopic(topic) || !topic.subject.currentUserSubscribed">
+                        [disabled]="isPremiumTopic(topic) || content.showLoadingDownload">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                         </svg>
                     </button>
 
                     <button href="#" class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                        [disabled]="isPremiumTopic(topic) || !topic.subject.currentUserSubscribed || content.showLoadingDownload"
+                        [disabled]="isPremiumTopic(topic) || content.showLoadingDownload"
                         (click)="onDownload(content, content.fileName)">
                         <svg *ngIf="!content.showLoadingDownload" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -761,7 +761,7 @@
                 Aprenda fazendo e consolide seu aprendizado.
             </p>
             <button class="btn-exercise" (click)="startQuestions()"
-                [disabled]="isPremiumTopic(topic) || !topic.subject.currentUserSubscribed">
+                [disabled]="isPremiumTopic(topic)">
                 Iniciar Exercícios ({{ topic.questions.length }})
             </button>
         </div>
@@ -940,39 +940,5 @@
                 Your browser does not support the video tag.
             </video>
         </div>
-    </div>
-</div>
-
-<div class="popout-overlay" *ngIf="displayModalSubscriptionInfo" (click)="displayModalSubscriptionInfo = false">
-    <div class="popout-container" (click)="$event.stopPropagation()">
-
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="popout-title">Conteúdo Exclusivo</h2>
-            <button class="close-button" (click)="displayModalSubscriptionInfo = false">&times;</button>
-        </div>
-
-        <!-- Corpo -->
-        <div class="popout-body">
-            <p>
-                Para acessar este material da disciplina, você precisa estar inscrito no curso.<br />
-                <strong>Desbloqueie todo o conteúdo e potencialize seu aprendizado!</strong>
-            </p>
-        </div>
-
-        <!-- Ação -->
-        <div class="popout-actions">
-            <button class="btn-subscription" (click)="onSubjectSubscription()"
-                [disabled]="topic.subject.currentUserSubscribed">
-                <span
-                    *ngIf="!topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrever-se
-                    Agora</span>
-                <span
-                    *ngIf="!topic.subject.currentUserSubscribed && topic.subject.showLoadingSubscription">Inscrevendo...</span>
-                <span
-                    *ngIf="topic.subject.currentUserSubscribed && !topic.subject.showLoadingSubscription">Inscrito</span>
-            </button>
-        </div>
-
     </div>
 </div>

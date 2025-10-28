@@ -46,14 +46,10 @@ export class TopicContentService {
         return this.http.get<number>(`${this.host}/total`, {});
     }
 
-    download(id: number, filename: string, currentUserId: number): Observable<Blob> {
-        let params = new HttpParams()
-            .set('currentUserId', currentUserId.toString());
+    download(id: number, filename: string): Observable<Blob> {
+        let params = new HttpParams();
 
-        return this.http.get(`${this.host}/download/${id}/${filename}`, {
-            responseType: 'blob',
-            params: params
-        });
+        return this.http.get(`${this.host}/download/${id}/${filename}`, { responseType: 'blob',params: params });
     }
 
 }
