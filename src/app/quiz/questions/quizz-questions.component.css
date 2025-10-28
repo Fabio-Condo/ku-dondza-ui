@@ -57,6 +57,13 @@ h1 {
   line-height: 1.6;
 }
 
+.question-text-container {
+  max-height: 500px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  transition: all 0.25s ease-in-out;
+}
+
 /* Opções de resposta */
 .answer-options {
   margin-top: 25px;
@@ -416,23 +423,6 @@ canvas {
   margin-left: auto;
   margin-right: auto;
   transition: none;
-}
-
-.question-text-container {
-  max-height: 500px;
-  overflow-y: auto;
-  padding: 16px 24px;
-  margin-top: 12px;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #ffffff, #f3f4f6);
-  /* suave e moderno */
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.05),
-    inset 0 1px 1px rgba(255, 255, 255, 0.6);
-  scroll-behavior: smooth;
-  transition: all 0.25s ease-in-out;
-  border: 1px solid rgba(229, 231, 235, 0.8);
-  backdrop-filter: blur(4px);
 }
 
 /* Número da questão à esquerda */
@@ -2404,10 +2394,6 @@ pre {
 
   .solution-button .title {
     font-size: 1rem;
-  }
-
-  .question-text-container {
-    padding: 16px 10px;
   }
 
   .popout-container {
