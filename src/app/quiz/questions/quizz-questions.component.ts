@@ -72,7 +72,7 @@ export class QuizzQuestionsComponent implements OnInit {
   otp: string = '';
 
   displayModalLogin: boolean = false;
-  
+
   displayModalQuestionsList: boolean = false;
   displayModalUpgradePlan: boolean = false;
   displayModalPaymentOptions: boolean = false;
@@ -145,7 +145,7 @@ export class QuizzQuestionsComponent implements OnInit {
   // MENSAGENS DE PROGRESSO
   // --------------------------
 
-  currentMessage: string | null = null;
+  currentMessage: { text: string; type: 'info' | 'success' | 'warning' | 'error' } | null = null;
   lastStage: number = -1;
 
   // Start (0–25%)
@@ -351,13 +351,16 @@ export class QuizzQuestionsComponent implements OnInit {
     //this.quiz.limitPerTopic = 2;
   }
 
-  showAnswerMessage(arr: string[]) {
+  showAnswerMessage(arr: string[], type: 'info' | 'success' | 'warning' | 'error' = 'info') {
     const index = Math.floor(Math.random() * arr.length);
-    this.currentMessage = arr[index];
+    this.currentMessage = {
+      text: arr[index],
+      type
+    };
 
     setTimeout(() => {
       this.currentMessage = null;
-    }, 3000); // some depois de 3 segundos
+    }, 3000);
   }
 
   playCorrect(): void {
@@ -385,10 +388,10 @@ export class QuizzQuestionsComponent implements OnInit {
       if (selected) {
         if (selected.correct) {
           this.playCorrect();
-          this.showAnswerMessage(this.correctMessages);
+          this.showAnswerMessage(this.correctMessages, 'success'); // 💚 verde
         } else {
           this.playWrong();
-          this.showAnswerMessage(this.incorrectMessages);
+          this.showAnswerMessage(this.incorrectMessages, 'error'); // ❤️ vermelho
         }
       }
     }
@@ -676,14 +679,14 @@ export class QuizzQuestionsComponent implements OnInit {
         question.savedByUser = !question.savedByUser;
         question.showLoadingSave = false;
 
-        // Mensagem de confirmação melhorada
-        this.currentMessage = question.savedByUser
+        // Mensagem de confirmação colorida e animada
+        const message = question.savedByUser
           ? 'Questão adicionada aos favoritos'
           : 'Questão removida dos favoritos';
 
-        setTimeout(() => {
-          this.currentMessage = null;
-        }, 3000); // desaparece depois de 3 segundos
+        const type = question.savedByUser ? 'success' : 'warning';
+
+        this.showAnswerMessage([message], type);
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -872,24 +875,32 @@ export class QuizzQuestionsComponent implements OnInit {
 
     let messagesToDraw: string[] = [];
     let stage = -1;
+    let type: 'info' | 'success' | 'warning' | 'error' = 'info';
 
     if (progress >= 75) {
       messagesToDraw = this.finalMessages;
       stage = 3;
+      type = 'success'; // 💚 progresso alto
     } else if (progress >= 50) {
       messagesToDraw = this.halfwayMessages;
       stage = 2;
+      type = 'info'; // 🔵 progresso médio
     } else if (progress >= 25) {
       messagesToDraw = this.midMessages;
       stage = 1;
+      type = 'warning'; // 🟡 início do progresso
     } else {
       messagesToDraw = this.startMessages;
       stage = 0;
+      type = 'info'; // Azul para começo
     }
 
     // Só mostra se entrou em uma faixa nova
     if (stage !== this.lastStage) {
-      this.currentMessage = this.getRandomMessage(messagesToDraw);
+      this.currentMessage = {
+        text: this.getRandomMessage(messagesToDraw),
+        type
+      };
       this.lastStage = stage;
 
       setTimeout(() => {

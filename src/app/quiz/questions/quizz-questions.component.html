@@ -10,8 +10,8 @@
       </div>
     </div>
 
-    <div *ngIf="currentMessage" class="progress-message">
-      {{ currentMessage }}
+    <div *ngIf="currentMessage" class="progress-message" [ngClass]="currentMessage.type">
+      {{ currentMessage.text }}
     </div>
 
     <div *ngIf="showInitQuizScreen" class="start-screen">
@@ -97,8 +97,7 @@
             <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
 
             <!-- Botão Selecionar todos -->
-            <div class="select-all" (click)="toggleSelectAllTopics()"
-              *ngIf="!isFreeUser()">
+            <div class="select-all" (click)="toggleSelectAllTopics()" *ngIf="!isFreeUser()">
               <span>
                 {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
               </span>
