@@ -146,7 +146,7 @@
                                     </div>
 
                                     <div class="lesson-actions">
-                                        <button [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed"
+                                        <button [disabled]="isPremiumTopic(topic) || content.showLoadingMarked"
                                             (click)="onPlayVideo(content)" class="btn btn-outline"
                                             *ngIf="content.contentType == 'VIDEO'">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -155,7 +155,7 @@
                                         </button>
 
                                         <button class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                                            [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed || content.showLoadingMarked"
+                                            [disabled]="isPremiumTopic(topic) || content.showLoadingMarked"
                                             (click)="onDownload(content, content.fileName)">
                                             <svg *ngIf="!content.showLoadingDownload" width="16" height="16"
                                                 viewBox="0 0 24 24" fill="none">
@@ -180,7 +180,7 @@
                                     </p>
                                     -->
                                     <button class="btn-exercise" (click)="startPractice(topic)"
-                                        [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed">
+                                        [disabled]="isPremiumTopic(topic)">
                                         Iniciar Exercícios ({{ topic.questions.length }})
                                     </button>
                                 </div>

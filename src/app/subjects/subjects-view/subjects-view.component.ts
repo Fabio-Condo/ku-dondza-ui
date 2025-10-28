@@ -245,10 +245,10 @@ export class SubjectsViewComponent {
 
   download(content: TopicContent, filename: string): void {
 
-    if (!this.subject.currentUserSubscribed) {
-      this.displayModalSubscriptionInfo = true;
-      return;
-    }
+    //if (!this.subject.currentUserSubscribed) {
+    //  this.displayModalSubscriptionInfo = true;
+    //  return;
+    //}
 
     content.showLoadingDownload = true;
     this.topicContentService.download(content.id, filename, this.loggedUser.id).subscribe((data: Blob) => {
