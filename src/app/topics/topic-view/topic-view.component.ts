@@ -125,15 +125,11 @@ export class TopicViewComponent implements OnInit {
     }
   }
 
-  startQuestions() {
-
-    // Embaralhar primeiro
-    this.shuffleQuestions(this.topic.questions);
-
-    this.router.navigate(['/questions', this.topic.questions[0].questionId], {
+  startPractice() {
+    this.router.navigate(['/quizzes', 'training'], {
       queryParams: {
         from: 'topics',
-        topicId: this.route.snapshot.paramMap.get('id')  // o ID do tópico atual
+        topicId: this.topic.id
       }
     });
   }

@@ -80,6 +80,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   origem: string = '';
   subjectId: number = 0;
+  topicId: number = 0;
 
   correctSound = new Audio('assets/sounds/correct.wav');
   wrongSound = new Audio('assets/sounds/wrong.wav');
@@ -292,7 +293,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
-    if (quizId && quizId !== 'new' && quizId !== 'test') {
+    if (quizId && quizId !== 'new' && quizId !== 'test' && quizId !== 'training') {
       this.getQuizByQuizId(quizId);
     }
 
@@ -303,12 +304,21 @@ export class QuizzQuestionsComponent implements OnInit {
       this.subjectId = params['subjectId'];
     });
 
+    this.route.queryParams.subscribe(params => {
+      this.origem = params['from'];
+      this.topicId = params['topicId'];
+    });
+
     if (quizId && quizId == 'new' && !this.origem && !this.subjectId) {
       this.onInitQuiz();
     }
 
     if (quizId && quizId == 'test' && this.origem === 'subjects' && this.subjectId) {
       this.StartFinalTest(this.subjectId);
+    }
+
+    if (quizId && quizId == 'training' && this.topicId && (this.origem === 'subjects' || this.origem === 'topics')) {
+      this.StartTopicTraining(this.topicId);
     }
 
     // Pré-carrega os sons para evitar atrasos
@@ -442,6 +452,39 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
+  StartTopicTraining(topicId: number): void {
+
+    this.loadingMessage = "Obtendo tópicos"
+    this.showLoading = true;
+
+    this.showInitQuizScreen = false;
+    this.showStartScreen = false;
+    this.showCorrection = false;
+
+    this.quiz.anonymous = true;
+    this.quiz.type = 'TRAINING';
+    this.quiz.difficultyLevel = 'BEGINNER';
+    this.quiz.limitPerTopic = 10;
+
+    this.topicService.findById(topicId).subscribe(
+      (topic: Topic) => {
+        this.quiz.questions = [];
+        this.quiz.subject = topic.subject;
+
+        this.topics = [{
+          ...topic,
+          selected: true
+        }];
+
+        this.getQuestions();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
   StartFinalTest(subjectId: number): void {
 
     this.loadingMessage = "Obtendo tópicos"
@@ -453,6 +496,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.quiz.anonymous = true;
     this.quiz.type = 'TEST';
+    this.quiz.difficultyLevel = 'BEGINNER';
     this.quiz.limitPerTopic = 5;
 
     this.topicService.getBySubjectId(subjectId).subscribe(

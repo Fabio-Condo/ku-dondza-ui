@@ -335,19 +335,16 @@ export class SubjectsViewComponent {
     });
   }
 
-  startPractice(topic: any) {
-    this.shuffleQuestions(topic.questions);
-
-    this.router.navigate(['/questions', topic.questions[0].questionId], {
+  startPractice(topic: Topic) {
+    this.router.navigate(['/quizzes', 'training'], {
       queryParams: {
         from: 'subjects',
-        subjectId: this.route.snapshot.paramMap.get('id')
+        topicId: topic.id
       }
     });
   }
 
   startFinalTest() {
-
     this.router.navigate(['/quizzes', 'test'], {
       queryParams: {
         from: 'subjects',
