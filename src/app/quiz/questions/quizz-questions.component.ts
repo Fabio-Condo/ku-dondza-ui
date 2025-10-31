@@ -1008,19 +1008,18 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   onStopCurrentRunningQuiz() {
-    if (!this.quiz.id) {
-      this.stopTimer();
-      this.scrollToTop();
-      //this.router.navigateByUrl('/quizzes');
-      //this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
-
-      if (this.origem === 'subjects' && this.subjectId) {
-        this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
-      } else {
-        this.router.navigateByUrl('/quizzes');
-      }
-    }
-
+  //  if (!this.quiz.id) {
+  //    this.stopTimer();
+  //    this.scrollToTop();
+  //    if (this.origem === 'subjects' && this.subjectId) {
+  //      this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
+  //    } else {
+  //      this.router.navigateByUrl('/quizzes');
+  //    }
+  //  }
+  
+    this.stopTimer();
+    this.scrollToTop();
     this.showStartScreen = true;
   }
 
