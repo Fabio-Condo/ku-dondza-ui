@@ -684,6 +684,9 @@ export class QuizzQuestionsComponent implements OnInit {
       (response) => {
         this.showLoading = false;
         this.quiz = response;
+        if (this.quiz.answers) {
+          this.calculateResults();
+        }
         this.router.navigate(['/quizzes', this.quiz.quizId], { replaceUrl: true });
         this.showStartScreen = true
       },
@@ -1008,16 +1011,16 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   onStopCurrentRunningQuiz() {
-  //  if (!this.quiz.id) {
-  //    this.stopTimer();
-  //    this.scrollToTop();
-  //    if (this.origem === 'subjects' && this.subjectId) {
-  //      this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
-  //    } else {
-  //      this.router.navigateByUrl('/quizzes');
-  //    }
-  //  }
-  
+    //  if (!this.quiz.id) {
+    //    this.stopTimer();
+    //    this.scrollToTop();
+    //    if (this.origem === 'subjects' && this.subjectId) {
+    //      this.router.navigate(['/subjects', this.quiz.subject.subjectId]);
+    //    } else {
+    //      this.router.navigateByUrl('/quizzes');
+    //    }
+    //  }
+
     this.stopTimer();
     this.scrollToTop();
     this.showStartScreen = true;
