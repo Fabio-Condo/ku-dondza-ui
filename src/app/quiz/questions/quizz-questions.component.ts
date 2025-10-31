@@ -1021,7 +1021,11 @@ export class QuizzQuestionsComponent implements OnInit {
     //    }
     //  }
 
-    this.stopTimer();
+    if ((!this.quiz.id || this.quiz.id === 0) && !this.quiz.isSubmitted) {
+      this.stopTimer();
+      this.router.navigateByUrl('/quizzes');
+      return;
+    }
     this.scrollToTop();
     this.showStartScreen = true;
   }
