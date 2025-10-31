@@ -1021,6 +1021,10 @@ export class QuizzQuestionsComponent implements OnInit {
     //    }
     //  }
 
+    if (this.quiz.type === 'TEST' && (!this.quiz.id || this.quiz.id === 0)) {
+      this.stopTimer();
+    }
+
     if ((!this.quiz.id || this.quiz.id === 0) && !this.quiz.isSubmitted) {
       this.stopTimer();
       this.router.navigateByUrl('/quizzes');
