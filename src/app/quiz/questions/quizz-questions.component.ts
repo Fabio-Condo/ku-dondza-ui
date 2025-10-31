@@ -631,13 +631,48 @@ export class QuizzQuestionsComponent implements OnInit {
     return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
   }
 
-  saveQuiz() {
+  onSubmitAnswers() {
+    this.submitAnswers();
+  }
 
+  submitAnswers() {
     if (!this.loggedUser) {
       this.loggedUser = new User();
       this.loggedUser.id = 0;
     }
 
+    this.quiz.user = this.loggedUser;
+
+    this.stopTimer();
+    this.quiz.isSubmitted = true;
+    this.quiz.id = 0; // Força a criação de um novo quiz
+    this.quiz.answers = this.submittedAnswers;
+    this.quiz.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
+    this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
+    if (this.quiz.answers) {
+      this.calculateResults();
+    }
+    this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+    this.showStartScreen = true
+    this.scrollToTop();
+  }
+
+  onSaveQuiz() {
+    if (this.isUserLoggedIn) {
+      this.saveQuiz();
+    }
+
+    if (!this.isUserLoggedIn) {
+      document.body.classList.add('no-scroll');
+      this.displayModalLogin = true;
+      setTimeout(() => {
+        this.initializeGoogleAuth();
+      }, 100); // Espera para o botão estar no DOM
+      return;
+    }
+  }
+
+  saveQuiz() {
     this.loadingMessage = "Salvando o quiz"
     this.showLoading = true;
     this.quiz.topics = this.getSelectedTopics();
@@ -645,20 +680,10 @@ export class QuizzQuestionsComponent implements OnInit {
     const questionIds = this.quiz.questions.map(question => question.id);
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
-    this.quiz.timeLimit = this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
-    this.quiz.user = this.loggedUser;
-
     this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds, this.loggedUser.id).subscribe(
       (response) => {
         this.showLoading = false;
         this.quiz = response;
-        //this.getQuizByQuizId(this.quiz.quizId);
-
-        this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
-        if (this.quiz.answers) {
-          this.calculateResults();
-        }
-        this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
         this.router.navigate(['/quizzes', this.quiz.quizId], { replaceUrl: true });
         this.showStartScreen = true
       },
@@ -672,32 +697,6 @@ export class QuizzQuestionsComponent implements OnInit {
   getTotalTimeLimit(): number {
     //return this.quiz.questions.reduce((sum, q) => sum + q.timeLimit, 0);
     return this.questions.reduce((sum, question) => sum + question.timeLimit, 0);
-  }
-
-  onSubmitAnswers() {
-    if (this.isUserLoggedIn) {
-      this.submitAnswers();
-    }
-
-    if (!this.isUserLoggedIn) {
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
-    }
-  }
-
-  submitAnswers() {
-    this.calculateResults();
-    this.stopTimer();
-    this.scrollToTop();
-    if (!this.quiz.id) {
-      const elapsedTimeInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
-      this.quiz.timeSpent = elapsedTimeInSeconds;
-      this.saveQuiz();
-    }
   }
 
   onSaveQuestion(question: Question) {
@@ -905,6 +904,10 @@ export class QuizzQuestionsComponent implements OnInit {
 
     if (!this.quiz.id && this.quiz.type == 'TRAINING') {
       this.showCorrection = false;
+    }
+
+    if ((this.quiz.id === 0) && this.quiz.type == 'TRAINING') {
+      this.showCorrection = true;
     }
 
   }

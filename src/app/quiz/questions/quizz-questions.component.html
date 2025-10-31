@@ -484,13 +484,13 @@
           <button class="btn btn-verification"
             [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)"
             (click)="togleCorrection()"
-            *ngIf="!quiz.id && !showInitQuizScreen && quiz.type === 'TRAINING' && !quiz.questions[currentQuestionIndex].verified">
+            *ngIf="(!quiz.id || quiz.id === 0) && !quiz.isSubmitted && !showInitQuizScreen && quiz.type === 'TRAINING' && !quiz.questions[currentQuestionIndex].verified">
             Verificar
             <i class="pi pi-eye"></i>
           </button>
 
           <button class="btn btn-prev" (click)="goToPreviousQuestion()" [disabled]="currentQuestionIndex === 0"
-            *ngIf="quiz.id || quiz.type === 'TEST'">
+            *ngIf="quiz.id || quiz.id === 0 || quiz.type === 'TEST'">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M15 18l-6-6 6-6" />
             </svg>
@@ -498,7 +498,7 @@
           </button>
 
           <button class="btn btn-next" (click)="goToNextQuestion()"
-            *ngIf="(!quiz.id && quiz.type === 'TRAINING' && quiz.questions[currentQuestionIndex].verified) || (!quiz.id && quiz.type === 'TEST' ) || quiz.id"
+            *ngIf="((!quiz.id || quiz.id === 0) && quiz.type === 'TRAINING' && quiz.questions[currentQuestionIndex].verified) || (!quiz.id && quiz.type === 'TEST' ) || quiz.id"
             [disabled]="currentQuestionIndex === quiz.questions.length - 1 || (!quiz.id && !showCorrection && quiz.type === 'TRAINING') || (!quiz.id && !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id))">
             Próxima
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -531,12 +531,17 @@
   </div>
 </body>
 
-<button class="fab fab-save" (click)="onSubmitAnswers()" [ngStyle]="{ bottom: quiz.type === 'TEST' ? '84px' : '16px' }"
-  *ngIf="(!showInitQuizScreen && !quiz.id) && allQuestionsAnswered()">
+<button class="fab fab-submitte" (click)="onSubmitAnswers()" [ngStyle]="{ bottom: quiz.type === 'TEST' ? '84px' : '16px' }"
+  *ngIf="(!showInitQuizScreen && !quiz.id && !quiz.isSubmitted) && allQuestionsAnswered()">
+  <i class="pi pi-upload"></i>
+</button>
+
+<button class="fab fab-save" (click)="onSaveQuiz()" [ngStyle]="{ bottom: (quiz.type === 'TRAINING' && showStartScreen) ? '84px' : '16px' }"
+  *ngIf="quiz.isSubmitted">
   <i class="pi pi-save"></i>
 </button>
 
-<button class="fab fab-primary" (click)="toggleDisableEditing()"
+<button class="fab fab-primary" (click)="toggleDisableEditing()" [disabled]="quiz.isSubmitted"
   *ngIf="!quiz.id && !showInitQuizScreen && quiz.type == 'TEST'">
   <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
   <i *ngIf="!disableEditing" class="pi pi-lock"></i>

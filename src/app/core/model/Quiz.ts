@@ -26,6 +26,8 @@ export class Quiz {
     isAdminMenuOpen: boolean = false;
     showLoadingSave: boolean = false;
 
+    isSubmitted: boolean = false;
+
     // Adicionando a propriedade resultsByTopic
     resultsByTopic: {
         [key: string]: {
