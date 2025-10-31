@@ -536,12 +536,12 @@
   <i class="pi pi-upload"></i>
 </button>
 
-<button class="fab fab-save" (click)="onSaveQuiz()" [ngStyle]="{ bottom: (quiz.type === 'TRAINING' && showStartScreen) ? '84px' : '16px' }"
+<button class="fab fab-save" (click)="onSaveQuiz()"
   *ngIf="quiz.isSubmitted">
   <i class="pi pi-save"></i>
 </button>
 
-<button class="fab fab-primary" (click)="toggleDisableEditing()" [disabled]="quiz.isSubmitted"
+<button class="fab fab-primary" (click)="toggleDisableEditing()"
   *ngIf="!quiz.id && !showInitQuizScreen && quiz.type == 'TEST'">
   <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
   <i *ngIf="!disableEditing" class="pi pi-lock"></i>
