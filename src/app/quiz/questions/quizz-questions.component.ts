@@ -126,20 +126,20 @@ export class QuizzQuestionsComponent implements OnInit {
 
   // Mensagens de acerto
   correctMessages: string[] = [
-    "Muito bem! 👏",
-    "Acertou, continue assim! ⭐",
+    "Mandou muito bem! 🎉",
+    "Perfeito! Continue assim! ⭐",
     "Excelente escolha! 🚀",
-    "Perfeito, siga firme 💪",
+    "Mandou ver! 🎯",
     "Você pegou essa! 🔥"
   ];
 
   // Mensagens de erro (motivacionais, sem desanimar)
   incorrectMessages: string[] = [
-    "Não foi dessa vez, tente a próxima! 💡",
-    "Quase lá, continue tentando! 🌟",
-    "Não desista, siga focado 🚀",
-    "Boa tentativa, revise e continue 💪",
-    "Cada tentativa conta, prossiga 👌"
+    "Faz parte do processo — siga firme! 🚀",
+    "Errou, mas está aprendendo! 🌱",
+    "Cada erro é um passo para o acerto! 🌟",
+    "Aprender é assim: tenta, erra e evolui! 🔥",
+    "O importante é continuar! 🌟",
   ];
 
   // --------------------------
