@@ -396,7 +396,7 @@
               <div class="progress-bar" *ngIf="!quiz.id" [style.width]="progressPercentage2 + '%'"></div>
             </div>
 
-            <button class="question-selector-btn" [disabled]="!quiz.id" (click)="onShowQuestionList()">
+            <button class="question-selector-btn" [disabled]="!quiz.isSubmitted" (click)="onShowQuestionList()">
               {{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}
               <span class="arrow">&#9662;</span> <!-- setinha para baixo -->
             </button>
@@ -537,7 +537,7 @@
 </button>
 
 <button class="fab fab-save" (click)="onSaveQuiz()" [ngStyle]="{ bottom: quiz.isSubmitted && showStartScreen ? '84px' : '84px' }"
-  *ngIf="quiz.isSubmitted">
+  *ngIf="quiz.isSubmitted && (!quiz.id || quiz.id === 0)">
   <i class="pi pi-save"></i>
 </button>
 

@@ -684,6 +684,7 @@ export class QuizzQuestionsComponent implements OnInit {
       (response) => {
         this.showLoading = false;
         this.quiz = response;
+        this.quiz.isSubmitted = true;
         if (this.quiz.answers) {
           this.calculateResults();
         }
@@ -753,6 +754,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quizService.getQuizByQuizId(quizId, this.loggedUser.id).subscribe(
       (response) => {
         this.quiz = response;
+        this.quiz.isSubmitted = true;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
         if (this.isFreeUser()) {
