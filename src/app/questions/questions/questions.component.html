@@ -1778,35 +1778,23 @@
             <br>
 
             <!-- Input para mostrar a solução  *ngIf="!showCorrection"-->
-            <div class="tip"
-                [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="tip">
                 <div class="tip-input">
                     <h1 class="title">Dica</h1>
                     <p class="tip-content scrollable" *ngIf="question.tip" [innerHTML]="getFormattedText(question.tip)">
                     </p>
-                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
-                        <button class="upgrade-button">
-                            Atualizar para Premium
-                        </button>
-                    </div>
                 </div>
             </div>
 
             <br>
 
             <!-- Input para mostrar a solução  *ngIf="showCorrection"-->
-            <div class="solution"
-                [ngClass]="{'blocked-content': isUserLoggedIn && loggedUser.plan === 'FREE', 'statistics-body': true}">
+            <div class="solution">
                 <div class="solution-input">
                     <h1 class="title">Resolução</h1>
                     <p class="solution-content scrollable" *ngIf="question.solution"
                         [innerHTML]="getFormattedText(question.solution)">
                     </p>
-                    <div *ngIf="isUserLoggedIn && loggedUser.plan === 'FREE'" class="upgrade-overlay">
-                        <button class="upgrade-button">
-                            Atualizar para Premium
-                        </button>
-                    </div>
                 </div>
             </div>
 
