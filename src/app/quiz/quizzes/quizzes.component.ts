@@ -52,7 +52,7 @@ export class QuizzesComponent implements OnInit {
 
   filter: QuizFilter = {
     page: 0,
-    itemsPerPage: 10,
+    itemsPerPage: 5,
     sort: 'id,desc'
   }
 
