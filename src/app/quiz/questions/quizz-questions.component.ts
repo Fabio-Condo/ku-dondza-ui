@@ -568,6 +568,20 @@ export class QuizzQuestionsComponent implements OnInit {
     return this.isFreeUser();
   }
 
+  selectAnonymousOption(anonymousOption: any) {
+    if (this.isAnonymousOptionDisabled(anonymousOption)) return; // bloqueia clique
+    this.quiz.anonymous = anonymousOption.value;
+  }
+
+  isAnonymousOptionDisabled(anonymousOption: any): boolean {
+    // Se a opção for "identificado" (anonymous = false)
+    if (anonymousOption.value === false) {
+      return !this.isUserLoggedIn; // desabilita se não estiver logado
+    }
+
+    return false; // anônimo sempre liberado
+  }
+
   toggleTopic(topic: Topic): void {
 
     // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado

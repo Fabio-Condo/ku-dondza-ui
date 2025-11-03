@@ -72,13 +72,17 @@
           <div class="step-card animate-step" *ngIf="quiz.type">
             <p class="step-description">Escolha se o quiz será anônimo ou identificado.</p>
             <div class="options-grid">
-              <div *ngFor="let option of anonymousOptions" (click)="quiz.anonymous = option.value"
-                [class.selected]="quiz.anonymous === option.value" class="option-card">
+              <div *ngFor="let option of anonymousOptions" (click)="selectAnonymousOption(option)"
+                [class.selected]="quiz.anonymous === option.value" [class.unlocked]="isAnonymousOptionDisabled(option)"
+                class="option-card">
                 <h3>{{ option.label }}</h3>
                 <p class="option-description">{{ option.description }}</p>
+                <p *ngIf="isAnonymousOptionDisabled(option)" class="lock-message">
+                  🔒 Disponível apenas para usuários Logados
+                </p>
               </div>
             </div>
-            <p class="info-note">⚠️ Você poderá alterar esta opção depois do quiz.</p>
+            <p class="info-note">⚠️ Você poderá alterar esta opção depois salvar o quiz.</p>
           </div>
 
           <!-- Step 3: Disciplina -->
@@ -536,7 +540,8 @@
   <i class="pi pi-upload"></i>
 </button>
 
-<button class="fab fab-save" (click)="onSaveQuiz()" [ngStyle]="{ bottom: quiz.isSubmitted && showStartScreen ? '84px' : '84px' }"
+<button class="fab fab-save" (click)="onSaveQuiz()"
+  [ngStyle]="{ bottom: quiz.isSubmitted && showStartScreen ? '84px' : '84px' }"
   *ngIf="quiz.isSubmitted && (!quiz.id || quiz.id === 0)">
   <i class="pi pi-save"></i>
 </button>
