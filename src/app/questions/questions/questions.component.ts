@@ -196,6 +196,15 @@ export class QuestionsComponent implements OnInit {
       answer.correct = (answer.text === this.correctAnswer); // Define a resposta correta
     });
 
+    // Garante exatamente 1 correta
+    const correctCount = this.question.answers.filter(a => a.correct).length;
+
+    if (correctCount !== 1) {
+      this.showLoading = false;
+      this.messageService.add({ severity: 'error', detail: 'Tens de selecionar a opção correcta.' });
+      return;
+    }
+
     this.questionService.add(this.question).subscribe(
       (question) => {
         this.question = question;
@@ -213,12 +222,22 @@ export class QuestionsComponent implements OnInit {
 
   // Método para atualizar pergunta
   updateQuestion(questionForm: NgForm) {
+
     this.showLoading = true;
 
     // Marcar a resposta correta
     this.question.answers.forEach(answer => {
       answer.correct = (answer.text === this.correctAnswer); // Define a resposta correta
     });
+
+    // Garante exatamente 1 correta
+    const correctCount = this.question.answers.filter(a => a.correct).length;
+
+    if (correctCount !== 1) {
+      this.showLoading = false;
+      this.messageService.add({ severity: 'error', detail: 'Tens de selecionar a opção correcta.' });
+      return;
+    }
 
     this.questionService.update(this.question).subscribe(
       (question) => {
@@ -232,6 +251,22 @@ export class QuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  ensureSingleCorrectAnswer(question: Question) {
+    if (!question?.answers) return;
+
+    // Encontra a primeira correta
+    const indexCorrect = question.answers.findIndex(a => a.correct);
+
+    // Se nenhuma está correta, não modifica nada
+    if (indexCorrect === -1) return;
+
+    // Marca somente a primeira como correta
+    //question.answers = question.answers.map((answer, i) => ({
+    //  ...answer,
+    //  correct: i === indexCorrect
+    //}));
   }
 
   // Método para renderizar expressões matemáticas
