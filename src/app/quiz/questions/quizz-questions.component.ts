@@ -560,12 +560,17 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.difficultyLevel = level.value;
   }
 
-  isAdvancedLevelDisabled(level: any): boolean {
+  //isAdvancedLevelDisabled(level: any): boolean {
     // só aplica a regra para o nível ADVANCED
-    if (level.value !== 'ADVANCED') return false;
+  //  if (level.value !== 'ADVANCED') return false;
 
     // desabilita se não estiver logado ou se estiver no plano FREE
-    return this.isFreeUser();
+  //  return this.isFreeUser();
+  //}
+
+  isAdvancedLevelDisabled(level: any): boolean {
+    if (level.value === 'ADVANCED') return true;
+    return false; // Sempre desabilitado para todos os usuários agora
   }
 
   selectAnonymousOption(anonymousOption: any) {
