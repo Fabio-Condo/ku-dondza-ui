@@ -560,6 +560,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.difficultyLevel = level.value;
   }
 
+  // Nao remover este código comentado, será util futuramente
   //isAdvancedLevelDisabled(level: any): boolean {
     // só aplica a regra para o nível ADVANCED
   //  if (level.value !== 'ADVANCED') return false;
