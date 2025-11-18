@@ -569,7 +569,7 @@ export class QuizzQuestionsComponent implements OnInit {
   //}
 
   isAdvancedLevelDisabled(level: any): boolean {
-    if (level.value === 'ADVANCED') return true;
+    if (level.value === 'ADVANCED') return true; // Sempre desabilitado para todos os usuários agora
     return false; // Sempre desabilitado para todos os usuários agora
   }
 
