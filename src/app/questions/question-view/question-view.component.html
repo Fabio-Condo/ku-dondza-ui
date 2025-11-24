@@ -139,7 +139,7 @@
             <br *ngIf="!showCorrection">
 
             <!-- Input para mostrar a solução -->
-            <div class="tip" *ngIf="!showCorrection">
+            <div class="tip">
                 <div class="tip-input">
                     <button class="solution-button"
                         (click)="question.showTip = !question.showTip; this.renderMathExpressions();">
@@ -182,7 +182,7 @@
                 </div>
             </div>
 
-            <div class="study-hint-section">
+            <div class="study-hint-section" *ngIf="isUserLoggedIn && isSuperAdmin">
                 <div class="study-hint">
                     Navegue entre os exercícios deste tópico e aprenda no seu ritmo.
                 </div>

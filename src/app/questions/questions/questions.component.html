@@ -1596,7 +1596,7 @@
             <div class="form-group">
                 <label for="subject">Disciplina</label>
                 <select id="subject" name="subject" [(ngModel)]="filtro.subject" [(ngModel)]="selectedSubject"
-                    (change)="getTopicsBySubjectId()" (change)="findAll()" required>
+                    (change)="getTopicsBySubjectId(); findAll()" required>
                     <option value="" disabled selected>Selecione a subject</option>
                     <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
                 </select>

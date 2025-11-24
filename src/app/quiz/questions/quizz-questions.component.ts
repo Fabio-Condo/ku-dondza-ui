@@ -517,7 +517,7 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getQuestions(): void {
-    this.loadingMessage = "Gerando questões...";
+    this.loadingMessage = "Gerando questões";
     const selectedTopicIds = this.getSelectedTopicIds();
 
     if (selectedTopicIds.length == 0) {
