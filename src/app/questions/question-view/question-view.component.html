@@ -115,7 +115,8 @@
                 <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
                     <canvas #canvas width="400" height="400"></canvas>
                 </div>
-                <p *ngIf="question.text" [innerHTML]="getFormattedText(question.text)" class="question-text-container"></p>
+                <p *ngIf="question.text" [innerHTML]="getFormattedText(question.text)" class="question-text-container">
+                </p>
 
             </div>
 
@@ -136,7 +137,7 @@
                 </label>
             </div>
 
-            <br *ngIf="!showCorrection">
+            <br>
 
             <!-- Input para mostrar a solução -->
             <div class="tip">
@@ -154,8 +155,6 @@
                         [innerHTML]="getFormattedText(question.tip)"></p>
                 </div>
             </div>
-
-            <br *ngIf="showCorrection">
 
             <!-- Input para mostrar a solução -->
             <div class="solution" *ngIf="showCorrection">
