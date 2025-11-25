@@ -35,7 +35,7 @@
                         <!--    
                         <label *ngIf="currentUser.userId == user.userId" for="profile-upload"
                             class="upload-button">Trocar</label>
-                        -->   
+                        -->
                         <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)"
                             type="file" id="profile-upload" class="upload-input" accept="image/*">
                     </div>
@@ -79,6 +79,51 @@
             </div>
             -->
             </div>
+        </div>
+
+        <!-- PAYMENT METHODS -->
+        <div class="payment-card">
+
+            <h2 class="payment-card-title">Métodos de Pagamento</h2>
+
+            <!-- Carteiras Disponíveis -->
+            <div class="wallet-options">
+                <!-- Caso existam carteiras -->
+                <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+                    <label class="wallet-option" *ngFor="let wallet of userWallets">
+                        <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
+                        <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
+                            <div class="wallet-left">
+                                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                    class="wallet-icon" />
+                                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                    class="wallet-icon" />
+
+                                <div class="wallet-details">
+                                    <span class="wallet-type">{{ wallet.type }}</span>
+                                    <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+                                </div>
+                            </div>
+
+                            <div class="wallet-check">
+                                <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
+                                    Definir como principal
+                                </button>
+                                <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+                            </div>
+                        </div>
+                    </label>
+                </ng-container>
+
+                <!-- Caso não existam carteiras -->
+                <ng-template #noWallets>
+                    <div class="wallet-card">
+                        <p class="empty-text">Você ainda não adicionou nenhuma carteira.</p>
+                    </div>
+                </ng-template>
+            </div>
+
+            <button class="add-payment-btn">+ Adicionar Método</button>
         </div>
 
         <!--

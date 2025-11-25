@@ -11,6 +11,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Role } from 'src/app/enum/role.enum';
 import { Title } from '@angular/platform-browser';
+import { Wallet } from 'src/app/core/model/Wallet';
+import { WalletService } from 'src/app/core/wallets/answers.service';
 
 @Component({
   selector: 'app-profile',
@@ -36,10 +38,15 @@ export class ProfileComponent implements OnInit {
 
   activeTab: string = 'activity';
 
+  wallet: Wallet = new Wallet();
+  userWallets: Wallet[] = [];
+  selectedWalletId: number = 0;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
+    private walletService: WalletService,
     private errorHandler: ErrorHandlerService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -85,6 +92,7 @@ export class ProfileComponent implements OnInit {
       (user: User) => {
         this.user = user;
         this.showLoading = false;
+        this.getWalletsByUser(this.user.id);
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
@@ -136,6 +144,43 @@ export class ProfileComponent implements OnInit {
 
   removeInterest(interest: { name: string }) {
     this.user.subjectsInterests = this.user.subjectsInterests.filter(i => i !== interest);
+  }
+
+  getWalletsByUser(userId: number): void {
+    this.loadingMessage = "Obtendo dados"
+    this.showLoading = true;
+    this.walletService.getWalletsByUser(userId).subscribe(
+      (dados: Wallet[]) => {
+        this.userWallets = dados;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  setDefaultWallet(wallet: Wallet) {
+
+    if (!wallet.id) {
+      this.sendErrorNotification('Carteira inválida: ID não definido');
+      return;
+    }
+
+    this.userWallets.forEach(w => w.default = false); // limpa anterior
+    wallet.default = true;
+
+    this.walletService.setDefault(wallet.id).subscribe({
+      next: (updatedWallet) => {
+        // Atualiza visualmente todas as carteiras
+        this.userWallets.forEach(w => w.default = w.id === updatedWallet.id);
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
   }
 
   onLogOut(): void {
