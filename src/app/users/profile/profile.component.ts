@@ -42,6 +42,11 @@ export class ProfileComponent implements OnInit {
   userWallets: Wallet[] = [];
   selectedWalletId: number = 0;
 
+  //displayModalQuestionsList: boolean = false;
+  //displayModalUpgradePlan: boolean = false;
+  //displayModalPaymentOptions: boolean = false;
+  displayModalAddPaymentOption: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -181,6 +186,94 @@ export class ProfileComponent implements OnInit {
         this.showLoading = false;
       }
     });
+  }
+
+  addNewWlletType(walletTypeForm: NgForm) {
+
+    //this.wallet.user = this.loggedUser;
+
+    this.detectWalletType(); // força atualização e validação
+
+    const phone = this.wallet.phoneNumber || '';
+
+    if (!this.wallet.type) {
+      this.sendErrorNotification("Número inválido: prefixo deve ser 84, 85, 86 ou 87.");
+      return;
+    }
+
+    if (phone.length !== 9) {
+      this.sendErrorNotification("Número inválido: deve conter exatamente 9 dígitos.");
+      return;
+    }
+
+    // Evitar duplicados
+    const exists = this.userWallets.some(
+      w => w.phoneNumber === phone
+    );
+
+    if (exists) {
+      this.sendErrorNotification("Este número já está registado nas suas carteiras.");
+      return;
+    }
+
+    // Definir como default se for a primeira carteira
+    if (this.userWallets.length === 0) {
+      this.wallet.default = true;
+    } else {
+      this.wallet.default = false;
+    }
+
+    this.loadingMessage = "Adicionando carteira"
+    this.showLoading = true;
+    this.walletService.add(this.user.id, this.wallet).subscribe(
+      (response) => {
+        console.log(response);
+        this.wallet = response;
+
+        this.userWallets.push(this.wallet);
+        this.showLoading = false;
+        this.displayModalAddPaymentOption = false;
+        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  openModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = true;
+  }
+
+  onCloseModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = false;
+  }
+
+  detectWalletType(): void {
+    const phone = this.wallet.phoneNumber ? this.wallet.phoneNumber.trim() : '';
+
+    // Remove espaços e caracteres não numéricos
+    const digitsOnly = phone.replace(/\D/g, '');
+
+    // Define o telefone limpo
+    this.wallet.phoneNumber = digitsOnly;
+
+    // Validação do tamanho
+    if (digitsOnly.length !== 9) {
+      this.wallet.type = '';
+      return;
+    }
+
+    // Verificação de prefixos válidos
+    const prefix = digitsOnly.substring(0, 2);
+    if (prefix === '84' || prefix === '85') {
+      this.wallet.type = 'MPESA';
+    } else if (prefix === '86' || prefix === '87') {
+      this.wallet.type = 'EMOLA';
+    } else {
+      this.wallet.type = '';
+    }
   }
 
   onLogOut(): void {

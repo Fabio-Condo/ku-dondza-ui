@@ -123,7 +123,9 @@
                 </ng-template>
             </div>
 
-            <button class="add-payment-btn">+ Adicionar Método</button>
+            <div class="upgrade-cta">
+                <button class="add-payment-btn" (click)="openModalAddPaymentOption()">+ Adicionar Método</button>
+            </div>
         </div>
 
         <!--
@@ -374,5 +376,63 @@
                 {{ showLoading ? 'Loading...' :'Salvar' }}
             </button>
         </form>
+    </div>
+</div>
+
+<!-- Etapa 2: Escolha de pagamento -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalAddPaymentOption">
+    <div class="popout-container pricing-card popular">
+
+        <!-- Header -->
+        <div class="popout-header">
+            <h2 class="plan-name popout-title">Adicione o método de pagamento</h2>
+            <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
+        </div>
+
+        <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+
+            <!-- Número de telefone -->
+            <div class="form-group">
+                <label for="phoneNumber">Número de telefone</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+                    [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" class="input-control" />
+
+                <!-- Mensagem de erro -->
+                <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+                    O número deve ter exatamente 9 dígitos.
+                </small>
+                <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
+                    Parece que este número não pertence a uma carteira válida. Suportamos apenas <strong>MPESA
+                        (84/85)</strong> e
+                    <strong>EMOLA (86/87)</strong>.
+                </small>
+            </div>
+
+            <!-- Tipo de carteira detectado automaticamente -->
+            <div class="wallet-detected" *ngIf="wallet.type">
+                <div class="wallet-card">
+                    <div class="wallet-left">
+                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                            class="wallet-icon" />
+                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                            class="wallet-icon" />
+
+                        <div class="wallet-details">
+                            <span class="wallet-type">{{ wallet.type }}</span>
+                            <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upgrade-cta">
+                <button class="add-payment-btn" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type">
+                    {{ showLoading ? 'Adicionando carteira...' :'Adicionar carteira' }}
+                </button>
+            </div>
+
+        </form>
+
     </div>
 </div>
