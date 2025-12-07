@@ -438,65 +438,63 @@
         </div>
         -->
 
-<div class="disciplines">
-  <div class="discipline">
-    <div class="discipline-header">
-      <div class="discipline-title">Matemática</div>
-      <div class="discipline-progress">
-        <div class="progress-circle" style="--progress: 50deg;">
-          <span>50%</span>
-        </div>
-      </div>
-    </div>
+        <div class="disciplines">
+            <div class="discipline">
+                <div class="discipline-header">
+                    <div class="discipline-title">Matemática</div>
+                    <div class="discipline-progress">
+                        <div class="progress-circle" style="--progress: 50deg;">
+                            <span>50%</span>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="topics">
-      <div class="topic" *ngFor="let topic of topicWithTests">
-        <div class="topic-header">
-          <div class="topic-title">{{ topic.topicName }}</div>
-          <div class="topic-progress-bar">
-            <div class="topic-progress-fill" [style.width.%]="getTopicProgress(topic)"></div>
-          </div>
-          <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">
-            {{ getTopicProgress(topic) }}%
-          </span>
-        </div>
+                <div class="topics">
+                    <div class="topic" *ngFor="let topic of topicWithTests">
+                        <div class="topic-header">
+                            <div class="topic-title">{{ topic.topicName }}</div>
+                            <div class="topic-progress-bar">
+                                <div class="topic-progress-fill" [style.width.%]="getTopicProgress(topic)"></div>
+                            </div>
+                            <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">
+                                {{ getTopicProgress(topic) }}%
+                            </span>
+                        </div>
 
-        <div class="quizzes">
-          <div class="quiz" *ngFor="let quiz of topic.tests"
-               [ngClass]="{
+                        <div class="quizzes">
+                            <div class="quiz" *ngFor="let quiz of topic.tests" [ngClass]="{
                  'completed': quiz.topicTestStatus === 'COMPLETE',
                  'active': quiz.topicTestStatus === 'ACTIVE',
                  'locked': quiz.topicTestStatus === 'LOCKED'
                }">
-            <div class="quiz-header">
-              <div class="quiz-title">{{ quiz.difficultyLevel }}</div>
-              <div class="quiz-icon">
-                {{ quiz.topicTestStatus === 'COMPLETE' ? '✓' : (quiz.topicTestStatus === 'ACTIVE' ? '🎯' : '🔒') }}
-              </div>
-            </div>
-            <div class="quiz-info">{{ quiz.totalQuestions }} questões</div>
+                                <div class="quiz-header">
+                                    <div class="quiz-title">{{ quiz.difficultyLevel }}</div>
+                                    <div class="quiz-icon">
+                                        {{ quiz.topicTestStatus === 'COMPLETE' ? '✓' : (quiz.topicTestStatus ===
+                                        'ACTIVE' ? '🎯' : '🔒') }}
+                                    </div>
+                                </div>
+                                <div class="quiz-info">{{ quiz.totalQuestions }} questões</div>
 
-            <div class="quiz-progress" *ngIf="quiz.topicTestStatus !== 'LOCKED'">
-              <div class="quiz-score">
-                {{ quiz.topicTestStatus === 'COMPLETE' ? quiz.totalQuestions + '/' + quiz.totalQuestions : '0/' + quiz.totalQuestions }}
-              </div>
-              <button class="start-btn">
-                {{ quiz.topicTestStatus === 'COMPLETE' ? 'Revisar' : 'Iniciar' }}
-              </button>
-            </div>
+                                <div class="quiz-progress" *ngIf="quiz.topicTestStatus !== 'LOCKED'">
+                                    <div class="quiz-score">
+                                        {{ quiz.topicTestStatus === 'COMPLETE' ? quiz.totalQuestions + '/' +
+                                        quiz.totalQuestions : '0/' + quiz.totalQuestions }}
+                                    </div>
+                                    <button class="start-btn">
+                                        {{ quiz.topicTestStatus === 'COMPLETE' ? 'Revisar' : 'Iniciar' }}
+                                    </button>
+                                </div>
 
-            <div class="lock-icon" *ngIf="quiz.topicTestStatus === 'LOCKED'">
-              🔒
+                                <div class="lock-icon" *ngIf="quiz.topicTestStatus === 'LOCKED'">
+                                    🔒
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
 
         <!--
         <div class="disciplines">
