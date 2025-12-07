@@ -463,12 +463,12 @@
 
                         <div class="quizzes">
                             <div class="quiz" *ngFor="let quiz of topic.tests" [ngClass]="{
-                 'completed': quiz.topicTestStatus === 'COMPLETE',
-                 'active': quiz.topicTestStatus === 'ACTIVE',
-                 'locked': quiz.topicTestStatus === 'LOCKED'
-               }">
+                                'completed': quiz.topicTestStatus === 'COMPLETE',
+                                'active': quiz.topicTestStatus === 'ACTIVE',
+                                'locked': quiz.topicTestStatus === 'LOCKED'
+                            }">
                                 <div class="quiz-header">
-                                    <div class="quiz-title">{{ quiz.difficultyLevel }}</div>
+                                    <div class="quiz-title">{{ getDifficultyLevelValue(quiz.difficultyLevel) }}</div>
                                     <div class="quiz-icon">
                                         {{ quiz.topicTestStatus === 'COMPLETE' ? '✓' : (quiz.topicTestStatus ===
                                         'ACTIVE' ? '🎯' : '🔒') }}
@@ -481,8 +481,11 @@
                                         {{ quiz.topicTestStatus === 'COMPLETE' ? quiz.totalQuestions + '/' +
                                         quiz.totalQuestions : '0/' + quiz.totalQuestions }}
                                     </div>
-                                    <button class="start-btn">
-                                        {{ quiz.topicTestStatus === 'COMPLETE' ? 'Revisar' : 'Iniciar' }}
+                                    <button class="start-btn" *ngIf="quiz.topicTestStatus === 'COMPLETE'" (click)="reviewTest()">
+                                        Revisar
+                                    </button>
+                                    <button class="start-btn" *ngIf="quiz.topicTestStatus === 'ACTIVE'" (click)="startTest(quiz.topic)">
+                                        Iniciar
                                     </button>
                                 </div>
 

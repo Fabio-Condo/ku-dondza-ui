@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MainPanelService } from '../main-panel.service';
 import { TopicWithTestsDTO } from 'src/app/core/model/TopicWithTestsDTO';
+import { Topic } from 'src/app/core/model/Topic';
 
 @Component({
   selector: 'app-main-panel',
@@ -43,6 +44,19 @@ export class MainPanelComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  startTest(topic: Topic) {
+    this.router.navigate(['/quizzes', 'training'], {
+      queryParams: {
+        from: 'subjects',
+        topicId: topic.id
+      }
+    });
+  }
+
+  reviewTest() {
+    this.router.navigate(['/quizzes/5402055b-6005-425a-b432-166e08645f59']);
+  }
+
   getTopicTestsBySubjectId() {
     this.mainPanelService.getBySubjectId(1).subscribe({
       next: (dados) => {
@@ -61,6 +75,17 @@ export class MainPanelComponent implements OnInit {
     return Math.round((completed / total) * 100);
   }
 
+  getDifficultyLevelValue(difficultyLevel: string) {
+    switch (difficultyLevel) {
+      case 'BEGINNER':
+        return 'Iniciante';
+      case 'INTERMEDIATE':
+        return 'Intermediário';
+      case 'ADVANCED':
+        return 'Avançado';
+    }
+    return '';
+  }
 
   private sendErrorNotification(message: string): void {
     if (message) {
