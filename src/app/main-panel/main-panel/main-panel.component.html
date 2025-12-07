@@ -438,107 +438,68 @@
         </div>
         -->
 
-        <div class="disciplines">
-            <!-- Matemática -->
-            <div class="discipline">
-                <div class="discipline-header">
-                    <div class="discipline-title">Matemática</div>
-                    <div class="discipline-progress">
-                        <div class="progress-circle" style="--progress: 180deg;">
-                            <span>50%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="topics">
-                    <div class="topic">
-                        <div class="topic-header">
-                            <div class="topic-title">Álgebra Básica</div>
-                            <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" style="width: 67%;"></div>
-                            </div>
-                            <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">67%</span>
-                        </div>
-                        <div class="quizzes">
-                            <div class="quiz completed">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Iniciante</div>
-                                    <div class="quiz-icon">✓</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Equações simples</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">9/10</div>
-                                    <button class="start-btn">Revisar</button>
-                                </div>
-                            </div>
-                            <div class="quiz completed">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Intermediário</div>
-                                    <div class="quiz-icon">✓</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Sistemas lineares</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">8/10</div>
-                                    <button class="start-btn">Revisar</button>
-                                </div>
-                            </div>
-                            <div class="quiz active">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Avançado</div>
-                                    <div class="quiz-icon">🎯</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Inequações</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">0/10</div>
-                                    <button class="start-btn">Iniciar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="topic">
-                        <div class="topic-header">
-                            <div class="topic-title">Geometria Plana</div>
-                            <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" style="width: 33%;"></div>
-                            </div>
-                            <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">33%</span>
-                        </div>
-                        <div class="quizzes">
-                            <div class="quiz completed">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Iniciante</div>
-                                    <div class="quiz-icon">✓</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Perímetros</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">7/10</div>
-                                    <button class="start-btn">Revisar</button>
-                                </div>
-                            </div>
-                            <div class="quiz active">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Intermediário</div>
-                                    <div class="quiz-icon">🎯</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Áreas</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">0/10</div>
-                                    <button class="start-btn">Iniciar</button>
-                                </div>
-                            </div>
-                            <div class="quiz locked">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Avançado</div>
-                                    <div class="quiz-icon">🔒</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Teoremas</div>
-                                <div class="lock-icon">🔒</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="disciplines">
+  <div class="discipline">
+    <div class="discipline-header">
+      <div class="discipline-title">Matemática</div>
+      <div class="discipline-progress">
+        <div class="progress-circle" style="--progress: 50deg;">
+          <span>50%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="topics">
+      <div class="topic" *ngFor="let topic of topicWithTests">
+        <div class="topic-header">
+          <div class="topic-title">{{ topic.topicName }}</div>
+          <div class="topic-progress-bar">
+            <div class="topic-progress-fill" [style.width.%]="getTopicProgress(topic)"></div>
+          </div>
+          <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">
+            {{ getTopicProgress(topic) }}%
+          </span>
+        </div>
+
+        <div class="quizzes">
+          <div class="quiz" *ngFor="let quiz of topic.tests"
+               [ngClass]="{
+                 'completed': quiz.topicTestStatus === 'COMPLETE',
+                 'active': quiz.topicTestStatus === 'ACTIVE',
+                 'locked': quiz.topicTestStatus === 'LOCKED'
+               }">
+            <div class="quiz-header">
+              <div class="quiz-title">{{ quiz.difficultyLevel }}</div>
+              <div class="quiz-icon">
+                {{ quiz.topicTestStatus === 'COMPLETE' ? '✓' : (quiz.topicTestStatus === 'ACTIVE' ? '🎯' : '🔒') }}
+              </div>
+            </div>
+            <div class="quiz-info">{{ quiz.totalQuestions }} questões</div>
+
+            <div class="quiz-progress" *ngIf="quiz.topicTestStatus !== 'LOCKED'">
+              <div class="quiz-score">
+                {{ quiz.topicTestStatus === 'COMPLETE' ? quiz.totalQuestions + '/' + quiz.totalQuestions : '0/' + quiz.totalQuestions }}
+              </div>
+              <button class="start-btn">
+                {{ quiz.topicTestStatus === 'COMPLETE' ? 'Revisar' : 'Iniciar' }}
+              </button>
             </div>
 
-            <!-- Português -->
+            <div class="lock-icon" *ngIf="quiz.topicTestStatus === 'LOCKED'">
+              🔒
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <!--
+        <div class="disciplines">
             <div class="discipline">
                 <div class="discipline-header">
                     <div class="discipline-title">Português</div>
@@ -634,7 +595,6 @@
                 </div>
             </div>
 
-            <!-- Física -->
             <div class="discipline">
                 <div class="discipline-header">
                     <div class="discipline-title">Física</div>
@@ -689,6 +649,7 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 
     <script>
