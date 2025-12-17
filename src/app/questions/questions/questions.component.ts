@@ -1136,6 +1136,19 @@ export class QuestionsComponent implements OnInit {
     }, 0);
   }
 
+  getBadgeClass(category: string): string {
+    switch (category) {
+      case 'EXACT_SCIENCES':
+        return 'exact-sciences';
+      case 'HUMAN_SCIENCES':
+        return 'human-sciences';
+      case 'LANGUAGES':
+        return 'languages';
+      default:
+        return '';
+    }
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

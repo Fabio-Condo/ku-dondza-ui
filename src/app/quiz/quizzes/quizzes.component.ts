@@ -343,6 +343,19 @@ export class QuizzesComponent implements OnInit {
     this.getQuizzes();
   }
 
+  getBadgeClass(category: string): string {
+    switch (category) {
+      case 'EXACT_SCIENCES':
+        return 'exact-sciences';
+      case 'HUMAN_SCIENCES':
+        return 'human-sciences';
+      case 'LANGUAGES':
+        return 'languages';
+      default:
+        return '';
+    }
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }

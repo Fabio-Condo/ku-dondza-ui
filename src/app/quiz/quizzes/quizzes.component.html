@@ -37,16 +37,21 @@
         <div class="cards-container">
             <div class="card" *ngFor="let quiz of quizzes">
                 <div class="quiz-header">
-                    <span class="badge matematica">{{ quiz.subject.name }}</span>
+                    <span class="badge" [ngClass]="getBadgeClass(quiz.subject.category)">
+                        {{ quiz.subject.name }}
+                    </span>
                     <div>
                         <div class="dropdown-container">
                             <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
                                 <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
-                                <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
+                                <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                    WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                    Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                    LinkedIn</a>
                                 <a [routerLink]="['/quizzes', quiz.quizId]">Visualizar</a>
                                 <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
