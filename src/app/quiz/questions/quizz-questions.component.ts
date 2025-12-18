@@ -254,6 +254,8 @@ export class QuizzQuestionsComponent implements OnInit {
     { label: '3', value: 3 },
     { label: '4', value: 4 },
     { label: '5', value: 5 },
+    { label: '8', value: 8 },
+    { label: '10', value: 10 },
     //{ label: 'ALL', value: 1000000 },
   ];
 
@@ -562,10 +564,10 @@ export class QuizzQuestionsComponent implements OnInit {
 
   // Nao remover este código comentado, será util futuramente
   //isAdvancedLevelDisabled(level: any): boolean {
-    // só aplica a regra para o nível ADVANCED
+  // só aplica a regra para o nível ADVANCED
   //  if (level.value !== 'ADVANCED') return false;
 
-    // desabilita se não estiver logado ou se estiver no plano FREE
+  // desabilita se não estiver logado ou se estiver no plano FREE
   //  return this.isFreeUser();
   //}
 
