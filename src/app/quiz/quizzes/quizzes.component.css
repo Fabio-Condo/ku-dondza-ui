@@ -338,22 +338,71 @@ button {
 }
 
 .fab {
-    display: none;
     position: fixed;
     bottom: 75px;
     right: 16px;
     background-color: #4361ee;
     color: white;
     border: none;
-    border-radius: 50%;
-    width: 56px;
+
     height: 56px;
-    font-size: 24px;
+    width: 56px;
+    border-radius: 50%;
+
+    display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
     cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
     z-index: 1000;
+
+    overflow: hidden;
+    padding: 0;
+
+    transition:
+        width 0.35s ease,
+        padding 0.35s ease,
+        border-radius 0.35s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Ícone */
+.fab i {
+    font-size: 24px;
+}
+
+/* Texto (fora do fluxo) */
+.fab-text {
+    position: absolute; /* sai do layout */
+    left: 56px;
+    white-space: nowrap;
+
+    opacity: 0;
+    transform: translateX(-8px);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.35s ease;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Estado expandido */
+.fab.expanded {
+    width: auto;
+    padding: 0 18px 0 14px;
+    border-radius: 30px;
+    justify-content: flex-start;
+}
+
+/* Texto visível */
+.fab.expanded .fab-text {
+    position: static; /* volta ao fluxo */
+    opacity: 1;
+    transform: translateX(0);
+    margin-left: 10px;
 }
 
 /* Paginação */

@@ -41,6 +41,8 @@ export class QuizzesComponent implements OnInit {
   loggedUser: User = new User;
   isUserLoggedIn: boolean = false;
 
+  expanded = true;
+
   selectQuizOption: string = 'ALL_QUIZZES';
 
   quizFilterOptions = [
@@ -73,6 +75,7 @@ export class QuizzesComponent implements OnInit {
     this.getQuizzes();
     this.carregarDisciplinas();
     this.scrollToTop();
+    this.autoCollapseFabButton();
   }
 
   ngOnDestroy(): void {
@@ -81,6 +84,12 @@ export class QuizzesComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  autoCollapseFabButton(): void {
+    setTimeout(() => {
+      this.expanded = false;
+    }, 5000);
   }
 
   get editing() {
