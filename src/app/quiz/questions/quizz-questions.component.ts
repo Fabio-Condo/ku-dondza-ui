@@ -9,7 +9,7 @@ import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Topic } from 'src/app/core/model/Topic';
 import { Comment } from 'src/app/core/model/Comment';
 declare const MathJax: any;
-import { evaluate } from 'mathjs'; //npm install mathjs
+import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
@@ -1106,10 +1106,26 @@ export class QuizzQuestionsComponent implements OnInit {
     });
   }
 
+  // TARREFA: FINALIZAR E POR A  FUNCIONAR BEM
   updateFormattedTime(): void {
     const minutes = Math.floor(this.timeLimit / 60);
     const seconds = this.timeLimit % 60;
     this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
+
+    if (this.formattedTime == "00:00" && this.quiz.type === 'TEST') {
+
+      const message = 'O Tempo esgotou! Não respondeu nenhuma questão!';
+
+      if (this.submittedAnswers.length === 0) {
+        this.showAnswerMessage([message], 'warning');
+      }else { 
+        this.showAnswerMessage(['O Tempo esgotou!'], 'warning');
+      }
+
+      this.ngZone.run(() => {
+        this.submitAnswers();
+      });
+    }
   }
 
   padZero(value: number): string {
