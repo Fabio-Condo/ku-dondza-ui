@@ -1114,17 +1114,19 @@ export class QuizzQuestionsComponent implements OnInit {
 
     if (this.formattedTime == "00:00" && this.quiz.type === 'TEST') {
 
-      const message = 'O Tempo esgotou! Não respondeu nenhuma questão!';
+      const message = 'O Tempo esgotou, mas não respondeu todas as questões!';
 
-      if (this.submittedAnswers.length === 0) {
+      if (this.submittedAnswers.length < this.questions.length) {
         this.showAnswerMessage([message], 'warning');
-      }else { 
+      } else {
+
         this.showAnswerMessage(['O Tempo esgotou!'], 'warning');
+
+        this.ngZone.run(() => {
+          this.submitAnswers();
+        });
       }
 
-      this.ngZone.run(() => {
-        this.submitAnswers();
-      });
     }
   }
 
