@@ -389,15 +389,24 @@
           <div class="progress-container">
             <!--<p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST' }" *ngIf="!quiz.id">{{ formattedTime }}</p>-->
 
+            <!--
             <p class="timer" [ngClass]="{ 
               'enabled': quiz.type === 'TEST',
               'warning': isWarning
             }" *ngIf="!quiz.id">
               {{ formattedTime }}
             </p>
+            -->
 
+            <p class="timer" [ngClass]="{ 
+              'enabled': quiz.type === 'TEST' && !isWarning,
+              'disabled': quiz.type === 'TRAINING',
+              'warning': isWarning
+            }" *ngIf="!quiz.id">
+              {{ formattedTime }}
+            </p>
 
-            <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST' }" *ngIf="quiz.id">
+            <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST', 'disabled': quiz.type === 'TRAINING' }" *ngIf="quiz.id">
               <span *ngIf="quiz.timeLimit > quiz.timeSpent">
                 {{ formatTime(quiz.timeLimit - quiz.timeSpent) }}
               </span>
