@@ -1112,7 +1112,7 @@ export class QuizzQuestionsComponent implements OnInit {
     const seconds = this.timeLimit % 60;
     this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
 
-    if (this.formattedTime == "00:00" && this.quiz.type === 'TEST') {
+    if (this.formattedTime == "01:00" && this.quiz.type === 'TEST') {
 
       const message = 'O Tempo esgotou, mas não respondeu todas as questões!';
 
