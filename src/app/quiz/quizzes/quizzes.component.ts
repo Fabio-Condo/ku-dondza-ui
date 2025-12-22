@@ -89,7 +89,7 @@ export class QuizzesComponent implements OnInit {
   autoCollapseFabButton(): void {
     setTimeout(() => {
       this.expanded = false;
-    }, 20000);
+    }, 15000);
   }
 
   get editing() {
