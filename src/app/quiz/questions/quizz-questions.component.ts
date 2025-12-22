@@ -1112,7 +1112,7 @@ export class QuizzQuestionsComponent implements OnInit {
     const seconds = this.timeLimit % 60;
     this.formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
 
-    if (this.formattedTime == "01:00" && this.quiz.type === 'TEST') {
+    if (this.formattedTime == "00:00" && this.quiz.type === 'TEST') {
 
       const message = 'O Tempo esgotou, mas não respondeu todas as questões!';
 
@@ -1138,6 +1138,16 @@ export class QuizzQuestionsComponent implements OnInit {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();// Cancelar o temporizador
     }
+  }
+
+  get isWarning(): boolean {
+    if (!this.formattedTime) return false;
+
+    const [minutes, seconds] = this.formattedTime.split(':').map(Number);
+    const totalSeconds = minutes * 60 + seconds;
+
+    // Só aplica warning se tiver 1 minuto ou menos, mas maior que 0
+    return totalSeconds > 0 && totalSeconds <= 60;
   }
 
   toggleDisableEditing() {
