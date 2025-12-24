@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { User } from 'src/app/core/model/User';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
-import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 
 declare var google: any;
 
@@ -35,12 +34,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private googleAuthService: GoogleAuthService,
   ) { }
 
   ngOnInit(): void {
     this.checkAuthentication();
-    //this.initializeGoogleAuth();
     this.scrollToTop();
   }
 
@@ -66,82 +63,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   toggleMenu() {
     this.isMenuActive = !this.isMenuActive;
     this.isPopoutVisible = false;
-  }
-
-  public onRegister(user: NgForm): void {
-    this.user.plan = "PREMIUM";
-    this.showLoading = true;
-    this.subscriptions.push(
-      this.authenticationService.register(this.user).subscribe(
-        (response: User) => {
-          this.showLoading = false;
-          this.messageService.add({ severity: 'success', detail: 'A new account was created for ${response.firstName}.Please check your email for password to log in.' })
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);
-          this.showLoading = false;
-        }
-      )
-    );
-  }
-
-  public onLogin(user: User): void {
-    this.loadingMessage = "Estamos quase lá...";
-    this.showLoading = true;
-
-    const subscription = this.authenticationService.login(user).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.router.navigateByUrl('/main-panel');
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(subscription);
-  }
-
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
-      setupButton((credential) => this.handleGoogleCredential(credential));
-    } catch (error) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
-  private handleGoogleCredential(googleCredential: string): void {
-    this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá...";
-      this.showLoading = true;
-    });
-
-    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.ngZone.run(() => {
-          this.router.navigateByUrl('/main-panel');
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(sub);
   }
 
   setActiveTab(tabIndex: number) {
