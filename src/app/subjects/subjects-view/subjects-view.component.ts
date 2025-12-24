@@ -493,6 +493,12 @@ export class SubjectsViewComponent {
   }
 
   private async initializeGoogleAuth(): Promise<void> {
+
+    if (this.isMobile()) {
+      console.log('Mobile detected — Google Auth skipped.');
+      return;
+    }
+
     try {
       const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
       setupButton((credential) => this.handleGoogleCredential(credential));
@@ -535,6 +541,11 @@ export class SubjectsViewComponent {
     });
 
     this.subscriptions.push(sub);
+  }
+
+  public isMobile(): boolean {
+    //return true;
+    return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
   }
 
   setActiveTab(tabIndex: number) {
