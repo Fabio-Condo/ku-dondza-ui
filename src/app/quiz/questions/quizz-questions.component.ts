@@ -1123,7 +1123,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showAnswerMessage(['O Tempo esgotou!'], 'warning');
 
         this.ngZone.run(() => {
-          this.submitAnswers();
+          //this.submitAnswers();
         });
       }
 
@@ -1147,7 +1147,9 @@ export class QuizzQuestionsComponent implements OnInit {
     const totalSeconds = minutes * 60 + seconds;
 
     // Só aplica warning se tiver 1 minuto ou menos, mas maior que 0
-    return totalSeconds > 0 && totalSeconds <= 60;
+    //return totalSeconds > 0 && totalSeconds <= 60;
+
+    return totalSeconds <= 60;
   }
 
   toggleDisableEditing() {

@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.checkAuthentication();
-    this.initializeGoogleAuth();
+    //this.initializeGoogleAuth();
     this.scrollToTop();
   }
 
