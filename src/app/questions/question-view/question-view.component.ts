@@ -1018,9 +1018,9 @@ export class QuestionViewComponent implements OnInit {
 
   private async initializeGoogleAuth(): Promise<void> {
     
-    if (this.isMobile()) {
-      console.log('Mobile detected — Google Auth skipped.');
-      return;
+    if (this.isMobileWebView()) {
+      console.log('Mobile WebView detected — Google Auth skipped.');
+      return; // não inicializa SDK
     }
 
     try {
@@ -1078,9 +1078,14 @@ export class QuestionViewComponent implements OnInit {
     this.subscriptions.push(sub);
   }
 
-  public isMobile(): boolean {
-    //return true;
-    return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  public isMobileWebView(): boolean {
+    return /android|iphone|ipad|ipod/i.test(navigator.userAgent) && this.isWebView();
+  }
+
+  public isWebView(): boolean {
+    const userAgent = navigator.userAgent || navigator.vendor;
+    // Android WebView ou iOS WKWebView
+    return /wv|Android.*Version\/|iPhone.*AppleWebKit\/.*Mobile/i.test(userAgent);
   }
 
   setActiveTab(tabIndex: number) {
