@@ -406,7 +406,8 @@
               {{ formattedTime }}
             </p>
 
-            <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST', 'disabled': quiz.type === 'TRAINING' }" *ngIf="quiz.id">
+            <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST', 'disabled': quiz.type === 'TRAINING' }"
+              *ngIf="quiz.id">
               <span *ngIf="quiz.timeLimit > quiz.timeSpent">
                 {{ formatTime(quiz.timeLimit - quiz.timeSpent) }}
               </span>
@@ -436,6 +437,10 @@
           <div id="math-container-{{ currentQuestionIndex }}" class="question-text-container"
             *ngIf="quiz.questions[currentQuestionIndex].text">
             {{ quiz.questions[currentQuestionIndex].text }}
+          </div>
+
+          <div class="question-topic" *ngIf="quiz.questions[currentQuestionIndex].topic">
+            <small>Tópico: {{ quiz.questions[currentQuestionIndex].topic.name }}</small>
           </div>
 
           <div class="answer-options">
