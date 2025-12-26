@@ -120,6 +120,11 @@
 
             </div>
 
+            <!-- Mostra o tópico, se existir -->
+            <div class="question-topic" *ngIf="question.topic">
+                <small>Tópico: {{ question.topic.name }}</small>
+            </div>
+
             <h2 class="title" style="margin-top: 24px;">Alternativas ({{ question.answers.length }})</h2>
 
             <div class="answer-options">
