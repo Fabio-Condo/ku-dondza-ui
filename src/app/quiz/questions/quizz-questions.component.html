@@ -439,11 +439,6 @@
             {{ quiz.questions[currentQuestionIndex].text }}
           </div>
 
-          <!-- Mostra o tópico, se existir -->
-          <div class="question-topic" *ngIf="quiz.questions[currentQuestionIndex].topic && isUserLoggedIn && isSuperAdmin">
-            <small>Tópico: {{ quiz.questions[currentQuestionIndex].topic.name }}</small>
-          </div>
-
           <div class="answer-options">
             <label *ngFor="let answer of quiz.questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
               'correct-answer': showCorrection && answer.correct,
@@ -457,6 +452,12 @@
                 [disabled]="showCorrection || disableEditing" />
               <span [innerHTML]="getFormattedText(answer.text || '')"></span>
             </label>
+          </div>
+
+          <!-- Mostra o tópico, se existir -->
+          <div class="question-topic"
+            *ngIf="quiz.questions[currentQuestionIndex].topic">
+            <small>Tópico: {{ quiz.questions[currentQuestionIndex].topic.name }}</small>
           </div>
 
           <br>
