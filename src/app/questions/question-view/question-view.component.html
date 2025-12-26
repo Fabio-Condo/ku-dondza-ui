@@ -121,7 +121,7 @@
             </div>
 
             <!-- Mostra o tópico, se existir -->
-            <div class="question-topic" *ngIf="question.topic">
+            <div class="question-topic" *ngIf="question.topic && isUserLoggedIn && isSuperAdmin">
                 <small>Tópico: {{ question.topic.name }}</small>
             </div>
 
