@@ -3,6 +3,7 @@ export interface QuestionFilter {
     text?: string;
     subject?: number;
     topic?: number;
+    difficultyLevel?: string;
     userId?: number,
 
     page: number,

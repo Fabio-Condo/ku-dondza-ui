@@ -1604,6 +1604,14 @@
                     (ngModelChange)="findAll()">
             </div>
 
+            <div class="form-group" *ngIf="isUserLoggedIn && isSuperAdmin">
+                <label for="difficultyLevel">Nivel</label>
+                <select id="difficultyLevel" [(ngModel)]="filtro.difficultyLevel" name="difficultyLevel" (ngModelChange)="findAll()" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
             <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
         </form>
     </div>

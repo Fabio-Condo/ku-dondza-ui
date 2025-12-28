@@ -37,6 +37,10 @@ export class QuestionService {
       params = params.set('text', filter.text);
     }
 
+    if (filter.difficultyLevel) {
+      params = params.set('difficultyLevel', filter.difficultyLevel);
+    }
+
     // Envia o userId se estiver definido
     if (filter.userId) {
       params = params.set('userId', filter.userId.toString());
