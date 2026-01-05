@@ -395,6 +395,11 @@
             transform: scale(1.05);
         }
 
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .quiz.completed .start-btn {
             background: white;
             color: #4361ee;
@@ -734,7 +739,6 @@
                 </div>
             </div>
 
-
         </div>
 
         <div class="disciplines">
@@ -806,7 +810,7 @@
 
                                     <!-- INICIAR -->
                                     <button class="start-btn start" *ngIf="isActive(topic, test, i)"
-                                        (click)="startTopicTest(test)">
+                                        (click)="startTopicTest(test)" [disabled]="loggedUser.id != selectedUser.id">
                                         Iniciar
                                     </button>
                                 </div>
@@ -818,183 +822,7 @@
 
             </div>
         </div>
-
-        <!--
-        <div class="disciplines">
-            <div class="discipline">
-                <div class="discipline-header">
-                    <div class="discipline-title">Português</div>
-                    <div class="discipline-progress">
-                        <div class="progress-circle" style="--progress: 144deg;">
-                            <span>40%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="topics">
-                    <div class="topic">
-                        <div class="topic-header">
-                            <div class="topic-title">Gramática</div>
-                            <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" style="width: 100%;"></div>
-                            </div>
-                            <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">100%</span>
-                        </div>
-                        <div class="quizzes">
-                            <div class="quiz completed">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Iniciante</div>
-                                    <div class="quiz-icon">✓</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Classes gramaticais</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">10/10</div>
-                                    <button class="start-btn">Revisar</button>
-                                </div>
-                            </div>
-                            <div class="quiz completed">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Intermediário</div>
-                                    <div class="quiz-icon">✓</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Sintaxe</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">8/10</div>
-                                    <button class="start-btn">Revisar</button>
-                                </div>
-                            </div>
-                            <div class="quiz completed">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Avançado</div>
-                                    <div class="quiz-icon">✓</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Análise sintática</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">9/10</div>
-                                    <button class="start-btn">Revisar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="topic">
-                        <div class="topic-header">
-                            <div class="topic-title">Interpretação de Texto</div>
-                            <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" style="width: 0%;"></div>
-                            </div>
-                            <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">0%</span>
-                        </div>
-                        <div class="quizzes">
-                            <div class="quiz active">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Iniciante</div>
-                                    <div class="quiz-icon">🎯</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Textos narrativos</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">0/10</div>
-                                    <button class="start-btn">Iniciar</button>
-                                </div>
-                            </div>
-                            <div class="quiz locked">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Intermediário</div>
-                                    <div class="quiz-icon">🔒</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Textos argumentativos</div>
-                                <div class="lock-icon">🔒</div>
-                            </div>
-                            <div class="quiz locked">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Avançado</div>
-                                    <div class="quiz-icon">🔒</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Inferências complexas</div>
-                                <div class="lock-icon">🔒</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="discipline">
-                <div class="discipline-header">
-                    <div class="discipline-title">Física</div>
-                    <div class="discipline-progress">
-                        <div class="progress-circle" style="--progress: 108deg;">
-                            <span>30%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="topics">
-                    <div class="topic">
-                        <div class="topic-header">
-                            <div class="topic-title">Cinemática</div>
-                            <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" style="width: 33%;"></div>
-                            </div>
-                            <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">33%</span>
-                        </div>
-                        <div class="quizzes">
-                            <div class="quiz completed">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Iniciante</div>
-                                    <div class="quiz-icon">✓</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Movimento uniforme</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">8/10</div>
-                                    <button class="start-btn">Revisar</button>
-                                </div>
-                            </div>
-                            <div class="quiz active">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Intermediário</div>
-                                    <div class="quiz-icon">🎯</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Aceleração</div>
-                                <div class="quiz-progress">
-                                    <div class="quiz-score">0/10</div>
-                                    <button class="start-btn">Iniciar</button>
-                                </div>
-                            </div>
-                            <div class="quiz locked">
-                                <div class="quiz-header">
-                                    <div class="quiz-title">Avançado</div>
-                                    <div class="quiz-icon">🔒</div>
-                                </div>
-                                <div class="quiz-info">10 questões • Movimento circular</div>
-                                <div class="lock-icon">🔒</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
     </div>
-
-    <script>
-        document.querySelectorAll('.quiz:not(.locked)').forEach(quiz => {
-            quiz.addEventListener('click', function () {
-                const isCompleted = this.classList.contains('completed');
-                const title = this.querySelector('.quiz-title').textContent;
-                const discipline = this.closest('.discipline').querySelector('.discipline-title').textContent;
-                const topic = this.closest('.topic').querySelector('.topic-title').textContent;
-
-                if (isCompleted) {
-                    alert(`Revisando: ${discipline} - ${topic} - ${title}`);
-                } else {
-                    alert(`Iniciando: ${discipline} - ${topic} - ${title}`);
-                }
-            });
-        });
-
-        document.querySelectorAll('.quiz.locked').forEach(quiz => {
-            quiz.addEventListener('click', function () {
-                alert('Complete o quiz anterior para desbloquear este!');
-            });
-        });
-    </script>
 </body>
 
 </html>

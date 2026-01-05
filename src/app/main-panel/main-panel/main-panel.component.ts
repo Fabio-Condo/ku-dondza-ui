@@ -49,6 +49,9 @@ export class MainPanelComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.carregarDisciplinas();
     this.scrollToTop();
+
+    const selectedUserId = this.route.snapshot.params['id'];
+    this.selectedUser.id = selectedUserId;
   }
 
   scrollToTop() {
@@ -128,9 +131,9 @@ export class MainPanelComponent implements OnInit {
         this.subjects = dados;
         this.selectedSubject = this.subjects[0];
 
-        const selectedUserId = this.route.snapshot.params['id'];
-        this.getTopicTestsBySubjectId(selectedUserId);
-          //this.getTopicTestsBySubjectId();
+        //const selectedUserId = this.route.snapshot.params['id'];
+        this.getTopicTestsBySubjectId(this.selectedUser.id);
+        //this.getTopicTestsBySubjectId();
 
       },
       error: (errorResponse: HttpErrorResponse) => {
