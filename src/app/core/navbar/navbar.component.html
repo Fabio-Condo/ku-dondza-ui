@@ -431,8 +431,6 @@
           Dikahub
         </div>
         <ul class="nav-links">
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/main-panel')"
-              routerLink="/main-panel">Início</a></li>
           <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
           <li><a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a></li>
           <li><a [class.active]="isActive('/topics')" routerLink="/topics">Tópicos</a></li>
@@ -487,8 +485,6 @@
   <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
     <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
     <ul class="mobile-nav-links">
-      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/main-panel')" routerLink="/main-panel"
-          (click)="toggleMenu()">Início</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
       <li><a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a></li>

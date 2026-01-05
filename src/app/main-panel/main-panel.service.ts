@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { TopicTestDTO } from '../core/model/TopicTestDTO';
 import { TopicWithTestsDTO } from '../core/model/TopicWithTestsDTO';
+import { Question } from '../core/model/Question';
+import { Quiz } from '../core/model/Quiz';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MainPanelService {
 
-  private host = environment.apiUrl + '/topic-tests';
+    private host = environment.apiUrl + '/topic-tests';
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-    getBySubjectId(subjectId: number): Observable<TopicWithTestsDTO[]> {
-        return this.http.get<TopicWithTestsDTO[]>(`${this.host}/${subjectId}/subjects`);
+    getBySubjectId(subjectId: number, userId: number): Observable<TopicWithTestsDTO[]> {
+        return this.http.get<TopicWithTestsDTO[]>(`${this.host}/${subjectId}/subjects/users/${userId}`, {});
     }
 
     findById(id: number): Observable<TopicTestDTO> {
@@ -36,5 +38,9 @@ export class MainPanelService {
 
     buscarTotal(): Observable<number> {
         return this.http.get<number>(`${this.host}/total`, {});
+    }
+
+    getQuestionsByTopicTestId(id: number): Observable<Question[]> {
+        return this.http.get<Question[]>(`${this.host}/${id}/questions`);
     }
 }

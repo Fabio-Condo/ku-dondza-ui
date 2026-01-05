@@ -5,7 +5,7 @@ import { MainPanelComponent } from './main-panel/main-panel.component';
 
 const routes: Routes = [
   { 
-    path: 'main-panel', 
+    path: 'progress-panel/users/:id', 
     component: MainPanelComponent,
     //canActivate: [AuthenticationGuard], 
     //data: { 

@@ -36,6 +36,138 @@
             margin-bottom: 1rem;
         }
 
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e6e6e6;
+            /* mais suave */
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-level {
+            font-size: 0.9rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #fff;
+            padding: 0.3rem 0.7rem;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters-section {
+            margin-bottom: 1.5rem;
+        }
+
+        /**/
+        .discipline-filters {
+            display: flex;
+            gap: 0.5rem;
+            /* ligeiramente menor */
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            /* ligeiramente menor */
+            border-radius: 25px;
+            /* mais suave */
+            border: 2px solid #e0e0e0;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-weight: 500;
+            font-size: 0.85rem;
+            /* menor */
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            user-select: none;
+            position: relative;
+            color: #555;
+        }
+
+        .filter-chip .emoji {
+            font-size: 1rem;
+        }
+
+        .filter-chip.active {
+            background: #f0f4ff;
+            border-color: #4361ee;
+            color: #4361ee;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.15);
+        }
+
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 2px solid #e0e0e0;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            user-select: none;
+        }
+
+        .filter-chip:hover {
+            border-color: #4361ee;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(67, 97, 238, 0.1);
+        }
+
         .overall-progress {
             display: flex;
             gap: 1rem;
@@ -277,6 +409,133 @@
             opacity: 0.3;
         }
 
+        /* Loading Container - Versão Moderna */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            /* Fundo escuro mais moderno */
+            backdrop-filter: blur(8px);
+            /* Efeito de desfoque */
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .loading-container.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-indicator {
+            display: flex;
+            flex-direction: column;
+            /* Empilha os elementos */
+            align-items: center;
+            gap: 20px;
+            padding: 30px 40px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(0);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .loading-container.visible .loading-indicator {
+            transform: translateY(0);
+        }
+
+        /* Spinner moderno com gradiente */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .spinner::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #4c6ef5;
+            /* Cor primária */
+            border-left-color: #ec4899;
+            /* Gradiente para roxo */
+            animation: spin 1s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite;
+        }
+
+        .spinner::after {
+            content: "";
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #ec4899;
+            /* Rosa */
+            border-left-color: #4c6ef5;
+            /* Roxo */
+            animation: spin 1.5s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite reverse;
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* Efeito de pulsação no texto */
+        .loading-text span {
+            display: inline-block;
+            opacity: 0.8;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-text span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-text span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Animações */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
         @media (max-width: 600px) {
             .container {
                 margin-top: 30px;
@@ -324,7 +583,9 @@
             }
 
             .header {
-                padding: 0.5rem;
+                padding-left: 1rem;
+                padding-right: 1%;
+                padding-bottom: 0.5rem;
                 /**/
             }
 
@@ -418,6 +679,16 @@
 
 <body>
     <div class="container">
+
+        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
+                </div>
+            </div>
+        </div>
+
         <!--
         <div class="header">
             <h1>Painel de Aprendizagem</h1>
@@ -437,11 +708,39 @@
             </div>
         </div>
         -->
+        <div class="header">
+            <div class="header-top">
+                <div class="user-info">
+                    <div class="user-avatar">FC</div>
+                    <div class="user-details">
+                        <div class="user-name">Fábio Condo</div>
+                        <div class="user-level">
+                            <!--<span class="level-badge">Nível 12</span>-->
+                            <span>Estadante na UEM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<h1>Selecione as Disciplinas</h1>-->
+
+            <div class="filters-section">
+                <div class="discipline-filters" id="disciplineFilters">
+                    <div class="filter-chip" *ngFor="let subject of subjects"
+                        [class.active]="subject.id === selectedSubject.id" (click)="onSelectSubject(subject)">
+                        <span class="emoji"></span>
+                        <span>{{ subject.name }}</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
 
         <div class="disciplines">
             <div class="discipline">
                 <div class="discipline-header">
-                    <div class="discipline-title">Matemática</div>
+                    <div class="discipline-title">{{ selectedSubject.name }}</div>
                     <div class="discipline-progress">
                         <div class="progress-circle" style="--progress: 50deg;">
                             <span>50%</span>
@@ -451,51 +750,72 @@
 
                 <div class="topics">
                     <div class="topic" *ngFor="let topic of topicWithTests">
+
+                        <!-- HEADER DO TÓPICO -->
                         <div class="topic-header">
                             <div class="topic-title">{{ topic.topicName }}</div>
+
                             <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" [style.width.%]="getTopicProgress(topic)"></div>
+                                <div class="topic-progress-fill" [style.width.%]="getTopicProgress(topic)">
+                                </div>
                             </div>
+
                             <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">
                                 {{ getTopicProgress(topic) }}%
                             </span>
                         </div>
 
+                        <!-- TESTES -->
                         <div class="quizzes">
-                            <div class="quiz" *ngFor="let quiz of topic.tests" [ngClass]="{
-                                'completed': quiz.topicTestStatus === 'COMPLETE',
-                                'active': quiz.topicTestStatus === 'ACTIVE',
-                                'locked': quiz.topicTestStatus === 'LOCKED'
-                            }">
+                            <div class="quiz" *ngFor="let test of topic.tests; let i = index" [ngClass]="{
+                                    completed: isCompleted(test),
+                                    active: isActive(topic, test, i),
+                                    locked: isLocked(topic, test, i)
+                                }">
+                                <!-- HEADER DO TESTE -->
                                 <div class="quiz-header">
-                                    <div class="quiz-title">{{ getDifficultyLevelValue(quiz.difficultyLevel) }}</div>
+                                    <div class="quiz-title">
+                                        {{ getDifficultyLevelValue(test.difficultyLevel) }}
+                                    </div>
+
                                     <div class="quiz-icon">
-                                        {{ quiz.topicTestStatus === 'COMPLETE' ? '✓' : (quiz.topicTestStatus ===
-                                        'ACTIVE' ? '🎯' : '🔒') }}
+                                        <ng-container *ngIf="isCompleted(test)">✓</ng-container>
+                                        <ng-container *ngIf="isActive(topic, test, i)">🎯</ng-container>
+                                        <ng-container *ngIf="isLocked(topic, test, i)">🔒</ng-container>
                                     </div>
                                 </div>
-                                <div class="quiz-info">{{ quiz.totalQuestions }} questões</div>
 
-                                <div class="quiz-progress" *ngIf="quiz.topicTestStatus !== 'LOCKED'">
+                                <!-- INFO -->
+                                <div class="quiz-info">
+                                    {{ test.totalQuestions }} questões
+                                </div>
+
+                                <!-- AÇÕES -->
+                                <div class="quiz-progress" *ngIf="!isLocked(topic, test, i)">
                                     <div class="quiz-score">
-                                        {{ quiz.topicTestStatus === 'COMPLETE' ? quiz.totalQuestions + '/' +
-                                        quiz.totalQuestions : '0/' + quiz.totalQuestions }}
+                                        {{ isCompleted(test)
+                                        ? test.totalQuestions + '/' + test.totalQuestions
+                                        : '0/' + test.totalQuestions }}
                                     </div>
-                                    <button class="start-btn" *ngIf="quiz.topicTestStatus === 'COMPLETE'" (click)="reviewTest()">
+
+                                    <!-- REVER -->
+                                    <button class="start-btn review" *ngIf="isCompleted(test)"
+                                        (click)="reviewTest(test)">
                                         Revisar
                                     </button>
-                                    <button class="start-btn" *ngIf="quiz.topicTestStatus === 'ACTIVE'" (click)="startTest(quiz.topic)">
+
+                                    <!-- INICIAR -->
+                                    <button class="start-btn start" *ngIf="isActive(topic, test, i)"
+                                        (click)="startTopicTest(test)">
                                         Iniciar
                                     </button>
                                 </div>
 
-                                <div class="lock-icon" *ngIf="quiz.topicTestStatus === 'LOCKED'">
-                                    🔒
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 

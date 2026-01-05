@@ -71,6 +71,17 @@ export class QuizService {
     return this.http.post<Quiz>(`${this.baseUrl}`, quiz, { params });
   }
 
+  saveQuizTopicTest(quiz: Quiz, questionIds: number[], userAnswerIds: any[], topicTestId: number, currentUserId: number): Observable<Quiz> {
+
+    const params = new HttpParams()
+      .set('questionIds', questionIds.join(','))
+      .set('userAnswerIds', userAnswerIds.join(','))
+      .set('topicTestId', topicTestId.toString())
+      .set('currentUserId', currentUserId.toString());
+
+    return this.http.post<Quiz>(`${this.baseUrl}/topic-test`, quiz, { params });
+  }
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
   }

@@ -30,6 +30,8 @@ import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { UserService } from 'src/app/users/user.service';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { Wallet } from 'src/app/core/model/Wallet';
+import { MainPanelService } from 'src/app/main-panel/main-panel.service';
+import { TopicTestDTO } from 'src/app/core/model/TopicTestDTO';
 
 
 @Component({
@@ -81,6 +83,8 @@ export class QuizzQuestionsComponent implements OnInit {
   origem: string = '';
   subjectId: number = 0;
   topicId: number = 0;
+  progressTestId: number = 0;
+
 
   correctSound = new Audio('assets/sounds/correct.wav');
   wrongSound = new Audio('assets/sounds/wrong.wav');
@@ -274,6 +278,7 @@ export class QuizzQuestionsComponent implements OnInit {
   constructor(
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
+    private mainPanelService: MainPanelService,
     private walletService: WalletService,
     private quizService: QuizService,
     private topicService: TopicService,
@@ -303,6 +308,11 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       this.origem = params['from'];
+      this.progressTestId = params['progressTestId'];
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.origem = params['from'];
       this.subjectId = params['subjectId'];
     });
 
@@ -321,6 +331,10 @@ export class QuizzQuestionsComponent implements OnInit {
 
     if (quizId && quizId == 'training' && this.topicId && (this.origem === 'subjects' || this.origem === 'topics')) {
       this.StartTopicTraining(this.topicId);
+    }
+
+    if (quizId && quizId == 'test' && this.origem === 'subject-progress' && this.progressTestId) {
+      this.StartProgressTopicTest(this.progressTestId);
     }
 
     // Pré-carrega os sons para evitar atrasos
@@ -479,6 +493,53 @@ export class QuizzQuestionsComponent implements OnInit {
         }];
 
         this.getQuestions();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  // Testes de topico único - Progresso automático
+  StartProgressTopicTest(topicId: number): void {
+
+    this.loadingMessage = "Iniciando teste de progresso"
+    this.showLoading = true;
+
+    this.showInitQuizScreen = false;
+    this.showStartScreen = false;
+    this.showCorrection = false;
+
+    this.quiz.anonymous = true;
+    this.quiz.type = 'TEST';
+    this.quiz.difficultyLevel = 'BEGINNER';
+    this.quiz.limitPerTopic = 10;
+
+    this.mainPanelService.getQuestionsByTopicTestId(topicId).subscribe(
+      (questions: Question[]) => {
+        this.questions = questions;
+        this.quiz.questions = this.questions;
+
+        this.quiz.subject = this.quiz.questions[0].topic.subject;
+
+        this.topics = [{
+          ...this.quiz.questions[0].topic,
+          selected: true
+        }];
+
+        // Se o utilizador não for premium → limitar o texto da solução
+        if (this.isFreeUser()) {
+          questions = questions.map(q => ({
+            ...q,
+            solution: this.limitSolutionSafe(q.solution, 5)
+          }));
+        }
+
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.startQuiz();
+        this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -681,6 +742,12 @@ export class QuizzQuestionsComponent implements OnInit {
 
   onSaveQuiz() {
     if (this.isUserLoggedIn) {
+
+      if(this.origem === 'subject-progress' && this.progressTestId){
+        this.saveQuizTopicTest();
+        return;
+      }
+
       this.saveQuiz();
     }
 
@@ -703,6 +770,32 @@ export class QuizzQuestionsComponent implements OnInit {
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
     this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds, this.loggedUser.id).subscribe(
+      (response) => {
+        this.showLoading = false;
+        this.quiz = response;
+        this.quiz.isSubmitted = true;
+        if (this.quiz.answers) {
+          this.calculateResults();
+        }
+        this.router.navigate(['/quizzes', this.quiz.quizId], { replaceUrl: true });
+        this.showStartScreen = true
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  saveQuizTopicTest() {
+    this.loadingMessage = "Salvando o quiz"
+    this.showLoading = true;
+    this.quiz.topics = this.getSelectedTopics();
+
+    const questionIds = this.quiz.questions.map(question => question.id);
+    const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
+
+    this.quizService.saveQuizTopicTest(this.quiz, questionIds, userAnswerIds, this.progressTestId, this.loggedUser.id).subscribe(
       (response) => {
         this.showLoading = false;
         this.quiz = response;

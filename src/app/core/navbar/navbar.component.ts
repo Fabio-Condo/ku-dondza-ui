@@ -48,6 +48,14 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  goToProgressPanel() {
+    const userId = this.loggedUser.id;
+
+    //this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/progress-panel/users', 1]);
+    //});
+  }
+
   onLogIn(): void {
     this.router.navigate(['/login']);
   }

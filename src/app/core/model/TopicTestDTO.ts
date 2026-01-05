@@ -1,3 +1,4 @@
+import { Quiz } from "./Quiz";
 import { Topic } from "./Topic";
 
 export class TopicTestDTO {
@@ -8,4 +9,5 @@ export class TopicTestDTO {
   accuracyRate!: number;
   totalQuestions!: number;
   topic = new Topic(); // id, name, position
+  submittedQuizzes: Quiz[] = [];
 }

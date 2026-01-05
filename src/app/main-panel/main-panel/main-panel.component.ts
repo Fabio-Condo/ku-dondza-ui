@@ -11,6 +11,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MainPanelService } from '../main-panel.service';
 import { TopicWithTestsDTO } from 'src/app/core/model/TopicWithTestsDTO';
 import { Topic } from 'src/app/core/model/Topic';
+import { to } from 'mathjs';
+import { Subject } from 'src/app/core/model/Subject';
+import { Quiz } from 'src/app/core/model/Quiz';
 
 @Component({
   selector: 'app-main-panel',
@@ -20,8 +23,15 @@ import { Topic } from 'src/app/core/model/Topic';
 export class MainPanelComponent implements OnInit {
 
   topicWithTests: TopicWithTestsDTO[] = [];
+  subjects: Subject[] = [];
+  selectedSubject: Subject = new Subject();
+  selectedUser: User = new User();
+
 
   loggedUser: User = new User();
+
+  showLoading: boolean = false;
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   constructor(
     private mainPanelService: MainPanelService,
@@ -35,8 +45,9 @@ export class MainPanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Painel Principal');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.getTopicTestsBySubjectId();
+    this.carregarDisciplinas();
     this.scrollToTop();
   }
 
@@ -44,26 +55,45 @@ export class MainPanelComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // Eliminar este método se não for mais necessário
   startTest(topic: Topic) {
-    this.router.navigate(['/quizzes', 'training'], {
+    this.router.navigate(['/quizzes', 'test'], {
       queryParams: {
-        from: 'subjects',
+        from: 'subject-progress',
         topicId: topic.id
       }
     });
   }
 
-  reviewTest() {
-    this.router.navigate(['/quizzes/5402055b-6005-425a-b432-166e08645f59']);
+  // Usar este método para iniciar testes de progresso
+  startTopicTest(topicTest: TopicTestDTO) {
+    this.router.navigate(['/quizzes', 'test'], {
+      queryParams: {
+        from: 'subject-progress',
+        progressTestId: topicTest.id
+      }
+    });
   }
 
-  getTopicTestsBySubjectId() {
-    this.mainPanelService.getBySubjectId(1).subscribe({
+  reviewTest(topicTest: TopicTestDTO) {
+    console.log("Quiz id: " + topicTest.submittedQuizzes[0].quizId)
+    this.router.navigate(['/quizzes/', topicTest.submittedQuizzes[0].quizId]);
+    //this.getQuizByUserAndTopicTest(topicTest.id, this.loggedUser.id);
+  }
+
+  getTopicTestsBySubjectId(selectedUserId: number) {
+
+    this.loadingMessage = "Obtendo o progresso";
+    this.showLoading = true;
+
+    this.mainPanelService.getBySubjectId(this.selectedSubject.id, selectedUserId).subscribe({
       next: (dados) => {
         this.topicWithTests = dados;
+        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     });
   }
@@ -86,6 +116,53 @@ export class MainPanelComponent implements OnInit {
     }
     return '';
   }
+
+  onSelectSubject(subject: Subject) {
+    this.selectedSubject = subject;
+    this.getTopicTestsBySubjectId(this.selectedUser.id);
+  }
+
+  carregarDisciplinas() {
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados;
+        this.selectedSubject = this.subjects[0];
+
+        const selectedUserId = this.route.snapshot.params['id'];
+        this.getTopicTestsBySubjectId(selectedUserId);
+          //this.getTopicTestsBySubjectId();
+
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    });
+  }
+
+  // Helper methods to determine test status
+  isCompleted(test: any): boolean {
+    return test.submittedQuizzes?.length === 1;
+  }
+
+  getFirstIncompleteIndex(topic: any): number {
+    return topic.tests.findIndex(
+      (t: any) => t.submittedQuizzes?.length === 0
+    );
+  }
+
+  isActive(topic: any, test: any, index: number): boolean {
+    if (this.isCompleted(test)) {
+      return false;
+    }
+
+    return index === this.getFirstIncompleteIndex(topic);
+  }
+
+  isLocked(topic: any, test: any, index: number): boolean {
+    return !this.isCompleted(test) && !this.isActive(topic, test, index);
+  }
+  //
+
 
   private sendErrorNotification(message: string): void {
     if (message) {
