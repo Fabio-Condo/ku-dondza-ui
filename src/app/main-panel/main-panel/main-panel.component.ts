@@ -1,19 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { TopicTestDTO } from 'src/app/core/model/TopicTestDTO';
-import { TopicService } from 'src/app/topics/topicsService.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Title } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MainPanelService } from '../main-panel.service';
 import { TopicWithTestsDTO } from 'src/app/core/model/TopicWithTestsDTO';
 import { Topic } from 'src/app/core/model/Topic';
-import { to } from 'mathjs';
 import { Subject } from 'src/app/core/model/Subject';
-import { Quiz } from 'src/app/core/model/Quiz';
 
 @Component({
   selector: 'app-main-panel',
@@ -24,14 +21,13 @@ export class MainPanelComponent implements OnInit {
 
   topicWithTests: TopicWithTestsDTO[] = [];
   subjects: Subject[] = [];
+
   selectedSubject: Subject = new Subject();
   selectedUser: User = new User();
-
-
   loggedUser: User = new User();
 
-  showLoading: boolean = false;
-  loadingMessage = "Carregando"; // Alterar dinamicamente
+  showLoading = false;
+  loadingMessage = 'Carregando';
 
   constructor(
     private mainPanelService: MainPanelService,
@@ -42,34 +38,32 @@ export class MainPanelComponent implements OnInit {
     private router: Router,
     private confirmationService: ConfirmationService,
     private title: Title,
-  ) { }
+  ) {}
+
+  /* =========================
+     CICLO DE VIDA
+     ========================= */
 
   ngOnInit(): void {
     this.title.setTitle('Painel Principal');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.carregarDisciplinas();
-    this.scrollToTop();
 
     const selectedUserId = this.route.snapshot.params['id'];
     this.selectedUser.id = selectedUserId;
+
+    this.carregarDisciplinas();
+    this.scrollToTop();
   }
 
-  scrollToTop() {
+  scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Eliminar este método se não for mais necessário
-  startTest(topic: Topic) {
-    this.router.navigate(['/quizzes', 'test'], {
-      queryParams: {
-        from: 'subject-progress',
-        topicId: topic.id
-      }
-    });
-  }
+  /* =========================
+     NAVEGAÇÃO
+     ========================= */
 
-  // Usar este método para iniciar testes de progresso
-  startTopicTest(topicTest: TopicTestDTO) {
+  startTopicTest(topicTest: TopicTestDTO): void {
     this.router.navigate(['/quizzes', 'test'], {
       queryParams: {
         from: 'subject-progress',
@@ -78,102 +72,119 @@ export class MainPanelComponent implements OnInit {
     });
   }
 
-  reviewTest(topicTest: TopicTestDTO) {
-    console.log("Quiz id: " + topicTest.submittedQuizzes[0].quizId)
-    this.router.navigate(['/quizzes/', topicTest.submittedQuizzes[0].quizId]);
-    //this.getQuizByUserAndTopicTest(topicTest.id, this.loggedUser.id);
+  reviewTest(topicTest: TopicTestDTO): void {
+    const quizId = topicTest.submittedQuizzes?.[0]?.quizId;
+    if (!quizId) return;
+
+    this.router.navigate(['/quizzes', quizId]);
   }
 
-  getTopicTestsBySubjectId(selectedUserId: number) {
+  /* =========================
+     CARREGAMENTO DE DADOS
+     ========================= */
 
-    this.loadingMessage = "Obtendo o progresso";
-    this.showLoading = true;
-
-    this.mainPanelService.getBySubjectId(this.selectedSubject.id, selectedUserId).subscribe({
-      next: (dados) => {
-        this.topicWithTests = dados;
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  getTopicProgress(topicGroup: TopicWithTestsDTO): number {
-    if (!topicGroup.tests || topicGroup.tests.length === 0) return 0;
-    const total = topicGroup.tests.length;
-    const completed = topicGroup.tests.filter(t => t.accuracyRate === 100).length;
-    return Math.round((completed / total) * 100);
-  }
-
-  getDifficultyLevelValue(difficultyLevel: string) {
-    switch (difficultyLevel) {
-      case 'BEGINNER':
-        return 'Iniciante';
-      case 'INTERMEDIATE':
-        return 'Intermediário';
-      case 'ADVANCED':
-        return 'Avançado';
-    }
-    return '';
-  }
-
-  onSelectSubject(subject: Subject) {
-    this.selectedSubject = subject;
-    this.getTopicTestsBySubjectId(this.selectedUser.id);
-  }
-
-  carregarDisciplinas() {
+  carregarDisciplinas(): void {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
         this.subjects = dados;
         this.selectedSubject = this.subjects[0];
-
-        //const selectedUserId = this.route.snapshot.params['id'];
         this.getTopicTestsBySubjectId(this.selectedUser.id);
-        //this.getTopicTestsBySubjectId();
-
       },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+      error: (error: HttpErrorResponse) => {
+        this.sendErrorNotification(error.error.message);
       }
     });
   }
 
-  // Helper methods to determine test status
-  isCompleted(test: any): boolean {
-    return test.submittedQuizzes?.length === 1;
+  onSelectSubject(subject: Subject): void {
+    this.selectedSubject = subject;
+    this.getTopicTestsBySubjectId(this.selectedUser.id);
   }
 
-  getFirstIncompleteIndex(topic: any): number {
-    return topic.tests.findIndex(
-      (t: any) => t.submittedQuizzes?.length === 0
+  getTopicTestsBySubjectId(selectedUserId: number): void {
+    this.loadingMessage = 'Obtendo o progresso';
+    this.showLoading = true;
+
+    this.mainPanelService
+      .getBySubjectId(this.selectedSubject.id, selectedUserId)
+      .subscribe({
+        next: (dados) => {
+          this.topicWithTests = dados;
+          this.showLoading = false;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.sendErrorNotification(error.error.message);
+          this.showLoading = false;
+        }
+      });
+  }
+
+  /* =========================
+     PROGRESSOS (TAXAS)
+     ========================= */
+
+  isCompleted(test: TopicTestDTO): boolean {
+    return !!test.submittedQuizzes && test.submittedQuizzes.length > 0;
+  }
+
+  getTopicProgress(topic: TopicWithTestsDTO): number {
+    if (!topic.tests || topic.tests.length === 0) return 0;
+
+    const completed = topic.tests.filter(t => this.isCompleted(t)).length;
+    return Math.round((completed / topic.tests.length) * 100);
+  }
+
+  getDisciplineProgress(): number {
+    if (!this.topicWithTests || this.topicWithTests.length === 0) return 0;
+
+    const totalTests = this.topicWithTests.reduce(
+      (sum, topic) => sum + topic.tests.length,
+      0
     );
+
+    if (totalTests === 0) return 0;
+
+    const completedTests = this.topicWithTests.reduce((sum, topic) => {
+      return sum + topic.tests.filter(t => this.isCompleted(t)).length;
+    }, 0);
+
+    return Math.round((completedTests / totalTests) * 100);
   }
 
-  isActive(topic: any, test: any, index: number): boolean {
-    if (this.isCompleted(test)) {
-      return false;
-    }
+  /* =========================
+     DESBLOQUEIO SEQUENCIAL
+     ========================= */
 
+  getFirstIncompleteIndex(topic: TopicWithTestsDTO): number {
+    return topic.tests.findIndex(test => !this.isCompleted(test));
+  }
+
+  isActive(topic: TopicWithTestsDTO, test: TopicTestDTO, index: number): boolean {
+    if (this.isCompleted(test)) return false;
     return index === this.getFirstIncompleteIndex(topic);
   }
 
-  isLocked(topic: any, test: any, index: number): boolean {
+  isLocked(topic: TopicWithTestsDTO, test: TopicTestDTO, index: number): boolean {
     return !this.isCompleted(test) && !this.isActive(topic, test, index);
   }
-  //
 
+  /* =========================
+     UTILIDADES
+     ========================= */
+
+  getDifficultyLevelValue(level: string): string {
+    switch (level) {
+      case 'BEGINNER': return 'Iniciante';
+      case 'INTERMEDIATE': return 'Intermediário';
+      case 'ADVANCED': return 'Avançado';
+      default: return '';
+    }
+  }
 
   private sendErrorNotification(message: string): void {
-    if (message) {
-      this.messageService.add({ severity: 'error', detail: message });
-    } else {
-      this.messageService.add({
-        severity: 'error', detail: 'Ocorreu um erro. Por favor, tente novamente.',
-      });
-    }
+    this.messageService.add({
+      severity: 'error',
+      detail: message || 'Ocorreu um erro. Por favor, tente novamente.'
+    });
   }
 }

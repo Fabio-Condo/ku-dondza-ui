@@ -746,8 +746,8 @@
                 <div class="discipline-header">
                     <div class="discipline-title">{{ selectedSubject.name }}</div>
                     <div class="discipline-progress">
-                        <div class="progress-circle" style="--progress: 50deg;">
-                            <span>50%</span>
+                        <div class="progress-circle" [style.--progress]="getDisciplineProgress() * 3.6 + 'deg'">
+                            <span>{{ getDisciplineProgress() }}%</span>
                         </div>
                     </div>
                 </div>
