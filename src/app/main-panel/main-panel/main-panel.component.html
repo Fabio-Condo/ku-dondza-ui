@@ -541,6 +541,144 @@
             }
         }
 
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4361ee;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        .fab {
+            display: flex;
+            position: fixed;
+            bottom: 75px;
+            right: 16px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .popout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popout-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 600px;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0px;
+        }
+
+        .popout-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-black);
+            margin: 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: var(--color-black);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #1d4ed8;
+        }
+
         @media (max-width: 600px) {
             .container {
                 margin-top: 30px;
@@ -741,6 +879,10 @@
 
         </div>
 
+        <button class="fab" (click)="onAddNewTopicTest()" *ngIf="loggedUser && isSuperAdmin">
+            <i class="pi pi-plus"></i>
+        </button>
+
         <div class="disciplines">
             <div class="discipline">
                 <div class="discipline-header">
@@ -826,3 +968,42 @@
 </body>
 
 </html>
+
+<div class="popout-overlay" *ngIf="displayModalSave">
+    <div class="popout-container">
+        <div class="popout-header">
+            <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
+            <button class="close-button" (click)="displayModalSave = false">&times;</button>
+        </div>
+
+        <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
+
+            <div class="form-group">
+                <label for="topic">Tópico</label>
+                <select id="topic" name="topic" [(ngModel)]="topicTest.topic.id" [disabled]="!selectedSubject" required>
+                    <option value="" disabled selected>Selecione o tópico</option>
+                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="difficultyLevel">Nivel</label>
+                <select id="difficultyLevel" [(ngModel)]="topicTest.difficultyLevel" name="difficultyLevel" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="position">Posição</label>
+                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                    [(ngModel)]="topicTest.orderIndex">
+            </div>
+
+            <button class="submit-button" type="submit" [disabled]="testForm.invalid" class="btn">
+                {{ showLoading ? 'Loading...' :'Salvar' }}
+            </button>
+
+        </form>
+    </div>
+</div>
