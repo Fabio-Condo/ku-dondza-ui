@@ -10,16 +10,22 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
             padding: 10px;
         }
 
+        .profile-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            margin-top: 75px;
+            margin-top: 50px;
         }
 
         .header {
@@ -679,9 +685,25 @@
             background: #1d4ed8;
         }
 
+        .go-back-btn {
+            padding: 10px 0px;
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .go-back-btn:hover {
+            color: #4361ee;
+        }
+
         @media (max-width: 600px) {
             .container {
-                margin-top: 30px;
+                margin-top: 45px;
             }
 
             .header h1 {
@@ -722,7 +744,7 @@
             }
 
             .container {
-                margin-top: 60px;
+                margin-top: 45px;
             }
 
             .header {
@@ -823,6 +845,15 @@
 
 <body>
     <div class="container">
+
+        <button class="go-back-btn" [routerLink]="['/user/profile', loggedUser.userId]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5"></path>
+                <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            Voltar
+        </button>
 
         <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
             <div class="loading-indicator">
