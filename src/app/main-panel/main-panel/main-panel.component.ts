@@ -177,7 +177,7 @@ export class MainPanelComponent implements OnInit {
         this.selectedSubject = this.subjects[0];
         this.getTopicTestsBySubjectId(this.loggedUser.id);
         this.getTopicsBySubjectId();
-        this.showLoading = false;
+        //this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
         this.sendErrorNotification(error.error.message);
