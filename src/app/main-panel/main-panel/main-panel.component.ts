@@ -168,15 +168,20 @@ export class MainPanelComponent implements OnInit {
      ========================= */
 
   carregarDisciplinas(): void {
+    this.loadingMessage = 'Obtendo disciplinas';
+    this.showLoading = true;
+
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
         this.subjects = dados;
         this.selectedSubject = this.subjects[0];
         this.getTopicTestsBySubjectId(this.loggedUser.id);
         this.getTopicsBySubjectId();
+        this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
         this.sendErrorNotification(error.error.message);
+        this.showLoading = false;
       }
     });
   }
