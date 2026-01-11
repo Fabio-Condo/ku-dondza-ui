@@ -8,8 +8,6 @@ import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Topic } from 'src/app/core/model/Topic';
 import { Comment } from 'src/app/core/model/Comment';
-declare const MathJax: any;
-import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
@@ -31,7 +29,8 @@ import { UserService } from 'src/app/users/user.service';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { Wallet } from 'src/app/core/model/Wallet';
 import { MainPanelService } from 'src/app/main-panel/main-panel.service';
-import { TopicTestDTO } from 'src/app/core/model/TopicTestDTO';
+declare const MathJax: any;
+import { e, evaluate } from 'mathjs'; //npm install mathjs
 
 
 @Component({

@@ -685,6 +685,67 @@
             background: #1d4ed8;
         }
 
+        /* Container de cada questão */
+        .popout-container .question-item {
+            cursor: pointer;
+            padding: 10px 14px;
+            margin: 10px 0;
+            border-radius: 8px;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.95rem;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Hover suave */
+        .popout-container .question-item:hover {
+            background-color: #f4f6ff;
+            border-color: rgba(67, 97, 238, 0.4);
+            /* destaca borda no hover */
+        }
+
+        /* Questão selecionada */
+        .popout-container .selected-question {
+            background: #e3f2fd;
+            border: 1px solid #4361ee;
+            box-shadow: 0 2px 6px rgba(67, 97, 238, 0.15);
+        }
+
+        /* Numeração */
+        .selected-question {
+            background: #e3f2fd;
+            border: 1px solid #4361ee;
+            box-shadow: 0 2px 6px rgba(67, 97, 238, 0.15);
+        }
+
+        .popout-container .correct-question {
+            border: 2px solid #10b981;
+        }
+
+        .popout-container .incorrect-question {
+            border: 2px solid #ef4444;
+        }
+
+        .question-topic {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 2px;
+            display: block;
+        }
+
+        /* Número da questão à esquerda */
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4361ee;
+            min-width: 30px;
+            text-align: left;
+        }
+
         .go-back-btn {
             padding: 10px 0px;
             display: flex;
@@ -1092,6 +1153,10 @@
                                 <!-- INFO -->
                                 <div class="quiz-info">
                                     {{ test.totalQuestions }} questões
+                                    <span (click)="onGetTopicTestQuestions(test)"
+                                        *ngIf="isSuperAdmin && loggedUser">
+                                        | Editar
+                                    </span>
                                 </div>
 
                                 <!-- AÇÕES -->
@@ -1113,13 +1178,6 @@
                                         (click)="startTopicTest(test)">
                                         Iniciar
                                     </button>
-
-                                    <!-- INICIAR -->
-                                    <!--
-                                    <button class="start-btn start" *ngIf="isSuperAdmin && loggedUser">
-                                        Editar
-                                    </button>
-                                    -->
                                 </div>
 
                             </div>
@@ -1170,5 +1228,35 @@
             </button>
 
         </form>
+    </div>
+</div>
+
+<!-- Popout -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalQuestionsList">
+    <div class="popout-container">
+
+        <div class="popout-header">
+            <h2 class="popout-title">Questões</h2>
+            <button class="close-button" (click)="onCloseQuestionList()">&times;</button>
+        </div>
+
+        <div *ngFor="let question of questions; let i = index">
+            <div class="question-item" *ngIf="question.text" [ngClass]="{
+             'selected-question': i === currentQuestionIndex,
+           }">
+
+                <span class="question-number">{{ i + 1 }}</span>
+                <div class="question-content">
+                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+
+                    <!-- Mostra o tópico, se existir -->
+                    <div class="question-topic" *ngIf="question.topic">
+                        <small>Tópico: {{ question.topic.name }}</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </div>

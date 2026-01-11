@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/core/model/User';
@@ -14,6 +14,10 @@ import { Subject } from 'src/app/core/model/Subject';
 import { Role } from 'src/app/enum/role.enum';
 import { NgForm } from '@angular/forms';
 import { TopicService } from 'src/app/topics/topicsService.service';
+import { QuestionService } from 'src/app/questions/question.service';
+import { Question } from 'src/app/core/model/Question';
+declare const MathJax: any;
+import { e, evaluate } from 'mathjs'; //npm install mathjs
 
 @Component({
   selector: 'app-main-panel',
@@ -27,6 +31,10 @@ export class MainPanelComponent implements OnInit {
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
+  questions: Question[] = [];
+  displayModalQuestionsList: boolean = false;
+  currentQuestionIndex = 0;
+
   selectedSubject: Subject = new Subject();
   //selectedUser: User = new User();
   loggedUser: User = new User();
@@ -35,6 +43,9 @@ export class MainPanelComponent implements OnInit {
   loadingMessage = 'Carregando';
 
   displayModalSave: boolean = false;
+
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
+
 
   difficultyLevels = [
     { label: 'Iniciante', value: 'BEGINNER' },
@@ -46,6 +57,7 @@ export class MainPanelComponent implements OnInit {
     private mainPanelService: MainPanelService,
     private subjectsService: SubjectsService,
     private topicService: TopicService,
+    private questionService: QuestionService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -141,6 +153,48 @@ export class MainPanelComponent implements OnInit {
         this.showLoading = false;
       }
     });
+  }
+
+  onGetTopicTestQuestions(topicTest: TopicTestDTO) {
+    this.displayModalQuestionsList = true;
+    this.topicTest = topicTest;
+    this.getQuestionsByTopicId(this.topicTest.topic);
+    document.body.classList.add('no-scroll');
+  }
+
+  getQuestionsByTopicId(topic: Topic): void {
+    this.loadingMessage = "Buscando questões";
+    this.showLoading = true;
+
+    this.questionService.getQuestionsByTopicId(topic.id).subscribe(
+      (dados: Question[]) => {
+        this.questions = dados;
+        this.currentQuestionIndex = 0;
+        this.showLoading = false;
+        this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+        this.renderFunctions();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onCloseQuestionList() {
+    this.displayModalQuestionsList = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  getFormattedText(text: string): string {
+    // Negrito: **texto** → <strong>texto</strong>
+    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto* → <em>texto</em>
+    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    // Quebras de linha: \n → <br>
+    return textoFormatado.replace(/\n/g, '<br>');
   }
 
   /* =========================
@@ -281,6 +335,124 @@ export class MainPanelComponent implements OnInit {
 
   private getUserRole(): string {
     return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  renderMathExpressions(): void {
+    setTimeout(() => {
+      const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
+      if (mathContainer && typeof MathJax !== 'undefined') {
+        mathContainer.innerHTML = this.getFormattedText(this.questions[this.currentQuestionIndex].text);
+      }
+
+      const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
+      if (mathContainerSolution && typeof MathJax !== 'undefined') {
+        mathContainerSolution.innerHTML = this.getFormattedText(this.questions[this.currentQuestionIndex].solution);
+      }
+
+      const mathContainerTip = document.getElementById(`math-container-tip-${this.currentQuestionIndex}`);
+      if (mathContainerTip && typeof MathJax !== 'undefined') {
+        mathContainerTip.innerHTML = this.getFormattedText(this.questions[this.currentQuestionIndex].tip);
+      }
+
+      if (typeof MathJax !== 'undefined') {
+        MathJax.typesetPromise().then(() => {
+          console.log('MathJax renderizado com sucesso!');
+        }).catch((err: any) => {
+          console.error('Erro ao renderizar MathJax:', err);
+        });
+      }
+    }, 0);
+  }
+
+  renderFunctions() {
+    setTimeout(() => {
+      const canvas = this.canvas?.nativeElement;
+      if (!canvas || !this.questions[this.currentQuestionIndex].mathExpressions || this.questions[this.currentQuestionIndex].mathExpressions.length === 0) return;
+
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const scaleX = width / 20;
+      const scaleY = height / 20;
+
+      // Desenha a grade cartesiana
+      ctx.beginPath();
+      ctx.strokeStyle = '#ddd';
+      ctx.lineWidth = 0.5;
+
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+      for (let i = -10; i <= 10; i++) {
+        let y = height / 2 - i * scaleY;
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      // Eixos principais
+      ctx.beginPath();
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.stroke();
+
+      // Números dos eixos
+      ctx.font = '12px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      for (let i = -10; i <= 10; i++) {
+        let x = width / 2 + i * scaleX;
+        let y = height / 2 - i * scaleY;
+        if (i !== 0) {
+          ctx.fillText(i.toString(), x, height / 2 + 15);
+          ctx.fillText(i.toString(), width / 2 - 15, y + 5);
+        }
+      }
+
+      // Cores para múltiplos gráficos
+      const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+      this.questions[this.currentQuestionIndex].mathExpressions.forEach((express, index) => {
+        ctx.beginPath();
+        ctx.strokeStyle = colors[index % colors.length];
+        ctx.lineWidth = 2;
+
+        for (let x = -10; x <= 10; x += 0.1) {
+          try {
+            let y = evaluate(express.expression!.replace(/x/g, `(${x})`));
+            let screenX = width / 2 + x * scaleX;
+            let screenY = height / 2 - y * scaleY;
+            if (x === -10) ctx.moveTo(screenX, screenY);
+            else ctx.lineTo(screenX, screenY);
+          } catch (error) {
+            console.error(`Erro ao avaliar ${express.expression!}:`, error);
+          }
+        }
+        ctx.stroke();
+
+        // Adiciona legenda no gráfico
+        ctx.fillStyle = colors[index % colors.length];
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText(
+          //express.name || express.expression || `f${index + 1}(x)`,
+          express.name || `f${index + 1}(x)`,
+          10,
+          20 + index * 20
+        );
+      });
+    }, 0);
   }
 
   private sendErrorNotification(message: string): void {
