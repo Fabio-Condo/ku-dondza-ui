@@ -1153,8 +1153,11 @@
                                 <!-- INFO -->
                                 <div class="quiz-info">
                                     {{ test.totalQuestions }} questões
-                                    <span (click)="onGetTopicTestQuestions(test)"
-                                        *ngIf="isSuperAdmin && loggedUser">
+                                    <span (click)="onGetSelectedQuestionsByTopicId(test)" *ngIf="isSuperAdmin && loggedUser">
+                                        | Ver
+                                    </span>
+
+                                    <span (click)="onGetQuestionsByTopicId(test)" *ngIf="isSuperAdmin && loggedUser">
                                         | Editar
                                     </span>
                                 </div>
@@ -1243,6 +1246,36 @@
         <div *ngFor="let question of questions; let i = index">
             <div class="question-item" *ngIf="question.text" [ngClass]="{
              'selected-question': i === currentQuestionIndex,
+           }">
+
+                <span class="question-number">{{ i + 1 }}</span>
+                <div class="question-content">
+                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+
+                    <!-- Mostra o tópico, se existir -->
+                    <div class="question-topic" *ngIf="question.topic">
+                        <small>Tópico: {{ question.topic.name }}</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Popout -->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalSelectedQuestionsList">
+    <div class="popout-container">
+
+        <div class="popout-header">
+            <h2 class="popout-title">Questões</h2>
+            <button class="close-button" (click)="onCloseSelectedQuestionsList()">&times;</button>
+        </div>
+
+        <div *ngFor="let question of selectedQuestions; let i = index">
+            <div class="question-item" *ngIf="question.text" [ngClass]="{
+             'selected-question': i === currentSelectedQuestionIndex,
            }">
 
                 <span class="question-number">{{ i + 1 }}</span>

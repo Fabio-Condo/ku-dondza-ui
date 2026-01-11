@@ -35,6 +35,11 @@ export class MainPanelComponent implements OnInit {
   displayModalQuestionsList: boolean = false;
   currentQuestionIndex = 0;
 
+  selectedQuestions: Question[] = [];
+  displayModalSelectedQuestionsList: boolean = false;
+  currentSelectedQuestionIndex = 0;
+
+
   selectedSubject: Subject = new Subject();
   //selectedUser: User = new User();
   loggedUser: User = new User();
@@ -155,11 +160,47 @@ export class MainPanelComponent implements OnInit {
     });
   }
 
-  onGetTopicTestQuestions(topicTest: TopicTestDTO) {
-    this.displayModalQuestionsList = true;
+  onGetSelectedQuestionsByTopicId(topicTest: TopicTestDTO) {
+    this.topicTest = topicTest;
+    this.getSelectedQuestionsByTopicId(this.topicTest);
+    this.displayModalSelectedQuestionsList = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseSelectedQuestionsList() {
+    this.displayModalSelectedQuestionsList = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  getSelectedQuestionsByTopicId(topicTest: TopicTestDTO): void {
+    this.loadingMessage = "Buscando questões";
+    this.showLoading = true;
+
+    this.mainPanelService.getQuestionsByTopicTestId(topicTest.id).subscribe(
+      (dados: Question[]) => {
+        this.selectedQuestions = dados;
+        this.currentSelectedQuestionIndex = 0;
+        this.showLoading = false;
+        this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
+        this.renderFunctions();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onGetQuestionsByTopicId(topicTest: TopicTestDTO) {
     this.topicTest = topicTest;
     this.getQuestionsByTopicId(this.topicTest.topic);
+    this.displayModalQuestionsList = true;
     document.body.classList.add('no-scroll');
+  }
+
+  onCloseQuestionList() {
+    this.displayModalQuestionsList = false;
+    document.body.classList.remove('no-scroll');
   }
 
   getQuestionsByTopicId(topic: Topic): void {
@@ -179,11 +220,6 @@ export class MainPanelComponent implements OnInit {
         this.showLoading = false;
       }
     );
-  }
-
-  onCloseQuestionList() {
-    this.displayModalQuestionsList = false;
-    document.body.classList.remove('no-scroll');
   }
 
   getFormattedText(text: string): string {
