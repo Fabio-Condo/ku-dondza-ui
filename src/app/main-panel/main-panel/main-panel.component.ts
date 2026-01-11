@@ -28,7 +28,7 @@ export class MainPanelComponent implements OnInit {
   topics: Topic[] = [];
 
   selectedSubject: Subject = new Subject();
-  selectedUser: User = new User();
+  //selectedUser: User = new User();
   loggedUser: User = new User();
 
   showLoading = false;
@@ -62,8 +62,8 @@ export class MainPanelComponent implements OnInit {
     this.title.setTitle('Painel Principal');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-    const selectedUserId = this.route.snapshot.params['id'];
-    this.selectedUser.id = selectedUserId;
+    //const selectedUserId = this.route.snapshot.params['id'];
+    //this.selectedUser.id = selectedUserId;
 
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -172,7 +172,7 @@ export class MainPanelComponent implements OnInit {
       next: (dados) => {
         this.subjects = dados;
         this.selectedSubject = this.subjects[0];
-        this.getTopicTestsBySubjectId(this.selectedUser.id);
+        this.getTopicTestsBySubjectId(this.loggedUser.id);
         this.getTopicsBySubjectId();
       },
       error: (error: HttpErrorResponse) => {
@@ -183,7 +183,7 @@ export class MainPanelComponent implements OnInit {
 
   onSelectSubject(subject: Subject): void {
     this.selectedSubject = subject;
-    this.getTopicTestsBySubjectId(this.selectedUser.id);
+    this.getTopicTestsBySubjectId(this.loggedUser.id);
   }
 
   getTopicTestsBySubjectId(selectedUserId: number): void {
