@@ -21,7 +21,7 @@
             Voltar
         </button>
         -->
-        
+
         <div class="profile-card">
             <div class="banner">
                 <button class="edit-button" (click)="onUpdateCurrentUser()" *ngIf="currentUser.userId == user.userId">
@@ -55,10 +55,12 @@
                             <span>São Paulo, Brasil</span>
                         </div>
                         -->
-                        <div class="detail-item" *ngIf="isSuperAdmin ||currentUser.userId == user.userId">
+                        <!--
+                        <div class="detail-item" *ngIf="isSuperAdmin || currentUser.userId == user.userId">
                             <i class="fas fa-envelope"></i>
                             <span>{{ user.email }}</span>
                         </div>
+                        -->
                         <!--
                         <div class="detail-item">
                             <i class="fas fa-calendar"></i>
@@ -66,11 +68,13 @@
                         </div>
                         -->
                     </div>
+                    <!--
                     <button class="btn-outline" id="logout-btn" (click)="onLogOut()"
                         *ngIf="currentUser.userId == user.userId">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </button>
+                    -->
                 </div>
 
                 <!--
