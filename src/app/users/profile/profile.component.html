@@ -127,11 +127,19 @@
                 <button class="add-payment-btn" (click)="openModalAddPaymentOption()">+ Adicionar Método</button>
             </div>
         </div>
-        
-        <button class="progress-btn" *ngIf="currentUser.userId == user.userId" [routerLink]="['/progress-panel']" aria-label="Ver progresso do usuário">
-            <i class="pi pi-chart-line"></i>
-            <span>Meu Progresso</span>
-        </button>
+
+        <div class="progress-card" *ngIf="currentUser.userId == user.userId">
+            <h3 class="card-title">Seu Progresso</h3>
+            <p class="card-description">
+                Acompanhe o seu desempenho e evolução nos testes realizados.
+            </p>
+
+            <button class="progress-button" [routerLink]="['/progress-panel']">
+                Ver Progresso
+            </button>
+        </div>
+
+
 
         <!--
         <div class="stats-grid">
