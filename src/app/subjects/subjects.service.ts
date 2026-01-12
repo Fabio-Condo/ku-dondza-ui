@@ -1,11 +1,11 @@
-
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Subject } from '../core/model/Subject';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { SubjectFilter } from '../core/interface/SubjectFilter';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +14,35 @@ export class SubjectsService {
 
   host: string;
 
+  // CACHE EM MEMÓRIA
+  private subjectsCache: Subject[] | null = null;
+
   constructor(private http: HttpClient) {
     this.host = `${environment.apiUrl}/subjects`;
   }
 
-  //getAll() : Promise<any> {
-  //  return firstValueFrom(this.http.get(this.host, { }));
+  //getAll() : Promise<any> { 
+  // return firstValueFrom(this.http.get(this.host, { })); 
   //}
 
+  //findAll(): Observable<Subject[]> { 
+  //  return this.http.get<Subject[]>(this.host, {}); 
+  //}
+
+  // FIND ALL COM CACHE
   findAll(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(this.host, {});
+    if (this.subjectsCache) {
+      return of(this.subjectsCache);
+    }
+
+    return this.http.get<Subject[]>(this.host).pipe(
+      tap(subjects => this.subjectsCache = subjects)
+    );
+  }
+
+  // Opcional: limpar cache manualmente
+  clearCache(): void {
+    this.subjectsCache = null;
   }
 
   filter(filtro: SubjectFilter, currentUserId: number): Observable<IApiResponse<Subject>> {
@@ -41,12 +60,8 @@ export class SubjectsService {
   }
 
   getById(id: number): Observable<Subject> {
-    return this.http.get<Subject>(`${this.host}/${id}`, {});
+    return this.http.get<Subject>(`${this.host}/${id}`);
   }
-
-  //getSubjectBySubjectId2(subjectId: string): Observable<Subject> {
-  //  return this.http.get<Subject>(`${this.host}/find-by-subjectId/${subjectId}`, {});
-  //}
 
   getSubjectBySubjectId(subjectId: string, currentUserId: number): Observable<Subject> {
     let params = new HttpParams()
@@ -55,19 +70,18 @@ export class SubjectsService {
   }
 
   add(subject: Subject): Observable<Subject> {
-    return this.http.post<Subject>(this.host, subject, {});
+    return this.http.post<Subject>(this.host, subject);
   }
 
   update(subject: Subject): Observable<Subject> {
-    return this.http.put<Subject>(`${this.host}/${subject.id}`, subject, {});
+    return this.http.put<Subject>(`${this.host}/${subject.id}`, subject);
   }
 
   excluir(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/${id}`, {});
+    return this.http.delete<void>(`${this.host}/${id}`);
   }
 
   buscarTotal(): Observable<number> {
-    return this.http.get<number>(`${this.host}/total`, {});
+    return this.http.get<number>(`${this.host}/total`);
   }
-
 }
