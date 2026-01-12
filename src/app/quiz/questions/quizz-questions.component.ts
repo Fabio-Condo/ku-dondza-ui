@@ -355,14 +355,14 @@ export class QuizzQuestionsComponent implements OnInit {
 
   get stepProgressPercentage(): number {
     let filled = 0;
-    if (this.quiz.difficultyLevel) filled++;
+    //if (this.quiz.difficultyLevel) filled++;
     if (this.quiz.type) filled++;
-    if (this.quiz.anonymous !== null) filled++;
+    //if (this.quiz.anonymous !== null) filled++;
     if (this.quiz.limitPerTopic) filled++;
     if (this.quiz.subject) filled++;
     if (this.getSelectedTopicIds().length > 0) filled++;
 
-    return (filled / 6) * 100;
+    return (filled / 4) * 100;
   }
 
   onInitQuiz() {
@@ -581,6 +581,9 @@ export class QuizzQuestionsComponent implements OnInit {
   getQuestions(): void {
     this.loadingMessage = "Gerando questões";
     const selectedTopicIds = this.getSelectedTopicIds();
+
+    this.quiz.anonymous = true;
+    this.quiz.difficultyLevel = 'BEGINNER';
 
     if (selectedTopicIds.length == 0) {
       this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões!' });

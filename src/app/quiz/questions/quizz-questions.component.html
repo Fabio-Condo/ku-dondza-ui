@@ -40,6 +40,7 @@
         <form autocomplete="off" #courseForm="ngForm">
 
           <!-- Step 0: Level -->
+          <!--
           <div class="step-card animate-step">
             <p class="step-description">Selecione o nível de quiz que deseja criar.</p>
 
@@ -51,14 +52,14 @@
                 <p class="option-description">{{ level.description }}</p>
                 <p *ngIf="isAdvancedLevelDisabled(level)" class="lock-message">
                   🔒 Não disponível neste momento
-                  <!-- 🔒 Disponível apenas para usuários Premium -->
                 </p>
               </div>
             </div>
           </div>
+          -->
 
-          <!-- Step 1: Tipo -->
-          <div class="step-card animate-step" *ngIf="quiz.difficultyLevel">
+          <!-- Step 1: Tipo  *ngIf="quiz.difficultyLevel"-->
+          <div class="step-card animate-step">
             <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
             <div class="options-grid">
               <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
@@ -70,6 +71,7 @@
           </div>
 
           <!-- Step 2: Modo -->
+          <!--
           <div class="step-card animate-step" *ngIf="quiz.type">
             <p class="step-description">Escolha se o quiz será anônimo ou identificado.</p>
             <div class="options-grid">
@@ -85,9 +87,10 @@
             </div>
             <p class="info-note">⚠️ Você poderá alterar esta opção depois de salvar o quiz.</p>
           </div>
+          -->
 
-          <!-- Step 3: Disciplina -->
-          <div class="step-card animate-step" *ngIf="quiz.anonymous !== null">
+          <!-- Step 3: Disciplina *ngIf="quiz.anonymous !== null"-->
+          <div class="step-card animate-step" *ngIf="quiz.type">
             <p class="step-description">Escolha a disciplina para este quiz.</p>
             <div class="options-grid">
               <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
@@ -455,8 +458,7 @@
           </div>
 
           <!-- Mostra o tópico, se existir -->
-          <div class="question-topic"
-            *ngIf="quiz.questions[currentQuestionIndex].topic">
+          <div class="question-topic" *ngIf="quiz.questions[currentQuestionIndex].topic">
             <small>Tópico: {{ quiz.questions[currentQuestionIndex].topic.name }}</small>
           </div>
 
