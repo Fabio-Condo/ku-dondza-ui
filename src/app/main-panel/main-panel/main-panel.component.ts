@@ -83,8 +83,6 @@ export class MainPanelComponent implements OnInit {
     //this.selectedUser.id = selectedUserId;
 
     this.carregarDisciplinas();
-    this.getTopicTestsBySubjectId(this.loggedUser.id);
-    this.getTopicsBySubjectId();
     this.scrollToTop();
   }
 
@@ -267,6 +265,8 @@ export class MainPanelComponent implements OnInit {
       next: (dados) => {
         this.subjects = dados;
         this.selectedSubject = this.subjects[0];
+        this.getTopicTestsBySubjectId(this.loggedUser.id);
+        this.getTopicsBySubjectId();
         //this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
