@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
     if (userId) {
       this.getUserByUserId(userId);
     }
-    this.getSubjectsInterests();
+    //this.getSubjectsInterests();
     this.scrollToTop();
   }
 
@@ -80,12 +80,16 @@ export class ProfileComponent implements OnInit {
   }
 
   getSubjectsInterests() {
+    this.loadingMessage = "Carregando disciplinas"
+    this.showLoading = true;
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
         this.subjectsInterests = dados;
+        this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     });
   }

@@ -32,9 +32,11 @@ export class SubjectsService {
   // FIND ALL COM CACHE
   findAll(): Observable<Subject[]> {
     if (this.subjectsCache) {
+      console.log('Returning subjects from cache');
       return of(this.subjectsCache);
     }
 
+    console.log('Fetching subjects from API')
     return this.http.get<Subject[]>(this.host).pipe(
       tap(subjects => this.subjectsCache = subjects)
     );
