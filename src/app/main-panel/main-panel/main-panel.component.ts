@@ -140,6 +140,7 @@ export class MainPanelComponent implements OnInit {
 
   onAddNewTopicTest(): void {
     this.topicTest = new TopicTestDTO();
+    this.getTopicsBySubjectId();
     this.displayModalSave = true;
   }
 
@@ -150,6 +151,7 @@ export class MainPanelComponent implements OnInit {
 
     this.topicService.getBySubjectId(this.selectedSubject.id!).subscribe({
       next: (dados) => {
+        this.topics = [];
         this.topics = dados;
         this.showLoading = false;
       },
@@ -305,8 +307,7 @@ export class MainPanelComponent implements OnInit {
       next: (dados) => {
         this.subjects = dados;
         this.selectedSubject = this.subjects[0];
-        this.getTopicTestsBySubjectId(this.loggedUser.id);
-        this.getTopicsBySubjectId();
+        this.getTopicTestsBySubjectId();
         //this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
@@ -318,16 +319,14 @@ export class MainPanelComponent implements OnInit {
 
   onSelectSubject(subject: Subject): void {
     this.selectedSubject = subject;
-    this.getTopicTestsBySubjectId(this.loggedUser.id);
+    this.getTopicTestsBySubjectId();
   }
 
-  getTopicTestsBySubjectId(selectedUserId: number): void {
+  getTopicTestsBySubjectId(): void {
     this.loadingMessage = 'Obtendo o progresso';
     this.showLoading = true;
 
-    this.mainPanelService
-      .getBySubjectId(this.selectedSubject.id, selectedUserId)
-      .subscribe({
+    this.mainPanelService.getBySubjectId(this.selectedSubject.id, this.loggedUser.id).subscribe({
         next: (dados) => {
           this.topicWithTests = dados;
           this.showLoading = false;
