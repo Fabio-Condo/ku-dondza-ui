@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserByUserId(userId: string) {
-    this.loadingMessage = "Carregando dados"
+    this.loadingMessage = "Carregando carteiras do usuário"
     this.showLoading = true;
     this.userService.getUserByUserId(userId).subscribe(
       (user: User) => {
@@ -156,7 +156,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getWalletsByUser(userId: number): void {
-    this.loadingMessage = "Obtendo dados"
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.walletService.getWalletsByUser(userId).subscribe(
       (dados: Wallet[]) => {
