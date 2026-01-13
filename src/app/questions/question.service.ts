@@ -84,6 +84,11 @@ export class QuestionService {
     return this.http.get<Question[]>(this.baseUrl);
   }
 
+  // PARA TESTE DE TOPIC TEST COM QUESTÕES MARCADAS // USAR NO PROGESSO
+  findAllByTopicAndMarkSelected(topicTestId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.baseUrl}/topic-tests/${topicTestId}`, {});
+  }
+
   findById(id: number): Observable<Question> {
     return this.http.get<Question>(`${this.baseUrl}/${id}`, {});
   }

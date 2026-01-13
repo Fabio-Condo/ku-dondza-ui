@@ -37,8 +37,6 @@ export class MainPanelComponent implements OnInit {
 
   selectedQuestions: Question[] = [];
   displayModalSelectedQuestionsList: boolean = false;
-  currentSelectedQuestionIndex = 0;
-
 
   selectedSubject: Subject = new Subject();
   //selectedUser: User = new User();
@@ -181,7 +179,6 @@ export class MainPanelComponent implements OnInit {
     this.mainPanelService.getQuestionsByTopicTestId(topicTest.id).subscribe(
       (dados: Question[]) => {
         this.selectedQuestions = dados;
-        this.currentSelectedQuestionIndex = 0;
         this.showLoading = false;
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
         this.renderFunctions();
@@ -195,7 +192,7 @@ export class MainPanelComponent implements OnInit {
 
   onGetQuestionsByTopicId(topicTest: TopicTestDTO) {
     this.topicTest = topicTest;
-    this.getQuestionsByTopicId(this.topicTest.topic);
+    this.findAllByTopicAndMarkSelected(this.topicTest);
     this.displayModalQuestionsList = true;
     document.body.classList.add('no-scroll');
   }
@@ -205,11 +202,12 @@ export class MainPanelComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
-  getQuestionsByTopicId(topic: Topic): void {
+  // USADO PARA ADD QUESTIONS NOS TESTES DE PROGRESSO
+  findAllByTopicAndMarkSelected(topicTest: TopicTestDTO): void {
     this.loadingMessage = "Buscando questões";
     this.showLoading = true;
 
-    this.questionService.getQuestionsByTopicId(topic.id).subscribe(
+    this.questionService.findAllByTopicAndMarkSelected(topicTest.id).subscribe(
       (dados: Question[]) => {
         this.questions = dados;
         this.currentQuestionIndex = 0;

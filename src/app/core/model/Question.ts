@@ -19,6 +19,7 @@ export class Question {
     topic = new Topic();
     answers: Answer[] = [];
     numberOfComments: number = 0;
+    selected: boolean = false;
 
     isAdminMenuOpen: boolean = false;
     showSolution: boolean = false;
