@@ -363,10 +363,54 @@
         }
 
         .quiz-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
             font-size: 0.9rem;
             opacity: 0.8;
             margin-bottom: 0.5rem;
         }
+
+        /* container dos botões */
+        .quiz-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* botão base */
+        .action-btn {
+            padding: 0.25rem 0.6rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        /* ver */
+        .action-btn.view {
+            border-color: #64748b;
+            color: #64748b;
+        }
+
+        .action-btn.view:hover {
+            background-color: #64748b;
+            color: #fff;
+        }
+
+        /* editar */
+        .action-btn.edit {
+            border-color: #4361ee;
+            color: #4361ee;
+        }
+
+        .action-btn.edit:hover {
+            background-color: #4361ee;
+            color: #fff;
+        }
+
 
         .quiz-progress {
             display: flex;
@@ -734,8 +778,33 @@
             color: #666;
             font-size: 0.85rem;
             margin-top: 2px;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+
+        .question-topic button {
+            padding: 0.25rem 0.6rem;
+            font-size: 0.75rem;
+            line-height: 1;
+            border-radius: 4px;
+            border: 1px solid #4361ee;
+            /* azul discreto */
+            background-color: transparent;
+            color: #4361ee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .question-topic button:hover {
+            background-color: #4361ee;
+            color: #fff;
+        }
+
+        .question-topic button:active {
+            transform: scale(0.95);
+        }
+
 
         /* Número da questão à esquerda */
         .question-number {
@@ -1084,7 +1153,7 @@
             </div>
             -->
 
-            <h1>Meu Progresso</h1>
+            <h1>Seu Progresso</h1>
 
             <div class="filters-section">
                 <div class="discipline-filters" id="disciplineFilters">
@@ -1171,15 +1240,19 @@
 
                                 <!-- INFO -->
                                 <div class="quiz-info">
-                                    {{ test.totalQuestions }} questões
-                                    <span (click)="onGetSelectedQuestionsByTopicId(test)"
-                                        *ngIf="isSuperAdmin && loggedUser">
-                                        | Ver
+                                    <span class="questions-count">
+                                        {{ test.totalQuestions }} questões
                                     </span>
 
-                                    <span (click)="onGetQuestionsByTopicId(test)" *ngIf="isSuperAdmin && loggedUser">
-                                        | Editar
-                                    </span>
+                                    <div class="quiz-actions" *ngIf="isSuperAdmin && loggedUser">
+                                        <button class="action-btn view" (click)="onGetSelectedQuestionsByTopicId(test)">
+                                            Ver
+                                        </button>
+
+                                        <button class="action-btn edit" (click)="onGetQuestionsByTopicId(test)">
+                                            Editar
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <!-- AÇÕES -->
@@ -1275,6 +1348,7 @@
                     <!-- Mostra o tópico, se existir -->
                     <div class="question-topic" *ngIf="question.topic">
                         <small>Tópico: {{ question.topic.name }}</small>
+                        <button (click)="onAddQuestionToTopicTestQuestions(question.id)">adicionar</button>
                     </div>
                 </div>
 
@@ -1305,6 +1379,7 @@
                     <!-- Mostra o tópico, se existir -->
                     <div class="question-topic" *ngIf="question.topic">
                         <small>Tópico: {{ question.topic.name }}</small>
+                        <button (click)="onRemoveQuestionFromTopicTestQuestions(question.id)">remover</button>
                     </div>
                 </div>
 

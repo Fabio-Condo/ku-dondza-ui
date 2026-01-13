@@ -6,6 +6,7 @@ import { TopicTestDTO } from '../core/model/TopicTestDTO';
 import { TopicWithTestsDTO } from '../core/model/TopicWithTestsDTO';
 import { Question } from '../core/model/Question';
 import { Quiz } from '../core/model/Quiz';
+import { User } from '../core/model/User';
 
 @Injectable({
     providedIn: 'root'
@@ -42,5 +43,13 @@ export class MainPanelService {
 
     getQuestionsByTopicTestId(id: number): Observable<Question[]> {
         return this.http.get<Question[]>(`${this.host}/${id}/questions`);
+    }
+
+    addQuestionToTopicTestQuestions(topicTestId: number, questionId: number): Observable<TopicTestDTO> {
+        return this.http.post<TopicTestDTO>(`${this.host}/${topicTestId}/questions/${questionId}`, {});
+    }
+
+    removeQuestionFromTopicTestQuestions(topicTestId: number, questionId: number): Observable<TopicTestDTO> {
+        return this.http.delete<TopicTestDTO>(`${this.host}/${topicTestId}/questions/${questionId}`, {});
     }
 }

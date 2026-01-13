@@ -222,6 +222,46 @@ export class MainPanelComponent implements OnInit {
     );
   }
 
+  onAddQuestionToTopicTestQuestions(questionId: number): void {
+    this.addQuestionToTopicTestQuestions(questionId);
+  }
+
+  addQuestionToTopicTestQuestions(questionId: number): void {
+    this.loadingMessage = 'Adicionando questão';
+    this.showLoading = true;
+
+    this.mainPanelService.addQuestionToTopicTestQuestions(this.topicTest.id, questionId).subscribe({
+      next: (topicTest) => {
+        this.messageService.add({ severity: 'success', detail: 'Questão adicionada com sucesso!' });
+        this.showLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.sendErrorNotification(error.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  onRemoveQuestionFromTopicTestQuestions(questionId: number): void {
+    this.removeQuestionFromTopicTestQuestions(questionId);
+  }
+
+  removeQuestionFromTopicTestQuestions(questionId: number): void {
+    this.loadingMessage = 'Removendo questão';
+    this.showLoading = true;
+
+    this.mainPanelService.removeQuestionFromTopicTestQuestions(this.topicTest.id, questionId).subscribe({
+      next: (topicTest) => {
+        this.messageService.add({ severity: 'success', detail: 'Questão removida com sucesso!' });
+        this.showLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.sendErrorNotification(error.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
   getFormattedText(text: string): string {
     // Negrito: **texto** → <strong>texto</strong>
     let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
@@ -258,7 +298,7 @@ export class MainPanelComponent implements OnInit {
      ========================= */
 
   carregarDisciplinas(): void {
-    this.loadingMessage = 'Obtendo disciplinas';
+    this.loadingMessage = 'Carregando disciplinas';
     this.showLoading = true;
 
     this.subjectsService.findAll().subscribe({
