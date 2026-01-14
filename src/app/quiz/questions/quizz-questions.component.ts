@@ -515,6 +515,8 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.difficultyLevel = 'BEGINNER';
     this.quiz.limitPerTopic = 10;
 
+    this.quiz.blockedTip = true; // Bloqueia dicas para testes de progresso
+
     this.mainPanelService.getQuestionsByTopicTestId(topicId).subscribe(
       (questions: Question[]) => {
         this.questions = questions;
@@ -561,6 +563,8 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.difficultyLevel = 'BEGINNER';
     this.quiz.limitPerTopic = 5;
 
+    this.quiz.blockedTip = true; // Bloqueia dicas para testes
+
     this.topicService.getBySubjectId(subjectId).subscribe(
       (dados: Topic[]) => {
         this.quiz.questions = [];
@@ -588,6 +592,10 @@ export class QuizzQuestionsComponent implements OnInit {
     if (selectedTopicIds.length == 0) {
       this.messageService.add({ severity: 'error', detail: 'O Quiz deve ter pelo menos um tópico associado para gerar questões!' });
       return;
+    }
+
+    if (this.quiz.type === 'TEST') {
+      this.quiz.blockedTip = true;
     }
 
     this.showLoading = true;
@@ -728,6 +736,8 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.quiz.user = this.loggedUser;
 
+    this.quiz.blockedTip = false; // Desbloqueia dicas ao submeter o quiz
+
     this.stopTimer();
     this.quiz.isSubmitted = true;
     this.quiz.id = 0; // Força a criação de um novo quiz
@@ -745,7 +755,7 @@ export class QuizzQuestionsComponent implements OnInit {
   onSaveQuiz() {
     if (this.isUserLoggedIn) {
 
-      if(this.origem === 'subject-progress' && this.progressTestId){
+      if (this.origem === 'subject-progress' && this.progressTestId) {
         this.saveQuizTopicTest();
         return;
       }

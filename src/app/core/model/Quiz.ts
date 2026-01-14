@@ -26,6 +26,8 @@ export class Quiz {
     isAdminMenuOpen: boolean = false;
     showLoadingSave: boolean = false;
 
+    blockedTip: boolean = false; // Indica se a dica está bloqueada (para quizzes do tipo TEST)
+
     isSubmitted: boolean = false;
 
     // Adicionando a propriedade resultsByTopic

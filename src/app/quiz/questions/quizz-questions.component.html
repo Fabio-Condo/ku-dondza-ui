@@ -467,7 +467,7 @@
           <!-- Input para mostrar dica e solução -->
           <div class="tip">
             <div class="tip-input">
-              <button class="solution-button" [disabled]="quiz.type === 'TEST'"
+              <button class="solution-button" [disabled]="quiz.blockedTip"
                 (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
                 <h1 class="title">Dica</h1>
                 <svg [class.rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="24"
@@ -481,7 +481,7 @@
                 {{ quiz.questions[currentQuestionIndex].tip }}
               </p>
             </div>
-            <p class="lock-message" *ngIf="quiz.type === 'TEST'">
+            <p class="lock-message" *ngIf="quiz.blockedTip">
               🔒 Dicas desativadas no modo Avaliação.
               O objetivo é medir o seu conhecimento real.
             </p>
