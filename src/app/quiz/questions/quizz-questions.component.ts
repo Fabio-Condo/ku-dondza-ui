@@ -1080,13 +1080,13 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showStartScreen = true;
   }
 
-  //goBack(): void {
-  //  if (this.origem === 'subjects' && this.subjectId) {
-  //    this.router.navigate(['/subjects', this.subjectId]);
-  //  } else {
-  //    this.router.navigate(['/topics']);
-  //  }
-  //} 
+  goBack(): void {
+    if (this.origem === 'subject-progress') {
+      this.router.navigate(['/subject-progress']);
+    } else {
+      this.router.navigate(['/quizzes']);
+    }
+  }
 
   startQuiz() {
     this.showInitQuizScreen = false; // Oculta a tela inicial do quiz
