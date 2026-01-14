@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserByUserId(userId: string) {
-    this.loadingMessage = "Carregando carteiras do usuário"
+    this.loadingMessage = "Carregando carteiras"
     this.showLoading = true;
     this.userService.getUserByUserId(userId).subscribe(
       (user: User) => {
