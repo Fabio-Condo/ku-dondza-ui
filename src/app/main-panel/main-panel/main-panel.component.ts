@@ -31,7 +31,7 @@ export class MainPanelComponent implements OnInit {
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
-  questions: Question[] = [];
+  allQuestions: Question[] = [];
   displayModalQuestionsList: boolean = false;
   currentQuestionIndex = 0;
 
@@ -209,7 +209,7 @@ export class MainPanelComponent implements OnInit {
 
     this.questionService.findAllByTopicAndMarkSelected(topicTest.id).subscribe(
       (dados: Question[]) => {
-        this.questions = dados;
+        this.allQuestions = dados;
         this.currentQuestionIndex = 0;
         this.showLoading = false;
         this.renderMathExpressions(); // Renderiza as expressões matemáticas após carregar o quiz
@@ -232,6 +232,13 @@ export class MainPanelComponent implements OnInit {
 
     this.mainPanelService.addQuestionToTopicTestQuestions(this.topicTest.id, questionId).subscribe({
       next: (topicTest) => {
+        
+        // DEVE MARCAR A QUESTÃO COMO SELECIONADA NA LISTA
+        const question = this.allQuestions.find(q => q.id === questionId);
+        if (question) {
+          question.selected = true;
+        }
+
         this.messageService.add({ severity: 'success', detail: 'Questão adicionada com sucesso!' });
         this.showLoading = false;
       },
@@ -252,6 +259,17 @@ export class MainPanelComponent implements OnInit {
 
     this.mainPanelService.removeQuestionFromTopicTestQuestions(this.topicTest.id, questionId).subscribe({
       next: (topicTest) => {
+        // DEV RETIRAR A QUESTÃO DA LISTA TAMBÉM
+        this.selectedQuestions = this.selectedQuestions.filter(q => q.id !== questionId);
+
+        // DEVE MARCAR A QUESTAO COM NAO SELECIONADA NA LISTA GERAL
+        this.allQuestions = this.allQuestions.map(q => {
+          if (q.id === questionId) {
+            q.selected = false;
+          }
+          return q;
+        });
+        
         this.messageService.add({ severity: 'success', detail: 'Questão removida com sucesso!' });
         this.showLoading = false;
       },
@@ -325,15 +343,15 @@ export class MainPanelComponent implements OnInit {
     this.showLoading = true;
 
     this.mainPanelService.getBySubjectId(this.selectedSubject.id, this.loggedUser.id).subscribe({
-        next: (dados) => {
-          this.topicWithTests = dados;
-          this.showLoading = false;
-        },
-        error: (error: HttpErrorResponse) => {
-          this.sendErrorNotification(error.error.message);
-          this.showLoading = false;
-        }
-      });
+      next: (dados) => {
+        this.topicWithTests = dados;
+        this.showLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.sendErrorNotification(error.error.message);
+        this.showLoading = false;
+      }
+    });
   }
 
   /* =========================
@@ -414,17 +432,17 @@ export class MainPanelComponent implements OnInit {
     setTimeout(() => {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
       if (mathContainer && typeof MathJax !== 'undefined') {
-        mathContainer.innerHTML = this.getFormattedText(this.questions[this.currentQuestionIndex].text);
+        mathContainer.innerHTML = this.getFormattedText(this.allQuestions[this.currentQuestionIndex].text);
       }
 
       const mathContainerSolution = document.getElementById(`math-container-solution-${this.currentQuestionIndex}`);
       if (mathContainerSolution && typeof MathJax !== 'undefined') {
-        mathContainerSolution.innerHTML = this.getFormattedText(this.questions[this.currentQuestionIndex].solution);
+        mathContainerSolution.innerHTML = this.getFormattedText(this.allQuestions[this.currentQuestionIndex].solution);
       }
 
       const mathContainerTip = document.getElementById(`math-container-tip-${this.currentQuestionIndex}`);
       if (mathContainerTip && typeof MathJax !== 'undefined') {
-        mathContainerTip.innerHTML = this.getFormattedText(this.questions[this.currentQuestionIndex].tip);
+        mathContainerTip.innerHTML = this.getFormattedText(this.allQuestions[this.currentQuestionIndex].tip);
       }
 
       if (typeof MathJax !== 'undefined') {
@@ -440,7 +458,7 @@ export class MainPanelComponent implements OnInit {
   renderFunctions() {
     setTimeout(() => {
       const canvas = this.canvas?.nativeElement;
-      if (!canvas || !this.questions[this.currentQuestionIndex].mathExpressions || this.questions[this.currentQuestionIndex].mathExpressions.length === 0) return;
+      if (!canvas || !this.allQuestions[this.currentQuestionIndex].mathExpressions || this.allQuestions[this.currentQuestionIndex].mathExpressions.length === 0) return;
 
 
       const ctx = canvas.getContext('2d');
@@ -496,7 +514,7 @@ export class MainPanelComponent implements OnInit {
       // Cores para múltiplos gráficos
       const colors = ['blue', 'red', 'green', 'orange', 'purple'];
 
-      this.questions[this.currentQuestionIndex].mathExpressions.forEach((express, index) => {
+      this.allQuestions[this.currentQuestionIndex].mathExpressions.forEach((express, index) => {
         ctx.beginPath();
         ctx.strokeStyle = colors[index % colors.length];
         ctx.lineWidth = 2;
