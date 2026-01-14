@@ -1069,12 +1069,24 @@ export class QuizzQuestionsComponent implements OnInit {
 
     if ((!this.quiz.id || this.quiz.id === 0) && !this.quiz.isSubmitted) {
       this.stopTimer();
-      this.router.navigateByUrl('/quizzes');
+      if (this.origem === 'subject-progress' && this.progressTestId) {
+        this.router.navigate(['/progress-panel']);
+      } else {
+        this.router.navigateByUrl('/quizzes');
+      }
       return;
     }
     this.scrollToTop();
     this.showStartScreen = true;
   }
+
+  //goBack(): void {
+  //  if (this.origem === 'subjects' && this.subjectId) {
+  //    this.router.navigate(['/subjects', this.subjectId]);
+  //  } else {
+  //    this.router.navigate(['/topics']);
+  //  }
+  //} 
 
   startQuiz() {
     this.showInitQuizScreen = false; // Oculta a tela inicial do quiz
