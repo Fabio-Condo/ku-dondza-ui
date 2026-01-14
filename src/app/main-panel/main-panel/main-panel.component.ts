@@ -232,7 +232,7 @@ export class MainPanelComponent implements OnInit {
 
     this.mainPanelService.addQuestionToTopicTestQuestions(this.topicTest.id, questionId).subscribe({
       next: (topicTest) => {
-        
+
         // DEVE MARCAR A QUESTÃO COMO SELECIONADA NA LISTA
         const question = this.allQuestions.find(q => q.id === questionId);
         if (question) {
@@ -339,7 +339,7 @@ export class MainPanelComponent implements OnInit {
   }
 
   getTopicTestsBySubjectId(): void {
-    this.loadingMessage = 'Obtendo o progresso';
+    this.loadingMessage = 'Carregando progresso';
     this.showLoading = true;
 
     this.mainPanelService.getBySubjectId(this.selectedSubject.id, this.loggedUser.id).subscribe({
