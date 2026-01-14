@@ -788,23 +788,44 @@
             font-size: 0.75rem;
             line-height: 1;
             border-radius: 4px;
-            border: 1px solid #4361ee;
-            /* azul discreto */
+            border: 1px solid transparent;
             background-color: transparent;
-            color: #4361ee;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .question-topic button:hover {
+        .question-topic .btn-add {
+            border-color: #4361ee;
+            color: #4361ee;
+        }
+
+        .question-topic .btn-add:hover {
             background-color: #4361ee;
             color: #fff;
         }
 
-        .question-topic button:active {
+        .question-topic .btn-add:active {
             transform: scale(0.95);
         }
 
+        .question-topic .btn-remove {
+            border-color: #e63946;
+            color: #e63946;
+        }
+
+        .question-topic .btn-remove:hover {
+            background-color: #e63946;
+            color: #fff;
+        }
+
+        .question-topic .btn-remove:active {
+            transform: scale(0.95);
+        }
+
+        .question-topic button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         /* Número da questão à esquerda */
         .question-number {
@@ -1359,7 +1380,40 @@
     </div>
 </div>
 
-<!-- Popout -->
+<!-- Popout Ver Questoes adicionadas-->
+<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalSelectedQuestionsList">
+    <div class="popout-container">
+
+        <div class="popout-header">
+            <h2 class="popout-title">Questões</h2>
+            <button class="close-button" (click)="onCloseSelectedQuestionsList()">&times;</button>
+        </div>
+
+        <div *ngFor="let question of selectedQuestions; let i = index">
+            <div class="question-item" *ngIf="question.text" [ngClass]="{
+           }">
+
+                <span class="question-number">{{ i + 1 }}</span>
+                <div class="question-content">
+                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+
+                    <!-- Mostra o tópico, se existir -->
+                    <div class="question-topic" *ngIf="question.topic">
+                        <small>Tópico: {{ question.topic.name }}</small>
+
+                        <button class="btn-remove" (click)="onRemoveQuestionFromTopicTestQuestions(question.id)">
+                            remover
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Popout Ver Questoes adicionadas e marcadas-->
 <div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalQuestionsList">
     <div class="popout-container">
 
@@ -1380,39 +1434,18 @@
                     <!-- Mostra o tópico, se existir -->
                     <div class="question-topic" *ngIf="question.topic">
                         <small>Tópico: {{ question.topic.name }}</small>
-                        <button (click)="onAddQuestionToTopicTestQuestions(question.id)" *ngIf="!question.selected">adicionar</button>
-                        <button (click)="onRemoveQuestionFromTopicTestQuestions(question.id)" *ngIf="question.selected">remover</button>
+
+                        <button class="btn-add" (click)="onAddQuestionToTopicTestQuestions(question.id)"
+                            *ngIf="!question.selected">
+                            adicionar
+                        </button>
+
+                        <button class="btn-remove" (click)="onRemoveQuestionFromTopicTestQuestions(question.id)"
+                            *ngIf="question.selected">
+                            remover
+                        </button>
                     </div>
-                </div>
 
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Popout -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalSelectedQuestionsList">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Questões</h2>
-            <button class="close-button" (click)="onCloseSelectedQuestionsList()">&times;</button>
-        </div>
-
-        <div *ngFor="let question of selectedQuestions; let i = index">
-            <div class="question-item" *ngIf="question.text" [ngClass]="{
-           }">
-
-                <span class="question-number">{{ i + 1 }}</span>
-                <div class="question-content">
-                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-
-                    <!-- Mostra o tópico, se existir -->
-                    <div class="question-topic" *ngIf="question.topic">
-                        <small>Tópico: {{ question.topic.name }}</small>
-                        <button (click)="onRemoveQuestionFromTopicTestQuestions(question.id)">remover</button>
-                    </div>
                 </div>
 
             </div>
