@@ -311,7 +311,7 @@ export class QuizzQuestionsComponent implements OnInit {
       this.onInitQuiz();
     }
 
-    if (quizId && quizId == 'test' && this.origem === 'subject-progress' && this.progressTestId) {
+    if (quizId && quizId == 'test' && this.origem === 'progress-panel' && this.progressTestId) {
       this.StartProgressTopicTest(this.progressTestId);
     }
 
@@ -668,7 +668,7 @@ export class QuizzQuestionsComponent implements OnInit {
   onSaveQuiz() {
     if (this.isUserLoggedIn) {
 
-      if (this.origem === 'subject-progress' && this.progressTestId) {
+      if (this.origem === 'progress-panel' && this.progressTestId) {
         this.saveQuizTopicTest();
         return;
       }
@@ -1069,7 +1069,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
     if ((!this.quiz.id || this.quiz.id === 0) && !this.quiz.isSubmitted) {
       this.stopTimer();
-      if (this.origem === 'subject-progress' && this.progressTestId) {
+      if (this.origem === 'progress-panel' && this.progressTestId) {
         this.router.navigate(['/progress-panel']);
       } else {
         this.router.navigateByUrl('/quizzes');
@@ -1081,8 +1081,8 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   goBack(): void {
-    if (this.origem === 'subject-progress') {
-      this.router.navigate(['/subject-progress']);
+    if (this.origem === 'progress-panel') {
+      this.router.navigate(['/progress-panel']);
     } else {
       this.router.navigate(['/quizzes']);
     }

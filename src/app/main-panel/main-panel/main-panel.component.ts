@@ -269,7 +269,7 @@ export class MainPanelComponent implements OnInit {
           }
           return q;
         });
-        
+
         this.messageService.add({ severity: 'success', detail: 'Questão removida com sucesso!' });
         this.showLoading = false;
       },
@@ -298,7 +298,7 @@ export class MainPanelComponent implements OnInit {
   startTopicTest(topicTest: TopicTestDTO): void {
     this.router.navigate(['/quizzes', 'test'], {
       queryParams: {
-        from: 'subject-progress',
+        from: 'progress-panel',
         progressTestId: topicTest.id
       }
     });
@@ -308,7 +308,11 @@ export class MainPanelComponent implements OnInit {
     const quizId = topicTest.submittedQuizzes?.[0]?.quizId;
     if (!quizId) return;
 
-    this.router.navigate(['/quizzes', quizId]);
+    this.router.navigate(['/quizzes', quizId], {
+      queryParams: {
+        from: 'progress-panel'
+      }
+    });
   }
 
   /* =========================
