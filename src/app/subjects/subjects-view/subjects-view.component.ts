@@ -335,24 +335,6 @@ export class SubjectsViewComponent {
     });
   }
 
-  startPractice(topic: Topic) {
-    this.router.navigate(['/quizzes', 'training'], {
-      queryParams: {
-        from: 'subjects',
-        topicId: topic.id
-      }
-    });
-  }
-
-  startFinalTest() {
-    this.router.navigate(['/quizzes', 'test'], {
-      queryParams: {
-        from: 'subjects',
-        subjectId: this.subject.id
-      }
-    });
-  }
-
   // Embaralhar a ordem
   shuffleQuestions(questions: Question[]): Question[] {
     return questions.sort(() => Math.random() - 0.5);

@@ -170,21 +170,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Botão de iniciar exercícios ao final -->
-                                <div class="exercise-section">
-                                    <!--
-                                    <h3 class="exercise-title">Pronto Para Praticar?</h3>
-                                    <p class="exercise-description">
-                                        Teste seus conhecimentos com exercícios práticos e desafios interativos.
-                                        Aprenda fazendo e consolide seu aprendizado.
-                                    </p>
-                                    -->
-                                    <button class="btn-exercise" (click)="startPractice(topic)"
-                                        [disabled]="isPremiumTopic(topic)">
-                                        Iniciar Exercícios ({{ topic.questions.length }})
-                                    </button>
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -197,23 +182,6 @@
                     </div>
                     <h3>Progresso Geral</h3>
                     <p>Continue estudando para completar a disciplina</p>
-                </div>
-
-                <!-- Botão de iniciar exercícios ao final -->
-                <div class="exercise-section">
-                    <h3 class="exercise-title">Teste Final</h3>
-                    <p class="lock-message" *ngIf="isFreeUser()">
-                        🔒 Disponível para usuários Premium —
-                        <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
-                    </p>
-                    <p class="exercise-description">
-                        Chegou a hora de colocar em prática tudo o que aprendeu nesta disciplina.
-                        Responda ao teste final para avaliar seus conhecimentos e comprovar seu progresso.
-                    </p>
-                    <button class="btn-exercise" (click)="startFinalTest()"
-                        [disabled]="isFreeUser() || !subject.currentUserSubscribed">
-                        Iniciar Teste Final
-                    </button>
                 </div>
 
                 <br>

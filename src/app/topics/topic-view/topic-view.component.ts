@@ -125,15 +125,6 @@ export class TopicViewComponent implements OnInit {
     }
   }
 
-  startPractice() {
-    this.router.navigate(['/quizzes', 'training'], {
-      queryParams: {
-        from: 'topics',
-        topicId: this.topic.id
-      }
-    });
-  }
-
   // Embaralhar a ordem
   shuffleQuestions(questions: Question[]): Question[] {
     return questions.sort(() => Math.random() - 0.5);

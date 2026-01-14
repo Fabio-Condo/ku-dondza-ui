@@ -80,10 +80,7 @@ export class QuizzQuestionsComponent implements OnInit {
   displayModalAddPaymentOption: boolean = false;
 
   origem: string = '';
-  subjectId: number = 0;
-  topicId: number = 0;
   progressTestId: number = 0;
-
 
   correctSound = new Audio('assets/sounds/correct.wav');
   wrongSound = new Audio('assets/sounds/wrong.wav');
@@ -310,26 +307,8 @@ export class QuizzQuestionsComponent implements OnInit {
       this.progressTestId = params['progressTestId'];
     });
 
-    this.route.queryParams.subscribe(params => {
-      this.origem = params['from'];
-      this.subjectId = params['subjectId'];
-    });
-
-    this.route.queryParams.subscribe(params => {
-      this.origem = params['from'];
-      this.topicId = params['topicId'];
-    });
-
-    if (quizId && quizId == 'new' && !this.origem && !this.subjectId) {
+    if (quizId && quizId == 'new' && !this.origem) {
       this.onInitQuiz();
-    }
-
-    if (quizId && quizId == 'test' && this.origem === 'subjects' && this.subjectId) {
-      this.StartFinalTest(this.subjectId);
-    }
-
-    if (quizId && quizId == 'training' && this.topicId && (this.origem === 'subjects' || this.origem === 'topics')) {
-      this.StartTopicTraining(this.topicId);
     }
 
     if (quizId && quizId == 'test' && this.origem === 'subject-progress' && this.progressTestId) {
@@ -467,39 +446,6 @@ export class QuizzQuestionsComponent implements OnInit {
     );
   }
 
-  StartTopicTraining(topicId: number): void {
-
-    this.loadingMessage = "Obtendo tópicos"
-    this.showLoading = true;
-
-    this.showInitQuizScreen = false;
-    this.showStartScreen = false;
-    this.showCorrection = false;
-
-    this.quiz.anonymous = true;
-    this.quiz.type = 'TRAINING';
-    this.quiz.difficultyLevel = 'BEGINNER';
-    this.quiz.limitPerTopic = 10;
-
-    this.topicService.findById(topicId).subscribe(
-      (topic: Topic) => {
-        this.quiz.questions = [];
-        this.quiz.subject = topic.subject;
-
-        this.topics = [{
-          ...topic,
-          selected: true
-        }];
-
-        this.getQuestions();
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
   // Testes de topico único - Progresso automático
   StartProgressTopicTest(topicId: number): void {
 
@@ -541,39 +487,6 @@ export class QuizzQuestionsComponent implements OnInit {
         this.renderFunctions();
         this.startQuiz();
         this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  StartFinalTest(subjectId: number): void {
-
-    this.loadingMessage = "Obtendo tópicos"
-    this.showLoading = true;
-
-    this.showInitQuizScreen = false;
-    this.showStartScreen = false;
-    this.showCorrection = false;
-
-    this.quiz.anonymous = true;
-    this.quiz.type = 'TEST';
-    this.quiz.difficultyLevel = 'BEGINNER';
-    this.quiz.limitPerTopic = 5;
-
-    this.quiz.blockedTip = true; // Bloqueia dicas para testes
-
-    this.topicService.getBySubjectId(subjectId).subscribe(
-      (dados: Topic[]) => {
-        this.quiz.questions = [];
-        this.topics = [];
-        this.topics = dados;
-        this.quiz.subject = this.topics[0].subject;
-
-        this.selectAllTopics();
-        this.getQuestions();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
