@@ -463,7 +463,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.quiz.blockedTip = true; // Bloqueia dicas para testes de progresso
 
-    this.mainPanelService.getQuestionsByTopicTestId(topicId).subscribe(
+    this.mainPanelService.getQuestionsByTestId(topicId).subscribe(
       (questions: Question[]) => {
         this.questions = questions;
         this.quiz.questions = this.questions;

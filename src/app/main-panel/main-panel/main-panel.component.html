@@ -1208,7 +1208,7 @@
 
         </div>
 
-        <button class="fab" (click)="onAddNewTopicTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
+        <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
 
             <svg class="fab-icon" viewBox="0 0 24 24" width="22" height="22" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
@@ -1318,7 +1318,7 @@
 
                                     <!-- INICIAR -->
                                     <button class="start-btn start" *ngIf="isActive(topic, test, i)"
-                                        (click)="startTopicTest(test)">
+                                        (click)="startTest(test)">
                                         Iniciar
                                     </button>
                                 </div>
@@ -1358,7 +1358,7 @@
 
             <div class="form-group">
                 <label for="topic">Tópico</label>
-                <select id="topic" name="topic" [(ngModel)]="topicTest.topic.id" [disabled]="!selectedSubject" required>
+                <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!selectedSubject" required>
                     <option value="" disabled selected>Selecione o tópico</option>
                     <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
@@ -1366,7 +1366,7 @@
 
             <div class="form-group">
                 <label for="difficultyLevel">Nivel</label>
-                <select id="difficultyLevel" [(ngModel)]="topicTest.difficultyLevel" name="difficultyLevel" required>
+                <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
                     <option value="" disabled selected>Selecione o nivel</option>
                     <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
                 </select>
@@ -1375,7 +1375,7 @@
             <div class="form-group">
                 <label for="position">Posição</label>
                 <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                    [(ngModel)]="topicTest.orderIndex">
+                    [(ngModel)]="test.orderIndex">
             </div>
 
             <button class="submit-button" type="submit" [disabled]="testForm.invalid" class="btn">
@@ -1407,7 +1407,7 @@
                     <div class="question-topic" *ngIf="question.topic">
                         <small>Tópico: {{ question.topic.name }}</small>
 
-                        <button class="btn-remove" (click)="onRemoveQuestionFromTopicTestQuestions(question.id)">
+                        <button class="btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)">
                             remover
                         </button>
                     </div>
@@ -1441,12 +1441,12 @@
                     <div class="question-topic" *ngIf="question.topic">
                         <small>Tópico: {{ question.topic.name }}</small>
 
-                        <button class="btn-add" (click)="onAddQuestionToTopicTestQuestions(question.id)"
+                        <button class="btn-add" (click)="onAddQuestionToTestQuestions(question.id)"
                             *ngIf="!question.selected">
                             adicionar
                         </button>
 
-                        <button class="btn-remove" (click)="onRemoveQuestionFromTopicTestQuestions(question.id)"
+                        <button class="btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)"
                             *ngIf="question.selected">
                             remover
                         </button>

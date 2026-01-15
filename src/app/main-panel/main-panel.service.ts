@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { TopicTestDTO } from '../core/model/TopicTestDTO';
+import { Test } from '../core/model/Test';
 import { TopicWithTestsDTO } from '../core/model/TopicWithTestsDTO';
 import { Question } from '../core/model/Question';
-import { Quiz } from '../core/model/Quiz';
-import { User } from '../core/model/User';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MainPanelService {
 
-    private host = environment.apiUrl + '/topic-tests';
+    private host = environment.apiUrl + '/tests';
 
     constructor(private http: HttpClient) { }
 
@@ -21,16 +19,16 @@ export class MainPanelService {
         return this.http.get<TopicWithTestsDTO[]>(`${this.host}/${subjectId}/subjects/users/${userId}`, {});
     }
 
-    findById(id: number): Observable<TopicTestDTO> {
-        return this.http.get<TopicTestDTO>(`${this.host}/${id}`, {});
+    findById(id: number): Observable<Test> {
+        return this.http.get<Test>(`${this.host}/${id}`, {});
     }
 
-    add(TopicTest: TopicTestDTO): Observable<TopicTestDTO> {
-        return this.http.post<TopicTestDTO>(this.host, TopicTest, {});
+    add(test: Test): Observable<Test> {
+        return this.http.post<Test>(this.host, test, {});
     }
 
-    update(TopicTest: TopicTestDTO): Observable<TopicTestDTO> {
-        return this.http.put<TopicTestDTO>(`${this.host}/${TopicTest.id}`, TopicTest, {});
+    update(test: Test): Observable<Test> {
+        return this.http.put<Test>(`${this.host}/${test.id}`, test, {});
     }
 
     excluir(id: number): Observable<void> {
@@ -41,15 +39,15 @@ export class MainPanelService {
         return this.http.get<number>(`${this.host}/total`, {});
     }
 
-    getQuestionsByTopicTestId(id: number): Observable<Question[]> {
+    getQuestionsByTestId(id: number): Observable<Question[]> {
         return this.http.get<Question[]>(`${this.host}/${id}/questions`);
     }
 
-    addQuestionToTopicTestQuestions(topicTestId: number, questionId: number): Observable<TopicTestDTO> {
-        return this.http.post<TopicTestDTO>(`${this.host}/${topicTestId}/questions/${questionId}`, {});
+    addQuestionToTestQuestions(testId: number, questionId: number): Observable<Test> {
+        return this.http.post<Test>(`${this.host}/${testId}/questions/${questionId}`, {});
     }
 
-    removeQuestionFromTopicTestQuestions(topicTestId: number, questionId: number): Observable<TopicTestDTO> {
-        return this.http.delete<TopicTestDTO>(`${this.host}/${topicTestId}/questions/${questionId}`, {});
+    removeQuestionFromTestQuestions(testId: number, questionId: number): Observable<Test> {
+        return this.http.delete<Test>(`${this.host}/${testId}/questions/${questionId}`, {});
     }
 }

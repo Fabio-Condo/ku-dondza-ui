@@ -3,7 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
-import { TopicTestDTO } from 'src/app/core/model/TopicTestDTO';
+import { Test } from 'src/app/core/model/Test';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Title } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -26,7 +26,7 @@ import { e, evaluate } from 'mathjs'; //npm install mathjs
 })
 export class MainPanelComponent implements OnInit {
 
-  topicTest: TopicTestDTO = new TopicTestDTO();
+  test: Test = new Test();
   topicWithTests: TopicWithTestsDTO[] = [];
   subjects: Subject[] = [];
   topics: Topic[] = [];
@@ -89,7 +89,7 @@ export class MainPanelComponent implements OnInit {
   }
 
   get editing() {
-    return Boolean(this.topicTest.id);
+    return Boolean(this.test.id);
   }
 
   save(subjectForm: NgForm) {
@@ -103,9 +103,9 @@ export class MainPanelComponent implements OnInit {
   addNew(testForm: NgForm) {
 
     this.showLoading = true;
-    this.mainPanelService.add(this.topicTest).subscribe(
+    this.mainPanelService.add(this.test).subscribe(
       (response) => {
-        this.topicTest = response;
+        this.test = response;
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Teste adicionado com sucesso!' });
       },
@@ -118,9 +118,9 @@ export class MainPanelComponent implements OnInit {
 
   update(testForm: NgForm) {
     this.showLoading = true;
-    this.mainPanelService.update(this.topicTest).subscribe(
+    this.mainPanelService.update(this.test).subscribe(
       (response) => {
-        this.topicTest = response;
+        this.test = response;
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Teste alterado com sucesso!' });
       },
@@ -131,13 +131,13 @@ export class MainPanelComponent implements OnInit {
     );
   }
 
-  onUpdateTopicTest(topicTest: TopicTestDTO): void {
-    this.topicTest = topicTest;
+  onUpdateTest(test: Test): void {
+    this.test = test;
     this.displayModalSave = true;
   }
 
-  onAddNewTopicTest(): void {
-    this.topicTest = new TopicTestDTO();
+  onAddNewTest(): void {
+    this.test = new Test();
     this.getTopicsBySubjectId();
     this.displayModalSave = true;
   }
@@ -160,9 +160,9 @@ export class MainPanelComponent implements OnInit {
     });
   }
 
-  onGetSelectedQuestionsByTopicId(topicTest: TopicTestDTO) {
-    this.topicTest = topicTest;
-    this.getSelectedQuestionsByTopicId(this.topicTest);
+  onGetSelectedQuestionsByTopicId(test: Test) {
+    this.test = test;
+    this.getSelectedQuestionsByTopicId(this.test);
     this.displayModalSelectedQuestionsList = true;
     document.body.classList.add('no-scroll');
   }
@@ -172,11 +172,11 @@ export class MainPanelComponent implements OnInit {
     document.body.classList.remove('no-scroll');
   }
 
-  getSelectedQuestionsByTopicId(topicTest: TopicTestDTO): void {
+  getSelectedQuestionsByTopicId(test: Test): void {
     this.loadingMessage = "Buscando questões";
     this.showLoading = true;
 
-    this.mainPanelService.getQuestionsByTopicTestId(topicTest.id).subscribe(
+    this.mainPanelService.getQuestionsByTestId(test.id).subscribe(
       (dados: Question[]) => {
         this.selectedQuestions = dados;
         this.showLoading = false;
@@ -190,9 +190,9 @@ export class MainPanelComponent implements OnInit {
     );
   }
 
-  onGetQuestionsByTopicId(topicTest: TopicTestDTO) {
-    this.topicTest = topicTest;
-    this.findAllByTopicAndMarkSelected(this.topicTest);
+  onGetQuestionsByTopicId(test: Test) {
+    this.test = test;
+    this.findAllByTopicAndMarkSelected(this.test);
     this.displayModalQuestionsList = true;
     document.body.classList.add('no-scroll');
   }
@@ -203,11 +203,11 @@ export class MainPanelComponent implements OnInit {
   }
 
   // USADO PARA ADD QUESTIONS NOS TESTES DE PROGRESSO
-  findAllByTopicAndMarkSelected(topicTest: TopicTestDTO): void {
+  findAllByTopicAndMarkSelected(test: Test): void {
     this.loadingMessage = "Buscando questões";
     this.showLoading = true;
 
-    this.questionService.findAllByTopicAndMarkSelected(topicTest.id).subscribe(
+    this.questionService.findAllByTopicAndMarkSelected(test.id).subscribe(
       (dados: Question[]) => {
         this.allQuestions = dados;
         this.currentQuestionIndex = 0;
@@ -222,16 +222,16 @@ export class MainPanelComponent implements OnInit {
     );
   }
 
-  onAddQuestionToTopicTestQuestions(questionId: number): void {
-    this.addQuestionToTopicTestQuestions(questionId);
+  onAddQuestionToTestQuestions(questionId: number): void {
+    this.addQuestionToTestQuestions(questionId);
   }
 
-  addQuestionToTopicTestQuestions(questionId: number): void {
+  addQuestionToTestQuestions(questionId: number): void {
     this.loadingMessage = 'Adicionando questão';
     this.showLoading = true;
 
-    this.mainPanelService.addQuestionToTopicTestQuestions(this.topicTest.id, questionId).subscribe({
-      next: (topicTest) => {
+    this.mainPanelService.addQuestionToTestQuestions(this.test.id, questionId).subscribe({
+      next: (test) => {
 
         // DEVE MARCAR A QUESTÃO COMO SELECIONADA NA LISTA
         const question = this.allQuestions.find(q => q.id === questionId);
@@ -249,16 +249,16 @@ export class MainPanelComponent implements OnInit {
     });
   }
 
-  onRemoveQuestionFromTopicTestQuestions(questionId: number): void {
-    this.removeQuestionFromTopicTestQuestions(questionId);
+  onRemoveQuestionFromTestQuestions(questionId: number): void {
+    this.removeQuestionFromTestQuestions(questionId);
   }
 
-  removeQuestionFromTopicTestQuestions(questionId: number): void {
+  removeQuestionFromTestQuestions(questionId: number): void {
     this.loadingMessage = 'Removendo questão';
     this.showLoading = true;
 
-    this.mainPanelService.removeQuestionFromTopicTestQuestions(this.topicTest.id, questionId).subscribe({
-      next: (topicTest) => {
+    this.mainPanelService.removeQuestionFromTestQuestions(this.test.id, questionId).subscribe({
+      next: (test) => {
         // DEV RETIRAR A QUESTÃO DA LISTA TAMBÉM
         this.selectedQuestions = this.selectedQuestions.filter(q => q.id !== questionId);
 
@@ -295,17 +295,17 @@ export class MainPanelComponent implements OnInit {
      NAVEGAÇÃO
      ========================= */
 
-  startTopicTest(topicTest: TopicTestDTO): void {
+  startTest(test: Test): void {
     this.router.navigate(['/quizzes', 'test'], {
       queryParams: {
         from: 'progress-panel',
-        progressTestId: topicTest.id
+        progressTestId: test.id
       }
     });
   }
 
-  reviewTest(topicTest: TopicTestDTO): void {
-    const quizId = topicTest.submittedQuizzes?.[0]?.quizId;
+  reviewTest(test: Test): void {
+    const quizId = test.submittedQuizzes?.[0]?.quizId;
     if (!quizId) return;
 
     this.router.navigate(['/quizzes', quizId], {
@@ -327,7 +327,7 @@ export class MainPanelComponent implements OnInit {
       next: (dados) => {
         this.subjects = dados;
         this.selectedSubject = this.subjects[0];
-        this.getTopicTestsBySubjectId();
+        this.getTestsBySubjectId();
         //this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
@@ -339,10 +339,10 @@ export class MainPanelComponent implements OnInit {
 
   onSelectSubject(subject: Subject): void {
     this.selectedSubject = subject;
-    this.getTopicTestsBySubjectId();
+    this.getTestsBySubjectId();
   }
 
-  getTopicTestsBySubjectId(): void {
+  getTestsBySubjectId(): void {
     this.loadingMessage = 'Carregando progresso';
     this.showLoading = true;
 
@@ -362,7 +362,7 @@ export class MainPanelComponent implements OnInit {
      PROGRESSOS (TAXAS)
      ========================= */
 
-  isCompleted(test: TopicTestDTO): boolean {
+  isCompleted(test: Test): boolean {
     return !!test.submittedQuizzes && test.submittedQuizzes.length > 0;
   }
 
@@ -398,12 +398,12 @@ export class MainPanelComponent implements OnInit {
     return topic.tests.findIndex(test => !this.isCompleted(test));
   }
 
-  isActive(topic: TopicWithTestsDTO, test: TopicTestDTO, index: number): boolean {
+  isActive(topic: TopicWithTestsDTO, test: Test, index: number): boolean {
     if (this.isCompleted(test)) return false;
     return index === this.getFirstIncompleteIndex(topic);
   }
 
-  isLocked(topic: TopicWithTestsDTO, test: TopicTestDTO, index: number): boolean {
+  isLocked(topic: TopicWithTestsDTO, test: Test, index: number): boolean {
     return !this.isCompleted(test) && !this.isActive(topic, test, index);
   }
 

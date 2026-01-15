@@ -1,5 +1,6 @@
 import { Question } from "./Question";
 import { Subject } from "./Subject";
+import { Test } from "./Test";
 import { TopicContent } from "./Topic-content";
 
 export class Topic {
@@ -10,7 +11,8 @@ export class Topic {
     subject = new Subject();
     questions: Question[] = [];
     contents: TopicContent[] = [];
-    premium: boolean = false; 
+    tests: Test[] = [];
+    premium: boolean = false;
 
     selected: boolean = false; // Adicionamos uma propriedade para controle de seleção
     isAdminMenuOpen: boolean = false;
