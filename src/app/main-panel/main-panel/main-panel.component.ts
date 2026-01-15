@@ -27,7 +27,7 @@ import { e, evaluate } from 'mathjs'; //npm install mathjs
 export class MainPanelComponent implements OnInit {
 
   test: Test = new Test();
-  topicWithTests: TopicTestsDTO[] = [];
+  topicTests: TopicTestsDTO[] = [];
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
@@ -348,7 +348,7 @@ export class MainPanelComponent implements OnInit {
 
     this.mainPanelService.getBySubjectId(this.selectedSubject.id, this.loggedUser.id).subscribe({
       next: (dados) => {
-        this.topicWithTests = dados;
+        this.topicTests = dados;
         this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
@@ -374,16 +374,16 @@ export class MainPanelComponent implements OnInit {
   }
 
   getDisciplineProgress(): number {
-    if (!this.topicWithTests || this.topicWithTests.length === 0) return 0;
+    if (!this.topicTests || this.topicTests.length === 0) return 0;
 
-    const totalTests = this.topicWithTests.reduce(
+    const totalTests = this.topicTests.reduce(
       (sum, topic) => sum + topic.tests.length,
       0
     );
 
     if (totalTests === 0) return 0;
 
-    const completedTests = this.topicWithTests.reduce((sum, topic) => {
+    const completedTests = this.topicTests.reduce((sum, topic) => {
       return sum + topic.tests.filter(t => this.isCompleted(t)).length;
     }, 0);
 
