@@ -8,7 +8,7 @@ import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Title } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MainPanelService } from '../main-panel.service';
-import { TopicWithTestsDTO } from 'src/app/core/model/TopicWithTestsDTO';
+import { TopicTestsDTO } from 'src/app/core/model/TopicTestsDTO';
 import { Topic } from 'src/app/core/model/Topic';
 import { Subject } from 'src/app/core/model/Subject';
 import { Role } from 'src/app/enum/role.enum';
@@ -27,7 +27,7 @@ import { e, evaluate } from 'mathjs'; //npm install mathjs
 export class MainPanelComponent implements OnInit {
 
   test: Test = new Test();
-  topicWithTests: TopicWithTestsDTO[] = [];
+  topicWithTests: TopicTestsDTO[] = [];
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
@@ -366,7 +366,7 @@ export class MainPanelComponent implements OnInit {
     return !!test.submittedQuizzes && test.submittedQuizzes.length > 0;
   }
 
-  getTopicProgress(topic: TopicWithTestsDTO): number {
+  getTopicProgress(topic: TopicTestsDTO): number {
     if (!topic.tests || topic.tests.length === 0) return 0;
 
     const completed = topic.tests.filter(t => this.isCompleted(t)).length;
@@ -394,16 +394,16 @@ export class MainPanelComponent implements OnInit {
      DESBLOQUEIO SEQUENCIAL
      ========================= */
 
-  getFirstIncompleteIndex(topic: TopicWithTestsDTO): number {
+  getFirstIncompleteIndex(topic: TopicTestsDTO): number {
     return topic.tests.findIndex(test => !this.isCompleted(test));
   }
 
-  isActive(topic: TopicWithTestsDTO, test: Test, index: number): boolean {
+  isActive(topic: TopicTestsDTO, test: Test, index: number): boolean {
     if (this.isCompleted(test)) return false;
     return index === this.getFirstIncompleteIndex(topic);
   }
 
-  isLocked(topic: TopicWithTestsDTO, test: Test, index: number): boolean {
+  isLocked(topic: TopicTestsDTO, test: Test, index: number): boolean {
     return !this.isCompleted(test) && !this.isActive(topic, test, index);
   }
 

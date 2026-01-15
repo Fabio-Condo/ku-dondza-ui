@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Test } from '../core/model/Test';
-import { TopicWithTestsDTO } from '../core/model/TopicWithTestsDTO';
+import { TopicTestsDTO } from '../core/model/TopicTestsDTO';
 import { Question } from '../core/model/Question';
 
 @Injectable({
@@ -15,8 +15,8 @@ export class MainPanelService {
 
     constructor(private http: HttpClient) { }
 
-    getBySubjectId(subjectId: number, userId: number): Observable<TopicWithTestsDTO[]> {
-        return this.http.get<TopicWithTestsDTO[]>(`${this.host}/${subjectId}/subjects/users/${userId}`, {});
+    getBySubjectId(subjectId: number, userId: number): Observable<TopicTestsDTO[]> {
+        return this.http.get<TopicTestsDTO[]>(`${this.host}/subjects/${subjectId}/users/${userId}`, {});
     }
 
     findById(id: number): Observable<Test> {

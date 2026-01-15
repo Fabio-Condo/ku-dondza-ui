@@ -1,6 +1,6 @@
 import { Test } from "./Test";
 
-export class TopicWithTestsDTO {
+export class TopicTestsDTO {
     topicId!: number;
     topicName!: string;
     orderIndex!: number;
