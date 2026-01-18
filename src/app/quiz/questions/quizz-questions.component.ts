@@ -49,6 +49,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   showInitQuizScreen: boolean = false; // Variável para controlar a exibição da tela inicial do quiz
   submittedAnswers: Answer[] = []; // Lista de respostas do usuário
+  questionsWithFullSolutions: Question[] = [];
   questions: Question[] = [];
   subjects: Subject[] = [];
   showGetSubjectLoading: boolean = false;
@@ -515,6 +516,9 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
       (dados: Question[]) => {
+
+        this.questionsWithFullSolutions = dados;
+
         // Se o utilizador não for premium → limitar o texto da solução
         if (this.isFreeUser()) {
           dados = dados.map(q => ({
@@ -795,6 +799,8 @@ export class QuizzQuestionsComponent implements OnInit {
       (response) => {
         this.quiz = response;
         this.quiz.isSubmitted = true;
+
+        this.questionsWithFullSolutions = this.quiz.questions;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
         if (this.isFreeUser()) {
@@ -1943,6 +1949,31 @@ export class QuizzQuestionsComponent implements OnInit {
         this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        // Atualiza **todas** as questões da lista
+        this.quiz.questions = this.quiz.questions.map(q => {
+          const full = this.questionsWithFullSolutions.find(f => f.questionId === q.questionId);
+          if (full) {
+            return {
+              ...q,
+              solution: full.solution
+            };
+          }
+          return q;
+        });
+
+        this.questions = this.questions.map(q => {
+          const full = this.questionsWithFullSolutions.find(f => f.questionId === q.questionId);
+          if (full) {
+            return {
+              ...q,
+              solution: full.solution
+            };
+          }
+          return q;
+        });
+
+        this.renderMathExpressions(); // Re-renderiza MathJax para todas as soluções
 
         this.onCloseUpgradeModal();
         this.onCloseModalPaymentOptions();

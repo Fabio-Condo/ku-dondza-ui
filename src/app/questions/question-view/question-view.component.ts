@@ -17,7 +17,7 @@ import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Title } from '@angular/platform-browser';
 
 declare const MathJax: any;
-import { evaluate } from 'mathjs'; //npm install mathjs
+import { evaluate, re } from 'mathjs'; //npm install mathjs
 import { NgForm } from '@angular/forms';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { CommentService } from 'src/app/comments/comment.service';
@@ -39,6 +39,7 @@ export class QuestionViewComponent implements OnInit {
   question: Question = new Question();
 
   questions: Question[] = [];
+  questionsWithFullSolutions: Question[] = [];
   currentQuestionIndex = 0;
 
   showLoading: boolean = false;
@@ -202,6 +203,7 @@ export class QuestionViewComponent implements OnInit {
     this.questionService.getQuestionByQuestionId(id, this.loggedUser.id).subscribe(
       (response) => {
         this.question = response;
+        this.questionsWithFullSolutions.unshift(response); // Adiciona a questão recebida na primeira posição da lista
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
         if (this.isFreeUser()) {
@@ -243,6 +245,8 @@ export class QuestionViewComponent implements OnInit {
 
     this.questionService.getQuestionsByTopicId(this.question.topic.id).subscribe(
       (dados: Question[]) => {
+
+        this.questionsWithFullSolutions = dados;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
         if (this.isFreeUser()) {
@@ -1017,7 +1021,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   private async initializeGoogleAuth(): Promise<void> {
-    
+
     if (this.isMobileWebView()) {
       console.log('Mobile WebView detected — Google Auth skipped.');
       return; // não inicializa SDK
@@ -1213,6 +1217,25 @@ export class QuestionViewComponent implements OnInit {
         this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        // Atualiza **todas** as questões da lista
+        this.questions = this.questions.map(q => {
+          const full = this.questionsWithFullSolutions.find(f => f.questionId === q.questionId);
+          if (full) {
+            return {
+              ...q,
+              solution: full.solution
+            };
+          }
+          return q;
+        });
+
+        // Atualiza também a questão atual (referência direta)
+        if (this.questions.length === 1) {
+          this.findById(this.question.questionId); // Recarrega questão atual
+        }
+
+        this.renderMathExpressions(); // Re-renderiza MathJax para todas as soluções
 
         this.onCloseUpgradeModal();
         this.onCloseModalPaymentOptions();
