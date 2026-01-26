@@ -1400,7 +1400,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-        this.submitAnswers();
+        //this.submitAnswers();
         this.showLoading = false;
         this.displayModalLogin = false;
         document.body.classList.remove('no-scroll');
@@ -1438,7 +1438,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-        this.submitAnswers();
+        //this.submitAnswers();
         this.showLoading = false;
         this.displayModalLogin = false;
         document.body.classList.remove('no-scroll');
@@ -1486,7 +1486,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
         this.ngZone.run(() => {
-          this.submitAnswers();
+          //this.submitAnswers();
           this.showLoading = false;
           this.displayModalLogin = false;
           document.body.classList.remove('no-scroll');
