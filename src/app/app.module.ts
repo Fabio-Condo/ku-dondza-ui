@@ -38,6 +38,8 @@ import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
 import { AboutUsModule } from './about-us/about-us.module';
 import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
 import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
+import { ExamesModule } from './exames/exames.module';
+import { ExamesRoutingModule } from './exames/exames-routing.module';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     HomeRoutingModule,
     QuizRoutingModule,
     QuestionRoutingModule,
+    ExamesRoutingModule,
     MainPanelRoutingModule,
     PricesRoutingModule,
     FaqRoutingModule,
@@ -67,6 +70,7 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     HomeModule,
     QuizModule,
     QuestionsModule,
+    ExamesModule,
     MainPanelModule,
     PricesModule,
     FaqModule,

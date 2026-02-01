@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exames de Admissão</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            color: #4a5568;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.625rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #2d3748;
+            transition: border-color 0.2s;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #4361ee;
+        }
+
+        .exams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .exam-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #f1f5f9;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(67, 97, 238, 0.15);
+        }
+
+        .exam-header {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .exam-title {
+            color: #2d3748;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .exam-institution {
+            color: #4361ee;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .exam-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #718096;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge-enunciado {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-resolvido {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            background: #3451d1;
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        .download-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #718096;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .exams-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Exames de Admissão</h1>
+            <p class="subtitle">Encontre e baixe exames anteriores das principais instituições</p>
+        </header>
+
+        <!--
+        <div class="filters">
+            <div class="filter-group">
+                <label for="year-filter">Ano</label>
+                <select id="year-filter">
+                    <option value="">Todos os anos</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="institution-filter">Instituição</label>
+                <select id="institution-filter">
+                    <option value="">Todas as instituições</option>
+                    <option value="UEM">UEM</option>
+                    <option value="UP">UP</option>
+                    <option value="UniZambeze">UniZambeze</option>
+                    <option value="UCM">UCM</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="type-filter">Tipo</label>
+                <select id="type-filter">
+                    <option value="">Todos os tipos</option>
+                    <option value="enunciado">Enunciado</option>
+                    <option value="resolvido">Resolvido</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="search">Pesquisar</label>
+                <input type="text" id="search" placeholder="Nome do exame...">
+            </div>
+        </div>
+        -->
+
+        <div class="exams-grid" id="exams-container">
+            <!-- Exam Card 1 -->
+            <div class="exam-card" data-year="2024" data-institution="UEM" data-type="enunciado">
+                <div class="exam-header">
+                    <h3 class="exam-title">Matemática - Fase I</h3>
+                    <p class="exam-institution">Universidade Eduardo Mondlane</p>
+                </div>
+                <div class="exam-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Ano:</span>
+                        <span>2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo:</span>
+                        <span class="badge badge-enunciado">Enunciado</span>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Baixar Exame
+                </button>
+            </div>
+
+            <!-- Exam Card 2 -->
+            <div class="exam-card" data-year="2024" data-institution="UEM" data-type="resolvido">
+                <div class="exam-header">
+                    <h3 class="exam-title">Matemática - Fase I</h3>
+                    <p class="exam-institution">Universidade Eduardo Mondlane</p>
+                </div>
+                <div class="exam-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Ano:</span>
+                        <span>2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo:</span>
+                        <span class="badge badge-resolvido">Resolvido</span>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Baixar Exame
+                </button>
+            </div>
+
+            <!-- Exam Card 3 -->
+            <div class="exam-card" data-year="2023" data-institution="UP" data-type="enunciado">
+                <div class="exam-header">
+                    <h3 class="exam-title">Física - 1ª Época</h3>
+                    <p class="exam-institution">Universidade Pedagógica</p>
+                </div>
+                <div class="exam-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Ano:</span>
+                        <span>2023</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo:</span>
+                        <span class="badge badge-enunciado">Enunciado</span>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Baixar Exame
+                </button>
+            </div>
+
+            <!-- Exam Card 4 -->
+            <div class="exam-card" data-year="2023" data-institution="UniZambeze" data-type="resolvido">
+                <div class="exam-header">
+                    <h3 class="exam-title">Química Geral</h3>
+                    <p class="exam-institution">Universidade do Zambeze</p>
+                </div>
+                <div class="exam-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Ano:</span>
+                        <span>2023</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo:</span>
+                        <span class="badge badge-resolvido">Resolvido</span>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Baixar Exame
+                </button>
+            </div>
+
+            <!-- Exam Card 5 -->
+            <div class="exam-card" data-year="2022" data-institution="UCM" data-type="enunciado">
+                <div class="exam-header">
+                    <h3 class="exam-title">Biologia - Admissão</h3>
+                    <p class="exam-institution">Universidade Católica de Moçambique</p>
+                </div>
+                <div class="exam-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Ano:</span>
+                        <span>2022</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo:</span>
+                        <span class="badge badge-enunciado">Enunciado</span>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Baixar Exame
+                </button>
+            </div>
+
+            <!-- Exam Card 6 -->
+            <div class="exam-card" data-year="2022" data-institution="UEM" data-type="resolvido">
+                <div class="exam-header">
+                    <h3 class="exam-title">Português - Língua e Literatura</h3>
+                    <p class="exam-institution">Universidade Eduardo Mondlane</p>
+                </div>
+                <div class="exam-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Ano:</span>
+                        <span>2022</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tipo:</span>
+                        <span class="badge badge-resolvido">Resolvido</span>
+                    </div>
+                </div>
+                <button class="download-btn">
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Baixar Exame
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
