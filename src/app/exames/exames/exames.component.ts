@@ -9,6 +9,8 @@ import { Role } from 'src/app/enum/role.enum';
 import { Exam } from 'src/app/core/model/Exame';
 import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { ExamesService } from '../exames.service';
+import { User } from 'src/app/core/model/User';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-exames',
@@ -27,6 +29,13 @@ export class ExamesComponent implements OnInit {
   totalExames: number = 0;
   displayModalFilter: boolean = false;
   subjects: Subject[] = [];
+
+  loggedUser: User = new User();
+  isUserLoggedIn: boolean = false;
+
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
+  currentMessage: string | null = null;
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
@@ -59,9 +68,13 @@ export class ExamesComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Questions page');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
     this.buscarTotal();
     this.carregarDisciplinas();
@@ -123,12 +136,17 @@ export class ExamesComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
+
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.examesService.findAll(this.filtro).subscribe(
       (dados: IApiResponse<Exam>) => {
         this.exams = dados.content
-        this.totalRegistros = dados.totalElements
+        //this.totalRegistros = dados.totalElements
+        if (this.totalRegistros == 0) {
+          this.totalRegistros = dados.totalElements;
+        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -139,7 +157,9 @@ export class ExamesComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
+
     this.filtro.pagina++;
 
     this.examesService.findAll(this.filtro).subscribe(
@@ -214,6 +234,10 @@ export class ExamesComponent implements OnInit {
 
   onFilter(): void {
     this.displayModalFilter = true;
+  }
+
+  get isLoadMoreDisabled(): boolean {
+    return this.exams.length >= this.totalRegistros && this.totalRegistros > 0;
   }
 
   public onUpdate(id: number, description: string, examType: string, date: Date, subjectId: number, file: File): void {
