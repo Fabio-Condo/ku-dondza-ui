@@ -221,14 +221,14 @@ export class SubjectsViewComponent {
     );
   }
 
-  onDownload(content: TopicContent, filename: string) {
-    this.download(content, filename);
+  onDownload(content: TopicContent) {
+    this.download(content);
   }
 
-  download(content: TopicContent, filename: string): void {
+  download(content: TopicContent): void {
 
     content.showLoadingDownload = true;
-    this.topicContentService.download(content.id, filename).subscribe((data: Blob) => {
+    this.topicContentService.download(content.id, content.fileName).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
       // Criar um link temporário para o Blob
@@ -236,7 +236,7 @@ export class SubjectsViewComponent {
       link.href = window.URL.createObjectURL(blob);
 
       // Definir o atributo "download" com o nome do arquivo
-      link.download = filename;
+      link.download = content.fileName;
 
       // Simular um clique no link para iniciar o download
       link.click();

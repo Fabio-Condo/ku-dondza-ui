@@ -281,9 +281,13 @@ export class ExamesComponent implements OnInit {
     return '';
   }
 
-  download(exam: Exam, filename: string): void {
+  onDownload(exam: Exam) {
+    this.download(exam);
+  }
+
+  download(exam: Exam): void {
     exam.showLoadingDownload = true;
-    this.examesService.download(exam.id, filename).subscribe((data: Blob) => {
+    this.examesService.download(exam.id, exam.fileName).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
       // Criar um link temporário para o Blob
@@ -291,7 +295,7 @@ export class ExamesComponent implements OnInit {
       link.href = window.URL.createObjectURL(blob);
 
       // Definir o atributo "download" com o nome do arquivo
-      link.download = filename;
+      link.download = exam.fileName;
 
       // Simular um clique no link para iniciar o download
       link.click();
