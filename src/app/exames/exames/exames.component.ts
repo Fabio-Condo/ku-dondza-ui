@@ -55,12 +55,17 @@ export class ExamesComponent implements OnInit {
     { label: 'Ensino Geral', value: 'Ensino Geral' },
   ];
 
-  examType = [
+  examTypes = [
     { label: 'Enunciado', value: 'ENUNCIADO' },
     { label: 'Resolução', value: 'RESOLUCAO' },
     { label: 'Todos tipos', value: '' },
   ];
 
+  institutions = [
+    { label: 'Universidade Eduardo Mondlane', value: 'UEM' },
+    { label: 'Universidade Pedagógica', value: 'UP' },
+    { label: 'Todas', value: '' },
+  ];
 
   constructor(
     private examesService: ExamesService,
@@ -337,6 +342,7 @@ export class ExamesComponent implements OnInit {
     this.filtro.searchParam = "";
     this.filtro.subject = undefined;
     this.filtro.examType = "";
+    this.filtro.institution = "";
     this.filtro.beginDate = undefined;
     this.filtro.endDate = undefined;
     this.filtro.pagina = 0;

@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs'; 
+import { Observable } from 'rxjs';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { DatePipe } from '@angular/common';
 import { Exam } from '../core/model/Exame';
 import { ExameFilter } from '../core/interface/ExameFilter';
 
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ExamesService {
   private host = environment.apiUrl + '/exames';
 
-  constructor(private http: HttpClient, private datePipe: DatePipe) {}
+  constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
   findAll(filtro: ExameFilter): Observable<IApiResponse<Exam>> {
 
@@ -20,25 +20,29 @@ export class ExamesService {
       .set('page', filtro.pagina)
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
-  
-      //if (filtro.searchParam) {
-      //  params = params.set('searchParam', filtro.searchParam);
-      //}
 
-      if (filtro.subject) {
-        params = params.set('subject', filtro.subject);
-      }
+    //if (filtro.searchParam) {
+    //  params = params.set('searchParam', filtro.searchParam);
+    //}
 
-      if (filtro.examType) {
-        params = params.set('examType', filtro.examType);
-      }
+    if (filtro.subject) {
+      params = params.set('subject', filtro.subject);
+    }
 
-      if (filtro.beginDate) {
-        params = params.set('beginDate', this.datePipe.transform(filtro.beginDate, 'yyyy-MM-dd')!);
-      }
-      if (filtro.endDate) {
-        params = params.set('endDate', this.datePipe.transform(filtro.endDate, 'yyyy-MM-dd')!);
-      }
+    if (filtro.examType) {
+      params = params.set('examType', filtro.examType);
+    }
+
+    if (filtro.institution) {
+      params = params.set('institution', filtro.institution);
+    }
+
+    if (filtro.beginDate) {
+      params = params.set('beginDate', this.datePipe.transform(filtro.beginDate, 'yyyy-MM-dd')!);
+    }
+    if (filtro.endDate) {
+      params = params.set('endDate', this.datePipe.transform(filtro.endDate, 'yyyy-MM-dd')!);
+    }
 
 
     return this.http.get<IApiResponse<Exam>>(`${this.host}/filter`, { params });
@@ -53,7 +57,7 @@ export class ExamesService {
     formData.append('file', file);
     return this.http.post<Exam>(`${this.host}`, formData);
   }
-  
+
   update(id: number, examType: string, date: Date, subjectId: number, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('id', id.toString());
