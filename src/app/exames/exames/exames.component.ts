@@ -281,6 +281,28 @@ export class ExamesComponent implements OnInit {
     return '';
   }
 
+  getBadgeClass(type: string): string {
+    switch (type) {
+      case 'ENUNCIADO':
+        return 'badge-enunciado';
+      case 'RESOLUCAO':
+        return 'badge-resolvido';
+      default:
+        return '';
+    }
+  }
+
+  getType(type: string): string {
+    switch (type) {
+      case 'ENUNCIADO':
+        return 'enunciado';
+      case 'RESOLUCAO':
+        return 'resolvido';
+      default:
+        return '';
+    }
+  }
+
   onDownload(exam: Exam) {
     this.download(exam);
   }
@@ -326,13 +348,11 @@ export class ExamesComponent implements OnInit {
     this.findAll();
   }
 
-
   changePageSize(event: any): void {
     this.filtro.itensPorPagina = +event.target.value;
     this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
     this.findAll();
   }
-
 
   previousPage(): void {
     if (this.currentPage > 1) {

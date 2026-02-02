@@ -210,6 +210,11 @@
             transform: scale(0.98);
         }
 
+        .download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .download-icon {
             width: 18px;
             height: 18px;
@@ -787,8 +792,7 @@
         </button>
 
         <div class="exams-grid" id="exams-container">
-            <div class="exam-card" data-year="2024" data-institution="UEM" data-type="enunciado"
-                *ngFor="let exam of exams">
+            <div class="exam-card" *ngFor="let exam of exams">
                 <div class="exam-header">
                     <h3 class="exam-title">{{ exam.subject.name }}</h3>
                     <p class="exam-institution">Universidade Eduardo Mondlane</p>
@@ -796,19 +800,21 @@
                 <div class="exam-details">
                     <div class="detail-item">
                         <span class="detail-label">Ano:</span>
-                        <span>{{ exam.date }}</span>
+                        <span>{{ exam.date | date:'yyyy' }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tipo:</span>
-                        <span class="badge badge-enunciado">{{ exam.examType }}</span>
+                        <span class="badge badge-enunciado" [ngClass]="getBadgeClass(exam.examType)">{{
+                            getType(exam.examType) }}</span>
                     </div>
                 </div>
-                <button class="download-btn" (click)="onDownload(exam)">
+                <button class="download-btn" (click)="onDownload(exam)" [disabled]="exam.showLoadingDownload">
                     <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    Baixar Exame
+                    <span *ngIf="!exam.showLoadingDownload">Baixar Exame</span>
+                    <span *ngIf="exam.showLoadingDownload">Baixando...</span>
                 </button>
             </div>
         </div>
