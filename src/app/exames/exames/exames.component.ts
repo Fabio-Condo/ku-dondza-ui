@@ -58,13 +58,13 @@ export class ExamesComponent implements OnInit {
   examTypes = [
     { label: 'Enunciado', value: 'ENUNCIADO' },
     { label: 'Resolução', value: 'RESOLUCAO' },
-    { label: 'Todos tipos', value: '' },
+    //  { label: 'Todos tipos', value: '' },
   ];
 
   institutions = [
     { label: 'Universidade Eduardo Mondlane', value: 'UEM' },
     { label: 'Universidade Pedagógica', value: 'UP' },
-    { label: 'Todas', value: '' },
+    //  { label: 'Todas', value: '' },
   ];
 
   constructor(
@@ -302,6 +302,17 @@ export class ExamesComponent implements OnInit {
         return 'enunciado';
       case 'RESOLUCAO':
         return 'resolvido';
+      default:
+        return '';
+    }
+  }
+
+  getInstitution(institution: string): string {
+    switch (institution) {
+      case 'UEM':
+        return 'Universidade Eduardo Mondlane';
+      case 'UP':
+        return 'Universidade Pedagógica';
       default:
         return '';
     }
