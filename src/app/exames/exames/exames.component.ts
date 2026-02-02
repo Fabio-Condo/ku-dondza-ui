@@ -99,7 +99,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exam.id, this.exam.description, this.exam.examType, this.exam.date, this.exam.subject.id!, this.file).subscribe(
+    this.examesService.update(this.exam.id, this.exam.examType, this.exam.date, this.exam.subject.id!, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -116,7 +116,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exam.description, this.exam.examType, this.exam.date, this.exam.subject.id!, this.file).subscribe(
+    this.examesService.save(this.exam.examType, this.exam.date, this.exam.subject.id!, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -240,10 +240,9 @@ export class ExamesComponent implements OnInit {
     return this.exams.length >= this.totalRegistros && this.totalRegistros > 0;
   }
 
-  public onUpdate(id: number, description: string, examType: string, date: Date, subjectId: number, file: File): void {
+  public onUpdate(id: number, examType: string, date: Date, subjectId: number, file: File): void {
     this.exam.id = id
     this.exam.subject.id = subjectId;
-    this.exam.description = description;
     this.exam.examType = examType;
     this.file = file;
     this.exam.date = date;
@@ -337,8 +336,6 @@ export class ExamesComponent implements OnInit {
   limparCampos() {
     this.filtro.searchParam = "";
     this.filtro.subject = undefined;
-    this.filtro.description = "";
-    this.filtro.institution = undefined;
     this.filtro.examType = "";
     this.filtro.beginDate = undefined;
     this.filtro.endDate = undefined;

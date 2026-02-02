@@ -769,7 +769,8 @@
             <div class="title">Exames</div>
             <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalExames }}</span>
             <div class="actions">
-                <button (click)="onAddNewExame()" class="button-add-new" id="add-btn">
+                <button (click)="onAddNewExame()" class="button-add-new" id="add-btn"
+                    *ngIf="isUserLoggedIn && isSuperAdmin">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -893,12 +894,6 @@
             </div>
 
             <div class="form-group">
-                <label for="description">Descrição</label>
-                <textarea id="description" type="text" name="description" ngModel #description="ngModel" required
-                    minlength="1" [(ngModel)]="exam.description" required></textarea>
-            </div>
-
-            <div class="form-group">
                 <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf"
                     class="form-control" required />
             </div>
@@ -917,7 +912,7 @@
 
         <div class="popout-header">
             <h2>Filtros</h2>
-            <button class="close-btn" (click)="displayModalFilter = false">&times;</button>
+            <button class="close-button" (click)="displayModalFilter = false">&times;</button>
         </div>
 
         <form autocomplete="off" #exameForm="ngForm">
@@ -937,12 +932,7 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="description">Descrição</label>
-                <input type="text" id="description" name="description" [(ngModel)]="filtro.description"
-                    (ngModelChange)="findAll()" minlength="1">
-            </div>
-
+            <!--
             <div class="form-group">
                 <label for="date-range">Intervalo de datas</label>
                 <div class="date-range-container">
@@ -955,6 +945,7 @@
                         (ngModelChange)="findAll()" placeholder="Data final"></p-calendar>
                 </div>
             </div>
+            -->
 
             <div class="dialog-footer">
                 <button type="button" (click)="limparCampos()" class="btn">Reset</button>

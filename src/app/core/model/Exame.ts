@@ -2,7 +2,6 @@ import { Subject } from "./Subject";
 
 export class Exam {
     id!: number;
-    description: string = '';
     examType!: string; // ENUNCIADO, RESOLUCAO
     fileName!: string;
     urlFile!: string;

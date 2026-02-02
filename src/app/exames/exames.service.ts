@@ -21,9 +21,9 @@ export class ExamesService {
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
   
-      if (filtro.searchParam) {
-        params = params.set('searchParam', filtro.searchParam);
-      }
+      //if (filtro.searchParam) {
+      //  params = params.set('searchParam', filtro.searchParam);
+      //}
 
       if (filtro.subject) {
         params = params.set('subject', filtro.subject);
@@ -31,10 +31,6 @@ export class ExamesService {
 
       if (filtro.examType) {
         params = params.set('examType', filtro.examType);
-      }
-      
-      if (filtro.description) {
-        params = params.set('description', filtro.description);
       }
 
       if (filtro.beginDate) {
@@ -49,9 +45,8 @@ export class ExamesService {
 
   }
 
-  save(description: string, examType: string, date: Date, subjectId: number, file: File): Observable<Exam> {
+  save(examType: string, date: Date, subjectId: number, file: File): Observable<Exam> {
     const formData = new FormData();
-    formData.append('description', description);
     formData.append('examType', examType)
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
@@ -59,10 +54,9 @@ export class ExamesService {
     return this.http.post<Exam>(`${this.host}`, formData);
   }
   
-  update(id: number, description: string, examType: string, date: Date, subjectId: number, file: File): Observable<Exam> {
+  update(id: number, examType: string, date: Date, subjectId: number, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('id', id.toString());
-    formData.append('description', description);
     formData.append('examType', examType)
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
