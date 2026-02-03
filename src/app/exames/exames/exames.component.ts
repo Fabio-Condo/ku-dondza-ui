@@ -67,6 +67,11 @@ export class ExamesComponent implements OnInit {
     //  { label: 'Todas', value: '' },
   ];
 
+  accessLevels = [
+    { label: 'Premium', value: true },
+    { label: 'Free', value: false },
+  ];
+
   constructor(
     private examesService: ExamesService,
     private subjectsService: SubjectsService,
@@ -104,7 +109,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exam.id, this.exam.examType, this.exam.date, this.exam.subject.id!, this.file).subscribe(
+    this.examesService.update(this.exam.id, this.exam.premium, this.exam.examType, this.exam.date, this.exam.subject.id!, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -121,7 +126,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exam.examType, this.exam.date, this.exam.subject.id!, this.file).subscribe(
+    this.examesService.save(this.exam.examType, this.exam.premium, this.exam.date, this.exam.subject.id!, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);

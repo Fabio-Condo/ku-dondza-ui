@@ -738,6 +738,7 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
+            margin-right: 10px;
         }
 
         @media (max-width: 768px) {
@@ -857,32 +858,28 @@
                 <div class="exam-header">
                     <div class="exam-title-container">
                         <h3 class="exam-title">{{ exam.subject.name }}</h3>
+                        <div>
+                            <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
+                                <button class="dropdown-btn" (click)="toggleDropdown(exam)">
+                                    <i class="pi pi-ellipsis-h"></i>
+                                </button>
 
-                        <span class="badge badge-with-icon" [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
-                            <!-- ÍCONE CADEADO -->
-                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- arco do cadeado -->
-                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" />
-                                <!-- corpo -->
-                                <rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor"
-                                    stroke-width="1.8" />
-                                <!-- chave -->
-                                <circle cx="12" cy="15" r="1.2" fill="currentColor" />
-                            </svg>
-
-                            {{ exam.premium ? 'Premium' : 'Gratuito' }}
-                        </span>
-
-
-                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
-                            <button class="dropdown-btn" (click)="toggleDropdown(exam)">
-                                <i class="pi pi-ellipsis-h"></i>
-                            </button>
-
-                            <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                                <a (click)="onUpdate(exam, file)">Editar</a>
+                                <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+                                    <a (click)="onUpdate(exam, file)">Editar</a>
+                                </div>
                             </div>
+                            <span class="badge badge-with-icon"
+                                [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
+                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linecap="round" />
+                                    <rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor"
+                                        stroke-width="1.8" />
+                                    <circle cx="12" cy="15" r="1.2" fill="currentColor" />
+                                </svg>
+                                {{ exam.premium ? 'Premium' : 'Gratuito' }}
+                            </span>
                         </div>
                     </div>
 
@@ -997,6 +994,14 @@
                 <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '400px'}" [showIcon]="true"
                     [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
                     [required]="true" [(ngModel)]="exam.date"></p-calendar>
+            </div>
+
+            <div class="form-group">
+                <label for="premium">Nivel</label>
+                <select id="premium" [(ngModel)]="exam.premium" name="premium" required>
+                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option *ngFor="let level of accessLevels" [value]="level.value">{{ level.label }}</option>
+                </select>
             </div>
 
             <div class="form-group">
