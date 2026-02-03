@@ -813,7 +813,7 @@
                     <div class="exam-title-container">
                         <h3 class="exam-title">{{ exam.subject.name }}</h3>
 
-                        <div class="dropdown-container">
+                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                             <button class="dropdown-btn" (click)="toggleDropdown(exam)">
                                 <i class="pi pi-ellipsis-h"></i>
                             </button>

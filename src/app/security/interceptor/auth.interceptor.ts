@@ -12,6 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private publicUrls = [
     `${this.authenticationService.host}/subjects`,
+    `${this.authenticationService.host}/exames`,
     `${this.authenticationService.host}/topics`,
     `${this.authenticationService.host}/topic-content`,
     //`${this.authenticationService.host}/topic-content/download`,
