@@ -109,7 +109,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exam.id, this.exam.examType, this.exam.premium, this.exam.institution, this.exam.date, this.exam.subject.id!, this.file).subscribe(
+    this.examesService.update(this.exam.id, this.exam.examType, this.exam.institution, this.exam.premium, this.exam.date, this.exam.subject.id!, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -126,7 +126,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exam.examType, this.exam.premium, this.exam.institution, this.exam.date, this.exam.subject.id!, this.file).subscribe(
+    this.examesService.save(this.exam.examType, this.exam.institution, this.exam.premium, this.exam.date, this.exam.subject.id!, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
