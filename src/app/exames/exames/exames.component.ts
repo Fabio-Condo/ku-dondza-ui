@@ -245,12 +245,9 @@ export class ExamesComponent implements OnInit {
     return this.exams.length >= this.totalRegistros && this.totalRegistros > 0;
   }
 
-  public onUpdate(id: number, examType: string, date: Date, subjectId: number, file: File): void {
-    this.exam.id = id
-    this.exam.subject.id = subjectId;
-    this.exam.examType = examType;
+  public onUpdate(exam: Exam, file: File): void {
+    this.exam = exam;
     this.file = file;
-    this.exam.date = date;
     this.exam.date = new Date(this.exam.date);
     this.displayModalSave = true;
   }
