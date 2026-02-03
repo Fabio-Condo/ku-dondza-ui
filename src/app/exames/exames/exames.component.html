@@ -1005,6 +1005,14 @@
             </div>
 
             <div class="form-group">
+                <label for="premium">Instituição</label>
+                <select id="premium" [(ngModel)]="exam.institution" name="premium" required>
+                    <option value="" disabled selected>Selecione a instituição</option>
+                    <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf"
                     class="form-control" required />
             </div>
