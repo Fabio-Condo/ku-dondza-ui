@@ -4,6 +4,7 @@ export class Exam {
     id!: number;
     examType!: string; // ENUNCIADO, RESOLUCAO
     institution!: string;
+    premium: boolean = false;
     fileName!: string;
     urlFile!: string;
     date!: Date;

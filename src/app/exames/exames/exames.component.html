@@ -174,21 +174,66 @@
         }
 
         .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.75rem;
+
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+
+            border-radius: 6px;
+            /* meio quadrado */
+            border: 1px solid currentColor;
+
+            background-color: rgba(0, 0, 0, 0.04);
+            color: #333;
+
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .badge-enunciado {
-            background: #fef3c7;
-            color: #92400e;
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
         }
 
         .badge-resolvido {
-            background: #d1fae5;
-            color: #065f46;
+            background: #fdf6e3;
+            color: #b8892e;
+            border: 1px solid #f0dbb8;
+        }
+
+        .badge-gray {
+            color: #4a5568;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        .badge-with-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .badge-icon {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .badge-premium {
+            color: #805ad5;
+            /* roxo premium */
+            background-color: rgba(128, 90, 213, 0.12);
+            border: 1px solid rgba(128, 90, 213, 0.45);
+        }
+
+        .badge-free {
+            color: #4a5568;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
         }
 
         .download-btn {
@@ -813,6 +858,23 @@
                     <div class="exam-title-container">
                         <h3 class="exam-title">{{ exam.subject.name }}</h3>
 
+                        <span class="badge badge-with-icon" [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
+                            <!-- ÍCONE CADEADO -->
+                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- arco do cadeado -->
+                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" />
+                                <!-- corpo -->
+                                <rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor"
+                                    stroke-width="1.8" />
+                                <!-- chave -->
+                                <circle cx="12" cy="15" r="1.2" fill="currentColor" />
+                            </svg>
+
+                            {{ exam.premium ? 'Premium' : 'Gratuito' }}
+                        </span>
+
+
                         <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                             <button class="dropdown-btn" (click)="toggleDropdown(exam)">
                                 <i class="pi pi-ellipsis-h"></i>
@@ -828,16 +890,32 @@
                 </div>
                 <div class="exam-details">
                     <div class="detail-item">
-                        <span class="detail-label">Ano:</span>
-                        <span>{{ exam.date | date:'yyyy' }}</span>
+                        <span class="badge badge-gray badge-with-icon">
+                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor"
+                                    stroke-width="1.8" />
+                                <path d="M16 2V6M8 2V6M3 10H21" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" />
+                            </svg>
+                            {{ exam.date | date:'yyyy' }}
+                        </span>
                     </div>
+
                     <div class="detail-item">
-                        <span class="detail-label">Tipo:</span>
-                        <span class="badge badge-enunciado" [ngClass]="getBadgeClass(exam.examType)">{{
-                            getType(exam.examType) }}</span>
+                        <span class="badge badge-enunciado badge-with-icon" [ngClass]="getBadgeClass(exam.examType)">
+                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6 C4.9 22 4 21.1 4 20V4 C4 2.9 4.9 2 6 2Z"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                                <path d="M14 2V6H18" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                            </svg>
+                            {{ getType(exam.examType) }}
+                        </span>
                     </div>
+
                 </div>
-                <button class="download-btn" (click)="onDownload(exam)" [disabled]="exam.showLoadingDownload">
+                <button class="download-btn" (click)="onDownload(exam)"
+                    [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
                     <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

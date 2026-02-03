@@ -252,6 +252,21 @@ export class ExamesComponent implements OnInit {
     this.displayModalSave = true;
   }
 
+  // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
+  isPremiumExam(exam: Exam): boolean {
+    if (!exam.premium) return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return this.isFreeUser();
+  }
+
+  isFreeUser(): boolean {
+    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+
+    const expiresAt = this.loggedUser.expiresAt ? new Date(this.loggedUser.expiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
+  }
+
   getLevelValue(status: string) {
     switch (status) {
       case 'Ensino Geral':
@@ -296,9 +311,9 @@ export class ExamesComponent implements OnInit {
   getType(type: string): string {
     switch (type) {
       case 'ENUNCIADO':
-        return 'enunciado';
+        return 'Enunciado';
       case 'RESOLUCAO':
-        return 'resolvido';
+        return 'Resolução';
       default:
         return '';
     }
