@@ -134,6 +134,12 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
+        .exam-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         .exam-title {
             color: #2d3748;
             font-size: 1.25rem;
@@ -679,6 +685,15 @@
             }
         }
 
+        /* Botão do menu dropdown */
+        .dropdown-btn {
+            background-color: transparent;
+            display: inline-block;
+            padding: 0px 0px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
 
         @media (max-width: 768px) {
             body {
@@ -795,7 +810,20 @@
         <div class="exams-grid" id="exams-container">
             <div class="exam-card" *ngFor="let exam of exams">
                 <div class="exam-header">
-                    <h3 class="exam-title">{{ exam.subject.name }}</h3>
+                    <div class="exam-title-container">
+                        <h3 class="exam-title">{{ exam.subject.name }}</h3>
+
+                        <div class="dropdown-container">
+                            <button class="dropdown-btn" (click)="toggleDropdown(exam)">
+                                <i class="pi pi-ellipsis-h"></i>
+                            </button>
+
+                            <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+                                <a (click)="onUpdate(exam, file)">Editar</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <p class="exam-institution">{{ getInstitution(exam.institution) }} - {{ exam.institution }}</p>
                 </div>
                 <div class="exam-details">
@@ -817,8 +845,6 @@
                     <span *ngIf="!exam.showLoadingDownload">Baixar Exame</span>
                     <span *ngIf="exam.showLoadingDownload">Baixando...</span>
                 </button>
-
-                <button (click)="onUpdate(exam, file)">Editar</button>
             </div>
         </div>
 
