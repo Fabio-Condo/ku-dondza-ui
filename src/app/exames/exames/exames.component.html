@@ -857,7 +857,7 @@
             <div class="exam-card" *ngFor="let exam of exams">
                 <div class="exam-header">
                     <div class="exam-title-container">
-                        <h3 class="exam-title">{{ exam.subject.name }}</h3>
+                        <h3 class="exam-title">{{ exam.subject.name }} {{ exam.number }}</h3>
                         <div>
                             <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
                                 <button class="dropdown-btn" (click)="toggleDropdown(exam)">
@@ -1008,7 +1008,16 @@
                 <label for="institution">Instituição</label>
                 <select id="institution" [(ngModel)]="exam.institution" name="institution" required>
                     <option value="" disabled selected>Selecione a instituição</option>
-                    <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}</option>
+                    <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="number">Número</label>
+                <select id="number" [(ngModel)]="exam.number" name="number" required>
+                    <option value="" disabled selected>Selecione o número</option>
+                    <option *ngFor="let numb of numbers" [value]="numb.value">{{ numb.label }}</option>
                 </select>
             </div>
 
