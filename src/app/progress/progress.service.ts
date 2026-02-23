@@ -9,7 +9,7 @@ import { Question } from '../core/model/Question';
 @Injectable({
     providedIn: 'root'
 })
-export class MainPanelService {
+export class ProgressService {
 
     private host = environment.apiUrl + '/tests';
 

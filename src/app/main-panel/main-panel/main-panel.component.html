@@ -1,1461 +1,433 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Quizzes</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyHub — Painel Principal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
     <style>
-        * {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
-            padding: 10px;
-        }
-
-        .profile-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            margin-top: 50px;
-        }
-
-        .header {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            border: 1px solid #4361ee;
-        }
-
-        .header h1 {
-            color: #4361ee;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e6e6e6;
-            /* mais suave */
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.5rem;
-            font-weight: 700;
-            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.25);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
-        }
-
-        .user-details {
+            /*background: #F5F2EE;*/
+            color: #1A1714;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        .user-name {
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #222;
-            margin-bottom: 0.2rem;
-        }
-
-        .user-level {
-            font-size: 0.9rem;
-            color: #555;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .level-badge {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #fff;
-            padding: 0.3rem 0.7rem;
-            border-radius: 14px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .filters-section {
-            margin-bottom: 1.5rem;
-        }
-
-        /**/
-        .discipline-filters {
-            display: flex;
-            gap: 0.5rem;
-            /* ligeiramente menor */
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .filter-chip {
-            padding: 0.5rem 1rem;
-            /* ligeiramente menor */
-            border-radius: 25px;
-            /* mais suave */
-            border: 2px solid #e0e0e0;
-            background: #fff;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-weight: 500;
-            font-size: 0.85rem;
-            /* menor */
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            user-select: none;
-            position: relative;
-            color: #555;
-        }
-
-        .filter-chip .emoji {
-            font-size: 1rem;
-        }
-
-        .filter-chip.active {
-            background: #f0f4ff;
-            border-color: #4361ee;
-            color: #4361ee;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.15);
-        }
-
-        .filter-chip {
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            border: 2px solid #e0e0e0;
-            background: #fff;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-weight: 500;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            user-select: none;
-        }
-
-        .filter-chip:hover {
-            border-color: #4361ee;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(67, 97, 238, 0.1);
-        }
-
-        .overall-progress {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .subject-card {
-            flex: 1;
-            min-width: 200px;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            padding: 1.5rem;
-            border-radius: 12px;
-            color: white;
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        .subject-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-        }
-
-        .subject-card .progress-text {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-
-        .disciplines {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .discipline {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: box-shadow 0.3s ease, transform 0.2s ease;
-            border: 1px solid #f1f5f9;
-        }
-
-        .discipline-header {
+        /* ── Header ── */
+        header {
+            padding: 2rem 3rem 1.5rem;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid #4361ee;
+            align-items: flex-end;
+            border-bottom: 1px solid #E2DDD8;
+            background: #FDFCFA;
+            animation: fadeDown .5s ease both;
         }
 
-        .discipline-title {
-            font-size: 1.8rem;
-            color: #4361ee;
-            font-weight: bold;
-        }
-
-        .discipline-progress {
+        /* ── Main ── */
+        main {
+            flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
+            padding: 3rem 2rem 4rem;
         }
 
-        .progress-circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: conic-gradient(#4361ee 0deg, #4361ee var(--progress), #e0e0e0 var(--progress));
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeUp .6s ease .1s both;
+        }
+
+        .intro h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            line-height: 1.15;
+            color: #1A1714;
+            margin-bottom: .6rem;
+        }
+
+        .intro h1 em {
+            color: #4361ee;
+            font-style: italic;
+        }
+
+        .intro p {
+            font-size: 1rem;
+            color: #8A8480;
+            font-weight: 300;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ── Grid ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            width: 100%;
+            max-width: 780px;
+        }
+
+        .card {
+            background: #FDFCFA;
+            border: 1px solid #E2DDD8;
+            border-radius: 16px;
+            padding: 2rem 1.75rem 1.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            box-shadow: 0 2px 12px rgba(26, 23, 20, 0.07), 0 1px 3px rgba(26, 23, 20, 0.05);
+            transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp .6s ease both;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: .15s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: .22s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: .29s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: .36s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: #EEF1FD;
+            opacity: 0;
+            transition: opacity .22s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(26, 23, 20, 0.12), 0 2px 8px rgba(26, 23, 20, 0.08);
+            border-color: #4361ee;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #EEF1FD;
+            border: 1px solid #C9D3F9;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: #4361ee;
             position: relative;
+            z-index: 1;
+            transition: background .22s ease;
         }
 
-        .progress-circle::before {
-            content: '';
-            position: absolute;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: white;
-            z-index: 0;
+        .card:hover .card-icon {
+            background: #4361ee;
         }
 
-        .progress-circle span {
+        .card:hover .card-icon svg {
+            stroke: #fff;
+        }
+
+        .card-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke .22s ease;
+        }
+
+        .card-label {
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: #8A8480;
             position: relative;
             z-index: 1;
         }
 
-        .topics {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .topic {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #f1f5f9;
-        }
-
-        .topic-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .topic-title {
-            font-size: 1.3rem;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .topic-progress-bar {
-            flex: 1;
-            max-width: 200px;
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-left: 1rem;
-        }
-
-        .topic-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4361ee, #3a56d4);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-        .quizzes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .quiz {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            cursor: pointer;
+        .card-title {
+            font-size: 1.35rem;
+            line-height: 1.2;
             position: relative;
-            border: 2px solid transparent;
+            z-index: 1;
         }
 
-        .quiz:hover:not(.locked) {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
-            border-color: #4361ee;
+        .card-desc {
+            font-size: .875rem;
+            color: #8A8480;
+            font-weight: 300;
+            line-height: 1.55;
+            position: relative;
+            z-index: 1;
         }
 
-        .quiz.completed {
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            color: white;
-        }
-
-        .quiz.active {
-            border-color: #4361ee;
-            background: #fff;
-        }
-
-        .quiz.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: #f5f5f5;
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .quiz-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .quiz-icon {
-            font-size: 1.5rem;
-        }
-
-        .quiz-info {
+        .card-arrow {
+            margin-top: auto;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-
-        /* container dos botões */
-        .quiz-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        /* botão base */
-        .action-btn {
-            padding: 0.25rem 0.6rem;
-            font-size: 0.75rem;
-            border-radius: 4px;
-            border: 1px solid transparent;
-            background: transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        /* ver */
-        .action-btn.view {
-            border-color: #64748b;
-            color: #64748b;
-        }
-
-        .action-btn.view:hover {
-            background-color: #64748b;
-            color: #fff;
-        }
-
-        /* editar */
-        .action-btn.edit {
-            border-color: #4361ee;
+            gap: .3rem;
+            font-size: .8rem;
+            font-weight: 500;
             color: #4361ee;
+            position: relative;
+            z-index: 1;
+            transition: gap .2s ease;
         }
 
-        .action-btn.edit:hover {
-            background-color: #4361ee;
-            color: #fff;
+        .card:hover .card-arrow {
+            gap: .55rem;
         }
 
-
-        .quiz-progress {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        .card-arrow svg {
+            width: 14px;
+            height: 14px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        .quiz.completed .quiz-progress {
-            border-top-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .quiz-score {
-            font-weight: bold;
-        }
-
-        .start-btn {
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 1.5rem;
+            right: 1.5rem;
+            height: 2px;
+            border-radius: 0 0 4px 4px;
             background: #4361ee;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .start-btn:hover {
-            background: #3a56d4;
-            transform: scale(1.05);
-        }
-
-        .start-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .quiz.completed .start-btn {
-            background: white;
-            color: #4361ee;
-        }
-
-        .lock-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            opacity: 0.3;
-        }
-
-        /* Loading Container - Versão Moderna */
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.8);
-            /* Fundo escuro mais moderno */
-            backdrop-filter: blur(8px);
-            /* Efeito de desfoque */
-            z-index: 9999;
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity .22s ease;
         }
 
-        .loading-container.visible {
+        .card:hover::after {
             opacity: 1;
-            visibility: visible;
         }
 
-        .loading-indicator {
-            display: flex;
-            flex-direction: column;
-            /* Empilha os elementos */
-            align-items: center;
-            gap: 20px;
-            padding: 30px 40px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .loading-container.visible .loading-indicator {
-            transform: translateY(0);
-        }
-
-        /* Spinner moderno com gradiente */
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .spinner::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #4c6ef5;
-            /* Cor primária */
-            border-left-color: #ec4899;
-            /* Gradiente para roxo */
-            animation: spin 1s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite;
-        }
-
-        .spinner::after {
-            content: "";
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #ec4899;
-            /* Rosa */
-            border-left-color: #4c6ef5;
-            /* Roxo */
-            animation: spin 1.5s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite reverse;
-        }
-
-        .loading-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1e293b;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        /* Efeito de pulsação no texto */
-        .loading-text span {
-            display: inline-block;
-            opacity: 0.8;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .loading-text span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-text span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        /* Animações */
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.6;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        button {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: #4361ee;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #4361ee;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-outline:hover {
-            background-color: #f8fafc;
-        }
-
-        .fab {
-            display: flex;
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            font-size: 24px;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .popout-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popout-container {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 600px;
-            overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-out;
-        }
-
-
-        @keyframes slideIn {
+        @keyframes fadeDown {
             from {
-                transform: translateY(20px);
                 opacity: 0;
+                transform: translateY(-12px);
             }
 
             to {
-                transform: translateY(0);
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .popout-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0px;
-        }
-
-        .popout-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--color-black);
-            margin: 0;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            padding: 4px;
-            transition: color 0.2s;
-        }
-
-        .close-button:hover {
-            color: var(--color-black);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .submit-button:hover {
-            background: #1d4ed8;
-        }
-
-        /* Container de cada questão */
-        .popout-container .question-item {
-            cursor: pointer;
-            padding: 10px 14px;
-            margin: 10px 0;
-            border-radius: 8px;
-            transition: all 0.2s ease-in-out;
-            display: flex;
-            align-items: flex-start;
-            font-size: 0.95rem;
-            background-color: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        /* Hover suave */
-        .popout-container .question-item:hover {
-            background-color: #f4f6ff;
-            border-color: rgba(67, 97, 238, 0.4);
-            /* destaca borda no hover */
-        }
-
-        /* Questão selecionada */
-        .popout-container .selected-question {
-            background: #e3f2fd;
-            border: 1px solid #4361ee;
-            box-shadow: 0 2px 6px rgba(67, 97, 238, 0.15);
-        }
-
-        /* Numeração */
-        .selected-question {
-            background: #e3f2fd;
-            border: 1px solid #4361ee;
-            box-shadow: 0 2px 6px rgba(67, 97, 238, 0.15);
-        }
-
-        .popout-container .correct-question {
-            border: 2px solid #10b981;
-        }
-
-        .popout-container .incorrect-question {
-            border: 2px solid #ef4444;
-        }
-
-        .question-topic {
-            color: #666;
-            font-size: 0.85rem;
-            margin-top: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .question-topic button {
-            padding: 0.25rem 0.6rem;
-            font-size: 0.75rem;
-            line-height: 1;
-            border-radius: 4px;
-            border: 1px solid transparent;
-            background-color: transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .question-topic .btn-add {
-            border-color: #4361ee;
-            color: #4361ee;
-        }
-
-        .question-topic .btn-add:hover {
-            background-color: #4361ee;
-            color: #fff;
-        }
-
-        .question-topic .btn-add:active {
-            transform: scale(0.95);
-        }
-
-        .question-topic .btn-remove {
-            border-color: #e63946;
-            color: #e63946;
-        }
-
-        .question-topic .btn-remove:hover {
-            background-color: #e63946;
-            color: #fff;
-        }
-
-        .question-topic .btn-remove:active {
-            transform: scale(0.95);
-        }
-
-        .question-topic button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Número da questão à esquerda */
-        .question-number {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #4361ee;
-            min-width: 30px;
-            text-align: left;
-        }
-
-        .go-back-btn {
-            padding: 10px 0px;
-            display: flex;
-            align-items: center;
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-weight: 500;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .go-back-btn:hover {
-            color: #4361ee;
-        }
-
-        .banner {
-            height: 128px;
-            background: #4361ee;
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
-
-        .edit-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            color: white;
-        }
-
-        /* Target Icon */
-        .target {
-            width: 26px;
-            height: 26px;
-            border: 3px solid #f59e0b;
-            border-radius: 50%;
-            position: relative;
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-        }
-
-        .target::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            border: 3px solid #f59e0b;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .target::after {
-            content: '';
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: #f59e0b;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
-        }
-
-        /* Lock Icon */
-        .lock {
-            width: 18px;
-            height: 22px;
-            position: relative;
-        }
-
-        .lock-body {
-            width: 18px;
-            height: 14px;
-            background: #ef4444;
-            border-radius: 4px;
-            position: absolute;
-            bottom: 0;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-        }
-
-        .lock-shackle {
-            width: 12px;
-            height: 10px;
-            border: 3px solid #ef4444;
-            border-bottom: none;
-            border-radius: 6px 6px 0 0;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-        }
-
-        .lock-keyhole {
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .lock-keyhole::after {
-            content: '';
-            width: 2px;
-            height: 4px;
-            background: white;
-            position: absolute;
-            top: 3px;
-            left: 1px;
-            border-radius: 0 0 1px 1px;
-        }
-
-        .progress-warning {
-            background-color: #d1fae5;
-            /* verde suave */
-            padding: 1rem 1.2rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            color: #065f46;
-            /* verde escuro para o texto */
-            border: 1px solid #6ee7b7;
-            /* borda suave */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-        }
-
-        .progress-warning strong {
-            display: block;
-            margin-bottom: 0.4rem;
-            font-weight: 600;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                margin-top: 45px;
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
             }
 
-            .header h1 {
-                font-size: 1.6rem;
-            }
-
-
-            .discipline-title {
-                font-size: 1.3rem;
-            }
-
-
-            .topic-title {
-                font-size: 1.1rem;
-            }
-
-
-            .progress-circle {
-                width: 45px;
-                height: 45px;
-            }
-
-
-            .progress-circle::before {
-                width: 32px;
-                height: 32px;
-            }
-
-
-            .quiz {
-                padding: 1rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
+        @media (max-width: 580px) {
+            header {
+                padding: 1.25rem 1.5rem 1rem;
             }
 
-            .container {
-                margin-top: 45px;
-            }
-
-            .header {
-                padding-left: 1rem;
-                padding-right: 1rem;
-                padding-bottom: 0.5rem;
-
-                /**/
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .subject-card {
-                padding: 1rem;
-            }
-
-            .subject-card .progress-text {
-                font-size: 1.5rem;
-            }
-
-            .discipline {
-                padding: 0.5rem;
-                /**/
-            }
-
-            .discipline-title {
-                font-size: 1.4rem;
-            }
-
-            .topic {
-                padding: 0.5rem;
-                /**/
-            }
-
-            .topic-title {
-                font-size: 1.1rem;
-            }
-
-            .quiz {
-                padding: 1rem;
-            }
-
-            .quiz-title {
-                font-size: 1rem;
-            }
-
-            .quiz-info {
-                font-size: 0.8rem;
-            }
-
-            .start-btn {
-                padding: 0.4rem 1rem;
-                font-size: 0.85rem;
-            }
-
-            .quizzes {
+            .grid {
                 grid-template-columns: 1fr;
+                max-width: 400px;
             }
 
-            .popout-container {
-                width: 95%;
-                padding: 10px;
-                max-width: 100%;
-                max-height: 70vh;
-                border-radius: 8px;
-                overflow-y: auto;
-            }
-
-            .popout-title {
-                font-size: 18px;
-                text-align: center;
-            }
-
-            .close-button {
-                font-size: 20px;
-                padding: 8px;
-            }
-        }
-
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .subject-card h3 {
-                font-size: 0.9rem;
-            }
-
-            .progress-circle {
-                width: 50px;
-                height: 50px;
-            }
-
-            .progress-circle::before {
-                width: 35px;
-                height: 35px;
-            }
-
-            .topic-progress-bar {
-                max-width: 150px;
-            }
-
-            .quiz {
-                padding: 0.8rem;
-                border-radius: 10px;
-            }
-
-            .quiz-title {
-                font-size: 0.9rem;
+            .intro h1 {
+                font-size: 1.75rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
 
-        <button class="go-back-btn" [routerLink]="['/user/profile', loggedUser.userId]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5"></path>
-                <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-            Voltar
-        </button>
-
-        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-            <div class="loading-indicator">
-                <div class="spinner"></div>
-                <div class="loading-text">
-                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-                </div>
-            </div>
+    <main>
+        <div class="intro">
+            <h1>O que queres<br /><em>fazer hoje?</em></h1>
+            <p>Escolhe uma das áreas abaixo para continuar o teu percurso académico.</p>
         </div>
 
-        <!--
-        <div class="header">
-            <h1>Painel de Aprendizagem</h1>
-            <div class="overall-progress">
-                <div class="subject-card">
-                    <h3>Progresso Geral</h3>
-                    <div class="progress-text">47%</div>
+        <div class="grid">
+
+            <!-- Progresso -->
+            <a routerLink="/progress-panel" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
                 </div>
-                <div class="subject-card">
-                    <h3>Quizzes Completos</h3>
-                    <div class="progress-text">14/30</div>
+                <span class="card-label">Acompanhamento</span>
+                <h2 class="card-title">Progresso</h2>
+                <p class="card-desc">Acompanha a evolução do teu desempenho, conquistas e áreas a melhorar.</p>
+                <span class="card-arrow">
+                    Ver Progresso
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Quizzes -->
+            <a routerLink="/quizzes" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
                 </div>
-                <div class="subject-card">
-                    <h3>Pontuação Média</h3>
-                    <div class="progress-text">8.2/10</div>
+                <span class="card-label">Avaliação</span>
+                <h2 class="card-title">Quizzes</h2>
+                <p class="card-desc">Testa os teus conhecimentos com questões interactivas e recebe feedback imediato.
+                </p>
+                <span class="card-arrow">
+                    Começar
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Repositório -->
+            <a routerLink="/questions" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
                 </div>
-            </div>
+                <span class="card-label">Estudo</span>
+                <h2 class="card-title">Repositório de questões</h2>
+                <p class="card-desc">Acede à colecção de questões e exercícios organizados por tema e nível de
+                    dificuldade.</p>
+                <span class="card-arrow">
+                    Explorar
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Exames Anteriores -->
+            <a routerLink="/exames" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="8" y1="13" x2="16" y2="13" />
+                        <line x1="8" y1="17" x2="16" y2="17" />
+                    </svg>
+                </div>
+                <span class="card-label">Preparação</span>
+                <h2 class="card-title">Exames Anteriores</h2>
+                <p class="card-desc">
+                    Consulta exames de anos anteriores e pratica com provas reais para melhorar o teu desempenho.
+                </p>
+                <span class="card-arrow">
+                    Ver Exames
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Cursos -->
+            <a routerLink="/subjects" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                </div>
+                <span class="card-label">Aprendizagem</span>
+                <h2 class="card-title">Cursos</h2>
+                <p class="card-desc">Navega pelos módulos e conteúdos estruturados para aprendizagem guiada e
+                    aprofundada.</p>
+                <span class="card-arrow">
+                    Ver Cursos
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Tópicos -->
+            <a routerLink="/topics" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="6" cy="6" r="2" />
+                        <circle cx="6" cy="12" r="2" />
+                        <circle cx="6" cy="18" r="2" />
+                        <line x1="10" y1="6" x2="20" y2="6" />
+                        <line x1="10" y1="12" x2="20" y2="12" />
+                        <line x1="10" y1="18" x2="20" y2="18" />
+                    </svg>
+                </div>
+                <span class="card-label">Conteúdo</span>
+                <h2 class="card-title">Tópicos</h2>
+                <p class="card-desc">
+                    Explora os conteúdos organizados por tópicos específicos e estuda cada tema de forma estruturada.
+                </p>
+                <span class="card-arrow">
+                    Ver Tópicos
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
         </div>
-        -->
-        <div class="header">
-            <!--
-            <div class="header-top">
-                <div class="user-info">
-                    <div class="user-avatar">FC</div>
-                    <div class="user-details">
-                        <div class="user-name">Fábio Condo</div>
-                        <div class="user-level">
-                            <span class="level-badge">Nível 12</span>
-                            <span>Estadante na UEM</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            -->
+    </main>
 
-            <h1>Seu Progresso</h1>
-
-            <div class="filters-section">
-                <div class="discipline-filters" id="disciplineFilters">
-                    <div class="filter-chip" *ngFor="let subject of subjects"
-                        [class.active]="subject.id === selectedSubject.id" (click)="onSelectSubject(subject)">
-                        <span class="emoji"></span>
-                        <span>{{ subject.name }}</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
-
-            <svg class="fab-icon" viewBox="0 0 24 24" width="22" height="22" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-
-                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-
-        </button>
-
-        <div class="disciplines">
-            <div class="discipline">
-                <div class="discipline-header">
-                    <div class="discipline-title">{{ selectedSubject.name }}</div>
-                    <div class="discipline-progress">
-                        <div class="progress-circle" [style.--progress]="getDisciplineProgress() * 3.6 + 'deg'">
-                            <span>{{ getDisciplineProgress() }}%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="topics">
-                    <div class="topic" *ngFor="let topic of topicTests">
-
-                        <!-- HEADER DO TÓPICO -->
-                        <div class="topic-header">
-                            <div class="topic-title">{{ topic.topicName }}</div>
-
-                            <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" [style.width.%]="getTopicProgress(topic)">
-                                </div>
-                            </div>
-
-                            <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">
-                                {{ getTopicProgress(topic) }}%
-                            </span>
-                        </div>
-
-                        <!-- TESTES -->
-                        <div class="quizzes">
-                            <div class="quiz" *ngFor="let test of topic.tests; let i = index" [ngClass]="{
-                                    completed: isCompleted(test),
-                                    active: isActive(topic, test, i),
-                                    locked: isLocked(topic, test, i)
-                                }">
-                                <!-- HEADER DO TESTE -->
-                                <div class="quiz-header">
-                                    <div class="quiz-title">
-                                        {{ getDifficultyLevelValue(test.difficultyLevel) }}
-                                    </div>
-
-                                    <div class="quiz-icon">
-                                        <ng-container *ngIf="isCompleted(test)">
-                                        </ng-container>
-
-                                        <ng-container *ngIf="isActive(topic, test, i)">
-                                            <!--
-                                            <div class="icon">
-                                                <div class="target"></div>
-                                            </div>
-                                            -->
-                                        </ng-container>
-
-                                        <ng-container *ngIf="isLocked(topic, test, i)">
-                                            <div class="icon">
-                                                <div class="lock">
-                                                    <div class="lock-shackle"></div>
-                                                    <div class="lock-body">
-                                                        <div class="lock-keyhole"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-
-                                </div>
-
-                                <!-- INFO -->
-                                <div class="quiz-info">
-                                    <span class="questions-count">
-                                        {{ test.totalQuestions }} questões
-                                    </span>
-
-                                    <div class="quiz-actions" *ngIf="isSuperAdmin && loggedUser">
-                                        <button class="action-btn view" (click)="onGetSelectedQuestionsByTopicId(test)">
-                                            Ver
-                                        </button>
-
-                                        <button class="action-btn edit" (click)="onGetQuestionsByTopicId(test)">
-                                            Editar
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- AÇÕES -->
-                                <div class="quiz-progress" *ngIf="!isLocked(topic, test, i)">
-                                    <div class="quiz-score">
-                                        {{ isCompleted(test)
-                                        ? test.totalQuestions + '/' + test.totalQuestions
-                                        : '0/' + test.totalQuestions }}
-                                    </div>
-
-                                    <!-- REVER -->
-                                    <button class="start-btn review" *ngIf="isCompleted(test)"
-                                        (click)="reviewTest(test)">
-                                        Revisar
-                                    </button>
-
-                                    <!-- INICIAR -->
-                                    <button class="start-btn start" *ngIf="isActive(topic, test, i)"
-                                        (click)="startTest(test)">
-                                        Iniciar
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <br>
-        <br>
-
-        <div class="progress-warning">
-            <strong>Dica de estudo</strong>
-            <p>
-                Domine todos os exercícios propostos, complete e revise cada teste para avançar com confiança
-                no seu progresso.
-            </p>
-        </div>
-
-    </div>
 </body>
 
 </html>
-
-<div class="popout-overlay" *ngIf="displayModalSave">
-    <div class="popout-container">
-        <div class="popout-header">
-            <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
-            <button class="close-button" (click)="displayModalSave = false">&times;</button>
-        </div>
-
-        <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
-
-            <div class="form-group">
-                <label for="topic">Tópico</label>
-                <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!selectedSubject" required>
-                    <option value="" disabled selected>Selecione o tópico</option>
-                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="difficultyLevel">Nivel</label>
-                <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
-                    <option value="" disabled selected>Selecione o nivel</option>
-                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="position">Posição</label>
-                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                    [(ngModel)]="test.orderIndex">
-            </div>
-
-            <button class="submit-button" type="submit" [disabled]="testForm.invalid" class="btn">
-                {{ showLoading ? 'Loading...' :'Salvar' }}
-            </button>
-
-        </form>
-    </div>
-</div>
-
-<!-- Popout Ver Questoes adicionadas-->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalSelectedQuestionsList">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Questões</h2>
-            <button class="close-button" (click)="onCloseSelectedQuestionsList()">&times;</button>
-        </div>
-
-        <div *ngFor="let question of selectedQuestions; let i = index">
-            <div class="question-item" *ngIf="question.text" [ngClass]="{
-           }">
-
-                <span class="question-number">{{ i + 1 }}</span>
-                <div class="question-content">
-                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-
-                    <!-- Mostra o tópico, se existir -->
-                    <div class="question-topic" *ngIf="question.topic">
-                        <small>Tópico: {{ question.topic.name }}</small>
-
-                        <button class="btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)">
-                            remover
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Popout Ver Questoes adicionadas e marcadas-->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalQuestionsList">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Questões</h2>
-            <button class="close-button" (click)="onCloseQuestionList()">&times;</button>
-        </div>
-
-        <div *ngFor="let question of allQuestions; let i = index">
-            <div class="question-item" *ngIf="question.text" [ngClass]="{
-             'selected-question': question.selected,
-           }">
-
-                <span class="question-number">{{ i + 1 }}</span>
-                <div class="question-content">
-                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-
-                    <!-- Mostra o tópico, se existir -->
-                    <div class="question-topic" *ngIf="question.topic">
-                        <small>Tópico: {{ question.topic.name }}</small>
-
-                        <button class="btn-add" (click)="onAddQuestionToTestQuestions(question.id)"
-                            *ngIf="!question.selected">
-                            adicionar
-                        </button>
-
-                        <button class="btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)"
-                            *ngIf="question.selected">
-                            remover
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</div>

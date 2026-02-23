@@ -28,7 +28,7 @@ import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { UserService } from 'src/app/users/user.service';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { Wallet } from 'src/app/core/model/Wallet';
-import { MainPanelService } from 'src/app/main-panel/main-panel.service';
+import { ProgressService } from 'src/app/progress/progress.service';
 declare const MathJax: any;
 import { e, evaluate } from 'mathjs'; //npm install mathjs
 
@@ -275,7 +275,7 @@ export class QuizzQuestionsComponent implements OnInit {
   constructor(
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
-    private mainPanelService: MainPanelService,
+    private progressService: ProgressService,
     private walletService: WalletService,
     private quizService: QuizService,
     private topicService: TopicService,
@@ -464,7 +464,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.quiz.blockedTip = true; // Bloqueia dicas para testes de progresso
 
-    this.mainPanelService.getQuestionsByTestId(topicId).subscribe(
+    this.progressService.getQuestionsByTestId(topicId).subscribe(
       (questions: Question[]) => {
         this.questions = questions;
         this.quiz.questions = this.questions;

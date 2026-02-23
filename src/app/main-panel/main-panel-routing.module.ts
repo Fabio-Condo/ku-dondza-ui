@@ -5,9 +5,9 @@ import { MainPanelComponent } from './main-panel/main-panel.component';
 
 const routes: Routes = [
   { 
-    path: 'progress-panel', 
+    path: 'main-panel', 
     component: MainPanelComponent,
-    canActivate: [AuthenticationGuard], 
+    //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true

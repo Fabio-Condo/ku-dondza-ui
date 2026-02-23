@@ -5,9 +5,9 @@ import { ProgressComponent } from './progress/progress.component';
 
 const routes: Routes = [
   { 
-    path: 'main-panel', 
+    path: 'progress-panel', 
     component: ProgressComponent,
-    //canActivate: [AuthenticationGuard], 
+    canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
