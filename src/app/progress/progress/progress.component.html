@@ -52,52 +52,6 @@
             /* mais suave */
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.5rem;
-            font-weight: 700;
-            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.25);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
-        }
-
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #222;
-            margin-bottom: 0.2rem;
-        }
-
-        .user-level {
-            font-size: 0.9rem;
-            color: #555;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .level-badge {
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: #fff;
@@ -122,57 +76,53 @@
             margin-bottom: 1rem;
         }
 
-        .filter-chip {
-            padding: 0.5rem 1rem;
-            /* ligeiramente menor */
-            border-radius: 25px;
-            /* mais suave */
-            border: 2px solid #e0e0e0;
-            background: #fff;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-weight: 500;
-            font-size: 0.85rem;
-            /* menor */
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            user-select: none;
-            position: relative;
-            color: #555;
-        }
+                .header {
+    background: #ffffff;
+    padding: 1.8rem;
+    border-radius: 14px;
+    margin-bottom: 2rem;
+    border: 1px solid #e5e7eb;
+}
 
-        .filter-chip .emoji {
-            font-size: 1rem;
-        }
+.header-top {
+    margin-bottom: 1.5rem;
+}
 
-        .filter-chip.active {
-            background: #f0f4ff;
-            border-color: #4361ee;
-            color: #4361ee;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.15);
-        }
 
-        .filter-chip {
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            border: 2px solid #e0e0e0;
-            background: #fff;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-weight: 500;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            user-select: none;
-        }
+.header-subtitle {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
 
-        .filter-chip:hover {
-            border-color: #4361ee;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(67, 97, 238, 0.1);
-        }
+/* Filtros modernos minimalistas */
+.discipline-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.filter-chip {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #374151;
+}
+
+.filter-chip:hover {
+    background: #eef2ff;
+    border-color: #4361ee;
+}
+
+.filter-chip.active {
+    background: #4361ee;
+    color: #ffffff;
+    border-color: #4361ee;
+}
 
         .overall-progress {
             display: flex;
@@ -1159,54 +1109,29 @@
             </div>
         </div>
 
-        <!--
-        <div class="header">
-            <h1>Painel de Aprendizagem</h1>
-            <div class="overall-progress">
-                <div class="subject-card">
-                    <h3>Progresso Geral</h3>
-                    <div class="progress-text">47%</div>
-                </div>
-                <div class="subject-card">
-                    <h3>Quizzes Completos</h3>
-                    <div class="progress-text">14/30</div>
-                </div>
-                <div class="subject-card">
-                    <h3>Pontuação Média</h3>
-                    <div class="progress-text">8.2/10</div>
-                </div>
-            </div>
-        </div>
-        -->
-        <div class="header">
-            <!--
-            <div class="header-top">
-                <div class="user-info">
-                    <div class="user-avatar">FC</div>
-                    <div class="user-details">
-                        <div class="user-name">Fábio Condo</div>
-                        <div class="user-level">
-                            <span class="level-badge">Nível 12</span>
-                            <span>Estadante na UEM</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            -->
+<div class="header">
 
+    <div class="header-top">
+        <div>
             <h1>Seu Progresso</h1>
-
-            <div class="filters-section">
-                <div class="discipline-filters" id="disciplineFilters">
-                    <div class="filter-chip" *ngFor="let subject of subjects"
-                        [class.active]="subject.id === selectedSubject.id" (click)="onSelectSubject(subject)">
-                        <span class="emoji"></span>
-                        <span>{{ subject.name }}</span>
-                    </div>
-                </div>
-            </div>
-
+            <p class="header-subtitle">
+                Acompanhe sua evolução por disciplina
+            </p>
         </div>
+    </div>
+
+    <div class="filters-section">
+        <div class="discipline-filters">
+            <div class="filter-chip"
+                 *ngFor="let subject of subjects"
+                 [class.active]="subject.id === selectedSubject.id"
+                 (click)="onSelectSubject(subject)">
+                {{ subject.name }}
+            </div>
+        </div>
+    </div>
+
+</div>
 
         <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
 
