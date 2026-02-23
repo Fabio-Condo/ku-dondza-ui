@@ -870,7 +870,7 @@
 
                             <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
                                 <a (click)="onUpdate(exam, file)" *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
-                                <a (click)="onDownload(exam)">Baixar</a>
+                                <a (click)="onDownload(exam)" *ngIf="isUserLoggedIn && isSuperAdmin">Baixar</a>
                             </div>
                         </div>
                     </div>
