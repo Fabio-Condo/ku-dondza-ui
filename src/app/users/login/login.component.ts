@@ -87,8 +87,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           method: 'google'
         });
 
-        //this.router.navigateByUrl('/main-panel');
-        this.router.navigateByUrl('/quizzes');
+        this.router.navigateByUrl('/main-panel');
+        //this.router.navigateByUrl('/quizzes');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -126,8 +126,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           method: 'google'
         });
 
-        //this.router.navigateByUrl('/main-panel');
-        this.router.navigateByUrl('/quizzes');
+        this.router.navigateByUrl('/main-panel');
+        //this.router.navigateByUrl('/quizzes');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -169,8 +169,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           method: 'google'
         });
 
-        //this.router.navigateByUrl('/main-panel');
-        this.router.navigateByUrl('/quizzes');
+        this.router.navigateByUrl('/main-panel');
+        //this.router.navigateByUrl('/quizzes');
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -220,8 +220,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
 
         this.ngZone.run(() => {
-          //this.router.navigateByUrl('/main-panel');
-          this.router.navigateByUrl('/quizzes');
+          this.router.navigateByUrl('/main-panel');
+          //this.router.navigateByUrl('/quizzes');
         });
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -245,8 +245,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private checkAuthentication(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      //this.router.navigateByUrl('/main-panel');
-      this.router.navigateByUrl('/quizzes');
+      this.router.navigateByUrl('/main-panel');
+      //this.router.navigateByUrl('/quizzes');
     }
   }
 

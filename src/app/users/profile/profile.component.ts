@@ -283,7 +283,8 @@ export class ProfileComponent implements OnInit {
   onLogOut(): void {
     this.authenticationService.logOut();
     this.authenticationService.notifyLoginStatus(false);
-    this.router.navigate(['/home']);
+    //this.router.navigate(['/home']);
+    this.router.navigateByUrl('/main-panel');
   }
 
   public get isAdmin(): boolean {
