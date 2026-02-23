@@ -117,7 +117,7 @@
         .exam-card {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid #f1f5f9;
@@ -747,17 +747,20 @@
             margin-right: 10px;
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
+        @media (max-width: 900px) {
+            .container {
+                margin-top: 60px;
             }
+        }
 
-            h1 {
-                font-size: 2rem;
-            }
+        @media (max-width: 768px) {
 
             .exams-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .exam-card {
+                padding: 10px;
             }
 
             .filters {
@@ -782,10 +785,6 @@
 
             .title {
                 display: flex;
-            }
-
-            .title {
-                font-size: 17px;
             }
 
             .fab {
@@ -864,28 +863,15 @@
                 <div class="exam-header">
                     <div class="exam-title-container">
                         <h3 class="exam-title">{{ exam.subject.name }} {{ exam.number }}</h3>
-                        <div>
-                            <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
-                                <button class="dropdown-btn" (click)="toggleDropdown(exam)">
-                                    <i class="pi pi-ellipsis-h"></i>
-                                </button>
+                        <div class="dropdown-container">
+                            <button class="dropdown-btn" (click)="toggleDropdown(exam)">
+                                <i class="pi pi-ellipsis-h"></i>
+                            </button>
 
-                                <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                                    <a (click)="onUpdate(exam, file)">Editar</a>
-                                </div>
+                            <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+                                <a (click)="onUpdate(exam, file)" *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
+                                <a (click)="onDownload(exam)">Baixar</a>
                             </div>
-                            <span class="badge badge-with-icon"
-                                [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
-                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8"
-                                        stroke-linecap="round" />
-                                    <rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor"
-                                        stroke-width="1.8" />
-                                    <circle cx="12" cy="15" r="1.2" fill="currentColor" />
-                                </svg>
-                                {{ exam.premium ? 'Premium' : 'Gratuito' }}
-                            </span>
                         </div>
                     </div>
 
@@ -908,6 +894,16 @@
                                     stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
                             </svg>
                             {{ getType(exam.examType) }}
+                        </span>
+                        <span class="badge badge-with-icon" [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
+                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" />
+                                <rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor"
+                                    stroke-width="1.8" />
+                                <circle cx="12" cy="15" r="1.2" fill="currentColor" />
+                            </svg>
+                            {{ exam.premium ? 'Premium' : 'Gratuito' }}
                         </span>
                     </div>
 
