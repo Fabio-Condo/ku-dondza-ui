@@ -205,7 +205,7 @@
             border: 1px solid #f0dbb8;
         }
 
-        .badge-gray {
+        .badge-date {
             color: #4a5568;
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -234,6 +234,12 @@
             color: #4a5568;
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
+        }
+
+        .detail-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .download-btn {
@@ -886,25 +892,17 @@
                     <p class="exam-institution">{{ getInstitution(exam.institution) }} - {{ exam.institution }}</p>
                 </div>
                 <div class="exam-details">
-                    <div class="detail-item">
-                        <span class="badge badge-gray badge-with-icon">
-                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor"
-                                    stroke-width="1.8" />
-                                <path d="M16 2V6M8 2V6M3 10H21" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" />
+                    <div class="detail-row">
+                        <span class="badge badge-date badge-with-icon">
+                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8" />
+                                <path d="M3 10H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                             </svg>
                             {{ exam.date | date:'yyyy' }}
                         </span>
-                    </div>
-
-                    <div class="detail-item">
                         <span class="badge badge-enunciado badge-with-icon" [ngClass]="getBadgeClass(exam.examType)">
-                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6 C4.9 22 4 21.1 4 20V4 C4 2.9 4.9 2 6 2Z"
-                                    stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
-                                <path d="M14 2V6H18" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6 C4.9 22 4 21.1 4 20V4 C4 2.9 4.9 2 6 2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
                             </svg>
                             {{ getType(exam.examType) }}
                         </span>
