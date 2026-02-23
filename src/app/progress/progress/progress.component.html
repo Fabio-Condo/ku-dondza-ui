@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyHub — Painel Principal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /*background: #F5F2EE;*/
+            color: #1A1714;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Header ── */
+        header {
+            padding: 2rem 3rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid #E2DDD8;
+            background: #FDFCFA;
+            animation: fadeDown .5s ease both;
+        }
+
+        /* ── Main ── */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem 4rem;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeUp .6s ease .1s both;
+        }
+
+        .intro h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            line-height: 1.15;
+            color: #1A1714;
+            margin-bottom: .6rem;
+        }
+
+        .intro h1 em {
+            color: #4361ee;
+            font-style: italic;
+        }
+
+        .intro p {
+            font-size: 1rem;
+            color: #8A8480;
+            font-weight: 300;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ── Grid ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            width: 100%;
+            max-width: 780px;
+        }
+
+        .card {
+            background: #FDFCFA;
+            border: 1px solid #E2DDD8;
+            border-radius: 16px;
+            padding: 2rem 1.75rem 1.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            box-shadow: 0 2px 12px rgba(26, 23, 20, 0.07), 0 1px 3px rgba(26, 23, 20, 0.05);
+            transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp .6s ease both;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: .15s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: .22s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: .29s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: .36s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: #EEF1FD;
+            opacity: 0;
+            transition: opacity .22s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(26, 23, 20, 0.12), 0 2px 8px rgba(26, 23, 20, 0.08);
+            border-color: #4361ee;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #EEF1FD;
+            border: 1px solid #C9D3F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            transition: background .22s ease;
+        }
+
+        .card:hover .card-icon {
+            background: #4361ee;
+        }
+
+        .card:hover .card-icon svg {
+            stroke: #fff;
+        }
+
+        .card-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke .22s ease;
+        }
+
+        .card-label {
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: #8A8480;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            line-height: 1.2;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-desc {
+            font-size: .875rem;
+            color: #8A8480;
+            font-weight: 300;
+            line-height: 1.55;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-arrow {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .8rem;
+            font-weight: 500;
+            color: #4361ee;
+            position: relative;
+            z-index: 1;
+            transition: gap .2s ease;
+        }
+
+        .card:hover .card-arrow {
+            gap: .55rem;
+        }
+
+        .card-arrow svg {
+            width: 14px;
+            height: 14px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 1.5rem;
+            right: 1.5rem;
+            height: 2px;
+            border-radius: 0 0 4px 4px;
+            background: #4361ee;
+            opacity: 0;
+            transition: opacity .22s ease;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 580px) {
+            header {
+                padding: 1.25rem 1.5rem 1rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .intro h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <div class="intro">
+            <h1>O que queres<br /><em>fazer hoje?</em></h1>
+            <p>Escolhe uma das áreas abaixo para continuar o teu percurso académico.</p>
+        </div>
+
+        <div class="grid">
+
+            <!-- Progresso -->
+            <a routerLink="/progress-panel" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                </div>
+                <span class="card-label">Acompanhamento</span>
+                <h2 class="card-title">Progresso</h2>
+                <p class="card-desc">Acompanha a evolução do teu desempenho, conquistas e áreas a melhorar.</p>
+                <span class="card-arrow">
+                    Ver Progresso
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Quizzes -->
+            <a routerLink="/quizzes" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                </div>
+                <span class="card-label">Avaliação</span>
+                <h2 class="card-title">Quizzes</h2>
+                <p class="card-desc">Testa os teus conhecimentos com questões interactivas e recebe feedback imediato.
+                </p>
+                <span class="card-arrow">
+                    Começar
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Repositório -->
+            <a routerLink="/questions" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                </div>
+                <span class="card-label">Estudo</span>
+                <h2 class="card-title">Repositório de questões</h2>
+                <p class="card-desc">Acede à colecção de questões e exercícios organizados por tema e nível de
+                    dificuldade.</p>
+                <span class="card-arrow">
+                    Explorar
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Exames Anteriores -->
+            <a routerLink="/exames" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="8" y1="13" x2="16" y2="13" />
+                        <line x1="8" y1="17" x2="16" y2="17" />
+                    </svg>
+                </div>
+                <span class="card-label">Preparação</span>
+                <h2 class="card-title">Exames Anteriores</h2>
+                <p class="card-desc">
+                    Consulta exames de anos anteriores e pratica com provas reais para melhorar o teu desempenho.
+                </p>
+                <span class="card-arrow">
+                    Ver Exames
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Cursos -->
+            <a routerLink="/subjects" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                </div>
+                <span class="card-label">Aprendizagem</span>
+                <h2 class="card-title">Cursos</h2>
+                <p class="card-desc">Navega pelos módulos e conteúdos estruturados para aprendizagem guiada e
+                    aprofundada.</p>
+                <span class="card-arrow">
+                    Ver Cursos
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Tópicos -->
+            <a routerLink="/topics" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="6" cy="6" r="2" />
+                        <circle cx="6" cy="12" r="2" />
+                        <circle cx="6" cy="18" r="2" />
+                        <line x1="10" y1="6" x2="20" y2="6" />
+                        <line x1="10" y1="12" x2="20" y2="12" />
+                        <line x1="10" y1="18" x2="20" y2="18" />
+                    </svg>
+                </div>
+                <span class="card-label">Conteúdo</span>
+                <h2 class="card-title">Tópicos</h2>
+                <p class="card-desc">
+                    Explora os conteúdos organizados por tópicos específicos e estuda cada tema de forma estruturada.
+                </p>
+                <span class="card-arrow">
+                    Ver Tópicos
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </span>
+            </a>
+
+        </div>
+    </main>
+
+</body>
+
+</html>

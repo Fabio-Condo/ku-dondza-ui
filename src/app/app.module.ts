@@ -40,6 +40,8 @@ import { AboutUsRoutingModule } from './about-us/about-us-routing.module';
 import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
 import { ExamesModule } from './exames/exames.module';
 import { ExamesRoutingModule } from './exames/exames-routing.module';
+import { ProgressRoutingModule } from './progress/progress-routing.module';
+import { ProgressModule } from './progress/progress.module';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { ExamesRoutingModule } from './exames/exames-routing.module';
     FaqRoutingModule,
     PrivacyPolicyRoutingModule,
     AboutUsRoutingModule,
+    ProgressRoutingModule,
 
     SubjectsModule,
     TopicsModule,
@@ -76,6 +79,7 @@ import { ExamesRoutingModule } from './exames/exames-routing.module';
     FaqModule,
     PrivacyPolicyModule,
     AboutUsModule,
+    ProgressModule,
 
     CoreRoutingModule,
     AppRoutingModule,
