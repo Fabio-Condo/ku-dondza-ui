@@ -5,11 +5,14 @@ import { Topic } from '../core/model/Topic';
 import { environment } from 'src/environments/environment';
 import { TopicFilter } from '../core/interface/TopicFilter';
 import { IApiResponse } from '../core/interface/IApiResponse';
+import { shareReplay } from 'rxjs/operators';
 
 
 @Injectable({ providedIn: 'root' })
 export class TopicService {
     private host = environment.apiUrl + '/topics';
+
+    private cache: { [key: number]: Observable<Topic[]> } = {};
 
     constructor(private http: HttpClient) { }
 
@@ -36,6 +39,20 @@ export class TopicService {
 
     getBySubjectId(subjectId: number): Observable<Topic[]> {
         return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
+    }
+
+    getBySubjectIdWithCache(subjectId: number): Observable<Topic[]> {
+
+        // Se já existe no cache, retorna
+        if (!this.cache[subjectId]) {
+            this.cache[subjectId] = this.http
+                .get<Topic[]>(`${this.host}/${subjectId}/subjects`)
+                .pipe(
+                    shareReplay(1) // mantém resposta em memória
+                );
+        }
+
+        return this.cache[subjectId];
     }
 
     //getSubjectsById(subjectId: number): Observable<Topic[]> {

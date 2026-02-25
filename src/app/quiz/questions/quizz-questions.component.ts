@@ -431,20 +431,23 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getTopicsBySubjectId(subjectId: number): void {
-    this.loadingMessage = "Obtendo tópicos"
+
+    this.loadingMessage = "Obtendo tópicos...";
     this.showLoading = true;
-    this.topicService.getBySubjectId(subjectId).subscribe(
-      (dados: Topic[]) => {
-        this.quiz.questions = [];
-        this.topics = [];
-        this.topics = dados;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
+
+    //this.topicService.getBySubjectId(subjectId)
+    this.topicService.getBySubjectIdWithCache(subjectId)
+      .subscribe({
+        next: (dados: Topic[]) => {
+          this.quiz.questions = [];
+          this.topics = dados;
+          this.showLoading = false;
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          this.sendErrorNotification(errorResponse.error.message);
+          this.showLoading = false;
+        }
+      });
   }
 
   // Testes de topico único - Progresso automático
