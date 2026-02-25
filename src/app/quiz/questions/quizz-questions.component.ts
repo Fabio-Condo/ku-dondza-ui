@@ -432,10 +432,9 @@ export class QuizzQuestionsComponent implements OnInit {
 
   getTopicsBySubjectId(subjectId: number): void {
 
-    this.loadingMessage = "Obtendo tópicos...";
+    this.loadingMessage = "Obtendo tópicos";
     this.showLoading = true;
 
-    //this.topicService.getBySubjectId(subjectId)
     this.topicService.getBySubjectIdWithCache(subjectId)
       .subscribe({
         next: (dados: Topic[]) => {

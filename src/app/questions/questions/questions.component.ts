@@ -566,7 +566,7 @@ export class QuestionsComponent implements OnInit {
     this.loadingMessage = "Carregando tópicos"
     this.showLoading = true;
 
-    this.topicService.getBySubjectId(this.selectedSubject!).subscribe({
+    this.topicService.getBySubjectIdWithCache(this.selectedSubject!).subscribe({
       next: (dados) => {
         this.topics = dados;
         this.showLoading = false;
