@@ -623,9 +623,15 @@
         </div>
 
         <div class="main-content" *ngIf="isPremiumTopic(topic)">
-            <p class="lock-message" style="margin-bottom: 0;" *ngIf="isPremiumTopic(topic)">
-                🔒 Disponível para usuários Premium —
-                <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
+            <p class="lock-message" *ngIf="isPremiumTopic(topic)">
+                <span class="lock-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </span>
+                Conteúdo exclusivo para utilizadores <strong>Premium</strong>.
+                <a class="upgrade-link" (click)="openUpgradeModal()">Desbloquear agora</a>
             </p>
         </div>
 
@@ -679,8 +685,7 @@
                     </button>
 
                     <button href="#" class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                        [disabled]="isPremiumTopic(topic) || content.showLoadingDownload"
-                        (click)="onDownload(content)">
+                        [disabled]="isPremiumTopic(topic) || content.showLoadingDownload" (click)="onDownload(content)">
                         <svg *ngIf="!content.showLoadingDownload" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
