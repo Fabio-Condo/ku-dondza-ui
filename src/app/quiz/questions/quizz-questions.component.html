@@ -119,18 +119,17 @@
             <div class="options-grid">
               <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
                 [class.unlocked]="isPremiumTopic(topic)" class="option-card">
-                <p class="option-description">{{ topic.name }}</p>
-
-                <p class="lock-message" *ngIf="isPremiumTopic(topic)">
-                  <span class="lock-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" />
-                      <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
-                    </svg>
+                <p class="option-description">
+                  {{ topic.name }}
+                  <span *ngIf="isPremiumTopic(topic)" class="premium-lock">
+                    <span class="lock-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" />
+                        <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
+                      </svg>
+                    </span>
                   </span>
-                  Conteúdo exclusivo para utilizadores <strong>Premium</strong>.
-                  <!--<a class="upgrade-link" (click)="openUpgradeModal()">Desbloquear agora</a>-->
                 </p>
               </div>
             </div>
@@ -145,11 +144,13 @@
                 class="option-card">
                 {{ limit.label }}
                 <span *ngIf="isLockedLimit(limit.value)">
-                  <svg [class.rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
+                  <span class="lock-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" />
+                      <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
                 </span>
               </div>
             </div>
@@ -533,10 +534,9 @@
                     <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
                   </svg>
                 </span>
-                Conteúdo exclusivo para utilizadores <strong>Premium</strong>.
-                <a class="upgrade-link" (click)="openUpgradeModal()">Desbloquear agora</a>
+                Resolução completa disponível apenas para utilizadores Premium —
+                <a class="upgrade-link" (click)="openUpgradeModal()">Ver mais</a>
               </p>
-
             </div>
           </div>
 
