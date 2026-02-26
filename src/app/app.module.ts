@@ -42,6 +42,8 @@ import { ExamesModule } from './exames/exames.module';
 import { ExamesRoutingModule } from './exames/exames-routing.module';
 import { ProgressRoutingModule } from './progress/progress-routing.module';
 import { ProgressModule } from './progress/progress.module';
+import { PaymentsModule } from './payments/payments.module';
+import { PaymentsRoutingModule } from './payments/payments-routing.module';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { ProgressModule } from './progress/progress.module';
     PrivacyPolicyRoutingModule,
     AboutUsRoutingModule,
     ProgressRoutingModule,
+    PaymentsRoutingModule,
 
     SubjectsModule,
     TopicsModule,
@@ -80,6 +83,7 @@ import { ProgressModule } from './progress/progress.module';
     PrivacyPolicyModule,
     AboutUsModule,
     ProgressModule,
+    PaymentsModule,
 
     CoreRoutingModule,
     AppRoutingModule,
