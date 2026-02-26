@@ -1107,8 +1107,8 @@ export class QuestionViewComponent implements OnInit {
   isFreeUser(): boolean {
     if (!this.loggedUser || this.loggedUser.id === 0) return true;
 
-    const expiresAt = this.loggedUser.expiresAt ? new Date(this.loggedUser.expiresAt) : null;
-    return this.loggedUser.plan === 'FREE' || !expiresAt || expiresAt <= new Date();
+    const planExpiresAt = this.loggedUser.planExpiresAt ? new Date(this.loggedUser.planExpiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !planExpiresAt || planExpiresAt <= new Date();
   }
 
   getWalletsByUser(userId: number): void {
