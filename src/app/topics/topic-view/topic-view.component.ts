@@ -645,7 +645,7 @@ export class TopicViewComponent implements OnInit {
       }
     }
 
-    this.loadingMessage = "Carregando dados";
+    this.loadingMessage = "Processando o pagamento";
     this.showLoading = true;
 
     this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', this.selectedWalletId).subscribe({
