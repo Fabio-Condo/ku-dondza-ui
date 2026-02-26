@@ -802,6 +802,25 @@
             .button-add-new {
                 display: none;
             }
+
+            .popout-container {
+                width: 95%;
+                padding: 10px;
+                max-width: 100%;
+                max-height: 70vh;
+                border-radius: 8px;
+                overflow-y: auto;
+            }
+
+            .popout-title {
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .close-button {
+                font-size: 20px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
@@ -870,7 +889,7 @@
 
                             <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
                                 <a (click)="onUpdate(exam, file)" *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
-                                <a (click)="onDownload(exam)" *ngIf="isUserLoggedIn && isSuperAdmin">Baixar</a>
+                                <a (click)="onDownload(exam)">Baixar</a>
                             </div>
                         </div>
                     </div>
