@@ -376,12 +376,12 @@
             flex-shrink: 0;
         }
 
-        .status-paid {
+        .status-success {
             background: #e6fbf3;
             color: #059669;
         }
 
-        .status-paid .status-dot {
+        .status-success .status-dot {
             background: #0ecb81;
         }
 
@@ -1039,293 +1039,80 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr *ngFor="let payment of payments">
 
-                        <tr>
+                            <!-- Usuário -->
                             <td>
                                 <div class="user-cell">
-                                    <div class="avatar av-1">AS</div>
+                                    <div class="avatar av-1">
+                                        {{ payment.user.fullName.charAt(0) }}
+                                    </div>
                                     <div>
-                                        <div class="user-name">Ana Silva</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="8cede2eda2ffe5e0faedcce9e1ede5e0a2efe3e1">[email&#160;protected]</a>
-                                        </div>
+                                        <div class="user-name">{{ payment.user.fullName }}</div>
+                                        <div class="user-email">{{ payment.user.email }}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td><span class="wallet-addr" data-tooltip="0x3f2a...e9b1">0x3f2a…e9b1</span></td>
-                            <td><span class="plan-badge plan-pro">⭐ Pro</span></td>
-                            <td><span class="amount">$79,00</span></td>
-                            <td><span class="status-badge status-paid"><span class="status-dot"></span>Aprovado</span>
-                            </td>
-                            <td class="date-cell">15 Jan 2025<div class="date-sub">14:32</div>
-                            </td>
-                            <td class="date-cell">15 Fev 2025<div class="date-sub">23:59</div>
-                            </td>
-                            <td><span class="tx-id" data-tooltip="txn_1OkJlALkdIwHu7ix2MYM85Gb">txn_1OkJlALk…85Gb</span>
-                            </td>
-                            <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
 
-                        <tr>
+                            <!-- Carteira -->
                             <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-2">MC</div>
-                                    <div>
-                                        <div class="user-name">Marcos Costa</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="ff92d19c908c8b9ebf98929e9693d19c9092">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
+                                <span class="wallet-addr">
+                                    {{ payment.wallet.phoneNumber }}
+                                </span>
+                            </td>
+
+                            <!-- Plano -->
+                            <td>
+                                <span class="plan-badge" [ngClass]="getPlanClass(payment.plan)">
+                                    {{ payment.plan }}
+                                </span>
+                            </td>
+
+                            <!-- Valor -->
+                            <td>
+                                <span class="amount">
+                                    {{ payment.amount | currency:'USD' }}
+                                </span>
+                            </td>
+
+                            <!-- Status  -->
+                            <td>
+                                <span class="status-badge" [ngClass]="getStatusClass(payment.status)">
+                                    <span class="status-dot"></span>
+                                    {{ payment.status }}
+                                </span>
+                            </td>
+
+                            <!-- Criado em -->
+                            <td class="date-cell">
+                                {{ payment.createdAt | date:'dd MMM yyyy' }}
+                                <div class="date-sub">
+                                    {{ payment.createdAt | date:'HH:mm' }}
                                 </div>
                             </td>
-                            <td><span class="wallet-addr" data-tooltip="0xf7b1...c2d4">0xf7b1…c2d4</span></td>
-                            <td><span class="plan-badge plan-premium">🔥 Premium</span></td>
-                            <td><span class="amount">$149,00</span></td>
-                            <td><span class="status-badge status-pending"><span
-                                        class="status-dot"></span>Pendente</span></td>
-                            <td class="date-cell">14 Jan 2025<div class="date-sub">09:18</div>
-                            </td>
-                            <td class="date-cell">14 Fev 2025<div class="date-sub">23:59</div>
-                            </td>
-                            <td><span class="tx-id" data-tooltip="txn_9XkMoRPz3Qy1Ab7cE4Wn56Jt">txn_9XkMoRPz…56Jt</span>
-                            </td>
-                            <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
 
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-3">LO</div>
-                                    <div>
-                                        <div class="user-name">Luciana Oliveira</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="335f46505a1d5c5f5a735657461d5141">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
+                            <!-- Expira em -->
+                            <td class="date-cell">
+                                {{ payment.planExpiresAt | date:'dd MMM yyyy' }}
+                                <div class="date-sub">
+                                    {{ payment.planExpiresAt | date:'HH:mm' }}
                                 </div>
                             </td>
-                            <td><span class="wallet-addr" data-tooltip="0xa3c9...78ef">0xa3c9…78ef</span></td>
-                            <td><span class="plan-badge plan-basic">📘 Basic</span></td>
-                            <td><span class="amount">$29,00</span></td>
-                            <td><span class="status-badge status-paid"><span class="status-dot"></span>Aprovado</span>
-                            </td>
-                            <td class="date-cell">13 Jan 2025<div class="date-sub">18:45</div>
-                            </td>
-                            <td class="date-cell">13 Fev 2025<div class="date-sub">23:59</div>
-                            </td>
-                            <td><span class="tx-id"
-                                    data-tooltip="txn_2BwQnMkPs8Ux3Fh6Rv0Yc91Te">txn_2BwQnMkP…91Te</span></td>
+
+                            <!-- Transação -->
                             <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
+                                <span class="tx-id">
+                                    {{ payment.transactionId }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <button class="action-btn">
+                                    ...
                                 </button>
                             </td>
-                        </tr>
 
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-5">RB</div>
-                                    <div>
-                                        <div class="user-name">Rafael Borges</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="ef9d8d809d888a9caf87809b828e8683c18c8082">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="wallet-addr" data-tooltip="0xd4e2...a0f3">0xd4e2…a0f3</span></td>
-                            <td><span class="plan-badge plan-pro">⭐ Pro</span></td>
-                            <td><span class="amount">$79,00</span></td>
-                            <td><span class="status-badge status-failed"><span class="status-dot"></span>Falhou</span>
-                            </td>
-                            <td class="date-cell">12 Jan 2025<div class="date-sub">22:03</div>
-                            </td>
-                            <td class="date-cell">—</td>
-                            <td><span class="tx-id"
-                                    data-tooltip="txn_7ZrGwAtNv5Kp1Xm8Qs3Lb04Ue">txn_7ZrGwAtN…04Ue</span></td>
-                            <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
-                                </button>
-                            </td>
                         </tr>
-
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-4">FM</div>
-                                    <div>
-                                        <div class="user-name">Fernanda Mota</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="f7919a988396b78e969f9898d994989a">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="wallet-addr" data-tooltip="0xb8a5...3c71">0xb8a5…3c71</span></td>
-                            <td><span class="plan-badge plan-premium">🔥 Premium</span></td>
-                            <td><span class="amount">$149,00</span></td>
-                            <td><span class="status-badge status-paid"><span class="status-dot"></span>Aprovado</span>
-                            </td>
-                            <td class="date-cell">11 Jan 2025<div class="date-sub">10:25</div>
-                            </td>
-                            <td class="date-cell">11 Fev 2025<div class="date-sub">23:59</div>
-                            </td>
-                            <td><span class="tx-id"
-                                    data-tooltip="txn_4CrTpVjHw9Mn2Yz7Od5Xk68Sf">txn_4CrTpVjH…68Sf</span></td>
-                            <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-6">DS</div>
-                                    <div>
-                                        <div class="user-name">Diego Santos</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="43272a26242c6d3003262e222a2f6d202c2e">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="wallet-addr" data-tooltip="0xc1f6...b2e8">0xc1f6…b2e8</span></td>
-                            <td><span class="plan-badge plan-free">Free</span></td>
-                            <td><span class="amount">$0,00</span></td>
-                            <td><span class="status-badge status-paid"><span class="status-dot"></span>Aprovado</span>
-                            </td>
-                            <td class="date-cell">10 Jan 2025<div class="date-sub">08:11</div>
-                            </td>
-                            <td class="date-cell">10 Fev 2025<div class="date-sub">23:59</div>
-                            </td>
-                            <td><span class="tx-id"
-                                    data-tooltip="txn_0GsLqEbKu6Jf3Aw9Pc2Nt71Rh">txn_0GsLqEbK…71Rh</span></td>
-                            <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-7">JP</div>
-                                    <div>
-                                        <div class="user-name">Julia Pereira</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="e08a959085a08f95948c8f8f8bce838f8d">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="wallet-addr" data-tooltip="0xe9d3...74ac">0xe9d3…74ac</span></td>
-                            <td><span class="plan-badge plan-pro">⭐ Pro</span></td>
-                            <td><span class="amount">$79,00</span></td>
-                            <td><span class="status-badge status-refunded"><span
-                                        class="status-dot"></span>Reembolsado</span></td>
-                            <td class="date-cell">09 Jan 2025<div class="date-sub">16:50</div>
-                            </td>
-                            <td class="date-cell">—</td>
-                            <td><span class="tx-id"
-                                    data-tooltip="txn_6HvNfWcXd1Bk4Iq8Gm0Oj35Pw">txn_6HvNfWcX…35Pw</span></td>
-                            <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-8">TN</div>
-                                    <div>
-                                        <div class="user-name">Thiago Nunes</div>
-                                        <div class="user-email"><a href="/cdn-cgi/l/email-protection"
-                                                class="__cf_email__"
-                                                data-cfemail="36425e5f5751591858435853457643585f185444">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="wallet-addr" data-tooltip="0x2b7e...d9f0">0x2b7e…d9f0</span></td>
-                            <td><span class="plan-badge plan-basic">📘 Basic</span></td>
-                            <td><span class="amount">$29,00</span></td>
-                            <td><span class="status-badge status-pending"><span
-                                        class="status-dot"></span>Pendente</span></td>
-                            <td class="date-cell">08 Jan 2025<div class="date-sub">11:37</div>
-                            </td>
-                            <td class="date-cell">08 Fev 2025<div class="date-sub">23:59</div>
-                            </td>
-                            <td><span class="tx-id"
-                                    data-tooltip="txn_3YmUeRsVt7Dl5Fx0Ch9Kp42Ag">txn_3YmUeRsV…42Ag</span></td>
-                            <td>
-                                <button class="action-btn" data-tooltip="Ver detalhes">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="19" cy="12" r="1" />
-                                        <circle cx="5" cy="12" r="1" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-
                     </tbody>
                 </table>
 
