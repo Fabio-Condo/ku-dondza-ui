@@ -47,8 +47,8 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:latest .
-        docker push ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:v1 .
+        docker push ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:v1
 
     #- name: Deploy with Docker Compose
     #  run: docker-compose up -d
