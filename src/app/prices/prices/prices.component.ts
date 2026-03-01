@@ -351,6 +351,7 @@ export class PricesComponent implements OnInit {
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
+        document.body.classList.remove('no-scroll');
       }
     });
   }
