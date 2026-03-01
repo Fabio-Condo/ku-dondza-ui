@@ -4,11 +4,12 @@ import { NaoAutorizadoComponent } from './core/nao-autorizado.component';
 
 import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
 import { HomeComponent } from './home/home/home.component';
+import { MainPanelComponent } from './main-panel/main-panel/main-panel.component';
 
 const routes: Routes = [
   { path: 'nao-autorizado', component: NaoAutorizadoComponent },
-  { path: 'home', component: HomeComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'main-panel', component: MainPanelComponent },
+  { path: '', redirectTo: 'main-panel', pathMatch: 'full' },
   { path: 'pagina-nao-encontrada', component: PaginaNaoEncontradaComponent },
   { path: '**', redirectTo: 'pagina-nao-encontrada' }
 ];
