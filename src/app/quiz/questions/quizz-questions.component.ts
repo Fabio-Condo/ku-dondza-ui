@@ -805,12 +805,19 @@ export class QuizzQuestionsComponent implements OnInit {
         this.questionsWithFullSolutions = this.quiz.questions;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (this.isFreeUser()) {
-          this.quiz.questions = this.quiz.questions.map(q => ({
-            ...q,
-            solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
-          }));
-        }
+        //if (this.isFreeUser()) {
+        //  this.quiz.questions = this.quiz.questions.map(q => ({
+        //    ...q,
+        //    solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
+        //  }));
+        //}
+
+        this.quiz.questions = this.quiz.questions.map(q => ({
+          ...q,
+          solution: this.isPremiumTopic(q.topic)
+            ? this.limitSolutionSafe(q.solution, 4)
+            : q.solution
+        }));
 
         this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
 

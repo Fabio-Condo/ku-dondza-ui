@@ -27,6 +27,7 @@ import { UserService } from 'src/app/users/user.service';
 import { Answer } from 'src/app/core/model/Answer';
 import { Wallet } from 'src/app/core/model/Wallet';
 import { WalletService } from 'src/app/core/wallets/answers.service';
+import { Topic } from 'src/app/core/model/Topic';
 
 
 @Component({
@@ -206,7 +207,7 @@ export class QuestionViewComponent implements OnInit {
         this.questionsWithFullSolutions.unshift(response); // Adiciona a questão recebida na primeira posição da lista
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (this.isFreeUser()) {
+        if (this.isPremiumTopic(this.question.topic)) {
           this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
         }
 
@@ -249,7 +250,7 @@ export class QuestionViewComponent implements OnInit {
         this.questionsWithFullSolutions = dados;
 
         // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (this.isFreeUser()) {
+        if (this.isPremiumTopic(this.question.topic)) {
           dados = dados.map(q => ({
             ...q,
             solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
@@ -1102,6 +1103,14 @@ export class QuestionViewComponent implements OnInit {
   onCloseLoginPopout() {
     this.displayModalLogin = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
+  isPremiumTopic(topic: Topic): boolean {
+    if (!topic.premium) return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return this.isFreeUser();
   }
 
   isFreeUser(): boolean {

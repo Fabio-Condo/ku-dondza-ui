@@ -179,7 +179,7 @@
 
                     <br>
 
-                    <p class="lock-message" *ngIf="isFreeUser() && question.showSolution">
+                    <p class="lock-message" *ngIf="isPremiumTopic(question.topic) && question.showSolution">
                         <span class="lock-icon">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -189,7 +189,7 @@
                                     stroke-width="2" />
                             </svg>
                         </span>
-                        Conteúdo exclusivo para utilizadores <strong>Premium</strong>.
+                        Tópico exclusivo para utilizadores <strong>Premium</strong>.
                         <a class="upgrade-link" (click)="openUpgradeModal()">Desbloquear agora</a>
                     </p>
                 </div>
