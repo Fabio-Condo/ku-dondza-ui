@@ -47,8 +47,8 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:v1 .
-        docker push ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:v1
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/kudondza-ui:latest
 
     #- name: Deploy with Docker Compose
     #  run: docker-compose up -d
@@ -57,7 +57,7 @@ jobs:
     # docker pull fabiocondo/kudondza-ui
     # docker-compose up -d
 
-    # Para testar localmente, depois de fazer uma actualizacao, baixa a nova versao e corra com docker-compose
+    # OU
 
     # docker pull fabiocondo/kudondza-ui:v1
     # docker compose up -d
