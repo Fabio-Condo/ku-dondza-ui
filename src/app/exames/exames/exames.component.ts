@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
@@ -11,6 +11,13 @@ import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { ExamesService } from '../exames.service';
 import { User } from 'src/app/core/model/User';
 import { Title } from '@angular/platform-browser';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { Subscription } from 'rxjs';
+import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
+import { Wallet } from 'src/app/core/model/Wallet';
+import { NgForm } from '@angular/forms';
+import { WalletService } from 'src/app/core/wallets/answers.service';
+import { UserService } from 'src/app/users/user.service';
 
 @Component({
   selector: 'app-exames',
@@ -39,6 +46,23 @@ export class ExamesComponent implements OnInit {
 
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  user = new User();
+  activeTab: number = 1;
+  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
+  otp: string = '';
+
+  private subscriptions: Subscription[] = [];
+  displayModalLogin: boolean = false;
+
+  wallet: Wallet = new Wallet();
+  userWallets: Wallet[] = [];
+  selectedWalletId: number = 0;
+
+  displayModalQuestionsList: boolean = false;
+  displayModalUpgradePlan: boolean = false;
+  displayModalPaymentOptions: boolean = false;
+  displayModalAddPaymentOption: boolean = false;
 
   filtro: ExameFilter = {
     examType: '',
@@ -80,7 +104,11 @@ export class ExamesComponent implements OnInit {
   ];
 
   constructor(
+    private ngZone: NgZone,
+    private googleAuthService: GoogleAuthService,
     private examesService: ExamesService,
+    private walletService: WalletService,
+    private userService: UserService,
     private subjectsService: SubjectsService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -373,6 +401,206 @@ export class ExamesComponent implements OnInit {
     );
   }
 
+  getWalletsByUser(userId: number): void {
+    this.loadingMessage = "Obtendo dados"
+    this.showLoading = true;
+    this.walletService.getWalletsByUser(userId).subscribe(
+      (dados: Wallet[]) => {
+        this.userWallets = dados;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  addNewWlletType(walletTypeForm: NgForm) {
+
+    //this.wallet.user = this.loggedUser;
+
+    this.detectWalletType(); // força atualização e validação
+
+    const phone = this.wallet.phoneNumber || '';
+
+    if (!this.wallet.type) {
+      this.sendErrorNotification("Número inválido: prefixo deve ser 84, 85, 86 ou 87.");
+      return;
+    }
+
+    if (phone.length !== 9) {
+      this.sendErrorNotification("Número inválido: deve conter exatamente 9 dígitos.");
+      return;
+    }
+
+    // Evitar duplicados
+    const exists = this.userWallets.some(
+      w => w.phoneNumber === phone
+    );
+
+    if (exists) {
+      this.sendErrorNotification("Este número já está registado nas suas carteiras.");
+      return;
+    }
+
+    // Definir como default se for a primeira carteira
+    if (this.userWallets.length === 0) {
+      this.wallet.default = true;
+    } else {
+      this.wallet.default = false;
+    }
+
+    this.loadingMessage = "Adicionando carteira"
+    this.showLoading = true;
+    this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
+      (response) => {
+        console.log(response);
+        this.wallet = response;
+
+        this.userWallets.push(this.wallet);
+        this.showLoading = false;
+        this.displayModalAddPaymentOption = false;
+        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onUpgradePlan(): void {
+    if (this.isUserLoggedIn) {
+      //this.upgradePlan();
+      this.openModalPaymentOptions();
+      return;
+    }
+
+    this.displayModalLogin = true;
+    setTimeout(() => {
+      this.displayModalUpgradePlan = false;
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
+  }
+
+  upgradePlan() {
+    // Se não tiver carteira selecionada, pega a default
+    if (!this.selectedWalletId) {
+      const defaultWallet = this.userWallets.find(w => w.default);
+      if (defaultWallet) {
+        this.selectedWalletId = defaultWallet.id!;
+      } else {
+        this.sendErrorNotification("Nenhuma carteira selecionada ou definida como principal.");
+        return;
+      }
+    }
+
+    this.loadingMessage = "Processando o pagamento";
+    this.showLoading = true;
+
+    this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', this.selectedWalletId).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.onCloseUpgradeModal();
+        this.onCloseModalPaymentOptions();
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  setDefaultWallet(wallet: Wallet) {
+
+    if (!wallet.id) {
+      this.sendErrorNotification('Carteira inválida: ID não definido');
+      return;
+    }
+
+    this.userWallets.forEach(w => w.default = false); // limpa anterior
+    wallet.default = true;
+
+    this.walletService.setDefault(wallet.id).subscribe({
+      next: (updatedWallet) => {
+        // Atualiza visualmente todas as carteiras
+        this.userWallets.forEach(w => w.default = w.id === updatedWallet.id);
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  openUpgradeModal() {
+    this.displayModalUpgradePlan = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseUpgradeModal() {
+    this.displayModalUpgradePlan = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  openModalPaymentOptions() {
+
+    if (this.userWallets.length === 0) {
+      this.getWalletsByUser(this.loggedUser.id);
+    }
+
+    this.displayModalPaymentOptions = true;
+    this.onCloseUpgradeModal();
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseModalPaymentOptions() {
+    this.displayModalPaymentOptions = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  openModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = true;
+  }
+
+  onCloseModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = false;
+  }
+
+  detectWalletType(): void {
+    const phone = this.wallet.phoneNumber ? this.wallet.phoneNumber.trim() : '';
+
+    // Remove espaços e caracteres não numéricos
+    const digitsOnly = phone.replace(/\D/g, '');
+
+    // Define o telefone limpo
+    this.wallet.phoneNumber = digitsOnly;
+
+    // Validação do tamanho
+    if (digitsOnly.length !== 9) {
+      this.wallet.type = '';
+      return;
+    }
+
+    // Verificação de prefixos válidos
+    const prefix = digitsOnly.substring(0, 2);
+    if (prefix === '84' || prefix === '85') {
+      this.wallet.type = 'MPESA';
+    } else if (prefix === '86' || prefix === '87') {
+      this.wallet.type = 'EMOLA';
+    } else {
+      this.wallet.type = '';
+    }
+  }
+
   limparCampos() {
     this.filtro.searchParam = "";
     this.filtro.subject = undefined;
@@ -420,6 +648,156 @@ export class ExamesComponent implements OnInit {
 
   private getUserRole(): string {
     return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  sendOtp() {
+    this.showLoading = true;
+    //const email = this.otpForm.value.email!;
+    this.authenticationService.generateOtp(this.user.email).subscribe({
+      next: () => {
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  validateOtp() {
+    this.showLoading = true;
+    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        //this.findById(this.question.questionId);
+
+        this.showLoading = false;
+        this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  startRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
+      next: (response) => {
+        console.log(response.body)
+        this.step = 'otp';
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  completeRegistrationViaOtp() {
+    this.showLoading = true;
+    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
+      next: (response) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.showLoading = false;
+        this.displayModalLogin = false;
+        document.body.classList.remove('no-scroll');
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  private async initializeGoogleAuth(): Promise<void> {
+
+    if (this.isMobileWebView()) {
+      console.log('Mobile WebView detected — Google Auth skipped.');
+      return; // não inicializa SDK
+    }
+
+    try {
+      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      setupButton((credential) => this.handleGoogleCredential(credential));
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Falha ao carregar autenticação Google',
+        life: 5000
+      });
+    }
+  }
+
+  private handleGoogleCredential(googleCredential: string): void {
+    this.ngZone.run(() => {
+      this.loadingMessage = "Estamos quase lá";
+      this.showLoading = true;
+    });
+
+    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+
+        this.ngZone.run(() => {
+          //this.findById(this.question.questionId);
+          this.showLoading = false;
+          this.displayModalLogin = false;
+          document.body.classList.remove('no-scroll');
+        });
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
+        this.showLoading = false;
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  public isMobileWebView(): boolean {
+    return /android|iphone|ipad|ipod/i.test(navigator.userAgent) && this.isWebView();
+  }
+
+  public isWebView(): boolean {
+    const userAgent = navigator.userAgent || navigator.vendor;
+    // Android WebView ou iOS WKWebView
+    return /wv|Android.*Version\/|iPhone.*AppleWebKit\/.*Mobile/i.test(userAgent);
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+    setTimeout(() => {
+      this.initializeGoogleAuth();
+    }, 100); // Espera para o botão estar no DOM
+  }
+
+  onCloseLoginPopout() {
+    this.displayModalLogin = false;
+    document.body.classList.remove('no-scroll');
   }
 
   private sendErrorNotification(message: string): void {
