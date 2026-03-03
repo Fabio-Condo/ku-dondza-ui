@@ -11,7 +11,7 @@
     <div class="container">
 
         <!-- routerLink="/users" -->
-         <!--
+        <!--
         <button class="go-back-btn" routerLink="/quizzes">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +43,24 @@
                     </div>
                     <div class="profile-info">
                         <h1>{{ user.fullName }}</h1>
-                        <p>{{ user.bio }}</p>
+
+                        <!-- Informações do Plano -->
+                        <div class="plan-info" *ngIf="user.plan">
+                            <div class="plan-name">
+                                <i class="fas fa-crown" *ngIf="user.plan !== 'FREE'"></i>
+                                <i class="fas fa-user" *ngIf="user.plan === 'FREE'"></i>
+                                <span>{{ user.plan }}</span>
+                            </div>
+
+                            <div class="plan-validity" *ngIf="user.plan !== 'FREE' && user.planExpiresAt">
+                                Válido até {{ user.planExpiresAt | date:'dd/MM/yyyy' }}
+                            </div>
+
+                            <div class="plan-validity" *ngIf="user.plan === 'FREE'">
+                                Plano gratuito
+                            </div>
+                        </div>
+                        <!--<p>{{ user.bio }}</p>-->
                     </div>
                 </div>
 
