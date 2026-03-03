@@ -696,6 +696,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.loadingMessage = "Salvando o quiz"
     this.showLoading = true;
     this.quiz.topics = this.getSelectedTopics();
+    this.quiz.user = this.loggedUser;
 
     const questionIds = this.quiz.questions.map(question => question.id);
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
