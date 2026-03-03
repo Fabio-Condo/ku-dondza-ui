@@ -22,79 +22,41 @@ export class FaqComponent implements OnInit {
 
   categories: FaqCategory[] = [
     {
-      title: 'Quizzes Automáticos',
+      title: 'Exames Anteriores de Admissão',
       items: [
         {
-          question: 'Como criar um quiz automático?',
-          answer: 'Para criar um quiz automático, selecione a disciplina, escolha os tópicos de interesse e defina o nível de dificuldade. O sistema gerará automaticamente questões baseadas nos exercícios cadastrados e suas configurações.',
+          question: 'Posso resolver exames anteriores de admissão?',
+          answer: 'Sim! Disponibilizamos exames anteriores organizados por ano e disciplina. Você pode resolver no formato original da prova para treinar exatamente como no dia oficial.',
           open: false
         },
         {
-          question: 'Como funcionam as dicas durante o quiz?',
-          answer: 'Durante o quiz, você pode solicitar dicas de resolução clicando no botão "Dica". As dicas são progressivas, oferecendo orientações sem revelar a resposta completa, ajudando no processo de aprendizagem.',
+          question: 'As provas anteriores têm resolução detalhada?',
+          answer: 'Sim. Cada questão possui resolução comentada passo a passo, explicando o raciocínio e os conceitos cobrados, para que você não apenas veja a resposta, mas entenda como resolver.',
           open: false
         },
         {
-          question: 'Como visualizar a correção e resolução?',
-          answer: 'Após finalizar o quiz, você receberá a correção completa com a pontuação e poderá visualizar a resolução detalhada de cada questão, incluindo explicações passo a passo.',
+          question: 'Resolver exames anteriores realmente ajuda?',
+          answer: 'Sim. Treinar com provas anteriores permite entender o padrão das perguntas, o nível de dificuldade e os temas mais cobrados, aumentando significativamente sua confiança e desempenho no exame.',
           open: false
         }
       ]
     },
     {
-      title: 'Biblioteca Digital',
+      title: 'Simulados e Quizzes Estratégicos',
       items: [
         {
-          question: 'Como baixar livros da biblioteca?',
-          answer: 'Acesse o módulo Biblioteca, utilize os filtros para encontrar o livro desejado e clique em "Download". Os livros ficam disponíveis em formato PDF para estudo offline.',
+          question: 'Como criar um simulado para o exame de admissão?',
+          answer: 'Selecione a disciplina, escolha os tópicos e defina o nível de dificuldade. O sistema gera automaticamente um simulado baseado no padrão do exame, focando nos conteúdos mais cobrados.',
           open: false
         },
         {
-          question: 'Posso ler os livros online?',
-          answer: 'Sim! Além do download, você pode ler online através do nosso visualizador integrado, que oferece ferramentas de marcação e anotações.',
-          open: false
-        }
-      ]
-    },
-    {
-      title: 'Cursos em Vídeo',
-      items: [
-        {
-          question: 'Como os cursos são organizados?',
-          answer: 'Os cursos são organizados em módulos sequenciais. Cada módulo contém várias aulas em vídeo e, ao final, você encontrará exercícios para download e exercícios resolvidos para praticar o conteúdo aprendido.',
+          question: 'Como funcionam as dicas durante o simulado?',
+          answer: 'Durante o simulado, você pode solicitar dicas progressivas que ajudam a direcionar o raciocínio sem revelar a resposta. Isso fortalece seu aprendizado e melhora seu desempenho real.',
           open: false
         },
         {
-          question: 'Como acessar os exercícios do módulo?',
-          answer: 'Após assistir todas as aulas de um módulo, a seção de exercícios será desbloqueada. Você poderá baixar listas de exercícios para praticar e acessar as resoluções detalhadas.',
-          open: false
-        }
-      ]
-    },
-    {
-      title: 'Competições',
-      items: [
-        {
-          question: 'Como participar das competições?',
-          answer: 'Acesse o módulo Competições, escolha uma competição ativa e faça sua submissão respondendo aos quizzes. Cada usuário pode fazer apenas uma submissão por competição.',
-          open: false
-        },
-        {
-          question: 'Como funciona o ranking?',
-          answer: 'O ranking é atualizado em tempo real baseado na pontuação e tempo de conclusão. Você pode acompanhar sua posição e ver os melhores colocados na tabela de classificação.',
-          open: false
-        },
-        {
-          question: 'Quais são os tipos de competições disponíveis?',
-          answer: `Atualmente, existem três tipos de competições disponíveis na plataforma:
-
-• **Copa do Conhecimento** – Competição aberta a todos os usuários cadastrados. Qualquer pessoa pode participar sem necessidade de convite ou autorização.
-
-• **Liga Escolar do Saber** – Voltada para alunos de instituições escolares específicas. A participação depende de autorização prévia da organização da competição.
-
-• **Torneio dos Gênios** – Competição especial e seletiva. Apenas usuários convidados ou autorizados podem participar.
-
-Cada tipo de competição pode ter regras e critérios próprios, então leia sempre as instruções específicas antes de participar.`,
+          question: 'Recebo análise de desempenho?',
+          answer: 'Sim. Ao finalizar, você recebe correção completa, pontuação detalhada e análise dos seus pontos fortes e fracos, ajudando a focar exatamente onde precisa melhorar antes do exame.',
           open: false
         }
       ]
@@ -103,32 +65,64 @@ Cada tipo de competição pode ter regras e critérios próprios, então leia se
       title: 'Exercícios Resolvidos',
       items: [
         {
-          question: 'Como acessar exercícios resolvidos?',
-          answer: 'No módulo Exercícios Resolvidos, você pode filtrar por disciplina e tópico. Cada exercício possui resolução completa com dicas de resolução e explicações detalhadas.',
+          question: 'Como acessar exercícios focados no exame?',
+          answer: 'Você pode filtrar por disciplina e tópico. Os exercícios são organizados com foco nos conteúdos mais frequentes nos exames de admissão.',
           open: false
         },
         {
-          question: 'Os exercícios aparecem nos quizzes?',
-          answer: 'Sim! Os exercícios resolvidos alimentam o banco de questões dos quizzes automáticos e competições, garantindo conteúdo sempre atualizado e de qualidade.',
+          question: 'Os exercícios aparecem nos simulados?',
+          answer: 'Sim. Nosso banco de questões é constantemente atualizado e alimenta os simulados automáticos, garantindo treino estratégico e alinhado ao exame.',
+          open: false
+        }
+      ]
+    },
+    /*
+    {
+      title: 'Cursos em Vídeo',
+      items: [
+        {
+          question: 'Os cursos ajudam na preparação para o exame?',
+          answer: 'Sim. Os cursos são organizados por módulos focados nos conteúdos exigidos nos exames de admissão. Ao final de cada módulo, você pratica com exercícios direcionados.',
+          open: false
+        },
+        {
+          question: 'Posso revisar antes do exame?',
+          answer: 'Sim. Você pode assistir às aulas quantas vezes quiser e revisar os pontos mais importantes antes da prova.',
           open: false
         }
       ]
     },
     {
-      title: 'Artigos Acadêmicos',
+      title: 'Biblioteca e Materiais de Apoio',
       items: [
         {
-          question: 'Como ler e interagir com artigos?',
-          answer: 'Selecione um artigo na biblioteca para leitura. Após ler, você pode dar like se achou interessante ou usar save para salvar em seus favoritos para consulta posterior.',
+          question: 'Posso baixar materiais para estudar offline?',
+          answer: 'Sim. Disponibilizamos materiais em PDF para reforçar sua preparação, permitindo estudar mesmo sem acesso à internet.',
           open: false
         },
         {
-          question: 'Como encontrar artigos salvos?',
-          answer: 'Seus artigos salvos ficam na seção "Meus Favoritos" dentro do módulo de artigos, organizados por data de salvamento para fácil acesso.',
+          question: 'Os materiais são alinhados ao exame?',
+          answer: 'Sim. Todos os materiais são selecionados com foco nos conteúdos cobrados nos exames de admissão.',
+          open: false
+        }
+      ]
+    },
+    {
+      title: 'Competições e Desafios',
+      items: [
+        {
+          question: 'Como as competições ajudam na preparação?',
+          answer: 'As competições simulam pressão e tempo real de prova, ajudando você a desenvolver rapidez, estratégia e confiança para o dia do exame.',
+          open: false
+        },
+        {
+          question: 'Como funciona o ranking?',
+          answer: 'O ranking é atualizado em tempo real com base na pontuação e tempo de conclusão, incentivando você a melhorar continuamente seu desempenho.',
           open: false
         }
       ]
     }
+    */
   ];
 
   toggleItem2(categoryIndex: number, itemIndex: number) {
