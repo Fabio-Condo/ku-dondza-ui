@@ -140,7 +140,7 @@
                 Acompanhe o seu desempenho e evolução nos testes realizados.
             </p>
 
-            <button class="progress-button" [routerLink]="['/progress-panel']">
+            <button *ngIf="isUserLoggedIn && isSuperAdmin" class="progress-button" [routerLink]="['/progress-panel']">
                 Ver Progresso
             </button>
         </div>

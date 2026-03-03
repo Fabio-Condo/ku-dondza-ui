@@ -433,8 +433,8 @@
         <ul class="nav-links">
           <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
           <li><a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a></li>
-          <li><a [class.active]="isActive('/topics')" routerLink="/topics">Tópicos</a></li>
-          <li><a [class.active]="isActive('/subjects')" routerLink="/subjects">Disciplinas</a></li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/topics')" routerLink="/topics">Tópicos</a></li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/subjects')" routerLink="/subjects">Disciplinas</a></li>
           <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
           <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/payments')"
               routerLink="/payments">Pagamentos</a></li>
@@ -463,7 +463,7 @@
             </button>
             <div class="dropdown" *ngIf="isDropdownOpen">
               <a (click)="goToProfile(); toggleDropdown()">Perfil</a>
-              <a (click)="goToProgressPanel(); toggleDropdown()">Progresso</a>
+              <a *ngIf="isUserLoggedIn && isSuperAdmin" (click)="goToProgressPanel(); toggleDropdown()">Progresso</a>
               <a (click)="onLogOut(); toggleDropdown()">Saír</a>
             </div>
           </div>
@@ -491,7 +491,7 @@
     <ul class="mobile-nav-links">
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
       <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
-      <li><a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a></li>
       <li><a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">Disciplinas</a></li>
       <li><a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">Exames</a></li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/payments')" routerLink="/payments"
