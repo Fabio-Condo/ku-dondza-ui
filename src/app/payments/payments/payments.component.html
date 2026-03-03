@@ -25,13 +25,6 @@
             margin-top: 75px;
         }
 
-        /* MAIN */
-        .main {
-            max-width: 1000px;
-            margin: 0 auto;
-            margin-top: 75px;
-        }
-
         .page-header {
             display: flex;
             align-items: flex-end;
@@ -704,40 +697,6 @@
             font-size: 12px;
         }
 
-        /* Mobile breakpoints */
-        @media(max-width: 768px) {
-            .page-title {
-                font-size: 24px;
-            }
-
-            .page-sub {
-                font-size: 13px;
-            }
-
-            .btn {
-                font-size: 13px;
-                padding: 8px 16px;
-            }
-
-            .stat-value {
-                font-size: 22px;
-            }
-
-            .stat-delta {
-                font-size: 11px;
-            }
-
-            .search-wrap {
-                max-width: 100%;
-                flex: 1 1 100%;
-            }
-
-            .table-footer {
-                font-size: 12px;
-                padding: 12px;
-            }
-        }
-
         @media(max-width: 480px) {
             .page-header {
                 flex-direction: column;
@@ -794,69 +753,6 @@
             }
         }
 
-        .main {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .page-header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .table-card {
-            overflow-x: auto;
-            /* permite rolagem horizontal no mobile */
-        }
-
-        table {
-            width: 100%;
-            min-width: 800px;
-            /* força rolagem se necessário */
-            border-collapse: collapse;
-        }
-
-        thead th,
-        td {
-            padding: 10px 12px;
-            font-size: 12px;
-        }
-
-        .table-toolbar {
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .filters {
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .table-footer {
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        /* Avatar menor em mobile */
-        .avatar {
-            width: 28px;
-            height: 28px;
-            font-size: 12px;
-        }
-
         /* Mobile breakpoints */
         @media(max-width: 768px) {
             .page-title {
@@ -888,62 +784,6 @@
             .table-footer {
                 font-size: 12px;
                 padding: 12px;
-            }
-        }
-
-        @media(max-width: 480px) {
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-
-            .table-card {
-                min-width: 0;
-            }
-
-            /* força tabela a usar scroll */
-            table {
-                min-width: 600px;
-            }
-
-            thead th,
-            td {
-                padding: 8px 10px;
-                font-size: 11px;
-            }
-
-            .avatar {
-                width: 24px;
-                height: 24px;
-                font-size: 11px;
-            }
-
-            .user-name {
-                font-size: 13px;
-            }
-
-            .user-email {
-                font-size: 10px;
-            }
-
-            .wallet-addr {
-                font-size: 11px;
-                padding: 2px 6px;
-            }
-
-            .plan-badge,
-            .status-badge {
-                font-size: 10px;
-                padding: 3px 6px;
-            }
-
-            .amount {
-                font-size: 14px;
             }
         }
     </style>
@@ -953,182 +793,179 @@
 
     <div class="container">
 
-        <!-- MAIN CONTENT -->
-        <main class="main">
 
-            <div class="page-header">
-                <div>
-                    <h1 class="page-title">Pagamentos</h1>
-                    <p class="page-sub">Histórico de transações dos estudantes</p>
-                </div>
-                <button class="btn btn-primary">
+
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Pagamentos</h1>
+                <p class="page-sub">Histórico de transações dos estudantes</p>
+            </div>
+            <button class="btn btn-primary">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 5v14M5 12l7-7 7 7" />
+                </svg>
+                Exportar CSV
+            </button>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Receita Total</div>
+                <div class="stat-value">$48.290</div>
+                <div class="stat-delta">↑ +18.2% este mês</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pagamentos Aprovados</div>
+                <div class="stat-value" style="color:var(--ink)">312</div>
+                <div class="stat-delta" style="color:var(--green)">↑ +5 hoje</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pendentes</div>
+                <div class="stat-value" style="color:var(--amber)">24</div>
+                <div class="stat-delta" style="color:var(--ink-soft)">Aguardando confirmação</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Taxa de Falha</div>
+                <div class="stat-value" style="color:var(--red)">3.1%</div>
+                <div class="stat-delta" style="color:var(--green)">↓ -0.4% vs mês anterior</div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-card">
+            <div class="table-toolbar">
+                <div class="search-wrap">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M12 5v14M5 12l7-7 7 7" />
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
                     </svg>
-                    Exportar CSV
-                </button>
-            </div>
-
-            <!-- STATS -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Receita Total</div>
-                    <div class="stat-value">$48.290</div>
-                    <div class="stat-delta">↑ +18.2% este mês</div>
+                    <input class="search-input" type="text" placeholder="Buscar por usuário, plano, ID...">
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Pagamentos Aprovados</div>
-                    <div class="stat-value" style="color:var(--ink)">312</div>
-                    <div class="stat-delta" style="color:var(--green)">↑ +5 hoje</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Pendentes</div>
-                    <div class="stat-value" style="color:var(--amber)">24</div>
-                    <div class="stat-delta" style="color:var(--ink-soft)">Aguardando confirmação</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Taxa de Falha</div>
-                    <div class="stat-value" style="color:var(--red)">3.1%</div>
-                    <div class="stat-delta" style="color:var(--green)">↓ -0.4% vs mês anterior</div>
-                </div>
-            </div>
-
-            <!-- TABLE -->
-            <div class="table-card">
-                <div class="table-toolbar">
-                    <div class="search-wrap">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                <div class="filters">
+                    <button class="filter-btn active">Todos</button>
+                    <button class="filter-btn">Aprovado</button>
+                    <button class="filter-btn">Pendente</button>
+                    <button class="filter-btn">Falhou</button>
+                    <button class="filter-btn">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="M21 21l-4.35-4.35" />
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
                         </svg>
-                        <input class="search-input" type="text" placeholder="Buscar por usuário, plano, ID...">
-                    </div>
-                    <div class="filters">
-                        <button class="filter-btn active">Todos</button>
-                        <button class="filter-btn">Aprovado</button>
-                        <button class="filter-btn">Pendente</button>
-                        <button class="filter-btn">Falhou</button>
-                        <button class="filter-btn">
-                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <line x1="8" y1="6" x2="21" y2="6" />
-                                <line x1="8" y1="12" x2="21" y2="12" />
-                                <line x1="8" y1="18" x2="21" y2="18" />
-                                <line x1="3" y1="6" x2="3.01" y2="6" />
-                                <line x1="3" y1="12" x2="3.01" y2="12" />
-                                <line x1="3" y1="18" x2="3.01" y2="18" />
-                            </svg>
-                            Período
-                        </button>
-                    </div>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Usuário</th>
-                            <th>Carteira</th>
-                            <th>Plano</th>
-                            <th>Valor</th>
-                            <th>Status</th>
-                            <th>Criado em <span class="sort-icon">↕</span></th>
-                            <th>Expira em</th>
-                            <th>ID da Transação</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let payment of payments">
-
-                            <!-- Usuário -->
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar av-1">
-                                        {{ payment.user.fullName.charAt(0) }}
-                                    </div>
-                                    <div>
-                                        <div class="user-name">{{ payment.user.fullName }}</div>
-                                        <div class="user-email">{{ payment.user.email }}</div>
-                                    </div>
-                                </div>
-                            </td>
-
-                            <!-- Carteira -->
-                            <td>
-                                <span class="wallet-addr">
-                                    {{ payment.wallet.phoneNumber }}
-                                </span>
-                            </td>
-
-                            <!-- Plano -->
-                            <td>
-                                <span class="plan-badge" [ngClass]="getPlanClass(payment.plan)">
-                                    {{ payment.plan }}
-                                </span>
-                            </td>
-
-                            <!-- Valor -->
-                            <td>
-                                <span class="amount">
-                                    {{ payment.amount | currency:'USD' }}
-                                </span>
-                            </td>
-
-                            <!-- Status  -->
-                            <td>
-                                <span class="status-badge" [ngClass]="getStatusClass(payment.status)">
-                                    <span class="status-dot"></span>
-                                    {{ payment.status }}
-                                </span>
-                            </td>
-
-                            <!-- Criado em -->
-                            <td class="date-cell">
-                                {{ payment.createdAt | date:'dd MMM yyyy' }}
-                                <div class="date-sub">
-                                    {{ payment.createdAt | date:'HH:mm' }}
-                                </div>
-                            </td>
-
-                            <!-- Expira em -->
-                            <td class="date-cell">
-                                {{ payment.planExpiresAt | date:'dd MMM yyyy' }}
-                                <div class="date-sub">
-                                    {{ payment.planExpiresAt | date:'HH:mm' }}
-                                </div>
-                            </td>
-
-                            <!-- Transação -->
-                            <td>
-                                <span class="tx-id">
-                                    {{ payment.transactionId }}
-                                </span>
-                            </td>
-
-                            <td>
-                                <button class="action-btn">
-                                    ...
-                                </button>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="table-footer">
-                    <div class="page-info">Mostrando <strong>1–8</strong> de <strong>336</strong> pagamentos</div>
-                    <div class="pagination">
-                        <button class="page-num disabled">←</button>
-                        <button class="page-num active">1</button>
-                        <button class="page-num">2</button>
-                        <button class="page-num">3</button>
-                        <button class="page-num" style="cursor:default;border:none;color:var(--ink-soft)">…</button>
-                        <button class="page-num">42</button>
-                        <button class="page-num">→</button>
-                    </div>
+                        Período
+                    </button>
                 </div>
             </div>
 
-        </main>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Carteira</th>
+                        <th>Plano</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th>Criado em <span class="sort-icon">↕</span></th>
+                        <th>Expira em</th>
+                        <th>ID da Transação</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let payment of payments">
+
+                        <!-- Usuário -->
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar av-1">
+                                    {{ payment.user.fullName.charAt(0) }}
+                                </div>
+                                <div>
+                                    <div class="user-name">{{ payment.user.fullName }}</div>
+                                    <div class="user-email">{{ payment.user.email }}</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Carteira -->
+                        <td>
+                            <span class="wallet-addr">
+                                {{ payment.wallet.phoneNumber }}
+                            </span>
+                        </td>
+
+                        <!-- Plano -->
+                        <td>
+                            <span class="plan-badge" [ngClass]="getPlanClass(payment.plan)">
+                                {{ payment.plan }}
+                            </span>
+                        </td>
+
+                        <!-- Valor -->
+                        <td>
+                            <span class="amount">
+                                {{ payment.amount | currency:'USD' }}
+                            </span>
+                        </td>
+
+                        <!-- Status  -->
+                        <td>
+                            <span class="status-badge" [ngClass]="getStatusClass(payment.status)">
+                                <span class="status-dot"></span>
+                                {{ payment.status }}
+                            </span>
+                        </td>
+
+                        <!-- Criado em -->
+                        <td class="date-cell">
+                            {{ payment.createdAt | date:'dd MMM yyyy' }}
+                            <div class="date-sub">
+                                {{ payment.createdAt | date:'HH:mm' }}
+                            </div>
+                        </td>
+
+                        <!-- Expira em -->
+                        <td class="date-cell">
+                            {{ payment.planExpiresAt | date:'dd MMM yyyy' }}
+                            <div class="date-sub">
+                                {{ payment.planExpiresAt | date:'HH:mm' }}
+                            </div>
+                        </td>
+
+                        <!-- Transação -->
+                        <td>
+                            <span class="tx-id">
+                                {{ payment.transactionId }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <button class="action-btn">
+                                ...
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-footer">
+                <div class="page-info">Mostrando <strong>1–8</strong> de <strong>336</strong> pagamentos</div>
+                <div class="pagination">
+                    <button class="page-num disabled">←</button>
+                    <button class="page-num active">1</button>
+                    <button class="page-num">2</button>
+                    <button class="page-num">3</button>
+                    <button class="page-num" style="cursor:default;border:none;color:var(--ink-soft)">…</button>
+                    <button class="page-num">42</button>
+                    <button class="page-num">→</button>
+                </div>
+            </div>
+        </div>
     </div>
+</body>

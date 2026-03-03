@@ -479,12 +479,12 @@ export class QuizzQuestionsComponent implements OnInit {
         }];
 
         // Se o utilizador não for premium → limitar o texto da solução
-        if (this.isFreeUser()) {
-          questions = questions.map(q => ({
-            ...q,
-            solution: this.limitSolutionSafe(q.solution, 5)
-          }));
-        }
+        this.quiz.questions = this.quiz.questions.map(q => ({
+          ...q,
+          solution: this.isPremiumTopic(q.topic)
+            ? this.limitSolutionSafe(q.solution, 4)
+            : q.solution
+        }));
 
         this.renderMathExpressions();
         this.renderFunctions();
@@ -522,12 +522,12 @@ export class QuizzQuestionsComponent implements OnInit {
         this.questionsWithFullSolutions = dados;
 
         // Se o utilizador não for premium → limitar o texto da solução
-        if (this.isFreeUser()) {
-          dados = dados.map(q => ({
-            ...q,
-            solution: this.limitSolutionSafe(q.solution, 5)
-          }));
-        }
+        this.quiz.questions = this.quiz.questions.map(q => ({
+          ...q,
+          solution: this.isPremiumTopic(q.topic)
+            ? this.limitSolutionSafe(q.solution, 4)
+            : q.solution
+        }));
 
         this.questions = dados;
         this.quiz.questions = this.questions;
