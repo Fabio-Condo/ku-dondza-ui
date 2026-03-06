@@ -207,7 +207,6 @@ export class QuestionsComponent implements OnInit {
 
     this.questionService.add(this.question).subscribe(
       (question) => {
-        this.questionService.clearCache();
         this.question = question;
         this.findAll();
         this.showLoading = false;
@@ -242,7 +241,6 @@ export class QuestionsComponent implements OnInit {
 
     this.questionService.update(this.question).subscribe(
       (question) => {
-        this.questionService.clearCache();
         this.question = question;
         this.findAll();
         this.showLoading = false;

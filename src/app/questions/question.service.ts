@@ -103,6 +103,24 @@ export class QuestionService {
     );
   }
 
+add(question: Question): Observable<Question> {
+  return this.http.post<Question>(this.baseUrl, question).pipe(
+    tap(() => this.clearCache())
+  );
+}
+
+update(question: Question): Observable<Question> {
+  return this.http.put<Question>(`${this.baseUrl}/${question.id}`, question).pipe(
+    tap(() => this.clearCache())
+  );
+}
+
+delete(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
+    tap(() => this.clearCache())
+  );
+}
+
   //getQuestionsByTopics(questionIds: number[]): Observable<IApiResponse<Question>> {
   //  return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/random-by-subject/${subjectId}`, {});
   //}
@@ -146,18 +164,6 @@ export class QuestionService {
   //findById(id: number): Observable<Question> {
   //  return this.http.get<Question>(`${this.baseUrl}/${id}`, {});
   //}
-
-  add(question: Question): Observable<Question> {
-    return this.http.post<Question>(this.baseUrl, question, {});
-  }
-
-  update(question: Question): Observable<Question> {
-    return this.http.put<Question>(`${this.baseUrl}/${question.id}`, question, {});
-  }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, {});
-  }
 
   toggleValidated(id: number, status: boolean): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/${id}/validated`, status, {});

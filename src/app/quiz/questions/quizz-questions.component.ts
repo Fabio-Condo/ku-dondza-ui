@@ -703,7 +703,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds, this.loggedUser.id).subscribe(
       (response) => {
-        this.quizService.clearCache(); // Limpa cache para forçar atualização dos quizzes salvos
         this.showLoading = false;
         this.quiz = response;
         this.quiz.isSubmitted = true;

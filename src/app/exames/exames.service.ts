@@ -92,7 +92,11 @@ export class ExamesService {
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
     formData.append('file', file);
-    return this.http.post<Exam>(`${this.host}`, formData);
+
+    //return this.http.post<Exam>(`${this.host}`, formData);
+    return this.http.post<Exam>(`${this.host}`, formData).pipe(
+      tap(() => this.clearCache()) // limpa cache após salvar
+    );
   }
 
   update(id: number, examType: string, institution: string, premium: boolean, date: Date, subjectId: number, number: string, file: File): Observable<Exam> {
@@ -105,12 +109,22 @@ export class ExamesService {
     formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
     formData.append('subjectId', subjectId.toString());
     formData.append('file', file);
-    return this.http.put<Exam>(`${this.host}`, formData);
+
+    //return this.http.put<Exam>(`${this.host}`, formData);
+    return this.http.put<Exam>(`${this.host}`, formData).pipe(
+      tap(() => this.clearCache()) // limpa cache após atualizar
+    );
   }
 
   excluir(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/${id}`, {});
+    return this.http.delete<void>(`${this.host}/${id}`).pipe(
+      tap(() => this.clearCache()) // limpa cache após deletar
+    );
   }
+
+  //excluir(id: number): Observable<void> {
+  //  return this.http.delete<void>(`${this.host}/${id}`, {});
+  //}
 
   download(id: number, filename: string): Observable<Blob> {
     return this.http.get(`${this.host}/download/${id}/${filename}`, { responseType: 'blob' });

@@ -7,6 +7,12 @@ import { IApiResponse } from '../core/interface/IApiResponse';
 import { SubjectFilter } from '../core/interface/SubjectFilter';
 import { tap } from 'rxjs/operators';
 
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +20,21 @@ export class SubjectsService {
 
   host: string;
 
-  // CACHE EM MEMÓRIA
-  private subjectsCache: Subject[] | null = null;
+  private subjectsCache = new Map<string, CacheEntry<IApiResponse<Subject>>>();
+  private subjectCache = new Map<string, CacheEntry<Subject>>();
+
+  private subjectsListCache: Subject[] | null = null;
+
+  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
+  private isCacheValid(entry: CacheEntry<any>): boolean {
+    return (Date.now() - entry.timestamp) < this.CACHE_TTL;
+  }
+
+  clearCache() {
+    this.subjectsCache.clear();
+    this.subjectCache.clear();
+  }
 
   constructor(private http: HttpClient) {
     this.host = `${environment.apiUrl}/subjects`;
@@ -31,23 +50,19 @@ export class SubjectsService {
 
   // FIND ALL COM CACHE
   findAll(): Observable<Subject[]> {
-    if (this.subjectsCache) {
+    if (this.subjectsListCache) {
       console.log('Returning subjects from cache');
-      return of(this.subjectsCache);
+      return of(this.subjectsListCache);
     }
 
     console.log('Fetching subjects from API')
     return this.http.get<Subject[]>(this.host).pipe(
-      tap(subjects => this.subjectsCache = subjects)
+      tap(subjects => this.subjectsListCache = subjects)
     );
   }
 
-  // Opcional: limpar cache manualmente
-  clearCache(): void {
-    this.subjectsCache = null;
-  }
-
   filter(filtro: SubjectFilter, currentUserId: number): Observable<IApiResponse<Subject>> {
+
     let params = new HttpParams()
       .set('currentUserId', currentUserId.toString())
       .set('page', filtro.pagina)
@@ -58,29 +73,65 @@ export class SubjectsService {
       params = params.set('name', filtro.name);
     }
 
-    return this.http.get<IApiResponse<Subject>>(`${this.host}/filter`, { params });
+    const cacheKey = params.toString();
+    const cachedEntry = this.subjectsCache.get(cacheKey);
+
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    return this.http.get<IApiResponse<Subject>>(`${this.host}/filter`, { params }).pipe(
+      tap(response => {
+        this.subjectsCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
+  }
+
+  getSubjectBySubjectId(subjectId: string, currentUserId: number): Observable<Subject> {
+
+    let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString());
+
+    const cacheKey = `subject_${subjectId}_user_${currentUserId}`;
+    const cachedEntry = this.subjectCache.get(cacheKey);
+
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    return this.http.get<Subject>(`${this.host}/find-by-subjectId/${subjectId}`, { params }).pipe(
+      tap(response => {
+        this.subjectCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
   }
 
   getById(id: number): Observable<Subject> {
     return this.http.get<Subject>(`${this.host}/${id}`);
   }
 
-  getSubjectBySubjectId(subjectId: string, currentUserId: number): Observable<Subject> {
-    let params = new HttpParams()
-      .set('currentUserId', currentUserId.toString());
-    return this.http.get<Subject>(`${this.host}/find-by-subjectId/${subjectId}`, { params });
-  }
-
   add(subject: Subject): Observable<Subject> {
-    return this.http.post<Subject>(this.host, subject);
+    return this.http.post<Subject>(this.host, subject).pipe(
+      tap(() => this.clearCache())
+    );
   }
 
   update(subject: Subject): Observable<Subject> {
-    return this.http.put<Subject>(`${this.host}/${subject.id}`, subject);
+    return this.http.put<Subject>(`${this.host}/${subject.id}`, subject).pipe(
+      tap(() => this.clearCache())
+    );
   }
 
   excluir(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.host}/${id}`);
+    return this.http.delete<void>(`${this.host}/${id}`).pipe(
+      tap(() => this.clearCache()) 
+    );
   }
 
   buscarTotal(): Observable<number> {

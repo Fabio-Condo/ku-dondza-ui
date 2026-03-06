@@ -119,7 +119,9 @@ export class QuizService {
       .set('userAnswerIds', userAnswerIds.join(','))
       .set('currentUserId', currentUserId.toString());
 
-    return this.http.post<Quiz>(`${this.baseUrl}`, quiz, { params });
+    return this.http.post<Quiz>(`${this.baseUrl}`, quiz, { params }).pipe(
+      tap(() => this.clearCache()) // limpa cache após salvar
+    );
   }
 
   saveQuizTopicTest(quiz: Quiz, questionIds: number[], userAnswerIds: any[], topicTestId: number, currentUserId: number): Observable<Quiz> {

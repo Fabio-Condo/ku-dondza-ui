@@ -146,7 +146,6 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
     this.examesService.update(this.exam.id, this.exam.examType, this.exam.institution, this.exam.premium, this.exam.date, this.exam.subject.id!, this.exam.number, this.file).subscribe(
       response => {
-        this.examesService.clearCache(); // Limpa cache para forçar atualização dos dados
         this.exam = response
         this.exam.date = new Date(this.exam.date);
         this.messageService.add({ severity: 'success', detail: 'Exame actualizado com sucesso!' });
@@ -164,7 +163,6 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
     this.examesService.save(this.exam.examType, this.exam.institution, this.exam.premium, this.exam.date, this.exam.subject.id!, this.exam.number, this.file).subscribe(
       response => {
-        this.examesService.clearCache(); // Limpa cache para forçar atualização dos dados
         this.exam = response
         this.exam.date = new Date(this.exam.date);
         this.messageService.add({ severity: 'success', detail: 'Exame salvo com sucesso!' });
