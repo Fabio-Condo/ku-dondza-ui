@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { Quiz } from '../core/model/Quiz';
 import { QuizFilter } from '../core/interface/QuizFilter';
+
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
 
 
 @Injectable({
@@ -14,6 +19,20 @@ export class QuizService {
   private baseUrl = environment.apiUrl + '/quizzes';
 
   constructor(private http: HttpClient) { }
+
+  private quizzesCache = new Map<string, CacheEntry<IApiResponse<Quiz>>>();
+  private quizCache = new Map<string, CacheEntry<Quiz>>();
+
+  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
+  clearCache() {
+    this.quizzesCache.clear();
+    this.quizCache.clear();
+  }
+
+  private isCacheValid(entry: CacheEntry<any>): boolean {
+    return (Date.now() - entry.timestamp) < this.CACHE_TTL;
+  }
 
   getQuizzes(filter: QuizFilter): Observable<IApiResponse<Quiz>> {
 
@@ -34,7 +53,45 @@ export class QuizService {
       params = params.set('user', filter.user);
     }
 
-    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/filter`, { params });
+    const cacheKey = params.toString();
+    const cachedEntry = this.quizzesCache.get(cacheKey);
+
+    // Se cache existir e ainda for válido
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    // Caso contrário, chama API
+    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/filter`, { params }).pipe(
+      tap(response => {
+        this.quizzesCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
+  }
+
+  getQuizByQuizId(quizId: string, currentUserId: number): Observable<Quiz> {
+
+    let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString());
+
+    const cacheKey = `quiz_${quizId}_user_${currentUserId}`;
+    const cachedEntry = this.quizCache.get(cacheKey);
+
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, { params }).pipe(
+      tap(response => {
+        this.quizCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
   }
 
   findAll(): Observable<IApiResponse<Quiz>> {
@@ -53,12 +110,6 @@ export class QuizService {
 
   findById(id: number): Observable<Quiz> {
     return this.http.get<Quiz>(`${this.baseUrl}/${id}`, {});
-  }
-
-  getQuizByQuizId(quizId: string, currentUserId: number): Observable<Quiz> {
-    let params = new HttpParams()
-      .set('currentUserId', currentUserId.toString());
-    return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, { params });
   }
 
   saveQuiz(quiz: Quiz, questionIds: number[], userAnswerIds: any[], currentUserId: number): Observable<Quiz> {

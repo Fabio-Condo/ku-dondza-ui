@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { DatePipe } from '@angular/common';
 import { Exam } from '../core/model/Exame';
 import { ExameFilter } from '../core/interface/ExameFilter';
+
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +18,20 @@ export class ExamesService {
   private host = environment.apiUrl + '/exames';
 
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
+
+  private examsCache = new Map<string, CacheEntry<IApiResponse<Exam>>>();
+  private examCache = new Map<string, CacheEntry<Exam>>();
+
+  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
+  private isCacheValid(entry: CacheEntry<any>): boolean {
+    return (Date.now() - entry.timestamp) < this.CACHE_TTL;
+  }
+
+  clearCache() {
+    this.examsCache.clear();
+    this.examCache.clear();
+  }
 
   findAll(filtro: ExameFilter): Observable<IApiResponse<Exam>> {
 
@@ -44,8 +63,23 @@ export class ExamesService {
       params = params.set('endDate', this.datePipe.transform(filtro.endDate, 'yyyy-MM-dd')!);
     }
 
+    const cacheKey = params.toString();
+    const cachedEntry = this.examsCache.get(cacheKey);
 
-    return this.http.get<IApiResponse<Exam>>(`${this.host}/filter`, { params });
+    // Se cache existir e ainda for válido
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    // Caso contrário, chama API
+    return this.http.get<IApiResponse<Exam>>(`${this.host}/filter`, { params }).pipe(
+      tap(response => {
+        this.examsCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
 
   }
 

@@ -207,8 +207,8 @@ export class QuestionsComponent implements OnInit {
 
     this.questionService.add(this.question).subscribe(
       (question) => {
-        this.question = question;
         this.questionService.clearCache();
+        this.question = question;
         this.findAll();
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Question added successfully' });
@@ -242,8 +242,8 @@ export class QuestionsComponent implements OnInit {
 
     this.questionService.update(this.question).subscribe(
       (question) => {
-        this.question = question;
         this.questionService.clearCache();
+        this.question = question;
         this.findAll();
         this.showLoading = false;
         this.messageService.add({ severity: 'success', detail: 'Question updated successfully!' });

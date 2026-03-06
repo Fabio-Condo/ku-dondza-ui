@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, of, tap } from 'rxjs';
 import { IApiResponse } from '../core/interface/IApiResponse';
-//import { CacheEntry } from '../core/interface/CacheEntry';
 import { Question } from '../core/model/Question';
 import { QuestionFilter } from '../core/interface/QuestionFilter';
 
@@ -24,12 +23,13 @@ export class QuestionService {
 
   private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 
-  private createCacheKey(params: HttpParams): string {
-    return params.toString();
-  }
-
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
+  }
+
+  clearCache() {
+    this.questionsCache.clear();
+    this.questionCache.clear();
   }
 
   getQuestions(filter: QuestionFilter, currentUserId: number): Observable<IApiResponse<Question>> {
@@ -101,11 +101,6 @@ export class QuestionService {
         });
       })
     );
-  }
-
-  clearCache() {
-    this.questionsCache.clear();
-    this.questionCache.clear();
   }
 
   //getQuestionsByTopics(questionIds: number[]): Observable<IApiResponse<Question>> {
