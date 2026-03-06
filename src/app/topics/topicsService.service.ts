@@ -22,7 +22,7 @@ export class TopicService {
     private topicCache = new Map<string, CacheEntry<Topic>>();
     private subjectTopicListCache: { [key: number]: Observable<Topic[]> } = {};
 
-    private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+    private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
 
     private isCacheValid(entry: CacheEntry<any>): boolean {
         return (Date.now() - entry.timestamp) < this.CACHE_TTL;

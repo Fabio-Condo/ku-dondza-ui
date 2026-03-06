@@ -23,7 +23,7 @@ export class QuizService {
   private quizzesCache = new Map<string, CacheEntry<IApiResponse<Quiz>>>();
   private quizCache = new Map<string, CacheEntry<Quiz>>();
 
-  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+  private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
 
   clearCache() {
     this.quizzesCache.clear();

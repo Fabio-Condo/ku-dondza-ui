@@ -22,7 +22,7 @@ export class ExamesService {
   private examsCache = new Map<string, CacheEntry<IApiResponse<Exam>>>();
   private examCache = new Map<string, CacheEntry<Exam>>();
 
-  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+  private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
 
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;

@@ -21,7 +21,7 @@ export class QuestionService {
   private questionsCache = new Map<string, CacheEntry<IApiResponse<Question>>>();
   private questionCache = new Map<string, CacheEntry<Question>>();
 
-  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+  private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
 
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
