@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { IApiResponse } from '../core/interface/IApiResponse';
+//import { CacheEntry } from '../core/interface/CacheEntry';
 import { Question } from '../core/model/Question';
 import { QuestionFilter } from '../core/interface/QuestionFilter';
+
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
 
 
 @Injectable({ providedIn: 'root' })
@@ -12,6 +18,19 @@ export class QuestionService {
   private baseUrl = environment.apiUrl + '/questions';
 
   constructor(private http: HttpClient) { }
+
+  private questionsCache = new Map<string, CacheEntry<IApiResponse<Question>>>();
+  private questionCache = new Map<string, CacheEntry<Question>>();
+
+  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
+  private createCacheKey(params: HttpParams): string {
+    return params.toString();
+  }
+
+  private isCacheValid(entry: CacheEntry<any>): boolean {
+    return (Date.now() - entry.timestamp) < this.CACHE_TTL;
+  }
 
   getQuestions(filter: QuestionFilter, currentUserId: number): Observable<IApiResponse<Question>> {
 
@@ -41,12 +60,52 @@ export class QuestionService {
       params = params.set('difficultyLevel', filter.difficultyLevel);
     }
 
-    // Envia o userId se estiver definido
     if (filter.userId) {
       params = params.set('userId', filter.userId.toString());
     }
 
-    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/filter`, { params });
+    const cacheKey = params.toString();
+    const cachedEntry = this.questionsCache.get(cacheKey);
+
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    return this.http.get<IApiResponse<Question>>(`${this.baseUrl}/filter`, { params }).pipe(
+      tap(response => {
+        this.questionsCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
+  }
+
+  getQuestionByQuestionId(questionId: string, currentUserId: number): Observable<Question> {
+
+    let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString());
+
+    const cacheKey = `question_${questionId}_user_${currentUserId}`;
+    const cachedEntry = this.questionCache.get(cacheKey);
+
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    return this.http.get<Question>(`${this.baseUrl}/find-by-questionId/${questionId}`, { params }).pipe(
+      tap(response => {
+        this.questionCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
+  }
+
+  clearCache() {
+    this.questionsCache.clear();
+    this.questionCache.clear();
   }
 
   //getQuestionsByTopics(questionIds: number[]): Observable<IApiResponse<Question>> {
@@ -89,15 +148,9 @@ export class QuestionService {
     return this.http.get<Question[]>(`${this.baseUrl}/topic-tests/${topicTestId}`, {});
   }
 
-  findById(id: number): Observable<Question> {
-    return this.http.get<Question>(`${this.baseUrl}/${id}`, {});
-  }
-
-  getQuestionByQuestionId(questionId: string, currentUserId: number): Observable<Question> {
-    let params = new HttpParams()
-      .set('currentUserId', currentUserId.toString());
-    return this.http.get<Question>(`${this.baseUrl}/find-by-questionId/${questionId}`, { params });
-  }
+  //findById(id: number): Observable<Question> {
+  //  return this.http.get<Question>(`${this.baseUrl}/${id}`, {});
+  //}
 
   add(question: Question): Observable<Question> {
     return this.http.post<Question>(this.baseUrl, question, {});
