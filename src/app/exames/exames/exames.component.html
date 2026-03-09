@@ -915,8 +915,8 @@
                             </button>
 
                             <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                                <a (click)="onUpdate(exam, file)" *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
-                                <a (click)="onDownload(exam)">Baixar</a>
+                                <a (click)="onUpdate(exam, file); toggleDropdown(exam)" *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
+                                <a (click)="onDownload(exam); toggleDropdown(exam)" *ngIf="!isPremiumExam(exam)">Baixar</a>
                             </div>
                         </div>
                     </div>
