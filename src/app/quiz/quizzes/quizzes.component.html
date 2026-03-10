@@ -176,7 +176,7 @@
             </div>
         </div>
 
-        <div *ngIf="!showLoading && quizzes.length === 0">
+        <div *ngIf="!showLoading && !retryVisible && quizzes.length === 0">
             <div class="card">
                 <span class="no-items-message">
                     Nenhum item encontrado
@@ -186,8 +186,12 @@
 
         <!-- Load-more -->
         <div class="load-more-container">
-            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
+            <button *ngIf="!retryVisible" class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
                 Buscar mais
+            </button>
+
+            <button class="btn-load-more" *ngIf="retryVisible" (click)="retryGetQuizzes()">
+                Tentar novamente
             </button>
         </div>
 

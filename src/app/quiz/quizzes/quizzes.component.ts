@@ -24,6 +24,8 @@ import { timer } from 'rxjs';
 export class QuizzesComponent implements OnInit {
 
   showLoading: boolean = false;
+  retryVisible: boolean = false;
+
   totalQuizzes: number = 0;
   totalRecords: number = 0
   currentPage: number = 1;
@@ -99,78 +101,46 @@ export class QuizzesComponent implements OnInit {
   }
 
   getQuizzes(page: number = 0): void {
-
+    this.retryVisible = false;
     this.loadingMessage = "Carregando dados";
-
-    if (this.showLoading) return;
-
-    if (this.selectQuizOption == 'MY_QUIZZES') {
-      this.filter.user = this.loggedUser.id;
-    }
-
-    if (this.selectQuizOption == 'ALL_QUIZZES') {
-      this.filter.user = 0;
-    }
-
     this.showLoading = true;
+
+    if (this.selectQuizOption == 'MY_QUIZZES') this.filter.user = this.loggedUser.id;
+    if (this.selectQuizOption == 'ALL_QUIZZES') this.filter.user = 0;
     this.filter.page = this.currentPage - 1;
 
     this.quizService.getQuizzes(this.filter)
       .pipe(
-
         retryWhen(errors =>
           errors.pipe(
-
             scan((retryCount, error) => {
-
-              if (retryCount >= 3) {
-                throw error;
-              }
-
+              if (retryCount >= 3) throw error; // 3 tentativas
               const nextRetry = retryCount + 1;
-
-              this.loadingMessage =
-                `Problema de conexão. Tentando novamente (${nextRetry}/3)`;
-
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
               return nextRetry;
-
             }, 0),
-
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
-
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
           )
         )
-
       )
       .subscribe(
         (data: IApiResponse<Quiz>) => {
-
-          this.loadingMessage = "Carregando dados";
-
           this.quizzes = data.content;
           this.totalRecords = data.totalElements;
-
-          if (this.totalQuizzes == 0) {
-            this.totalQuizzes = data.totalElements;
-          }
-
+          this.totalQuizzes = this.totalQuizzes || data.totalElements;
           this.showLoading = false;
+          this.loadingMessage = "";
         },
-        (errorResponse: HttpErrorResponse) => {
-
+        (error: HttpErrorResponse) => {
           this.showLoading = false;
-
-          if (!navigator.onLine) {
-            this.sendErrorNotification("Você está sem conexão com a internet.");
-          } else {
-            this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar os quizzes."
-            );
-          }
+          this.retryVisible = true;
+          this.loadingMessage = !navigator.onLine
+            ? "Sem conexão com a internet."
+            : "Não foi possível carregar os quizzes.";
         }
       );
   }
-  
+
   loadMore(page: number = 0): void {
     if (this.showLoading) return;
 
@@ -200,6 +170,12 @@ export class QuizzesComponent implements OnInit {
 
   get isLoadMoreDisabled(): boolean {
     return this.quizzes.length >= this.totalRecords && this.totalRecords > 0;
+  }
+
+  retryGetQuizzes(): void {
+    this.retryVisible = false;
+    this.filter.page = 0;
+    this.getQuizzes(this.currentPage);
   }
 
   toggleTopics(quizId: number): void {
