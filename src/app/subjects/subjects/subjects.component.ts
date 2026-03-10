@@ -23,7 +23,7 @@ export class SubjectsComponent implements OnInit {
   selectedSubject: Subject = new Subject();
 
   showLoading: boolean = false;
-  totalRegistros: number = 0;
+  totalRecords: number = 0;
   totalSubjects: number = 0;
   displayModalSave: boolean = false;
   displayModalFilter: boolean = false;
@@ -114,7 +114,6 @@ export class SubjectsComponent implements OnInit {
   excluir(subject: Subject) {
     this.subjectsService.excluir(subject.id).subscribe(() => {
       this.findAll();
-      this.buscarTotal();
       this.messageService.add({ severity: 'success', detail: 'Disciplina excluída com sucesso!' });
     },
       (errorResponse: HttpErrorResponse) => {
@@ -146,7 +145,7 @@ export class SubjectsComponent implements OnInit {
     this.subjectsService.filter(this.filtro, this.loggedUser.id).subscribe(
       (dados: IApiResponse<Subject>) => {
         this.subjects = dados.content;
-        this.totalRegistros = dados.totalElements;
+        this.totalRecords = dados.totalElements;
         if (this.totalSubjects == 0) {
           this.totalSubjects = dados.totalElements;
         }
@@ -173,8 +172,7 @@ export class SubjectsComponent implements OnInit {
     this.subjectsService.filter(this.filtro, this.loggedUser.id).subscribe(
       (data: IApiResponse<Subject>) => {
         this.subjects = [...this.subjects, ...data.content];
-
-        this.totalRegistros = data.totalElements;
+        this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -185,7 +183,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   get isLoadMoreDisabled(): boolean {
-    return this.subjects.length >= this.totalRegistros && this.totalRegistros > 0;
+    return this.subjects.length >= this.totalRecords && this.totalRecords > 0;
   }
 
   toggleFilter(): void {
@@ -196,17 +194,6 @@ export class SubjectsComponent implements OnInit {
     } else {
       document.body.classList.remove('no-scroll');
     }
-  }
-
-  buscarTotal() {
-    this.subjectsService.buscarTotal().subscribe(
-      (total) => {
-        this.totalSubjects = total;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
   }
 
   onUpdateSubject(subject: Subject): void {
@@ -253,7 +240,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   totalPages(): number {
-    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+    return Math.ceil(this.totalRecords / this.filtro.itensPorPagina);
   }
 
   limparCampos() {
