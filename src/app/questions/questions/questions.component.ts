@@ -326,7 +326,7 @@ export class QuestionsComponent implements OnInit {
             this.sendErrorNotification("Você está sem conexão com a internet.");
           } else {
             this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar os quizzes."
+              errorResponse?.error?.message || "Não foi possível carregar as questões."
             );
           }
         }

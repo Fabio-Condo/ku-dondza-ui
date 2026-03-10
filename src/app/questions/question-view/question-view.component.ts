@@ -28,6 +28,8 @@ import { Answer } from 'src/app/core/model/Answer';
 import { Wallet } from 'src/app/core/model/Wallet';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { Topic } from 'src/app/core/model/Topic';
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 
 @Component({
@@ -44,6 +46,7 @@ export class QuestionViewComponent implements OnInit {
   currentQuestionIndex = 0;
 
   showLoading: boolean = false;
+  retryVisible: boolean = false;
   showLatexLoading: boolean = false;
 
   quizzes: Quiz[] = [];
@@ -201,31 +204,53 @@ export class QuestionViewComponent implements OnInit {
 
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
-    this.questionService.getQuestionByQuestionId(id, this.loggedUser.id).subscribe(
-      (response) => {
-        this.question = response;
-        this.questionsWithFullSolutions.unshift(response); // Adiciona a questão recebida na primeira posição da lista
+    this.questionService.getQuestionByQuestionId(id, this.loggedUser.id)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      )
+      .subscribe(
+        (response) => {
+          this.question = response;
+          this.questionsWithFullSolutions.unshift(response); // Adiciona a questão recebida na primeira posição da lista
 
-        // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        if (this.isPremiumTopic(this.question.topic)) {
-          this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
-        }
+          // 🔒 Se o utilizador não for Premium → limitar o texto da solução
+          if (this.isPremiumTopic(this.question.topic)) {
+            this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
+          }
 
-        this.questions.unshift(this.question); // Adiciona a questão recebida na primeira posição da lista
-        this.renderMathExpressions();
-        this.renderFunctions();
-        this.showLoading = false;
-        //this.getComments(this.question.id);
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.showLoading = false;
-        if (errorResponse.status == 400) {
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        } else {
-          this.sendErrorNotification(errorResponse.error.message);
+          this.questions.unshift(this.question); // Adiciona a questão recebida na primeira posição da lista
+          this.renderMathExpressions();
+          this.renderFunctions();
+          this.showLoading = false;
+          //this.getComments(this.question.id);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar a questão."
+            );
+          }
         }
-      }
-    );
+      );
+  }
+
+  retryGetQuestion(): void {
+    this.retryVisible = false;
+    this.findById(this.route.snapshot.params['id']);
   }
 
   onGenerateNextQuestion() {

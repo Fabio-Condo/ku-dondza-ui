@@ -31,6 +31,8 @@ import { Wallet } from 'src/app/core/model/Wallet';
 import { ProgressService } from 'src/app/progress/progress.service';
 declare const MathJax: any;
 import { e, evaluate } from 'mathjs'; //npm install mathjs
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 
 @Component({
@@ -43,6 +45,8 @@ export class QuizzQuestionsComponent implements OnInit {
   topics: Topic[] = [];
 
   showLoading: boolean = false;
+  retryVisible: boolean = false;
+
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   currentQuestionIndex: number = 0;
@@ -798,46 +802,68 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showLoading = true;
     this.loadingMessage = "Carregando dados";
 
-    this.quizService.getQuizByQuizId(quizId, this.loggedUser.id).subscribe(
-      (response) => {
-        this.quiz = response;
-        this.quiz.isSubmitted = true;
+    this.quizService.getQuizByQuizId(quizId, this.loggedUser.id)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      )
+      .subscribe(
+        (response) => {
+          this.quiz = response;
+          this.quiz.isSubmitted = true;
 
-        this.questionsWithFullSolutions = this.quiz.questions;
+          this.questionsWithFullSolutions = this.quiz.questions;
 
-        // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-        //if (this.isFreeUser()) {
-        //  this.quiz.questions = this.quiz.questions.map(q => ({
-        //    ...q,
-        //    solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
-        //  }));
-        //}
+          // 🔒 Se o utilizador não for Premium → limitar o texto da solução
+          //if (this.isFreeUser()) {
+          //  this.quiz.questions = this.quiz.questions.map(q => ({
+          //    ...q,
+          //    solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
+          //  }));
+          //}
 
-        this.quiz.questions = this.quiz.questions.map(q => ({
-          ...q,
-          solution: this.isPremiumTopic(q.topic)
-            ? this.limitSolutionSafe(q.solution, 4)
-            : q.solution
-        }));
+          this.quiz.questions = this.quiz.questions.map(q => ({
+            ...q,
+            solution: this.isPremiumTopic(q.topic)
+              ? this.limitSolutionSafe(q.solution, 4)
+              : q.solution
+          }));
 
-        this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
+          this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
 
-        if (this.quiz.answers) {
-          this.calculateResults();
+          if (this.quiz.answers) {
+            this.calculateResults();
+          }
+
+          this.renderMathExpressions();
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar as questões."
+            );
+          }
         }
+      );
+  }
 
-        this.renderMathExpressions();
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.showLoading = false;
-        if (errorResponse.status === 400) {
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        } else {
-          this.sendErrorNotification(errorResponse.error.message);
-        }
-      }
-    );
+  retryGetQuestion(): void {
+    this.retryVisible = false;
+    this.getQuizByQuizId(this.route.snapshot.params['id']);
   }
 
   getTopicosFromQuestoes(questoes: Question[]): Topic[] {

@@ -10,6 +10,26 @@
             </div>
         </div>
 
+        <div *ngIf="retryVisible" class="retry-container">
+            <div class="retry-content">
+                <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
+                    fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <circle cx="12" cy="16" r="1"></circle>
+                </svg>
+
+                <div class="retry-text">
+                    Ocorreu um erro ao carregar a questão.<br>
+                    Por favor, tente novamente.
+                </div>
+
+                <button class="retry-button" (click)="retryGetQuestion()">
+                    Tentar novamente
+                </button>
+            </div>
+        </div>
+
         <div *ngIf="currentMessage" class="progress-message" [ngClass]="currentMessage.type">
             {{ currentMessage.text }}
         </div>
