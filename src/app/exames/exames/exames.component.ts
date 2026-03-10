@@ -18,6 +18,8 @@ import { Wallet } from 'src/app/core/model/Wallet';
 import { NgForm } from '@angular/forms';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { UserService } from 'src/app/users/user.service';
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-exames',
@@ -27,6 +29,8 @@ import { UserService } from 'src/app/users/user.service';
 export class ExamesComponent implements OnInit {
 
   showLoading: boolean = false;
+  retryVisible: boolean = false;
+
   totalRegistros: number = 0;
   exams: Exam[] = [];
   exam: Exam = new Exam();
@@ -181,24 +185,46 @@ export class ExamesComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+    this.retryVisible = false;
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.examesService.findAll(this.filtro).subscribe(
-      (dados: IApiResponse<Exam>) => {
-        this.exams = dados.content
-        //this.totalRegistros = dados.totalElements
-        if (this.totalRegistros == 0) {
-          this.totalRegistros = dados.totalElements;
+    this.examesService.findAll(this.filtro)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      )
+      .subscribe(
+        (dados: IApiResponse<Exam>) => {
+          this.exams = dados.content
+          //this.totalRegistros = dados.totalElements
+          if (this.totalRegistros == 0) {
+            this.totalRegistros = dados.totalElements;
+          }
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar os quizzes."
+            );
+          }
         }
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
+      );
   }
 
   loadMore(page: number = 0): void {
@@ -219,6 +245,12 @@ export class ExamesComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  retryGetExames(): void {
+    this.retryVisible = false;
+    this.filtro.pagina = 0;
+    this.findAll(this.currentPage);
   }
 
   excluir(exam: Exam) {

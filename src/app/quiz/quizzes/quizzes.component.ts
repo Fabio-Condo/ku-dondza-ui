@@ -13,7 +13,7 @@ import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { Role } from 'src/app/enum/role.enum';
-import { retryWhen, delayWhen, scan, tap } from 'rxjs/operators';
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
 @Component({
@@ -131,13 +131,6 @@ export class QuizzesComponent implements OnInit {
           this.showLoading = false;
           this.loadingMessage = "";
         },
-        //(error: HttpErrorResponse) => {
-        //  this.showLoading = false;
-        //  this.retryVisible = true;
-        //  this.loadingMessage = !navigator.onLine
-        //    ? "Sem conexão com a internet."
-        //    : "Não foi possível carregar os quizzes.";
-        //}
         (errorResponse: HttpErrorResponse) => {
           this.showLoading = false;
           this.retryVisible = true;

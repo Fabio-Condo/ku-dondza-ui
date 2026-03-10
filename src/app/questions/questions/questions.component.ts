@@ -23,7 +23,8 @@ import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Subscription } from 'rxjs';
 import { evaluate } from 'mathjs'; //npm install mathjs
 declare const MathJax: any;
-
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-questions',
@@ -32,10 +33,12 @@ declare const MathJax: any;
 })
 export class QuestionsComponent implements OnInit {
 
+  showLoading: boolean = false;
+  retryVisible: boolean = false;
+
   questions: Question[] = [];
   totalQuestions: number = 0;
   totalRegistros: number = 0;
-  showLoading: boolean = false;
   displayModalSave: boolean = false;
   displayModalgenerateFromAI: boolean = false;
   displayModalgenerateFromJson: boolean = false;
@@ -280,13 +283,8 @@ export class QuestionsComponent implements OnInit {
 
   // Método de carregamento de questões
   findAll(pagina: number = 0): void {
-    if (this.selectQuestionOption == 'MY_SAVED_QUESTIONS') {
-      this.filtro.userId = this.loggedUser.id;
-    }
-
-    if (this.selectQuestionOption == 'ALL_QUESTIONS') {
-      this.filtro.userId = 0;
-    }
+    if (this.selectQuestionOption == 'MY_SAVED_QUESTIONS') this.filtro.userId = this.loggedUser.id;
+    if (this.selectQuestionOption == 'ALL_QUESTIONS') this.filtro.userId = 0;
 
     if (!this.loggedUser) {
       this.loggedUser = new User();
@@ -297,21 +295,42 @@ export class QuestionsComponent implements OnInit {
     this.showLoading = true;
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
-    this.questionService.getQuestions(this.filtro, this.loggedUser.id).subscribe(
-      (dados: IApiResponse<Question>) => {
-        this.questions = dados.content
-        this.totalRegistros = dados.totalElements;
-        this.renderMathExpressions();
-        if (this.totalQuestions == 0) {
-          this.totalQuestions = dados.totalElements;
+    this.questionService.getQuestions(this.filtro, this.loggedUser.id)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      )
+      .subscribe(
+        (dados: IApiResponse<Question>) => {
+          this.questions = dados.content
+          this.totalRegistros = dados.totalElements;
+          this.renderMathExpressions();
+          if (this.totalQuestions == 0) {
+            this.totalQuestions = dados.totalElements;
+          }
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar os quizzes."
+            );
+          }
         }
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
+      );
   }
 
   loadMore(page: number = 0): void {
@@ -328,6 +347,7 @@ export class QuestionsComponent implements OnInit {
       this.loggedUser.id = 0;
     }
 
+    this.retryVisible = false;
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.page++;
@@ -344,6 +364,12 @@ export class QuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  retryGetQuestions(): void {
+    this.retryVisible = false;
+    this.filtro.page = 0;
+    this.findAll(this.currentPage);
   }
 
   get isLoadMoreDisabled(): boolean {
