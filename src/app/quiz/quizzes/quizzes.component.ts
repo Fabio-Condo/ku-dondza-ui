@@ -13,8 +13,8 @@ import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { Role } from 'src/app/enum/role.enum';
-import { retryWhen, delay, scan, tap } from 'rxjs/operators';
-
+import { retryWhen, delayWhen, scan, tap } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-quizzes',
@@ -117,20 +117,30 @@ export class QuizzesComponent implements OnInit {
 
     this.quizService.getQuizzes(this.filter)
       .pipe(
+
         retryWhen(errors =>
           errors.pipe(
-            tap(() => {
-              this.loadingMessage = "Tentando reconectar";
-            }),
-            delay(2000),
-            scan((retryCount) => {
+
+            scan((retryCount, error) => {
+
               if (retryCount >= 3) {
-                throw errors;
+                throw error;
               }
-              return retryCount + 1;
-            }, 0)
+
+              const nextRetry = retryCount + 1;
+
+              this.loadingMessage =
+                `Problema de conexão. Tentando novamente (${nextRetry}/3)`;
+
+              return nextRetry;
+
+            }, 0),
+
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
+
           )
         )
+
       )
       .subscribe(
         (data: IApiResponse<Quiz>) => {
@@ -147,12 +157,20 @@ export class QuizzesComponent implements OnInit {
           this.showLoading = false;
         },
         (errorResponse: HttpErrorResponse) => {
+
           this.showLoading = false;
-          this.sendErrorNotification(errorResponse.error.message);
+
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar os quizzes."
+            );
+          }
         }
       );
   }
-
+  
   loadMore(page: number = 0): void {
     if (this.showLoading) return;
 
