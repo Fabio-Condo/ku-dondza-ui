@@ -23,6 +23,8 @@ import { Topic } from 'src/app/core/model/Topic';
 import { Wallet } from 'src/app/core/model/Wallet';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { NgForm } from '@angular/forms';
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-subjects-view',
@@ -33,6 +35,7 @@ export class SubjectsViewComponent {
 
   subject: Subject = new Subject();
   showLoading: boolean = false;
+  retryVisible: boolean = false;
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -123,26 +126,48 @@ export class SubjectsViewComponent {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
-    this.subjectsService.getSubjectBySubjectId(subjectId, this.loggedUser.id).subscribe(
-      (response) => {
-        this.subject = response;
-        if (this.subject.topics.length > 0) {
-          this.expandedTopics = [this.subject.topics[0].id];
+    this.subjectsService.getSubjectBySubjectId(subjectId, this.loggedUser.id)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      )
+      .subscribe(
+        (response) => {
+          this.subject = response;
+          if (this.subject.topics.length > 0) {
+            this.expandedTopics = [this.subject.topics[0].id];
+          }
+          if (this.isUserLoggedIn && this.isSuperAdmin) {
+            this.getStudentsBySubjectId(this.subject.id);
+          }
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar a disciplina."
+            );
+          }
         }
-        if (this.isUserLoggedIn && this.isSuperAdmin) {
-          this.getStudentsBySubjectId(this.subject.id);
-        }
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.showLoading = false;
-        if (errorResponse.status == 400) {
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        } else {
-          this.sendErrorNotification(errorResponse.error.message);
-        }
-      }
-    );
+      );
+  }
+
+  retryGetSubject(): void {
+    this.retryVisible = false;
+    this.getSubjectBySubjectId(this.route.snapshot.params['id']);
   }
 
   onPlayVideo(content: TopicContent) {

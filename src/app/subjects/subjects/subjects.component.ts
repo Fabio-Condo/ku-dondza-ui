@@ -10,6 +10,8 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Role } from 'src/app/enum/role.enum';
 import { Title } from '@angular/platform-browser';
 import { User } from 'src/app/core/model/User';
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-subjects',
@@ -23,6 +25,8 @@ export class SubjectsComponent implements OnInit {
   selectedSubject: Subject = new Subject();
 
   showLoading: boolean = false;
+  retryVisible: boolean = false;
+
   totalRecords: number = 0;
   totalSubjects: number = 0;
   displayModalSave: boolean = false;
@@ -142,20 +146,41 @@ export class SubjectsComponent implements OnInit {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.subjectsService.filter(this.filtro, this.loggedUser.id).subscribe(
-      (dados: IApiResponse<Subject>) => {
-        this.subjects = dados.content;
-        this.totalRecords = dados.totalElements;
-        if (this.totalSubjects == 0) {
-          this.totalSubjects = dados.totalElements;
+    this.subjectsService.filter(this.filtro, this.loggedUser.id)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      )
+      .subscribe(
+        (dados: IApiResponse<Subject>) => {
+          this.subjects = dados.content;
+          this.totalRecords = dados.totalElements;
+          if (this.totalSubjects == 0) {
+            this.totalSubjects = dados.totalElements;
+          }
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar as disciplinas."
+            );
+          }
         }
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
+      );
   }
 
   loadMore(page: number = 0): void {
@@ -180,6 +205,12 @@ export class SubjectsComponent implements OnInit {
         this.showLoading = false;
       }
     );
+  }
+
+  retryGetSubjects(): void {
+    this.retryVisible = false;
+    this.filtro.pagina = 0;
+    this.findAll(this.currentPage);
   }
 
   get isLoadMoreDisabled(): boolean {

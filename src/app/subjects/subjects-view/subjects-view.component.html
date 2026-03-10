@@ -11,6 +11,26 @@
             </div>
         </div>
 
+        <div *ngIf="retryVisible" class="retry-container">
+            <div class="retry-content">
+                <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
+                    fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <circle cx="12" cy="16" r="1"></circle>
+                </svg>
+
+                <div class="retry-text">
+                    Ocorreu um erro ao carregar a disciplina.<br>
+                    Por favor, tente novamente.
+                </div>
+
+                <button class="retry-button" (click)="retryGetSubject()">
+                    Tentar novamente
+                </button>
+            </div>
+        </div>
+
         <div class="header-buttons">
             <button class="go-back-btn" routerLink="/subjects">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -106,11 +126,14 @@
                                         </a>
                                     </p>
 
-                                    <p class="lock-message"  *ngIf="isPremiumTopic(topic) && isTopicExpanded(topic.id)">
+                                    <p class="lock-message" *ngIf="isPremiumTopic(topic) && isTopicExpanded(topic.id)">
                                         <span class="lock-icon">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                                                <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" />
+                                                <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor"
+                                                    stroke-width="2" />
                                             </svg>
                                         </span>
                                         Conteúdo exclusivo para utilizadores <strong>Premium</strong>.

@@ -612,6 +612,77 @@
 
         /* End */
 
+
+        .retry-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .retry-content {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .retry-icon {
+            font-size: 48px;
+        }
+
+        .retry-text {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.4;
+        }
+
+        .retry-button {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            display: inline-block;
+            /* garante que fique centralizado */
+        }
+
+        .retry-button:hover {
+            transform: scale(1.05);
+        }
+
+        .retry-button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
         @media (max-width: 900px) {
             .container {
                 margin-top: 60px;
@@ -787,7 +858,7 @@
             </div>
         </div>
 
-        <div *ngIf="!showLoading && subjects.length === 0">
+        <div *ngIf="!showLoading && !retryVisible && subjects.length  === 0">
             <div class="card">
                 <span class="no-items-message">
                     Nenhum item encontrado
@@ -796,10 +867,30 @@
         </div>
 
         <!-- Load-more -->
-        <div class="load-more-container">
+        <div *ngIf="!retryVisible" class="load-more-container">
             <button class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
                 Buscar mais
             </button>
+        </div>
+
+        <div *ngIf="retryVisible" class="retry-container">
+            <div class="retry-content">
+                <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
+                    fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <circle cx="12" cy="16" r="1"></circle>
+                </svg>
+
+                <div class="retry-text">
+                    Ocorreu um erro ao carregar as questões.<br>
+                    Por favor, tente novamente.
+                </div>
+
+                <button class="retry-button" (click)="retryGetSubjects()">
+                    Tentar novamente
+                </button>
+            </div>
         </div>
 
         <!-- Paginação -->

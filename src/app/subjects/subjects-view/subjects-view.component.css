@@ -1246,7 +1246,8 @@ pre {
 
 .lock-message {
     font-size: 0.85rem;
-    color: #6b7280; /* cinza elegante */
+    color: #6b7280;
+    /* cinza elegante */
     margin-top: 10px;
     text-align: center;
     background: #f8f9ff;
@@ -1256,7 +1257,8 @@ pre {
 }
 
 .upgrade-link {
-    color: #4361ee; /* cor principal do projeto */
+    color: #4361ee;
+    /* cor principal do projeto */
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
@@ -1271,7 +1273,8 @@ pre {
 
 .lock-icon svg {
     display: inline-block;
-    vertical-align: middle; /* garante alinhamento vertical */
+    vertical-align: middle;
+    /* garante alinhamento vertical */
     color: #4361ee;
 }
 
@@ -1551,6 +1554,77 @@ pre {
 .upgrade-link:hover {
     color: #1d4ed8;
     text-decoration: underline;
+}
+
+
+.retry-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.retry-content {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.retry-icon {
+    font-size: 48px;
+}
+
+.retry-text {
+    font-size: 16px;
+    color: #333333;
+    line-height: 1.4;
+}
+
+.retry-button {
+    background-color: #4361ee;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: inline-block;
+    /* garante que fique centralizado */
+}
+
+.retry-button:hover {
+    transform: scale(1.05);
+}
+
+.retry-button:active {
+    transform: scale(0.98);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Responsividade */
