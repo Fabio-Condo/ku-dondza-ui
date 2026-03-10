@@ -25,7 +25,7 @@ export class TopicsComponent implements OnInit {
   subjects: Subject[] = [];
 
   showLoading: boolean = false;
-  totalRegistros: number = 0;
+  totalRecords: number = 0;
   totalTopics: number = 0;
   displayModalSave: boolean = false;
   displayModalFilter: boolean = false;
@@ -120,7 +120,6 @@ export class TopicsComponent implements OnInit {
   excluir(topic: Topic) {
     this.topicService.excluir(topic.id).subscribe(() => {
       this.findAll();
-      this.buscarTotal();
       this.messageService.add({ severity: 'success', detail: 'Tópico excluído com sucesso!' });
     },
       (errorResponse: HttpErrorResponse) => {
@@ -146,7 +145,7 @@ export class TopicsComponent implements OnInit {
     this.topicService.filter(this.filtro).subscribe(
       (dados: IApiResponse<Topic>) => {
         this.topics = dados.content;
-        this.totalRegistros = dados.totalElements;
+        this.totalRecords = dados.totalElements;
         if (this.totalTopics == 0) {
           this.totalTopics = dados.totalElements;
         }
@@ -167,8 +166,7 @@ export class TopicsComponent implements OnInit {
     this.topicService.filter(this.filtro).subscribe(
       (data: IApiResponse<Topic>) => {
         this.topics = [...this.topics, ...data.content];
-
-        this.totalRegistros = data.totalElements;
+        this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -179,18 +177,7 @@ export class TopicsComponent implements OnInit {
   }
 
   get isLoadMoreDisabled(): boolean {
-    return this.topics.length >= this.totalRegistros && this.totalRegistros > 0;
-  }
-
-  buscarTotal() {
-    this.topicService.buscarTotal().subscribe(
-      (total) => {
-        this.totalTopics = total;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
+    return this.topics.length >= this.totalRecords && this.totalRecords > 0;
   }
 
   carregarDisciplinas() {
@@ -263,7 +250,7 @@ export class TopicsComponent implements OnInit {
   }
 
   totalPages(): number {
-    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+    return Math.ceil(this.totalRecords / this.filtro.itensPorPagina);
   }
 
   limparCampos() {

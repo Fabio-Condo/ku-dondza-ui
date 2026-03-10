@@ -125,7 +125,6 @@ export class ExamesComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
-    //this.buscarTotal();
     this.carregarDisciplinas();
     this.scrollToTop();
   }
@@ -281,17 +280,6 @@ export class ExamesComponent implements OnInit {
         this.sendErrorNotification(errorResponse.error.message);
       }
     });
-  }
-
-  buscarTotal() {
-    this.examesService.buscarTotal().subscribe(
-      (total) => {
-        this.totalExames = total;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-      }
-    );
   }
 
   toggleDropdown(exam: Exam) {
