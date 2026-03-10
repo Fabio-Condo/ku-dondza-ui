@@ -13,6 +13,8 @@ import { Subject } from 'src/app/core/model/Subject';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { Role } from 'src/app/enum/role.enum';
+import { retryWhen, delay, scan, tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-quizzes',
@@ -97,7 +99,9 @@ export class QuizzesComponent implements OnInit {
   }
 
   getQuizzes(page: number = 0): void {
-    this.loadingMessage = "Carregando dados"
+
+    this.loadingMessage = "Carregando dados";
+
     if (this.showLoading) return;
 
     if (this.selectQuizOption == 'MY_QUIZZES') {
@@ -109,21 +113,44 @@ export class QuizzesComponent implements OnInit {
     }
 
     this.showLoading = true;
-    this.filter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.quizService.getQuizzes(this.filter).subscribe(
-      (data: IApiResponse<Quiz>) => {
-        this.quizzes = data.content;
-        this.totalRecords = data.totalElements;
-        if (this.totalQuizzes == 0) {
-          this.totalQuizzes = data.totalElements;
+    this.filter.page = this.currentPage - 1;
+
+    this.quizService.getQuizzes(this.filter)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            tap(() => {
+              this.loadingMessage = "Tentando reconectar";
+            }),
+            delay(2000),
+            scan((retryCount) => {
+              if (retryCount >= 3) {
+                throw errors;
+              }
+              return retryCount + 1;
+            }, 0)
+          )
+        )
+      )
+      .subscribe(
+        (data: IApiResponse<Quiz>) => {
+
+          this.loadingMessage = "Carregando dados";
+
+          this.quizzes = data.content;
+          this.totalRecords = data.totalElements;
+
+          if (this.totalQuizzes == 0) {
+            this.totalQuizzes = data.totalElements;
+          }
+
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.sendErrorNotification(errorResponse.error.message);
         }
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
+      );
   }
 
   loadMore(page: number = 0): void {
