@@ -21,6 +21,8 @@ import { Wallet } from 'src/app/core/model/Wallet';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { NgForm } from '@angular/forms';
 import { UserService } from 'src/app/users/user.service';
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-topic-view',
@@ -31,6 +33,7 @@ export class TopicViewComponent implements OnInit {
 
   topic: Topic = new Topic();
   showLoading: boolean = false;
+  retryVisible: boolean = false;
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -140,20 +143,42 @@ export class TopicViewComponent implements OnInit {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
-    this.topicService.getTopicByTopicId(id, this.loggedUser.id).subscribe(
-      (response) => {
-        this.topic = response;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.showLoading = false;
-        if (errorResponse.status == 400) {
-          this.router.navigateByUrl('/pagina-nao-encontrada');
-        } else {
-          this.sendErrorNotification(errorResponse.error.message);
+    this.topicService.getTopicByTopicId(id, this.loggedUser.id)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      )
+      .subscribe(
+        (response) => {
+          this.topic = response;
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar o tópico."
+            );
+          }
         }
-      }
-    );
+      );
+  }
+
+  retryGetTopic(): void {
+    this.retryVisible = false;
+    this.findById(this.route.snapshot.params['id']);
   }
 
   get editingContent() {
