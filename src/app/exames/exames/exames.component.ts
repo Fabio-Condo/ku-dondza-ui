@@ -31,7 +31,6 @@ export class ExamesComponent implements OnInit {
   showLoading: boolean = false;
   retryVisible: boolean = false;
 
-  totalRegistros: number = 0;
   exams: Exam[] = [];
   exam: Exam = new Exam();
   displayModalSave: boolean = false;
@@ -48,6 +47,7 @@ export class ExamesComponent implements OnInit {
 
   currentMessage: string | null = null;
 
+  totalRecords: number = 0;
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
@@ -125,7 +125,7 @@ export class ExamesComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.findAll(0);
-    this.buscarTotal();
+    //this.buscarTotal();
     this.carregarDisciplinas();
     this.scrollToTop();
   }
@@ -207,10 +207,8 @@ export class ExamesComponent implements OnInit {
       .subscribe(
         (dados: IApiResponse<Exam>) => {
           this.exams = dados.content
-          //this.totalRegistros = dados.totalElements
-          if (this.totalRegistros == 0) {
-            this.totalRegistros = dados.totalElements;
-          }
+          this.totalRecords = dados.totalElements;
+          this.totalExames = this.totalExames || dados.totalElements;
           this.showLoading = false;
         },
         (errorResponse: HttpErrorResponse) => {
@@ -236,8 +234,7 @@ export class ExamesComponent implements OnInit {
     this.examesService.findAll(this.filtro).subscribe(
       (data: IApiResponse<Exam>) => {
         this.exams = [...this.exams, ...data.content];
-
-        this.totalRegistros = data.totalElements;
+        this.totalRecords = data.totalElements;
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -251,6 +248,7 @@ export class ExamesComponent implements OnInit {
     this.retryVisible = false;
     this.filtro.pagina = 0;
     this.findAll(this.currentPage);
+    this.carregarDisciplinas();
   }
 
   excluir(exam: Exam) {
@@ -314,7 +312,7 @@ export class ExamesComponent implements OnInit {
   }
 
   get isLoadMoreDisabled(): boolean {
-    return this.exams.length >= this.totalRegistros && this.totalRegistros > 0;
+    return this.exams.length >= this.totalRecords && this.totalRecords > 0;
   }
 
   public onUpdate(exam: Exam, file: File): void {
@@ -667,7 +665,7 @@ export class ExamesComponent implements OnInit {
   }
 
   totalPages(): number {
-    return Math.ceil(this.totalRegistros / this.filtro.itensPorPagina);
+    return Math.ceil(this.totalRecords / this.filtro.itensPorPagina);
   }
 
   public get isAdmin(): boolean {

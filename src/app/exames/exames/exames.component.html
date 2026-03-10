@@ -879,7 +879,7 @@
 
         <header>
             <div class="title">Exames</div>
-            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalExames }}</span>
+            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalExames }}</span>
             <div class="actions">
                 <button (click)="onAddNewExame()" class="button-add-new" id="add-btn"
                     *ngIf="isUserLoggedIn && isSuperAdmin">
@@ -1016,7 +1016,7 @@
 
         <!-- Paginação -->
         <div class="pagination">
-            <span class="pagination-info">Mostrando {{ totalRegistros }} de {{ totalExames }}</span>
+            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalExames }}</span>
             <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

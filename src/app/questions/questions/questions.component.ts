@@ -370,6 +370,7 @@ export class QuestionsComponent implements OnInit {
     this.retryVisible = false;
     this.filtro.page = 0;
     this.findAll(this.currentPage);
+    this.carregarDisciplinas();
   }
 
   get isLoadMoreDisabled(): boolean {

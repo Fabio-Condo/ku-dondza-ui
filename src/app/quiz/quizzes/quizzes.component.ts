@@ -180,6 +180,7 @@ export class QuizzesComponent implements OnInit {
     this.retryVisible = false;
     this.filter.page = 0;
     this.getQuizzes(this.currentPage);
+    this.carregarDisciplinas();
   }
 
   toggleTopics(quizId: number): void {
