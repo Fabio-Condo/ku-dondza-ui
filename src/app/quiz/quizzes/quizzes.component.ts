@@ -131,12 +131,23 @@ export class QuizzesComponent implements OnInit {
           this.showLoading = false;
           this.loadingMessage = "";
         },
-        (error: HttpErrorResponse) => {
+        //(error: HttpErrorResponse) => {
+        //  this.showLoading = false;
+        //  this.retryVisible = true;
+        //  this.loadingMessage = !navigator.onLine
+        //    ? "Sem conexão com a internet."
+        //    : "Não foi possível carregar os quizzes.";
+        //}
+        (errorResponse: HttpErrorResponse) => {
           this.showLoading = false;
           this.retryVisible = true;
-          this.loadingMessage = !navigator.onLine
-            ? "Sem conexão com a internet."
-            : "Não foi possível carregar os quizzes.";
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar os quizzes."
+            );
+          }
         }
       );
   }
