@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrivacyPolicyComponent implements OnInit {
 
-  email: string = 'dikahub@gmail.com';
+  email: string = 'dikahub.education@gmail.com';
 
   constructor() { }
 
