@@ -29,6 +29,9 @@ export class NavbarComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.onLogOut();
+
+    /*
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
@@ -36,8 +39,7 @@ export class NavbarComponent implements OnInit {
       this.isUserLoggedIn = logged;
       this.loggedUser = this.authenticationService.getUserFromLocalCache();
     });
-
-    //this.onLogOut();
+/*
   }
 
   //this.authenticationService.logOut(); // So para testes, remova depois
