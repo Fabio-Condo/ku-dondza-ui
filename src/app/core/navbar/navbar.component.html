@@ -453,7 +453,7 @@
             <a (click)="onLogOut()" class="btn btn-outline">Logout</a>
           </div>
           -->
-          <div class="dropdown-container" *ngIf="isUserLoggedIn" (click)="onLogOut()">
+          <div class="dropdown-container" *ngIf="isUserLoggedIn">
             <button class="dropdown-btn"
               style="cursor: pointer; display: flex; align-items: center; justify-content: center;"
               (click)="toggleDropdown()">
@@ -488,7 +488,7 @@
   </header>
 
   <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive" (click)="onLogOut()">
+  <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
     <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
     <ul class="mobile-nav-links">
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
