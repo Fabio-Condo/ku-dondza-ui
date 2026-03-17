@@ -60,9 +60,6 @@ export class AuthenticationService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('users');
-    localStorage.clear();
-    sessionStorage.clear();
-    //this.notifyLoginStatus(false); // Notifica que o usuário fez logout
   }
 
   public saveToken(token: any): void {
