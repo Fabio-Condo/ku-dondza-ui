@@ -60,6 +60,8 @@ export class AuthenticationService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('users');
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
   public saveToken(token: any): void {
