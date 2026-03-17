@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
       this.loggedUser = this.authenticationService.getUserFromLocalCache();
     });
 
-    this.onLogOut();
+    //this.onLogOut();
   }
 
   //this.authenticationService.logOut(); // So para testes, remova depois
