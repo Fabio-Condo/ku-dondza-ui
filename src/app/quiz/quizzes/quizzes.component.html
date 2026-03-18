@@ -46,6 +46,10 @@
                             <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
                                     class="pi pi-ellipsis-h"></i></button>
                             <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
+                                <a *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
+                                    (click)="toggleAnonymousStatus(quiz); closeDropdown(quiz)">
+                                    <span>{{ quiz.anonymous ? 'Exibir meu nome' : 'Ocultar o nome' }}</span>
+                                </a>
                                 <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
                                 <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no
                                     WhatsApp</a>
@@ -68,6 +72,7 @@
                             <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id"></span>
                             <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
 
+                            <!--
                             <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
                                 (click)="toggleAnonymousStatus(quiz)" class="anon-toggle"
                                 [ngClass]="quiz.anonymous ? 'anon-active' : 'anon-inactive'"
@@ -75,6 +80,7 @@
                                 <i [class]="'pi ' + (quiz.anonymous ? 'pi-eye-slash' : 'pi-eye')"></i>
                                 {{ quiz.anonymous ? 'Anônimo' : 'Visível' }}
                             </span>
+                            -->
 
                             <!-- Ícone de carregamento -->
                             <i *ngIf="quiz.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
