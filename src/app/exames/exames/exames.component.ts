@@ -317,8 +317,11 @@ export class ExamesComponent implements OnInit {
   isPremiumExam(exam: Exam): boolean {
     if (!exam.premium) return false;
 
+    // ADMIN sempre tem acesso
+    if (this.loggedUser && this.isAdmin) return false;
+
     // desabilita se não estiver logado ou se estiver no plano FREE
-    return this.isFreeUser();
+    return this.isFreeUser();``
   }
 
   isFreeUser(): boolean {
