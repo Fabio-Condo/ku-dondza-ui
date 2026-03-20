@@ -251,7 +251,10 @@ export class ExamesComponent implements OnInit {
   }
 
   excluir(exam: Exam) {
+    this.loadingMessage = "Excluindo exame";
+    this.showLoading = true;
     this.examesService.excluir(exam.id!).subscribe(() => {
+      this.showLoading = false;
       this.findAll();
       this.messageService.add({ severity: 'success', detail: 'Exame excluído com sucesso!' })
     },
