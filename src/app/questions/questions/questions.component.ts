@@ -744,6 +744,7 @@ export class QuestionsComponent implements OnInit {
     question.showLoadingSave = true;
     this.userService.toggleSaveQuestion(this.loggedUser.id, question.id).subscribe(
       response => {
+        this.questionService.clearCache();
         question.savedByUser = !question.savedByUser;
         question.showLoadingSave = false;
 
