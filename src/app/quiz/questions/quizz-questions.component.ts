@@ -622,6 +622,9 @@ export class QuizzQuestionsComponent implements OnInit {
   isPremiumTopic(topic: Topic): boolean {
     if (!topic.premium) return false;
 
+    // ADMIN sempre tem acesso
+    if (this.loggedUser && this.isAdmin) return false;
+
     // desabilita se não estiver logado ou se estiver no plano FREE
     return this.isFreeUser();
   }
@@ -1398,7 +1401,7 @@ export class QuizzQuestionsComponent implements OnInit {
     return String.fromCharCode(65 + index); // 65 = 'A' em ASCII - Mostra A, B, C, ...
   }
 
-  public get(): boolean {
+  public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
 
