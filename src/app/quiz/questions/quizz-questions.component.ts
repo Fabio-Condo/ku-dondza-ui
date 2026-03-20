@@ -623,7 +623,7 @@ export class QuizzQuestionsComponent implements OnInit {
     if (!topic.premium) return false;
 
     // ADMIN sempre tem acesso
-    if (this.loggedUser && this.isAdmin) return false;
+    if (this.isUserLoggedIn && this.isAdmin) return false;
 
     // desabilita se não estiver logado ou se estiver no plano FREE
     return this.isFreeUser();
