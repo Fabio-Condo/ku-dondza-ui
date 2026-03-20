@@ -109,7 +109,7 @@ export class QuestionsComponent implements OnInit {
 
   questionFilterOptions = [
     { label: 'Mostrar todos', value: 'ALL_QUESTIONS' },
-    { label: 'Mostrar salvos', value: 'MY_SAVED_QUESTIONS' },
+    { label: 'Mostrar salvos (favoritos)', value: 'MY_SAVED_QUESTIONS' },
   ];
 
   timeLimits = [
