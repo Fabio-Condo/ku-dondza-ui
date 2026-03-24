@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   otp: string = '';
 
+  googleAuthReady = true;
+
   constructor(
     private fb: FormBuilder,
     private ngZone: NgZone,
@@ -180,11 +182,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private async initializeGoogleAuth(): Promise<void> {
-
     try {
-      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      const setupButton =
+        await this.googleAuthService.initializeGoogleButton('google-signin-button');
+
       setupButton((credential) => this.handleGoogleCredential(credential));
+
+      // só ativa o botão se tudo correr bem
+      this.googleAuthReady = true;
+
     } catch (error) {
+      this.googleAuthReady = false;
+
       this.messageService.add({
         severity: 'error',
         summary: 'Erro',
