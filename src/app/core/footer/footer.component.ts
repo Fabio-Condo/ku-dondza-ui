@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Role } from 'src/app/enum/role.enum';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from '../model/User';
@@ -12,6 +12,10 @@ export class FooterComponent implements OnInit {
 
   isUserLoggedIn: boolean = false;
   loggedUser: User = new User();
+
+  isAndroid = /Android/i.test(navigator.userAgent);
+  showPwaButton = false;
+  deferredPrompt: any;
 
   constructor(
     private authenticationService: AuthenticationService
@@ -41,6 +45,22 @@ export class FooterComponent implements OnInit {
 
   private getUserRole(): string {
     return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onBeforeInstallPrompt(e: any) {
+    e.preventDefault();
+    this.deferredPrompt = e;
+    this.showPwaButton = true;
+  }
+
+  installPWA() {
+    if (this.deferredPrompt) {
+      this.deferredPrompt.prompt();
+      this.deferredPrompt.userChoice.then(() => {
+        this.deferredPrompt = null;
+      });
+    }
   }
 
 }
