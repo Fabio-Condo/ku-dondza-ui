@@ -43,6 +43,8 @@ export class PricesComponent implements OnInit {
   step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
   otp: string = '';
 
+  googleAuthReady = true;
+
   constructor(
     private authenticationService: AuthenticationService,
     private googleAuthService: GoogleAuthService,
@@ -160,16 +162,18 @@ export class PricesComponent implements OnInit {
   }
 
   private async initializeGoogleAuth(): Promise<void> {
-
-    if (this.isMobileWebView()) {
-      console.log('Mobile WebView detected — Google Auth skipped.');
-      return; // não inicializa SDK
-    }
-
     try {
-      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      const setupButton =
+        await this.googleAuthService.initializeGoogleButton('google-signin-button');
+
       setupButton((credential) => this.handleGoogleCredential(credential));
+
+      // só ativa o botão se tudo correr bem
+      this.googleAuthReady = true;
+
     } catch (error) {
+      this.googleAuthReady = false;
+
       this.messageService.add({
         severity: 'error',
         summary: 'Erro',
@@ -208,16 +212,6 @@ export class PricesComponent implements OnInit {
     });
 
     this.subscriptions.push(sub);
-  }
-
-  public isMobileWebView(): boolean {
-    return /android|iphone|ipad|ipod/i.test(navigator.userAgent) && this.isWebView();
-  }
-
-  public isWebView(): boolean {
-    const userAgent = navigator.userAgent || navigator.vendor;
-    // Android WebView ou iOS WKWebView
-    return /wv|Android.*Version\/|iPhone.*AppleWebKit\/.*Mobile/i.test(userAgent);
   }
 
   setActiveTab(tabIndex: number) {

@@ -105,6 +105,8 @@ export class QuestionViewComponent implements OnInit {
   topicId: string = '';
   subjectId: string = '';
 
+  googleAuthReady = true;
+
   currentMessage: { text: string; type: 'info' | 'success' | 'warning' | 'error' } | null = null;
 
   // Mensagens de acerto
@@ -1049,16 +1051,18 @@ export class QuestionViewComponent implements OnInit {
   }
 
   private async initializeGoogleAuth(): Promise<void> {
-
-    if (this.isMobileWebView()) {
-      console.log('Mobile WebView detected — Google Auth skipped.');
-      return; // não inicializa SDK
-    }
-
     try {
-      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      const setupButton =
+        await this.googleAuthService.initializeGoogleButton('google-signin-button');
+
       setupButton((credential) => this.handleGoogleCredential(credential));
+
+      // só ativa o botão se tudo correr bem
+      this.googleAuthReady = true;
+
     } catch (error) {
+      this.googleAuthReady = false;
+
       this.messageService.add({
         severity: 'error',
         summary: 'Erro',
@@ -1108,16 +1112,6 @@ export class QuestionViewComponent implements OnInit {
     });
 
     this.subscriptions.push(sub);
-  }
-
-  public isMobileWebView(): boolean {
-    return /android|iphone|ipad|ipod/i.test(navigator.userAgent) && this.isWebView();
-  }
-
-  public isWebView(): boolean {
-    const userAgent = navigator.userAgent || navigator.vendor;
-    // Android WebView ou iOS WKWebView
-    return /wv|Android.*Version\/|iPhone.*AppleWebKit\/.*Mobile/i.test(userAgent);
   }
 
   setActiveTab(tabIndex: number) {

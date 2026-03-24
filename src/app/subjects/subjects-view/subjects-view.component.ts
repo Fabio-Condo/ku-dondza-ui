@@ -75,6 +75,8 @@ export class SubjectsViewComponent {
   students: User[] = [];
   totalRegistrosStudents: number = 0;
 
+  googleAuthReady = true;
+
   filtroStudents: IUserFilter = {
     page: -1,
     itemsPerPage: 2,
@@ -500,16 +502,18 @@ export class SubjectsViewComponent {
   }
 
   private async initializeGoogleAuth(): Promise<void> {
-
-    if (this.isMobileWebView()) {
-      console.log('Mobile WebView detected — Google Auth skipped.');
-      return; // não inicializa SDK
-    }
-
     try {
-      const setupButton = await this.googleAuthService.initializeGoogleButton('google-signin-button');
+      const setupButton =
+        await this.googleAuthService.initializeGoogleButton('google-signin-button');
+
       setupButton((credential) => this.handleGoogleCredential(credential));
+
+      // só ativa o botão se tudo correr bem
+      this.googleAuthReady = true;
+
     } catch (error) {
+      this.googleAuthReady = false;
+
       this.messageService.add({
         severity: 'error',
         summary: 'Erro',
@@ -548,16 +552,6 @@ export class SubjectsViewComponent {
     });
 
     this.subscriptions.push(sub);
-  }
-
-  public isMobileWebView(): boolean {
-    return /android|iphone|ipad|ipod/i.test(navigator.userAgent) && this.isWebView();
-  }
-
-  public isWebView(): boolean {
-    const userAgent = navigator.userAgent || navigator.vendor;
-    // Android WebView ou iOS WKWebView
-    return /wv|Android.*Version\/|iPhone.*AppleWebKit\/.*Mobile/i.test(userAgent);
   }
 
   setActiveTab(tabIndex: number) {
