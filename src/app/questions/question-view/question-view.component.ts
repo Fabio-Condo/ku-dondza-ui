@@ -91,8 +91,8 @@ export class QuestionViewComponent implements OnInit {
 
   @ViewChild('editInput') editInputRef!: ElementRef;
 
-  correctSound = new Audio('assets/sounds/correct.wav');
-  wrongSound = new Audio('assets/sounds/wrong.wav');
+  correctSound = new Audio('assets/sounds/correct.mpeg');
+  wrongSound = new Audio('assets/sounds/wrong.mpeg');
 
   openedMenuId: number | null = null;
 

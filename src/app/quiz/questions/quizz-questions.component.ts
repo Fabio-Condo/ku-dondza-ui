@@ -87,8 +87,8 @@ export class QuizzQuestionsComponent implements OnInit {
   origem: string = '';
   progressTestId: number = 0;
 
-  correctSound = new Audio('assets/sounds/correct.wav');
-  wrongSound = new Audio('assets/sounds/wrong.wav');
+  correctSound = new Audio('assets/sounds/correct.mpeg');
+  wrongSound = new Audio('assets/sounds/wrong.mpeg');
 
   private subscriptions: Subscription[] = [];
 
