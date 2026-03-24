@@ -15,6 +15,7 @@ export class FooterComponent implements OnInit {
 
   isAndroid = /Android/i.test(navigator.userAgent);
   showPwaButton = false;
+  isInstalled = false;
   deferredPrompt: any;
 
   constructor(
@@ -29,22 +30,10 @@ export class FooterComponent implements OnInit {
       this.isUserLoggedIn = logged;
       this.loggedUser = this.authenticationService.getUserFromLocalCache();
     });
-  }
 
-  enterOnGroup() {
-    window.open('https://chat.whatsapp.com/B95NsSxUWFYETIMvKBRynV?mode=ac_t', '_blank');
-  }
-
-  public get isAdmin(): boolean {
-    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  public get isSuperAdmin(): boolean {
-    return this.getUserRole() === Role.SUPER_ADMIN;
-  }
-
-  private getUserRole(): string {
-    return this.authenticationService.getUserFromLocalCache().role;
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      this.isInstalled = true;
+    }
   }
 
   @HostListener('window:beforeinstallprompt', ['$event'])
@@ -61,6 +50,22 @@ export class FooterComponent implements OnInit {
         this.deferredPrompt = null;
       });
     }
+  }
+
+  enterOnGroup() {
+    window.open('https://chat.whatsapp.com/B95NsSxUWFYETIMvKBRynV?mode=ac_t', '_blank');
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
 }

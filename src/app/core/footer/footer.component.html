@@ -196,6 +196,16 @@
             transform: scale(0.97);
         }
 
+        .installed-msg {
+            background: #1c1c1e;
+            color: #4ade80;
+
+            padding: 12px 18px;
+            border-radius: 12px;
+
+            font-weight: 500;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .footer-content {
@@ -297,27 +307,32 @@
 
                 <div class="install-card">
 
-                    <!-- Play Store (Android) -->
-                    <a *ngIf="isAndroid" href="https://play.google.com/store/apps/details?id=com.dikahub.app"
-                        target="_blank" class="install-btn playstore">
+                    <!-- SE JÁ INSTALADO -->
+                    <div *ngIf="isInstalled" class="installed-msg">
+                        ✅ App instalada
+                    </div>
+
+                    <!-- ANDROID -->
+                    <a *ngIf="!isInstalled && isAndroid"
+                        href="https://play.google.com/store/apps/details?id=com.dikahub.app" target="_blank"
+                        class="install-btn playstore">
 
                         <span class="icon">📱</span>
                         <div class="text">
                             <small>Disponível na</small>
                             <strong>Google Play</strong>
                         </div>
-
                     </a>
 
-                    <!-- PWA Install -->
-                    <button *ngIf="!isAndroid && showPwaButton" (click)="installPWA()" class="install-btn pwa">
+                    <!-- PWA -->
+                    <button *ngIf="!isInstalled && !isAndroid && showPwaButton" (click)="installPWA()"
+                        class="install-btn pwa">
 
                         <span class="icon">⚡</span>
                         <div class="text">
                             <small>Instalar rapidamente</small>
                             <strong>App Dikahub</strong>
                         </div>
-
                     </button>
 
                 </div>
