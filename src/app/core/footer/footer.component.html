@@ -274,32 +274,6 @@
                         <i class="fab fa-whatsapp" style="margin-left: 10px;"></i>
                         <span style="margin-right: 10px;">WhatsApp</span>
                     </a>
-                    <div class="install-card">
-
-                        <!-- Play Store (Android) -->
-                        <a *ngIf="isAndroid" href="https://play.google.com/store/apps/details?id=com.dikahub.app"
-                            target="_blank" class="install-btn playstore">
-
-                            <span class="icon">📱</span>
-                            <div class="text">
-                                <small>Disponível na</small>
-                                <strong>Google Play</strong>
-                            </div>
-
-                        </a>
-
-                        <!-- PWA Install -->
-                        <button *ngIf="!isAndroid && showPwaButton" (click)="installPWA()" class="install-btn pwa">
-
-                            <span class="icon">⚡</span>
-                            <div class="text">
-                                <small>Instalar rapidamente</small>
-                                <strong>App Dikahub</strong>
-                            </div>
-
-                        </button>
-
-                    </div>
                 </nav>
 
                 <div class="social-links">
@@ -319,6 +293,33 @@
                         class="linkedin" title="LinkedIn">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
+                </div>
+
+                <div class="install-card">
+
+                    <!-- Play Store (Android) -->
+                    <a *ngIf="isAndroid" href="https://play.google.com/store/apps/details?id=com.dikahub.app"
+                        target="_blank" class="install-btn playstore">
+
+                        <span class="icon">📱</span>
+                        <div class="text">
+                            <small>Disponível na</small>
+                            <strong>Google Play</strong>
+                        </div>
+
+                    </a>
+
+                    <!-- PWA Install -->
+                    <button *ngIf="!isAndroid && showPwaButton" (click)="installPWA()" class="install-btn pwa">
+
+                        <span class="icon">⚡</span>
+                        <div class="text">
+                            <small>Instalar rapidamente</small>
+                            <strong>App Dikahub</strong>
+                        </div>
+
+                    </button>
+
                 </div>
             </div>
 
