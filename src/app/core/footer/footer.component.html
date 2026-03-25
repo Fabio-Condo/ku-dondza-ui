@@ -138,7 +138,6 @@
         .install-card {
             display: flex;
             justify-content: center;
-            margin: 20px;
         }
 
         .install-btn {
@@ -146,7 +145,7 @@
             align-items: center;
             gap: 12px;
 
-            padding: 14px 18px;
+            padding: 14px 14px;
             border-radius: 14px;
 
             text-decoration: none;
@@ -194,16 +193,6 @@
 
         .install-btn:active {
             transform: scale(0.97);
-        }
-
-        .installed-msg {
-            background: #1c1c1e;
-            color: #4ade80;
-
-            padding: 12px 18px;
-            border-radius: 12px;
-
-            font-weight: 500;
         }
 
         /* Responsive Design */
@@ -305,17 +294,10 @@
                     </a>
                 </div>
 
-                <div class="install-card">
-
-                    <!-- SE JÁ INSTALADO -->
-                    <!--
-                    <div *ngIf="isInstalled" class="installed-msg">
-                        App instalada
-                    </div>
-                    -->
+                <div class="install-card" *ngIf="!isInstalled">
 
                     <!-- ANDROID -->
-                    <a *ngIf="!isInstalled && isAndroid"
+                    <a *ngIf="isAndroid"
                         href="https://play.google.com/store/apps/details?id=com.dikahub.app" target="_blank"
                         class="install-btn playstore">
 
@@ -327,7 +309,7 @@
                     </a>
 
                     <!-- PWA -->
-                    <button *ngIf="!isInstalled && !isAndroid && showPwaButton" (click)="installPWA()"
+                    <button *ngIf="!isAndroid && showPwaButton" (click)="installPWA()"
                         class="install-btn pwa">
 
                         <span class="icon">⚡</span>
