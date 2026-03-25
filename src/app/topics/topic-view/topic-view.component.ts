@@ -168,9 +168,7 @@ export class TopicViewComponent implements OnInit {
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
         } else {
-          this.sendErrorNotification(
-            errorResponse?.error?.message || "Não foi possível carregar o tópico."
-          );
+          this.sendErrorNotification(errorResponse.error.message);
         }
       }
     );
@@ -297,7 +295,7 @@ export class TopicViewComponent implements OnInit {
         if (errorResponse.status === 429) {
           this.sendErrorNotification("Você atingiu o limite de downloads. Tente novamente em instantes.");
         } else {
-          this.sendErrorNotification(errorResponse.error?.message || "Erro ao fazer o download.");
+          this.sendErrorNotification(errorResponse.error.message);
         }
       }
     );

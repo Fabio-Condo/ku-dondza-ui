@@ -462,14 +462,11 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
-        //this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
         } else {
-          this.sendErrorNotification(
-            errorResponse?.error?.message || "Não foi possível carregar os tópicos."
-          );
+          this.sendErrorNotification(errorResponse.error.message);
         }
       }
     });
@@ -583,9 +580,7 @@ export class QuizzQuestionsComponent implements OnInit {
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
         } else {
-          this.sendErrorNotification(
-            errorResponse?.error?.message || "Não foi possível carregar as questões."
-          );
+          this.sendErrorNotification(errorResponse.error.message);
         }
       }
     );
@@ -772,7 +767,6 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showStartScreen = true
       },
       (errorResponse: HttpErrorResponse) => {
-        //this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");

@@ -157,9 +157,7 @@ export class SubjectsViewComponent {
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
         } else {
-          this.sendErrorNotification(
-            errorResponse?.error?.message || "Não foi possível carregar a disciplina."
-          );
+          this.sendErrorNotification(errorResponse.error.message);
         }
       }
     );

@@ -173,9 +173,7 @@ export class SubjectsComponent implements OnInit {
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
         } else {
-          this.sendErrorNotification(
-            errorResponse?.error?.message || "Não foi possível carregar as disciplinas."
-          );
+          this.sendErrorNotification(errorResponse.error.message);
         }
       }
     );
