@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   isMenuActive = false;
   activeTab: number = 1;
   googleInitialized: boolean = false;
+  isInstalled = false;
+
 
   constructor(
     private ngZone: NgZone,
@@ -39,6 +41,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkAuthentication();
     this.scrollToTop();
+
+    const isInstalled =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as any).standalone === true;
+
+    if (isInstalled) {
+      this.router.navigateByUrl('/main-panel');
+    }
   }
 
   ngOnDestroy(): void {
