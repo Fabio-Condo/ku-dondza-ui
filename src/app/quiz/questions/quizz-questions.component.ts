@@ -443,18 +443,36 @@ export class QuizzQuestionsComponent implements OnInit {
     this.loadingMessage = "Obtendo tópicos";
     this.showLoading = true;
 
-    this.topicService.getBySubjectIdWithCache(subjectId)
-      .subscribe({
-        next: (dados: Topic[]) => {
-          this.quiz.questions = [];
-          this.topics = dados;
-          this.showLoading = false;
-        },
-        error: (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);
-          this.showLoading = false;
+    this.topicService.getBySubjectIdWithCache(subjectId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe({
+      next: (dados: Topic[]) => {
+        this.quiz.questions = [];
+        this.topics = dados;
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        //this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(
+            errorResponse?.error?.message || "Não foi possível carregar os tópicos."
+          );
         }
-      });
+      }
+    });
   }
 
   // Testes de topico único - Progresso automático
@@ -524,35 +542,54 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.showLoading = true;
 
-    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).subscribe(
-      (dados: Question[]) => {
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 3) throw error; // 3 tentativas
+              const nextRetry = retryCount + 1;
+              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+              return nextRetry;
+            }, 0),
+            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          )
+        )
+      ).subscribe(
+        (dados: Question[]) => {
 
-        this.questionsWithFullSolutions = dados;
+          this.questionsWithFullSolutions = dados;
 
-        // Se o utilizador não for premium → limitar o texto da solução
-        this.quiz.questions = this.quiz.questions.map(q => ({
-          ...q,
-          solution: this.isPremiumTopic(q.topic)
-            ? this.limitSolutionSafe(q.solution, 4)
-            : q.solution
-        }));
+          // Se o utilizador não for premium → limitar o texto da solução
+          this.quiz.questions = this.quiz.questions.map(q => ({
+            ...q,
+            solution: this.isPremiumTopic(q.topic)
+              ? this.limitSolutionSafe(q.solution, 4)
+              : q.solution
+          }));
 
-        this.questions = dados;
-        this.quiz.questions = this.questions;
-        this.showLoading = false;
-        this.renderMathExpressions();
-        this.renderFunctions();
-        this.startQuiz();
+          this.questions = dados;
+          this.quiz.questions = this.questions;
+          this.showLoading = false;
+          this.renderMathExpressions();
+          this.renderFunctions();
+          this.startQuiz();
 
-        if (this.isUserLoggedIn) {
-          this.quiz.user = this.loggedUser;
+          if (this.isUserLoggedIn) {
+            this.quiz.user = this.loggedUser;
+          }
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(
+              errorResponse?.error?.message || "Não foi possível carregar as questões."
+            );
+          }
         }
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
+      );
   }
 
   selectLevel(level: any) {
