@@ -748,7 +748,19 @@ export class QuizzQuestionsComponent implements OnInit {
     const questionIds = this.quiz.questions.map(question => question.id);
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
-    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds, this.loggedUser.id).subscribe(
+    this.quizService.saveQuiz(this.quiz, questionIds, userAnswerIds, this.loggedUser.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe(
       (response) => {
         this.showLoading = false;
         this.quiz = response;
@@ -760,8 +772,13 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showStartScreen = true
       },
       (errorResponse: HttpErrorResponse) => {
+        //this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
-        this.sendErrorNotification(errorResponse.error.message);
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
       }
     );
   }
