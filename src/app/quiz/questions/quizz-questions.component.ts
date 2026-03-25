@@ -542,54 +542,53 @@ export class QuizzQuestionsComponent implements OnInit {
 
     this.showLoading = true;
 
-    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic)
-      .pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 3) throw error; // 3 tentativas
-              const nextRetry = retryCount + 1;
-              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
-              return nextRetry;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
-          )
+    this.questionService.getQuestionsByTopics(selectedTopicIds, this.quiz.difficultyLevel, this.quiz.limitPerTopic).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
         )
-      ).subscribe(
-        (dados: Question[]) => {
+      )
+    ).subscribe(
+      (dados: Question[]) => {
 
-          this.questionsWithFullSolutions = dados;
+        this.questionsWithFullSolutions = dados;
 
-          // Se o utilizador não for premium → limitar o texto da solução
-          this.quiz.questions = this.quiz.questions.map(q => ({
-            ...q,
-            solution: this.isPremiumTopic(q.topic)
-              ? this.limitSolutionSafe(q.solution, 4)
-              : q.solution
-          }));
+        // Se o utilizador não for premium → limitar o texto da solução
+        this.quiz.questions = this.quiz.questions.map(q => ({
+          ...q,
+          solution: this.isPremiumTopic(q.topic)
+            ? this.limitSolutionSafe(q.solution, 4)
+            : q.solution
+        }));
 
-          this.questions = dados;
-          this.quiz.questions = this.questions;
-          this.showLoading = false;
-          this.renderMathExpressions();
-          this.renderFunctions();
-          this.startQuiz();
+        this.questions = dados;
+        this.quiz.questions = this.questions;
+        this.showLoading = false;
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.startQuiz();
 
-          if (this.isUserLoggedIn) {
-            this.quiz.user = this.loggedUser;
-          }
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
-          if (!navigator.onLine) {
-            this.sendErrorNotification("Você está sem conexão com a internet.");
-          } else {
-            this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar as questões."
-            );
-          }
+        if (this.isUserLoggedIn) {
+          this.quiz.user = this.loggedUser;
         }
-      );
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(
+            errorResponse?.error?.message || "Não foi possível carregar as questões."
+          );
+        }
+      }
+    );
   }
 
   selectLevel(level: any) {
@@ -846,63 +845,61 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showLoading = true;
     this.loadingMessage = "Carregando dados";
 
-    this.quizService.getQuizByQuizId(quizId, this.loggedUser.id)
-      .pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 3) throw error; // 3 tentativas
-              const nextRetry = retryCount + 1;
-              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
-              return nextRetry;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
-          )
+    this.quizService.getQuizByQuizId(quizId, this.loggedUser.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
         )
       )
-      .subscribe(
-        (response) => {
-          this.quiz = response;
-          this.quiz.isSubmitted = true;
+    ).subscribe(
+      (response) => {
+        this.quiz = response;
+        this.quiz.isSubmitted = true;
 
-          this.questionsWithFullSolutions = this.quiz.questions;
+        this.questionsWithFullSolutions = this.quiz.questions;
 
-          // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-          //if (this.isFreeUser()) {
-          //  this.quiz.questions = this.quiz.questions.map(q => ({
-          //    ...q,
-          //    solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
-          //  }));
-          //}
+        // 🔒 Se o utilizador não for Premium → limitar o texto da solução
+        //if (this.isFreeUser()) {
+        //  this.quiz.questions = this.quiz.questions.map(q => ({
+        //    ...q,
+        //    solution: this.limitSolutionSafe(q.solution, 4) // mostra 4 blocos/linhas
+        //  }));
+        //}
 
-          this.quiz.questions = this.quiz.questions.map(q => ({
-            ...q,
-            solution: this.isPremiumTopic(q.topic)
-              ? this.limitSolutionSafe(q.solution, 4)
-              : q.solution
-          }));
+        this.quiz.questions = this.quiz.questions.map(q => ({
+          ...q,
+          solution: this.isPremiumTopic(q.topic)
+            ? this.limitSolutionSafe(q.solution, 4)
+            : q.solution
+        }));
 
-          this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
+        this.topics = this.getTopicosFromQuestoes(this.quiz.questions);
 
-          if (this.quiz.answers) {
-            this.calculateResults();
-          }
-
-          this.renderMathExpressions();
-          this.showLoading = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
-          this.retryVisible = true;
-          if (!navigator.onLine) {
-            this.sendErrorNotification("Você está sem conexão com a internet.");
-          } else {
-            this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar as questões."
-            );
-          }
+        if (this.quiz.answers) {
+          this.calculateResults();
         }
-      );
+
+        this.renderMathExpressions();
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(
+            errorResponse?.error?.message || "Não foi possível carregar as questões."
+          );
+        }
+      }
+    );
   }
 
   retryGetQuestion(): void {

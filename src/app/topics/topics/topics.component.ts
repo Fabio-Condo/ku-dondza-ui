@@ -146,41 +146,39 @@ export class TopicsComponent implements OnInit {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.topicService.filter(this.filtro)
-      .pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 3) throw error; // 3 tentativas
-              const nextRetry = retryCount + 1;
-              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
-              return nextRetry;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
-          )
+    this.topicService.filter(this.filtro).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
         )
       )
-      .subscribe(
-        (dados: IApiResponse<Topic>) => {
-          this.topics = dados.content;
-          this.totalRecords = dados.totalElements;
-          if (this.totalTopics == 0) {
-            this.totalTopics = dados.totalElements;
-          }
-          this.showLoading = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
-          this.retryVisible = true;
-          if (!navigator.onLine) {
-            this.sendErrorNotification("Você está sem conexão com a internet.");
-          } else {
-            this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar os tópicos."
-            );
-          }
+    ).subscribe(
+      (dados: IApiResponse<Topic>) => {
+        this.topics = dados.content;
+        this.totalRecords = dados.totalElements;
+        if (this.totalTopics == 0) {
+          this.totalTopics = dados.totalElements;
         }
-      );
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(
+            errorResponse?.error?.message || "Não foi possível carregar os tópicos."
+          );
+        }
+      }
+    );
   }
 
   loadMore(page: number = 0): void {

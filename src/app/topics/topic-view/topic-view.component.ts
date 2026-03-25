@@ -145,37 +145,35 @@ export class TopicViewComponent implements OnInit {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
-    this.topicService.getTopicByTopicId(id, this.loggedUser.id)
-      .pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 3) throw error; // 3 tentativas
-              const nextRetry = retryCount + 1;
-              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
-              return nextRetry;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
-          )
+    this.topicService.getTopicByTopicId(id, this.loggedUser.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
         )
       )
-      .subscribe(
-        (response) => {
-          this.topic = response;
-          this.showLoading = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
-          this.retryVisible = true;
-          if (!navigator.onLine) {
-            this.sendErrorNotification("Você está sem conexão com a internet.");
-          } else {
-            this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar o tópico."
-            );
-          }
+    ).subscribe(
+      (response) => {
+        this.topic = response;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(
+            errorResponse?.error?.message || "Não foi possível carregar o tópico."
+          );
         }
-      );
+      }
+    );
   }
 
   retryGetTopic(): void {

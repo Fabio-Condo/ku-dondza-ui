@@ -206,48 +206,46 @@ export class QuestionViewComponent implements OnInit {
 
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
-    this.questionService.getQuestionByQuestionId(id, this.loggedUser.id)
-      .pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 3) throw error; // 3 tentativas
-              const nextRetry = retryCount + 1;
-              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
-              return nextRetry;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
-          )
+    this.questionService.getQuestionByQuestionId(id, this.loggedUser.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
         )
       )
-      .subscribe(
-        (response) => {
-          this.question = response;
-          this.questionsWithFullSolutions.unshift(response); // Adiciona a questão recebida na primeira posição da lista
+    ).subscribe(
+      (response) => {
+        this.question = response;
+        this.questionsWithFullSolutions.unshift(response); // Adiciona a questão recebida na primeira posição da lista
 
-          // 🔒 Se o utilizador não for Premium → limitar o texto da solução
-          if (this.isPremiumTopic(this.question.topic)) {
-            this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
-          }
-
-          this.questions.unshift(this.question); // Adiciona a questão recebida na primeira posição da lista
-          this.renderMathExpressions();
-          this.renderFunctions();
-          this.showLoading = false;
-          //this.getComments(this.question.id);
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
-          this.retryVisible = true;
-          if (!navigator.onLine) {
-            this.sendErrorNotification("Você está sem conexão com a internet.");
-          } else {
-            this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar a questão."
-            );
-          }
+        // 🔒 Se o utilizador não for Premium → limitar o texto da solução
+        if (this.isPremiumTopic(this.question.topic)) {
+          this.question.solution = this.limitSolutionSafe(this.question.solution, 4); // mostra 4 blocos/linhas}
         }
-      );
+
+        this.questions.unshift(this.question); // Adiciona a questão recebida na primeira posição da lista
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.showLoading = false;
+        //this.getComments(this.question.id);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(
+            errorResponse?.error?.message || "Não foi possível carregar a questão."
+          );
+        }
+      }
+    );
   }
 
   retryGetQuestion(): void {

@@ -128,43 +128,41 @@ export class SubjectsViewComponent {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
-    this.subjectsService.getSubjectBySubjectId(subjectId, this.loggedUser.id)
-      .pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 3) throw error; // 3 tentativas
-              const nextRetry = retryCount + 1;
-              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
-              return nextRetry;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
-          )
+    this.subjectsService.getSubjectBySubjectId(subjectId, this.loggedUser.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
         )
       )
-      .subscribe(
-        (response) => {
-          this.subject = response;
-          if (this.subject.topics.length > 0) {
-            this.expandedTopics = [this.subject.topics[0].id];
-          }
-          if (this.isUserLoggedIn && this.isSuperAdmin) {
-            this.getStudentsBySubjectId(this.subject.id);
-          }
-          this.showLoading = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
-          this.retryVisible = true;
-          if (!navigator.onLine) {
-            this.sendErrorNotification("Você está sem conexão com a internet.");
-          } else {
-            this.sendErrorNotification(
-              errorResponse?.error?.message || "Não foi possível carregar a disciplina."
-            );
-          }
+    ).subscribe(
+      (response) => {
+        this.subject = response;
+        if (this.subject.topics.length > 0) {
+          this.expandedTopics = [this.subject.topics[0].id];
         }
-      );
+        if (this.isUserLoggedIn && this.isSuperAdmin) {
+          this.getStudentsBySubjectId(this.subject.id);
+        }
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(
+            errorResponse?.error?.message || "Não foi possível carregar a disciplina."
+          );
+        }
+      }
+    );
   }
 
   retryGetSubject(): void {

@@ -109,20 +109,19 @@ export class QuizzesComponent implements OnInit {
     if (this.selectQuizOption == 'ALL_QUIZZES') this.filter.user = 0;
     this.filter.page = this.currentPage - 1;
 
-    this.quizService.getQuizzes(this.filter)
-      .pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 3) throw error; // 3 tentativas
-              const nextRetry = retryCount + 1;
-              this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
-              return nextRetry;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
-          )
+    this.quizService.getQuizzes(this.filter).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
         )
       )
+    )
       .subscribe(
         (data: IApiResponse<Quiz>) => {
           this.quizzes = data.content;
