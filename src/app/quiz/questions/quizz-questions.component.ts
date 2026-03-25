@@ -377,11 +377,13 @@ export class QuizzQuestionsComponent implements OnInit {
   playCorrect(): void {
     this.correctSound.currentTime = 0;
     this.correctSound.play().catch(() => { });
+    navigator.vibrate(50);
   }
 
   playWrong(): void {
     this.wrongSound.currentTime = 0;
     this.wrongSound.play().catch(() => { });
+    navigator.vibrate([100, 50, 100]);
   }
 
   // Se escolher o modo treino. SERA DADO FEEDBACK INSTATANEO
