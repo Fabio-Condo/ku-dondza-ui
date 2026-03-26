@@ -25,7 +25,8 @@ export class SubjectsService {
 
   private subjectsListCache: Subject[] | null = null;
 
-  private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
+  //private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
+  private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
 
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
@@ -130,7 +131,7 @@ export class SubjectsService {
 
   excluir(id: number): Observable<void> {
     return this.http.delete<void>(`${this.host}/${id}`).pipe(
-      tap(() => this.clearCache()) 
+      tap(() => this.clearCache())
     );
   }
 
