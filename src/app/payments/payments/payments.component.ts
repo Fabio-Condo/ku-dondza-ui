@@ -6,6 +6,11 @@ import { Title } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Payment } from 'src/app/core/model/Payment';
 import { User } from 'src/app/core/model/User';
+import { PaymentFilter } from 'src/app/core/interface/PaymentFilter';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { retryWhen, delayWhen, scan } from 'rxjs/operators';
+import { timer } from 'rxjs';
+
 
 @Component({
   selector: 'app-payments',
@@ -21,7 +26,19 @@ export class PaymentsComponent {
   loggedUser: User = new User;
   isUserLoggedIn: boolean = false;
 
+  retryVisible: boolean = false;
 
+  totalRecords: number = 0;
+  currentPage: number = 1;
+  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+
+  totalPayments: number = 0;
+
+  filtro: PaymentFilter = {
+    pagina: 0,
+    itensPorPagina: 10,
+    ordenamento: 'id,asc',
+  };
 
   constructor(
     private paymentsService: PaymentsService,
@@ -34,25 +51,63 @@ export class PaymentsComponent {
     this.title.setTitle('Payments page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    this.getPaymets();
+    //this.getPaymets();
+    this.findAll();
   }
 
-  getPaymets() {
+  findAll(pagina: number = 0): void {
+    this.retryVisible = false;
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
-    this.paymentsService.findAll().subscribe({
-      next: (dados) => {
-        this.payments = dados;
+    this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.paymentsService.filter(this.filtro).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe(
+      (dados: IApiResponse<Payment>) => {
+        this.payments = dados.content
+        this.totalRecords = dados.totalElements;
+        this.totalPayments = this.totalPayments || dados.totalElements;
         this.showLoading = false;
-
       },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
+      (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
-
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
       }
-    });
+    );
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findAll();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRecords / this.filtro.itensPorPagina);
   }
 
   getPlanClass(plan: string) {

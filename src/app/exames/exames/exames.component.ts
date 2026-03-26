@@ -79,6 +79,30 @@ export class ExamesComponent implements OnInit {
 
   @ViewChild('tabela') grid: any;
 
+  anos = [
+    { label: '2025', value: 2025 },
+    { label: '2024', value: 2024 },
+    { label: '2023', value: 2023 },
+    { label: '2022', value: 2022 },
+    { label: '2021', value: 2021 },
+    { label: '2020', value: 2020 },
+    { label: '2019', value: 2019 },
+    { label: '2018', value: 2018 },
+    { label: '2017', value: 2017 },
+    { label: '2016', value: 2016 },
+    { label: '2015', value: 2015 },
+    { label: '2014', value: 2014 },
+    { label: '2013', value: 2017 },
+    { label: '2012', value: 2016 },
+    { label: '2011', value: 2011 },
+    { label: '2010', value: 2010 },
+    { label: '2009', value: 2009 },
+    { label: '2008', value: 2008 },
+    { label: '2007', value: 2007 },
+    { label: '2006', value: 2006 },
+    { label: '2005', value: 2005 },
+  ];
+
   niveis = [
     { label: 'Ensino Superior', value: 'Ensino Superior' },
     { label: 'Ensino Técnico', value: 'Ensino Técnico' },
@@ -149,7 +173,7 @@ export class ExamesComponent implements OnInit {
 
   update() {
     this.showLoading = true;
-    this.examesService.update(this.exam.id, this.exam.examType, this.exam.institution, this.exam.premium, this.exam.date, this.exam.subject.id!, this.exam.number, this.file).subscribe(
+    this.examesService.update(this.exam.id, this.exam.examType, this.exam.institution, this.exam.premium, this.exam.year, this.exam.subject.id!, this.exam.number, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -166,7 +190,7 @@ export class ExamesComponent implements OnInit {
 
   addNew() {
     this.showLoading = true;
-    this.examesService.save(this.exam.examType, this.exam.institution, this.exam.premium, this.exam.date, this.exam.subject.id!, this.exam.number, this.file).subscribe(
+    this.examesService.save(this.exam.examType, this.exam.institution, this.exam.premium, this.exam.year, this.exam.subject.id!, this.exam.number, this.file).subscribe(
       response => {
         this.exam = response
         this.exam.date = new Date(this.exam.date);
@@ -628,8 +652,8 @@ export class ExamesComponent implements OnInit {
     this.filtro.subject = undefined;
     this.filtro.examType = "";
     this.filtro.institution = "";
-    this.filtro.beginDate = undefined;
-    this.filtro.endDate = undefined;
+    this.filtro.beginYear = undefined;
+    this.filtro.endYear = undefined;
     this.filtro.pagina = 0;
     this.filtro.itensPorPagina = 10;
     this.filtro.ordenamento = "id,desc"

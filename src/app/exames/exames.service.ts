@@ -56,11 +56,12 @@ export class ExamesService {
       params = params.set('institution', filtro.institution);
     }
 
-    if (filtro.beginDate) {
-      params = params.set('beginDate', this.datePipe.transform(filtro.beginDate, 'yyyy-MM-dd')!);
+    if (filtro.beginYear) {
+      params = params.set('beginYear', filtro.beginYear.toString());
     }
-    if (filtro.endDate) {
-      params = params.set('endDate', this.datePipe.transform(filtro.endDate, 'yyyy-MM-dd')!);
+    
+    if (filtro.endYear) {
+      params = params.set('endYear', filtro.endYear.toString());
     }
 
     const cacheKey = params.toString();
@@ -83,13 +84,13 @@ export class ExamesService {
 
   }
 
-  save(examType: string, institution: string, premium: boolean, date: Date, subjectId: number, number: string, file: File): Observable<Exam> {
+  save(examType: string, institution: string, premium: boolean, year: number, subjectId: number, number: string, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('examType', examType)
     formData.append('premium', premium.toString());
     formData.append('institution', institution);
     formData.append('number', number);
-    formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
+    formData.append('year', year.toString());
     formData.append('subjectId', subjectId.toString());
     formData.append('file', file);
 
@@ -99,14 +100,14 @@ export class ExamesService {
     );
   }
 
-  update(id: number, examType: string, institution: string, premium: boolean, date: Date, subjectId: number, number: string, file: File): Observable<Exam> {
+  update(id: number, examType: string, institution: string, premium: boolean, year: number, subjectId: number, number: string, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('id', id.toString());
     formData.append('premium', premium.toString());
     formData.append('examType', examType)
     formData.append('institution', institution);
     formData.append('number', number);
-    formData.append('date', date.toISOString()); // Convertendo para o formato ISO string
+    formData.append('year', year.toString());
     formData.append('subjectId', subjectId.toString());
     formData.append('file', file);
 

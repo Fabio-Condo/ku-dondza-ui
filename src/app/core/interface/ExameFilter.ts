@@ -4,8 +4,8 @@ export interface ExameFilter {
     institution?: string;
     subject?: number;
 
-    beginDate?: Date,
-    endDate?: Date,
+    beginYear?: Date,
+    endYear?: Date,
 
     pagina: number,
     ordenamento: string,

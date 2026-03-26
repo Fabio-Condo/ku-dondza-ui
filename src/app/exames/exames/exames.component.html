@@ -95,8 +95,9 @@
         .filter-group input {
             width: 100%;
             padding: 0.625rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
             font-size: 0.95rem;
             color: #2d3748;
             transition: border-color 0.2s;
@@ -106,6 +107,7 @@
         .filter-group input:focus {
             outline: none;
             border-color: #4361ee;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
         }
 
         .exams-grid {
@@ -774,6 +776,28 @@
             margin-right: 10px;
         }
 
+        .date-range-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            flex: 1;
+        }
+
+        .separator {
+            padding: 0 0.25rem;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.4rem;
+            white-space: nowrap;
+        }
+
         @media (max-width: 900px) {
             .container {
                 margin-top: 60px;
@@ -934,7 +958,7 @@
                                     stroke-width="1.8" />
                                 <path d="M3 10H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                             </svg>
-                            {{ exam.date | date:'yyyy' }}
+                            {{ exam.year }}
                         </span>
                         <span class="badge badge-enunciado badge-with-icon" [ngClass]="getBadgeClass(exam.examType)">
                             <svg class="badge-icon" viewBox="0 0 24 24" fill="none">
@@ -1067,10 +1091,11 @@
             </div>
 
             <div class="form-group">
-                <label>Ano</label>
-                <p-calendar name="date" dateFormat="yy" [inputStyle]="{ 'width': '400px'}" [showIcon]="true"
-                    [showOnFocus]="false" name="date" [inline]="false" [readonlyInput]="false" ngModel #date="ngModel"
-                    [required]="true" [(ngModel)]="exam.date"></p-calendar>
+                <label for="year">Ano</label>
+                <select id="year" [(ngModel)]="exam.year" name="year" required>
+                    <option value="" disabled selected>Selecione o ano</option>
+                    <option *ngFor="let ano of anos" [value]="ano.value">{{ ano.label }}</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -1146,20 +1171,37 @@
                 </select>
             </div>
 
-            <!--
             <div class="form-group">
-                <label for="date-range">Intervalo de datas</label>
+                <label class="form-label">Período</label>
+
                 <div class="date-range-container">
-                    <p-calendar id="beginDate" view="year" dateFormat="yy" [showOnFocus]="false" name="beginDate"
-                        [inline]="false" [readonlyInput]="false" [(ngModel)]="filtro.beginDate"
-                        (ngModelChange)="findAll()" placeholder="Data inicial"></p-calendar>
-                    <span class="date-separator">até</span>
-                    <p-calendar id="endDate" view="year" dateFormat="yy" [showOnFocus]="false" name="endDate"
-                        [inline]="false" [readonlyInput]="false" [(ngModel)]="filtro.endDate"
-                        (ngModelChange)="findAll()" placeholder="Data final"></p-calendar>
+
+                    <div class="field">
+                        <label for="beginYear">Ano inicial</label>
+                        <select id="beginYear" [(ngModel)]="filtro.beginYear" (change)="findAll()" name="beginYear"
+                            required>
+                            <option value="" disabled>Selecione</option>
+                            <option *ngFor="let ano of anos" [value]="ano.value">
+                                {{ ano.label }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="separator">até</div>
+
+                    <div class="field">
+                        <label for="endYear">Ano final</label>
+                        <select id="endYear" [(ngModel)]="filtro.endYear" (change)="findAll()" name="endYear" required>
+                            <option value="" disabled>Selecione</option>
+                            <option *ngFor="let ano of anos" [value]="ano.value">
+                                {{ ano.label }}
+                            </option>
+                        </select>
+                    </div>
+
                 </div>
             </div>
-            -->
+
             <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
         </form>
     </div>

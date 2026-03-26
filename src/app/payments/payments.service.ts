@@ -17,10 +17,6 @@ export class PaymentsService {
     this.host = `${environment.apiUrl}/payments`;
   }
 
-  findAll(): Observable<Payment[]> { 
-    return this.http.get<Payment[]>(`${this.host}/all`, {}); 
-  }
-
   filter(filtro: PaymentFilter): Observable<IApiResponse<Payment>> {
     let params = new HttpParams()
       .set('page', filtro.pagina)
@@ -34,7 +30,4 @@ export class PaymentsService {
     return this.http.get<IApiResponse<Payment>>(`${this.host}/filter`, { params });
   }
 
-  buscarTotal(): Observable<number> {
-    return this.http.get<number>(`${this.host}/total`);
-  }
 }

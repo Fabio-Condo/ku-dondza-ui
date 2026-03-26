@@ -9,6 +9,7 @@ export class Exam {
     fileName!: string;
     urlFile!: string;
     date!: Date;
+    year!: number;
     totalDownloadNumber!: string;
     subject = new Subject();
 
