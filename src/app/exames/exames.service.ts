@@ -22,7 +22,8 @@ export class ExamesService {
   private examsCache = new Map<string, CacheEntry<IApiResponse<Exam>>>();
   private examCache = new Map<string, CacheEntry<Exam>>();
 
-  private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
+  //private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
+  private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
 
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
@@ -59,7 +60,7 @@ export class ExamesService {
     if (filtro.beginYear) {
       params = params.set('beginYear', filtro.beginYear.toString());
     }
-    
+
     if (filtro.endYear) {
       params = params.set('endYear', filtro.endYear.toString());
     }
