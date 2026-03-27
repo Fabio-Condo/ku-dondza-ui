@@ -171,7 +171,7 @@
                                 <div class="lesson-item" *ngFor="let content of topic.contents">
 
                                     <div class="lesson-content">
-                                        <div class="lesson-title-with-check">
+                                        <div class="lesson-content-container">
                                             <input type="checkbox" class="styled-checkbox"
                                                 [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
                                                 (change)="toggleMarkedContent(content)"
@@ -180,7 +180,7 @@
                                             <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
                                                 style="color: #4361ee; font-size: 18px;"></i>
                                             <div>
-                                                <label>{{ content.description }}</label>
+                                                <label class="lesson-title">{{ content.description }}</label>
                                                 <div class="lesson-duration">
                                                     <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula | {{
                                                         content.time }} minutos</span>
