@@ -112,19 +112,19 @@ export class QuestionViewComponent implements OnInit {
   // Mensagens de acerto
   correctMessages: string[] = [
     "Mandou muito bem! 🎉",
-    "Perfeito! Continue assim! ⭐",
-    "Excelente escolha! 🚀",
-    "Mandou ver! 🎯",
-    "Você pegou essa! 🔥"
+    "Perfeito! Continue assim!",
+    "Excelente escolha!",
+    "Mandou ver!",
+    "Você pegou essa!"
   ];
 
   // Mensagens de erro (motivacionais, sem desanimar)
   incorrectMessages: string[] = [
-    "Faz parte do processo — siga firme! 🚀",
-    "Errou, mas está aprendendo! 🌱",
-    "Cada erro é um passo para o acerto! 🌟",
-    "Aprender é assim: tenta, erra e evolui! 🔥",
-    "O importante é continuar! 🌟",
+    "Faz parte do processo — siga firme!",
+    "Errou, mas está aprendendo!",
+    "Cada erro é um passo para o acerto!",
+    "Aprender é assim: tenta, erra e evolui!",
+    "O importante é continuar!",
   ];
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;

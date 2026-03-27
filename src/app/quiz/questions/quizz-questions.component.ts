@@ -133,20 +133,20 @@ export class QuizzQuestionsComponent implements OnInit {
 
   // Mensagens de acerto
   correctMessages: string[] = [
-    "Mandou muito bem! 🎉",
-    "Perfeito! Continue assim! ⭐",
-    "Excelente escolha! 🚀",
-    "Mandou ver! 🎯",
-    "Você pegou essa! 🔥"
+    "Mandou muito bem!",
+    "Perfeito! Continue assim!",
+    "Excelente escolha!",
+    "Mandou ver!",
+    "Você pegou essa!"
   ];
 
   // Mensagens de erro (motivacionais, sem desanimar)
   incorrectMessages: string[] = [
-    "Faz parte do processo — siga firme! 🚀",
-    "Errou, mas está aprendendo! 🌱",
-    "Cada erro é um passo para o acerto! 🌟",
-    "Aprender é assim: tenta, erra e evolui! 🔥",
-    "O importante é continuar! 🌟",
+    "Faz parte do processo — siga firme!",
+    "Errou, mas está aprendendo!",
+    "Cada erro é um passo para o acerto!",
+    "Aprender é assim: tenta, erra e evolui!",
+    "O importante é continuar!",
   ];
 
   // --------------------------
@@ -158,58 +158,58 @@ export class QuizzQuestionsComponent implements OnInit {
 
   // Start (0–25%)
   startMessages: string[] = [
-    "Você já começou, isso é o mais importante 👣",
-    "Primeiros passos dados, continue firme 💪",
-    "Início promissor, bora em frente 🚀",
-    "Já está em movimento, ótimo começo ⚡",
-    "Começou bem, mantenha o ritmo ⭐",
-    "Cada jornada começa com um passo, e você já deu o seu 👏",
-    "Primeira parte iniciada, siga com foco 📚",
-    "Belo arranque, continue no fluxo 🌊",
-    "O caminho começou, aproveite a jornada 🛤️",
-    "Ótima decisão em começar, siga em frente 👍"
+    "Você já começou, isso é o mais importante",
+    "Primeiros passos dados, continue firme",
+    "Início promissor, bora em frente",
+    "Já está em movimento, ótimo começo",
+    "Começou bem, mantenha o ritmo",
+    "Cada jornada começa com um passo, e você já deu o seu",
+    "Primeira parte iniciada, siga com foco",
+    "Belo arranque, continue no fluxo",
+    "O caminho começou, aproveite a jornada",
+    "Ótima decisão em começar, siga em frente"
   ]
 
   // Mid (25–50%)
   midMessages: string[] = [
-    "Você já está no ritmo, continue 📈",
-    "Seguindo bem no caminho, mantenha a constância ⚡",
-    "Está avançando com firmeza 💡",
-    "Quase na metade, foco total 🔥",
-    "Boa cadência, siga sem parar 🚴",
-    "Progresso visível, continue firme ⭐",
-    "Ótimo ritmo, siga nessa energia 👏",
-    "Você está construindo conhecimento passo a passo 📚",
-    "Já percorreu um bom trecho da jornada, continue 🌟",
-    "Mais um pouco e você chega à metade 💪"
+    "Você já está no ritmo, continue",
+    "Seguindo bem no caminho, mantenha a constância",
+    "Está avançando com firmeza",
+    "Quase na metade, foco total",
+    "Boa cadência, siga sem parar",
+    "Progresso visível, continue firme",
+    "Ótimo ritmo, siga nessa energia",
+    "Você está construindo conhecimento passo a passo",
+    "Já percorreu um bom trecho da jornada, continue",
+    "Mais um pouco e você chega à metade"
   ]
 
   // Halfway (50–75%)
   halfwayMessages: string[] = [
-    "Metade da jornada concluída 👏",
-    "Chegou longe, mantenha a energia 🚀",
-    "Você já percorreu um grande caminho 🌟",
-    "Mais da metade avançada, foco no restante 💡",
-    "Persistência é a chave, continue firme 🔑",
-    "Agora é seguir até o fim, está indo bem 💪",
-    "Grande parte já concluída, não perca o ritmo 🚴",
-    "O esforço está somando, continue constante 📈",
-    "Você está mantendo a disciplina, excelente 👌",
-    "Já passou do meio, siga motivado 🔥"
+    "Metade da jornada concluída",
+    "Chegou longe, mantenha a energia",
+    "Você já percorreu um grande caminho",
+    "Mais da metade avançada, foco no restante",
+    "Persistência é a chave, continue firme",
+    "Agora é seguir até o fim, está indo bem",
+    "Grande parte já concluída, não perca o ritmo",
+    "O esforço está somando, continue constante",
+    "Você está mantendo a disciplina, excelente",
+    "Já passou do meio, siga motivado"
   ]
 
   // Almost finished (75–99%)
   finalMessages: string[] = [
-    "Está quase no fim, falta pouco 🏁",
-    "Última etapa, mantenha o foco 👀",
-    "Já percorreu quase tudo, continue firme 💪",
-    "Últimos passos da jornada 🚶",
-    "Final se aproximando, energia extra agora ⚡",
-    "Só mais um pouco, não pare agora 🚀",
-    "Está prestes a concluir, parabéns pela dedicação 🎯",
-    "A linha de chegada está à vista 🏆",
-    "Última reta, concentre-se e finalize 🌟",
-    "Falta bem pouco, continue até o fim 🔥"
+    "Está quase no fim, falta pouco",
+    "Última etapa, mantenha o foco",
+    "Já percorreu quase tudo, continue firme",
+    "Últimos passos da jornada",
+    "Final se aproximando, energia extra agora",
+    "Só mais um pouco, não pare agora",
+    "Está prestes a concluir, parabéns pela dedicação",
+    "A linha de chegada está à vista",
+    "Última reta, concentre-se e finalize",
+    "Falta bem pouco, continue até o fim"
   ]
 
   walletTypes = [
