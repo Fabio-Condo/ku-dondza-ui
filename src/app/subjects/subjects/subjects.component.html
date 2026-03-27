@@ -231,14 +231,14 @@
             flex-direction: column;
         }
 
-        .topic {
+        .subject-name {
             font-size: 1.25rem;
             font-weight: 600;
             color: #2d3748;
         }
 
         /* Container do texto */
-        .exercise {
+        .subject-description {
             position: relative;
             overflow: hidden;
             max-height: 4.8em;
@@ -250,7 +250,7 @@
         }
 
         /* Efeito de transparência no final do texto */
-        .exercise::after {
+        .subject-description::after {
             content: "";
             position: absolute;
             bottom: 0;
@@ -771,7 +771,7 @@
                 display: none;
             }
 
-            .topic {
+            .subject-name {
                 font-size: 17px;
             }
 
@@ -844,9 +844,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="topic">{{ subject.name }}</div>
-                    <div class="exercise">
-                        <p class="exercise-description"> {{ subject.description }}</p>
+                    <div class="subject-name">{{ subject.name }}</div>
+                    <div class="subject-description">
+                        <p class="description"> {{ subject.description }}</p>
                     </div>
                     <div class="progress-container" *ngIf="isUserLoggedIn">
                         <div class="progress-bar" [style.width.%]="subject.currentUserMarkedContentRate"></div>

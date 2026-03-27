@@ -331,6 +331,13 @@ export class SubjectsViewComponent {
     return this.loggedUser.plan === 'FREE' || !planExpiresAt || planExpiresAt <= new Date();
   }
 
+  getTopicProgress(topic: any): number {
+    if (!topic.contents || topic.contents.length === 0) return 0;
+
+    const marked = topic.contents.filter((c: any) => c.markedByUser).length;
+    return (marked / topic.contents.length) * 100;
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
