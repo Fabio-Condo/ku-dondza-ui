@@ -161,8 +161,8 @@
                                             <input type="checkbox" class="styled-checkbox"
                                                 [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
                                                 (change)="toggleMarkedContent(content)"
-                                                *ngIf="!content.showLoadingMarked && isUserLoggedIn && subject.currentUserSubscribed"
-                                                [disabled]="isPremiumTopic(topic) || !subject.currentUserSubscribed || content.showLoadingMarked" />
+                                                *ngIf="!content.showLoadingMarked && isUserLoggedIn"
+                                                [disabled]="isPremiumTopic(topic) || content.showLoadingMarked" />
                                             <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
                                                 style="color: #4361ee; font-size: 18px;"></i>
                                             <div>
@@ -207,48 +207,13 @@
                     </div>
                 </div>
 
-                <div class="progress-card" *ngIf="isUserLoggedIn && subject.currentUserSubscribed">
+                <div class="progress-card" *ngIf="isUserLoggedIn">
                     <div class="progress-circle" *ngIf="subject.currentUserMarkedContentRate != null"
                         [style.--progress]="subject.currentUserMarkedContentRate">
                         <span class="progress-percentage">{{ subject.currentUserMarkedContentRate.toFixed(1) }}%</span>
                     </div>
                     <h3>Progresso Geral</h3>
                     <p>Continue estudando para completar a disciplina</p>
-                </div>
-
-                <br>
-
-                <!-- Students Section -->
-                <div class="students-section" *ngIf="isUserLoggedIn && isSuperAdmin">
-                    <div class="card students-card">
-                        <h2 class="section-title">Alunos Inscritos</h2>
-                        <p class="students-count">{{ totalRegistrosStudents }} alunos neste curso</p>
-
-                        <ul class="students-list">
-                            <li *ngFor="let student of students" class="student-item">
-                                <img [src]="student.profileImageUrl" [alt]="student.fullName" class="student-avatar" />
-                                <div class="student-progress">
-                                    <p class="student-name">{{ student.fullName }}</p>
-                                    <div class="progress-bar">
-
-                                        <div class="progress-fill"
-                                            [style.width.%]="student.markedContentRate.toFixed(1)"></div>
-
-                                    </div>
-                                </div>
-                                <span class="progress-percent">{{ student.markedContentRate.toFixed(1) }}%</span>
-                            </li>
-                        </ul>
-
-                        <!-- Load-more -->
-                        <div class="load-more-container">
-                            <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreStudents()"
-                                [disabled]="(students.length === totalRegistrosStudents && totalRegistrosStudents > 0) || students.length === 0">
-                                Buscar mais
-                            </button>
-                        </div>
-
-                    </div>
                 </div>
 
             </div>

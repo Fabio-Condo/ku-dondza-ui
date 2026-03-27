@@ -10,7 +10,7 @@ export class Subject {
     totalTopics!: number;
     currentUserMarkedContentRate!: number;
 
-    currentUserSubscribed: boolean = false;
+    //currentUserSubscribed: boolean = false;
     isAdminMenuOpen: boolean = false;
     showLoadingSubscription: boolean = false;
 }

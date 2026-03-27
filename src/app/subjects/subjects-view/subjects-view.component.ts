@@ -13,8 +13,6 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { Role } from 'src/app/enum/role.enum';
 import { TopicContent } from 'src/app/core/model/Topic-content';
 import { TopicContentService } from 'src/app/topics/TopicContentService.service';
-import { UserSubjectSubscription } from 'src/app/core/model/UserSubjectSubscription';
-import { UserSubjectSubscriptionService } from '../user-subjects-subscription.service';
 import { UserService } from 'src/app/users/user.service';
 import { IUserFilter } from 'src/app/core/interface/IUserFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
@@ -41,8 +39,6 @@ export class SubjectsViewComponent {
 
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
-
-  userSubjectSubscription: UserSubjectSubscription = new UserSubjectSubscription();
 
   showLesson: boolean = false;
   //selectedContent!: TopicContent;
@@ -72,23 +68,13 @@ export class SubjectsViewComponent {
   displayModalPaymentOptions: boolean = false;
   displayModalAddPaymentOption: boolean = false;
 
-  students: User[] = [];
-  totalRegistrosStudents: number = 0;
-
   googleAuthReady = true;
-
-  filtroStudents: IUserFilter = {
-    page: -1,
-    itemsPerPage: 2,
-    sort: 'id,asc',
-  }
 
   constructor(
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
     private subjectsService: SubjectsService,
     private walletService: WalletService,
-    private userSubjectSubscriptionService: UserSubjectSubscriptionService,
     private topicContentService: TopicContentService,
     private userService: UserService,
     private authenticationService: AuthenticationService,
@@ -146,9 +132,6 @@ export class SubjectsViewComponent {
         if (this.subject.topics.length > 0) {
           this.expandedTopics = [this.subject.topics[0].id];
         }
-        if (this.isUserLoggedIn && this.isSuperAdmin) {
-          this.getStudentsBySubjectId(this.subject.id);
-        }
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -186,47 +169,6 @@ export class SubjectsViewComponent {
       videoElement.load();
       videoElement.play();
     }
-  }
-
-  onSubjectSubscription(subject: Subject) {
-
-    if (subject.currentUserSubscribed) {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Já inscrito',
-        detail: 'Você já está inscrito nesta disciplina.',
-        life: 3000
-      });
-      return;
-    }
-
-    this.subject = subject;
-    if (this.isUserLoggedIn) {
-      this.toggleSubjectSubscription(subject);
-    }
-
-    if (!this.isUserLoggedIn) {
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
-    }
-  }
-
-  toggleSubjectSubscription(subject: Subject): void {
-    subject.showLoadingSubscription = true;
-    this.userSubjectSubscription.subject = subject;
-    this.userSubjectSubscription.user = this.loggedUser;
-    this.userSubjectSubscriptionService.addSubjectToUser(this.userSubjectSubscription).subscribe(() => {
-      subject.currentUserSubscribed = true;
-      subject.showLoadingSubscription = false;
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        subject.showLoadingSubscription = false;
-      }
-    );
   }
 
   toggleMarkedContent(content: TopicContent): void {
@@ -371,28 +313,6 @@ export class SubjectsViewComponent {
   getFileCount(topic: any): number {
     if (!topic || !topic.contents) return 0;
     return topic.contents.filter((content: any) => content.contentType === 'FILE').length;
-  }
-
-  getStudentsBySubjectId(subjectId: number): void {
-    this.loadingMessage = "Buscando alunos"
-    this.showLoading = true;
-    this.filtroStudents.page++;
-    this.userSubjectSubscriptionService.getEnrolledUsersBySubjectId(subjectId, this.filtroStudents).subscribe(
-
-      (dados: IApiResponse<User>) => {
-        this.students = [...this.students, ...dados.content];
-        this.totalRegistrosStudents = dados.totalElements;
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onShowMoreStudents(): void {
-    this.getStudentsBySubjectId(this.subject.id);
   }
 
   // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado

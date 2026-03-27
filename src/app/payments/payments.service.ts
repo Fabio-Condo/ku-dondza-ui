@@ -23,8 +23,12 @@ export class PaymentsService {
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
 
-    if (filtro.name) {
-      params = params.set('name', filtro.name);
+    if (filtro.searchParam) {
+      params = params.set('searchParam', filtro.searchParam);
+    }
+
+    if (filtro.status) {
+      params = params.set('status', filtro.status);
     }
 
     return this.http.get<IApiResponse<Payment>>(`${this.host}/filter`, { params });

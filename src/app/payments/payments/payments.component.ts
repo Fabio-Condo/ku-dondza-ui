@@ -55,10 +55,22 @@ export class PaymentsComponent {
     this.findAll();
   }
 
+  onGetByStatus(status: string) {
+    this.filtro.status = status;
+    this.findAll();
+  }
+
+  onReset() {
+    this.filtro.status = undefined;
+    this.findAll();
+  }
+
   findAll(pagina: number = 0): void {
     this.retryVisible = false;
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
+
+    console.log("status: " + this.filtro.status);
 
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.paymentsService.filter(this.filtro).pipe(

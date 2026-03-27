@@ -14,9 +14,6 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Subscription } from 'rxjs';
 import { Question } from 'src/app/core/model/Question';
-import { UserSubjectSubscriptionService } from 'src/app/subjects/user-subjects-subscription.service';
-import { Subject } from 'src/app/core/model/Subject';
-import { UserSubjectSubscription } from 'src/app/core/model/UserSubjectSubscription';
 import { Wallet } from 'src/app/core/model/Wallet';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { NgForm } from '@angular/forms';
@@ -61,8 +58,6 @@ export class TopicViewComponent implements OnInit {
   topicContent: TopicContent = new TopicContent();
   topicContentFile!: File;
 
-  userSubjectSubscription: UserSubjectSubscription = new UserSubjectSubscription();
-
   showLesson: boolean = false;
   selectedContent!: TopicContent;
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
@@ -87,7 +82,6 @@ export class TopicViewComponent implements OnInit {
     private topicContentService: TopicContentService,
     private walletService: WalletService,
     private userService: UserService,
-    private userSubjectSubscriptionService: UserSubjectSubscriptionService,
     private confirmationService: ConfirmationService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
@@ -247,25 +241,6 @@ export class TopicViewComponent implements OnInit {
 
   onTopicContentFileSelected(event: any) {
     this.topicContentFile = event.target.files[0];
-  }
-
-  onSubjectSubscription() {
-    this.toggleSubjectSubscription();
-  }
-
-  toggleSubjectSubscription(): void {
-    this.topic.subject.showLoadingSubscription = true;
-    this.userSubjectSubscription.subject = this.topic.subject;
-    this.userSubjectSubscription.user = this.loggedUser;
-    this.userSubjectSubscriptionService.addSubjectToUser(this.userSubjectSubscription).subscribe(() => {
-      this.topic.subject.currentUserSubscribed = true;
-      this.topic.subject.showLoadingSubscription = false;
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.topic.subject.showLoadingSubscription = false;
-      }
-    );
   }
 
   download(content: TopicContent): void {

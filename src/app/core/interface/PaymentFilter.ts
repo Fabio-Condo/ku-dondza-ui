@@ -1,6 +1,6 @@
 export interface PaymentFilter {
     searchParam?: string,
-    name?: string;
+    status?: string;
 
     pagina: number,
     ordenamento: string,

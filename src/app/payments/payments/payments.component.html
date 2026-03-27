@@ -33,11 +33,9 @@
         }
 
         .page-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 32px;
-            color: #0f1629;
-            letter-spacing: -0.5px;
-            line-height: 1.1;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
         }
 
         .page-sub {
@@ -924,12 +922,8 @@
 
         /* Mobile breakpoints */
         @media(max-width: 768px) {
-            .page-title {
-                font-size: 24px;
-            }
-
-            .page-sub {
-                font-size: 13px;
+            .container {
+                margin-top: 60px;
             }
 
             .btn {
@@ -1016,13 +1010,18 @@
                         <circle cx="11" cy="11" r="8" />
                         <path d="M21 21l-4.35-4.35" />
                     </svg>
-                    <input class="search-input" type="text" placeholder="Buscar por usuário, plano, ID...">
+                    <input class="search-input" type="text" placeholder="Buscar por usuário, plano, ID..."
+                        [(ngModel)]="filtro.searchParam" (ngModelChange)="findAll()">
                 </div>
                 <div class="filters">
-                    <button class="filter-btn active">Todos</button>
-                    <button class="filter-btn">Aprovado</button>
-                    <button class="filter-btn">Pendente</button>
-                    <button class="filter-btn">Falhou</button>
+                    <button class="filter-btn" [class.active]="filtro.status == undefined"
+                        (click)="onReset()">Todos</button>
+                    <button class="filter-btn" [class.active]="filtro.status == 'SUCCESS'"
+                        (click)="onGetByStatus('SUCCESS')">Aprovado</button>
+                    <button class="filter-btn" [class.active]="filtro.status == 'PENDING'"
+                        (click)="onGetByStatus('PENDING')">Pendente</button>
+                    <button class="filter-btn" [class.active]="filtro.status == 'FAILED'"
+                        (click)="onGetByStatus('FAILED')">Falhou</button>
                     <button class="filter-btn">
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24">
