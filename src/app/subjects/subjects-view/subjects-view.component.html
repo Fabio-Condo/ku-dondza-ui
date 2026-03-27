@@ -193,14 +193,14 @@
 
                                     <div class="lesson-actions">
                                         <button [disabled]="isPremiumTopic(topic) || content.showLoadingMarked"
-                                            (click)="onPlayVideo(content)" class="btn btn-outline"
+                                            (click)="onPlayVideo(content)" class="btn play-btn"
                                             *ngIf="content.contentType == 'VIDEO'">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                                 <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                                             </svg>
                                         </button>
 
-                                        <button class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
+                                        <button class="btn download-btn" *ngIf="content.contentType == 'FILE'"
                                             [disabled]="isPremiumTopic(topic) || content.showLoadingMarked"
                                             (click)="onDownload(content)">
                                             <svg *ngIf="!content.showLoadingDownload" width="16" height="16"
