@@ -127,7 +127,7 @@
                                     <span class="lesson-count">
                                         {{ getVideoCount(topic) }} vídeo{{ getVideoCount(topic) !== 1 ? 's' : '' }},
                                         {{ getFileCount(topic) }} ficheiro{{ getFileCount(topic) !== 1 ? 's' : '' }},
-                                        <span class="progress-mini-value">
+                                        <span class="progress-mini-value" *ngIf="isUserLoggedIn">
                                             {{ getTopicProgress(topic).toFixed(1) }}% concluído
                                         </span>
                                     </span>
