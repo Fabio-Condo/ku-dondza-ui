@@ -178,6 +178,7 @@ export class SubjectsViewComponent {
         content.markedByUser = !content.markedByUser;
         this.subject.currentUserMarkedContentRate = response.markedContentRate;
         content.showLoadingMarked = false;
+        this.subjectsService.clearCache();
       },
       (errorResponse: HttpErrorResponse) => {
         content.showLoadingMarked = false;
