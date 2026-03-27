@@ -833,7 +833,9 @@
                                 </path>
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                             </svg>
-                            {{ subject.totalTopics }} tópicos | {{ subject.currentUserMarkedContentRate.toFixed(1) }}% concluído
+                            <span>{{ subject.totalTopics }} tópicos </span>
+                            <span *ngIf="isUserLoggedIn" style="margin-right: 5px; margin-left: 5px;"> | </span>
+                            <span *ngIf="isUserLoggedIn">{{ subject.currentUserMarkedContentRate.toFixed(1) }}% concluído</span>
                         </span>
 
                         <button class="view-button" [routerLink]="['/subjects', subject.subjectId]">
