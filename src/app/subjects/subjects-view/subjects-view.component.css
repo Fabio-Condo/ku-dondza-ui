@@ -475,26 +475,6 @@ button:disabled {
     letter-spacing: 0.01em;
 }
 
-.progress-bar {
-    width: 100%;
-    background-color: #e5e7eb;
-    border-radius: 9999px;
-    height: 0.5rem;
-    margin-top: 0.25rem;
-}
-
-.progress-fill {
-    height: 100%;
-    border-radius: 9999px;
-    background: linear-gradient(to right, #4ade80, #60a5fa);
-}
-
-.progress-percent {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #4361ee;
-    margin-left: 0.5rem;
-}
 
 /* Botão "Carregar mais" */
 .load-more-container {
@@ -524,47 +504,6 @@ button:disabled {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-}
-
-.progress-card {
-    background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
-    color: white;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.progress-circle {
-    --progress: 0;
-    --angle: calc((var(--progress) / 100) * 360deg);
-
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: conic-gradient(white 0deg var(--angle),
-            rgba(255, 255, 255, 0.3) var(--angle) 360deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.progress-card h3 {
-    color: white;
-
-}
-
-.progress-card p {
-    color: white;
-}
-
-.progress-percentage {
-    color: blue;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /*
@@ -1584,6 +1523,37 @@ pre {
     to {
         opacity: 1;
     }
+}
+
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 25px;
+}
+
+.progress-container {
+    flex: 1;
+    height: 6px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4361ee, #3a0ca3);
+    border-radius: 8px;
+    transition: width 0.4s ease;
+}
+
+.progress-value {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4361ee;
+    min-width: 40px;
+    text-align: right;
 }
 
 /* Responsividade */

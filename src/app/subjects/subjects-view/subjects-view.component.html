@@ -95,6 +95,16 @@
                     -->
                 </div>
 
+                <div class="progress-wrapper" *ngIf="isUserLoggedIn">
+                    <div class="progress-container">
+                        <div class="progress-bar" [style.width.%]="subject.currentUserMarkedContentRate"></div>
+                    </div>
+
+                    <span class="progress-value">
+                        {{ subject.currentUserMarkedContentRate.toFixed(1) }}%
+                    </span>
+                </div>
+
                 <!-- Modules Section -->
                 <div class="card modules-card">
 
@@ -205,15 +215,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="progress-card" *ngIf="isUserLoggedIn">
-                    <div class="progress-circle" *ngIf="subject.currentUserMarkedContentRate != null"
-                        [style.--progress]="subject.currentUserMarkedContentRate">
-                        <span class="progress-percentage">{{ subject.currentUserMarkedContentRate.toFixed(1) }}%</span>
-                    </div>
-                    <h3>Progresso Geral</h3>
-                    <p>Continue estudando para completar a disciplina</p>
                 </div>
 
             </div>
