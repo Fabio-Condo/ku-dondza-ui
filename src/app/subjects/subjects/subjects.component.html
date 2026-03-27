@@ -824,6 +824,10 @@
                     <div class="exercise">
                         <p class="exercise-description"> {{ subject.description }}</p>
                     </div>
+                    <div class="progress-container" *ngIf="isUserLoggedIn">
+                        <div class="progress-bar" [style.width.%]="subject.currentUserMarkedContentRate">
+                        </div>
+                    </div>
                     <div class="card-footer">
                         <span class="time">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -835,7 +839,8 @@
                             </svg>
                             <span>{{ subject.totalTopics }} tópicos </span>
                             <span *ngIf="isUserLoggedIn" style="margin-right: 5px; margin-left: 5px;"> | </span>
-                            <span *ngIf="isUserLoggedIn">{{ subject.currentUserMarkedContentRate.toFixed(1) }}% concluído</span>
+                            <span *ngIf="isUserLoggedIn" style="color: #4361ee;">{{
+                                subject.currentUserMarkedContentRate.toFixed(1) }}% concluído</span>
                         </span>
 
                         <button class="view-button" [routerLink]="['/subjects', subject.subjectId]">
