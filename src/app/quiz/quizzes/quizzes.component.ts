@@ -388,6 +388,12 @@ export class QuizzesComponent implements OnInit {
     }
   }
 
+  getScoreClass(rate: number): string {
+    if (rate < 40) return 'low';
+    if (rate < 70) return 'medium';
+    return 'high';
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
