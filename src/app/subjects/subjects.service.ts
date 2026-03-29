@@ -45,9 +45,11 @@ export class SubjectsService {
   // return firstValueFrom(this.http.get(this.host, { })); 
   //}
 
-  //findAll(): Observable<Subject[]> { 
-  //  return this.http.get<Subject[]>(this.host, {}); 
-  //}
+  findAll2(userId: number): Observable<Subject[]> {
+    let params = new HttpParams()
+      .set('currentUserId', userId.toString());
+    return this.http.get<Subject[]>(`${this.host}/progress/users`, { params });
+  }
 
   // FIND ALL COM CACHE
   findAll(): Observable<Subject[]> {

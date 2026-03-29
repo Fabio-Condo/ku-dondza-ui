@@ -9,6 +9,7 @@ export class Subject {
     topics: Topic[] = [];
     totalTopics!: number;
     currentUserMarkedContentRate!: number;
+    currentUserProgressRate!: number;
 
     //currentUserSubscribed: boolean = false;
     isAdminMenuOpen: boolean = false;

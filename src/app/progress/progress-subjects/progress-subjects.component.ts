@@ -58,7 +58,7 @@ export class ProgressSubjectsComponent {
     this.loadingMessage = 'Carregando disciplinas';
     this.showLoading = true;
 
-    this.subjectsService.findAll().subscribe({
+    this.subjectsService.findAll2(this.loggedUser.id).subscribe({
       next: (dados) => {
         this.subjects = dados;
         //this.selectedSubject = this.subjects[0];
@@ -69,6 +69,18 @@ export class ProgressSubjectsComponent {
         this.showLoading = false;
       }
     });
+  }
+
+  getCategoryValue(category: string) {
+    switch (category) {
+      case 'EXACT_SCIENCES':
+        return 'Ciências Exatas';
+      case 'HUMAN_SCIENCES':
+        return 'Ciências Humanas';
+      case 'LANGUAGES':
+        return 'Línguas';
+    }
+    return '';
   }
 
   private sendErrorNotification(message: string): void {
