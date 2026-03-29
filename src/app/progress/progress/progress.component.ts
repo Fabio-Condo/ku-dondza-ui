@@ -77,10 +77,11 @@ export class ProgressComponent implements OnInit {
     this.title.setTitle('Painel Principal');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-    //const selectedUserId = this.route.snapshot.params['id'];
-    //this.selectedUser.id = selectedUserId;
+    const selectedUserId = this.route.snapshot.params['id'];
+    //this.selectedSubject.id = selectedUserId;
 
-    this.carregarDisciplinas();
+    this.getTestsBySubjectId(selectedUserId);
+    //this.carregarDisciplinas();
     this.scrollToTop();
   }
 
@@ -326,8 +327,8 @@ export class ProgressComponent implements OnInit {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
         this.subjects = dados;
-        this.selectedSubject = this.subjects[0];
-        this.getTestsBySubjectId();
+        //this.selectedSubject = this.subjects[0];
+        this.getTestsBySubjectId(this.selectedSubject.id);
         //this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
@@ -339,14 +340,14 @@ export class ProgressComponent implements OnInit {
 
   onSelectSubject(subject: Subject): void {
     this.selectedSubject = subject;
-    this.getTestsBySubjectId();
+    this.getTestsBySubjectId(subject.id);
   }
 
-  getTestsBySubjectId(): void {
+  getTestsBySubjectId(id: number): void {
     this.loadingMessage = 'Carregando progresso';
     this.showLoading = true;
 
-    this.progressService.getBySubjectId(this.selectedSubject.id, this.loggedUser.id).subscribe({
+    this.progressService.getBySubjectId(id, this.loggedUser.id).subscribe({
       next: (dados) => {
         this.topicTests = dados;
         this.showLoading = false;
