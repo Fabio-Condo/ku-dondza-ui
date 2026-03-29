@@ -15,12 +15,14 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { ProgressSubjectsComponent } from './progress-subjects/progress-subjects.component';
 
 
 
 @NgModule({
   declarations: [
-    ProgressComponent
+    ProgressComponent,
+    ProgressSubjectsComponent
   ],
   imports: [
     CommonModule,
