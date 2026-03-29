@@ -611,14 +611,18 @@
         }
 
         /* End */
+        .progress-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
         .progress-container {
-            width: 100%;
+            flex: 1;
             height: 6px;
             background-color: #e9ecef;
             border-radius: 8px;
             overflow: hidden;
-            margin-top: 8px;
         }
 
         .progress-bar {
@@ -628,14 +632,12 @@
             transition: width 0.4s ease;
         }
 
-        .divider {
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-
-        .progress-text {
-            color: #4361ee;
+        .progress-value {
+            font-size: 0.75rem;
             font-weight: 600;
+            color: #4361ee;
+            min-width: 40px;
+            text-align: right;
         }
 
         .retry-container {
@@ -849,9 +851,17 @@
                     <div class="subject-description">
                         <p class="description"> {{ subject.description }}</p>
                     </div>
-                    <div class="progress-container" *ngIf="isUserLoggedIn">
-                        <div class="progress-bar" [style.width.%]="subject.currentUserMarkedContentRate"></div>
+
+                    <div class="progress-wrapper" *ngIf="isUserLoggedIn">
+                        <div class="progress-container">
+                            <div class="progress-bar" [style.width.%]="subject.currentUserMarkedContentRate"></div>
+                        </div>
+
+                        <span class="progress-value">
+                            {{ subject.currentUserMarkedContentRate.toFixed(1) }}%
+                        </span>
                     </div>
+
                     <div class="card-footer">
                         <span class="meta-container">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -864,12 +874,6 @@
                             <div class="meta-info">
                                 <span class="topics">
                                     {{ subject.totalTopics }} tópicos
-                                </span>
-
-                                <span class="divider" *ngIf="isUserLoggedIn"> | </span>
-
-                                <span class="progress-text" *ngIf="isUserLoggedIn">
-                                    {{ subject.currentUserMarkedContentRate.toFixed(1) }}% concluído
                                 </span>
                             </div>
                         </span>
