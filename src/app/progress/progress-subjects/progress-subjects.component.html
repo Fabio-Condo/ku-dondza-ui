@@ -394,6 +394,40 @@
             transform: translateX(3px);
         }
 
+        .discipline-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: conic-gradient(#4361ee 0deg, #4361ee var(--progress), #e2e8f0 var(--progress));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #4361ee;
+            position: relative;
+        }
+
+        .progress-circle::before {
+            content: '';
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #f7f8fc;
+        }
+
+        .progress-circle span {
+            position: relative;
+            z-index: 1;
+        }
+
         /* Loading Container - Versão Moderna */
         .loading-container {
             display: flex;
@@ -631,7 +665,8 @@
                 <div class="overall">
                     <div class="overall-ring">
                         <div class="discipline-progress">
-                            <div class="progress-circle" [style.--progress]="subject.currentUserProgressRate * 3.6 + 'deg'">
+                            <div class="progress-circle"
+                                [style.--progress]="subject.currentUserProgressRate * 3.6 + 'deg'">
                                 <span></span>
                             </div>
                         </div>
@@ -648,7 +683,13 @@
                                 class="topic-score"><span class="total">{{ topic.progressRate.toFixed(0)
                                     }}%</span></span></div>
                         <div class="track">
-                            <div class="fill high" [style.width.%]="topic.progressRate"></div>
+                            <div class="fill" [ngClass]="{
+                                'empty': topic.progressRate === 0,
+                                'low': topic.progressRate > 0 && topic.progressRate < 40,
+                                'mid': topic.progressRate >= 40 && topic.progressRate < 80,
+                                'high': topic.progressRate >= 80
+                                }" [style.width.%]="topic.progressRate">
+                            </div>
                         </div>
                     </div>
                 </div>
