@@ -27,7 +27,7 @@ export class ProgressSubjectsComponent {
   showLoading = false;
   loadingMessage = 'Carregando';
 
-  selectedSubject: Subject = new Subject();
+  //selectedSubject: Subject = new Subject();
 
   constructor(
     private progressService: ProgressService,
@@ -61,24 +61,7 @@ export class ProgressSubjectsComponent {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
         this.subjects = dados;
-        this.selectedSubject = this.subjects[0];
-        this.getTestsBySubjectId();
-        //this.showLoading = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.sendErrorNotification(error.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  getTestsBySubjectId(): void {
-    this.loadingMessage = 'Carregando progresso';
-    this.showLoading = true;
-
-    this.progressService.getBySubjectId(this.selectedSubject.id, this.loggedUser.id).subscribe({
-      next: (dados) => {
-        this.topicTests = dados;
+        //this.selectedSubject = this.subjects[0];
         this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
@@ -86,34 +69,6 @@ export class ProgressSubjectsComponent {
         this.showLoading = false;
       }
     });
-  }
-
-  isCompleted(test: Test): boolean {
-    return !!test.submittedQuizzes && test.submittedQuizzes.length > 0;
-  }
-
-  getTopicProgress(topic: TopicTestsDTO): number {
-    if (!topic.tests || topic.tests.length === 0) return 0;
-
-    const completed = topic.tests.filter(t => this.isCompleted(t)).length;
-    return Math.round((completed / topic.tests.length) * 100);
-  }
-
-  getDisciplineProgress(): number {
-    if (!this.topicTests || this.topicTests.length === 0) return 0;
-
-    const totalTests = this.topicTests.reduce(
-      (sum, topic) => sum + topic.tests.length,
-      0
-    );
-
-    if (totalTests === 0) return 0;
-
-    const completedTests = this.topicTests.reduce((sum, topic) => {
-      return sum + topic.tests.filter(t => this.isCompleted(t)).length;
-    }, 0);
-
-    return Math.round((completedTests / totalTests) * 100);
   }
 
   private sendErrorNotification(message: string): void {
