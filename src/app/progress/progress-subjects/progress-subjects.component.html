@@ -569,21 +569,21 @@
             <!-- MATEMÁTICA -->
             <div class="card" *ngFor="let subject of subjects">
                 <div class="card-header">
-                    <div class="discipline-icon" *ngIf="subject.name === 'Matemática'">
+                    <div class="discipline-icon" *ngIf="subject.subjectName === 'Matemática'">
                         <svg viewBox="0 0 24 24">
                             <path d="M4 4h16" />
                             <path d="M4 4l8 8-8 8" />
                             <path d="M4 20h16" />
                         </svg>
                     </div>
-                    <div class="discipline-icon" *ngIf="subject.name === 'Português'">
+                    <div class="discipline-icon" *ngIf="subject.subjectName === 'Português'">
                         <svg viewBox="0 0 24 24">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
                             <path
                                 d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                     </div>
-                    <div class="discipline-icon" *ngIf="subject.name === 'Quimica'">
+                    <div class="discipline-icon" *ngIf="subject.subjectName === 'Quimica'">
                         <svg viewBox="0 0 24 24">
                             <path d="M9 3h6" />
                             <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
@@ -593,7 +593,7 @@
                             <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
                         </svg>
                     </div>
-                    <div class="discipline-icon" *ngIf="subject.name === 'Fisica'">
+                    <div class="discipline-icon" *ngIf="subject.subjectName === 'Fisica'">
                         <svg viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="2" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" />
@@ -601,7 +601,7 @@
                             <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
                         </svg>
                     </div>
-                    <div class="discipline-icon" *ngIf="subject.name === 'Biologia'">
+                    <div class="discipline-icon" *ngIf="subject.subjectName === 'Biologia'">
                         <svg viewBox="0 0 24 24">
                             <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
                             <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
@@ -613,7 +613,7 @@
                             <path d="M7.5 17h9" />
                         </svg>
                     </div>
-                    <div class="discipline-icon" *ngIf="subject.name === 'História'">
+                    <div class="discipline-icon" *ngIf="subject.subjectName === 'História'">
                         <svg viewBox="0 0 24 24">
                             <path d="M5 3h14" />
                             <path d="M5 21h14" />
@@ -623,36 +623,35 @@
                         </svg>
                     </div>
                     <div class="card-title-group">
-                        <span class="card-name">{{ subject.name }}</span>
-                        <span class="card-sub">{{ getCategoryValue(subject.category) }}</span>
+                        <span class="card-name">{{ subject.subjectName }}</span>
+                        <span class="card-sub">{{ getCategoryValue(subject.subjectCategory) }}</span>
                     </div>
                 </div>
                 <div class="divider"></div>
                 <div class="overall">
                     <div class="overall-ring">
-                        <svg viewBox="0 0 44 44">
-                            <circle class="ring-bg" cx="22" cy="22" r="18" />
-                            <circle class="ring-fill" cx="22" cy="22" r="18" stroke-dasharray="113.1"
-                                stroke-dashoffset="37.3" />
-                        </svg>
-                        <div class="ring-label">{{ subject.currentUserProgressRate | percent }}</div>
+                        <div class="discipline-progress">
+                            <div class="progress-circle" [style.--progress]="subject.currentUserProgressRate * 3.6 + 'deg'">
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="ring-label">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
                     </div>
                     <div class="overall-text"><strong>Progresso geral</strong><span>{{ subject.totalTopics }}
                             tópicos</span>
                     </div>
                 </div>
-                <!-- 
                 <div class="topics-label">Tópicos</div>
-                <div class="topic-list" *ngFor="let topic of subject.topics">
+                <div class="topic-list" *ngFor="let topic of subject.topicTests">
                     <div class="topic-row">
-                        <div class="topic-meta"><span class="topic-name">{{ topic.name }}</span><span
-                                class="topic-score">9<span class="total">/10</span></span></div>
+                        <div class="topic-meta"><span class="topic-name">{{ topic.topicName }}</span><span
+                                class="topic-score"><span class="total">{{ topic.progressRate.toFixed(0)
+                                    }}%</span></span></div>
                         <div class="track">
-                            <div class="fill high" style="width:90%"></div>
+                            <div class="fill high" [style.width.%]="topic.progressRate"></div>
                         </div>
                     </div>
                 </div>
-                -->
                 <button class="btn-continue" [routerLink]="['/progress-panel', subject.id]">Continuar <svg
                         viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7" />

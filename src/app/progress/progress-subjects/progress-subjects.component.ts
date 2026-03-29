@@ -12,6 +12,7 @@ import { Subject } from 'src/app/core/model/Subject';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TopicTestsDTO } from 'src/app/core/model/TopicTestsDTO';
 import { Test } from 'src/app/core/model/Test';
+import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 
 @Component({
   selector: 'app-progress-subjects',
@@ -20,7 +21,7 @@ import { Test } from 'src/app/core/model/Test';
 })
 export class ProgressSubjectsComponent {
 
-  subjects: Subject[] = [];
+  subjects: SubjectProgressDTO[] = [];
   topicTests: TopicTestsDTO[] = [];
 
   loggedUser: User = new User();
@@ -58,7 +59,7 @@ export class ProgressSubjectsComponent {
     this.loadingMessage = 'Carregando disciplinas';
     this.showLoading = true;
 
-    this.subjectsService.findAll2(this.loggedUser.id).subscribe({
+    this.subjectsService.getUserProgress(this.loggedUser.id).subscribe({
       next: (dados) => {
         this.subjects = dados;
         //this.selectedSubject = this.subjects[0];

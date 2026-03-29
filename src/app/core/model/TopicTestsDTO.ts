@@ -5,4 +5,6 @@ export class TopicTestsDTO {
     topicName!: string;
     orderIndex!: number;
     tests: Test[] = [];
+    progressRate!: number;
+    completed!: boolean;
 }

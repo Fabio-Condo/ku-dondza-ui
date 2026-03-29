@@ -6,6 +6,7 @@ import { Subject } from '../core/model/Subject';
 import { IApiResponse } from '../core/interface/IApiResponse';
 import { SubjectFilter } from '../core/interface/SubjectFilter';
 import { tap } from 'rxjs/operators';
+import { SubjectProgressDTO } from '../core/model/SubjectProgressDTO';
 
 interface CacheEntry<T> {
   data: T;
@@ -45,10 +46,10 @@ export class SubjectsService {
   // return firstValueFrom(this.http.get(this.host, { })); 
   //}
 
-  findAll2(userId: number): Observable<Subject[]> {
+  getUserProgress(userId: number): Observable<SubjectProgressDTO[]> {
     let params = new HttpParams()
       .set('currentUserId', userId.toString());
-    return this.http.get<Subject[]>(`${this.host}/progress/users`, { params });
+    return this.http.get<SubjectProgressDTO[]>(`${this.host}/progress/users`, { params });
   }
 
   // FIND ALL COM CACHE
