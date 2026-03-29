@@ -391,10 +391,6 @@ export class ProgressComponent implements OnInit {
     return Math.round((completedTests / totalTests) * 100);
   }
 
-  /* =========================
-     DESBLOQUEIO SEQUENCIAL
-     ========================= */
-
   getFirstIncompleteIndex(topic: TopicTestsDTO): number {
     return topic.tests.findIndex(test => !this.isCompleted(test));
   }
@@ -407,10 +403,6 @@ export class ProgressComponent implements OnInit {
   isLocked(topic: TopicTestsDTO, test: Test, index: number): boolean {
     return !this.isCompleted(test) && !this.isActive(topic, test, index);
   }
-
-  /* =========================
-     UTILIDADES
-     ========================= */
 
   getDifficultyLevelValue(level: string): string {
     switch (level) {
