@@ -47,7 +47,7 @@ export class ProgressSubjectsComponent {
     this.title.setTitle('Painel Principal');
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-    this.carregarDisciplinas();
+    this.getUserProgress();
     this.scrollToTop();
   }
 
@@ -55,11 +55,11 @@ export class ProgressSubjectsComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  carregarDisciplinas(): void {
+  getUserProgress(): void {
     this.loadingMessage = 'Carregando disciplinas';
     this.showLoading = true;
 
-    this.subjectsService.getUserProgress(this.loggedUser.id).subscribe({
+    this.subjectsService.getUserProgressSubjects(this.loggedUser.id).subscribe({
       next: (dados) => {
         this.subjects = dados;
         //this.selectedSubject = this.subjects[0];

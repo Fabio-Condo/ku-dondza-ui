@@ -18,6 +18,7 @@ import { Question } from 'src/app/core/model/Question';
 declare const MathJax: any;
 import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { ProgressService} from 'src/app/progress/progress.service';
+import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 
 @Component({
   selector: 'app-progress',
@@ -25,10 +26,11 @@ import { ProgressService} from 'src/app/progress/progress.service';
   styleUrls: ['./progress.component.css']
 })
 export class ProgressComponent implements OnInit {
+  subject: SubjectProgressDTO = new SubjectProgressDTO();
+  //subjects: Subject[] = [];
 
   test: Test = new Test();
-  topicTests: TopicTestsDTO[] = [];
-  subjects: Subject[] = [];
+  //topicTests: TopicTestsDTO[] = [];
   topics: Topic[] = [];
 
   allQuestions: Question[] = [];
@@ -80,8 +82,8 @@ export class ProgressComponent implements OnInit {
     const selectedUserId = this.route.snapshot.params['id'];
     //this.selectedSubject.id = selectedUserId;
 
-    this.getTestsBySubjectId(selectedUserId);
-    //this.carregarDisciplinas();
+    //this.getTestsBySubjectId(selectedUserId);
+    this.getUserProgressSubject();
     this.scrollToTop();
   }
 
@@ -320,36 +322,17 @@ export class ProgressComponent implements OnInit {
      CARREGAMENTO DE DADOS
      ========================= */
 
-  carregarDisciplinas(): void {
+  getUserProgressSubject(): void {
     this.loadingMessage = 'Carregando disciplinas';
     this.showLoading = true;
 
-    this.subjectsService.findAll().subscribe({
-      next: (dados) => {
-        this.subjects = dados;
+    const selectedUserId = this.route.snapshot.params['id'];
+
+    this.subjectsService.getUserProgressSubject(this.loggedUser.id, selectedUserId).subscribe({
+      next: (dado) => {
+        this.subject = dado;
         //this.selectedSubject = this.subjects[0];
-        this.getTestsBySubjectId(this.selectedSubject.id);
-        //this.showLoading = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.sendErrorNotification(error.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  onSelectSubject(subject: Subject): void {
-    this.selectedSubject = subject;
-    this.getTestsBySubjectId(subject.id);
-  }
-
-  getTestsBySubjectId(id: number): void {
-    this.loadingMessage = 'Carregando progresso';
-    this.showLoading = true;
-
-    this.progressService.getBySubjectId(id, this.loggedUser.id).subscribe({
-      next: (dados) => {
-        this.topicTests = dados;
+        //this.getTestsBySubjectId(this.selectedSubject.id);
         this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
@@ -375,16 +358,16 @@ export class ProgressComponent implements OnInit {
   }
 
   getDisciplineProgress(): number {
-    if (!this.topicTests || this.topicTests.length === 0) return 0;
+    if (!this.subject || !this.subject.topicTests || this.subject.topicTests.length === 0) return 0;
 
-    const totalTests = this.topicTests.reduce(
+    const totalTests = this.subject.topicTests.reduce(
       (sum, topic) => sum + topic.tests.length,
       0
     );
 
     if (totalTests === 0) return 0;
 
-    const completedTests = this.topicTests.reduce((sum, topic) => {
+    const completedTests = this.subject.topicTests.reduce((sum, topic) => {
       return sum + topic.tests.filter(t => this.isCompleted(t)).length;
     }, 0);
 

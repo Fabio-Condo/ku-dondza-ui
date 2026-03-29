@@ -46,10 +46,18 @@ export class SubjectsService {
   // return firstValueFrom(this.http.get(this.host, { })); 
   //}
 
-  getUserProgress(userId: number): Observable<SubjectProgressDTO[]> {
+  getUserProgressSubjects(userId: number): Observable<SubjectProgressDTO[]> {
     let params = new HttpParams()
       .set('currentUserId', userId.toString());
     return this.http.get<SubjectProgressDTO[]>(`${this.host}/progress/users`, { params });
+  }
+
+  getUserProgressSubject(userId: number, subjectId: number): Observable<SubjectProgressDTO> {
+    let params = new HttpParams()
+      .set('currentUserId', userId.toString())
+      .set('subjectId', subjectId.toString());
+
+    return this.http.get<SubjectProgressDTO>(`${this.host}/progress/users/view`, { params });
   }
 
   // FIND ALL COM CACHE

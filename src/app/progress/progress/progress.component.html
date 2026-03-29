@@ -1144,7 +1144,7 @@
         <div class="disciplines">
             <div class="discipline">
                 <div class="discipline-header">
-                    <div class="discipline-title">{{ selectedSubject.name }}</div>
+                    <div class="discipline-title">{{ subject.subjectName }}</div>
                     <div class="discipline-progress">
                         <div class="progress-circle" [style.--progress]="getDisciplineProgress() * 3.6 + 'deg'">
                             <span>{{ getDisciplineProgress() }}%</span>
@@ -1153,7 +1153,7 @@
                 </div>
 
                 <div class="topics">
-                    <div class="topic" *ngFor="let topic of topicTests">
+                    <div class="topic" *ngFor="let topic of subject.topicTests">
 
                         <!-- HEADER DO TÓPICO -->
                         <div class="topic-header">
