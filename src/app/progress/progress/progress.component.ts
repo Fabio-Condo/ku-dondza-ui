@@ -7,7 +7,6 @@ import { Test } from 'src/app/core/model/Test';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Title } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
-import { TopicTestsDTO } from 'src/app/core/model/TopicTestsDTO';
 import { Topic } from 'src/app/core/model/Topic';
 import { Subject } from 'src/app/core/model/Subject';
 import { Role } from 'src/app/enum/role.enum';
@@ -19,6 +18,7 @@ declare const MathJax: any;
 import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { ProgressService} from 'src/app/progress/progress.service';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
+import { TopicDtoWithTests } from 'src/app/core/model/TopicDtoWithTests';
 
 @Component({
   selector: 'app-progress',
@@ -349,41 +349,17 @@ export class ProgressComponent implements OnInit {
   isCompleted(test: Test): boolean {
     return !!test.submittedQuizzes && test.submittedQuizzes.length > 0;
   }
-
-  getTopicProgress(topic: TopicTestsDTO): number {
-    if (!topic.tests || topic.tests.length === 0) return 0;
-
-    const completed = topic.tests.filter(t => this.isCompleted(t)).length;
-    return Math.round((completed / topic.tests.length) * 100);
-  }
-
-  getDisciplineProgress(): number {
-    if (!this.subject || !this.subject.topicTests || this.subject.topicTests.length === 0) return 0;
-
-    const totalTests = this.subject.topicTests.reduce(
-      (sum, topic) => sum + topic.tests.length,
-      0
-    );
-
-    if (totalTests === 0) return 0;
-
-    const completedTests = this.subject.topicTests.reduce((sum, topic) => {
-      return sum + topic.tests.filter(t => this.isCompleted(t)).length;
-    }, 0);
-
-    return Math.round((completedTests / totalTests) * 100);
-  }
-
-  getFirstIncompleteIndex(topic: TopicTestsDTO): number {
+  
+  getFirstIncompleteIndex(topic: TopicDtoWithTests): number {
     return topic.tests.findIndex(test => !this.isCompleted(test));
   }
 
-  isActive(topic: TopicTestsDTO, test: Test, index: number): boolean {
+  isActive(topic: TopicDtoWithTests, test: Test, index: number): boolean {
     if (this.isCompleted(test)) return false;
     return index === this.getFirstIncompleteIndex(topic);
   }
 
-  isLocked(topic: TopicTestsDTO, test: Test, index: number): boolean {
+  isLocked(topic: TopicDtoWithTests, test: Test, index: number): boolean {
     return !this.isCompleted(test) && !this.isActive(topic, test, index);
   }
 

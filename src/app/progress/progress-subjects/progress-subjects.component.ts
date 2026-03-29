@@ -10,9 +10,9 @@ import { ProgressService } from '../progress.service';
 import { User } from 'src/app/core/model/User';
 import { Subject } from 'src/app/core/model/Subject';
 import { HttpErrorResponse } from '@angular/common/http';
-import { TopicTestsDTO } from 'src/app/core/model/TopicTestsDTO';
 import { Test } from 'src/app/core/model/Test';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
+import { TopicDtoWithTests } from 'src/app/core/model/TopicDtoWithTests';
 
 @Component({
   selector: 'app-progress-subjects',
@@ -22,7 +22,7 @@ import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 export class ProgressSubjectsComponent {
 
   subjects: SubjectProgressDTO[] = [];
-  topicTests: TopicTestsDTO[] = [];
+  //topicTests: TopicDtoWithTests[] = [];
 
   loggedUser: User = new User();
   showLoading = false;

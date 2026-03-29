@@ -3,8 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Test } from '../core/model/Test';
-import { TopicTestsDTO } from '../core/model/TopicTestsDTO';
 import { Question } from '../core/model/Question';
+import { TopicDtoWithTests } from '../core/model/TopicDtoWithTests';
 
 @Injectable({
     providedIn: 'root'
@@ -15,8 +15,8 @@ export class ProgressService {
 
     constructor(private http: HttpClient) { }
 
-    getBySubjectId(subjectId: number, userId: number): Observable<TopicTestsDTO[]> {
-        return this.http.get<TopicTestsDTO[]>(`${this.host}/subjects/${subjectId}/users/${userId}`, {});
+    getBySubjectId(subjectId: number, userId: number): Observable<TopicDtoWithTests[]> {
+        return this.http.get<TopicDtoWithTests[]>(`${this.host}/subjects/${subjectId}/users/${userId}`, {});
     }
 
     findById(id: number): Observable<Test> {

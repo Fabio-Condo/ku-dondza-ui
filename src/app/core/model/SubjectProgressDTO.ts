@@ -1,4 +1,4 @@
-import { TopicTestsDTO } from "./TopicTestsDTO";
+import { TopicDtoWithTests } from "./TopicDtoWithTests";
 
 export class SubjectProgressDTO {
     id!: number;
@@ -7,7 +7,7 @@ export class SubjectProgressDTO {
     subjectDescription!: string;
     subjectCategory!: string
     orderIndex!: number;
-    topicTests: TopicTestsDTO[] = [];
+    topicDtoWithTests: TopicDtoWithTests[] = [];
     currentUserProgressRate!: number;
     totalTopics!: number;
 }    

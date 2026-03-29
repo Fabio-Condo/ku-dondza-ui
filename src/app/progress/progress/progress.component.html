@@ -1146,26 +1146,26 @@
                 <div class="discipline-header">
                     <div class="discipline-title">{{ subject.subjectName }}</div>
                     <div class="discipline-progress">
-                        <div class="progress-circle" [style.--progress]="getDisciplineProgress() * 3.6 + 'deg'">
-                            <span>{{ getDisciplineProgress() }}%</span>
+                        <div class="progress-circle" [style.--progress]="subject.currentUserProgressRate * 3.6 + 'deg'">
+                            <span>{{ subject.currentUserProgressRate.toFixed(0) }}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="topics">
-                    <div class="topic" *ngFor="let topic of subject.topicTests">
+                    <div class="topic" *ngFor="let topic of subject.topicDtoWithTests">
 
                         <!-- HEADER DO TÓPICO -->
                         <div class="topic-header">
                             <div class="topic-title">{{ topic.topicName }}</div>
 
                             <div class="topic-progress-bar">
-                                <div class="topic-progress-fill" [style.width.%]="getTopicProgress(topic)">
+                                <div class="topic-progress-fill" [style.width.%]="topic.progressRate.toFixed(0)">
                                 </div>
                             </div>
 
                             <span style="margin-left: 1rem; font-weight: bold; color: #4361ee;">
-                                {{ getTopicProgress(topic) }}%
+                                {{ topic.progressRate.toFixed(0) }}%
                             </span>
                         </div>
 
