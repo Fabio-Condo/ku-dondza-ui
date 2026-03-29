@@ -1108,29 +1108,27 @@
             </div>
         </div>
 
-<div class="header">
+        <div class="header">
 
-    <div class="header-top">
-        <div>
-            <h1>Seu Progresso</h1>
-            <p class="header-subtitle">
-                Acompanhe sua evolução por disciplina
-            </p>
-        </div>
-    </div>
-
-    <div class="filters-section">
-        <div class="discipline-filters">
-            <div class="filter-chip"
-                 *ngFor="let subject of subjects"
-                 [class.active]="subject.id === selectedSubject.id"
-                 (click)="onSelectSubject(subject)">
-                {{ subject.name }}
+            <div class="header-top">
+                <div>
+                    <h1>Seu Progresso</h1>
+                    <p class="header-subtitle">
+                        Acompanhe sua evolução por disciplina
+                    </p>
+                </div>
             </div>
-        </div>
-    </div>
 
-</div>
+            <div class="filters-section">
+                <div class="discipline-filters">
+                    <div class="filter-chip" *ngFor="let subject of subjects"
+                        [class.active]="subject.id === selectedSubject.id" (click)="onSelectSubject(subject)">
+                        {{ subject.name }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
 
