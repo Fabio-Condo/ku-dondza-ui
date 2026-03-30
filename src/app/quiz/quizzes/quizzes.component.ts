@@ -394,6 +394,18 @@ export class QuizzesComponent implements OnInit {
     return 'high';
   }
 
+  getCategoryValue(category: string) {
+    switch (category) {
+      case 'EXACT_SCIENCES':
+        return 'Ciências Exatas';
+      case 'HUMAN_SCIENCES':
+        return 'Ciências Humanas';
+      case 'LANGUAGES':
+        return 'Línguas';
+    }
+    return '';
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
