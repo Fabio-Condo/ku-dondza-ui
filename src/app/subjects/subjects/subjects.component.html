@@ -155,11 +155,11 @@
         .card {
             background-color: white;
             border-radius: 12px;
-            /*overflow: hidden;*/
             overflow: visible;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: box-shadow 0.3s ease, transform 0.2s ease;
-            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 16px rgba(15, 17, 30, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: fadeUp 0.45s ease both;
+            border: 1px solid #e8eaf0;
         }
 
         .card:hover {
@@ -232,9 +232,11 @@
         }
 
         .subject-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #2d3748;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: #0f1117;
+            line-height: 1.25;
         }
 
         /* Container do texto */
@@ -242,11 +244,13 @@
             position: relative;
             overflow: hidden;
             max-height: 4.8em;
-            color: #64748b;
             margin-bottom: 20px;
             font-size: 14px;
             line-height: 1.6;
             flex-grow: 1;
+
+            font-size: 12px;
+            color: #a0a8b8;
         }
 
         /* Efeito de transparência no final do texto */
@@ -292,6 +296,49 @@
         .button-add-new {
             background-color: #4361ee;
             color: white;
+        }
+
+
+        .download-btn {
+            width: 100%;
+            padding: 12px 18px;
+            background: #0f1117;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+
+        .download-btn:hover {
+            background: #4361ee;
+            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-btn svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.2s;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .download-btn:hover svg {
+            transform: translateX(3px);
         }
 
         .fab {
@@ -863,6 +910,7 @@
                     </div>
 
                     <div class="card-footer">
+                        <!--
                         <span class="meta-container">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -880,6 +928,15 @@
 
                         <button class="view-button" [routerLink]="['/subjects', subject.subjectId]">
                             Continuar Estudo
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        -->
+                        <button class="download-btn" [routerLink]="['/subjects', subject.subjectId]">
+                            <span>Continuar Estudo</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
