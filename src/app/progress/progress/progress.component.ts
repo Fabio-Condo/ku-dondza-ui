@@ -40,8 +40,6 @@ export class ProgressComponent implements OnInit {
   selectedQuestions: Question[] = [];
   displayModalSelectedQuestionsList: boolean = false;
 
-  selectedSubject: Subject = new Subject();
-  //selectedUser: User = new User();
   loggedUser: User = new User();
 
   showLoading = false;
@@ -80,7 +78,6 @@ export class ProgressComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
     const selectedUserId = this.route.snapshot.params['id'];
-    //this.selectedSubject.id = selectedUserId;
 
     //this.getTestsBySubjectId(selectedUserId);
     this.getUserProgressSubject();
@@ -141,7 +138,16 @@ export class ProgressComponent implements OnInit {
 
   onAddNewTest(): void {
     this.test = new Test();
-    this.getTopicsBySubjectId();
+    //this.getTopicsBySubjectId();
+
+    this.topics = [];
+    this.topics = this.subject.topicDtoWithTests.map(t => {
+      const topic = new Topic();
+      topic.id = t.topicId;
+      topic.name = t.topicName;
+      return topic;
+    });
+    
     this.displayModalSave = true;
   }
 
@@ -150,7 +156,7 @@ export class ProgressComponent implements OnInit {
     this.loadingMessage = "Carregando tópicos"
     this.showLoading = true;
 
-    this.topicService.getBySubjectId(this.selectedSubject.id!).subscribe({
+    this.topicService.getBySubjectId(this.subject.id!).subscribe({
       next: (dados) => {
         this.topics = [];
         this.topics = dados;
@@ -331,8 +337,6 @@ export class ProgressComponent implements OnInit {
     this.subjectsService.getUserProgressSubject(this.loggedUser.id, selectedUserId).subscribe({
       next: (dado) => {
         this.subject = dado;
-        //this.selectedSubject = this.subjects[0];
-        //this.getTestsBySubjectId(this.selectedSubject.id);
         this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
@@ -349,7 +353,7 @@ export class ProgressComponent implements OnInit {
   isCompleted(test: Test): boolean {
     return !!test.submittedQuizzes && test.submittedQuizzes.length > 0;
   }
-  
+
   getFirstIncompleteIndex(topic: TopicDtoWithTests): number {
     return topic.tests.findIndex(test => !this.isCompleted(test));
   }

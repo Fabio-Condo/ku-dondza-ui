@@ -1281,7 +1281,7 @@
 
             <div class="form-group">
                 <label for="topic">Tópico</label>
-                <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!selectedSubject" required>
+                <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!subject.id" required>
                     <option value="" disabled selected>Selecione o tópico</option>
                     <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
