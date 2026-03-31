@@ -212,7 +212,7 @@
                             {{ quiz.accuracyRate.toFixed(1) }}% acerto
                         </div>
                     </div>
-
+                    <!--
                     <div class="quiz-footer">
                         <div class="update-date">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -222,7 +222,6 @@
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
-                            <!--Submetido em: {{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}-->
                             Data: {{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}
                         </div>
                         <button class="start-button" [routerLink]="['/quizzes', quiz.quizId]">
@@ -234,6 +233,15 @@
                             </svg>
                         </button>
                     </div>
+                    -->
+                    <button class="start-btn" [routerLink]="['/quizzes', quiz.quizId]">
+                        <span>Continuar Estudo</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>

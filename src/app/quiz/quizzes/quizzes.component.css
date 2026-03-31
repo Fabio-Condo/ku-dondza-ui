@@ -231,9 +231,11 @@ button {
 }
 
 .quiz-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #2d3748;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: #0f1117;
+    line-height: 1.25;
 }
 
 .topic-tags {
@@ -366,24 +368,47 @@ button {
     margin-right: 5px;
 }
 
-.start-button {
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    background-color: transparent;
+
+.start-btn {
+    width: 100%;
+    padding: 12px 18px;
+    background: #0f1117;
+    color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    transition: all 0.2s ease;
-    color: #2d3748;
-    gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.2s;
 }
 
-.start-button:hover {
-    color: #4361ee;
+.start-btn:hover {
+    background: #4361ee;
+    box-shadow: 0 4px 16px rgba(67, 97, 238, 0.18);
+    transform: translateY(-1px);
+}
+
+.start-btn:active {
+    transform: translateY(0);
+}
+
+.start-btn svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.start-btn:hover svg {
+    transform: translateX(3px);
 }
 
 .start-quiz-button {
@@ -977,10 +1002,6 @@ pre {
 
     .title-container {
         display: none;
-    }
-
-    .quiz-title {
-        font-size: 17px;
     }
 
 }
