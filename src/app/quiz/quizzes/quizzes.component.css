@@ -183,6 +183,102 @@ button {
     color: #a0a8b8;
 }
 
+.overall {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #f7f8fc;
+    border-radius: 10px;
+    border: 1px solid #e8eaf0;
+    margin-bottom: 18px;
+}
+
+.overall-ring {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.overall-ring svg {
+    transform: rotate(-90deg);
+    width: 44px;
+    height: 44px;
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #e8eaf0;
+    stroke-width: 3.5;
+}
+
+.ring-fill {
+    fill: none;
+    stroke: #4361ee;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s cubic-bezier(.22, .68, 0, 1.2);
+}
+
+.ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #0f1117;
+}
+
+.overall-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f1117;
+    margin-bottom: 2px;
+}
+
+.overall-text span {
+    font-size: 12px;
+    color: #a0a8b8;
+}
+
+.discipline-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.progress-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: conic-gradient(#4361ee 0deg, #4361ee var(--progress), #e2e8f0 var(--progress));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.7rem;
+    color: #4361ee;
+    position: relative;
+}
+
+.progress-circle::before {
+    content: '';
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #f7f8fc;
+}
+
+.progress-circle span {
+    position: relative;
+    z-index: 1;
+}
+
 .quiz-content {
     padding: 20px;
     display: flex;

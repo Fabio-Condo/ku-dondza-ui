@@ -130,30 +130,35 @@
                 <div class="quiz-content">
                     <div>
 
+                        <!--
                         <div class="quiz-title">
                             {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
                             <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id"></span>
                             <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
 
-                            <!--
-                            <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
-                                (click)="toggleAnonymousStatus(quiz)" class="anon-toggle"
-                                [ngClass]="quiz.anonymous ? 'anon-active' : 'anon-inactive'"
-                                title="{{ quiz.anonymous ? 'Modo anônimo ativado' : 'Mostrar meu nome' }}">
-                                <i [class]="'pi ' + (quiz.anonymous ? 'pi-eye-slash' : 'pi-eye')"></i>
-                                {{ quiz.anonymous ? 'Anônimo' : 'Visível' }}
-                            </span>
-                            -->
-
-                            <!-- Ícone de carregamento -->
                             <i *ngIf="quiz.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
 
-                            <!-- Texto de carregamento -->
                             <span *ngIf="quiz.showLoadingSave" class="save-loading-text" style="margin-left: 5px;">
                                 {{ quiz.anonymous ? 'Mostrando...' : 'Ocultando...' }}
                             </span>
                         </div>
+                        -->
+                        <div class="overall">
+                            <div class="overall-ring">
+                                <div class="discipline-progress">
+                                    <div class="progress-circle"
+                                        [style.--progress]="quiz.accuracyRate * 3.6 + 'deg'">
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class="ring-label">{{ quiz.accuracyRate.toFixed(0) }}%</div>
+                            </div>
+                            <div class="overall-text"><strong>Progresso geral</strong><span>{{ quiz.topics.length }}
+                                    tópicos</span>
+                            </div>
+                        </div>
 
+                        <!--
                         <div class="topic-tags">
                             <span class="topic-tag"
                                 *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 5)">
@@ -172,8 +177,10 @@
                                 {{ showAllTopicsMap[quiz.id] ? 'Ver menos tópicos' : 'Ver todos os tópicos' }}
                             </button>
                         </div>
+                        -->
                     </div>
 
+                    <!--
                     <div class="quiz-stats">
                         <div class="stats-left">
                             <div class="stat-item">
@@ -212,6 +219,8 @@
                             {{ quiz.accuracyRate.toFixed(1) }}% acerto
                         </div>
                     </div>
+                    -->
+
                     <!--
                     <div class="quiz-footer">
                         <div class="update-date">
