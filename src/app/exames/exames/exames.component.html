@@ -110,34 +110,45 @@
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
         }
 
-        .exams-grid {
+        .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
         }
 
-        .exam-card {
-            background: white;
+        .card {
+            background-color: white;
             border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #e8eaf0;
+            overflow: visible;
             box-shadow: 0 2px 16px rgba(15, 17, 30, 0.06);
-            animation: fadeUp 0.45s ease both;
             transition: transform 0.2s, box-shadow 0.2s;
+            animation: fadeUp 0.45s ease both;
+            border: 1px solid #e8eaf0;
         }
 
-        .exam-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(67, 97, 238, 0.15);
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .exam-header {
+        .card-header {
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             gap: 13px;
-            border-bottom: 1px solid #e2e8f0;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
         }
 
         .exam-title-container {
@@ -929,12 +940,6 @@
 
 <body>
     <div class="container">
-        <!--
-        <header>
-            <h1>Exames de Admissão</h1>
-            <p class="subtitle">Encontre e baixe exames anteriores das principais instituições</p>
-        </header>
-        -->
         <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
             <div class="loading-indicator">
                 <div class="spinner"></div>
@@ -978,9 +983,10 @@
             <i class="pi pi-plus"></i>
         </button>
 
-        <div class="exams-grid" id="exams-container">
-            <div class="exam-card" *ngFor="let exam of exams">
-                <div class="exam-header">
+        <div class="cards-container">
+            <!-- Card 1 -->
+            <div class="card" *ngFor="let exam of exams">
+                <div class="card-header">
                     <div class="discipline-icon" *ngIf="exam.subject.name === 'Matemática'">
                         <svg viewBox="0 0 24 24">
                             <path d="M4 4h16" />
@@ -1060,7 +1066,7 @@
                     <p class="exam-institution">{{ getInstitution(exam.institution) }} - {{ exam.institution }}</p>
                     -->
                 </div>
-                <div class="exam-details">
+                <div class="card-body">
                     <div class="detail-row">
                         <span class="badge badge-date badge-with-icon">
                             <svg class="badge-icon" viewBox="0 0 24 24" fill="none">
@@ -1089,28 +1095,25 @@
                             {{ exam.premium ? 'Premium' : 'Gratuito' }}
                         </span>
                     </div>
-
+                    <div class="card-footer">
+                        <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
+                            [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
+                            <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span *ngIf="!exam.showLoadingDownload">Baixar Exame</span>
+                            <span *ngIf="exam.showLoadingDownload">Baixando...</span>
+                        </button>
+                        <button class="download-btn" (click)="onUpgradePlan()" *ngIf="isPremiumExam(exam)">
+                            <svg class="upgrade-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                            </svg>
+                            <span>Ver Resolução Completa</span>
+                        </button>
+                    </div>
                 </div>
-                <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
-                    [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
-                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span *ngIf="!exam.showLoadingDownload">Baixar Exame</span>
-                    <span *ngIf="exam.showLoadingDownload">Baixando...</span>
-                </button>
-
-                <button class="download-btn" (click)="onUpgradePlan()" *ngIf="isPremiumExam(exam)">
-
-                    <!-- Ícone Coroa (Premium) -->
-                    <svg class="upgrade-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-                    </svg>
-
-                    <span>Ver Resolução Completa</span>
-                </button>
             </div>
         </div>
 

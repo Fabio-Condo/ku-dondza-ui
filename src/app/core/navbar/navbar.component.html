@@ -433,12 +433,13 @@
           Dikahub
         </div>
         <ul class="nav-links">
+          <li><a [class.active]="isActive('/progress-subjects')" routerLink="/progress-subjects">Progresso</a></li>
           <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
-          <li *ngIf="isUserLoggedIn && isAdmin"><a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a></li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/questions')"
+              routerLink="/questions">Exercícios</a></li>
           <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/topics')"
               routerLink="/topics">Tópicos</a></li>
-          <li><a [class.active]="isActive('/subjects')"
-              routerLink="/subjects">Materiais</a></li>
+          <li><a [class.active]="isActive('/subjects')" routerLink="/subjects">Materiais</a></li>
           <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
           <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/payments')"
               routerLink="/payments">Pagamentos</a></li>
@@ -493,12 +494,14 @@
   <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
     <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
     <ul class="mobile-nav-links">
+      <li><a [class.active]="isActive('/progress-subjects')" routerLink="/progress-subjects"
+          (click)="toggleMenu()">Progresso</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
-      <li *ngIf="isUserLoggedIn && isAdmin"><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/questions')" routerLink="/questions"
+          (click)="toggleMenu()">Exercícios</a></li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/topics')" routerLink="/topics"
           (click)="toggleMenu()">Tópicos</a></li>
-      <li><a [class.active]="isActive('/subjects')" routerLink="/subjects"
-          (click)="toggleMenu()">Materiais</a></li>
+      <li><a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">Materiais</a></li>
       <li><a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">Exames</a></li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/payments')" routerLink="/payments"
           (click)="toggleMenu()">Pagamentos</a></li>
