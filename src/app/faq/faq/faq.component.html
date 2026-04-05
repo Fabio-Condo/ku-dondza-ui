@@ -1,305 +1,524 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - Dikahub</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resultado do Quiz</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            padding: 10px;
-        }
+  body {
+    background: #f5f6fa;
+    color: #1a1a2e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding: 36px 24px 72px;
+  }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            margin-top: 75px;
-        }
+  .container { max-width: 980px; margin: 0 auto; }
 
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+  .label-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(67, 97, 238, 0.08);
+    border: 1px solid rgba(67, 97, 238, 0.2);
+    color: #4361ee;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .label-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #4361ee;
+    border-radius: 50%;
+  }
+  h1 {
+    font-size: clamp(22px, 3.5vw, 30px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1a1a2e;
+  }
+  h1 span { color: #4361ee; }
+  .subtitle { color: #8b8fa8; font-size: 14px; margin-top: 6px; }
 
-        header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-        }
+  .meta-pills { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .meta-item {
+    font-size: 12px;
+    color: #8b8fa8;
+    background: #ffffff;
+    border: 1px solid #e4e6ef;
+    padding: 5px 13px;
+    border-radius: 100px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .meta-item strong { color: #1a1a2e; font-weight: 600; }
 
-        header p {
-            font-size: 14px;
-            color: #718096;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 36px;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e4e6ef;
+    border-radius: 20px;
+    padding: 36px 40px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 8px 24px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 260px; height: 100%;
+    background: linear-gradient(135deg, transparent 50%, rgba(67, 97, 238, 0.06) 100%);
+    pointer-events: none;
+  }
 
-        .categories {
-            display: grid;
-            /*grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));*/
-            gap: 30px;
-            margin-bottom: 40px;
-        }
+  .score-ring { width: 148px; height: 148px; position: relative; flex-shrink: 0; }
+  .score-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring-track { fill: none; stroke: #f0f1f7; stroke-width: 10; }
+  .ring-fill {
+    fill: none;
+    stroke: #4361ee;
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 408;
+    stroke-dashoffset: 110;
+    filter: drop-shadow(0 0 5px rgba(67,97,238,0.3));
+  }
+  .score-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .score-num { font-size: 36px; font-weight: 700; color: #1a1a2e; line-height: 1; }
+  .score-of  { font-size: 12px; color: #8b8fa8; margin-top: 3px; }
 
-        .category-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+  .grade-badge { font-size: 52px; font-weight: 700; color: #4361ee; line-height: 1; margin-bottom: 4px; }
+  .grade-label { font-size: 13px; color: #8b8fa8; margin-bottom: 22px; }
+  .grade-label strong { color: #16a34a; font-weight: 600; }
 
-        .category-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            /*border-bottom: 2px solid #f0f0f0;*/
-        }
+  .stats-row { display: flex; flex-wrap: wrap; }
+  .stat-item { padding: 0 20px; border-right: 1px solid #e4e6ef; }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-item:last-child  { border-right: none; }
+  .stat-val { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+  .stat-val.green { color: #16a34a; }
+  .stat-val.red   { color: #dc2626; }
+  .stat-val.grey  { color: #8b8fa8; }
+  .stat-key { font-size: 11px; color: #8b8fa8; margin-top: 2px; text-transform: uppercase; letter-spacing: .05em; }
 
-        .category-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #4361ee, #667eea);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 1.5rem;
-            color: white;
-        }
+  /* TIP */
+  .tip-box {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: #ffffff;
+    border: 1px solid rgba(67, 97, 238, 0.2);
+    border-left: 3px solid #4361ee;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .tip-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+  .tip-text { font-size: 13px; color: #555555; line-height: 1.65; }
+  .tip-text strong { color: #1a1a2e; font-weight: 600; }
 
-        .category-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
-        }
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #8b8fa8;
+    margin-bottom: 14px;
+    padding-left: 2px;
+  }
 
-        .faq-item {
-            margin-bottom: 15px;
-            border-radius: 15px;
-            overflow: hidden;
-            background: #f8f9fa;
-            border: 1px solid #f1f5f9;
-            transition: all 0.3s ease;
-        }
+  /* TOPIC CARDS */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(278px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .topic-card {
+    background: #ffffff;
+    border: 1px solid #e4e6ef;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    transition: box-shadow .2s, transform .2s, border-color .2s;
+  }
+  .topic-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 8px 24px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+    border-color: rgba(67, 97, 238, 0.2);
+  }
 
-        .faq-question {
-            padding: 20px;
-            cursor: pointer;
-            background: white;
-            border: none;
-            width: 100%;
-            text-align: left;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #64748b;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  .topic-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 8px; }
+  .topic-name { font-size: 14px; font-weight: 600; color: #1a1a2e; line-height: 1.3; }
 
-        .faq-question:hover {
-            background: #e9ecef;
-        }
+  .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+  .badge-great { background: rgba(22, 163, 74, 0.08);  color: #16a34a; border: 1px solid rgba(22, 163, 74, 0.2); }
+  .badge-ok    { background: rgba(217, 119, 6, 0.08);  color: #d97706; border: 1px solid rgba(217, 119, 6, 0.2); }
+  .badge-weak  { background: rgba(220, 38, 38, 0.08);  color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.2); }
 
-        .faq-question.active {
-            background-color: #eef2ff;
-            border-bottom: 1px solid #e0e7ff;
-        }
+  .topic-score-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 12px; }
+  .topic-score-big { font-size: 26px; font-weight: 700; color: #1a1a2e; }
+  .topic-score-den { font-size: 13px; color: #8b8fa8; }
+  .topic-pct { margin-left: auto; font-size: 18px; font-weight: 700; }
+  .pct-great { color: #16a34a; }
+  .pct-ok    { color: #d97706; }
+  .pct-weak  { color: #dc2626; }
 
-        .faq-arrow {
-            transition: transform 0.3s ease;
-            font-size: 1.2rem;
-        }
+  .bar-track { height: 5px; background: #f0f1f7; border-radius: 100px; overflow: hidden; margin-bottom: 12px; }
+  .bar-fill  { height: 100%; border-radius: 100px; }
+  .bar-great { background: #16a34a; }
+  .bar-ok    { background: #d97706; }
+  .bar-weak  { background: #dc2626; }
 
-        .chevron-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            color: #6366f1;
-            transition: transform 0.2s;
-        }
+  .topic-foot { display: flex; justify-content: space-between; font-size: 11px; color: #8b8fa8; }
+  .topic-foot span strong { color: #1a1a2e; font-weight: 600; }
 
-        .chevron-icon.rotated {
-            transform: rotate(180deg);
-        }
+  /* TABLE */
+  .table-card {
+    background: #ffffff;
+    border: 1px solid #e4e6ef;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: #f0f1f7; border-bottom: 1px solid #e4e6ef; }
+  thead th {
+    padding: 12px 22px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: #8b8fa8;
+  }
+  tbody tr { border-bottom: 1px solid #e4e6ef; transition: background .15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fafbff; }
+  tbody td { padding: 13px 22px; color: #1a1a2e; }
+  .td-name { font-weight: 500; }
+  .td-bar-wrap { display: flex; align-items: center; gap: 10px; }
+  .mini-track { flex: 1; height: 4px; background: #f0f1f7; border-radius: 100px; overflow: hidden; }
+  .mini-fill  { height: 100%; border-radius: 100px; }
+  .td-pct-label { font-size: 12px; color: #8b8fa8; min-width: 34px; text-align: right; }
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: white;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .faq-answer.active {
-            max-height: 500px;
-        }
-
-        .faq-answer-content {
-            padding: 20px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, #4361ee20 0%, #4361ee20 100%);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #4361ee;
-            font-weight: 500;
-        }
-
-        .contact-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            margin-top: 40px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #f1f5f9;
-        }
-
-        .contact-section h2 {
-            color: #4361ee;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-
-        .contact-section p {
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 1.1rem;
-        }
-
-        .contact-btn {
-            background: linear-gradient(45deg, #4361ee, #667eea);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .contact-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
-        }
-
-        .contact-info {
-            background: linear-gradient(135deg, #4361ee, #5a67d8);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .contact-info h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-
-        .contact-info p {
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        @media (max-width: 900px) {
-            .container {
-                margin-top: 60px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.5rem;
-            }
-
-            header p {
-                font-size: 14px;
-            }
-
-            .categories {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .category-card {
-                padding: 10px;
-            }
-        }
-    </style>
+  /* RESPONSIVE */
+  @media (max-width: 620px) {
+    .hero { grid-template-columns: 1fr; text-align: center; gap: 20px; padding: 28px 24px; }
+    .score-ring { margin: 0 auto; }
+    .stats-row { justify-content: center; }
+    .stat-item:first-child { padding-left: 20px; }
+    .header { flex-direction: column; gap: 14px; }
+    .meta-pills { align-items: flex-start; }
+  }
+</style>
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <h1>FAQ</h1>
-            <p>Todas as respostas sobre nossa plataforma acadêmica em um só lugar</p>
-        </header>
+<div class="container">
 
-        <div class="categories">
-            <div class="category-card" *ngFor="let category of categories; let i = index">
-                <div class="category-header">
-                    <h3 class="category-title">{{ category.title }}</h3>
-                </div>
-                <div class="faq-item" *ngFor="let item of category.items; let j = index">
-                    <button class="faq-question" [class.active]="item.open" (click)="toggleItem(i, j)">
-                        {{ item.question }}
-                        <svg class="chevron-icon" [class.rotated]="item.open" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="M6 9l6 6 6-6" />
-                        </svg>
-                    </button>
-                    <div class="faq-answer" [class.active]="item.open">
-                        <div class="faq-answer-content">
-                            {{ item.answer }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="contact-section">
-            <h2>Ainda tem dúvidas?</h2>
-            <p>Nossa equipe de suporte está sempre pronta para ajudar você!</p>
-            <!--<a href="#" class="contact-btn">💬 Fale Conosco</a>-->
-        </div>
-
-        <div class="contact-info">
-            <h3>Entre em Contato</h3>
-            <p><strong>Email:</strong> {{email}}</p>
-            <p><strong>Telefone:</strong> (+258) 844505579</p>
-            <p><strong>Endereço:</strong> Rua 8, 25 de junho - choupal, Maputo</p>
-            <p>Nossa equipe está disponível para esclarecer as suas dúvidas.</p>
-        </div>
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="label-tag">Resultado Final</div>
+      <h1>Avaliação de <span>Algoritmos &amp; Estruturas</span></h1>
+      <p class="subtitle">Análise detalhada do desempenho por tópico</p>
     </div>
-</body>
+    <div class="meta-pills">
+      <div class="meta-item">Data: <strong>05 Abr 2026</strong></div>
+      <div class="meta-item">Aluno: <strong>João Macuácua</strong></div>
+      <div class="meta-item">Duração: <strong>47 min</strong></div>
+    </div>
+  </header>
 
+  <!-- HERO -->
+  <div class="hero">
+    <div class="score-ring">
+      <svg viewBox="0 0 140 140">
+        <circle class="ring-track" cx="70" cy="70" r="65"/>
+        <circle class="ring-fill"  cx="70" cy="70" r="65"/>
+      </svg>
+      <div class="score-center">
+        <div class="score-num">73</div>
+        <div class="score-of">de 100</div>
+      </div>
+    </div>
+    <div>
+      <div class="grade-badge">B</div>
+      <div class="grade-label">Bom desempenho · <strong>Aprovado</strong></div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-val">36</div>
+          <div class="stat-key">Total</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val green">26</div>
+          <div class="stat-key">Corretas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val red">10</div>
+          <div class="stat-key">Erradas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val grey">0</div>
+          <div class="stat-key">Em branco</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIP -->
+  <div class="tip-box">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">
+      <strong>Dica personalizada:</strong> Você teve maiores dificuldades em
+      <strong>Ponteiros &amp; Memória</strong> e <strong>Grafos</strong>.
+      Recomendamos rever alocação dinâmica, aritmética de ponteiros e os algoritmos BFS/DFS antes da próxima avaliação.
+      Os seus pontos fortes são <strong>Arrays &amp; Vetores</strong> e <strong>Ordenação</strong> — continue assim!
+    </div>
+  </div>
+
+  <!-- TOPIC CARDS -->
+  <div class="section-label">Desempenho por Tópico</div>
+  <div class="topics-grid">
+
+    <!-- Card 1: Arrays & Vetores — 7/7 — 100% — great -->
+    <div class="topic-card">
+      <div class="topic-head">
+        <div class="topic-name">Arrays &amp; Vetores</div>
+        <div class="badge badge-great">Ótimo</div>
+      </div>
+      <div class="topic-score-row">
+        <div class="topic-score-big">7</div>
+        <div class="topic-score-den">&nbsp;/ 7</div>
+        <div class="topic-pct pct-great">100%</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-great" style="width: 100%;"></div>
+      </div>
+      <div class="topic-foot">
+        <span>✓ Corretas: <strong>7</strong></span>
+        <span>✗ Erradas: <strong>0</strong></span>
+      </div>
+    </div>
+
+    <!-- Card 2: Listas Ligadas — 5/7 — 71% — ok -->
+    <div class="topic-card">
+      <div class="topic-head">
+        <div class="topic-name">Listas Ligadas</div>
+        <div class="badge badge-ok">Bom</div>
+      </div>
+      <div class="topic-score-row">
+        <div class="topic-score-big">5</div>
+        <div class="topic-score-den">&nbsp;/ 7</div>
+        <div class="topic-pct pct-ok">71%</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-ok" style="width: 71%;"></div>
+      </div>
+      <div class="topic-foot">
+        <span>✓ Corretas: <strong>5</strong></span>
+        <span>✗ Erradas: <strong>2</strong></span>
+      </div>
+    </div>
+
+    <!-- Card 3: Árvores Binárias — 4/6 — 67% — ok -->
+    <div class="topic-card">
+      <div class="topic-head">
+        <div class="topic-name">Árvores Binárias</div>
+        <div class="badge badge-ok">Bom</div>
+      </div>
+      <div class="topic-score-row">
+        <div class="topic-score-big">4</div>
+        <div class="topic-score-den">&nbsp;/ 6</div>
+        <div class="topic-pct pct-ok">67%</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-ok" style="width: 67%;"></div>
+      </div>
+      <div class="topic-foot">
+        <span>✓ Corretas: <strong>4</strong></span>
+        <span>✗ Erradas: <strong>2</strong></span>
+      </div>
+    </div>
+
+    <!-- Card 4: Ponteiros & Memória — 3/7 — 43% — weak -->
+    <div class="topic-card">
+      <div class="topic-head">
+        <div class="topic-name">Ponteiros &amp; Memória</div>
+        <div class="badge badge-weak">Fraco</div>
+      </div>
+      <div class="topic-score-row">
+        <div class="topic-score-big">3</div>
+        <div class="topic-score-den">&nbsp;/ 7</div>
+        <div class="topic-pct pct-weak">43%</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-weak" style="width: 43%;"></div>
+      </div>
+      <div class="topic-foot">
+        <span>✓ Corretas: <strong>3</strong></span>
+        <span>✗ Erradas: <strong>4</strong></span>
+      </div>
+    </div>
+
+    <!-- Card 5: Algoritmos de Ordenação — 6/6 — 100% — great -->
+    <div class="topic-card">
+      <div class="topic-head">
+        <div class="topic-name">Algoritmos de Ordenação</div>
+        <div class="badge badge-great">Ótimo</div>
+      </div>
+      <div class="topic-score-row">
+        <div class="topic-score-big">6</div>
+        <div class="topic-score-den">&nbsp;/ 6</div>
+        <div class="topic-pct pct-great">100%</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-great" style="width: 100%;"></div>
+      </div>
+      <div class="topic-foot">
+        <span>✓ Corretas: <strong>6</strong></span>
+        <span>✗ Erradas: <strong>0</strong></span>
+      </div>
+    </div>
+
+    <!-- Card 6: Grafos — 1/3 — 33% — weak -->
+    <div class="topic-card">
+      <div class="topic-head">
+        <div class="topic-name">Grafos</div>
+        <div class="badge badge-weak">Fraco</div>
+      </div>
+      <div class="topic-score-row">
+        <div class="topic-score-big">1</div>
+        <div class="topic-score-den">&nbsp;/ 3</div>
+        <div class="topic-pct pct-weak">33%</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-weak" style="width: 33%;"></div>
+      </div>
+      <div class="topic-foot">
+        <span>✓ Corretas: <strong>1</strong></span>
+        <span>✗ Erradas: <strong>2</strong></span>
+      </div>
+    </div>
+
+  </div><!-- /topics-grid -->
+
+  <!-- TABLE -->
+  <div class="section-label">Resumo Comparativo</div>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Tópico</th>
+          <th>Acertos</th>
+          <th style="min-width: 160px;">Taxa de acerto</th>
+          <th>Classificação</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="td-name">Arrays &amp; Vetores</td>
+          <td>7 / 7</td>
+          <td>
+            <div class="td-bar-wrap">
+              <div class="mini-track"><div class="mini-fill bar-great" style="width: 100%;"></div></div>
+              <span class="td-pct-label">100%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-great">Ótimo</span></td>
+        </tr>
+
+        <tr>
+          <td class="td-name">Listas Ligadas</td>
+          <td>5 / 7</td>
+          <td>
+            <div class="td-bar-wrap">
+              <div class="mini-track"><div class="mini-fill bar-ok" style="width: 71%;"></div></div>
+              <span class="td-pct-label">71%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-ok">Bom</span></td>
+        </tr>
+
+        <tr>
+          <td class="td-name">Árvores Binárias</td>
+          <td>4 / 6</td>
+          <td>
+            <div class="td-bar-wrap">
+              <div class="mini-track"><div class="mini-fill bar-ok" style="width: 67%;"></div></div>
+              <span class="td-pct-label">67%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-ok">Bom</span></td>
+        </tr>
+
+        <tr>
+          <td class="td-name">Ponteiros &amp; Memória</td>
+          <td>3 / 7</td>
+          <td>
+            <div class="td-bar-wrap">
+              <div class="mini-track"><div class="mini-fill bar-weak" style="width: 43%;"></div></div>
+              <span class="td-pct-label">43%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-weak">Fraco</span></td>
+        </tr>
+
+        <tr>
+          <td class="td-name">Algoritmos de Ordenação</td>
+          <td>6 / 6</td>
+          <td>
+            <div class="td-bar-wrap">
+              <div class="mini-track"><div class="mini-fill bar-great" style="width: 100%;"></div></div>
+              <span class="td-pct-label">100%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-great">Ótimo</span></td>
+        </tr>
+
+        <tr>
+          <td class="td-name">Grafos</td>
+          <td>1 / 3</td>
+          <td>
+            <div class="td-bar-wrap">
+              <div class="mini-track"><div class="mini-fill bar-weak" style="width: 33%;"></div></div>
+              <span class="td-pct-label">33%</span>
+            </div>
+          </td>
+          <td><span class="badge badge-weak">Fraco</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
 </html>

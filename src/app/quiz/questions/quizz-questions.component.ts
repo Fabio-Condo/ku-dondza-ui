@@ -2207,6 +2207,18 @@ export class QuizzQuestionsComponent implements OnInit {
     return text;
   }
 
+  getPerformanceClass(percentage: number): string {
+    if (percentage >= 80) return 'great';
+    if (percentage >= 50) return 'ok';
+    return 'weak';
+  }
+
+  getPerformanceLabel(percentage: number): string {
+    if (percentage >= 80) return 'Ótimo';
+    if (percentage >= 50) return 'Bom';
+    return 'Fraco';
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

@@ -229,6 +229,7 @@
     <div *ngIf="showStartScreen" class="results-screen2">
 
       <!-- Metadados da questão -->
+      <!-- 
       <div class="questao-meta">
         <div class="meta-grid">
           <div class="meta-item">
@@ -305,8 +306,152 @@
       </div>
 
       <br>
-      <br>
+      -->
 
+      <!-- HERO -->
+      <div class="hero">
+        <div class="score-ring">
+          <svg viewBox="0 0 140 140">
+            <circle class="ring-track" cx="70" cy="70" r="65" />
+            <circle class="ring-fill" cx="70" cy="70" r="65" />
+          </svg>
+          <div class="score-center">
+            <div class="score-num">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
+            <div class="score-of">de 100</div>
+          </div>
+        </div>
+        <div>
+          <div class="grade-badge">B</div>
+          <div class="grade-label">Bom desempenho · <strong>Aprovado</strong></div>
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-val">{{ quiz.questions.length }}</div>
+              <div class="stat-key">Total</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val green">{{ result.correctAnswers }}</div>
+              <div class="stat-key">Corretas</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val red">{{ result.incorrectAnswers + result.nullAnswers }}</div>
+              <div class="stat-key">Erradas</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val grey">{{ result.nullAnswers }}</div>
+              <div class="stat-key">Em branco</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOPIC CARDS -->
+      <div class="section-label">Desempenho por Tópico</div>
+      <div class="topics-grid">
+
+        <div class="topic-card" *ngFor="let topic of topics">
+          <div class="topic-head">
+            <div class="topic-name">{{ topic.name }}</div>
+
+            <div class="badge"
+              [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
+
+              {{
+              (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' :
+              (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco'
+              }}
+            </div>
+          </div>
+
+          <div class="topic-score-row">
+            <div class="topic-score-big">
+              {{ quiz.resultsByTopic[topic.name].correct || 0 }}
+            </div>
+
+            <div class="topic-score-den">
+              &nbsp;/ {{ quiz.resultsByTopic[topic.name].total || 0 }}
+            </div>
+
+            <div class="topic-pct"
+              [ngClass]="'pct-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
+
+              {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
+            </div>
+          </div>
+
+          <div class="bar-track">
+            <div class="bar-fill"
+              [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
+              [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0">
+            </div>
+          </div>
+
+          <div class="topic-foot">
+            <span>✓ Corretas:
+              <strong>{{ quiz.resultsByTopic[topic.name].correct || 0 }}</strong>
+            </span>
+
+            <span>✗ Erradas:
+              <strong>{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</strong>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="section-label">Resumo Comparativo</div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Tópico</th>
+              <th>Acertos</th>
+              <th style="min-width: 160px;">Taxa de acerto</th>
+              <th>Classificação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let topic of topics">
+
+              <td class="td-name">
+                {{ topic.name }}
+              </td>
+
+              <td>
+                {{ quiz.resultsByTopic[topic.name].correct || 0 }} /
+                {{ quiz.resultsByTopic[topic.name].total || 0 }}
+              </td>
+
+              <td>
+                <div class="td-bar-wrap">
+
+                  <div class="mini-track">
+                    <div class="mini-fill"
+                      [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
+                      [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0">
+                    </div>
+                  </div>
+
+                  <span class="td-pct-label">
+                    {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
+                  </span>
+
+                </div>
+              </td>
+
+              <td>
+                <span class="badge"
+                  [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
+
+                  {{ getPerformanceLabel(quiz.resultsByTopic[topic.name].percentage || 0) }}
+                </span>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!--
       <div class="card">
         <div class="card-header">
           <div class="card-title">Desempenho Geral</div>
@@ -344,9 +489,9 @@
         </div>
 
       </div>
+      -->
 
-      <br>
-
+      <!--
       <div class="card" *ngIf="quiz.resultsByTopic">
         <div class="card-header">
           <div class="card-title">Desempenho por Tópico</div>
@@ -394,7 +539,7 @@
           </div>
         </div>
       </div>
-
+      -->
 
     </div>
 
