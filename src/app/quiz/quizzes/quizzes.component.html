@@ -162,21 +162,17 @@
                         <div class="topic-tags">
                             <span class="topic-tag"
                                 *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 2)">
-                                <!--
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path
-                                        d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
-                                    </path>
-                                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                                </svg>
-                                 -->
                                 {{ topic.name }}
                             </span>
 
                             <button class="tag-toggle-button" *ngIf="quiz.topics.length > 5"
                                 (click)="toggleTopics(quiz.id)">
-                                {{ showAllTopicsMap[quiz.id] ? 'Ver menos tópicos' : 'Ver todos os tópicos' }}
+                                <span>
+                                    {{ showAllTopicsMap[quiz.id] ? 'Ver menos' : 'Ver mais' }}
+                                </span>
+
+                                <i class="pi"
+                                    [ngClass]="showAllTopicsMap[quiz.id] ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
                             </button>
                         </div>
                     </div>
