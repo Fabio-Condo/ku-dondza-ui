@@ -399,58 +399,60 @@
 
       <!-- TABLE -->
       <div class="section-label">Resumo Comparativo</div>
-      <div class="table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Tópico</th>
-              <th>Acertos</th>
-              <th style="min-width: 160px;">Taxa de acerto</th>
-              <th>Classificação</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let topic of topics">
+      <div class="table-wrapper">
 
-              <td class="td-name">
-                {{ topic.name }}
-              </td>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Tópico</th>
+                <th>Acertos</th>
+                <th style="min-width: 160px;">Taxa de acerto</th>
+                <th>Classificação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let topic of topics">
 
-              <td>
-                {{ quiz.resultsByTopic[topic.name].correct || 0 }} /
-                {{ quiz.resultsByTopic[topic.name].total || 0 }}
-              </td>
+                <td class="td-name">
+                  {{ topic.name }}
+                </td>
 
-              <td>
-                <div class="td-bar-wrap">
+                <td>
+                  {{ quiz.resultsByTopic[topic.name].correct || 0 }} /
+                  {{ quiz.resultsByTopic[topic.name].total || 0 }}
+                </td>
 
-                  <div class="mini-track">
-                    <div class="mini-fill"
-                      [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
-                      [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0">
+                <td>
+                  <div class="td-bar-wrap">
+
+                    <div class="mini-track">
+                      <div class="mini-fill"
+                        [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
+                        [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0">
+                      </div>
                     </div>
+
+                    <span class="td-pct-label">
+                      {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
+                    </span>
+
                   </div>
+                </td>
 
-                  <span class="td-pct-label">
-                    {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
+                <td>
+                  <span class="badge"
+                    [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
+
+                    {{ getPerformanceLabel(quiz.resultsByTopic[topic.name].percentage || 0) }}
                   </span>
+                </td>
 
-                </div>
-              </td>
-
-              <td>
-                <span class="badge"
-                  [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
-
-                  {{ getPerformanceLabel(quiz.resultsByTopic[topic.name].percentage || 0) }}
-                </span>
-              </td>
-
-            </tr>
-          </tbody>
-        </table>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-
       <!--
       <div class="card">
         <div class="card-header">

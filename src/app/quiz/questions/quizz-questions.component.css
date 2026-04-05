@@ -2963,7 +2963,7 @@ pre {
   border: 1px solid #e4e6ef;
   border-radius: 14px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
-  overflow: hidden;
+  overflow: visible;
 }
 
 table {
@@ -3035,6 +3035,12 @@ tbody td {
   text-align: right;
 }
 
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* RESPONSIVE */
 @media (max-width: 620px) {
   .hero {
@@ -3063,5 +3069,26 @@ tbody td {
 
   .meta-pills {
     align-items: flex-start;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  thead th {
+    padding: 10px 14px;
+  }
+
+  tbody td {
+    padding: 11px 14px;
+  }
+
+  .td-bar-wrap {
+    gap: 6px;
+  }
+
+  .td-pct-label {
+    font-size: 11px;
+    min-width: 30px;
   }
 }
