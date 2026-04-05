@@ -112,12 +112,10 @@
             padding: 20px;
             box-shadow: 0 2px 16px rgba(15, 17, 30, 0.06);
             transition: box-shadow 0.25s, transform 0.25s cubic-bezier(.22, .68, 0, 1.2);
-            animation: fadeUp 0.45s ease both;
         }
 
         .card:hover {
             box-shadow: 0 8px 32px rgba(15, 17, 30, 0.10);
-            transform: translateY(-3px);
         }
 
         @keyframes fadeUp {
@@ -688,12 +686,12 @@
                                 'low': topic.progressRate > 0 && topic.progressRate < 40,
                                 'mid': topic.progressRate >= 40 && topic.progressRate < 80,
                                 'high': topic.progressRate >= 80
-                                }" [style.width.%]="topic.progressRate">
+                                }" [style.width.%]="topic.progressRate.toFixed(0)">
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="continue-btn" [routerLink]="['/progress-panel', subject.subjectId]">Continuar <svg
+                <button class="continue-btn" [routerLink]="['/progress/subjects', subject.subjectId]">Continuar <svg
                         viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg></button>

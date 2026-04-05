@@ -13,6 +13,7 @@ import { Role } from 'src/app/enum/role.enum';
 import { Title } from '@angular/platform-browser';
 import { Wallet } from 'src/app/core/model/Wallet';
 import { WalletService } from 'src/app/core/wallets/answers.service';
+import { delayWhen, retryWhen, scan, timer } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -82,7 +83,19 @@ export class ProfileComponent implements OnInit {
   getSubjectsInterests() {
     this.loadingMessage = "Carregando disciplinas"
     this.showLoading = true;
-    this.subjectsService.findAll().subscribe({
+    this.subjectsService.findAll().pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe({
       next: (dados) => {
         this.subjectsInterests = dados;
         this.showLoading = false;
@@ -95,9 +108,21 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserByUserId(userId: string) {
-    this.loadingMessage = "Carregando carteiras"
+    this.loadingMessage = "Carregando dados"
     this.showLoading = true;
-    this.userService.getUserByUserId(userId).subscribe(
+    this.userService.getUserByUserId(userId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe(
       (user: User) => {
         this.user = user;
         this.showLoading = false;
@@ -158,7 +183,19 @@ export class ProfileComponent implements OnInit {
   getWalletsByUser(userId: number): void {
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
-    this.walletService.getWalletsByUser(userId).subscribe(
+    this.walletService.getWalletsByUser(userId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe(
       (dados: Wallet[]) => {
         this.userWallets = dados;
         this.showLoading = false;

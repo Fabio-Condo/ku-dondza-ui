@@ -33,6 +33,6 @@ export class AppComponent {
 
   showMobileFooter() {
     return this.router.url == '/quizzes' || this.router.url == '/questions' || this.router.url == '/topics' || this.router.url == '/subjects'
-      || this.router.url == '/exames' || this.router.url == '/progress-subjects' || this.router.url == '/users';
+      || this.router.url == '/exames' || this.router.url == '/progress' || this.router.url == '/users';
   }
 }

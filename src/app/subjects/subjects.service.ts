@@ -13,7 +13,6 @@ interface CacheEntry<T> {
   timestamp: number;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -24,7 +23,11 @@ export class SubjectsService {
   private subjectsCache = new Map<string, CacheEntry<IApiResponse<Subject>>>();
   private subjectCache = new Map<string, CacheEntry<Subject>>();
 
+  private progressSubjectsCache = new Map<string, CacheEntry<SubjectProgressDTO[]>>();
+  private progressSubjectCache = new Map<string, CacheEntry<SubjectProgressDTO>>();
+
   private subjectsListCache: Subject[] | null = null;
+
 
   //private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
   private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
@@ -38,6 +41,11 @@ export class SubjectsService {
     this.subjectCache.clear();
   }
 
+  clearProgressSubjectsCache() {
+    this.progressSubjectsCache.clear();
+    this.progressSubjectCache.clear();
+  }
+
   constructor(private http: HttpClient) {
     this.host = `${environment.apiUrl}/subjects`;
   }
@@ -49,15 +57,44 @@ export class SubjectsService {
   getUserProgressSubjects(userId: number): Observable<SubjectProgressDTO[]> {
     let params = new HttpParams()
       .set('currentUserId', userId.toString());
-    return this.http.get<SubjectProgressDTO[]>(`${this.host}/progress/users`, { params });
+
+    const cacheKey = params.toString();
+    const cachedEntry = this.progressSubjectsCache.get(cacheKey);
+
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    return this.http.get<SubjectProgressDTO[]>(`${this.host}/progress/users`, { params }).pipe(
+      tap(response => {
+        this.progressSubjectsCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
   }
 
-  getUserProgressSubject(userId: number, subjectId: number): Observable<SubjectProgressDTO> {
+  getUserProgressSubject(currentUserId: number, subjectId: number): Observable<SubjectProgressDTO> {
     let params = new HttpParams()
-      .set('currentUserId', userId.toString())
+      .set('currentUserId', currentUserId.toString())
       .set('subjectId', subjectId.toString());
 
-    return this.http.get<SubjectProgressDTO>(`${this.host}/progress/users/view`, { params });
+    const cacheKey = `subject_${subjectId}_user_${currentUserId}`;
+    const cachedEntry = this.progressSubjectCache.get(cacheKey);
+
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    return this.http.get<SubjectProgressDTO>(`${this.host}/progress/users/view`, { params }).pipe(
+      tap(response => {
+        this.progressSubjectCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
   }
 
   // FIND ALL COM CACHE

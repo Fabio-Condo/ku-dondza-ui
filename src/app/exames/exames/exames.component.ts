@@ -73,7 +73,7 @@ export class ExamesComponent implements OnInit {
   filtro: ExameFilter = {
     examType: '',
     pagina: 0,
-    itensPorPagina: 5,
+    itensPorPagina: 6,
     ordenamento: 'id,asc',
   };
 
@@ -450,7 +450,19 @@ export class ExamesComponent implements OnInit {
   getWalletsByUser(userId: number): void {
     this.loadingMessage = "Obtendo dados"
     this.showLoading = true;
-    this.walletService.getWalletsByUser(userId).subscribe(
+    this.walletService.getWalletsByUser(userId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe(
       (dados: Wallet[]) => {
         this.userWallets = dados;
         this.showLoading = false;
@@ -501,13 +513,10 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
     this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
       (response) => {
-        console.log(response);
         this.wallet = response;
-
         this.userWallets.push(this.wallet);
         this.showLoading = false;
         this.displayModalAddPaymentOption = false;
-        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

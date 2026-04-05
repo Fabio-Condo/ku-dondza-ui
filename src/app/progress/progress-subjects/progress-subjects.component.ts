@@ -13,6 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Test } from 'src/app/core/model/Test';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 import { TopicDtoWithTests } from 'src/app/core/model/TopicDtoWithTests';
+import { delayWhen, retryWhen, scan, timer } from 'rxjs';
 
 @Component({
   selector: 'app-progress-subjects',
@@ -56,10 +57,22 @@ export class ProgressSubjectsComponent {
   }
 
   getUserProgress(): void {
-    this.loadingMessage = 'Carregando disciplinas';
+    this.loadingMessage = 'Carregando progresso';
     this.showLoading = true;
 
-    this.subjectsService.getUserProgressSubjects(this.loggedUser.id).subscribe({
+    this.subjectsService.getUserProgressSubjects(this.loggedUser.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe({
       next: (dados) => {
         this.subjects = dados;
         //this.selectedSubject = this.subjects[0];

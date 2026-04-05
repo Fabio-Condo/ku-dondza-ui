@@ -4,10 +4,11 @@ export class SubjectProgressDTO {
     id!: number;
     subjectId!: number;
     subjectName!: string;
+
     subjectDescription!: string;
     subjectCategory!: string
     orderIndex!: number;
     topicDtoWithTests: TopicDtoWithTests[] = [];
-    currentUserProgressRate!: number;
+    currentUserProgressRate: number = 0;
     totalTopics!: number;
 }    

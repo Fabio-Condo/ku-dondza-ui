@@ -49,7 +49,7 @@ export class SubjectsComponent implements OnInit {
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   filtro: SubjectFilter = {
     pagina: 0,
-    itensPorPagina: 5,
+    itensPorPagina: 6,
     ordenamento: 'id,asc'
   };
 

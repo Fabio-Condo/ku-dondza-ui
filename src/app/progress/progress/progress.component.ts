@@ -6,7 +6,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Test } from 'src/app/core/model/Test';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Title } from '@angular/platform-browser';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Topic } from 'src/app/core/model/Topic';
 import { Subject } from 'src/app/core/model/Subject';
 import { Role } from 'src/app/enum/role.enum';
@@ -16,9 +16,14 @@ import { QuestionService } from 'src/app/questions/question.service';
 import { Question } from 'src/app/core/model/Question';
 declare const MathJax: any;
 import { e, evaluate } from 'mathjs'; //npm install mathjs
-import { ProgressService} from 'src/app/progress/progress.service';
+import { ProgressService } from 'src/app/progress/progress.service';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 import { TopicDtoWithTests } from 'src/app/core/model/TopicDtoWithTests';
+import { Wallet } from 'src/app/core/model/Wallet';
+import { HeaderType } from 'src/app/enum/header-type.enum';
+import { WalletService } from 'src/app/core/wallets/answers.service';
+import { UserService } from 'src/app/users/user.service';
+import { delayWhen, retryWhen, scan, timer } from 'rxjs';
 
 @Component({
   selector: 'app-progress',
@@ -41,11 +46,20 @@ export class ProgressComponent implements OnInit {
   displayModalSelectedQuestionsList: boolean = false;
 
   loggedUser: User = new User();
+  isUserLoggedIn: boolean = false;
 
   showLoading = false;
   loadingMessage = 'Carregando';
 
   displayModalSave: boolean = false;
+
+  displayModalUpgradePlan: boolean = false;
+  displayModalPaymentOptions: boolean = false;
+  displayModalAddPaymentOption: boolean = false;
+
+  wallet: Wallet = new Wallet();
+  userWallets: Wallet[] = [];
+  selectedWalletId: number = 0;
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
@@ -61,6 +75,8 @@ export class ProgressComponent implements OnInit {
     private subjectsService: SubjectsService,
     private topicService: TopicService,
     private questionService: QuestionService,
+    private userService: UserService,
+    private walletService: WalletService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -75,6 +91,7 @@ export class ProgressComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Painel Principal');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
     const selectedUserId = this.route.snapshot.params['id'];
@@ -147,7 +164,7 @@ export class ProgressComponent implements OnInit {
       topic.name = t.topicName;
       return topic;
     });
-    
+
     this.displayModalSave = true;
   }
 
@@ -304,10 +321,17 @@ export class ProgressComponent implements OnInit {
      NAVEGAÇÃO
      ========================= */
 
-  startTest(test: Test): void {
+  startTest(test: Test, topic: TopicDtoWithTests): void {
+
+    //console.log("Premium: " + topic.premium)
+    if (this.isPremiumTopic(topic)) {
+      this.displayModalUpgradePlan = true;
+      return;
+    }
+
     this.router.navigate(['/quizzes', 'test'], {
       queryParams: {
-        from: 'progress-panel',
+        from: 'progress/subjects',
         progressTestId: test.id
       }
     });
@@ -319,7 +343,7 @@ export class ProgressComponent implements OnInit {
 
     this.router.navigate(['/quizzes', quizId], {
       queryParams: {
-        from: 'progress-panel'
+        from: 'progress/subjects'
       }
     });
   }
@@ -329,12 +353,24 @@ export class ProgressComponent implements OnInit {
      ========================= */
 
   getUserProgressSubject(): void {
-    this.loadingMessage = 'Carregando disciplinas';
+    this.loadingMessage = 'Carregando progresso';
     this.showLoading = true;
 
-    const selectedUserId = this.route.snapshot.params['id'];
+    const selectedSubjectId = this.route.snapshot.params['id'];
 
-    this.subjectsService.getUserProgressSubject(this.loggedUser.id, selectedUserId).subscribe({
+    this.subjectsService.getUserProgressSubject(this.loggedUser.id, selectedSubjectId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe({
       next: (dado) => {
         this.subject = dado;
         this.showLoading = false;
@@ -346,9 +382,23 @@ export class ProgressComponent implements OnInit {
     });
   }
 
-  /* =========================
-     PROGRESSOS (TAXAS)
-     ========================= */
+  // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
+  isPremiumTopic(topic: TopicDtoWithTests): boolean {
+    if (!topic.premium) return false;
+
+    // ADMIN sempre tem acesso
+    if (this.isUserLoggedIn && this.isAdmin) return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return this.isFreeUser();
+  }
+
+  isFreeUser(): boolean {
+    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+
+    const planExpiresAt = this.loggedUser.planExpiresAt ? new Date(this.loggedUser.planExpiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !planExpiresAt || planExpiresAt <= new Date();
+  }
 
   isCompleted(test: Test): boolean {
     return !!test.submittedQuizzes && test.submittedQuizzes.length > 0;
@@ -373,6 +423,212 @@ export class ProgressComponent implements OnInit {
       case 'INTERMEDIATE': return 'Intermediário';
       case 'ADVANCED': return 'Avançado';
       default: return '';
+    }
+  }
+
+  getWalletsByUser(userId: number): void {
+    this.loadingMessage = "Obtendo dados"
+    this.showLoading = true;
+    this.walletService.getWalletsByUser(userId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe(
+      (dados: Wallet[]) => {
+        this.userWallets = dados;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  addNewWlletType(walletTypeForm: NgForm) {
+
+    //this.wallet.user = this.loggedUser;
+
+    this.detectWalletType(); // força atualização e validação
+
+    const phone = this.wallet.phoneNumber || '';
+
+    if (!this.wallet.type) {
+      this.sendErrorNotification("Número inválido: prefixo deve ser 84, 85, 86 ou 87.");
+      return;
+    }
+
+    if (phone.length !== 9) {
+      this.sendErrorNotification("Número inválido: deve conter exatamente 9 dígitos.");
+      return;
+    }
+
+    // Evitar duplicados
+    const exists = this.userWallets.some(
+      w => w.phoneNumber === phone
+    );
+
+    if (exists) {
+      this.sendErrorNotification("Este número já está registado nas suas carteiras.");
+      return;
+    }
+
+    // Definir como default se for a primeira carteira
+    if (this.userWallets.length === 0) {
+      this.wallet.default = true;
+    } else {
+      this.wallet.default = false;
+    }
+
+    this.loadingMessage = "Adicionando carteira"
+    this.showLoading = true;
+    this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
+      (response) => {
+        console.log(response);
+        this.wallet = response;
+
+        this.userWallets.push(this.wallet);
+        this.showLoading = false;
+        this.displayModalAddPaymentOption = false;
+        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  onUpgradePlan(): void {
+    if (this.isUserLoggedIn) {
+      //this.upgradePlan();
+      this.openModalPaymentOptions();
+      return;
+    }
+  }
+
+  upgradePlan() {
+    // Se não tiver carteira selecionada, pega a default
+    if (!this.selectedWalletId) {
+      const defaultWallet = this.userWallets.find(w => w.default);
+      if (defaultWallet) {
+        this.selectedWalletId = defaultWallet.id!;
+      } else {
+        this.sendErrorNotification("Nenhuma carteira selecionada ou definida como principal.");
+        return;
+      }
+    }
+
+    this.loadingMessage = "Processando o pagamento";
+    this.showLoading = true;
+
+    this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', this.selectedWalletId).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.onCloseUpgradeModal();
+        this.onCloseModalPaymentOptions();
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  setDefaultWallet(wallet: Wallet) {
+
+    if (!wallet.id) {
+      this.sendErrorNotification('Carteira inválida: ID não definido');
+      return;
+    }
+
+    this.userWallets.forEach(w => w.default = false); // limpa anterior
+    wallet.default = true;
+
+    this.walletService.setDefault(wallet.id).subscribe({
+      next: (updatedWallet) => {
+        // Atualiza visualmente todas as carteiras
+        this.userWallets.forEach(w => w.default = w.id === updatedWallet.id);
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  openUpgradeModal() {
+    this.displayModalUpgradePlan = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseUpgradeModal() {
+    this.displayModalUpgradePlan = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  openModalPaymentOptions() {
+
+    if (this.userWallets.length === 0) {
+      this.getWalletsByUser(this.loggedUser.id);
+    }
+
+    this.displayModalPaymentOptions = true;
+    this.onCloseUpgradeModal();
+    document.body.classList.add('no-scroll');
+  }
+
+  onCloseModalPaymentOptions() {
+    this.displayModalPaymentOptions = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  openModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = true;
+  }
+
+  onCloseModalAddPaymentOption() {
+    this.displayModalAddPaymentOption = false;
+  }
+
+  detectWalletType(): void {
+    const phone = this.wallet.phoneNumber ? this.wallet.phoneNumber.trim() : '';
+
+    // Remove espaços e caracteres não numéricos
+    const digitsOnly = phone.replace(/\D/g, '');
+
+    // Define o telefone limpo
+    this.wallet.phoneNumber = digitsOnly;
+
+    // Validação do tamanho
+    if (digitsOnly.length !== 9) {
+      this.wallet.type = '';
+      return;
+    }
+
+    // Verificação de prefixos válidos
+    const prefix = digitsOnly.substring(0, 2);
+    if (prefix === '84' || prefix === '85') {
+      this.wallet.type = 'MPESA';
+    } else if (prefix === '86' || prefix === '87') {
+      this.wallet.type = 'EMOLA';
+    } else {
+      this.wallet.type = '';
     }
   }
 

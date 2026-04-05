@@ -146,8 +146,7 @@
                         <div class="overall">
                             <div class="overall-ring">
                                 <div class="discipline-progress">
-                                    <div class="progress-circle"
-                                        [style.--progress]="quiz.accuracyRate * 3.6 + 'deg'">
+                                    <div class="progress-circle" [style.--progress]="quiz.accuracyRate * 3.6 + 'deg'">
                                         <span></span>
                                     </div>
                                 </div>
@@ -158,10 +157,12 @@
                             </div>
                         </div>
 
-                        <!--
+                        <div class="topics-label">Tópicos Avaliados</div>
+
                         <div class="topic-tags">
                             <span class="topic-tag"
-                                *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 5)">
+                                *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 2)">
+                                <!--
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path
@@ -169,6 +170,7 @@
                                     </path>
                                     <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                 </svg>
+                                 -->
                                 {{ topic.name }}
                             </span>
 
@@ -177,7 +179,6 @@
                                 {{ showAllTopicsMap[quiz.id] ? 'Ver menos tópicos' : 'Ver todos os tópicos' }}
                             </button>
                         </div>
-                        -->
                     </div>
 
                     <!--

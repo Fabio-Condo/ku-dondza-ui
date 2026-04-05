@@ -6,7 +6,7 @@ import { ProgressSubjectsComponent } from './progress-subjects/progress-subjects
 
 const routes: Routes = [
   {
-    path: 'progress-panel/:id',
+    path: 'progress/subjects/:id',
     component: ProgressComponent,
     canActivate: [AuthenticationGuard],
     //data: { 
@@ -15,7 +15,7 @@ const routes: Routes = [
     //} 
   },
   {
-    path: 'progress-subjects',
+    path: 'progress',
     component: ProgressSubjectsComponent,
     canActivate: [AuthenticationGuard],
     //data: { 
