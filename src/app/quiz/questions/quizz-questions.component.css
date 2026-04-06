@@ -552,7 +552,7 @@ canvas {
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #93a0dc, #4361ee);
+  background: #4361ee;
   transition: width 0.4s ease-in-out;
   border-radius: 6px;
 }
@@ -714,26 +714,77 @@ pre {
 
 .quiz-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  margin-top: 16px;
 }
 
-.quiz-header h1 {
-  font-size: 25px;
+.quiz-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4361ee, #7b8cff);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
-  margin: 10px 0 0;
+  font-size: 1rem;
 }
 
-.quiz-header span {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-.quiz-title {
+.user-info .title {
+  font-size: 0.95rem;
+  font-weight: 600;
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.you-badge {
+  background: #e0e7ff;
+  color: #4361ee;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.meta {
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta .dot {
+  width: 4px;
+  height: 4px;
+  background: #9ca3af;
+  border-radius: 50%;
+}
+
+.quiz-close-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  background: #f1f5f9;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.quiz-close-btn:hover {
+  background: #e2e8f0;
+  transform: scale(1.05);
 }
 
 .quiz-close-btn {

@@ -587,26 +587,40 @@
       <div *ngIf="currentQuestionIndex < quiz.questions.length">
         <div class="question-card">
 
-          <div class="quiz-header" style="  margin-bottom: 15px;">
-            <div>
+          <div class="quiz-header">
+            <div class="quiz-user">
 
-              <h1 class="title">
+              <div class="avatar">
                 {{
                 quiz.anonymous
-                ? 'Usuário Anônimo'
-                : (quiz.user.fullName ? quiz.user.fullName : 'Nome não disponível')
+                ? 'A'
+                : (quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?')
                 }}
-                <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id">
-                  (tú)
-                </span>
-              </h1>
+              </div>
 
-              <span>{{ quiz.subject.name }} | {{
-                getQuizTypeValue(quiz.type) }}</span>
+              <div class="user-info">
+                <h1 class="title">
+                  {{
+                  quiz.anonymous
+                  ? 'Usuário Anônimo'
+                  : (quiz.user.fullName || 'Nome não disponível')
+                  }}
+                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id" class="you-badge">
+                    você
+                  </span>
+                </h1>
+
+                <div class="meta">
+                  <span class="subject">{{ quiz.subject.name }}</span>
+                  <span class="dot"></span>
+                  <span class="type">{{ getQuizTypeValue(quiz.type) }}</span>
+                </div>
+              </div>
 
             </div>
+
             <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
-              <i class="pi pi-times"></i>
+              ✕
             </button>
           </div>
 
