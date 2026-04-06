@@ -2232,10 +2232,10 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getGradeLabel(percent: number): string {
-    if (percent >= 80) return 'Excelente desempenho · Aprovado';
-    if (percent >= 70) return 'Bom desempenho · Aprovado';
-    if (percent >= 50) return 'Desempenho médio · Aprovado';
-    return 'Fraco desempenho · Reprovado';
+    if (percent >= 80) return 'Excelente desempenho';
+    if (percent >= 70) return 'Bom desempenho';
+    if (percent >= 50) return 'Desempenho médio';
+    return 'Fraco desempenho';
   }
 
   private sendErrorNotification(message: string): void {
