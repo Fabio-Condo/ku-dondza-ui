@@ -311,18 +311,36 @@
       <!-- HERO -->
       <div class="hero">
         <div class="score-ring">
+          <div class="discipline-progress">
+            <div class="progress-circle" [style.--color]="
+                (result.correctAnswers / quiz.questions.length) >= 0.7 ? '#22c55e' :
+                (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#f59e0b' : '#ef4444'
+              " [style.--progress]="((result.correctAnswers / quiz.questions.length) * 100) + '%'">
+              <span></span>
+            </div>
+          </div>
+          <!--
           <svg viewBox="0 0 140 140">
             <circle class="ring-track" cx="70" cy="70" r="65" />
             <circle class="ring-fill" cx="70" cy="70" r="65" />
           </svg>
+          -->
           <div class="score-center">
             <div class="score-num">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
             <div class="score-of">de 100</div>
           </div>
         </div>
         <div>
-          <div class="grade-badge">B</div>
-          <div class="grade-label">Bom desempenho · <strong>Aprovado</strong></div>
+          <div class="grade-badge">
+            {{ getGrade(getPercentage(result, quiz)) }}
+          </div>
+
+          <div class="grade-label">
+            {{ getGradeLabel(getPercentage(result, quiz)) }}
+            <strong>
+              ({{ getPercentage(result, quiz).toFixed(1) }}%)
+            </strong>
+          </div>
           <div class="stats-row">
             <div class="stat-item">
               <div class="stat-val">{{ quiz.questions.length }}</div>

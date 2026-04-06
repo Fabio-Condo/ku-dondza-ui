@@ -41,6 +41,7 @@ import { timer } from 'rxjs';
   styleUrls: ['./quizz-questions.component.css'],
 })
 export class QuizzQuestionsComponent implements OnInit {
+[x: string]: any;
   quiz: Quiz = new Quiz();
   topics: Topic[] = [];
 
@@ -2207,6 +2208,10 @@ export class QuizzQuestionsComponent implements OnInit {
     return text;
   }
 
+  getPercentage(result: any, quiz: any): number {
+    return ((result.correctAnswers / quiz.questions.length) * 100) || 0;
+  }
+
   getPerformanceClass(percentage: number): string {
     if (percentage >= 80) return 'great';
     if (percentage >= 50) return 'ok';
@@ -2217,6 +2222,20 @@ export class QuizzQuestionsComponent implements OnInit {
     if (percentage >= 80) return 'Ótimo';
     if (percentage >= 50) return 'Bom';
     return 'Fraco';
+  }
+
+  getGrade(percent: number): string {
+    if (percent >= 80) return 'A';
+    if (percent >= 70) return 'B';
+    if (percent >= 50) return 'C';
+    return 'D';
+  }
+
+  getGradeLabel(percent: number): string {
+    if (percent >= 80) return 'Excelente desempenho · Aprovado';
+    if (percent >= 70) return 'Bom desempenho · Aprovado';
+    if (percent >= 50) return 'Desempenho médio · Aprovado';
+    return 'Fraco desempenho · Reprovado';
   }
 
   private sendErrorNotification(message: string): void {
