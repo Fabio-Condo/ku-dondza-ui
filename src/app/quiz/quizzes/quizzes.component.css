@@ -255,14 +255,19 @@ button {
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: conic-gradient(#4361ee 0deg, #4361ee var(--progress), #e2e8f0 var(--progress));
+    background: conic-gradient(
+        var(--color, #4361ee) 0deg,
+        var(--color, #4361ee) var(--progress),
+        #e2e8f0 var(--progress)
+    );
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 500;
     font-size: 0.7rem;
-    color: #4361ee;
+    color: var(--color, #4361ee);
     position: relative;
+    transition: background 0.4s ease;
 }
 
 .progress-circle::before {
