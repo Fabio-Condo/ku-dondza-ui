@@ -2659,10 +2659,71 @@ pre {
 }
 
 
+/* HERO IDENTITY */
+.hero-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  padding-left: 32px;
+  border-left: 1px solid #e4e6ef;
+}
+
+.hero-discipline {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #4361ee;
+  background: rgba(67, 97, 238, 0.08);
+  border: 1px solid rgba(67, 97, 238, 0.2);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+.hero-student-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: right;
+}
+
+.hero-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.hero-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #8b8fa8;
+}
+
+.hero-meta-row svg {
+  width: 13px;
+  height: 13px;
+  stroke: #b0b3c6;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.hero-meta-row strong {
+  color: #4a4e69;
+  font-weight: 600;
+}
+
 /* HERO */
 .hero {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   gap: 36px;
   align-items: center;
   background: #ffffff;
@@ -2673,7 +2734,6 @@ pre {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07), 0 8px 24px rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;
-  animation: fadeUp .45s .08s ease both;
 }
 
 .hero::after {
@@ -3087,8 +3147,36 @@ tbody td {
   .hero {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 20px;
+    gap: 24px;
     padding: 28px 24px;
+  }
+
+  .score-ring {
+    margin: 0 auto;
+  }
+
+  .stats-row {
+    justify-content: center;
+  }
+
+  .stat-item:first-child {
+    padding-left: 20px;
+  }
+
+  .hero-identity {
+    align-items: center;
+    border-left: none;
+    border-top: 1px solid #e4e6ef;
+    padding-left: 0;
+    padding-top: 20px;
+  }
+
+  .hero-student-name {
+    text-align: center;
+  }
+
+  .hero-meta {
+    align-items: center;
   }
 
   .score-ring {
