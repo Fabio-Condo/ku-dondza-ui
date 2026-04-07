@@ -1,1875 +1,642 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Quizzes</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        body {
-            padding: 10px;
-        }
-
-        .profile-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            margin-top: 50px;
-        }
-
-        .header {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            border: 1px solid #4361ee;
-        }
-
-        .header h1 {
-            color: #4361ee;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e6e6e6;
-            /* mais suave */
-        }
-
-        .level-badge {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #fff;
-            padding: 0.3rem 0.7rem;
-            border-radius: 14px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .filters-section {
-            margin-bottom: 1.5rem;
-        }
-
-        /**/
-        .discipline-filters {
-            display: flex;
-            gap: 0.5rem;
-            /* ligeiramente menor */
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .header {
-            background: #ffffff;
-            padding: 1.8rem;
-            border-radius: 14px;
-            margin-bottom: 2rem;
-            border: 1px solid #e5e7eb;
-        }
-
-        .header-top {
-            margin-bottom: 1.5rem;
-        }
-
-        .header-subtitle {
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-
-        /* Filtros modernos minimalistas */
-        .discipline-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-        }
-
-        .filter-chip {
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            border: 1px solid #e5e7eb;
-            background: #f9fafb;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #374151;
-        }
-
-        .filter-chip:hover {
-            background: #eef2ff;
-            border-color: #4361ee;
-        }
-
-        .filter-chip.active {
-            background: #4361ee;
-            color: #ffffff;
-            border-color: #4361ee;
-        }
-
-        .subject-card {
-            flex: 1;
-            min-width: 200px;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            padding: 1.5rem;
-            border-radius: 12px;
-            color: white;
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        .subject-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-        }
-
-        .subject-card .progress-text {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-
-        .disciplines {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .discipline {
-            background: white;
-            border-radius: 12px;
-        }
-
-        .topics {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .topic {
-            padding: 1.5rem;
-            border-radius: 12px;
-            background: #ffffff;
-            border: 1px solid #e8eaf0;
-        }
-
-        .quizzes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .quiz {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            border: 1px solid transparent;
-        }
-
-        .quiz:hover:not(.locked) {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
-            border-color: #4361ee;
-        }
-
-        .quiz.completed {
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            color: white;
-        }
-
-        .quiz.active {
-            border-color: #4361ee;
-            background: #fff;
-        }
-
-        .quiz.locked {
-            cursor: not-allowed;
-            border: 1px solid #e0e4ec;
-        }
-
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .quiz-title {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .quiz-icon {
-            font-size: 1.5rem;
-        }
-
-        .quiz-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-
-        /* container dos botões */
-        .quiz-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        /* botão base */
-        .action-btn {
-            padding: 0.25rem 0.6rem;
-            font-size: 0.75rem;
-            border-radius: 4px;
-            border: 1px solid transparent;
-            background: transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        /* ver */
-        .action-btn.view {
-            border-color: #64748b;
-            color: #64748b;
-        }
-
-        .action-btn.view:hover {
-            background-color: #64748b;
-            color: #fff;
-        }
-
-        /* editar */
-        .action-btn.edit {
-            border-color: #4361ee;
-            color: #4361ee;
-        }
-
-        .action-btn.edit:hover {
-            background-color: #4361ee;
-            color: #fff;
-        }
-
-        .quiz-progress {
-            /*
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            */
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .quiz.completed .quiz-progress {
-            border-top-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .quiz-score {
-            font-weight: bold;
-        }
-
-        .start-btn {
-            width: 100%;
-            padding: 12px 18px;
-            background: #4361ee;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            transition: all 0.2s;
-        }
-
-        .start-btn:hover {
-            background: #3a56d4;
-            transform: scale(1.05);
-        }
-
-        .start-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .quiz.completed .start-btn {
-            background: white;
-            color: #4361ee;
-        }
-
-        .quiz.active .questions-count {
-            color: #718096;
-        }
-
-        .quiz.locked .questions-count {
-            color: #718096;
-        }
-
-        .lock-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            opacity: 0.3;
-        }
-
-        .overall {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 16px;
-            background: #f7f8fc;
-            border-radius: 10px;
-            border: 1px solid #e8eaf0;
-            margin-bottom: 18px;
-        }
-
-        .overall-ring {
-            position: relative;
-            width: 44px;
-            height: 44px;
-            flex-shrink: 0;
-        }
-
-        .overall-ring svg {
-            transform: rotate(-90deg);
-            width: 44px;
-            height: 44px;
-        }
-
-        .ring-bg {
-            fill: none;
-            stroke: #e8eaf0;
-            stroke-width: 3.5;
-        }
-
-        .ring-fill {
-            fill: none;
-            stroke: #4361ee;
-            stroke-width: 3.5;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 1s cubic-bezier(.22, .68, 0, 1.2);
-        }
-
-        .ring-label {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 800;
-            color: #0f1117;
-        }
-
-        .overall-text strong {
-            display: block;
-            font-size: 14px;
-            font-weight: 700;
-            color: #0f1117;
-            margin-bottom: 2px;
-        }
-
-        .overall-text span {
-            font-size: 12px;
-            color: #a0a8b8;
-        }
-
-        .discipline-progress {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .progress-circle {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: conic-gradient(#4361ee 0deg, #4361ee var(--progress), #e2e8f0 var(--progress));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            font-size: 0.7rem;
-            color: #4361ee;
-            position: relative;
-        }
-
-        .progress-circle::before {
-            content: '';
-            position: absolute;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: #f7f8fc;
-        }
-
-        .progress-circle span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .topic-row {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-
-        .topic-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        .topic-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #0f1117;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .topic-score {
-            font-size: 15px;
-            font-weight: 600;
-            color: #6b7280;
-            flex-shrink: 0;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .topic-score .total {
-            color: #a0a8b8;
-            font-weight: 400;
-        }
-
-        .track {
-            width: 100%;
-            height: 5px;
-            background: #f7f8fc;
-            border-radius: 99px;
-            overflow: hidden;
-        }
-
-        .fill {
-            height: 100%;
-            border-radius: 99px;
-            background: linear-gradient(90deg, #93a0dc, #4361ee);
-        }
-
-
-        .pricing-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1rem;
-            border: 1px solid #e2e8f0;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .plan-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .plan-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
-        }
-
-        .plan-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #4361ee;
-            margin-bottom: 0.25rem;
-        }
-
-        .plan-price.free {
-            color: #059669;
-        }
-
-        .plan-period {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .features .feature {
-            display: flex;
-            align-items: start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-            line-height: 1.4;
-            color: #1e293b;
-        }
-
-        .features .feature-icon {
-            width: 18px;
-            height: 18px;
-            background: #4361ee;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .features .feature-icon::after {
-            content: '✓';
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .upgrade-cta {
-            margin-top: 1.5rem;
-        }
-
-        .cta-button.btn-upgrade {
-            width: 100%;
-            padding: 0.875rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, #4361ee, #3651c9);
-            color: white;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .cta-button.btn-upgrade:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(90deg, #3b54d9, #2f45b5);
-        }
-
-        .cta-button.btn-upgrade:disabled,
-        .cta-button.btn-upgrade.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            background: linear-gradient(90deg, #aab4f5, #8f9de3);
-            box-shadow: none;
-        }
-
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .wallet-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .wallet-option input {
-            display: none;
-        }
-
-        .wallet-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 0.9rem;
-            padding: 0.9rem 1.1rem;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            background-color: #fff;
-        }
-
-        .wallet-card:hover {
-            border-color: #2563eb;
-            background-color: #f9fafb;
-        }
-
-        .wallet-card.selected {
-            border-color: #2563eb;
-            background-color: #eff6ff;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-        }
-
-        .wallet-left {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-        }
-
-        .wallet-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            background: #f3f4f6;
-            padding: 4px;
-        }
-
-        .wallet-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .wallet-type {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #111827;
-            text-transform: capitalize;
-        }
-
-        .wallet-number {
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-
-        .wallet-check .checkmark {
-            font-size: 1.3rem;
-            color: #2563eb;
-            font-weight: 600;
-        }
-
-        .wallet-card.default {
-            border: 2px solid #4361ee;
-            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.25);
-        }
-
-        .wallet-badge {
-            background-color: #4361ee;
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        .empty-text {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .btn-default {
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 12px;
-            border: 1px solid #4361ee;
-            background-color: white;
-            color: #4361ee;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-default:hover {
-            background-color: #4361ee;
-            color: white;
-        }
-
-        .cta-button {
-            width: 100%;
-            border: none;
-            border-radius: 0.75rem;
-            padding: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-add {
-            background: #e5e7eb;
-            color: #111;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .btn-upgrade {
-            background: #2563eb;
-            color: white;
-        }
-
-        .btn-upgrade:hover {
-            background: #1d4ed8;
-        }
-
-        .plan-price-upgrade {
-            text-align: center;
-            margin-top: 0.5rem;
-            color: #374151;
-            font-weight: 500;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Cores — serão colocadas via binding */
-        .pulse {
-            animation: pulse 1s infinite;
-        }
-
-        /* Efeito de pulsar para urgência */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.2);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .time-up {
-            color: gray;
-            font-weight: bold;
-            animation: flash 0.8s ease-in-out infinite;
-        }
-
-        @keyframes flash {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-        }
-
-        /* Loading Container - Versão Moderna */
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.8);
-            /* Fundo escuro mais moderno */
-            backdrop-filter: blur(8px);
-            /* Efeito de desfoque */
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .loading-container.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .loading-indicator {
-            display: flex;
-            flex-direction: column;
-            /* Empilha os elementos */
-            align-items: center;
-            gap: 20px;
-            padding: 30px 40px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .loading-container.visible .loading-indicator {
-            transform: translateY(0);
-        }
-
-        /* Spinner moderno com gradiente */
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .spinner::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #4c6ef5;
-            /* Cor primária */
-            border-left-color: #ec4899;
-            /* Gradiente para roxo */
-            animation: spin 1s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite;
-        }
-
-        .spinner::after {
-            content: "";
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #ec4899;
-            /* Rosa */
-            border-left-color: #4c6ef5;
-            /* Roxo */
-            animation: spin 1.5s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite reverse;
-        }
-
-        .loading-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1e293b;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        /* Efeito de pulsação no texto */
-        .loading-text span {
-            display: inline-block;
-            opacity: 0.8;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .loading-text span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-text span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        /* Animações */
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.6;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        button {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: #4361ee;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #4361ee;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-outline:hover {
-            background-color: #f8fafc;
-        }
-
-        .fab {
-            display: flex;
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            font-size: 24px;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .popout-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popout-container {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 600px;
-            overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-out;
-        }
-
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .popout-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0px;
-        }
-
-        .popout-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--color-black);
-            margin: 0;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            padding: 4px;
-            transition: color 0.2s;
-        }
-
-        .close-button:hover {
-            color: var(--color-black);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .submit-button:hover {
-            background: #1d4ed8;
-        }
-
-        /* Container de cada questão */
-        .popout-container .question-item {
-            cursor: pointer;
-            padding: 10px 14px;
-            margin: 10px 0;
-            border-radius: 8px;
-            transition: all 0.2s ease-in-out;
-            display: flex;
-            align-items: flex-start;
-            font-size: 0.95rem;
-            background-color: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        /* Hover suave */
-        .popout-container .question-item:hover {
-            background-color: #f4f6ff;
-            border-color: rgba(67, 97, 238, 0.4);
-            /* destaca borda no hover */
-        }
-
-        /* Questão selecionada */
-        .popout-container .selected-question {
-            background: #e3f2fd;
-            border: 1px solid #4361ee;
-            box-shadow: 0 2px 6px rgba(67, 97, 238, 0.15);
-        }
-
-        /* Numeração */
-        .selected-question {
-            background: #e3f2fd;
-            border: 1px solid #4361ee;
-            box-shadow: 0 2px 6px rgba(67, 97, 238, 0.15);
-        }
-
-        .popout-container .correct-question {
-            border: 2px solid #10b981;
-        }
-
-        .popout-container .incorrect-question {
-            border: 2px solid #ef4444;
-        }
-
-        .question-topic {
-            color: #666;
-            font-size: 0.85rem;
-            margin-top: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .question-topic button {
-            padding: 0.25rem 0.6rem;
-            font-size: 0.75rem;
-            line-height: 1;
-            border-radius: 4px;
-            border: 1px solid transparent;
-            background-color: transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .question-topic .btn-add {
-            border-color: #4361ee;
-            color: #4361ee;
-        }
-
-        .question-topic .btn-add:hover {
-            background-color: #4361ee;
-            color: #fff;
-        }
-
-        .question-topic .btn-add:active {
-            transform: scale(0.95);
-        }
-
-        .question-topic .btn-remove {
-            border-color: #e63946;
-            color: #e63946;
-        }
-
-        .question-topic .btn-remove:hover {
-            background-color: #e63946;
-            color: #fff;
-        }
-
-        .question-topic .btn-remove:active {
-            transform: scale(0.95);
-        }
-
-        .question-topic button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Número da questão à esquerda */
-        .question-number {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #4361ee;
-            min-width: 30px;
-            text-align: left;
-        }
-
-        .go-back-btn {
-            padding: 10px 0px;
-            display: flex;
-            align-items: center;
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-weight: 500;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .go-back-btn:hover {
-            color: #4361ee;
-        }
-
-        .banner {
-            height: 128px;
-            background: #4361ee;
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
-
-        .edit-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            color: white;
-        }
-
-        /* Target Icon */
-        .target {
-            width: 26px;
-            height: 26px;
-            border: 3px solid #f59e0b;
-            border-radius: 50%;
-            position: relative;
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-        }
-
-        .target::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            border: 3px solid #f59e0b;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .target::after {
-            content: '';
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: #f59e0b;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
-        }
-
-        /* Lock Icon */
-        .lock {
-            width: 18px;
-            height: 22px;
-            position: relative;
-        }
-
-        .lock-body {
-            width: 18px;
-            height: 14px;
-            background: #ef4444;
-            border-radius: 4px;
-            position: absolute;
-            bottom: 0;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-        }
-
-        .lock-shackle {
-            width: 12px;
-            height: 10px;
-            border: 3px solid #ef4444;
-            border-bottom: none;
-            border-radius: 6px 6px 0 0;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-        }
-
-        .lock-keyhole {
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .lock-keyhole::after {
-            content: '';
-            width: 2px;
-            height: 4px;
-            background: white;
-            position: absolute;
-            top: 3px;
-            left: 1px;
-            border-radius: 0 0 1px 1px;
-        }
-
-        .progress-warning {
-            background-color: #d1fae5;
-            /* verde suave */
-            padding: 1rem 1.2rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            color: #065f46;
-            /* verde escuro para o texto */
-            border: 1px solid #6ee7b7;
-            /* borda suave */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-        }
-
-        .progress-warning strong {
-            display: block;
-            margin-bottom: 0.4rem;
-            font-weight: 600;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                margin-top: 45px;
-            }
-
-            .header h1 {
-                font-size: 1.6rem;
-            }
-
-
-            .discipline-title {
-                font-size: 1.3rem;
-            }
-
-
-            .topic-title {
-                font-size: 1.1rem;
-            }
-
-            .quiz {
-                padding: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                margin-top: 45px;
-            }
-
-            .header {
-                padding-left: 1rem;
-                padding-right: 1rem;
-                padding-bottom: 0.5rem;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .subject-card {
-                padding: 1rem;
-            }
-
-            .discipline-title {
-                font-size: 1.4rem;
-            }
-
-            .topic {
-                padding: 0.5rem;
-                /**/
-            }
-
-            .topic-title {
-                font-size: 1.1rem;
-            }
-
-            .quiz {
-                padding: 1rem;
-            }
-
-            .quiz-info {
-                font-size: 0.8rem;
-            }
-
-            .quizzes {
-                grid-template-columns: 1fr;
-            }
-
-            .popout-container {
-                width: 95%;
-                padding: 10px;
-                max-width: 100%;
-                max-height: 70vh;
-                border-radius: 8px;
-                overflow-y: auto;
-            }
-
-            .popout-title {
-                font-size: 18px;
-                text-align: center;
-            }
-
-            .close-button {
-                font-size: 20px;
-                padding: 8px;
-            }
-        }
-
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .subject-card h3 {
-                font-size: 0.9rem;
-            }
-
-            .quiz {
-                padding: 0.8rem;
-                border-radius: 10px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Testes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f7f8fc;
+      color: #111827;
+      padding: 16px;
+    }
+
+    /* ─── Layout ─────────────────────────────────────── */
+    .page { max-width: 900px; margin: 0 auto; padding-top: 48px; padding-bottom: 3rem; }
+
+    /* ─── Loading overlay ────────────────────────────── */
+    .loading-overlay {
+      position: fixed; inset: 0;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .loading-overlay.visible { opacity: 1; visibility: visible; }
+    .loading-box {
+      background: #fff; border-radius: 16px; border: 1px solid #e8eaf0;
+      padding: 2rem 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+    .spinner {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 3px solid #e0e4f5;
+      border-top-color: #4361ee;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: 14px; font-weight: 500; color: #374151; }
+
+    /* ─── Back button ────────────────────────────────── */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer;
+      font-size: 13px; font-weight: 500; color: #6b7280;
+      padding: 0; margin-bottom: 1.5rem;
+      transition: color 0.15s;
+      font-family: inherit;
+    }
+    .back-btn:hover { color: #4361ee; }
+
+    /* ─── FAB ────────────────────────────────────────── */
+    .fab {
+      position: fixed; bottom: 20px; right: 20px;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #4361ee; color: #fff; border: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(67,97,238,0.35);
+      cursor: pointer; z-index: 100; transition: background 0.15s, transform 0.15s;
+    }
+    .fab:hover { background: #3451d1; transform: scale(1.05); }
+
+    /* ─── Subject hero card ──────────────────────────── */
+    .subject-hero {
+      display: flex; align-items: center; gap: 1rem;
+      background: #fff; border: 1px solid #e8eaf0; border-radius: 14px;
+      padding: 1.25rem 1.5rem; margin-bottom: 2rem;
+    }
+    .ring-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
+    .ring-wrap svg { width: 52px; height: 52px; transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: #dde3f8; stroke-width: 4; }
+    .ring-fg {
+      fill: none; stroke: #4361ee; stroke-width: 4; stroke-linecap: round;
+      transition: stroke-dashoffset 1s cubic-bezier(.22,.68,0,1.2);
+    }
+    .ring-pct {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; color: #4361ee;
+    }
+    .subject-info strong { display: block; font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 2px; }
+    .subject-info span { font-size: 12px; color: #6b7280; }
+
+    /* ─── Topic block ────────────────────────────────── */
+    .topic-block { margin-bottom: 2rem; }
+    .topic-header { margin-bottom: 1rem; }
+    .topic-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .topic-name { font-size: 14px; font-weight: 600; color: #111827; }
+    .topic-pct { font-size: 12px; color: #6b7280; font-variant-numeric: tabular-nums; }
+    .track { height: 4px; background: #edf0f8; border-radius: 99px; overflow: hidden; }
+    .fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #8fa4f3, #4361ee); transition: width 0.5s ease; }
+
+    /* ─── Tests grid ─────────────────────────────────── */
+    .tests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 0.75rem;
+    }
+
+    /* ─── Test card ──────────────────────────────────── */
+    .test-card {
+      background: #fff; border: 1px solid #e8eaf0; border-radius: 14px;
+      padding: 1.1rem 1.2rem; position: relative;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .test-card.active { border-color: #4361ee; cursor: pointer; }
+    .test-card.active:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(67,97,238,0.13);
+    }
+    .test-card.completed { background: #4361ee; border-color: #4361ee; }
+    .test-card.locked { opacity: 0.48; pointer-events: none; }
+
+    /* card top row */
+    .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem; }
+    .test-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #9ca3af; }
+    .test-card.completed .test-label { color: rgba(255,255,255,0.65); }
+    .status-pip { width: 8px; height: 8px; border-radius: 50%; }
+    .pip-done     { background: rgba(255,255,255,0.7); }
+    .pip-active   { background: #4361ee; }
+    .pip-locked   { background: #d1d5db; }
+
+    /* card number */
+    .test-num { font-size: 26px; font-weight: 600; line-height: 1; color: #111827; margin-bottom: 3px; }
+    .test-card.completed .test-num { color: #fff; }
+    .test-meta { font-size: 12px; color: #9ca3af; }
+    .test-card.completed .test-meta { color: rgba(255,255,255,0.65); }
+
+    /* divider */
+    .card-divider { height: 1px; background: #f0f2f8; margin: 0.9rem 0; }
+    .test-card.completed .card-divider { background: rgba(255,255,255,0.2); }
+
+    /* action button */
+    .start-btn {
+      width: 100%; padding: 7px 0; border-radius: 8px; border: none;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      transition: background 0.15s, transform 0.1s;
+      font-family: inherit;
+    }
+    .btn-start  { background: #4361ee; color: #fff; }
+    .btn-start:hover  { background: #3451d1; }
+    .btn-review { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+    .btn-review:hover { background: rgba(255,255,255,0.25); }
+
+    /* lock visual */
+    .lock-row { display: flex; align-items: center; justify-content: center; padding: 6px 0; }
+    .lock-icon { width: 16px; height: 20px; position: relative; }
+    .lock-body3  { width: 16px; height: 11px; background: #d1d5db; border-radius: 4px; position: absolute; bottom: 0; }
+    .lock-shackle3 { width: 10px; height: 9px; border: 2.5px solid #d1d5db; border-bottom: none; border-radius: 5px 5px 0 0; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+    .lock-hole { width: 4px; height: 4px; background: #fff; border-radius: 50%; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); }
+
+    /* admin action buttons */
+    .admin-row { display: flex; gap: 6px; margin-top: 0.5rem; }
+    .admin-btn {
+      padding: 3px 8px; font-size: 11px; border-radius: 5px; cursor: pointer;
+      background: none; border: 1px solid #e5e7eb; color: #6b7280;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .admin-btn.a-view:hover { border-color: #64748b; color: #64748b; background: #f8fafc; }
+    .admin-btn.a-edit:hover { border-color: #4361ee; color: #4361ee; background: #eef1fd; }
+
+    /* ─── Tip box ─────────────────────────────────────── */
+    .tip-box {
+      margin-top: 1.5rem; padding: 1rem 1.25rem;
+      background: #eef1fd; border: 1px solid #c7d0f8; border-radius: 12px;
+    }
+    .tip-box strong { font-size: 13px; font-weight: 600; color: #3451d1; display: block; margin-bottom: 4px; }
+    .tip-box p { font-size: 13px; color: #3451d1; line-height: 1.6; }
+
+    /* ─── Modals ──────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 16px;
+    }
+    .modal {
+      background: #fff; border-radius: 16px; padding: 1.5rem;
+      width: 100%; max-width: 480px; max-height: 80vh;
+      overflow-y: auto; animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .modal-title { font-size: 17px; font-weight: 600; color: #111827; }
+    .close-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid #e5e7eb;
+      background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: #6b7280; font-size: 18px; transition: background 0.15s;
+    }
+    .close-btn:hover { background: #f3f4f6; }
+
+    /* form inside modal */
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; letter-spacing: 0.3px; }
+    .form-group select,
+    .form-group input[type="text"] {
+      width: 100%; padding: 9px 12px; border: 1px solid #e5e7eb; border-radius: 8px;
+      font-size: 14px; color: #111827; background: #fff; transition: border-color 0.15s;
+      font-family: inherit; outline: none;
+    }
+    .form-group select:focus,
+    .form-group input[type="text"]:focus { border-color: #4361ee; }
+
+    .btn-submit {
+      width: 100%; padding: 10px; border-radius: 10px; border: none;
+      background: #4361ee; color: #fff; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s; font-family: inherit;
+    }
+    .btn-submit:hover { background: #3451d1; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* question items in modals */
+    .question-item {
+      display: flex; gap: 10px; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid #e8eaf0; background: #f9fafb; margin-bottom: 8px;
+      cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    }
+    .question-item:hover { border-color: #c7d0f8; background: #f3f5fd; }
+    .question-item.selected-question { border-color: #4361ee; background: #eef1fd; }
+    .question-item.correct-question  { border-color: #10b981; }
+    .question-item.incorrect-question { border-color: #ef4444; }
+    .question-number { font-size: 13px; font-weight: 700; color: #4361ee; min-width: 24px; }
+    .question-text { font-size: 13px; color: #374151; line-height: 1.5; }
+    .question-topic-row { display: flex; align-items: center; justify-content: space-between; margin-top: 5px; }
+    .question-topic-row small { font-size: 11px; color: #9ca3af; }
+
+    .q-btn {
+      padding: 2px 8px; font-size: 11px; border-radius: 5px; cursor: pointer;
+      background: none; font-family: inherit; transition: all 0.15s;
+    }
+    .q-btn-add    { border: 1px solid #4361ee; color: #4361ee; }
+    .q-btn-add:hover { background: #4361ee; color: #fff; }
+    .q-btn-remove { border: 1px solid #ef4444; color: #ef4444; }
+    .q-btn-remove:hover { background: #ef4444; color: #fff; }
+    .q-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* pricing / upgrade modal */
+    .pricing-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+    .plan-price-big { font-size: 2rem; font-weight: 700; color: #4361ee; text-align: center; margin: 0.5rem 0 2px; }
+    .plan-period { font-size: 13px; color: #6b7280; text-align: center; margin-bottom: 1rem; }
+    .feature-list { list-style: none; }
+    .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #374151; margin-bottom: 10px; line-height: 1.5; }
+    .feature-check {
+      width: 18px; height: 18px; border-radius: 50%; background: #4361ee; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feature-check svg { stroke: #fff; }
+
+    .btn-upgrade-big {
+      width: 100%; padding: 11px; border-radius: 10px; border: none;
+      background: #4361ee; color: #fff; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s; margin-top: 0.75rem; font-family: inherit;
+    }
+    .btn-upgrade-big:hover { background: #3451d1; }
+    .btn-upgrade-big:disabled { opacity: 0.5; cursor: not-allowed; background: #8fa4f3; }
+
+    /* wallet cards */
+    .wallet-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1rem; }
+    .wallet-card {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 1rem; border: 1.5px solid #e5e7eb; border-radius: 12px;
+      cursor: pointer; background: #fff; transition: border-color 0.2s, background 0.2s;
+    }
+    .wallet-card.selected { border-color: #4361ee; background: #eef1fd; }
+    .wallet-left { display: flex; align-items: center; gap: 10px; }
+    .wallet-img { width: 36px; height: 36px; border-radius: 8px; background: #f3f4f6; object-fit: contain; padding: 3px; }
+    .wallet-type { font-weight: 600; font-size: 14px; color: #111827; }
+    .wallet-num  { font-size: 12px; color: #6b7280; }
+    .wallet-badge { background: #4361ee; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+    .btn-set-default {
+      font-size: 11px; padding: 3px 8px; border-radius: 20px;
+      border: 1px solid #4361ee; background: none; color: #4361ee;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+    }
+    .btn-set-default:hover { background: #4361ee; color: #fff; }
+
+    .btn-add-wallet {
+      width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #e5e7eb;
+      background: #f9fafb; color: #374151; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s; margin-bottom: 0.75rem; font-family: inherit;
+    }
+    .btn-add-wallet:hover { background: #f1f3f9; }
+    .plan-price-note { text-align: center; font-size: 13px; color: #374151; font-weight: 500; margin-top: 6px; }
+
+    .input-control {
+      width: 100%; padding: 9px 12px; border: 1px solid #e5e7eb; border-radius: 8px;
+      font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.15s;
+    }
+    .input-control:focus { border-color: #4361ee; }
+    .error-text { font-size: 11px; color: #ef4444; margin-top: 4px; display: block; }
+
+    @media (max-width: 600px) {
+      .tests-grid { grid-template-columns: 1fr 1fr; }
+      .page { padding-top: 44px; }
+    }
+    @media (max-width: 400px) {
+      .tests-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
 
-        <button class="go-back-btn" [routerLink]="['/progress']">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5"></path>
-                <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-            Voltar
-        </button>
+<div class="page">
 
-        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-            <div class="loading-indicator">
-                <div class="spinner"></div>
-                <div class="loading-text">
-                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-                </div>
-            </div>
-        </div>
-
-        <!--
-        <div class="header">
-            <div class="header-top">
-                <div>
-                    <h1>Seu Progresso</h1>
-                    <p class="header-subtitle">
-                        Acompanhe sua evolução por disciplina
-                    </p>
-                </div>
-            </div>
-            
-            <div class="filters-section">
-                <div class="discipline-filters">
-                    <div class="filter-chip" *ngFor="let subject of subjects"
-                        [class.active]="subject.id === selectedSubject.id" (click)="onSelectSubject(subject)">
-                        {{ subject.name }}
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        -->
-
-        <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
-
-            <svg class="fab-icon" viewBox="0 0 24 24" width="22" height="22" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-
-                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-
-        </button>
-
-        <div class="overall">
-            <div class="overall-ring">
-                <div class="discipline-progress">
-                    <div class="progress-circle" [style.--progress]="subject.currentUserProgressRate * 3.6 + 'deg'">
-                        <span></span>
-                    </div>
-                </div>
-                <div class="ring-label">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
-            </div>
-            <div class="overall-text"><strong>{{ subject.subjectName }}</strong><span>{{ subject.totalTopics }}
-                    tópicos</span>
-            </div>
-        </div>
-
-        <div class="discipline">
-
-            <div class="topics">
-                <div class="topic" *ngFor="let topic of subject.topicDtoWithTests">
-
-                    <div class="topic-row">
-                        <div class="topic-meta"><span class="topic-name">{{ topic.topicName }}</span><span
-                                class="topic-score"><span class="total">{{ topic.progressRate.toFixed(0)
-                                    }}%</span></span></div>
-                        <div class="track">
-                            <div class="fill" [style.width.%]="topic.progressRate.toFixed(0)"></div>
-                        </div>
-                    </div>
-
-                    <!-- TESTES -->
-                    <div class="quizzes">
-                        <div class="quiz" *ngFor="let test of topic.tests; let i = index" [ngClass]="{
-                                    completed: isCompleted(test),
-                                    active: isActive(topic, test, i),
-                                    locked: isLocked(topic, test, i)
-                                }">
-                            <!-- HEADER DO TESTE -->
-                            <div class="quiz-header">
-                                <div class="quiz-title">
-                                    Teste {{ i + 1 }}
-                                </div>
-
-                                <div class="quiz-icon">
-                                    <ng-container *ngIf="isCompleted(test)">
-                                    </ng-container>
-
-                                    <ng-container *ngIf="isActive(topic, test, i)">
-                                        <!--
-                                            <div class="icon">
-                                                <div class="target"></div>
-                                            </div>
-                                            -->
-                                    </ng-container>
-
-                                    <ng-container *ngIf="isLocked(topic, test, i)">
-                                        <div class="icon">
-                                            <div class="lock">
-                                                <div class="lock-shackle"></div>
-                                                <div class="lock-body">
-                                                    <div class="lock-keyhole"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                </div>
-
-                            </div>
-
-                            <!-- INFO -->
-                            <div class="quiz-info">
-                                <span class="questions-count">
-                                    {{ test.totalQuestions }} questões
-                                </span>
-
-                                <div class="quiz-actions" *ngIf="isSuperAdmin && loggedUser">
-                                    <button class="action-btn view" (click)="onGetSelectedQuestionsByTopicId(test)">
-                                        Ver
-                                    </button>
-
-                                    <button class="action-btn edit" (click)="onGetQuestionsByTopicId(test)">
-                                        Editar
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- AÇÕES -->
-                            <div class="quiz-progress" *ngIf="!isLocked(topic, test, i)">
-                                <!-- REVER -->
-                                <button class="start-btn review" *ngIf="isCompleted(test)" (click)="reviewTest(test)">
-                                    Revisar
-                                </button>
-
-                                <!-- INICIAR -->
-                                <button class="start-btn start" *ngIf="isActive(topic, test, i)"
-                                    (click)="startTest(test, topic)">
-                                    Iniciar
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <br>
-        <br>
-
-        <div class="progress-warning">
-            <strong>Dica de estudo</strong>
-            <p>
-                Domine todos os exercícios propostos, complete e revise cada teste para avançar com confiança
-                no seu progresso.
-            </p>
-        </div>
-
+  <!-- Loading overlay -->
+  <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
     </div>
+  </div>
+
+  <!-- FAB (admin) -->
+  <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <path d="M12 5v14M5 12h14"/>
+    </svg>
+  </button>
+
+  <!-- Back -->
+  <button class="back-btn" [routerLink]="['/progress']">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+    </svg>
+    Voltar
+  </button>
+
+  <!-- Subject hero -->
+  <div class="subject-hero">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+        <circle class="ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="ring-fg" cx="26" cy="26" r="22"
+          stroke-dasharray="138.23"
+          [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23"/>
+      </svg>
+      <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
+    </div>
+    <div class="subject-info">
+      <strong>{{ subject.subjectName }}</strong>
+      <span>{{ subject.totalTopics }} tópicos</span>
+    </div>
+  </div>
+
+  <!-- Topics -->
+  <div *ngFor="let topic of subject.topicDtoWithTests" class="topic-block">
+
+    <div class="topic-header">
+      <div class="topic-meta">
+        <span class="topic-name">{{ topic.topicName }}</span>
+        <span class="topic-pct">{{ topic.progressRate.toFixed(0) }}%</span>
+      </div>
+      <div class="track">
+        <div class="fill" [style.width.%]="topic.progressRate.toFixed(0)"></div>
+      </div>
+    </div>
+
+    <div class="tests-grid">
+      <div class="test-card"
+           *ngFor="let test of topic.tests; let i = index"
+           [ngClass]="{
+             completed: isCompleted(test),
+             active: isActive(topic, test, i),
+             locked: isLocked(topic, test, i)
+           }">
+
+        <!-- Top row -->
+        <div class="card-top">
+          <span class="test-label">Teste {{ i + 1 }}</span>
+          <div class="status-pip"
+               [ngClass]="{
+                 'pip-done':   isCompleted(test),
+                 'pip-active': isActive(topic, test, i),
+                 'pip-locked': isLocked(topic, test, i)
+               }"></div>
+        </div>
+
+        <!-- Number + meta -->
+        <div class="test-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</div>
+        <div class="test-meta">{{ test.totalQuestions }} questões</div>
+
+        <!-- Admin buttons -->
+        <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
+          <button class="admin-btn a-view" (click)="onGetSelectedQuestionsByTopicId(test)">Ver</button>
+          <button class="admin-btn a-edit" (click)="onGetQuestionsByTopicId(test)">Editar</button>
+        </div>
+
+        <!-- Action area -->
+        <ng-container *ngIf="!isLocked(topic, test, i)">
+          <div class="card-divider"></div>
+          <div>
+            <button class="start-btn btn-review" *ngIf="isCompleted(test)" (click)="reviewTest(test)">
+              Revisar
+            </button>
+            <button class="start-btn btn-start" *ngIf="isActive(topic, test, i)" (click)="startTest(test, topic)">
+              Iniciar
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Lock visual for locked cards -->
+        <ng-container *ngIf="isLocked(topic, test, i)">
+          <div class="card-divider"></div>
+          <div class="lock-row">
+            <div class="lock-icon">
+              <div class="lock-shackle3"></div>
+              <div class="lock-body3"><div class="lock-hole"></div></div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Tip -->
+  <div class="tip-box">
+    <strong>Dica de estudo</strong>
+    <p>Domine todos os exercícios propostos, complete e revise cada teste para avançar com confiança no seu progresso.</p>
+  </div>
+
+</div><!-- /page -->
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Adicionar / Editar Teste
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalSave">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">{{ editing ? 'Editar teste' : 'Novo teste' }}</h2>
+      <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
+    </div>
+
+    <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
+      <div class="form-group">
+        <label for="topic">Tópico</label>
+        <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!subject.id" required>
+          <option value="" disabled selected>Selecione o tópico</option>
+          <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="difficultyLevel">Nível</label>
+        <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
+          <option value="" disabled selected>Selecione o nível</option>
+          <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="position">Posição</label>
+        <input type="text" name="position" ngModel #position="ngModel" required minlength="1" [(ngModel)]="test.orderIndex">
+      </div>
+      <button class="btn-submit" type="submit" [disabled]="testForm.invalid || showLoading">
+        {{ showLoading ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Ver questões adicionadas
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Questões do teste</h2>
+      <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
+    </div>
+
+    <div *ngFor="let question of selectedQuestions; let i = index">
+      <div class="question-item" *ngIf="question.text">
+        <span class="question-number">{{ i + 1 }}</span>
+        <div>
+          <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+          <div class="question-topic-row" *ngIf="question.topic">
+            <small>Tópico: {{ question.topic.name }}</small>
+            <button class="q-btn q-btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Editar questões (marcar/desmarcar)
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalQuestionsList">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Editar questões</h2>
+      <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
+    </div>
+
+    <div *ngFor="let question of allQuestions; let i = index">
+      <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
+        <span class="question-number">{{ i + 1 }}</span>
+        <div>
+          <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+          <div class="question-topic-row" *ngIf="question.topic">
+            <small>Tópico: {{ question.topic.name }}</small>
+            <button class="q-btn q-btn-add"    *ngIf="!question.selected" (click)="onAddQuestionToTestQuestions(question.id)">Adicionar</button>
+            <button class="q-btn q-btn-remove" *ngIf="question.selected"  (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Upgrade de plano
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Plano Premium</h2>
+      <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
+    </div>
+
+    <div class="pricing-card">
+      <div class="plan-price-big">MT 299</div>
+      <div class="plan-period">por mês</div>
+      <ul class="feature-list">
+        <li>
+          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+        </li>
+        <li>
+          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Resolução detalhada com dicas e comentários
+        </li>
+        <li>
+          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Criação de quizzes avançados e personalizados
+        </li>
+        <li>
+          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Mais exercícios por quiz para reforçar o aprendizado
+        </li>
+      </ul>
+    </div>
+
+    <button class="btn-upgrade-big" (click)="onUpgradePlan()">Fazer upgrade agora</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Método de pagamento
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Método de pagamento</h2>
+      <button class="close-btn" (click)="onCloseModalPaymentOptions()">&#x2715;</button>
+    </div>
+
+    <div class="wallet-options">
+      <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+        <label class="wallet-card" *ngFor="let wallet of userWallets" [class.selected]="selectedWalletId === wallet.id">
+          <div class="wallet-left">
+            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img"/>
+            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img"/>
+            <div>
+              <div class="wallet-type">{{ wallet.type }}</div>
+              <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+            </div>
+          </div>
+          <div>
+            <button *ngIf="!wallet.default" class="btn-set-default" (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Principal</button>
+            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+          </div>
+        </label>
+      </ng-container>
+      <ng-template #noWallets>
+        <p style="font-size:13px; color:#6b7280;">Você ainda não adicionou nenhuma carteira.</p>
+      </ng-template>
+    </div>
+
+    <button class="btn-add-wallet" (click)="openModalAddPaymentOption()">+ Adicionar método de pagamento</button>
+
+    <div *ngIf="userWallets.length !== 0">
+      <button class="btn-upgrade-big" (click)="upgradePlan()">Confirmar upgrade</button>
+      <p class="plan-price-note">MT 299/mês</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Adicionar carteira
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Adicionar carteira</h2>
+      <button class="close-btn" (click)="onCloseModalAddPaymentOption()">&#x2715;</button>
+    </div>
+
+    <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+      <div class="form-group">
+        <label for="phoneNumber">Número de telefone</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" class="input-control"
+               maxlength="9" minlength="9" [(ngModel)]="wallet.phoneNumber"
+               (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
+               required placeholder="Ex: 841234567"/>
+        <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+          O número deve ter exatamente 9 dígitos.
+        </span>
+        <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
+          Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+        </span>
+      </div>
+
+      <div *ngIf="wallet.type" class="wallet-card" style="margin-bottom: 1rem; pointer-events: none;">
+        <div class="wallet-left">
+          <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img"/>
+          <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img"/>
+          <div>
+            <div class="wallet-type">{{ wallet.type }}</div>
+            <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-upgrade-big" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
+        {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
+      </button>
+    </form>
+  </div>
+</div>
+
 </body>
-
 </html>
-
-<div class="popout-overlay" *ngIf="displayModalSave">
-    <div class="popout-container">
-        <div class="popout-header">
-            <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
-            <button class="close-button" (click)="displayModalSave = false">&times;</button>
-        </div>
-
-        <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
-
-            <div class="form-group">
-                <label for="topic">Tópico</label>
-                <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!subject.id" required>
-                    <option value="" disabled selected>Selecione o tópico</option>
-                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="difficultyLevel">Nivel</label>
-                <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
-                    <option value="" disabled selected>Selecione o nivel</option>
-                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="position">Posição</label>
-                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                    [(ngModel)]="test.orderIndex">
-            </div>
-
-            <button class="submit-button" type="submit" [disabled]="testForm.invalid" class="btn">
-                {{ showLoading ? 'Loading...' :'Salvar' }}
-            </button>
-
-        </form>
-    </div>
-</div>
-
-<!-- Popout Ver Questoes adicionadas-->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalSelectedQuestionsList">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Questões</h2>
-            <button class="close-button" (click)="onCloseSelectedQuestionsList()">&times;</button>
-        </div>
-
-        <div *ngFor="let question of selectedQuestions; let i = index">
-            <div class="question-item" *ngIf="question.text" [ngClass]="{
-           }">
-
-                <span class="question-number">{{ i + 1 }}</span>
-                <div class="question-content">
-                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-
-                    <!-- Mostra o tópico, se existir -->
-                    <div class="question-topic" *ngIf="question.topic">
-                        <small>Tópico: {{ question.topic.name }}</small>
-
-                        <button class="btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)">
-                            remover
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Popout Ver Questoes adicionadas e marcadas-->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalQuestionsList">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Questões</h2>
-            <button class="close-button" (click)="onCloseQuestionList()">&times;</button>
-        </div>
-
-        <div *ngFor="let question of allQuestions; let i = index">
-            <div class="question-item" *ngIf="question.text" [ngClass]="{
-             'selected-question': question.selected,
-           }">
-
-                <span class="question-number">{{ i + 1 }}</span>
-                <div class="question-content">
-                    <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-
-                    <!-- Mostra o tópico, se existir -->
-                    <div class="question-topic" *ngIf="question.topic">
-                        <small>Tópico: {{ question.topic.name }}</small>
-
-                        <button class="btn-add" (click)="onAddQuestionToTestQuestions(question.id)"
-                            *ngIf="!question.selected">
-                            adicionar
-                        </button>
-
-                        <button class="btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)"
-                            *ngIf="question.selected">
-                            remover
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Popout Upgrade Plan -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalUpgradePlan">
-    <div class="popout-container pricing-card popular">
-
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="plan-name popout-title">Atualize para o Plano Premium</h2>
-            <button class="close-button" (click)="onCloseUpgradeModal()">&times;</button>
-        </div>
-
-        <div class="pricing-card">
-            <div class="plan-header">
-                <!--<h3 class="plan-name">Premium</h3>-->
-                <div class="plan-price">MT 299</div>
-                <div class="plan-period">por mês</div>
-            </div>
-
-            <!-- Features -->
-            <div class="popout-body features">
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Resolução detalhada de todas as questões com dicas e comentários</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Criação de quizzes avançados e personalizados</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Mais exercícios por quiz para reforçar o aprendizado</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- CTA / Preço -->
-        <div class="upgrade-cta">
-            <button class="cta-button btn-upgrade" (click)="onUpgradePlan()">
-                Fazer Upgrade Agora
-            </button>
-            <!--<p class="plan-price" style="margin-top: 0.5rem; text-align:center;">299 MT/mês</p>-->
-        </div>
-
-    </div>
-</div>
-
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPaymentOptions">
-    <div class="popout-container modern-card">
-
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="popout-title">Escolha o método de pagamento</h2>
-            <button class="close-button" (click)="onCloseModalPaymentOptions()">
-                &times;
-            </button>
-        </div>
-
-        <!-- Carteiras Disponíveis -->
-        <div class="wallet-options">
-            <!-- Caso existam carteiras -->
-            <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-                <label class="wallet-option" *ngFor="let wallet of userWallets">
-                    <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
-                    <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
-                        <div class="wallet-left">
-                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                class="wallet-icon" />
-                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                class="wallet-icon" />
-
-                            <div class="wallet-details">
-                                <span class="wallet-type">{{ wallet.type }}</span>
-                                <span class="wallet-number">{{ wallet.phoneNumber }}</span>
-                            </div>
-                        </div>
-
-                        <div class="wallet-check">
-                            <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
-                                Definir como principal
-                            </button>
-                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-                        </div>
-                    </div>
-                </label>
-            </ng-container>
-
-            <!-- Caso não existam carteiras -->
-            <ng-template #noWallets>
-                <div class="wallet-card">
-                    <p class="empty-text">Você ainda não adicionou nenhuma carteira.</p>
-                </div>
-            </ng-template>
-        </div>
-
-        <!-- Caso não tenha carteiras -->
-        <div class="upgrade-cta">
-            <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
-                Adicionar Método de Pagamento
-            </button>
-        </div>
-
-        <!-- Confirmar pagamento -->
-        <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
-            <button class="cta-button btn-upgrade" (click)="upgradePlan()">
-                Fazer Upgrade Agora
-            </button>
-            <p class="plan-price-upgrade">299 MT/mês</p>
-        </div>
-    </div>
-</div>
-
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalAddPaymentOption">
-    <div class="popout-container pricing-card popular">
-
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="plan-name popout-title">Adicione o método de pagamento</h2>
-            <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
-        </div>
-
-        <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-
-            <!-- Número de telefone -->
-            <div class="form-group">
-                <label for="phoneNumber">Número de telefone</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
-                    [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" class="input-control" />
-
-                <!-- Mensagem de erro -->
-                <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-                    O número deve ter exatamente 9 dígitos.
-                </small>
-                <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
-                    Parece que este número não pertence a uma carteira válida. Suportamos apenas <strong>MPESA
-                        (84/85)</strong> e
-                    <strong>EMOLA (86/87)</strong>.
-                </small>
-            </div>
-
-            <!-- Tipo de carteira detectado automaticamente -->
-            <div class="wallet-detected" *ngIf="wallet.type">
-                <div class="wallet-card">
-                    <div class="wallet-left">
-                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                            class="wallet-icon" />
-                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                            class="wallet-icon" />
-
-                        <div class="wallet-details">
-                            <span class="wallet-type">{{ wallet.type }}</span>
-                            <span class="wallet-number">{{ wallet.phoneNumber }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="upgrade-cta">
-                <button class="cta-button btn-upgrade" type="submit"
-                    [disabled]="walletTypeForm.invalid || !wallet.type">
-                    {{ showLoading ? 'Adicionando carteira...' :'Adicionar carteira' }}
-                </button>
-            </div>
-
-        </form>
-
-    </div>
-</div>
