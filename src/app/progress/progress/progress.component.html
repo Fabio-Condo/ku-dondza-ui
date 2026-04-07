@@ -1,642 +1,1282 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel de Testes</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Testes</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: #f7f8fc;
-      color: #111827;
-      padding: 16px;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 16px;
+        }
 
-    /* ─── Layout ─────────────────────────────────────── */
-    .page { max-width: 900px; margin: 0 auto; padding-top: 48px; padding-bottom: 3rem; }
+        /* ─── Layout ─────────────────────────────────────── */
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 48px;
+            padding-bottom: 3rem;
+        }
 
-    /* ─── Loading overlay ────────────────────────────── */
-    .loading-overlay {
-      position: fixed; inset: 0;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999;
-      opacity: 0; visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s;
-    }
-    .loading-overlay.visible { opacity: 1; visibility: visible; }
-    .loading-box {
-      background: #fff; border-radius: 16px; border: 1px solid #e8eaf0;
-      padding: 2rem 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 16px;
-    }
-    .spinner {
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 3px solid #e0e4f5;
-      border-top-color: #4361ee;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text { font-size: 14px; font-weight: 500; color: #374151; }
+        /* ─── Loading overlay ────────────────────────────── */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
 
-    /* ─── Back button ────────────────────────────────── */
-    .back-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: none; border: none; cursor: pointer;
-      font-size: 13px; font-weight: 500; color: #6b7280;
-      padding: 0; margin-bottom: 1.5rem;
-      transition: color 0.15s;
-      font-family: inherit;
-    }
-    .back-btn:hover { color: #4361ee; }
+        .loading-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
 
-    /* ─── FAB ────────────────────────────────────────── */
-    .fab {
-      position: fixed; bottom: 20px; right: 20px;
-      width: 52px; height: 52px; border-radius: 50%;
-      background: #4361ee; color: #fff; border: none;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(67,97,238,0.35);
-      cursor: pointer; z-index: 100; transition: background 0.15s, transform 0.15s;
-    }
-    .fab:hover { background: #3451d1; transform: scale(1.05); }
+        .loading-box {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e8eaf0;
+            padding: 2rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
 
-    /* ─── Subject hero card ──────────────────────────── */
-    .subject-hero {
-      display: flex; align-items: center; gap: 1rem;
-      background: #fff; border: 1px solid #e8eaf0; border-radius: 14px;
-      padding: 1.25rem 1.5rem; margin-bottom: 2rem;
-    }
-    .ring-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
-    .ring-wrap svg { width: 52px; height: 52px; transform: rotate(-90deg); }
-    .ring-bg { fill: none; stroke: #dde3f8; stroke-width: 4; }
-    .ring-fg {
-      fill: none; stroke: #4361ee; stroke-width: 4; stroke-linecap: round;
-      transition: stroke-dashoffset 1s cubic-bezier(.22,.68,0,1.2);
-    }
-    .ring-pct {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 600; color: #4361ee;
-    }
-    .subject-info strong { display: block; font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 2px; }
-    .subject-info span { font-size: 12px; color: #6b7280; }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #e0e4f5;
+            border-top-color: #4361ee;
+            animation: spin 0.8s linear infinite;
+        }
 
-    /* ─── Topic block ────────────────────────────────── */
-    .topic-block { margin-bottom: 2rem; }
-    .topic-header { margin-bottom: 1rem; }
-    .topic-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-    .topic-name { font-size: 14px; font-weight: 600; color: #111827; }
-    .topic-pct { font-size: 12px; color: #6b7280; font-variant-numeric: tabular-nums; }
-    .track { height: 4px; background: #edf0f8; border-radius: 99px; overflow: hidden; }
-    .fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #8fa4f3, #4361ee); transition: width 0.5s ease; }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    /* ─── Tests grid ─────────────────────────────────── */
-    .tests-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 0.75rem;
-    }
+        .loading-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
 
-    /* ─── Test card ──────────────────────────────────── */
-    .test-card {
-      background: #fff; border: 1px solid #e8eaf0; border-radius: 14px;
-      padding: 1.1rem 1.2rem; position: relative;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    }
-    .test-card.active { border-color: #4361ee; cursor: pointer; }
-    .test-card.active:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(67,97,238,0.13);
-    }
-    .test-card.completed { background: #4361ee; border-color: #4361ee; }
-    .test-card.locked { opacity: 0.48; pointer-events: none; }
+        /* ─── Back button ────────────────────────────────── */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            padding: 0;
+            margin-bottom: 1.5rem;
+            transition: color 0.15s;
+            font-family: inherit;
+        }
 
-    /* card top row */
-    .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem; }
-    .test-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #9ca3af; }
-    .test-card.completed .test-label { color: rgba(255,255,255,0.65); }
-    .status-pip { width: 8px; height: 8px; border-radius: 50%; }
-    .pip-done     { background: rgba(255,255,255,0.7); }
-    .pip-active   { background: #4361ee; }
-    .pip-locked   { background: #d1d5db; }
+        .back-btn:hover {
+            color: #4361ee;
+        }
 
-    /* card number */
-    .test-num { font-size: 26px; font-weight: 600; line-height: 1; color: #111827; margin-bottom: 3px; }
-    .test-card.completed .test-num { color: #fff; }
-    .test-meta { font-size: 12px; color: #9ca3af; }
-    .test-card.completed .test-meta { color: rgba(255,255,255,0.65); }
+        /* ─── FAB ────────────────────────────────────────── */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #4361ee;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.35);
+            cursor: pointer;
+            z-index: 100;
+            transition: background 0.15s, transform 0.15s;
+        }
 
-    /* divider */
-    .card-divider { height: 1px; background: #f0f2f8; margin: 0.9rem 0; }
-    .test-card.completed .card-divider { background: rgba(255,255,255,0.2); }
+        .fab:hover {
+            background: #3451d1;
+            transform: scale(1.05);
+        }
 
-    /* action button */
-    .start-btn {
-      width: 100%; padding: 7px 0; border-radius: 8px; border: none;
-      font-size: 12px; font-weight: 600; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 5px;
-      transition: background 0.15s, transform 0.1s;
-      font-family: inherit;
-    }
-    .btn-start  { background: #4361ee; color: #fff; }
-    .btn-start:hover  { background: #3451d1; }
-    .btn-review { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
-    .btn-review:hover { background: rgba(255,255,255,0.25); }
+        /* ─── Subject hero card ──────────────────────────── */
+        .subject-hero {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #fff;
+            border: 1px solid #e8eaf0;
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+        }
 
-    /* lock visual */
-    .lock-row { display: flex; align-items: center; justify-content: center; padding: 6px 0; }
-    .lock-icon { width: 16px; height: 20px; position: relative; }
-    .lock-body3  { width: 16px; height: 11px; background: #d1d5db; border-radius: 4px; position: absolute; bottom: 0; }
-    .lock-shackle3 { width: 10px; height: 9px; border: 2.5px solid #d1d5db; border-bottom: none; border-radius: 5px 5px 0 0; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
-    .lock-hole { width: 4px; height: 4px; background: #fff; border-radius: 50%; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); }
+        .ring-wrap {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+        }
 
-    /* admin action buttons */
-    .admin-row { display: flex; gap: 6px; margin-top: 0.5rem; }
-    .admin-btn {
-      padding: 3px 8px; font-size: 11px; border-radius: 5px; cursor: pointer;
-      background: none; border: 1px solid #e5e7eb; color: #6b7280;
-      transition: all 0.15s; font-family: inherit;
-    }
-    .admin-btn.a-view:hover { border-color: #64748b; color: #64748b; background: #f8fafc; }
-    .admin-btn.a-edit:hover { border-color: #4361ee; color: #4361ee; background: #eef1fd; }
+        .ring-wrap svg {
+            width: 52px;
+            height: 52px;
+            transform: rotate(-90deg);
+        }
 
-    /* ─── Tip box ─────────────────────────────────────── */
-    .tip-box {
-      margin-top: 1.5rem; padding: 1rem 1.25rem;
-      background: #eef1fd; border: 1px solid #c7d0f8; border-radius: 12px;
-    }
-    .tip-box strong { font-size: 13px; font-weight: 600; color: #3451d1; display: block; margin-bottom: 4px; }
-    .tip-box p { font-size: 13px; color: #3451d1; line-height: 1.6; }
+        .ring-bg {
+            fill: none;
+            stroke: #dde3f8;
+            stroke-width: 4;
+        }
 
-    /* ─── Modals ──────────────────────────────────────── */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 200; padding: 16px;
-    }
-    .modal {
-      background: #fff; border-radius: 16px; padding: 1.5rem;
-      width: 100%; max-width: 480px; max-height: 80vh;
-      overflow-y: auto; animation: modalIn 0.25s ease;
-    }
-    @keyframes modalIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
-    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-    .modal-title { font-size: 17px; font-weight: 600; color: #111827; }
-    .close-btn {
-      width: 32px; height: 32px; border-radius: 8px; border: 1px solid #e5e7eb;
-      background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      color: #6b7280; font-size: 18px; transition: background 0.15s;
-    }
-    .close-btn:hover { background: #f3f4f6; }
+        .ring-fg {
+            fill: none;
+            stroke: #4361ee;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s cubic-bezier(.22, .68, 0, 1.2);
+        }
 
-    /* form inside modal */
-    .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; letter-spacing: 0.3px; }
-    .form-group select,
-    .form-group input[type="text"] {
-      width: 100%; padding: 9px 12px; border: 1px solid #e5e7eb; border-radius: 8px;
-      font-size: 14px; color: #111827; background: #fff; transition: border-color 0.15s;
-      font-family: inherit; outline: none;
-    }
-    .form-group select:focus,
-    .form-group input[type="text"]:focus { border-color: #4361ee; }
+        .ring-pct {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #4361ee;
+        }
 
-    .btn-submit {
-      width: 100%; padding: 10px; border-radius: 10px; border: none;
-      background: #4361ee; color: #fff; font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: background 0.15s; font-family: inherit;
-    }
-    .btn-submit:hover { background: #3451d1; }
-    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .subject-info strong {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2px;
+        }
 
-    /* question items in modals */
-    .question-item {
-      display: flex; gap: 10px; padding: 10px 12px; border-radius: 10px;
-      border: 1px solid #e8eaf0; background: #f9fafb; margin-bottom: 8px;
-      cursor: pointer; transition: border-color 0.15s, background 0.15s;
-    }
-    .question-item:hover { border-color: #c7d0f8; background: #f3f5fd; }
-    .question-item.selected-question { border-color: #4361ee; background: #eef1fd; }
-    .question-item.correct-question  { border-color: #10b981; }
-    .question-item.incorrect-question { border-color: #ef4444; }
-    .question-number { font-size: 13px; font-weight: 700; color: #4361ee; min-width: 24px; }
-    .question-text { font-size: 13px; color: #374151; line-height: 1.5; }
-    .question-topic-row { display: flex; align-items: center; justify-content: space-between; margin-top: 5px; }
-    .question-topic-row small { font-size: 11px; color: #9ca3af; }
+        .subject-info span {
+            font-size: 12px;
+            color: #6b7280;
+        }
 
-    .q-btn {
-      padding: 2px 8px; font-size: 11px; border-radius: 5px; cursor: pointer;
-      background: none; font-family: inherit; transition: all 0.15s;
-    }
-    .q-btn-add    { border: 1px solid #4361ee; color: #4361ee; }
-    .q-btn-add:hover { background: #4361ee; color: #fff; }
-    .q-btn-remove { border: 1px solid #ef4444; color: #ef4444; }
-    .q-btn-remove:hover { background: #ef4444; color: #fff; }
-    .q-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        /* ─── Topic block ────────────────────────────────── */
+        .topic-block {
+            margin-bottom: 2rem;
+        }
 
-    /* pricing / upgrade modal */
-    .pricing-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
-    .plan-price-big { font-size: 2rem; font-weight: 700; color: #4361ee; text-align: center; margin: 0.5rem 0 2px; }
-    .plan-period { font-size: 13px; color: #6b7280; text-align: center; margin-bottom: 1rem; }
-    .feature-list { list-style: none; }
-    .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #374151; margin-bottom: 10px; line-height: 1.5; }
-    .feature-check {
-      width: 18px; height: 18px; border-radius: 50%; background: #4361ee; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .feature-check svg { stroke: #fff; }
+        .topic-header {
+            margin-bottom: 1rem;
+        }
 
-    .btn-upgrade-big {
-      width: 100%; padding: 11px; border-radius: 10px; border: none;
-      background: #4361ee; color: #fff; font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: background 0.15s; margin-top: 0.75rem; font-family: inherit;
-    }
-    .btn-upgrade-big:hover { background: #3451d1; }
-    .btn-upgrade-big:disabled { opacity: 0.5; cursor: not-allowed; background: #8fa4f3; }
+        .topic-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
 
-    /* wallet cards */
-    .wallet-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1rem; }
-    .wallet-card {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.85rem 1rem; border: 1.5px solid #e5e7eb; border-radius: 12px;
-      cursor: pointer; background: #fff; transition: border-color 0.2s, background 0.2s;
-    }
-    .wallet-card.selected { border-color: #4361ee; background: #eef1fd; }
-    .wallet-left { display: flex; align-items: center; gap: 10px; }
-    .wallet-img { width: 36px; height: 36px; border-radius: 8px; background: #f3f4f6; object-fit: contain; padding: 3px; }
-    .wallet-type { font-weight: 600; font-size: 14px; color: #111827; }
-    .wallet-num  { font-size: 12px; color: #6b7280; }
-    .wallet-badge { background: #4361ee; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
-    .btn-set-default {
-      font-size: 11px; padding: 3px 8px; border-radius: 20px;
-      border: 1px solid #4361ee; background: none; color: #4361ee;
-      cursor: pointer; transition: all 0.15s; font-family: inherit;
-    }
-    .btn-set-default:hover { background: #4361ee; color: #fff; }
+        .topic-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+        }
 
-    .btn-add-wallet {
-      width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #e5e7eb;
-      background: #f9fafb; color: #374151; font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: background 0.15s; margin-bottom: 0.75rem; font-family: inherit;
-    }
-    .btn-add-wallet:hover { background: #f1f3f9; }
-    .plan-price-note { text-align: center; font-size: 13px; color: #374151; font-weight: 500; margin-top: 6px; }
+        .topic-pct {
+            font-size: 12px;
+            color: #6b7280;
+            font-variant-numeric: tabular-nums;
+        }
 
-    .input-control {
-      width: 100%; padding: 9px 12px; border: 1px solid #e5e7eb; border-radius: 8px;
-      font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.15s;
-    }
-    .input-control:focus { border-color: #4361ee; }
-    .error-text { font-size: 11px; color: #ef4444; margin-top: 4px; display: block; }
+        .track {
+            height: 4px;
+            background: #edf0f8;
+            border-radius: 99px;
+            overflow: hidden;
+        }
 
-    @media (max-width: 600px) {
-      .tests-grid { grid-template-columns: 1fr 1fr; }
-      .page { padding-top: 44px; }
-    }
-    @media (max-width: 400px) {
-      .tests-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+        .fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #8fa4f3, #4361ee);
+            transition: width 0.5s ease;
+        }
+
+        /* ─── Tests grid ─────────────────────────────────── */
+        .tests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 0.75rem;
+        }
+
+        /* ─── Test card ──────────────────────────────────── */
+        .test-card {
+            background: #fff;
+            border: 1px solid #e8eaf0;
+            border-radius: 14px;
+            padding: 1.1rem 1.2rem;
+            position: relative;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .test-card.active {
+            border-color: #4361ee;
+            cursor: pointer;
+        }
+
+        .test-card.active:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(67, 97, 238, 0.13);
+        }
+
+        .test-card.completed {
+            background: #4361ee;
+            border-color: #4361ee;
+        }
+
+        .test-card.locked {
+            opacity: 0.48;
+            pointer-events: none;
+        }
+
+        /* card top row */
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.9rem;
+        }
+
+        .test-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #9ca3af;
+        }
+
+        .test-card.completed .test-label {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .status-pip {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .pip-done {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .pip-active {
+            background: #4361ee;
+        }
+
+        .pip-locked {
+            background: #d1d5db;
+        }
+
+        /* card number */
+        .test-num {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1;
+            color: #111827;
+            margin-bottom: 3px;
+        }
+
+        .test-card.completed .test-num {
+            color: #fff;
+        }
+
+        .test-meta {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .test-card.completed .test-meta {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* divider */
+        .card-divider {
+            height: 1px;
+            background: #f0f2f8;
+            margin: 0.9rem 0;
+        }
+
+        .test-card.completed .card-divider {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* action button */
+        .start-btn {
+            width: 100%;
+            padding: 7px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: background 0.15s, transform 0.1s;
+            font-family: inherit;
+        }
+
+        .btn-start {
+            background: #4361ee;
+            color: #fff;
+        }
+
+        .btn-start:hover {
+            background: #3451d1;
+        }
+
+        .btn-review {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-review:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* lock visual */
+        .lock-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 0;
+        }
+
+        .lock-icon {
+            width: 16px;
+            height: 20px;
+            position: relative;
+        }
+
+        .lock-body3 {
+            width: 16px;
+            height: 11px;
+            background: #d1d5db;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .lock-shackle3 {
+            width: 10px;
+            height: 9px;
+            border: 2.5px solid #d1d5db;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .lock-hole {
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* admin action buttons */
+        .admin-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 0.5rem;
+        }
+
+        .admin-btn {
+            padding: 3px 8px;
+            font-size: 11px;
+            border-radius: 5px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+
+        .admin-btn.a-view:hover {
+            border-color: #64748b;
+            color: #64748b;
+            background: #f8fafc;
+        }
+
+        .admin-btn.a-edit:hover {
+            border-color: #4361ee;
+            color: #4361ee;
+            background: #eef1fd;
+        }
+
+        /* ─── Tip box ─────────────────────────────────────── */
+        .tip-box {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            background: #eef1fd;
+            border: 1px solid #c7d0f8;
+            border-radius: 12px;
+        }
+
+        .tip-box strong {
+            font-size: 13px;
+            font-weight: 600;
+            color: #3451d1;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip-box p {
+            font-size: 13px;
+            color: #3451d1;
+            line-height: 1.6;
+        }
+
+        /* ─── Modals ──────────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 16px;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 480px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalIn 0.25s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 18px;
+            transition: background 0.15s;
+        }
+
+        .close-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* form inside modal */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group select,
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #111827;
+            background: #fff;
+            transition: border-color 0.15s;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-group select:focus,
+        .form-group input[type="text"]:focus {
+            border-color: #4361ee;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover {
+            background: #3451d1;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* question items in modals */
+        .question-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #e8eaf0;
+            background: #f9fafb;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .question-item:hover {
+            border-color: #c7d0f8;
+            background: #f3f5fd;
+        }
+
+        .question-item.selected-question {
+            border-color: #4361ee;
+            background: #eef1fd;
+        }
+
+        .question-item.correct-question {
+            border-color: #10b981;
+        }
+
+        .question-item.incorrect-question {
+            border-color: #ef4444;
+        }
+
+        .question-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4361ee;
+            min-width: 24px;
+        }
+
+        .question-text {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .question-topic-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        .question-topic-row small {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .q-btn {
+            padding: 2px 8px;
+            font-size: 11px;
+            border-radius: 5px;
+            cursor: pointer;
+            background: none;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+
+        .q-btn-add {
+            border: 1px solid #4361ee;
+            color: #4361ee;
+        }
+
+        .q-btn-add:hover {
+            background: #4361ee;
+            color: #fff;
+        }
+
+        .q-btn-remove {
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .q-btn-remove:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .q-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* pricing / upgrade modal */
+        .pricing-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .plan-price-big {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4361ee;
+            text-align: center;
+            margin: 0.5rem 0 2px;
+        }
+
+        .plan-period {
+            font-size: 13px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: #374151;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .feature-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #4361ee;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-check svg {
+            stroke: #fff;
+        }
+
+        .btn-upgrade-big {
+            width: 100%;
+            padding: 11px;
+            border-radius: 10px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-top: 0.75rem;
+            font-family: inherit;
+        }
+
+        .btn-upgrade-big:hover {
+            background: #3451d1;
+        }
+
+        .btn-upgrade-big:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #8fa4f3;
+        }
+
+        /* wallet cards */
+        .wallet-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .wallet-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #fff;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .wallet-card.selected {
+            border-color: #4361ee;
+            background: #eef1fd;
+        }
+
+        .wallet-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wallet-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            object-fit: contain;
+            padding: 3px;
+        }
+
+        .wallet-type {
+            font-weight: 600;
+            font-size: 14px;
+            color: #111827;
+        }
+
+        .wallet-num {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .wallet-badge {
+            background: #4361ee;
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .btn-set-default {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            border: 1px solid #4361ee;
+            background: none;
+            color: #4361ee;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-set-default:hover {
+            background: #4361ee;
+            color: #fff;
+        }
+
+        .btn-add-wallet {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-bottom: 0.75rem;
+            font-family: inherit;
+        }
+
+        .btn-add-wallet:hover {
+            background: #f1f3f9;
+        }
+
+        .plan-price-note {
+            text-align: center;
+            font-size: 13px;
+            color: #374151;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .input-control:focus {
+            border-color: #4361ee;
+        }
+
+        .error-text {
+            font-size: 11px;
+            color: #ef4444;
+            margin-top: 4px;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .tests-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .page {
+                padding-top: 44px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .tests-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="page">
+    <div class="page">
 
-  <!-- Loading overlay -->
-  <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
-    <div class="loading-box">
-      <div class="spinner"></div>
-      <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
-    </div>
-  </div>
+        <!-- Loading overlay -->
+        <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+            <div class="loading-box">
+                <div class="spinner"></div>
+                <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+            </div>
+        </div>
 
-  <!-- FAB (admin) -->
-  <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
-  </button>
+        <!-- FAB (admin) -->
+        <button class="fab" (click)="onAddNewTest()" *ngIf="loggedUser && isSuperAdmin" aria-label="Adicionar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
+        </button>
 
-  <!-- Back -->
-  <button class="back-btn" [routerLink]="['/progress']">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
-    </svg>
-    Voltar
-  </button>
+        <!-- Back -->
+        <button class="back-btn" [routerLink]="['/progress']">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+            </svg>
+            Voltar
+        </button>
 
-  <!-- Subject hero -->
-  <div class="subject-hero">
-    <div class="ring-wrap">
-      <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
-        <circle class="ring-bg" cx="26" cy="26" r="22"/>
-        <circle class="ring-fg" cx="26" cy="26" r="22"
-          stroke-dasharray="138.23"
-          [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23"/>
-      </svg>
-      <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
-    </div>
-    <div class="subject-info">
-      <strong>{{ subject.subjectName }}</strong>
-      <span>{{ subject.totalTopics }} tópicos</span>
-    </div>
-  </div>
+        <!-- Subject hero -->
+        <div class="subject-hero">
+            <div class="ring-wrap">
+                <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="ring-bg" cx="26" cy="26" r="22" />
+                    <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                        [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
+                </svg>
+                <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
+            </div>
+            <div class="subject-info">
+                <strong>{{ subject.subjectName }}</strong>
+                <span>{{ subject.totalTopics }} tópicos</span>
+            </div>
+        </div>
 
-  <!-- Topics -->
-  <div *ngFor="let topic of subject.topicDtoWithTests" class="topic-block">
+        <!-- Topics -->
+        <div *ngFor="let topic of subject.topicDtoWithTests" class="topic-block">
 
-    <div class="topic-header">
-      <div class="topic-meta">
-        <span class="topic-name">{{ topic.topicName }}</span>
-        <span class="topic-pct">{{ topic.progressRate.toFixed(0) }}%</span>
-      </div>
-      <div class="track">
-        <div class="fill" [style.width.%]="topic.progressRate.toFixed(0)"></div>
-      </div>
-    </div>
+            <div class="topic-header">
+                <div class="topic-meta">
+                    <span class="topic-name">{{ topic.topicName }}</span>
+                    <span class="topic-pct">{{ topic.progressRate.toFixed(0) }}%</span>
+                </div>
+                <div class="track">
+                    <div class="fill" [style.width.%]="topic.progressRate.toFixed(0)"></div>
+                </div>
+            </div>
 
-    <div class="tests-grid">
-      <div class="test-card"
-           *ngFor="let test of topic.tests; let i = index"
-           [ngClass]="{
+            <div class="tests-grid">
+                <div class="test-card" *ngFor="let test of topic.tests; let i = index" [ngClass]="{
              completed: isCompleted(test),
              active: isActive(topic, test, i),
              locked: isLocked(topic, test, i)
            }">
 
-        <!-- Top row -->
-        <div class="card-top">
-          <span class="test-label">Teste {{ i + 1 }}</span>
-          <div class="status-pip"
-               [ngClass]="{
+                    <!-- Top row -->
+                    <div class="card-top">
+                        <span class="test-label">Teste {{ i + 1 }}</span>
+                        <div class="status-pip" [ngClass]="{
                  'pip-done':   isCompleted(test),
                  'pip-active': isActive(topic, test, i),
                  'pip-locked': isLocked(topic, test, i)
                }"></div>
-        </div>
+                    </div>
 
-        <!-- Number + meta -->
-        <div class="test-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</div>
-        <div class="test-meta">{{ test.totalQuestions }} questões</div>
+                    <!-- Number + meta -->
+                    <div class="test-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</div>
+                            <div class="test-meta">{{ test.totalQuestions }} questões</div>
 
-        <!-- Admin buttons -->
-        <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
-          <button class="admin-btn a-view" (click)="onGetSelectedQuestionsByTopicId(test)">Ver</button>
-          <button class="admin-btn a-edit" (click)="onGetQuestionsByTopicId(test)">Editar</button>
-        </div>
+                            <!-- Admin buttons -->
+                            <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
+                                <button class="admin-btn a-view"
+                                    (click)="onGetSelectedQuestionsByTopicId(test)">Ver</button>
+                                <button class="admin-btn a-edit" (click)="onGetQuestionsByTopicId(test)">Editar</button>
+                            </div>
 
-        <!-- Action area -->
-        <ng-container *ngIf="!isLocked(topic, test, i)">
-          <div class="card-divider"></div>
-          <div>
-            <button class="start-btn btn-review" *ngIf="isCompleted(test)" (click)="reviewTest(test)">
-              Revisar
-            </button>
-            <button class="start-btn btn-start" *ngIf="isActive(topic, test, i)" (click)="startTest(test, topic)">
-              Iniciar
-            </button>
-          </div>
-        </ng-container>
+                            <!-- Action area -->
+                            <ng-container *ngIf="!isLocked(topic, test, i)">
+                                <div class="card-divider"></div>
+                                <div>
+                                    <button class="start-btn btn-review" *ngIf="isCompleted(test)"
+                                        (click)="reviewTest(test)">
+                                        Revisar
+                                    </button>
+                                    <button class="start-btn btn-start" *ngIf="isActive(topic, test, i)"
+                                        (click)="startTest(test, topic)">
+                                        Iniciar
+                                    </button>
+                                </div>
+                            </ng-container>
 
-        <!-- Lock visual for locked cards -->
-        <ng-container *ngIf="isLocked(topic, test, i)">
-          <div class="card-divider"></div>
-          <div class="lock-row">
-            <div class="lock-icon">
-              <div class="lock-shackle3"></div>
-              <div class="lock-body3"><div class="lock-hole"></div></div>
+                            <!-- Lock visual for locked cards -->
+                            <ng-container *ngIf="isLocked(topic, test, i)">
+                                <div class="card-divider"></div>
+                                <div class="lock-row">
+                                    <div class="lock-icon">
+                                        <div class="lock-shackle3"></div>
+                                        <div class="lock-body3">
+                                            <div class="lock-hole"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                    </div>
+                </div>
             </div>
-          </div>
-        </ng-container>
 
-      </div>
-    </div>
-  </div>
+            <!-- Tip -->
+            <div class="tip-box">
+                <strong>Dica de estudo</strong>
+                <p>Domine todos os exercícios propostos, complete e revise cada teste para avançar com confiança no seu
+                    progresso.</p>
+            </div>
 
-  <!-- Tip -->
-  <div class="tip-box">
-    <strong>Dica de estudo</strong>
-    <p>Domine todos os exercícios propostos, complete e revise cada teste para avançar com confiança no seu progresso.</p>
-  </div>
-
-</div><!-- /page -->
+        </div><!-- /page -->
 
 
-<!-- ══════════════════════════════════════════
+        <!-- ══════════════════════════════════════════
      MODAL: Adicionar / Editar Teste
 ════════════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalSave">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-title">{{ editing ? 'Editar teste' : 'Novo teste' }}</h2>
-      <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
-    </div>
+        <div class="modal-overlay" *ngIf="displayModalSave">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">{{ editing ? 'Editar teste' : 'Novo teste' }}</h2>
+                    <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
+                </div>
 
-    <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
-      <div class="form-group">
-        <label for="topic">Tópico</label>
-        <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!subject.id" required>
-          <option value="" disabled selected>Selecione o tópico</option>
-          <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="difficultyLevel">Nível</label>
-        <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
-          <option value="" disabled selected>Selecione o nível</option>
-          <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="position">Posição</label>
-        <input type="text" name="position" ngModel #position="ngModel" required minlength="1" [(ngModel)]="test.orderIndex">
-      </div>
-      <button class="btn-submit" type="submit" [disabled]="testForm.invalid || showLoading">
-        {{ showLoading ? 'Salvando...' : 'Salvar' }}
-      </button>
-    </form>
-  </div>
-</div>
+                <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
+                    <div class="form-group">
+                        <label for="topic">Tópico</label>
+                        <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!subject.id" required>
+                            <option value="" disabled selected>Selecione o tópico</option>
+                            <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="difficultyLevel">Nível</label>
+                        <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
+                            <option value="" disabled selected>Selecione o nível</option>
+                            <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Posição</label>
+                        <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                            [(ngModel)]="test.orderIndex">
+                    </div>
+                    <button class="btn-submit" type="submit" [disabled]="testForm.invalid || showLoading">
+                        {{ showLoading ? 'Salvando...' : 'Salvar' }}
+                    </button>
+                </form>
+            </div>
+        </div>
 
 
-<!-- ══════════════════════════════════════════
+        <!-- ══════════════════════════════════════════
      MODAL: Ver questões adicionadas
 ════════════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-title">Questões do teste</h2>
-      <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
-    </div>
+        <div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Questões do teste</h2>
+                    <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
+                </div>
 
-    <div *ngFor="let question of selectedQuestions; let i = index">
-      <div class="question-item" *ngIf="question.text">
-        <span class="question-number">{{ i + 1 }}</span>
-        <div>
-          <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-          <div class="question-topic-row" *ngIf="question.topic">
-            <small>Tópico: {{ question.topic.name }}</small>
-            <button class="q-btn q-btn-remove" (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
-          </div>
+                <div *ngFor="let question of selectedQuestions; let i = index">
+                    <div class="question-item" *ngIf="question.text">
+                        <span class="question-number">{{ i + 1 }}</span>
+                        <div>
+                            <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+                            <div class="question-topic-row" *ngIf="question.topic">
+                                <small>Tópico: {{ question.topic.name }}</small>
+                                <button class="q-btn q-btn-remove"
+                                    (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<!-- ══════════════════════════════════════════
+        <!-- ══════════════════════════════════════════
      MODAL: Editar questões (marcar/desmarcar)
 ════════════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalQuestionsList">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-title">Editar questões</h2>
-      <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
-    </div>
+        <div class="modal-overlay" *ngIf="displayModalQuestionsList">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Editar questões</h2>
+                    <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
+                </div>
 
-    <div *ngFor="let question of allQuestions; let i = index">
-      <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
-        <span class="question-number">{{ i + 1 }}</span>
-        <div>
-          <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-          <div class="question-topic-row" *ngIf="question.topic">
-            <small>Tópico: {{ question.topic.name }}</small>
-            <button class="q-btn q-btn-add"    *ngIf="!question.selected" (click)="onAddQuestionToTestQuestions(question.id)">Adicionar</button>
-            <button class="q-btn q-btn-remove" *ngIf="question.selected"  (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
-          </div>
+                <div *ngFor="let question of allQuestions; let i = index">
+                    <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
+                        <span class="question-number">{{ i + 1 }}</span>
+                        <div>
+                            <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+                            <div class="question-topic-row" *ngIf="question.topic">
+                                <small>Tópico: {{ question.topic.name }}</small>
+                                <button class="q-btn q-btn-add" *ngIf="!question.selected"
+                                    (click)="onAddQuestionToTestQuestions(question.id)">Adicionar</button>
+                                <button class="q-btn q-btn-remove" *ngIf="question.selected"
+                                    (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<!-- ══════════════════════════════════════════
+        <!-- ══════════════════════════════════════════
      MODAL: Upgrade de plano
 ════════════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-title">Plano Premium</h2>
-      <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
-    </div>
+        <div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Plano Premium</h2>
+                    <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
+                </div>
 
-    <div class="pricing-card">
-      <div class="plan-price-big">MT 299</div>
-      <div class="plan-period">por mês</div>
-      <ul class="feature-list">
-        <li>
-          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Acesso ilimitado a todos os tópicos e conteúdos disponíveis
-        </li>
-        <li>
-          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Resolução detalhada com dicas e comentários
-        </li>
-        <li>
-          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Criação de quizzes avançados e personalizados
-        </li>
-        <li>
-          <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Mais exercícios por quiz para reforçar o aprendizado
-        </li>
-      </ul>
-    </div>
+                <div class="pricing-card">
+                    <div class="plan-price-big">MT 299</div>
+                    <div class="plan-period">por mês</div>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg></span>
+                            Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+                        </li>
+                        <li>
+                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg></span>
+                            Resolução detalhada com dicas e comentários
+                        </li>
+                        <li>
+                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg></span>
+                            Criação de quizzes avançados e personalizados
+                        </li>
+                        <li>
+                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg></span>
+                            Mais exercícios por quiz para reforçar o aprendizado
+                        </li>
+                    </ul>
+                </div>
 
-    <button class="btn-upgrade-big" (click)="onUpgradePlan()">Fazer upgrade agora</button>
-  </div>
-</div>
+                <button class="btn-upgrade-big" (click)="onUpgradePlan()">Fazer upgrade agora</button>
+            </div>
+        </div>
 
 
-<!-- ══════════════════════════════════════════
+        <!-- ══════════════════════════════════════════
      MODAL: Método de pagamento
 ════════════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-title">Método de pagamento</h2>
-      <button class="close-btn" (click)="onCloseModalPaymentOptions()">&#x2715;</button>
-    </div>
+        <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Método de pagamento</h2>
+                    <button class="close-btn" (click)="onCloseModalPaymentOptions()">&#x2715;</button>
+                </div>
 
-    <div class="wallet-options">
-      <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-        <label class="wallet-card" *ngFor="let wallet of userWallets" [class.selected]="selectedWalletId === wallet.id">
-          <div class="wallet-left">
-            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img"/>
-            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img"/>
-            <div>
-              <div class="wallet-type">{{ wallet.type }}</div>
-              <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+                <div class="wallet-options">
+                    <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+                        <label class="wallet-card" *ngFor="let wallet of userWallets"
+                            [class.selected]="selectedWalletId === wallet.id">
+                            <div class="wallet-left">
+                                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                    class="wallet-img" />
+                                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                    class="wallet-img" />
+                                <div>
+                                    <div class="wallet-type">{{ wallet.type }}</div>
+                                    <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <button *ngIf="!wallet.default" class="btn-set-default"
+                                    (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Principal</button>
+                                <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+                            </div>
+                        </label>
+                    </ng-container>
+                    <ng-template #noWallets>
+                        <p style="font-size:13px; color:#6b7280;">Você ainda não adicionou nenhuma carteira.</p>
+                    </ng-template>
+                </div>
+
+                <button class="btn-add-wallet" (click)="openModalAddPaymentOption()">+ Adicionar método de
+                    pagamento</button>
+
+                <div *ngIf="userWallets.length !== 0">
+                    <button class="btn-upgrade-big" (click)="upgradePlan()">Confirmar upgrade</button>
+                    <p class="plan-price-note">MT 299/mês</p>
+                </div>
             </div>
-          </div>
-          <div>
-            <button *ngIf="!wallet.default" class="btn-set-default" (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Principal</button>
-            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-          </div>
-        </label>
-      </ng-container>
-      <ng-template #noWallets>
-        <p style="font-size:13px; color:#6b7280;">Você ainda não adicionou nenhuma carteira.</p>
-      </ng-template>
-    </div>
-
-    <button class="btn-add-wallet" (click)="openModalAddPaymentOption()">+ Adicionar método de pagamento</button>
-
-    <div *ngIf="userWallets.length !== 0">
-      <button class="btn-upgrade-big" (click)="upgradePlan()">Confirmar upgrade</button>
-      <p class="plan-price-note">MT 299/mês</p>
-    </div>
-  </div>
-</div>
+        </div>
 
 
-<!-- ══════════════════════════════════════════
+        <!-- ══════════════════════════════════════════
      MODAL: Adicionar carteira
 ════════════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-title">Adicionar carteira</h2>
-      <button class="close-btn" (click)="onCloseModalAddPaymentOption()">&#x2715;</button>
-    </div>
+        <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Adicionar carteira</h2>
+                    <button class="close-btn" (click)="onCloseModalAddPaymentOption()">&#x2715;</button>
+                </div>
 
-    <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-      <div class="form-group">
-        <label for="phoneNumber">Número de telefone</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" class="input-control"
-               maxlength="9" minlength="9" [(ngModel)]="wallet.phoneNumber"
-               (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
-               required placeholder="Ex: 841234567"/>
-        <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-          O número deve ter exatamente 9 dígitos.
-        </span>
-        <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
-          Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
-        </span>
-      </div>
+                <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+                    <div class="form-group">
+                        <label for="phoneNumber">Número de telefone</label>
+                        <input type="text" id="phoneNumber" name="phoneNumber" class="input-control" maxlength="9"
+                            minlength="9" [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+                            pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" />
+                        <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+                            O número deve ter exatamente 9 dígitos.
+                        </span>
+                        <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
+                            class="error-text">
+                            Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+                        </span>
+                    </div>
 
-      <div *ngIf="wallet.type" class="wallet-card" style="margin-bottom: 1rem; pointer-events: none;">
-        <div class="wallet-left">
-          <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img"/>
-          <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img"/>
-          <div>
-            <div class="wallet-type">{{ wallet.type }}</div>
-            <div class="wallet-num">{{ wallet.phoneNumber }}</div>
-          </div>
+                    <div *ngIf="wallet.type" class="wallet-card" style="margin-bottom: 1rem; pointer-events: none;">
+                        <div class="wallet-left">
+                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                class="wallet-img" />
+                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                class="wallet-img" />
+                            <div>
+                                <div class="wallet-type">{{ wallet.type }}</div>
+                                <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-upgrade-big" type="submit"
+                        [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
+                        {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
+                    </button>
+                </form>
+            </div>
         </div>
-      </div>
-
-      <button class="btn-upgrade-big" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
-        {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
-      </button>
-    </form>
-  </div>
-</div>
 
 </body>
+
 </html>
