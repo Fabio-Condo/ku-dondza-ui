@@ -6,780 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exercícios por Disciplina</title>
     <style>
-        /* Base Styles */
+        /* ─── Reset & Base ─────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f4f6fb;
+            color: #1a1a2e;
             padding: 10px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             margin-top: 50px;
         }
 
-        .header-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Button Styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            border: none;
-            font-size: 0.875rem;
-        }
-
-        .btn i {
-            margin-right: 0.375rem;
-        }
-
-        .btn-primary {
-            background: #4361ee;
-            color: white;
-            border: 1px solid white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background-color: white;
-            border: 1px solid #4f46e5;
-            color: #4f46e5;
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(79, 70, 229, 0.05);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #e5e7eb;
-            color: #1f2937;
-        }
-
-        .btn-outline:hover {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .btn-text {
-            background: transparent;
-            padding: 0.25rem;
-            color: #64748b;
-        }
-
-        .btn-text:hover {
-            color: #1f2937;
-            background-color: rgba(0, 0, 0, 0.05);
-            border-radius: 50%;
-        }
-
-        /* Header */
-        .header {
-            background: #4361ee;
-            color: white;
-            padding: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .main {
-            padding: 40px 0;
-            min-height: calc(100vh - 170px);
-        }
-
-        /* Header Styles */
-        .course-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            /*background-color: white;*/
-            background: linear-gradient(to right, #4299e1, #2563eb);
-            background: #4361ee;
-
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #f1f5f9;
-            padding: 20px;
-            margin-bottom: 1.5rem;
-        }
-
-        .course-info {
-            flex: 1;
-        }
-
-        .course-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .course-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            /*color: #212529;*/
-            color: #fff;
-        }
-
-        .course-meta {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0px;
-        }
-
-        .course-stats {
-            display: flex;
-            gap: 20px;
-        }
-
-        .stat {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .course-description {
-            line-height: 1.8;
-            margin-bottom: 20px;
-            color: white;
-        }
-
-        .enrollment-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        /* Main Content */
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        /* Cards */
-        .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #f1f5f9;
-            padding: 20px;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .instrutor-section-title {
-            margin-bottom: 1rem
-        }
-
-
-        /* ===========================
-   MÓDULOS
-=========================== */
-        .modules-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .module-item {
-            border: 1px solid #e5e7eb;
-            border-radius: 0.75rem;
-            overflow: hidden;
-            background: #fff;
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .module-item:hover {
-            border-color: #cdd6f6;
-            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.08);
-        }
-
-        .module-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.25rem;
-            cursor: pointer;
-            background-color: white;
-            transition: background-color 0.3s ease;
-        }
-
-        .module-item.expanded .module-header {
-            background-color: #f3f5ff;
-            border-bottom: 1px solid #e0e7ff;
-        }
-
-        .module-title {
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        .module-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .lesson-count {
-            font-size: 0.85rem;
-            color: #6b7280;
-            margin-top: 2px;
-            display: block;
-        }
-
-        .progress-mini-value {
-            color: #4361ee;
-        }
-
-        /* botão vídeo */
-        .action-btn.video {
-            background-color: #edf2ff;
-            color: #4361ee;
-        }
-
-        .action-btn.video:hover:not(:disabled) {
-            background-color: #dbe4ff;
-        }
-
-        /* botão download */
-        .download-btn,
-        .play-btn {
-            background-color: #f1f3f5;
-            color: #4361ee;
-        }
-
-        .download-btn:hover:not(:disabled),
-        .play-btn:hover:not(:disabled) {
-            background-color: #e9ecef;
-        }
-
-        .expand-btn {
-            background-color: #f1f3f5;
-            color: #4361ee;
-        }
-
-        .chevron-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            color: #4361ee;
-            transition: transform 0.25s ease;
-        }
-
-        .chevron-icon.rotated {
-            transform: rotate(180deg);
-        }
-
-        .actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        button {
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-            padding: 8px 16px;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            border: none;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .edit-btn {
-            background: none;
-            color: #4361ee;
-        }
-
-        .edit-btn:hover {
-            opacity: 0.75;
-        }
-
-        .loadmore-btn {
-            background-color: transparent;
-            border: 1px solid #d1d5db;
-        }
-
-        .loadmore-btn:hover:not(:disabled) {
-            background-color: #f3f4f6;
-        }
-
-        /***********/
-        .lesson-item {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            margin-bottom: 12px;
-            background: #f8f9fa;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .lesson-item:hover {
-            background: #f1f3f4;
-            border-color: #4361ee;
-        }
-
-        .lesson-icon {
-            width: 10px;
-            height: 10px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .lesson-content {
-            flex: 1;
-        }
-
-        .lesson-title {
-            color: #1a1a1a;
-            margin-bottom: 6px;
-            font-size: 1rem;
-        }
-
-        .lesson-duration {
-            font-size: 0.85rem;
-            color: #6b7280;
-            font-weight: 300;
-        }
-
-        .lesson-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .custom-checkbox-visible {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .styled-checkbox {
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 1px solid #4361ee;
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s ease-in-out;
-            background-color: #fff;
-            margin-right: 5px;
-        }
-
-        .styled-checkbox:checked {
-            background-color: #4361ee;
-            border-color: #4361ee;
-        }
-
-        .styled-checkbox:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .styled-checkbox:checked::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 6px;
-            width: 4px;
-            height: 8px;
-            border: solid #fff;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-
-
-        /* Ícone ao lado do checkbox */
-        .custom-checkbox-visible label {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            color: #444;
-            transition: color 0.2s;
-        }
-
-        .custom-checkbox-visible label.checked {
-            color: #4361ee;
-        }
-
-        .custom-checkbox-visible label .pi {
-            font-size: 18px;
-        }
-
-        .lesson-content-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            color: #1a1a1a;
-            font-size: 1.1rem;
-        }
-
-        .lesson-content-container .styled-checkbox {
-            flex-shrink: 0;
-        }
-
-        /* Author Section */
-        .author-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .author-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .author-details {
-            margin-left: 15px;
-        }
-
-        .author-name {
-            font-weight: 500;
-            letter-spacing: -0.01em;
-        }
-
-        .author-bio {
-            font-size: 0.9rem;
-            color: #64748b;
-            line-height: 1.6;
-        }
-
-        .experience-description {
-            line-height: 1.8;
-            color: #64748b;
-            margin-bottom: 18px;
-            font-size: 1rem;
-            letter-spacing: 0.01em;
-        }
-
-
-        /* Botão "Carregar mais" */
-        .load-more-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-        }
-
-        .btn-load-more {
-            background-color: transparent;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-load-more:hover {
-            background-color: #f8fafc;
-        }
-
-        .btn-load-more:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Section Headers */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        /*
-  @media (min-width: 1024px) {
-    .grid-container {
-      grid-template-columns: 2fr 1fr;
-    }
-  }
-  */
-
-        /* Animação de fade-in para o overlay */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Animação de slide-up para o modal */
-        @keyframes slideUp {
-            from {
-                transform: translateY(10px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .popout-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popout-container {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .popout-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .popout-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #4361ee;
-            margin: 0;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            padding: 4px;
-            transition: color 0.2s;
-        }
-
-        .close-button:hover {
-            color: #000;
-        }
-
-        .popout-body {
-            font-size: 15px;
-            color: #444;
-            line-height: 1.6;
-            text-align: center;
-        }
-
-        .popout-actions {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .btn-subscription {
-            background: #4361ee;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.25s;
-            width: 100%;
-        }
-
-        .btn-subscription:hover {
-            background: #3346c8;
-        }
-
-        .btn-subscription:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--color-black);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-
-        .form-textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .submit-button:hover {
-            background: #1d4ed8;
-        }
-
-        .vidio-popout-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .vidio-popout-overlay h2 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 24px;
-            text-align: center;
-            max-width: 80%;
-        }
-
-        .vidio-close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-        .vidio-close-btn:hover {
-            transform: rotate(90deg);
-            color: #8E54E9;
-        }
-
-        .video {
-            width: 100%;
-            max-width: 900px;
-            border-radius: 12px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        /* ─── Back button ────────────────────────────────── */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: #6b7280;
-            padding: 0;
-            margin-top: 0.7rem;
-            margin-bottom: 0.7rem;
-            transition: color 0.15s;
-            font-family: inherit;
-        }
-
-        .back-btn:hover {
-            color: #4361ee;
-        }
-
-        .dropdown-btn {
-            background-color: transparent;
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--gray);
-        }
-
-        /* ─── Loading overlay ────────────────────────────── */
+        /* ─── Loading Overlay ──────────────────────────────── */
         .loading-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -802,23 +50,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: 3px solid #e0e4f5;
             border-top-color: #4361ee;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.75s linear infinite;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .loading-text {
             font-size: 14px;
@@ -826,371 +70,722 @@
             color: #374151;
         }
 
-        .login-side {
-            flex: 1;
-            background-color: white;
+        /* ─── Retry Container ──────────────────────────────── */
+        .retry-container {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .retry-content {
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center;
+            gap: 16px;
         }
 
-        .login-side h1 {
-            font-size: 1rem;
-            color: #333;
-            margin-top: 15px;
-            margin-bottom: 15px;
+        .retry-text {
+            font-size: 15px;
+            color: #374151;
+            line-height: 1.6;
         }
 
-        .input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .input-group label {
-            display: block;
-            color: #666;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
+        .retry-button {
+            background: #4361ee;
+            color: #fff;
+            border: none;
+            padding: 11px 24px;
+            font-size: 15px;
+            font-weight: 600;
             border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.15s;
         }
 
-        .input-group input:focus {
-            border-color: #4361ee;
-            outline: none;
-        }
+        .retry-button:hover { background: #3350d6; transform: translateY(-1px); }
+        .retry-button:active { transform: scale(0.98); }
 
-        .options-row {
+        /* ─── Header Buttons Row ───────────────────────────── */
+        .header-buttons {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            padding: 8px 0 14px;
         }
 
-        .remember-me {
-            display: flex;
-            align-items: center;
-        }
-
-        .remember-me input[type="checkbox"] {
-            margin-right: 8px;
-            accent-color: #4361ee;
-        }
-
-        .remember-me label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .forgot-password a {
-            color: #666;
-            font-size: 0.9rem;
-            text-decoration: none;
-        }
-
-        .forgot-password a:hover {
-            color: #4361ee;
-        }
-
-        .login-btn {
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 25px;
-            width: 100%;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
-        }
-
-        .message {
-            font-size: 0.9rem;
-            color: #5a5a5a;
-            line-height: 1.5;
-            padding: 12px;
-            background-color: #f8f9fa;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .message a {
-            color: #4361ee;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .message a:hover {
-            text-decoration: underline;
-            color: #4361ee;
-        }
-
-        .resend-btn {
-            color: #333;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
+        /* ─── Back Button ──────────────────────────────────── */
+        .back-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
-            transition: gap 0.2s ease;
-            margin-bottom: 1rem;
+            gap: 6px;
+            background: none;
+            border: none;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            margin: 0 auto 1rem auto;
-            /* centraliza horizontalmente */
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            padding: 6px 10px 6px 4px;
+            border-radius: 8px;
+            font-family: inherit;
+            transition: background 0.15s, color 0.15s;
         }
 
-        .resend-btn:hover {
-            gap: 0.5rem;
-            opacity: 0.8;
-        }
+        .back-btn svg { width: 15px; height: 15px; }
 
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 30px 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background-color: #ddd;
-        }
-
-        .divider span {
-            padding: 0 15px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #666;
-            cursor: pointer;
-        }
-
-        .signup-link a {
+        .back-btn:hover {
             color: #4361ee;
+            background: #eef0fd;
+        }
+
+        /* ─── Dropdown ─────────────────────────────────────── */
+        .dropdown-container { position: relative; }
+
+        .dropdown-btn {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #64748b;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+
+        .dropdown-btn:hover { background: #f8fafc; }
+
+        .dropdown {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 6px);
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            min-width: 200px;
+            overflow: hidden;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: #374151;
+            cursor: pointer;
+            transition: background 0.15s;
             text-decoration: none;
-            font-weight: bold;
         }
 
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #dde1e7;
+        .dropdown a:hover { background: #f3f5ff; color: #4361ee; }
+
+        /* ─── Course Header (Hero) ─────────────────────────── */
+        .course-header {
+            background: #4361ee;
+            border-radius: 16px;
+            padding: 28px 28px 22px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
+        .course-header::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            pointer-events: none;
+        }
+
+        .course-header::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: -30px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+        }
+
+        .course-info { position: relative; z-index: 1; }
+
+        .course-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            font-size: 11px;
             font-weight: 600;
-            color: #6c757d;
-            transition: all 0.3s;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
         }
 
-        .auth-tab.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
+        .course-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.25;
         }
 
-        .logo-container {
+        .course-description {
+            font-size: 0.925rem;
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.65;
+            max-width: 560px;
+        }
+
+        .course-stats {
             display: flex;
-            justify-content: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top: 18px;
         }
 
-        .logo {
+        .stat {
             display: flex;
             align-items: center;
-            font-size: 22px;
-            font-weight: 700;
-            color: #4361ee;
-            letter-spacing: -1px;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 13px;
         }
 
-        .logo-icon {
-            margin-right: 10px;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 24px;
+        .stat svg { width: 14px; height: 14px; opacity: 0.85; flex-shrink: 0; }
+
+        /* ─── Progress Bar ─────────────────────────────────── */
+        .progress-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 5px;
+            background: #dde3f5;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4361ee;
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-value {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4361ee;
+            white-space: nowrap;
+            min-width: 90px;
+            text-align: right;
+        }
+
+        /* ─── Card ─────────────────────────────────────────── */
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e8edf5;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* ─── Section Header ───────────────────────────────── */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        /* ─── Buttons ──────────────────────────────────────── */
+        button {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+        }
+
+        .btn svg { width: 14px; height: 14px; }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #d1d9f0;
+            color: #4361ee;
+        }
+
+        .btn-outline:hover { background: #f0f2fd; border-color: #b0bbee; }
+
+        /* ─── Modules List ─────────────────────────────────── */
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .module-item {
+            border: 1px solid #e8edf5;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .module-item:hover { border-color: #c7d0f5; }
+
+        .module-item.expanded {
+            border-color: #c7d0f5;
+            box-shadow: 0 2px 12px rgba(67, 97, 238, 0.08);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .module-item.expanded .module-header {
+            background: #f5f7ff;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .module-header:hover { background: #f8f9ff; }
+
+        .module-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .module-index {
             width: 30px;
             height: 30px;
-            /* Diminuindo o tamanho do ícone */
-        }
-
-        .logo::before {
-            /* content: '🎓';*/
-            margin-right: 10px;
-            font-size: 24px;
-            /* Diminuindo o tamanho do emoji */
-        }
-
-        /* Animações */
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.6;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* Versão para componente Angular (código de referência) */
-        .code-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: white;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        pre {
-            white-space: pre-wrap;
-            font-family: 'Consolas', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            overflow-x: auto;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .topic-description {
-            font-size: 0.8rem;
-            color: #6b7280;
-            margin-top: 6px;
-            line-height: 1.4;
-        }
-
-        .topic-description .toggle-desc {
+            background: #eef0fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
             color: #4361ee;
-            font-weight: 500;
-            margin-left: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: color 0.2s ease;
+            flex-shrink: 0;
+            transition: background 0.2s, color 0.2s;
         }
 
-        .topic-description .toggle-desc:hover {
-            color: #2a3eb1;
-            text-decoration: underline;
+        .module-item.expanded .module-index {
+            background: #4361ee;
+            color: #fff;
         }
 
+        .module-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .lesson-count {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 2px;
+            display: block;
+        }
+
+        .module-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chevron-icon {
+            width: 18px;
+            height: 18px;
+            color: #94a3b8;
+            transition: transform 0.25s ease;
+        }
+
+        .chevron-icon.rotated { transform: rotate(180deg); }
+
+        /* ─── Lock / Premium Message ───────────────────────── */
         .lock-message {
-            font-size: 0.85rem;
-            color: #6b7280;
-            /* cinza elegante */
-            margin-top: 10px;
-            text-align: center;
-            background: #f8f9ff;
-            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #854f0b;
+            background: #faeeda;
             border-radius: 8px;
-            border: 1px solid #e0e7ff;
+            padding: 7px 12px;
+            margin-top: 8px;
         }
+
+        .lock-message svg { width: 13px; height: 13px; flex-shrink: 0; }
 
         .upgrade-link {
             color: #4361ee;
-            /* cor principal do projeto */
             font-weight: 600;
-            text-decoration: none;
             cursor: pointer;
-            margin-left: 4px;
-            transition: all 0.2s ease;
+            margin-left: 2px;
+            text-decoration: none;
+            transition: color 0.2s;
         }
 
-        .upgrade-link:hover {
-            color: #364fc7;
-            text-decoration: underline;
+        .upgrade-link:hover { color: #3350d6; text-decoration: underline; }
+
+        /* ─── Lesson Items ─────────────────────────────────── */
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 18px;
+            border-bottom: 1px solid #f1f5fb;
+            transition: background 0.15s;
         }
 
-        .lock-icon svg {
-            display: inline-block;
-            vertical-align: middle;
-            /* garante alinhamento vertical */
+        .lesson-item:last-child { border-bottom: none; }
+        .lesson-item:hover { background: #f8f9ff; }
+
+        /* ─── Checkbox ─────────────────────────────────────── */
+        .styled-checkbox {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .styled-checkbox:checked {
+            background: #4361ee;
+            border-color: #4361ee;
+        }
+
+        .styled-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 4px;
+            height: 7px;
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .styled-checkbox:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        /* ─── Lesson Type Icon ─────────────────────────────── */
+        .lesson-type-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .lesson-type-icon.video { background: #eef0fd; }
+        .lesson-type-icon.file { background: #e8f5ed; }
+
+        .lesson-type-icon svg { width: 14px; height: 14px; }
+        .lesson-type-icon.video svg { color: #4361ee; }
+        .lesson-type-icon.file svg { color: #1d9e75; }
+
+        /* ─── Lesson Content ───────────────────────────────── */
+        .lesson-content { flex: 1; min-width: 0; }
+
+        .lesson-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1a1a2e;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .lesson-duration {
+            font-size: 0.775rem;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        /* ─── Lesson Action Buttons ────────────────────────── */
+        .lesson-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .play-btn, .download-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            padding: 0;
+        }
+
+        .play-btn svg, .download-btn svg { width: 13px; height: 13px; color: #64748b; }
+
+        .play-btn:hover:not(:disabled) { background: #eef0fd; border-color: #c7d0f5; }
+        .play-btn:hover:not(:disabled) svg { color: #4361ee; }
+
+        .download-btn:hover:not(:disabled) { background: #e8f5ed; border-color: #a7d9bc; }
+        .download-btn:hover:not(:disabled) svg { color: #1d9e75; }
+
+        /* ─── Author Section ───────────────────────────────── */
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #eef0fd;
+            flex-shrink: 0;
+        }
+
+        .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .author-details { margin-left: 0; }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1a1a2e;
+        }
+
+        .author-bio {
+            font-size: 0.83rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .experience-description {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.75;
+        }
+
+        /* ─── Popout Modal ─────────────────────────────────── */
+        .popout-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .popout-container {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            animation: slideUp 0.25s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(16px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .popout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .popout-title {
+            font-size: 18px;
+            font-weight: 700;
             color: #4361ee;
         }
 
-        .pricing-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1rem;
-            border: 1px solid #e2e8f0;
-            transition: all 0.2s ease;
-            position: relative;
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #94a3b8;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
         }
 
-        .plan-header {
+        .close-button:hover { color: #1a1a2e; background: #f1f5f9; }
+
+        .popout-body {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.65;
             text-align: center;
-            margin-bottom: 1.5rem;
         }
+
+        .popout-actions { margin-top: 20px; text-align: center; }
+
+        .btn-subscription {
+            background: #4361ee;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-subscription:hover { background: #3350d6; }
+        .btn-subscription:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ─── Video Popout ─────────────────────────────────── */
+        .vidio-popout-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .vidio-popout-overlay h2 {
+            color: #fff;
+            margin-bottom: 16px;
+            font-size: 20px;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .vidio-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 36px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s, transform 0.25s;
+        }
+
+        .vidio-close-btn:hover { opacity: 0.7; transform: rotate(90deg); }
+
+        .video { width: 100%; max-width: 880px; border-radius: 12px; }
+
+        /* ─── Pricing Card ─────────────────────────────────── */
+        .pricing-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .plan-header { text-align: center; margin-bottom: 1.25rem; }
 
         .plan-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
         }
 
         .plan-price {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 2.25rem;
+            font-weight: 800;
             color: #4361ee;
-            margin-bottom: 0.25rem;
+            margin-bottom: 4px;
         }
 
-        .plan-price.free {
-            color: #059669;
-        }
+        .plan-price.free { color: #059669; }
 
         .plan-period {
-            color: #64748b;
-            font-size: 0.9rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
         }
 
         .features .feature {
             display: flex;
-            align-items: start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-            line-height: 1.4;
-            color: #1e293b;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.5;
         }
 
         .features .feature-icon {
@@ -1202,450 +797,206 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            margin-top: 1px;
         }
 
         .features .feature-icon::after {
             content: '✓';
-            color: white;
+            color: #fff;
             font-size: 10px;
-            font-weight: bold;
+            font-weight: 700;
         }
 
-        .upgrade-cta {
-            margin-top: 1.5rem;
-        }
+        .upgrade-cta { margin-top: 1.25rem; }
 
         .cta-button.btn-upgrade {
             width: 100%;
-            padding: 0.875rem;
+            padding: 12px;
             border-radius: 10px;
             font-size: 0.95rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, #4361ee, #3651c9);
-            color: white;
+            font-weight: 700;
+            background: #4361ee;
+            color: #fff;
+            border: none;
             cursor: pointer;
-            transition: all 0.25s ease;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.15s;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
         }
 
-        .cta-button.btn-upgrade:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(90deg, #3b54d9, #2f45b5);
-        }
+        .cta-button.btn-upgrade:hover { background: #3350d6; transform: translateY(-1px); }
 
         .cta-button.btn-upgrade:disabled,
         .cta-button.btn-upgrade.disabled {
-            opacity: 0.6;
+            opacity: 0.55;
             cursor: not-allowed;
             transform: none;
-            background: linear-gradient(90deg, #aab4f5, #8f9de3);
-            box-shadow: none;
         }
 
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .wallet-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .wallet-option input {
-            display: none;
-        }
+        /* ─── Wallet Options ───────────────────────────────── */
+        .wallet-options { display: flex; flex-direction: column; gap: 10px; }
+        .wallet-option input { display: none; }
 
         .wallet-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1.5px solid #e5e7eb;
-            border-radius: 0.9rem;
-            padding: 0.9rem 1.1rem;
+            border-radius: 12px;
+            padding: 12px 16px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            background-color: #fff;
+            transition: all 0.2s;
+            background: #fff;
         }
 
-        .wallet-card:hover {
-            border-color: #2563eb;
-            background-color: #f9fafb;
-        }
+        .wallet-card:hover { border-color: #4361ee; background: #f3f5ff; }
 
         .wallet-card.selected {
-            border-color: #2563eb;
-            background-color: #eff6ff;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+            border-color: #4361ee;
+            background: #f0f2fd;
         }
 
-        .wallet-left {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
+        .wallet-card.default {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.12);
         }
+
+        .wallet-left { display: flex; align-items: center; gap: 12px; }
 
         .wallet-icon {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 8px;
             background: #f3f4f6;
             padding: 4px;
         }
 
-        .wallet-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .wallet-type {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #111827;
-            text-transform: capitalize;
-        }
-
-        .wallet-number {
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-
-        .wallet-check .checkmark {
-            font-size: 1.3rem;
-            color: #2563eb;
-            font-weight: 600;
-        }
-
-        .wallet-card.default {
-            border: 2px solid #4361ee;
-            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.25);
-        }
+        .wallet-details { display: flex; flex-direction: column; }
+        .wallet-type { font-weight: 600; font-size: 0.95rem; color: #111827; text-transform: capitalize; }
+        .wallet-number { font-size: 0.85rem; color: #6b7280; }
 
         .wallet-badge {
-            background-color: #4361ee;
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 12px;
+            background: #4361ee;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 20px;
             font-weight: 600;
         }
 
-        .empty-text {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
+        .wallet-check .checkmark { font-size: 1.2rem; color: #4361ee; font-weight: 700; }
 
         .btn-default {
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 12px;
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 20px;
             border: 1px solid #4361ee;
-            background-color: white;
+            background: #fff;
             color: #4361ee;
             cursor: pointer;
             transition: 0.2s;
+            font-family: inherit;
         }
 
-        .btn-default:hover {
-            background-color: #4361ee;
-            color: white;
-        }
+        .btn-default:hover { background: #4361ee; color: #fff; }
 
-        .cta-button {
-            width: 100%;
-            border: none;
-            border-radius: 0.75rem;
-            padding: 0.9rem;
+        /* ─── Form Elements ────────────────────────────────── */
+        .form-group { margin-bottom: 18px; }
+
+        .form-label {
+            display: block;
+            margin-bottom: 7px;
             font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-add {
-            background: #e5e7eb;
-            color: #111;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .btn-upgrade {
-            background: #2563eb;
-            color: white;
-        }
-
-        .btn-upgrade:hover {
-            background: #1d4ed8;
-        }
-
-        .plan-price-upgrade {
-            text-align: center;
-            margin-top: 0.5rem;
+            font-size: 0.875rem;
             color: #374151;
-            font-weight: 500;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .upgrade-link {
-            color: #2563eb;
-            font-style: normal;
-            font-weight: 500;
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .upgrade-link:hover {
-            color: #1d4ed8;
-            text-decoration: underline;
-        }
-
-
-        .retry-container {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .form-input {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            animation: fadeIn 0.3s ease;
+            padding: 11px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            background: #fff;
+            color: #1a1a2e;
         }
 
-        .retry-content {
-            background: #ffffff;
-            padding: 30px 40px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            max-width: 400px;
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
+        .form-input:focus { outline: none; border-color: #4361ee; }
+        .form-textarea { min-height: 90px; resize: vertical; }
 
-        .retry-icon {
-            font-size: 48px;
-        }
-
-        .retry-text {
-            font-size: 16px;
-            color: #333333;
-            line-height: 1.4;
-        }
-
-        .retry-button {
-            background-color: #4361ee;
-            color: white;
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background: #4361ee;
+            color: #fff;
             border: none;
-            padding: 12px 25px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 600;
-            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            display: inline-block;
-            /* garante que fique centralizado */
+            font-family: inherit;
+            transition: background 0.2s;
         }
 
-        .retry-button:hover {
-            transform: scale(1.05);
+        .submit-button:hover { background: #3350d6; }
+
+        /* ─── Load More ────────────────────────────────────── */
+        .load-more-container { display: flex; justify-content: center; padding: 24px; }
+
+        .btn-load-more {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #64748b;
+            font-family: inherit;
         }
 
-        .retry-button:active {
-            transform: scale(0.98);
+        .btn-load-more:hover:not(:disabled) { background: #f8fafc; }
+        .btn-load-more:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        /* ─── Misc ─────────────────────────────────────────── */
+        .main {
+            padding: 40px 0;
+            min-height: calc(100vh - 170px);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
 
-        .progress-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            margin-bottom: 25px;
-        }
-
-        .progress-container {
-            flex: 1;
-            height: 6px;
-            background-color: #e9ecef;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #93a0dc, #4361ee);
-            border-radius: 8px;
-            transition: width 0.4s ease;
-        }
-
-        .progress-value {
-            font-size: 0.75rem;
-            font-weight: 600;
+        .edit-btn {
+            background: none;
             color: #4361ee;
-            min-width: 40px;
-            text-align: right;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
-        /* Responsividade */
+        .edit-btn:hover { opacity: 0.75; background: #eef0fd; }
+
+        /* ─── Responsive ───────────────────────────────────── */
         @media (max-width: 900px) {
-            .container {
-                margin-top: 45px;
-            }
-
-            .card {
-                flex-direction: column;
-                padding: 10px;
-            }
-
-            .course-cover {
-                flex: 0 0 200px;
-                width: 100%;
-            }
+            .container { margin-top: 45px; }
+            .card { padding: 14px; }
         }
 
         @media (max-width: 768px) {
-            .vidio-popout-overlay h2 {
-                font-size: 18px;
-            }
-
-            .video-button {
-                padding: 12px 24px;
-                font-size: 14px;
-            }
-
-            .vidio-close-btn {
-                top: 10px;
-                right: 10px;
-                font-size: 30px;
-            }
-
-            .course-header {
-                flex-direction: column;
-                gap: 0px;
-                padding: 10px;
-            }
-
-            .course-title {
-                font-size: 1.3rem;
-            }
-
-            .section-title,
-            .module-title {
-                font-size: 17px;
-            }
-
-            .popout-container {
-                width: 95%;
-                padding: 10px;
-                max-width: 100%;
-                max-height: 70vh;
-                border-radius: 8px;
-                overflow-y: auto;
-            }
-
-            .popout-title {
-                font-size: 18px;
-                text-align: center;
-            }
-
-            .close-button {
-                font-size: 20px;
-                padding: 8px;
-            }
-
-            .lesson-item {
-                padding: 16px;
-                margin-bottom: 12px;
-                flex-direction: row;
-                align-items: center;
-            }
-
-            .lesson-icon {
-                width: 40px;
-                height: 40px;
-                margin-right: 16px;
-                flex-shrink: 0;
-            }
-
-            .lesson-content {
-                flex: 1;
-                min-width: 0;
-            }
-
-            .lesson-title {
-                font-size: 1rem;
-                margin-bottom: 4px;
-            }
-
-            .lesson-duration {
-                font-size: 0.8rem;
-            }
-
-            .lesson-actions {
-                flex-direction: column;
-                gap: 8px;
-                flex-shrink: 0;
-            }
-
-            .exercise-section {
-                padding: 24px;
-                margin: 0 0px;
-            }
-
-            .exercise-title {
-                font-size: 1.3rem;
-                margin-bottom: 12px;
-            }
-
-            .exercise-description {
-                font-size: 0.95rem;
-                margin-bottom: 24px;
-            }
-
-            .btn-exercise {
-                padding: 16px 32px;
-                font-size: 1rem;
-            }
+            .course-header { padding: 20px 18px 16px; }
+            .course-header::before, .course-header::after { display: none; }
+            .course-title { font-size: 1.35rem; }
+            .module-header { padding: 12px 16px; }
+            .module-header-left { gap: 10px; }
+            .lesson-item { padding: 12px 16px; }
+            .popout-container { width: 95%; padding: 18px; max-height: 80vh; overflow-y: auto; }
+            .popout-title { font-size: 16px; }
+            .vidio-popout-overlay h2 { font-size: 16px; }
+            .vidio-close-btn { top: 10px; right: 10px; font-size: 28px; }
         }
     </style>
 </head>
@@ -1662,30 +1013,29 @@
             </div>
         </div>
 
+        <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
-                <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
-                    fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#E24B4A" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <circle cx="12" cy="16" r="1"></circle>
+                    <circle cx="12" cy="16" r="1" fill="#E24B4A"></circle>
                 </svg>
-
                 <div class="retry-text">
                     Ocorreu um erro ao carregar a disciplina.<br>
                     Por favor, tente novamente.
                 </div>
-
                 <button class="retry-button" (click)="retryGetSubject()">
                     Tentar novamente
                 </button>
             </div>
         </div>
 
+        <!-- Top row: back + dropdown -->
         <div class="header-buttons">
-            <!-- Back -->
             <button class="back-btn" [routerLink]="['/subjects']">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M19 12H5" />
                     <path d="M12 19l-7-7 7-7" />
@@ -1694,71 +1044,57 @@
             </button>
 
             <div class="dropdown-container">
-                <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i class="pi pi-ellipsis-h"></i></button>
+                <button class="dropdown-btn" (click)="toggleDropdown(subject)">
+                    <i class="pi pi-ellipsis-h"></i>
+                </button>
                 <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
                     <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
-                    <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no
-                        WhatsApp</a>
-                    <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no
-                        Facebook</a>
-                    <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no
-                        LinkedIn</a>
+                    <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no WhatsApp</a>
+                    <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no Facebook</a>
+                    <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no LinkedIn</a>
                 </div>
             </div>
         </div>
 
         <div class="grid-container">
-            <!-- Course Info & Modules -->
             <div class="course-section">
 
+                <!-- Hero header -->
                 <div class="course-header">
                     <div class="course-info">
+                        <div class="course-badge">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                            </svg>
+                            Disciplina
+                        </div>
                         <h1 class="course-title">{{ subject.name }}</h1>
                         <p class="course-description">{{ subject.description }}</p>
-                        <!--
-                        <div class="course-meta">
-                            <div class="course-stats">
-                                <div class="stat">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path
-                                            d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
-                                        </path>
-                                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                                    </svg>
-                                    <span>{{ subject.totalTopics }} topics</span>
-                                </div>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg>
+                                {{ subject.totalTopics }} tópico{{ subject.totalTopics !== 1 ? 's' : '' }}
                             </div>
                         </div>
-                        -->
                     </div>
-                    <!--
-                    <div class="course-actions">
-                        <button (click)="onSubjectSubscription(subject)" class="btn btn-primary"
-                            [disabled]="subject.currentUserSubscribed">
-                            <i *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription"
-                                class="fas fa-plus"></i>
-                            <span
-                                *ngIf="!subject.currentUserSubscribed && !subject.showLoadingSubscription">Inscrever-se</span>
-                            <i *ngIf="!subject.currentUserSubscribed && subject.showLoadingSubscription"
-                                class="pi pi-spin pi-spinner-dotted" style="color: white;"></i>
-                            <span *ngIf="subject.currentUserSubscribed && subject.currentUserSubscribed">Inscrito</span>
-                        </button>
-                    </div>
-                    -->
                 </div>
 
+                <!-- Progress -->
                 <div class="progress-wrapper" *ngIf="isUserLoggedIn">
                     <div class="progress-container">
                         <div class="progress-bar" [style.width.%]="subject.currentUserMarkedContentRate"></div>
                     </div>
-
                     <span class="progress-value">
                         {{ subject.currentUserMarkedContentRate.toFixed(1) }}% Concluído
                     </span>
                 </div>
 
-                <!-- Modules Section -->
+                <!-- Topics / Modules -->
                 <div class="card modules-card">
 
                     <div class="section-header">
@@ -1771,116 +1107,117 @@
                     </div>
 
                     <div class="modules-list">
-                        <div *ngFor="let topic of subject.topics" class="module-item"
+                        <div *ngFor="let topic of subject.topics; let i = index" class="module-item"
                             [class.expanded]="isTopicExpanded(topic.id)">
+
                             <div class="module-header"
                                 (click)="toggleModule(topic.id); toggleDescription($event, topic)">
-                                <div>
-                                    <h3 class="module-title">{{ topic.name }}</h3>
-                                    <span class="lesson-count">
-                                        {{ getVideoCount(topic) }} vídeo{{ getVideoCount(topic) !== 1 ? 's' : '' }},
-                                        {{ getFileCount(topic) }} ficheiro{{ getFileCount(topic) !== 1 ? 's' : '' }}
-                                        <!--
-                                        <span *ngIf="isUserLoggedIn">| </span>
-                                        <span class="progress-mini-value" *ngIf="isUserLoggedIn">
-                                            {{ getTopicProgress(topic).toFixed(1) }}% concluído
+                                <div class="module-header-left">
+                                    <div class="module-index">{{ i + 1 }}</div>
+                                    <div>
+                                        <h3 class="module-title">{{ topic.name }}</h3>
+                                        <span class="lesson-count">
+                                            {{ getVideoCount(topic) }} vídeo{{ getVideoCount(topic) !== 1 ? 's' : '' }},
+                                            {{ getFileCount(topic) }} ficheiro{{ getFileCount(topic) !== 1 ? 's' : '' }}
                                         </span>
-                                        -->
-                                    </span>
-
-                                    <!-- Descrição resumida -->
-                                    <p class="topic-description">
-                                        {{ getLimitedDescription(topic) }}
-                                        <a class="toggle-desc" (click)="goToTopic(topic)"
-                                            *ngIf="isTopicExpanded(topic.id)">
-                                            Ver separado
-                                        </a>
-                                    </p>
-
-                                    <p class="lock-message" *ngIf="isPremiumTopic(topic) && isTopicExpanded(topic.id)">
-                                        <span class="lock-icon">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" />
-                                                <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor"
-                                                    stroke-width="2" />
+                                        <p class="lock-message"
+                                            *ngIf="isPremiumTopic(topic) && isTopicExpanded(topic.id)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M7 10V7a5 5 0 0 1 10 0v3" />
+                                                <rect x="5" y="10" width="14" height="10" rx="2" />
                                             </svg>
-                                        </span>
-                                        Conteúdo exclusivo para utilizadores <strong>Premium</strong>.
-                                        <a class="upgrade-link" (click)="openUpgradeModal()">Desbloquear agora</a>
-                                    </p>
+                                            Conteúdo exclusivo para utilizadores <strong>Premium</strong>.
+                                            <a class="upgrade-link" (click)="openUpgradeModal()">Desbloquear agora</a>
+                                        </p>
+                                    </div>
                                 </div>
                                 <div class="module-info">
-                                    <svg class="chevron-icon" [class.rotated]="isTopicExpanded(topic.id)" width="24"
-                                        height="24" [class.expanded]="isTopicExpanded(topic.id)" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
+                                    <svg class="chevron-icon" [class.rotated]="isTopicExpanded(topic.id)"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M6 9l6 6 6-6" />
                                     </svg>
                                 </div>
                             </div>
 
                             <div *ngIf="isTopicExpanded(topic.id)" class="lessons-container">
-
                                 <div class="lesson-item" *ngFor="let content of topic.contents">
 
+                                    <input type="checkbox" class="styled-checkbox"
+                                        [id]="'visible-checkbox-' + content.id"
+                                        [checked]="content.markedByUser"
+                                        (change)="toggleMarkedContent(content)"
+                                        *ngIf="!content.showLoadingMarked && isUserLoggedIn"
+                                        [disabled]="isPremiumTopic(topic) || content.showLoadingMarked" />
+
+                                    <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
+                                        style="color: #4361ee; font-size: 16px; width: 16px; flex-shrink: 0;"></i>
+
+                                    <div class="lesson-type-icon"
+                                        [class.video]="content.contentType === 'VIDEO'"
+                                        [class.file]="content.contentType === 'FILE'">
+                                        <svg *ngIf="content.contentType === 'VIDEO'" viewBox="0 0 24 24"
+                                            fill="currentColor">
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                        <svg *ngIf="content.contentType === 'FILE'" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                            <polyline points="14 2 14 8 20 8" />
+                                        </svg>
+                                    </div>
+
                                     <div class="lesson-content">
-                                        <div class="lesson-content-container">
-                                            <input type="checkbox" class="styled-checkbox"
-                                                [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
-                                                (change)="toggleMarkedContent(content)"
-                                                *ngIf="!content.showLoadingMarked && isUserLoggedIn"
-                                                [disabled]="isPremiumTopic(topic) || content.showLoadingMarked" />
-                                            <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
-                                                style="color: #4361ee; font-size: 18px;"></i>
-                                            <div>
-                                                <label class="lesson-title">{{ content.description }}</label>
-                                                <div class="lesson-duration">
-                                                    <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula | {{
-                                                        content.time }} minutos</span>
-                                                    <span *ngIf="content.contentType == 'FILE'">Ficheiro para
-                                                        baixar</span>
-                                                </div>
-                                            </div>
+                                        <label class="lesson-title">{{ content.description }}</label>
+                                        <div class="lesson-duration">
+                                            <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula · {{ content.time }} min</span>
+                                            <span *ngIf="content.contentType == 'FILE'">Ficheiro para baixar</span>
                                         </div>
                                     </div>
 
                                     <div class="lesson-actions">
                                         <button [disabled]="isPremiumTopic(topic) || content.showLoadingMarked"
-                                            (click)="onPlayVideo(content)" class="btn play-btn"
+                                            (click)="onPlayVideo(content)" class="play-btn"
                                             *ngIf="content.contentType == 'VIDEO'">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                                <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+                                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M8 5v14l11-7z" />
                                             </svg>
                                         </button>
 
-                                        <button class="btn download-btn" *ngIf="content.contentType == 'FILE'"
+                                        <button class="download-btn" *ngIf="content.contentType == 'FILE'"
                                             [disabled]="isPremiumTopic(topic) || content.showLoadingMarked"
                                             (click)="onDownload(content)">
-                                            <svg *ngIf="!content.showLoadingDownload" width="16" height="16"
-                                                viewBox="0 0 24 24" fill="none">
+                                            <svg *ngIf="!content.showLoadingDownload" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
                                                 <path
-                                                    d="M21 15V19C21 19.53 20.79 20.04 20.41 20.41C20.04 20.79 19.53 21 19 21H5C4.47 21 3.96 20.79 3.59 20.41C3.21 20.04 3 19.53 3 19V15M7 10L12 15L17 10M12 15V3"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
+                                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                <polyline points="7 10 12 15 17 10" />
+                                                <line x1="12" y1="15" x2="12" y2="3" />
                                             </svg>
-                                            <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                                                style="color: #4361ee;"></i>
+                                            <i *ngIf="content.showLoadingDownload"
+                                                class="pi pi-spin pi-spinner-dotted"
+                                                style="color: #1d9e75; font-size: 13px;"></i>
                                         </button>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
+
                         </div>
                     </div>
+
                 </div>
 
             </div>
-
         </div>
+
     </div>
+
 </body>
+</html>
 
 <!-- Modal de Vídeo -->
 <div *ngIf="showLesson">
