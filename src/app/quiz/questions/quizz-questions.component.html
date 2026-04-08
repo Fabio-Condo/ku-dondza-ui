@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz — AcademiaApp</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* --------------------------------------------
+       GLOBAL & RESET
+    -------------------------------------------- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -22,13 +23,16 @@
       padding: 16px;
     }
 
-    .container {
+    /* Container principal */
+    .quiz-container {
       max-width: 780px;
       margin: 0 auto;
       padding-top: 48px;
     }
 
-    /* ── Loading Overlay ── */
+    /* --------------------------------------------
+       LOADING OVERLAY & RETRY
+    -------------------------------------------- */
     .loading-overlay {
       position: fixed;
       inset: 0;
@@ -43,12 +47,12 @@
       transition: opacity 0.25s, visibility 0.25s;
     }
 
-    .loading-overlay.visible {
+    .loading-overlay--visible {
       opacity: 1;
       visibility: visible;
     }
 
-    .loading-box {
+    .loading-card {
       background: #ffffff;
       border-radius: 20px;
       border: 1px solid #e2e8f0;
@@ -75,8 +79,8 @@
       color: #475569;
     }
 
-    /* ── Retry ── */
-    .retry-container {
+    /* Retry Modal */
+    .retry-modal {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.4);
@@ -87,7 +91,7 @@
       animation: fadeInUp 0.25s ease;
     }
 
-    .retry-content {
+    .retry-card {
       background: #ffffff;
       padding: 2rem 2.5rem;
       border-radius: 20px;
@@ -101,7 +105,7 @@
       gap: 16px;
     }
 
-    .retry-icon-wrap {
+    .retry-icon {
       width: 56px;
       height: 56px;
       border-radius: 50%;
@@ -117,7 +121,7 @@
       line-height: 1.6;
     }
 
-    .retry-button {
+    .btn-retry {
       background: #2563eb;
       color: white;
       border: none;
@@ -130,13 +134,15 @@
       transition: opacity 0.2s, transform 0.15s;
     }
 
-    .retry-button:hover {
+    .btn-retry:hover {
       opacity: 0.9;
       transform: translateY(-1px);
     }
 
-    /* ── Toast ── */
-    .progress-message {
+    /* --------------------------------------------
+       TOAST MESSAGES
+    -------------------------------------------- */
+    .toast-message {
       position: fixed;
       bottom: 24px;
       left: 50%;
@@ -151,39 +157,41 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
     }
 
-    .progress-message.info {
+    .toast-message--info {
       background: #eff6ff;
       color: #1e3a8a;
       border: 1px solid #bfdbfe;
     }
 
-    .progress-message.success {
+    .toast-message--success {
       background: #f0fdf4;
       color: #14532d;
       border: 1px solid #bbf7d0;
     }
 
-    .progress-message.warning {
+    .toast-message--warning {
       background: #fffbeb;
       color: #713f12;
       border: 1px solid #fde68a;
     }
 
-    .progress-message.error {
+    .toast-message--error {
       background: #fef2f2;
       color: #7f1d1d;
       border: 1px solid #fecaca;
     }
 
-    /* ── Header ── */
-    .header-buttons {
+    /* --------------------------------------------
+       HEADER & DROPDOWN
+    -------------------------------------------- */
+    .quiz-header-actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 4px;
     }
 
-    .back-btn {
+    .btn-back {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -199,16 +207,17 @@
       transition: color 0.15s, background 0.15s;
     }
 
-    .back-btn:hover {
+    .btn-back:hover {
       color: #2563eb;
       background: #eff6ff;
     }
 
-    .dropdown-container {
+    /* Dropdown */
+    .dropdown-wrapper {
       position: relative;
     }
 
-    .dropdown-btn {
+    .dropdown-trigger {
       background: transparent;
       border: 1px solid #e2e8f0;
       border-radius: 8px;
@@ -221,13 +230,13 @@
       transition: all 0.15s;
     }
 
-    .dropdown-btn:hover {
+    .dropdown-trigger:hover {
       border-color: #2563eb;
       color: #2563eb;
       background: #eff6ff;
     }
 
-    .dropdown {
+    .dropdown-menu {
       position: absolute;
       right: 0;
       top: calc(100% + 6px);
@@ -241,7 +250,7 @@
       animation: slideIn 0.15s ease;
     }
 
-    .dropdown a {
+    .dropdown-item {
       display: block;
       padding: 10px 14px;
       font-size: 13px;
@@ -251,16 +260,18 @@
       border-bottom: 1px solid #e2e8f0;
     }
 
-    .dropdown a:last-child {
+    .dropdown-item:last-child {
       border-bottom: none;
     }
 
-    .dropdown a:hover {
+    .dropdown-item:hover {
       background: #f8fafc;
     }
 
-    /* ── Init Quiz Screen ── */
-    .start-screen {
+    /* --------------------------------------------
+       QUIZ SETUP SCREEN (Start Screen)
+    -------------------------------------------- */
+    .setup-card {
       background: #ffffff;
       border-radius: 20px;
       border: 1px solid #e2e8f0;
@@ -271,27 +282,27 @@
       animation: fadeInUp 0.3s ease;
     }
 
-    .quiz-header-init {
+    .setup-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 20px;
     }
 
-    .quiz-header-init h1 {
+    .setup-title {
       font-size: 18px;
       font-weight: 700;
       color: #0f172a;
     }
 
-    .quiz-header-init span {
+    .setup-subtitle {
       font-size: 13px;
       color: #94a3b8;
       margin-top: 2px;
       display: block;
     }
 
-    .quiz-close-btn {
+    .btn-close-quiz {
       width: 32px;
       height: 32px;
       border: 1px solid #e2e8f0;
@@ -307,13 +318,14 @@
       transition: all 0.15s;
     }
 
-    .quiz-close-btn:hover {
+    .btn-close-quiz:hover {
       background: #fef2f2;
       color: #dc2626;
       border-color: #fecaca;
     }
 
-    .step-progress-bar {
+    /* Progress Bar */
+    .progress-track {
       width: 100%;
       height: 4px;
       background: #e5e7eb;
@@ -322,13 +334,14 @@
       overflow: hidden;
     }
 
-    .progress {
+    .progress-fill {
       height: 100%;
       background: #2563eb;
       border-radius: 999px;
       transition: width 0.4s ease;
     }
 
+    /* Step Card */
     .step-card {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -345,6 +358,7 @@
       font-weight: 500;
     }
 
+    /* Options Grid */
     .options-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -376,27 +390,27 @@
       color: #2563eb;
     }
 
-    .option-card.selected {
+    .option-card--selected {
       border-color: #2563eb;
       background: #2563eb;
       color: white;
     }
 
-    .option-card.selected h3 {
+    .option-card--selected h3 {
       color: white;
     }
 
-    .option-card.selected .option-description {
+    .option-card--selected .option-description {
       color: rgba(255, 255, 255, 0.8);
     }
 
-    .option-card.unlocked {
+    .option-card--locked {
       opacity: 0.5;
       cursor: not-allowed;
       filter: grayscale(60%);
     }
 
-    .option-card.unlocked:hover {
+    .option-card--locked:hover {
       border-color: #e2e8f0;
       background: #ffffff;
       color: #0f172a;
@@ -408,6 +422,7 @@
       margin-top: 4px;
     }
 
+    /* Lock Icon */
     .lock-icon {
       display: inline-flex;
       align-items: center;
@@ -427,7 +442,7 @@
       gap: 6px;
     }
 
-    .select-all {
+    .select-all-link {
       font-size: 12px;
       font-weight: 600;
       color: #2563eb;
@@ -439,7 +454,7 @@
       transition: opacity 0.15s;
     }
 
-    .select-all:hover {
+    .select-all-link:hover {
       opacity: 0.75;
     }
 
@@ -449,7 +464,7 @@
       margin-bottom: 10px;
     }
 
-    .total-questions {
+    .total-questions-badge {
       text-align: center;
       font-size: 13px;
       font-weight: 600;
@@ -468,7 +483,7 @@
       line-height: 1.5;
     }
 
-    .start-button {
+    .btn-start-quiz {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -487,19 +502,21 @@
       transition: all 0.2s;
     }
 
-    .start-button:hover:not(:disabled) {
+    .btn-start-quiz:hover:not(:disabled) {
       opacity: 0.9;
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
-    .start-button:disabled {
+    .btn-start-quiz:disabled {
       opacity: 0.45;
       cursor: not-allowed;
     }
 
-    /* ── Quiz Screen ── */
-    .question-card {
+    /* --------------------------------------------
+       QUIZ QUESTION SCREEN
+    -------------------------------------------- */
+    .question-panel {
       background: #ffffff;
       border-radius: 20px;
       border: 1px solid #e2e8f0;
@@ -508,20 +525,20 @@
       animation: fadeInUp 0.25s ease;
     }
 
-    .quiz-header {
+    .quiz-user-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
     }
 
-    .quiz-user {
+    .user-profile {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .avatar {
+    .user-avatar {
       width: 38px;
       height: 38px;
       border-radius: 50%;
@@ -535,7 +552,12 @@
       flex-shrink: 0;
     }
 
-    .user-info .title {
+    .user-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
       font-size: 14px;
       font-weight: 700;
       color: #0f172a;
@@ -544,7 +566,7 @@
       gap: 6px;
     }
 
-    .you-badge {
+    .badge-you {
       background: #eff6ff;
       color: #2563eb;
       font-size: 10px;
@@ -553,7 +575,7 @@
       border-radius: 999px;
     }
 
-    .meta {
+    .quiz-meta {
       font-size: 12px;
       color: #94a3b8;
       display: flex;
@@ -562,15 +584,15 @@
       margin-top: 2px;
     }
 
-    .meta .dot {
+    .meta-dot {
       width: 3px;
       height: 3px;
       background: #94a3b8;
       border-radius: 50%;
     }
 
-    /* ── Progress Bar ── */
-    .progress-container {
+    /* Progress Area */
+    .progress-area {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -584,16 +606,16 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .timer.enabled {
+    .timer--active {
       color: #2563eb;
     }
 
-    .timer.disabled {
+    .timer--inactive {
       color: #e5e7eb;
       position: relative;
     }
 
-    .timer.disabled::after {
+    .timer--inactive::after {
       content: "";
       position: absolute;
       top: 50%;
@@ -604,18 +626,12 @@
       transform: translateY(-50%);
     }
 
-    .timer.warning {
+    .timer--warning {
       color: #f43f5e;
       animation: pulse 1s infinite;
     }
 
-    .time-up {
-      color: #6b7280;
-      font-weight: 700;
-      animation: flash 0.8s infinite;
-    }
-
-    .progress-bar-container {
+    .progress-bar-wrapper {
       flex: 1;
       height: 6px;
       background: #e5e7eb;
@@ -623,14 +639,14 @@
       overflow: hidden;
     }
 
-    .progress-bar {
+    .progress-bar-fill {
       height: 100%;
       background: #2563eb;
       transition: width 0.4s ease;
       border-radius: 999px;
     }
 
-    .question-selector-btn {
+    .btn-question-selector {
       display: flex;
       align-items: center;
       gap: 5px;
@@ -646,22 +662,22 @@
       transition: all 0.15s;
     }
 
-    .question-selector-btn:hover:not(:disabled) {
+    .btn-question-selector:hover:not(:disabled) {
       background: #eff6ff;
       border-color: #2563eb;
     }
 
-    .question-selector-btn:disabled {
+    .btn-question-selector:disabled {
       opacity: 0.4;
       cursor: not-allowed;
     }
 
-    .question-selector-btn .arrow {
+    .arrow-icon {
       font-size: 10px;
     }
 
-    /* ── Question ── */
-    .question-graph {
+    /* Question Image */
+    .question-image {
       width: 100%;
       border-radius: 16px;
       border: 1px solid #e2e8f0;
@@ -669,11 +685,7 @@
       display: block;
     }
 
-    .graph-container {
-      margin-bottom: 20px;
-    }
-
-    canvas {
+    .math-canvas {
       max-width: 60%;
       border-radius: 12px;
       display: block;
@@ -681,7 +693,7 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
     }
 
-    .question-text-container {
+    .question-text {
       font-size: 16px;
       color: #0f172a;
       line-height: 1.7;
@@ -690,21 +702,21 @@
       margin-bottom: 20px;
     }
 
-    .question-topic {
+    .question-topic-badge {
       font-size: 11px;
       color: #94a3b8;
       margin-top: 12px;
     }
 
-    /* ── Answer Options ── */
-    .answer-options {
+    /* Answer Options */
+    .answers-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
       margin-bottom: 8px;
     }
 
-    .answer-options label {
+    .answer-option {
       display: flex;
       align-items: flex-start;
       padding: 14px 16px;
@@ -718,13 +730,13 @@
       overflow-y: auto;
     }
 
-    .answer-options label:hover {
+    .answer-option:hover {
       border-color: #2563eb;
       background: #eff6ff;
       transform: translateX(2px);
     }
 
-    .answer-options label .num {
+    .answer-letter {
       background: #2563eb;
       color: white;
       border-radius: 50%;
@@ -741,24 +753,24 @@
       box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
     }
 
-    .answer-options input[type="radio"] {
+    .answer-option input[type="radio"] {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    .answer-options label.selected-answer {
+    .answer-option--selected {
       border-color: #2563eb;
       background: #eff6ff;
     }
 
-    .answer-options label.correct-answer {
+    .answer-option--correct {
       background: #f0fdf4;
       border-color: #16a34a;
       color: #14532d;
     }
 
-    .answer-options label.correct-answer::after {
+    .answer-option--correct::after {
       content: '✓';
       position: absolute;
       right: 14px;
@@ -768,13 +780,13 @@
       font-weight: 700;
     }
 
-    .answer-options label.incorrect-answer {
+    .answer-option--incorrect {
       background: #fef2f2;
       border-color: #dc2626;
       color: #7f1d1d;
     }
 
-    .answer-options label.incorrect-answer::after {
+    .answer-option--incorrect::after {
       content: '✕';
       position: absolute;
       right: 14px;
@@ -784,26 +796,24 @@
       font-weight: 700;
     }
 
-    /* ── Tip / Solution ── */
-    .tip,
-    .solution {
+    /* Tip & Solution */
+    .tip-box {
       margin-top: 16px;
       padding: 14px 16px;
       border-radius: 12px;
-      border: 1px solid;
-    }
-
-    .tip {
       background: #fffbeb;
-      border-color: #fde68a;
+      border: 1px solid #fde68a;
     }
 
-    .solution {
+    .solution-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
       background: #eff6ff;
-      border-color: #bfdbfe;
+      border: 1px solid #bfdbfe;
     }
 
-    .solution-button {
+    .toggle-section-btn {
       background: transparent;
       border: none;
       cursor: pointer;
@@ -815,15 +825,10 @@
       font-family: inherit;
     }
 
-    .solution-button .title {
+    .toggle-section-title {
       font-size: 13px;
       font-weight: 700;
       color: #0f172a;
-    }
-
-    .solution-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
     }
 
     .chevron-icon {
@@ -831,33 +836,31 @@
       color: #475569;
     }
 
-    .chevron-icon.rotated {
+    .chevron-icon--rotated {
       transform: rotate(180deg);
     }
 
-    .solution-content,
-    .tip-content {
+    .toggle-content {
       font-size: 14px;
       color: #475569;
       line-height: 1.7;
       margin-top: 10px;
     }
 
-    .solution-content.scrollable,
-    .tip-content.scrollable {
+    .toggle-content--scrollable {
       max-height: 400px;
       overflow-y: auto;
     }
 
-    /* ── Navigation ── */
-    .navigation-buttons {
+    /* Navigation Buttons */
+    .nav-buttons {
       display: flex;
       justify-content: center;
       gap: 10px;
       margin-top: 20px;
     }
 
-    button.btn {
+    .btn {
       font-family: inherit;
       cursor: pointer;
       border-radius: 12px;
@@ -870,7 +873,7 @@
       transition: all 0.2s;
     }
 
-    button.btn svg {
+    .btn svg {
       width: 16px;
       height: 16px;
       stroke-width: 2.5;
@@ -900,26 +903,26 @@
       transform: translateY(-1px);
     }
 
-    .btn-verification {
+    .btn-verify {
       background: #10b981;
       border: none;
       color: white;
     }
 
-    .btn-verification:hover:not(:disabled) {
+    .btn-verify:hover:not(:disabled) {
       opacity: 0.9;
       transform: translateY(-1px);
     }
 
-    .btn-prev:disabled,
-    .btn-next:disabled,
-    .btn-verification:disabled {
+    .btn:disabled {
       opacity: 0.35;
       cursor: not-allowed;
       transform: none;
     }
 
-    /* ── FAB ── */
+    /* --------------------------------------------
+       FLOATING ACTION BUTTONS (FAB)
+    -------------------------------------------- */
     .fab {
       position: fixed;
       border: none;
@@ -946,14 +949,14 @@
       cursor: not-allowed;
     }
 
-    .fab-primary {
+    .fab--primary {
       background: #2563eb;
       color: white;
       bottom: 16px;
       right: 16px;
     }
 
-    .fab-save-as-favorite {
+    .fab--save-favorite {
       bottom: 148px;
       right: 16px;
       background: #ffffff;
@@ -961,7 +964,7 @@
       color: #2563eb;
     }
 
-    .fab-show-comments {
+    .fab--comments {
       bottom: 80px;
       right: 16px;
       background: #ffffff;
@@ -970,33 +973,35 @@
       font-size: 14px;
     }
 
-    .fab-save {
+    .fab--save-quiz {
       bottom: 80px;
       right: 16px;
       background: #10b981;
       color: white;
     }
 
-    .fab-submitte {
+    .fab--submit {
       bottom: 16px;
       right: 16px;
       background: #2563eb;
       color: white;
     }
 
-    .fab-lock {
+    .fab--lock {
       bottom: 80px;
       right: 16px;
       background: #2563eb;
       color: white;
     }
 
-    /* ── Results Screen ── */
-    .results-screen2 {
+    /* --------------------------------------------
+       RESULTS SCREEN
+    -------------------------------------------- */
+    .results-container {
       animation: fadeInUp 0.35s ease;
     }
 
-    .hero {
+    .results-hero {
       display: grid;
       grid-template-columns: auto 1fr auto;
       gap: 28px;
@@ -1009,18 +1014,19 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
     }
 
-    .progress-circle {
+    /* Progress Circle */
+    .progress-ring {
       width: 130px;
       height: 130px;
       border-radius: 50%;
-      background: conic-gradient(var(--color, #2563eb) var(--progress), #e5e7eb 0deg);
+      background: conic-gradient(var(--score-color, #2563eb) var(--score-degrees), #e5e7eb 0deg);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
     }
 
-    .progress-circle::before {
+    .progress-ring::before {
       content: '';
       position: absolute;
       width: 110px;
@@ -1043,20 +1049,20 @@
       justify-content: center;
     }
 
-    .score-num {
+    .score-number {
       font-size: 30px;
       font-weight: 700;
       color: #0f172a;
       line-height: 1;
     }
 
-    .score-of {
+    .score-max {
       font-size: 11px;
       color: #94a3b8;
       margin-top: 2px;
     }
 
-    .grade-badge {
+    .grade-letter {
       font-size: 44px;
       font-weight: 700;
       color: #2563eb;
@@ -1094,20 +1100,20 @@
       border-right: none;
     }
 
-    .stat-val {
+    .stat-value {
       font-size: 20px;
       font-weight: 700;
     }
 
-    .stat-val.green {
+    .stat-value--correct {
       color: #16a34a;
     }
 
-    .stat-val.red {
+    .stat-value--incorrect {
       color: #dc2626;
     }
 
-    .stat-val.grey {
+    .stat-value--neutral {
       color: #94a3b8;
     }
 
@@ -1164,7 +1170,7 @@
       font-weight: 600;
     }
 
-    /* ── Section Label ── */
+    /* Section Label */
     .section-label {
       font-size: 10px;
       font-weight: 700;
@@ -1174,7 +1180,7 @@
       margin: 28px 0 12px;
     }
 
-    /* ── Topic Cards ── */
+    /* Topics Grid */
     .topics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -1221,19 +1227,19 @@
       flex-shrink: 0;
     }
 
-    .badge-great {
+    .badge--great {
       background: #f0fdf4;
       color: #15803d;
       border: 1px solid #bbf7d0;
     }
 
-    .badge-ok {
+    .badge--ok {
       background: #fffbeb;
       color: #b45309;
       border: 1px solid #fde68a;
     }
 
-    .badge-weak {
+    .badge--weak {
       background: #fef2f2;
       color: #b91c1c;
       border: 1px solid #fecaca;
@@ -1257,21 +1263,21 @@
       color: #94a3b8;
     }
 
-    .topic-pct {
+    .topic-percentage {
       margin-left: auto;
       font-size: 16px;
       font-weight: 700;
     }
 
-    .pct-great {
+    .percentage--great {
       color: #16a34a;
     }
 
-    .pct-ok {
+    .percentage--ok {
       color: #d97706;
     }
 
-    .pct-weak {
+    .percentage--weak {
       color: #dc2626;
     }
 
@@ -1288,15 +1294,15 @@
       border-radius: 999px;
     }
 
-    .bar-great {
+    .bar-fill--great {
       background: #16a34a;
     }
 
-    .bar-ok {
+    .bar-fill--ok {
       background: #d97706;
     }
 
-    .bar-weak {
+    .bar-fill--weak {
       background: #dc2626;
     }
 
@@ -1312,7 +1318,7 @@
       font-weight: 600;
     }
 
-    /* ── Table ── */
+    /* Comparison Table */
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -1320,7 +1326,7 @@
       margin-bottom: 48px;
     }
 
-    .table-card {
+    .results-table {
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
@@ -1328,18 +1334,18 @@
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
-    table {
+    .results-table table {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
     }
 
-    thead tr {
+    .results-table thead tr {
       background: #f8fafc;
       border-bottom: 1px solid #e2e8f0;
     }
 
-    thead th {
+    .results-table th {
       padding: 12px 18px;
       text-align: left;
       font-size: 10px;
@@ -1349,20 +1355,20 @@
       color: #94a3b8;
     }
 
-    tbody tr {
+    .results-table tbody tr {
       border-bottom: 1px solid #e2e8f0;
       transition: background 0.15s;
     }
 
-    tbody tr:last-child {
+    .results-table tbody tr:last-child {
       border-bottom: none;
     }
 
-    tbody tr:hover {
+    .results-table tbody tr:hover {
       background: #f8fafc;
     }
 
-    tbody td {
+    .results-table td {
       padding: 12px 18px;
       color: #0f172a;
     }
@@ -1397,8 +1403,10 @@
       text-align: right;
     }
 
-    /* ── Popovers ── */
-    .popout-overlay {
+    /* --------------------------------------------
+       MODALS & POPOVERS
+    -------------------------------------------- */
+    .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(15, 23, 42, 0.45);
@@ -1409,7 +1417,7 @@
       backdrop-filter: blur(2px);
     }
 
-    .popout-container {
+    .modal-container {
       background: #ffffff;
       border-radius: 20px;
       padding: 24px;
@@ -1422,20 +1430,20 @@
       border: 1px solid #e2e8f0;
     }
 
-    .popout-header {
+    .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
     }
 
-    .popout-title {
+    .modal-title {
       font-size: 18px;
       font-weight: 700;
       color: #0f172a;
     }
 
-    .close-button {
+    .modal-close {
       width: 32px;
       height: 32px;
       border: 1px solid #e2e8f0;
@@ -1451,16 +1459,18 @@
       font-family: inherit;
     }
 
-    .close-button:hover {
+    .modal-close:hover {
       background: #fef2f2;
       color: #dc2626;
       border-color: #fecaca;
     }
 
-    /* ── Auth Forms ── */
-    .login-side {}
+    /* Login Form */
+    .login-form {
+      /* styles applied */
+    }
 
-    .login-side h1 {
+    .form-title {
       font-size: 15px;
       color: #475569;
       margin: 12px 0;
@@ -1526,7 +1536,7 @@
       color: #2563eb;
     }
 
-    .login-btn {
+    .btn-login {
       width: 100%;
       padding: 12px;
       background: #2563eb;
@@ -1541,18 +1551,18 @@
       transition: all 0.2s;
     }
 
-    .login-btn:hover:not(:disabled) {
+    .btn-login:hover:not(:disabled) {
       opacity: 0.9;
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
-    .login-btn:disabled {
+    .btn-login:disabled {
       opacity: 0.45;
       cursor: not-allowed;
     }
 
-    .message {
+    .message-box {
       font-size: 13px;
       color: #475569;
       line-height: 1.6;
@@ -1563,13 +1573,13 @@
       border: 1px solid #e2e8f0;
     }
 
-    .message a {
+    .message-box a {
       color: #2563eb;
       text-decoration: none;
       font-weight: 600;
     }
 
-    .resend-btn {
+    .resend-link {
       color: #0f172a;
       text-decoration: none;
       font-size: 13px;
@@ -1583,7 +1593,7 @@
       transition: opacity 0.15s;
     }
 
-    .resend-btn:hover {
+    .resend-link:hover {
       opacity: 0.7;
     }
 
@@ -1621,7 +1631,7 @@
       text-decoration: none;
     }
 
-    .go-back-btn {
+    .back-link {
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -1634,7 +1644,7 @@
       text-decoration: none;
     }
 
-    .go-back-btn:hover {
+    .back-link:hover {
       color: #2563eb;
     }
 
@@ -1660,8 +1670,8 @@
       border-bottom: 2px solid #2563eb;
     }
 
-    /* ── Comments ── */
-    .comments-overlay {
+    /* Comments Popup */
+    .comments-modal {
       position: fixed;
       inset: 0;
       background: rgba(15, 23, 42, 0.45);
@@ -1672,7 +1682,7 @@
       backdrop-filter: blur(2px);
     }
 
-    .comments-popup {
+    .comments-panel {
       display: flex;
       flex-direction: column;
       background: #ffffff;
@@ -1704,7 +1714,7 @@
       color: #0f172a;
     }
 
-    .comments-count {
+    .comments-count-badge {
       background: #2563eb;
       color: white;
       font-size: 11px;
@@ -1713,34 +1723,20 @@
       border-radius: 999px;
     }
 
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: #94a3b8;
-      padding: 2px;
-      transition: color 0.15s;
-    }
-
-    .close-btn:hover {
-      color: #dc2626;
-    }
-
-    .comments-scrollable {
+    .comments-list {
       overflow-y: auto;
       padding: 16px 24px;
       flex-grow: 1;
     }
 
-    .no-comments-message {
+    .no-comments {
       text-align: center;
       color: #94a3b8;
       font-size: 13px;
       padding: 24px 0;
     }
 
-    .comment-wrapper {
+    .comment-item {
       display: flex;
       align-items: flex-start;
       gap: 12px;
@@ -1755,7 +1751,7 @@
       flex-shrink: 0;
     }
 
-    .comment {
+    .comment-bubble {
       flex: 1;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -1764,7 +1760,7 @@
       transition: all 0.2s;
     }
 
-    .comment:hover {
+    .comment-bubble:hover {
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
@@ -1798,7 +1794,7 @@
       gap: 6px;
     }
 
-    .comment-action {
+    .comment-action-btn {
       background: none;
       border: none;
       font-size: 12px;
@@ -1814,7 +1810,7 @@
       gap: 4px;
     }
 
-    .comment-action:hover {
+    .comment-action-btn:hover {
       background: #eff6ff;
       color: #2563eb;
     }
@@ -1824,7 +1820,51 @@
       font-weight: 700;
     }
 
-    .comment-form-fixed {
+    .comment-menu-wrapper {
+      position: relative;
+    }
+
+    .comment-menu-btn {
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 2px 6px;
+      color: #94a3b8;
+    }
+
+    .comment-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      min-width: 130px;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .comment-dropdown button {
+      display: block;
+      width: 100%;
+      padding: 9px 14px;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      color: #0f172a;
+      transition: background 0.15s;
+    }
+
+    .comment-dropdown button:hover {
+      background: #f8fafc;
+    }
+
+    .comment-form {
       padding: 14px 24px;
       border-top: 1px solid #e2e8f0;
       position: sticky;
@@ -1833,18 +1873,18 @@
       border-radius: 0 0 20px 20px;
     }
 
-    .comment-input-wrapper {
+    .comment-input-area {
       display: flex;
       align-items: flex-start;
       gap: 10px;
     }
 
-    .comment-textarea-container {
+    .comment-textarea-wrapper {
       position: relative;
       flex: 1;
     }
 
-    .comment-input {
+    .comment-textarea {
       width: 100%;
       padding: 11px 44px 11px 14px;
       border: 1.5px solid #e2e8f0;
@@ -1860,12 +1900,12 @@
       transition: border-color 0.15s;
     }
 
-    .comment-input:focus {
+    .comment-textarea:focus {
       outline: none;
       border-color: #2563eb;
     }
 
-    .send-button {
+    .btn-send-comment {
       position: absolute;
       bottom: 10px;
       right: 10px;
@@ -1879,11 +1919,11 @@
       transition: background 0.15s;
     }
 
-    .send-button:hover {
+    .btn-send-comment:hover {
       background: #eff6ff;
     }
 
-    .send-button:disabled {
+    .btn-send-comment:disabled {
       opacity: 0.4;
       cursor: not-allowed;
     }
@@ -1917,52 +1957,8 @@
       cursor: not-allowed;
     }
 
-    .comment-actions {
-      position: relative;
-    }
-
-    .comment-menu-button {
-      background: transparent;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      padding: 2px 6px;
-      color: #94a3b8;
-    }
-
-    .comment-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
-      min-width: 130px;
-      z-index: 20;
-      overflow: hidden;
-    }
-
-    .comment-menu button {
-      display: block;
-      width: 100%;
-      padding: 9px 14px;
-      text-align: left;
-      background: none;
-      border: none;
-      font-size: 13px;
-      cursor: pointer;
-      font-family: inherit;
-      color: #0f172a;
-      transition: background 0.15s;
-    }
-
-    .comment-menu button:hover {
-      background: #f8fafc;
-    }
-
-    /* ── Question List Popout ── */
-    .popout-container .question-item {
+    /* Question List Popout */
+    .question-list-item {
       cursor: pointer;
       padding: 12px 14px;
       margin: 8px 0;
@@ -1978,22 +1974,22 @@
       overflow-y: auto;
     }
 
-    .popout-container .question-item:hover {
+    .question-list-item:hover {
       background: #eff6ff;
       border-color: #2563eb;
     }
 
-    .popout-container .selected-question {
+    .question-list-item--selected {
       background: #eff6ff;
       border-color: #2563eb;
     }
 
-    .popout-container .correct-question {
+    .question-list-item--correct {
       border-color: #16a34a;
       border-width: 2px;
     }
 
-    .popout-container .incorrect-question {
+    .question-list-item--incorrect {
       border-color: #dc2626;
       border-width: 2px;
     }
@@ -2005,14 +2001,14 @@
       min-width: 24px;
     }
 
-    .question-topic small {
+    .question-topic-small {
       font-size: 11px;
       color: #94a3b8;
       display: block;
       margin-top: 3px;
     }
 
-    /* ── Pricing / Upgrade ── */
+    /* Pricing / Upgrade */
     .pricing-card {
       background: #ffffff;
       border-radius: 16px;
@@ -2044,7 +2040,7 @@
       margin-top: 2px;
     }
 
-    .features .feature {
+    .features-list .feature {
       display: flex;
       align-items: flex-start;
       gap: 10px;
@@ -2053,7 +2049,7 @@
       color: #0f172a;
     }
 
-    .features .feature-icon {
+    .feature-icon {
       width: 16px;
       height: 16px;
       background: #2563eb;
@@ -2065,7 +2061,7 @@
       justify-content: center;
     }
 
-    .features .feature-icon::after {
+    .feature-icon::after {
       content: '✓';
       color: white;
       font-size: 9px;
@@ -2076,7 +2072,7 @@
       margin-top: 20px;
     }
 
-    .cta-button.btn-upgrade {
+    .btn-upgrade {
       width: 100%;
       padding: 13px;
       border-radius: 12px;
@@ -2093,19 +2089,19 @@
       transition: all 0.2s;
     }
 
-    .cta-button.btn-upgrade:hover:not(:disabled) {
+    .btn-upgrade:hover:not(:disabled) {
       opacity: 0.9;
       transform: translateY(-1px);
       box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
     }
 
-    .cta-button.btn-upgrade:disabled {
+    .btn-upgrade:disabled {
       opacity: 0.45;
       cursor: not-allowed;
       transform: none;
     }
 
-    .cta-button.btn-add {
+    .btn-add-payment {
       width: 100%;
       padding: 11px;
       border-radius: 12px;
@@ -2123,7 +2119,7 @@
       transition: all 0.15s;
     }
 
-    .cta-button.btn-add:hover {
+    .btn-add-payment:hover {
       background: #e5e7eb;
     }
 
@@ -2134,7 +2130,7 @@
       margin-top: 8px;
     }
 
-    /* ── Wallet ── */
+    /* Wallet Options */
     .wallet-options {
       display: flex;
       flex-direction: column;
@@ -2162,7 +2158,7 @@
       background: #eff6ff;
     }
 
-    .wallet-card.selected {
+    .wallet-card--selected {
       border-color: #2563eb;
       background: #eff6ff;
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -2203,7 +2199,7 @@
       border-radius: 999px;
     }
 
-    .btn-default {
+    .btn-set-default {
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 999px;
@@ -2215,7 +2211,7 @@
       font-family: inherit;
     }
 
-    .btn-default:hover {
+    .btn-set-default:hover {
       background: #2563eb;
       color: white;
     }
@@ -2225,7 +2221,7 @@
       color: #94a3b8;
     }
 
-    /* ── Form elements ── */
+    /* Form Elements */
     .form-group {
       margin-bottom: 16px;
     }
@@ -2255,7 +2251,7 @@
       border-color: #2563eb;
     }
 
-    input.input-control {
+    .input-control {
       width: 100%;
       padding: 11px 14px;
       border: 1.5px solid #e2e8f0;
@@ -2267,7 +2263,7 @@
       transition: border-color 0.15s;
     }
 
-    input.input-control:focus {
+    .input-control:focus {
       outline: none;
       border-color: #2563eb;
     }
@@ -2308,7 +2304,9 @@
       margin-left: 4px;
     }
 
-    /* ── Animations ── */
+    /* --------------------------------------------
+       ANIMATIONS
+    -------------------------------------------- */
     @keyframes spin {
       to {
         transform: rotate(360deg);
@@ -2398,9 +2396,15 @@
       }
     }
 
-    /* ── Responsive ── */
+    /* --------------------------------------------
+       RESPONSIVE
+    -------------------------------------------- */
     @media (max-width: 640px) {
-      .hero {
+      .quiz-container {
+        padding-top: 36px;
+      }
+
+      .results-hero {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 20px;
@@ -2435,11 +2439,11 @@
         align-items: center;
       }
 
-      .question-card {
+      .question-panel {
         padding: 16px;
       }
 
-      .navigation-buttons {
+      .nav-buttons {
         gap: 8px;
       }
 
@@ -2447,7 +2451,7 @@
         padding: 10px 18px;
       }
 
-      .comments-popup {
+      .comments-panel {
         width: 100%;
         height: 100%;
         max-height: none;
@@ -2455,38 +2459,36 @@
       }
 
       .comments-header,
-      .comment-form-fixed {
+      .comment-form {
         border-radius: 0;
       }
 
-      .popout-container {
+      .modal-container {
         width: 95%;
         max-height: 80vh;
       }
 
-      canvas {
+      .math-canvas {
         max-width: 90%;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
+  <div class="quiz-container">
 
     <!-- Loading overlay -->
-    <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
-      <div class="loading-box">
+    <div class="loading-overlay" [class.loading-overlay--visible]="showLoading" aria-live="polite">
+      <div class="loading-card">
         <div class="spinner"></div>
         <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
       </div>
     </div>
 
-    <div *ngIf="retryVisible" class="retry-container">
-      <div class="retry-content">
-        <div class="retry-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <div *ngIf="retryVisible" class="retry-modal">
+      <div class="retry-card">
+        <div class="retry-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <circle cx="12" cy="16" r="1"></circle>
@@ -2495,73 +2497,74 @@
         <div class="retry-text">
           Ocorreu um erro ao carregar.<br>Por favor, tente novamente.
         </div>
-        <button class="retry-button" (click)="retryGetQuestion()">Tentar novamente</button>
+        <button class="btn-retry" (click)="retryGetQuestion()">Tentar novamente</button>
       </div>
     </div>
 
-    <div *ngIf="currentMessage" class="progress-message" [ngClass]="currentMessage.type">
+    <div *ngIf="currentMessage" class="toast-message" [ngClass]="{
+      'toast-message--info': currentMessage.type === 'info',
+      'toast-message--success': currentMessage.type === 'success',
+      'toast-message--warning': currentMessage.type === 'warning',
+      'toast-message--error': currentMessage.type === 'error'
+    }">
       {{ currentMessage.text }}
     </div>
 
     <!-- ── Init Quiz Screen ── -->
-    <div *ngIf="showInitQuizScreen" class="start-screen">
+    <div *ngIf="showInitQuizScreen" class="setup-card">
 
-      <div class="quiz-header-init">
+      <div class="setup-header">
         <div>
-          <h1>Configuração do Quiz</h1>
-          <span>Personalize o quiz antes de começar</span>
+          <h1 class="setup-title">Configuração do Quiz</h1>
+          <span class="setup-subtitle">Personalize o quiz antes de começar</span>
         </div>
-        <button class="quiz-close-btn" routerLink="/quizzes" aria-label="Fechar quiz">
+        <button class="btn-close-quiz" routerLink="/quizzes" aria-label="Fechar quiz">
           <i class="pi pi-times"></i>
         </button>
       </div>
 
-      <div class="step-progress-bar">
-        <div class="progress" [style.width.%]="stepProgressPercentage"></div>
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="stepProgressPercentage"></div>
       </div>
 
       <form autocomplete="off" #courseForm="ngForm">
 
-        <div class="step-card animate-step">
+        <div class="step-card">
           <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
           <div class="options-grid">
-            <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
-              [class.selected]="quiz.type === type.value" class="option-card">
+            <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value" [class.option-card--selected]="quiz.type === type.value" class="option-card">
               <h3>{{ type.label }}</h3>
               <p class="option-description">{{ type.description }}</p>
             </div>
           </div>
         </div>
 
-        <div class="step-card animate-step" *ngIf="quiz.type">
+        <div class="step-card" *ngIf="quiz.type">
           <p class="step-description">Escolha a disciplina para este quiz.</p>
           <div class="options-grid">
-            <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
-              [class.selected]="quiz.subject.id === subject.id" class="option-card">
+            <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)" [class.option-card--selected]="quiz.subject.id === subject.id" class="option-card">
               {{ subject.name }}
             </div>
           </div>
         </div>
 
-        <div class="step-card animate-step" *ngIf="quiz.subject.id && topics.length > 0">
+        <div class="step-card" *ngIf="quiz.subject.id && topics.length > 0">
           <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
 
-          <div class="select-all" (click)="toggleSelectAllTopics()" *ngIf="!isFreeUser()">
+          <div class="select-all-link" (click)="toggleSelectAllTopics()" *ngIf="!isFreeUser()">
             {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
           </div>
 
           <p class="topics-summary">Tópicos selecionados: {{ getSelectedTopicIds().length }}</p>
 
           <div class="options-grid">
-            <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
-              [class.unlocked]="isPremiumTopic(topic)" class="option-card">
+            <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.option-card--selected]="topic.selected" [class.option-card--locked]="isPremiumTopic(topic)" class="option-card">
               <p class="option-description">
                 {{ topic.name }}
                 <span *ngIf="isPremiumTopic(topic)" class="premium-lock">
                   <span class="lock-icon">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" />
+                      <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                       <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
                     </svg>
                   </span>
@@ -2571,12 +2574,10 @@
           </div>
         </div>
 
-        <div class="step-card animate-step" *ngIf="getSelectedTopicIds().length > 0">
+        <div class="step-card" *ngIf="getSelectedTopicIds().length > 0">
           <p class="step-description">Escolha o número de questões por tópico.</p>
           <div class="options-grid">
-            <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)"
-              [class.selected]="quiz.limitPerTopic === limit.value" [class.unlocked]="isLockedLimit(limit.value)"
-              class="option-card">
+            <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)" [class.option-card--selected]="quiz.limitPerTopic === limit.value" [class.option-card--locked]="isLockedLimit(limit.value)" class="option-card">
               {{ limit.label }}
               <span *ngIf="isLockedLimit(limit.value)">
                 <span class="lock-icon">
@@ -2591,15 +2592,14 @@
           <p class="info-note">O total de questões = tópicos selecionados × questões por tópico.</p>
         </div>
 
-        <p class="total-questions" *ngIf="quiz.limitPerTopic">
+        <p class="total-questions-badge" *ngIf="quiz.limitPerTopic">
           Total de questões: {{ getSelectedTopicIds().length * quiz.limitPerTopic }}
         </p>
 
         <div *ngIf="quiz.limitPerTopic">
-          <button class="start-button" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
+          <button class="btn-start-quiz" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
             Gerar Questões
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
@@ -2608,63 +2608,62 @@
       </form>
     </div>
 
-    <div class="header-buttons">
-      <button *ngIf="showStartScreen" class="back-btn" (click)="goBack()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          stroke-linecap="round" stroke-linejoin="round">
+    <div class="quiz-header-actions">
+      <button *ngIf="showStartScreen" class="btn-back" (click)="goBack()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5" />
           <path d="M12 19l-7-7 7-7" />
         </svg>
         Voltar
       </button>
-      <div *ngIf="showStartScreen" class="dropdown-container">
-        <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-h"></i></button>
-        <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
-          <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
-          <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
-          <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
-          <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
+      <div *ngIf="showStartScreen" class="dropdown-wrapper">
+        <button class="dropdown-trigger" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-h"></i></button>
+        <div class="dropdown-menu" *ngIf="quiz.isAdminMenuOpen">
+          <a class="dropdown-item" (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
+          <a class="dropdown-item" (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
+          <a class="dropdown-item" (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
+          <a class="dropdown-item" (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
         </div>
       </div>
     </div>
 
     <!-- ── Results Screen ── -->
-    <div *ngIf="showStartScreen" class="results-screen2">
+    <div *ngIf="showStartScreen" class="results-container">
 
-      <div class="hero">
+      <div class="results-hero">
         <div class="score-ring">
           <div class="discipline-progress">
-            <div class="progress-circle" [style.--color]="
+            <div class="progress-ring" [style.--score-color]="
                 (result.correctAnswers / quiz.questions.length) >= 0.7 ? '#16a34a' :
                 (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'
-              " [style.--progress]="((result.correctAnswers / quiz.questions.length) * 100) + '%'">
+              " [style.--score-degrees]="((result.correctAnswers / quiz.questions.length) * 100) + '%'">
               <span></span>
             </div>
           </div>
           <div class="score-center">
-            <div class="score-num">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
-            <div class="score-of">de 100</div>
+            <div class="score-number">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
+            <div class="score-max">de 100</div>
           </div>
         </div>
 
         <div>
-          <div class="grade-badge">{{ getGrade(getPercentage(result, quiz)) }}</div>
+          <div class="grade-letter">{{ getGrade(getPercentage(result, quiz)) }}</div>
           <div class="grade-label">{{ getGradeLabel(getPercentage(result, quiz)) }}</div>
           <div class="stats-row">
             <div class="stat-item">
-              <div class="stat-val">{{ quiz.questions.length }}</div>
+              <div class="stat-value">{{ quiz.questions.length }}</div>
               <div class="stat-key">Total</div>
             </div>
             <div class="stat-item">
-              <div class="stat-val green">{{ result.correctAnswers }}</div>
+              <div class="stat-value stat-value--correct">{{ result.correctAnswers }}</div>
               <div class="stat-key">Corretas</div>
             </div>
             <div class="stat-item">
-              <div class="stat-val red">{{ result.incorrectAnswers + result.nullAnswers }}</div>
+              <div class="stat-value stat-value--incorrect">{{ result.incorrectAnswers + result.nullAnswers }}</div>
               <div class="stat-key">Erradas</div>
             </div>
             <div class="stat-item">
-              <div class="stat-val grey">{{ result.nullAnswers }}</div>
+              <div class="stat-value stat-value--neutral">{{ result.nullAnswers }}</div>
               <div class="stat-key">Em branco</div>
             </div>
           </div>
@@ -2686,24 +2685,31 @@
         <div class="topic-card" *ngFor="let topic of topics">
           <div class="topic-head">
             <div class="topic-name">{{ topic.name }}</div>
-            <div class="badge"
-              [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
-              {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' :
-              (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco' }}
+            <div class="badge" [ngClass]="{
+              'badge--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
+              'badge--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+              'badge--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+            }">
+              {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' : (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco' }}
             </div>
           </div>
           <div class="topic-score-row">
             <div class="topic-score-big">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</div>
             <div class="topic-score-den">&nbsp;/ {{ quiz.resultsByTopic[topic.name].total || 0 }}</div>
-            <div class="topic-pct"
-              [ngClass]="'pct-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
+            <div class="topic-percentage" [ngClass]="{
+              'percentage--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
+              'percentage--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+              'percentage--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+            }">
               {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
             </div>
           </div>
           <div class="bar-track">
-            <div class="bar-fill"
-              [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
-              [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
+            <div class="bar-fill" [ngClass]="{
+              'bar-fill--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
+              'bar-fill--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+              'bar-fill--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+            }" [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
           </div>
           <div class="topic-foot">
             <span>✓ Corretas: <strong>{{ quiz.resultsByTopic[topic.name].correct || 0 }}</strong></span>
@@ -2714,7 +2720,7 @@
 
       <div class="section-label">Resumo Comparativo</div>
       <div class="table-wrapper">
-        <div class="table-card">
+        <div class="results-table">
           <table>
             <thead>
               <tr>
@@ -2727,21 +2733,25 @@
             <tbody>
               <tr *ngFor="let topic of topics">
                 <td class="td-name">{{ topic.name }}</td>
-                <td>{{ quiz.resultsByTopic[topic.name].correct || 0 }} / {{ quiz.resultsByTopic[topic.name].total || 0
-                  }}</td>
+                <td>{{ quiz.resultsByTopic[topic.name].correct || 0 }} / {{ quiz.resultsByTopic[topic.name].total || 0 }}</td>
                 <td>
                   <div class="td-bar-wrap">
                     <div class="mini-track">
-                      <div class="mini-fill"
-                        [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
-                        [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
+                      <div class="mini-fill" [ngClass]="{
+                        'bar-fill--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
+                        'bar-fill--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+                        'bar-fill--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+                      }" [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
                     </div>
                     <span class="td-pct-label">{{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%</span>
                   </div>
                 </td>
                 <td>
-                  <span class="badge"
-                    [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
+                  <span class="badge" [ngClass]="{
+                    'badge--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
+                    'badge--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+                    'badge--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+                  }">
                     {{ getPerformanceLabel(quiz.resultsByTopic[topic.name].percentage || 0) }}
                   </span>
                 </td>
@@ -2756,75 +2766,67 @@
     <!-- ── Quiz Screen ── -->
     <div *ngIf="!showStartScreen">
       <div *ngIf="currentQuestionIndex < quiz.questions.length">
-        <div class="question-card">
+        <div class="question-panel">
 
-          <div class="quiz-header">
-            <div class="quiz-user">
-              <div class="avatar">
+          <div class="quiz-user-info">
+            <div class="user-profile">
+              <div class="user-avatar">
                 {{ quiz.anonymous ? 'A' : (quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?') }}
               </div>
-              <div class="user-info">
-                <h1 class="title">
+              <div class="user-details">
+                <h1 class="user-name">
                   {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName || 'Nome não disponível') }}
-                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id"
-                    class="you-badge">você</span>
+                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id" class="badge-you">você</span>
                 </h1>
-                <div class="meta">
+                <div class="quiz-meta">
                   <span class="subject">{{ quiz.subject.name }}</span>
-                  <span class="dot"></span>
+                  <span class="meta-dot"></span>
                   <span class="type">{{ getQuizTypeValue(quiz.type) }}</span>
                 </div>
               </div>
             </div>
 
-            <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round">
+            <button class="btn-close-quiz" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          <div class="progress-container">
-            <p class="timer"
-              [ngClass]="{ 'enabled': quiz.type === 'TEST' && !isWarning, 'disabled': quiz.type === 'TRAINING', 'warning': isWarning }"
-              *ngIf="!quiz.id">
+          <div class="progress-area">
+            <p class="timer" [class.timer--active]="quiz.type === 'TEST' && !isWarning" [class.timer--inactive]="quiz.type === 'TRAINING'" [class.timer--warning]="isWarning" *ngIf="!quiz.id">
               {{ formattedTime }}
             </p>
-            <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST', 'disabled': quiz.type === 'TRAINING' }"
-              *ngIf="quiz.id">
+            <p class="timer" [class.timer--active]="quiz.type === 'TEST'" [class.timer--inactive]="quiz.type === 'TRAINING'" *ngIf="quiz.id">
               <span *ngIf="quiz.timeLimit > quiz.timeSpent">{{ formatTime(quiz.timeLimit - quiz.timeSpent) }}</span>
               <span *ngIf="quiz.timeLimit <= quiz.timeSpent">00:00</span>
             </p>
-            <div class="progress-bar-container">
-              <div class="progress-bar" *ngIf="quiz.id" [style.width]="progressPercentage + '%'"></div>
-              <div class="progress-bar" *ngIf="!quiz.id" [style.width]="progressPercentage2 + '%'"></div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill" *ngIf="quiz.id" [style.width]="progressPercentage + '%'"></div>
+              <div class="progress-bar-fill" *ngIf="!quiz.id" [style.width]="progressPercentage2 + '%'"></div>
             </div>
-            <button class="question-selector-btn" [disabled]="!quiz.isSubmitted" (click)="onShowQuestionList()">
+            <button class="btn-question-selector" [disabled]="!quiz.isSubmitted" (click)="onShowQuestionList()">
               {{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}
-              <span class="arrow">&#9662;</span>
+              <span class="arrow-icon">&#9662;</span>
             </button>
           </div>
 
-          <img *ngIf="quiz.questions[currentQuestionIndex].urlFile"
-            src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico" class="question-graph" />
-          <div class="graph-container"
-            *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
-            <canvas #canvas width="400" height="400"></canvas>
+          <img *ngIf="quiz.questions[currentQuestionIndex].urlFile" src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico" class="question-image" />
+          <div class="graph-container" *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
+            <canvas #canvas width="400" height="400" class="math-canvas"></canvas>
           </div>
 
-          <div id="math-container-{{ currentQuestionIndex }}" class="question-text-container"
-            *ngIf="quiz.questions[currentQuestionIndex].text">
+          <div id="math-container-{{ currentQuestionIndex }}" class="question-text" *ngIf="quiz.questions[currentQuestionIndex].text">
             {{ quiz.questions[currentQuestionIndex].text }}
           </div>
 
-          <div class="answer-options">
+          <div class="answers-list">
             <label *ngFor="let answer of quiz.questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
-              'correct-answer': showCorrection && answer.correct,
-              'incorrect-answer': showCorrection && !answer.correct && isSelected(quiz.questions[currentQuestionIndex].id, answer.id!),
-              'selected-answer': isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)
-            }">
-              <span class="num">{{ getOptionLetter(i) }}</span>
+              'answer-option--correct': showCorrection && answer.correct,
+              'answer-option--incorrect': showCorrection && !answer.correct && isSelected(quiz.questions[currentQuestionIndex].id, answer.id!),
+              'answer-option--selected': isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)
+            }" class="answer-option">
+              <span class="answer-letter">{{ getOptionLetter(i) }}</span>
               <input type="radio" name="question-{{ quiz.questions[currentQuestionIndex].id }}" [value]="answer.id"
                 [checked]="isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)"
                 (change)="captureUserAnswer(quiz.questions[currentQuestionIndex].id, answer.id!)"
@@ -2833,23 +2835,19 @@
             </label>
           </div>
 
-          <div class="question-topic" *ngIf="quiz.questions[currentQuestionIndex].topic">
+          <div class="question-topic-badge" *ngIf="quiz.questions[currentQuestionIndex].topic">
             <small>Tópico: {{ quiz.questions[currentQuestionIndex].topic.name }}</small>
           </div>
 
-          <div class="tip">
+          <div class="tip-box">
             <div class="tip-input">
-              <button class="solution-button" [disabled]="quiz.blockedTip"
-                (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
-                <h1 class="title">Dica</h1>
-                <svg [class.rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="18"
-                  height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
+              <button class="toggle-section-btn" [disabled]="quiz.blockedTip" (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
+                <h1 class="toggle-section-title">Dica</h1>
+                <svg [class.chevron-icon--rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </button>
-              <p id="math-container-tip-{{ currentQuestionIndex }}" class="tip-content scrollable"
-                *ngIf="quiz.questions[currentQuestionIndex].tip && quiz.questions[currentQuestionIndex].showTip">
+              <p id="math-container-tip-{{ currentQuestionIndex }}" class="toggle-content toggle-content--scrollable" *ngIf="quiz.questions[currentQuestionIndex].tip && quiz.questions[currentQuestionIndex].showTip">
                 {{ quiz.questions[currentQuestionIndex].tip }}
               </p>
             </div>
@@ -2864,23 +2862,18 @@
             </p>
           </div>
 
-          <div class="solution" *ngIf="showCorrection">
+          <div class="solution-box" *ngIf="showCorrection">
             <div class="solution-input">
-              <button class="solution-button"
-                (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
-                <h1 class="title">Resolução</h1>
-                <svg [class.rotated]="quiz.questions[currentQuestionIndex].showSolution" class="chevron-icon" width="18"
-                  height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
+              <button class="toggle-section-btn" (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
+                <h1 class="toggle-section-title">Resolução</h1>
+                <svg [class.chevron-icon--rotated]="quiz.questions[currentQuestionIndex].showSolution" class="chevron-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </button>
-              <p id="math-container-solution-{{ currentQuestionIndex }}" class="solution-content scrollable"
-                *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
+              <p id="math-container-solution-{{ currentQuestionIndex }}" class="toggle-content toggle-content--scrollable" *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
-              <p class="lock-message"
-                *ngIf="isPremiumTopic(quiz.questions[currentQuestionIndex].topic) && quiz.questions[currentQuestionIndex].showSolution">
+              <p class="lock-message" *ngIf="isPremiumTopic(quiz.questions[currentQuestionIndex].topic) && quiz.questions[currentQuestionIndex].showSolution">
                 <span class="lock-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
@@ -2895,8 +2888,8 @@
 
         </div>
 
-        <div class="navigation-buttons">
-          <button class="btn btn-verification"
+        <div class="nav-buttons">
+          <button class="btn btn-verify"
             [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)"
             (click)="togleCorrection()"
             *ngIf="(!quiz.id || quiz.id === 0) && !quiz.isSubmitted && !showInitQuizScreen && quiz.type === 'TRAINING' && !quiz.questions[currentQuestionIndex].verified">
@@ -2923,21 +2916,20 @@
         </div>
       </div>
 
-      <button class="fab fab-save-as-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
+      <button class="fab fab--save-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
         *ngIf="quiz.id && showCorrection && showOptions && isUserLoggedIn">
         <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
           [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
         <i *ngIf="quiz.questions[currentQuestionIndex].showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
       </button>
 
-      <button class="fab fab-show-comments" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
+      <button class="fab fab--comments" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
         *ngIf="quiz.id && showCorrection && showOptions">
         <i class="pi pi-comments"></i>
-        <span style="font-size: 11px; font-weight: 700;">{{ quiz.questions[currentQuestionIndex].numberOfComments
-          }}</span>
+        <span style="font-size: 11px; font-weight: 700;">{{ quiz.questions[currentQuestionIndex].numberOfComments }}</span>
       </button>
 
-      <button class="fab fab-primary" (click)="toggleShowOptions()" *ngIf="quiz.id && showCorrection">
+      <button class="fab fab--primary" (click)="toggleShowOptions()" *ngIf="quiz.id && showCorrection">
         <i class="pi pi-ellipsis-h"></i>
       </button>
 
@@ -2946,26 +2938,25 @@
   </div>
 </body>
 
-<button class="fab fab-submitte" (click)="onSubmitAnswers()" [disabled]="quiz.isSubmitted || !allQuestionsAnswered()"
+<button class="fab fab--submit" (click)="onSubmitAnswers()" [disabled]="quiz.isSubmitted || !allQuestionsAnswered()"
   *ngIf="(!showInitQuizScreen && !quiz.id)">
   <i class="pi pi-upload"></i>
 </button>
 
-<button class="fab fab-save" (click)="onSaveQuiz()"
+<button class="fab fab--save-quiz" (click)="onSaveQuiz()"
   [ngStyle]="{ bottom: quiz.isSubmitted && showStartScreen ? '84px' : '84px' }"
   *ngIf="quiz.isSubmitted && (!quiz.id || quiz.id === 0)">
   <i class="pi pi-save"></i>
 </button>
 
-<button class="fab fab-lock" (click)="toggleDisableEditing()"
+<button class="fab fab--lock" (click)="toggleDisableEditing()"
   *ngIf="!quiz.id && !showInitQuizScreen && quiz.type == 'TEST' && !quiz.isSubmitted">
   <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
   <i *ngIf="!disableEditing" class="pi pi-lock"></i>
 </button>
 
-<button class="fab fab-primary" (click)="startCorretion()" *ngIf="showStartScreen">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
+<button class="fab fab--primary" (click)="startCorretion()" *ngIf="showStartScreen">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <line x1="8" y1="6" x2="21" y2="6"></line>
     <line x1="8" y1="12" x2="21" y2="12"></line>
     <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -2976,53 +2967,51 @@
 </button>
 
 <!-- ── Login Popout ── -->
-<div class="popout-overlay" *ngIf="displayModalLogin">
-  <div class="popout-container">
+<div class="modal-overlay" *ngIf="displayModalLogin">
+  <div class="modal-container">
 
-    <div class="login-side" *ngIf="activeTab === 1">
-      <div class="popout-header">
-        <h2 class="popout-title">Entre para continuar</h2>
-        <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+    <div class="login-form" *ngIf="activeTab === 1">
+      <div class="modal-header">
+        <h2 class="modal-title">Entre para continuar</h2>
+        <button class="modal-close" (click)="onCloseLoginPopout()">&times;</button>
       </div>
 
       <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
       <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
 
       <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
-        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">← Voltar</a>
-        <p class="message" *ngIf="step === 'otp'">
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="back-link">← Voltar</a>
+        <p class="message-box" *ngIf="step === 'otp'">
           Insira o código enviado para <strong>{{ user.email }}</strong>
         </p>
         <div class="input-group" *ngIf="step === 'email'">
           <label>Email</label>
-          <input type="email" name="email" #emailInput="ngModel" ngModel placeholder="seu@email.com" required email
-            [(ngModel)]="user.email">
+          <input type="email" name="email" #emailInput="ngModel" ngModel placeholder="seu@email.com" required email [(ngModel)]="user.email">
         </div>
         <div class="input-group" *ngIf="step === 'otp'">
           <label>Código</label>
           <input type="text" name="otp" #otpInput="ngModel" ngModel placeholder="000000" required [(ngModel)]="otp">
         </div>
-        <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+        <button class="btn-login" type="submit" [disabled]="otpForm.invalid || showLoading">
           {{ step === 'email' ? 'Continuar' : 'Verificar' }}
         </button>
-        <p class="message" *ngIf="step === 'email'">
+        <p class="message-box" *ngIf="step === 'email'">
           Enviaremos um código de acesso único para o seu e-mail.
         </p>
         <div class="signup-link">Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se</a></div>
       </form>
     </div>
 
-    <div class="login-side" *ngIf="activeTab === 2">
-      <div class="popout-header">
-        <h2 class="popout-title">Criar conta</h2>
-        <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+    <div class="login-form" *ngIf="activeTab === 2">
+      <div class="modal-header">
+        <h2 class="modal-title">Criar conta</h2>
+        <button class="modal-close" (click)="onCloseLoginPopout()">&times;</button>
       </div>
 
       <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
       <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
 
-      <form autocomplete="off" #registerForm="ngForm"
-        (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+      <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
         <div class="input-group" *ngIf="step === 'email'">
           <label>Nome completo</label>
           <input type="text" name="fullName" ngModel placeholder="Seu nome completo" [(ngModel)]="user.fullName">
@@ -3031,18 +3020,18 @@
           <label>E-mail</label>
           <input type="email" name="email" ngModel placeholder="seu@email.com" required email [(ngModel)]="user.email">
         </div>
-        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">← Voltar</a>
-        <p class="message" *ngIf="step === 'otp'">
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="back-link">← Voltar</a>
+        <p class="message-box" *ngIf="step === 'otp'">
           Insira o código enviado para <strong>{{ user.email }}</strong>
         </p>
         <div class="input-group" *ngIf="step === 'otp'">
           <input type="text" name="otp" ngModel placeholder="000000" required [(ngModel)]="otp">
         </div>
-        <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+        <button class="btn-login" type="submit" [disabled]="registerForm.invalid || showLoading">
           {{ step === 'email' ? 'Criar conta' : 'Verificar' }}
         </button>
-        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar código →</a>
-        <p class="message" *ngIf="step === 'email'">Enviaremos um código de acesso único para o seu e-mail.</p>
+        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-link">Reenviar código →</a>
+        <p class="message-box" *ngIf="step === 'email'">Enviaremos um código de acesso único para o seu e-mail.</p>
       </form>
       <div id="google-signin-button"></div>
       <div class="signup-link">Já tem conta? <a (click)="setActiveTab(1)">Faça login</a></div>
@@ -3051,45 +3040,42 @@
 </div>
 
 <!-- ── Comments ── -->
-<div class="comments-overlay" *ngIf="showComments">
-  <div class="comments-popup">
+<div class="comments-modal" *ngIf="showComments">
+  <div class="comments-panel">
     <div class="comments-header">
       <div>
         <h2 class="comments-title">Comentários</h2>
         <span style="font-size: 12px; color: #94a3b8;">Dúvidas e insights sobre este exercício</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <div class="comments-count">{{ comments.length }}</div>
-        <button class="close-btn" (click)="onCloseComments()">×</button>
+        <div class="comments-count-badge">{{ comments.length }}</div>
+        <button class="modal-close" (click)="onCloseComments()">×</button>
       </div>
     </div>
 
-    <div class="comments-scrollable">
-      <div *ngIf="comments.length === 0" class="no-comments-message">
+    <div class="comments-list">
+      <div *ngIf="comments.length === 0" class="no-comments">
         Nenhum comentário ainda. Seja o primeiro! 💬
       </div>
 
-      <div *ngFor="let comment of comments" class="comment-wrapper">
+      <div *ngFor="let comment of comments" class="comment-item">
         <img [src]="comment.user.profileImageUrl" alt="User" class="comment-avatar" />
-        <div class="comment">
+        <div class="comment-bubble">
           <div class="comment-header">
             <div class="comment-author">{{ comment.user.fullName }}</div>
             <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
           </div>
           <div class="comment-text">{{ comment.content }}</div>
           <div class="comment-footer">
-            <button class="comment-action" (click)="onLike(comment)">
-              <span *ngIf="!comment.showLoadingLike" [ngClass]="{ 'liked': comment.likedByUser }">Gosto · {{
-                comment.numberOfLikes }}</span>
+            <button class="comment-action-btn" (click)="onLike(comment)">
+              <span *ngIf="!comment.showLoadingLike" [class.liked]="comment.likedByUser">Gosto · {{ comment.numberOfLikes }}</span>
               <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
             </button>
-            <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
-              class="comment-action">Editar</button>
-            <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
-              class="comment-action">Eliminar</button>
-            <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin">
-              <button class="comment-menu-button" (click)="toggleMenu(comment.id)">⋮</button>
-              <div class="comment-menu" *ngIf="openedMenuId === comment.id">
+            <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)" class="comment-action-btn">Editar</button>
+            <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)" class="comment-action-btn">Eliminar</button>
+            <div class="comment-menu-wrapper" *ngIf="isUserLoggedIn && isSuperAdmin">
+              <button class="comment-menu-btn" (click)="toggleMenu(comment.id)">⋮</button>
+              <div class="comment-dropdown" *ngIf="openedMenuId === comment.id">
                 <button (click)="confirmarExclusao(comment)">Eliminar</button>
               </div>
             </div>
@@ -3103,15 +3089,14 @@
     </div>
 
     <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
-      <div class="comment-form-fixed">
-        <div class="comment-input-wrapper">
-          <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User"
-            class="comment-avatar" />
-          <div class="comment-textarea-container">
-            <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput class="comment-input"
+      <div class="comment-form">
+        <div class="comment-input-area">
+          <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User" class="comment-avatar" />
+          <div class="comment-textarea-wrapper">
+            <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput class="comment-textarea"
               name="content" [(ngModel)]="comment.content" (input)="autoResize(editInput)"
               placeholder="Partilhe a sua dúvida ou insight..." required></textarea>
-            <button type="submit" class="send-button" [disabled]="commentForm.invalid || showLoading">
+            <button type="submit" class="btn-send-comment" [disabled]="commentForm.invalid || showLoading">
               <i class="pi pi-send"></i>
             </button>
           </div>
@@ -3122,22 +3107,22 @@
 </div>
 
 <!-- ── Question List ── -->
-<div class="popout-overlay" *ngIf="displayModalQuestionsList">
-  <div class="popout-container">
-    <div class="popout-header">
-      <h2 class="popout-title">Questões</h2>
-      <button class="close-button" (click)="onCloseQuestionList()">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalQuestionsList">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 class="modal-title">Questões</h2>
+      <button class="modal-close" (click)="onCloseQuestionList()">&times;</button>
     </div>
     <div *ngFor="let question of quiz.questions; let i = index">
-      <div class="question-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
-        'selected-question': i === currentQuestionIndex,
-        'correct-question': getQuestionStatus(question) === true,
-        'incorrect-question': getQuestionStatus(question) === false
+      <div class="question-list-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
+        'question-list-item--selected': i === currentQuestionIndex,
+        'question-list-item--correct': getQuestionStatus(question) === true,
+        'question-list-item--incorrect': getQuestionStatus(question) === false
       }">
         <span class="question-number">{{ i + 1 }}</span>
         <div class="question-content">
           <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-          <div class="question-topic" *ngIf="question.topic">
+          <div class="question-topic-badge" *ngIf="question.topic">
             <small>Tópico: {{ question.topic.name }}</small>
           </div>
         </div>
@@ -3147,11 +3132,11 @@
 </div>
 
 <!-- ── Upgrade Plan ── -->
-<div class="popout-overlay" *ngIf="displayModalUpgradePlan">
-  <div class="popout-container">
-    <div class="popout-header">
-      <h2 class="popout-title">Plano Premium</h2>
-      <button class="close-button" (click)="onCloseUpgradeModal()">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 class="modal-title">Plano Premium</h2>
+      <button class="modal-close" (click)="onCloseUpgradeModal()">&times;</button>
     </div>
 
     <div class="pricing-card">
@@ -3159,7 +3144,7 @@
         <div class="plan-price">MT 299</div>
         <div class="plan-period">por mês</div>
       </div>
-      <div class="features">
+      <div class="features-list">
         <div class="feature">
           <div class="feature-icon"></div>
           <span>Acesso ilimitado a todos os tópicos e conteúdos</span>
@@ -3180,24 +3165,24 @@
     </div>
 
     <div class="upgrade-cta">
-      <button class="cta-button btn-upgrade" (click)="onUpgradePlan()">Fazer Upgrade Agora</button>
+      <button class="btn-upgrade" (click)="onUpgradePlan()">Fazer Upgrade Agora</button>
     </div>
   </div>
 </div>
 
 <!-- ── Payment Options ── -->
-<div class="popout-overlay" *ngIf="displayModalPaymentOptions">
-  <div class="popout-container">
-    <div class="popout-header">
-      <h2 class="popout-title">Método de pagamento</h2>
-      <button class="close-button" (click)="onCloseModalPaymentOptions()">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 class="modal-title">Método de pagamento</h2>
+      <button class="modal-close" (click)="onCloseModalPaymentOptions()">&times;</button>
     </div>
 
     <div class="wallet-options">
       <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
         <label class="wallet-option" *ngFor="let wallet of userWallets">
           <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
-          <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
+          <div class="wallet-card" [class.wallet-card--selected]="selectedWalletId === wallet.id">
             <div class="wallet-left">
               <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
               <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
@@ -3207,7 +3192,7 @@
               </div>
             </div>
             <div class="wallet-check">
-              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">Principal</button>
+              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-set-default">Principal</button>
               <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
             </div>
           </div>
@@ -3221,38 +3206,36 @@
     </div>
 
     <div class="upgrade-cta">
-      <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
+      <button class="btn-add-payment" (click)="openModalAddPaymentOption()">
         + Adicionar Método de Pagamento
       </button>
     </div>
 
     <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
-      <button class="cta-button btn-upgrade" (click)="upgradePlan()">Confirmar Upgrade</button>
+      <button class="btn-upgrade" (click)="upgradePlan()">Confirmar Upgrade</button>
       <p class="plan-price-upgrade">MT 299/mês</p>
     </div>
   </div>
 </div>
 
 <!-- ── Add Payment Method ── -->
-<div class="popout-overlay" *ngIf="displayModalAddPaymentOption">
-  <div class="popout-container">
-    <div class="popout-header">
-      <h2 class="popout-title">Adicionar carteira</h2>
-      <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 class="modal-title">Adicionar carteira</h2>
+      <button class="modal-close" (click)="onCloseModalAddPaymentOption()">&times;</button>
     </div>
 
     <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
       <div class="form-group">
         <label class="form-label">Número de telefone</label>
         <input class="form-input" type="text" name="phoneNumber" maxlength="9" minlength="9"
-          [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
-          required placeholder="Ex: 841234567" />
-        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9"
-          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
+          [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+          pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" />
+        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
           O número deve ter exactamente 9 dígitos.
         </small>
-        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
-          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
+        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
           Suportamos apenas <strong>MPESA (84/85)</strong> e <strong>EMOLA (86/87)</strong>.
         </small>
       </div>
@@ -3271,7 +3254,7 @@
       </div>
 
       <div class="upgrade-cta">
-        <button class="cta-button btn-upgrade" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type">
+        <button class="btn-upgrade" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type">
           {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
         </button>
       </div>
