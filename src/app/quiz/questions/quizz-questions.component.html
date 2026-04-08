@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz — AcademiaApp</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     /* --------------------------------------------
        GLOBAL & RESET
@@ -182,16 +184,9 @@
     }
 
     /* --------------------------------------------
-       HEADER & DROPDOWN
+       Back button
     -------------------------------------------- */
-    .quiz-header-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-
-    .btn-back {
+    .back-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -200,72 +195,16 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 500;
-      color: #475569;
+      color: #6b7280;
+      padding: 0;
+      margin-top: 0.7rem;
+      margin-bottom: 0.7rem;
+      transition: color 0.15s;
       font-family: inherit;
-      padding: 6px 10px;
-      border-radius: 8px;
-      transition: color 0.15s, background 0.15s;
     }
 
-    .btn-back:hover {
-      color: #2563eb;
-      background: #eff6ff;
-    }
-
-    /* Dropdown */
-    .dropdown-wrapper {
-      position: relative;
-    }
-
-    .dropdown-trigger {
-      background: transparent;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #475569;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.15s;
-    }
-
-    .dropdown-trigger:hover {
-      border-color: #2563eb;
-      color: #2563eb;
-      background: #eff6ff;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      right: 0;
-      top: calc(100% + 6px);
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
-      min-width: 200px;
-      overflow: hidden;
-      z-index: 100;
-      animation: slideIn 0.15s ease;
-    }
-
-    .dropdown-item {
-      display: block;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #0f172a;
-      cursor: pointer;
-      transition: background 0.15s;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .dropdown-item:last-child {
-      border-bottom: none;
-    }
-
-    .dropdown-item:hover {
-      background: #f8fafc;
+    .back-btn:hover {
+      color: #4361ee;
     }
 
     /* --------------------------------------------
@@ -2474,12 +2413,13 @@
     }
 
     @media (max-width: 900px) {
-      .quiz-container {
-        margin-top: 10px;
+      .question-panel {
+        margin-top: 15px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="quiz-container">
 
@@ -2494,7 +2434,8 @@
     <div *ngIf="retryVisible" class="retry-modal">
       <div class="retry-card">
         <div class="retry-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <circle cx="12" cy="16" r="1"></circle>
@@ -2538,7 +2479,8 @@
         <div class="step-card">
           <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
           <div class="options-grid">
-            <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value" [class.option-card--selected]="quiz.type === type.value" class="option-card">
+            <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
+              [class.option-card--selected]="quiz.type === type.value" class="option-card">
               <h3>{{ type.label }}</h3>
               <p class="option-description">{{ type.description }}</p>
             </div>
@@ -2548,7 +2490,8 @@
         <div class="step-card" *ngIf="quiz.type">
           <p class="step-description">Escolha a disciplina para este quiz.</p>
           <div class="options-grid">
-            <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)" [class.option-card--selected]="quiz.subject.id === subject.id" class="option-card">
+            <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
+              [class.option-card--selected]="quiz.subject.id === subject.id" class="option-card">
               {{ subject.name }}
             </div>
           </div>
@@ -2564,13 +2507,16 @@
           <p class="topics-summary">Tópicos selecionados: {{ getSelectedTopicIds().length }}</p>
 
           <div class="options-grid">
-            <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.option-card--selected]="topic.selected" [class.option-card--locked]="isPremiumTopic(topic)" class="option-card">
+            <div *ngFor="let topic of topics" (click)="toggleTopic(topic);"
+              [class.option-card--selected]="topic.selected" [class.option-card--locked]="isPremiumTopic(topic)"
+              class="option-card">
               <p class="option-description">
                 {{ topic.name }}
                 <span *ngIf="isPremiumTopic(topic)" class="premium-lock">
                   <span class="lock-icon">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                      <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" />
                       <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
                     </svg>
                   </span>
@@ -2583,7 +2529,9 @@
         <div class="step-card" *ngIf="getSelectedTopicIds().length > 0">
           <p class="step-description">Escolha o número de questões por tópico.</p>
           <div class="options-grid">
-            <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)" [class.option-card--selected]="quiz.limitPerTopic === limit.value" [class.option-card--locked]="isLockedLimit(limit.value)" class="option-card">
+            <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)"
+              [class.option-card--selected]="quiz.limitPerTopic === limit.value"
+              [class.option-card--locked]="isLockedLimit(limit.value)" class="option-card">
               {{ limit.label }}
               <span *ngIf="isLockedLimit(limit.value)">
                 <span class="lock-icon">
@@ -2605,7 +2553,8 @@
         <div *ngIf="quiz.limitPerTopic">
           <button class="btn-start-quiz" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
             Gerar Questões
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
@@ -2614,24 +2563,15 @@
       </form>
     </div>
 
-    <div class="quiz-header-actions">
-      <button *ngIf="showStartScreen" class="btn-back" (click)="goBack()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5" />
-          <path d="M12 19l-7-7 7-7" />
-        </svg>
-        Voltar
-      </button>
-      <div *ngIf="showStartScreen" class="dropdown-wrapper">
-        <button class="dropdown-trigger" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-h"></i></button>
-        <div class="dropdown-menu" *ngIf="quiz.isAdminMenuOpen">
-          <a class="dropdown-item" (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
-          <a class="dropdown-item" (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
-          <a class="dropdown-item" (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
-          <a class="dropdown-item" (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
-        </div>
-      </div>
-    </div>
+    <!-- Back -->
+    <button *ngIf="showStartScreen" class="back-btn" (click)="goBack()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5" />
+        <path d="M12 19l-7-7 7-7" />
+      </svg>
+      Voltar
+    </button>
 
     <!-- ── Results Screen ── -->
     <div *ngIf="showStartScreen" class="results-container">
@@ -2696,7 +2636,8 @@
               'badge--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
               'badge--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
             }">
-              {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' : (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco' }}
+              {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' :
+              (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco' }}
             </div>
           </div>
           <div class="topic-score-row">
@@ -2739,7 +2680,8 @@
             <tbody>
               <tr *ngFor="let topic of topics">
                 <td class="td-name">{{ topic.name }}</td>
-                <td>{{ quiz.resultsByTopic[topic.name].correct || 0 }} / {{ quiz.resultsByTopic[topic.name].total || 0 }}</td>
+                <td>{{ quiz.resultsByTopic[topic.name].correct || 0 }} / {{ quiz.resultsByTopic[topic.name].total || 0
+                  }}</td>
                 <td>
                   <div class="td-bar-wrap">
                     <div class="mini-track">
@@ -2782,7 +2724,8 @@
               <div class="user-details">
                 <h1 class="user-name">
                   {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName || 'Nome não disponível') }}
-                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id" class="badge-you">você</span>
+                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id"
+                    class="badge-you">você</span>
                 </h1>
                 <div class="quiz-meta">
                   <span class="subject">{{ quiz.subject.name }}</span>
@@ -2793,17 +2736,20 @@
             </div>
 
             <button class="btn-close-quiz" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
           </div>
 
           <div class="progress-area">
-            <p class="timer" [class.timer--active]="quiz.type === 'TEST' && !isWarning" [class.timer--inactive]="quiz.type === 'TRAINING'" [class.timer--warning]="isWarning" *ngIf="!quiz.id">
+            <p class="timer" [class.timer--active]="quiz.type === 'TEST' && !isWarning"
+              [class.timer--inactive]="quiz.type === 'TRAINING'" [class.timer--warning]="isWarning" *ngIf="!quiz.id">
               {{ formattedTime }}
             </p>
-            <p class="timer" [class.timer--active]="quiz.type === 'TEST'" [class.timer--inactive]="quiz.type === 'TRAINING'" *ngIf="quiz.id">
+            <p class="timer" [class.timer--active]="quiz.type === 'TEST'"
+              [class.timer--inactive]="quiz.type === 'TRAINING'" *ngIf="quiz.id">
               <span *ngIf="quiz.timeLimit > quiz.timeSpent">{{ formatTime(quiz.timeLimit - quiz.timeSpent) }}</span>
               <span *ngIf="quiz.timeLimit <= quiz.timeSpent">00:00</span>
             </p>
@@ -2817,12 +2763,15 @@
             </button>
           </div>
 
-          <img *ngIf="quiz.questions[currentQuestionIndex].urlFile" src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico" class="question-image" />
-          <div class="graph-container" *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
+          <img *ngIf="quiz.questions[currentQuestionIndex].urlFile"
+            src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico" class="question-image" />
+          <div class="graph-container"
+            *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
             <canvas #canvas width="400" height="400" class="math-canvas"></canvas>
           </div>
 
-          <div id="math-container-{{ currentQuestionIndex }}" class="question-text" *ngIf="quiz.questions[currentQuestionIndex].text">
+          <div id="math-container-{{ currentQuestionIndex }}" class="question-text"
+            *ngIf="quiz.questions[currentQuestionIndex].text">
             {{ quiz.questions[currentQuestionIndex].text }}
           </div>
 
@@ -2847,13 +2796,17 @@
 
           <div class="tip-box">
             <div class="tip-input">
-              <button class="toggle-section-btn" [disabled]="quiz.blockedTip" (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
+              <button class="toggle-section-btn" [disabled]="quiz.blockedTip"
+                (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
                 <h1 class="toggle-section-title">Dica</h1>
-                <svg [class.chevron-icon--rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg [class.chevron-icon--rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon"
+                  width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </button>
-              <p id="math-container-tip-{{ currentQuestionIndex }}" class="toggle-content toggle-content--scrollable" *ngIf="quiz.questions[currentQuestionIndex].tip && quiz.questions[currentQuestionIndex].showTip">
+              <p id="math-container-tip-{{ currentQuestionIndex }}" class="toggle-content toggle-content--scrollable"
+                *ngIf="quiz.questions[currentQuestionIndex].tip && quiz.questions[currentQuestionIndex].showTip">
                 {{ quiz.questions[currentQuestionIndex].tip }}
               </p>
             </div>
@@ -2870,16 +2823,22 @@
 
           <div class="solution-box" *ngIf="showCorrection">
             <div class="solution-input">
-              <button class="toggle-section-btn" (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
+              <button class="toggle-section-btn"
+                (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
                 <h1 class="toggle-section-title">Resolução</h1>
-                <svg [class.chevron-icon--rotated]="quiz.questions[currentQuestionIndex].showSolution" class="chevron-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg [class.chevron-icon--rotated]="quiz.questions[currentQuestionIndex].showSolution"
+                  class="chevron-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </button>
-              <p id="math-container-solution-{{ currentQuestionIndex }}" class="toggle-content toggle-content--scrollable" *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
+              <p id="math-container-solution-{{ currentQuestionIndex }}"
+                class="toggle-content toggle-content--scrollable"
+                *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
-              <p class="lock-message" *ngIf="isPremiumTopic(quiz.questions[currentQuestionIndex].topic) && quiz.questions[currentQuestionIndex].showSolution">
+              <p class="lock-message"
+                *ngIf="isPremiumTopic(quiz.questions[currentQuestionIndex].topic) && quiz.questions[currentQuestionIndex].showSolution">
                 <span class="lock-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
@@ -2932,7 +2891,8 @@
       <button class="fab fab--comments" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
         *ngIf="quiz.id && showCorrection && showOptions">
         <i class="pi pi-comments"></i>
-        <span style="font-size: 11px; font-weight: 700;">{{ quiz.questions[currentQuestionIndex].numberOfComments }}</span>
+        <span style="font-size: 11px; font-weight: 700;">{{ quiz.questions[currentQuestionIndex].numberOfComments
+          }}</span>
       </button>
 
       <button class="fab fab--primary" (click)="toggleShowOptions()" *ngIf="quiz.id && showCorrection">
@@ -2962,7 +2922,8 @@
 </button>
 
 <button class="fab fab--primary" (click)="startCorretion()" *ngIf="showStartScreen">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
     <line x1="8" y1="6" x2="21" y2="6"></line>
     <line x1="8" y1="12" x2="21" y2="12"></line>
     <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -2992,7 +2953,8 @@
         </p>
         <div class="input-group" *ngIf="step === 'email'">
           <label>Email</label>
-          <input type="email" name="email" #emailInput="ngModel" ngModel placeholder="seu@email.com" required email [(ngModel)]="user.email">
+          <input type="email" name="email" #emailInput="ngModel" ngModel placeholder="seu@email.com" required email
+            [(ngModel)]="user.email">
         </div>
         <div class="input-group" *ngIf="step === 'otp'">
           <label>Código</label>
@@ -3017,7 +2979,8 @@
       <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
       <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
 
-      <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+      <form autocomplete="off" #registerForm="ngForm"
+        (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
         <div class="input-group" *ngIf="step === 'email'">
           <label>Nome completo</label>
           <input type="text" name="fullName" ngModel placeholder="Seu nome completo" [(ngModel)]="user.fullName">
@@ -3074,11 +3037,14 @@
           <div class="comment-text">{{ comment.content }}</div>
           <div class="comment-footer">
             <button class="comment-action-btn" (click)="onLike(comment)">
-              <span *ngIf="!comment.showLoadingLike" [class.liked]="comment.likedByUser">Gosto · {{ comment.numberOfLikes }}</span>
+              <span *ngIf="!comment.showLoadingLike" [class.liked]="comment.likedByUser">Gosto · {{
+                comment.numberOfLikes }}</span>
               <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
             </button>
-            <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)" class="comment-action-btn">Editar</button>
-            <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)" class="comment-action-btn">Eliminar</button>
+            <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
+              class="comment-action-btn">Editar</button>
+            <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
+              class="comment-action-btn">Eliminar</button>
             <div class="comment-menu-wrapper" *ngIf="isUserLoggedIn && isSuperAdmin">
               <button class="comment-menu-btn" (click)="toggleMenu(comment.id)">⋮</button>
               <div class="comment-dropdown" *ngIf="openedMenuId === comment.id">
@@ -3097,7 +3063,8 @@
     <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
       <div class="comment-form">
         <div class="comment-input-area">
-          <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User" class="comment-avatar" />
+          <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User"
+            class="comment-avatar" />
           <div class="comment-textarea-wrapper">
             <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput class="comment-textarea"
               name="content" [(ngModel)]="comment.content" (input)="autoResize(editInput)"
@@ -3198,7 +3165,8 @@
               </div>
             </div>
             <div class="wallet-check">
-              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-set-default">Principal</button>
+              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)"
+                class="btn-set-default">Principal</button>
               <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
             </div>
           </div>
@@ -3236,12 +3204,14 @@
       <div class="form-group">
         <label class="form-label">Número de telefone</label>
         <input class="form-input" type="text" name="phoneNumber" maxlength="9" minlength="9"
-          [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-          pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" />
-        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
+          [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
+          required placeholder="Ex: 841234567" />
+        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9"
+          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
           O número deve ter exactamente 9 dígitos.
         </small>
-        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
+        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
+          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
           Suportamos apenas <strong>MPESA (84/85)</strong> e <strong>EMOLA (86/87)</strong>.
         </small>
       </div>
