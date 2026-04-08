@@ -7,12 +7,16 @@
     <title>Exercícios por Disciplina</title>
     <style>
         /* ─── Reset & Base ─────────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #f4f6fb;
-            color: #1a1a2e;
             padding: 10px;
         }
 
@@ -62,7 +66,11 @@
             animation: spin 0.75s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .loading-text {
             font-size: 14px;
@@ -114,8 +122,14 @@
             transition: background 0.2s, transform 0.15s;
         }
 
-        .retry-button:hover { background: #3350d6; transform: translateY(-1px); }
-        .retry-button:active { transform: scale(0.98); }
+        .retry-button:hover {
+            background: #3350d6;
+            transform: translateY(-1px);
+        }
+
+        .retry-button:active {
+            transform: scale(0.98);
+        }
 
         /* ─── Header Buttons Row ───────────────────────────── */
         .header-buttons {
@@ -142,7 +156,10 @@
             transition: background 0.15s, color 0.15s;
         }
 
-        .back-btn svg { width: 15px; height: 15px; }
+        .back-btn svg {
+            width: 15px;
+            height: 15px;
+        }
 
         .back-btn:hover {
             color: #4361ee;
@@ -150,7 +167,9 @@
         }
 
         /* ─── Dropdown ─────────────────────────────────────── */
-        .dropdown-container { position: relative; }
+        .dropdown-container {
+            position: relative;
+        }
 
         .dropdown-btn {
             background: #fff;
@@ -164,7 +183,9 @@
             transition: background 0.15s;
         }
 
-        .dropdown-btn:hover { background: #f8fafc; }
+        .dropdown-btn:hover {
+            background: #f8fafc;
+        }
 
         .dropdown {
             position: absolute;
@@ -189,7 +210,10 @@
             text-decoration: none;
         }
 
-        .dropdown a:hover { background: #f3f5ff; color: #4361ee; }
+        .dropdown a:hover {
+            background: #f3f5ff;
+            color: #4361ee;
+        }
 
         /* ─── Course Header (Hero) ─────────────────────────── */
         .course-header {
@@ -225,7 +249,10 @@
             pointer-events: none;
         }
 
-        .course-info { position: relative; z-index: 1; }
+        .course-info {
+            position: relative;
+            z-index: 1;
+        }
 
         .course-badge {
             display: inline-flex;
@@ -272,7 +299,12 @@
             font-size: 13px;
         }
 
-        .stat svg { width: 14px; height: 14px; opacity: 0.85; flex-shrink: 0; }
+        .stat svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.85;
+            flex-shrink: 0;
+        }
 
         /* ─── Progress Bar ─────────────────────────────────── */
         .progress-wrapper {
@@ -336,7 +368,10 @@
             transition: all 0.2s ease;
         }
 
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         .btn {
             display: inline-flex;
@@ -350,7 +385,10 @@
             border: none;
         }
 
-        .btn svg { width: 14px; height: 14px; }
+        .btn svg {
+            width: 14px;
+            height: 14px;
+        }
 
         .btn-outline {
             background: #fff;
@@ -358,7 +396,10 @@
             color: #4361ee;
         }
 
-        .btn-outline:hover { background: #f0f2fd; border-color: #b0bbee; }
+        .btn-outline:hover {
+            background: #f0f2fd;
+            border-color: #b0bbee;
+        }
 
         /* ─── Modules List ─────────────────────────────────── */
         .modules-list {
@@ -375,7 +416,9 @@
             transition: border-color 0.25s, box-shadow 0.25s;
         }
 
-        .module-item:hover { border-color: #c7d0f5; }
+        .module-item:hover {
+            border-color: #c7d0f5;
+        }
 
         .module-item.expanded {
             border-color: #c7d0f5;
@@ -396,7 +439,9 @@
             border-bottom: 1px solid #e0e7ff;
         }
 
-        .module-header:hover { background: #f8f9ff; }
+        .module-header:hover {
+            background: #f8f9ff;
+        }
 
         .module-header-left {
             display: flex;
@@ -450,7 +495,9 @@
             transition: transform 0.25s ease;
         }
 
-        .chevron-icon.rotated { transform: rotate(180deg); }
+        .chevron-icon.rotated {
+            transform: rotate(180deg);
+        }
 
         /* ─── Lock / Premium Message ───────────────────────── */
         .lock-message {
@@ -465,7 +512,11 @@
             margin-top: 8px;
         }
 
-        .lock-message svg { width: 13px; height: 13px; flex-shrink: 0; }
+        .lock-message svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
 
         .upgrade-link {
             color: #4361ee;
@@ -476,7 +527,10 @@
             transition: color 0.2s;
         }
 
-        .upgrade-link:hover { color: #3350d6; text-decoration: underline; }
+        .upgrade-link:hover {
+            color: #3350d6;
+            text-decoration: underline;
+        }
 
         /* ─── Lesson Items ─────────────────────────────────── */
         .lesson-item {
@@ -488,8 +542,13 @@
             transition: background 0.15s;
         }
 
-        .lesson-item:last-child { border-bottom: none; }
-        .lesson-item:hover { background: #f8f9ff; }
+        .lesson-item:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-item:hover {
+            background: #f8f9ff;
+        }
 
         /* ─── Checkbox ─────────────────────────────────────── */
         .styled-checkbox {
@@ -522,7 +581,10 @@
             transform: rotate(45deg);
         }
 
-        .styled-checkbox:disabled { opacity: 0.45; cursor: not-allowed; }
+        .styled-checkbox:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
 
         /* ─── Lesson Type Icon ─────────────────────────────── */
         .lesson-type-icon {
@@ -535,15 +597,32 @@
             flex-shrink: 0;
         }
 
-        .lesson-type-icon.video { background: #eef0fd; }
-        .lesson-type-icon.file { background: #e8f5ed; }
+        .lesson-type-icon.video {
+            background: #eef0fd;
+        }
 
-        .lesson-type-icon svg { width: 14px; height: 14px; }
-        .lesson-type-icon.video svg { color: #4361ee; }
-        .lesson-type-icon.file svg { color: #1d9e75; }
+        .lesson-type-icon.file {
+            background: #e8f5ed;
+        }
+
+        .lesson-type-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .lesson-type-icon.video svg {
+            color: #4361ee;
+        }
+
+        .lesson-type-icon.file svg {
+            color: #1d9e75;
+        }
 
         /* ─── Lesson Content ───────────────────────────────── */
-        .lesson-content { flex: 1; min-width: 0; }
+        .lesson-content {
+            flex: 1;
+            min-width: 0;
+        }
 
         .lesson-title {
             font-size: 0.875rem;
@@ -568,7 +647,8 @@
             flex-shrink: 0;
         }
 
-        .play-btn, .download-btn {
+        .play-btn,
+        .download-btn {
             width: 30px;
             height: 30px;
             border-radius: 8px;
@@ -582,13 +662,30 @@
             padding: 0;
         }
 
-        .play-btn svg, .download-btn svg { width: 13px; height: 13px; color: #64748b; }
+        .play-btn svg,
+        .download-btn svg {
+            width: 13px;
+            height: 13px;
+            color: #64748b;
+        }
 
-        .play-btn:hover:not(:disabled) { background: #eef0fd; border-color: #c7d0f5; }
-        .play-btn:hover:not(:disabled) svg { color: #4361ee; }
+        .play-btn:hover:not(:disabled) {
+            background: #eef0fd;
+            border-color: #c7d0f5;
+        }
 
-        .download-btn:hover:not(:disabled) { background: #e8f5ed; border-color: #a7d9bc; }
-        .download-btn:hover:not(:disabled) svg { color: #1d9e75; }
+        .play-btn:hover:not(:disabled) svg {
+            color: #4361ee;
+        }
+
+        .download-btn:hover:not(:disabled) {
+            background: #e8f5ed;
+            border-color: #a7d9bc;
+        }
+
+        .download-btn:hover:not(:disabled) svg {
+            color: #1d9e75;
+        }
 
         /* ─── Author Section ───────────────────────────────── */
         .author-info {
@@ -607,9 +704,15 @@
             flex-shrink: 0;
         }
 
-        .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-        .author-details { margin-left: 0; }
+        .author-details {
+            margin-left: 0;
+        }
 
         .author-name {
             font-weight: 600;
@@ -641,7 +744,15 @@
             animation: fadeIn 0.2s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
 
         .popout-container {
             background: #fff;
@@ -653,8 +764,15 @@
         }
 
         @keyframes slideUp {
-            from { transform: translateY(16px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(16px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .popout-header {
@@ -681,7 +799,10 @@
             transition: color 0.2s, background 0.2s;
         }
 
-        .close-button:hover { color: #1a1a2e; background: #f1f5f9; }
+        .close-button:hover {
+            color: #1a1a2e;
+            background: #f1f5f9;
+        }
 
         .popout-body {
             font-size: 14px;
@@ -690,7 +811,10 @@
             text-align: center;
         }
 
-        .popout-actions { margin-top: 20px; text-align: center; }
+        .popout-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
 
         .btn-subscription {
             background: #4361ee;
@@ -706,8 +830,14 @@
             transition: background 0.2s;
         }
 
-        .btn-subscription:hover { background: #3350d6; }
-        .btn-subscription:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-subscription:hover {
+            background: #3350d6;
+        }
+
+        .btn-subscription:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         /* ─── Video Popout ─────────────────────────────────── */
         .vidio-popout-overlay {
@@ -743,9 +873,16 @@
             transition: opacity 0.2s, transform 0.25s;
         }
 
-        .vidio-close-btn:hover { opacity: 0.7; transform: rotate(90deg); }
+        .vidio-close-btn:hover {
+            opacity: 0.7;
+            transform: rotate(90deg);
+        }
 
-        .video { width: 100%; max-width: 880px; border-radius: 12px; }
+        .video {
+            width: 100%;
+            max-width: 880px;
+            border-radius: 12px;
+        }
 
         /* ─── Pricing Card ─────────────────────────────────── */
         .pricing-card {
@@ -755,7 +892,10 @@
             border: 1px solid #e2e8f0;
         }
 
-        .plan-header { text-align: center; margin-bottom: 1.25rem; }
+        .plan-header {
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
 
         .plan-name {
             font-size: 1.1rem;
@@ -771,7 +911,9 @@
             margin-bottom: 4px;
         }
 
-        .plan-price.free { color: #059669; }
+        .plan-price.free {
+            color: #059669;
+        }
 
         .plan-period {
             color: #94a3b8;
@@ -807,7 +949,9 @@
             font-weight: 700;
         }
 
-        .upgrade-cta { margin-top: 1.25rem; }
+        .upgrade-cta {
+            margin-top: 1.25rem;
+        }
 
         .cta-button.btn-upgrade {
             width: 100%;
@@ -826,7 +970,10 @@
             align-items: center;
         }
 
-        .cta-button.btn-upgrade:hover { background: #3350d6; transform: translateY(-1px); }
+        .cta-button.btn-upgrade:hover {
+            background: #3350d6;
+            transform: translateY(-1px);
+        }
 
         .cta-button.btn-upgrade:disabled,
         .cta-button.btn-upgrade.disabled {
@@ -836,8 +983,15 @@
         }
 
         /* ─── Wallet Options ───────────────────────────────── */
-        .wallet-options { display: flex; flex-direction: column; gap: 10px; }
-        .wallet-option input { display: none; }
+        .wallet-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .wallet-option input {
+            display: none;
+        }
 
         .wallet-card {
             display: flex;
@@ -851,7 +1005,10 @@
             background: #fff;
         }
 
-        .wallet-card:hover { border-color: #4361ee; background: #f3f5ff; }
+        .wallet-card:hover {
+            border-color: #4361ee;
+            background: #f3f5ff;
+        }
 
         .wallet-card.selected {
             border-color: #4361ee;
@@ -863,7 +1020,11 @@
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.12);
         }
 
-        .wallet-left { display: flex; align-items: center; gap: 12px; }
+        .wallet-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
         .wallet-icon {
             width: 36px;
@@ -873,9 +1034,22 @@
             padding: 4px;
         }
 
-        .wallet-details { display: flex; flex-direction: column; }
-        .wallet-type { font-weight: 600; font-size: 0.95rem; color: #111827; text-transform: capitalize; }
-        .wallet-number { font-size: 0.85rem; color: #6b7280; }
+        .wallet-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wallet-type {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #111827;
+            text-transform: capitalize;
+        }
+
+        .wallet-number {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
 
         .wallet-badge {
             background: #4361ee;
@@ -886,7 +1060,11 @@
             font-weight: 600;
         }
 
-        .wallet-check .checkmark { font-size: 1.2rem; color: #4361ee; font-weight: 700; }
+        .wallet-check .checkmark {
+            font-size: 1.2rem;
+            color: #4361ee;
+            font-weight: 700;
+        }
 
         .btn-default {
             font-size: 0.72rem;
@@ -900,10 +1078,15 @@
             font-family: inherit;
         }
 
-        .btn-default:hover { background: #4361ee; color: #fff; }
+        .btn-default:hover {
+            background: #4361ee;
+            color: #fff;
+        }
 
         /* ─── Form Elements ────────────────────────────────── */
-        .form-group { margin-bottom: 18px; }
+        .form-group {
+            margin-bottom: 18px;
+        }
 
         .form-label {
             display: block;
@@ -925,8 +1108,15 @@
             color: #1a1a2e;
         }
 
-        .form-input:focus { outline: none; border-color: #4361ee; }
-        .form-textarea { min-height: 90px; resize: vertical; }
+        .form-input:focus {
+            outline: none;
+            border-color: #4361ee;
+        }
+
+        .form-textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
 
         .submit-button {
             width: 100%;
@@ -942,10 +1132,16 @@
             transition: background 0.2s;
         }
 
-        .submit-button:hover { background: #3350d6; }
+        .submit-button:hover {
+            background: #3350d6;
+        }
 
         /* ─── Load More ────────────────────────────────────── */
-        .load-more-container { display: flex; justify-content: center; padding: 24px; }
+        .load-more-container {
+            display: flex;
+            justify-content: center;
+            padding: 24px;
+        }
 
         .btn-load-more {
             background: transparent;
@@ -954,8 +1150,14 @@
             font-family: inherit;
         }
 
-        .btn-load-more:hover:not(:disabled) { background: #f8fafc; }
-        .btn-load-more:disabled { opacity: 0.45; cursor: not-allowed; }
+        .btn-load-more:hover:not(:disabled) {
+            background: #f8fafc;
+        }
+
+        .btn-load-more:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
 
         /* ─── Misc ─────────────────────────────────────────── */
         .main {
@@ -978,25 +1180,68 @@
             cursor: pointer;
         }
 
-        .edit-btn:hover { opacity: 0.75; background: #eef0fd; }
+        .edit-btn:hover {
+            opacity: 0.75;
+            background: #eef0fd;
+        }
 
         /* ─── Responsive ───────────────────────────────────── */
         @media (max-width: 900px) {
-            .container { margin-top: 45px; }
-            .card { padding: 14px; }
+            .container {
+                margin-top: 45px;
+            }
+
+            .card {
+                padding: 14px;
+            }
         }
 
         @media (max-width: 768px) {
-            .course-header { padding: 20px 18px 16px; }
-            .course-header::before, .course-header::after { display: none; }
-            .course-title { font-size: 1.35rem; }
-            .module-header { padding: 12px 16px; }
-            .module-header-left { gap: 10px; }
-            .lesson-item { padding: 12px 16px; }
-            .popout-container { width: 95%; padding: 18px; max-height: 80vh; overflow-y: auto; }
-            .popout-title { font-size: 16px; }
-            .vidio-popout-overlay h2 { font-size: 16px; }
-            .vidio-close-btn { top: 10px; right: 10px; font-size: 28px; }
+            .course-header {
+                padding: 20px 18px 16px;
+            }
+
+            .course-header::before,
+            .course-header::after {
+                display: none;
+            }
+
+            .course-title {
+                font-size: 1.35rem;
+            }
+
+            .module-header {
+                padding: 12px 16px;
+            }
+
+            .module-header-left {
+                gap: 10px;
+            }
+
+            .lesson-item {
+                padding: 12px 16px;
+            }
+
+            .popout-container {
+                width: 95%;
+                padding: 18px;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            .popout-title {
+                font-size: 16px;
+            }
+
+            .vidio-popout-overlay h2 {
+                font-size: 16px;
+            }
+
+            .vidio-close-btn {
+                top: 10px;
+                right: 10px;
+                font-size: 28px;
+            }
         }
     </style>
 </head>
@@ -1049,9 +1294,12 @@
                 </button>
                 <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
                     <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
-                    <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no WhatsApp</a>
-                    <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no Facebook</a>
-                    <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no LinkedIn</a>
+                    <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no
+                        WhatsApp</a>
+                    <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no
+                        Facebook</a>
+                    <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no
+                        LinkedIn</a>
                 </div>
             </div>
         </div>
@@ -1145,8 +1393,7 @@
                                 <div class="lesson-item" *ngFor="let content of topic.contents">
 
                                     <input type="checkbox" class="styled-checkbox"
-                                        [id]="'visible-checkbox-' + content.id"
-                                        [checked]="content.markedByUser"
+                                        [id]="'visible-checkbox-' + content.id" [checked]="content.markedByUser"
                                         (change)="toggleMarkedContent(content)"
                                         *ngIf="!content.showLoadingMarked && isUserLoggedIn"
                                         [disabled]="isPremiumTopic(topic) || content.showLoadingMarked" />
@@ -1154,8 +1401,7 @@
                                     <i *ngIf="content.showLoadingMarked" class="pi pi-spin pi-spinner-dotted"
                                         style="color: #4361ee; font-size: 16px; width: 16px; flex-shrink: 0;"></i>
 
-                                    <div class="lesson-type-icon"
-                                        [class.video]="content.contentType === 'VIDEO'"
+                                    <div class="lesson-type-icon" [class.video]="content.contentType === 'VIDEO'"
                                         [class.file]="content.contentType === 'FILE'">
                                         <svg *ngIf="content.contentType === 'VIDEO'" viewBox="0 0 24 24"
                                             fill="currentColor">
@@ -1172,7 +1418,8 @@
                                     <div class="lesson-content">
                                         <label class="lesson-title">{{ content.description }}</label>
                                         <div class="lesson-duration">
-                                            <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula · {{ content.time }} min</span>
+                                            <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula · {{ content.time }}
+                                                min</span>
                                             <span *ngIf="content.contentType == 'FILE'">Ficheiro para baixar</span>
                                         </div>
                                     </div>
@@ -1192,13 +1439,11 @@
                                             <svg *ngIf="!content.showLoadingDownload" viewBox="0 0 24 24" fill="none"
                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                 stroke-linejoin="round">
-                                                <path
-                                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                                 <polyline points="7 10 12 15 17 10" />
                                                 <line x1="12" y1="15" x2="12" y2="3" />
                                             </svg>
-                                            <i *ngIf="content.showLoadingDownload"
-                                                class="pi pi-spin pi-spinner-dotted"
+                                            <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
                                                 style="color: #1d9e75; font-size: 13px;"></i>
                                         </button>
                                     </div>
@@ -1217,6 +1462,7 @@
     </div>
 
 </body>
+
 </html>
 
 <!-- Modal de Vídeo -->
