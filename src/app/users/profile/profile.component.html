@@ -1,10 +1,9 @@
 <body>
-    <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-        <div class="loading-indicator">
+    <!-- Loading overlay -->
+    <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+        <div class="loading-box">
             <div class="spinner"></div>
-            <div class="loading-text">
-                {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-            </div>
+            <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
         </div>
     </div>
 

@@ -1,12 +1,11 @@
 <body>
   <div class="container">
 
-    <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-      <div class="loading-indicator">
+    <!-- Loading overlay -->
+    <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+      <div class="loading-box">
         <div class="spinner"></div>
-        <div class="loading-text">
-          {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-        </div>
+        <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
       </div>
     </div>
 
@@ -59,25 +58,6 @@
 
         <form autocomplete="off" #courseForm="ngForm">
 
-          <!-- Step 0: Level -->
-          <!--
-          <div class="step-card animate-step">
-            <p class="step-description">Selecione o nível de quiz que deseja criar.</p>
-
-            <div class="options-grid">
-              <div *ngFor="let level of difficultyLevels" (click)="selectLevel(level)"
-                [class.selected]="quiz.difficultyLevel === level.value"
-                [class.unlocked]="isAdvancedLevelDisabled(level)" class="option-card">
-                <h3>{{ level.label }}</h3>
-                <p class="option-description">{{ level.description }}</p>
-                <p *ngIf="isAdvancedLevelDisabled(level)" class="lock-message">
-                  🔒 Não disponível neste momento
-                </p>
-              </div>
-            </div>
-          </div>
-          -->
-
           <!-- Step 1: Tipo  *ngIf="quiz.difficultyLevel"-->
           <div class="step-card animate-step">
             <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
@@ -89,25 +69,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Step 2: Modo -->
-          <!--
-          <div class="step-card animate-step" *ngIf="quiz.type">
-            <p class="step-description">Escolha se o quiz será anônimo ou identificado.</p>
-            <div class="options-grid">
-              <div *ngFor="let option of anonymousOptions" (click)="selectAnonymousOption(option)"
-                [class.selected]="quiz.anonymous === option.value" [class.unlocked]="isAnonymousOptionDisabled(option)"
-                class="option-card">
-                <h3>{{ option.label }}</h3>
-                <p class="option-description">{{ option.description }}</p>
-                <p *ngIf="isAnonymousOptionDisabled(option)" class="lock-message">
-                  🔒 Disponível apenas para usuários Logados
-                </p>
-              </div>
-            </div>
-            <p class="info-note">⚠️ Você poderá alterar esta opção depois de salvar o quiz.</p>
-          </div>
-          -->
 
           <!-- Step 3: Disciplina *ngIf="quiz.anonymous !== null"-->
           <div class="step-card animate-step" *ngIf="quiz.type">
@@ -183,12 +144,6 @@
           <p class="total-questions" *ngIf="quiz.limitPerTopic">
             Total de questões: {{ getSelectedTopicIds().length * quiz.limitPerTopic }}
           </p>
-          <!-- Duração estimada -->
-          <!--
-          <p class="total-questions" *ngIf="quiz.limitPerTopic">
-            Duração: {{ getSelectedTopicIds().length * quiz.limitPerTopic }}:00 minutos no mínimo
-          </p>
-          -->
 
           <!-- Botão final -->
           <div class="form-actions" *ngIf="quiz.limitPerTopic">
@@ -202,14 +157,17 @@
     </div>
 
     <div class="header-buttons">
-      <button *ngIf="showStartScreen" class="go-back-btn" (click)="goBack()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5"></path>
-          <path d="M12 19l-7-7 7-7"></path>
+
+      <!-- Back -->
+      <button *ngIf="showStartScreen" class="back-btn" (click)="goBack()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5" />
+          <path d="M12 19l-7-7 7-7" />
         </svg>
         Voltar
       </button>
+
       <div *ngIf="showStartScreen" class="dropdown-container">
         <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-h"></i></button>
         <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
@@ -228,86 +186,6 @@
     <!-- Tela inicial -->
     <div *ngIf="showStartScreen" class="results-screen2">
 
-      <!-- Metadados da questão -->
-      <!-- 
-      <div class="questao-meta">
-        <div class="meta-grid">
-          <div class="meta-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-            </svg>
-            <div>
-              <p class="meta-label">Disciplina</p>
-              <p class="meta-valor">{{ quiz.subject.name }}</p>
-            </div>
-          </div>
-
-          <div class="meta-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
-              </path>
-              <line x1="7" y1="7" x2="7.01" y2="7"></line>
-            </svg>
-            <div>
-              <p class="meta-label">Tópicos</p>
-              <p class="meta-valor">{{ topics.length }}</p>
-            </div>
-          </div>
-
-          <div class="meta-item" *ngIf="quiz.id || quiz.id !== 0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            <div>
-              <p class="meta-label">Tempo gasto / estimado</p>
-              <p class="meta-valor" *ngIf="quiz.timeLimit > quiz.timeSpent">{{ formatTime(quiz.timeSpent) }} / {{
-                formatTime(quiz.timeLimit) }}</p>
-              <p class="meta-valor" *ngIf="quiz.timeLimit <= quiz.timeSpent">{{ formatTime(quiz.timeLimit) }} / {{
-                formatTime(quiz.timeLimit) }}</p>
-            </div>
-          </div>
-
-          <div class="meta-item" *ngIf="quiz.id || quiz.id !== 0">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <div>
-              <p class="meta-label">Data</p>
-              <p class="meta-valor">{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</p>
-            </div>
-          </div>
-
-          <div class="meta-item">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M4 21v-2a4 4 0 0 1 3-3.87" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-            <div>
-              <p class="meta-label">Usuário</p>
-              <p class="meta-valor">
-                {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
-                <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id"></span>
-                <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <br>
-      -->
-
       <!-- HERO -->
       <div class="hero">
         <div class="score-ring">
@@ -319,12 +197,7 @@
               <span></span>
             </div>
           </div>
-          <!--
-          <svg viewBox="0 0 140 140">
-            <circle class="ring-track" cx="70" cy="70" r="65" />
-            <circle class="ring-fill" cx="70" cy="70" r="65" />
-          </svg>
-          -->
+
           <div class="score-center">
             <div class="score-num">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
             <div class="score-of">de 100</div>
@@ -488,95 +361,6 @@
           </table>
         </div>
       </div>
-      <!--
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Desempenho Geral</div>
-        </div>
-
-        <div class="overview">
-          <div class="stat-item">
-            <div class="stat-value primary">{{ quiz.questions.length }}</div>
-            <div class="stat-label">Total de Questões</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value success">{{ result.correctAnswers }}</div>
-            <div class="stat-label">Acertos</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value danger">{{ result.incorrectAnswers + result.nullAnswers }}</div>
-            <div class="stat-label">Erros</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value success">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}%
-            </div>
-            <div class="stat-label">Taxa de Acerto</div>
-          </div>
-        </div>
-
-        <div class="results-progress-container">
-          <div class="progress-label">
-            <div class="progress-title">Taxa de Acerto</div>
-            <div class="progress-value">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)}}%</div>
-          </div>
-          <div class="results-progress-bar">
-            <div class="progress success"
-              [style.width.%]="((result.correctAnswers / quiz.questions.length) * 100).toFixed(1)"></div>
-          </div>
-        </div>
-
-      </div>
-      -->
-
-      <!--
-      <div class="card" *ngIf="quiz.resultsByTopic">
-        <div class="card-header">
-          <div class="card-title">Desempenho por Tópico</div>
-        </div>
-
-        <div class="topics" *ngFor="let topic of topics">
-          <div class="topic-card" style="margin-bottom: 15px;">
-            <div class="topic-header">
-              <div class="topic-title">{{ topic.name }}</div>
-              <div class="topic-questions">
-                {{ quiz.resultsByTopic[topic.name].total || 0 }} questões
-              </div>
-            </div>
-
-            <div class="topic-stats">
-              <div class="topic-stat">
-                <div class="topic-stat-value success">
-                  {{ quiz.resultsByTopic[topic.name].correct || 0 }}
-                </div>
-                <div class="topic-stat-label">Acertos</div>
-              </div>
-              <div class="topic-stat">
-                <div class="topic-stat-value danger">
-                  {{
-                  (quiz.resultsByTopic[topic.name].incorrect || 0) +
-                  (quiz.resultsByTopic[topic.name].nullAnswers || 0)
-                  }}
-                </div>
-                <div class="topic-stat-label">Erros</div>
-              </div>
-            </div>
-
-            <div class="results-progress-container">
-              <div class="progress-label">
-                <div class="progress-title">Taxa de Acerto</div>
-                <div class="progress-value">
-                  {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
-                </div>
-              </div>
-              <div class="results-progress-bar">
-                <div class="progress success" [style.width.%]="quiz.resultsByTopic[topic.name].percentage?.toFixed(1)">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      -->
 
     </div>
 
@@ -622,16 +406,6 @@
           </div>
 
           <div class="progress-container">
-            <!--<p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST' }" *ngIf="!quiz.id">{{ formattedTime }}</p>-->
-
-            <!--
-            <p class="timer" [ngClass]="{ 
-              'enabled': quiz.type === 'TEST',
-              'warning': isWarning
-            }" *ngIf="!quiz.id">
-              {{ formattedTime }}
-            </p>
-            -->
 
             <p class="timer" [ngClass]="{ 
               'enabled': quiz.type === 'TEST' && !isWarning,
@@ -657,7 +431,7 @@
 
             <button class="question-selector-btn" [disabled]="!quiz.isSubmitted" (click)="onShowQuestionList()">
               {{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}
-              <span class="arrow">&#9662;</span> <!-- setinha para baixo -->
+              <span class="arrow">&#9662;</span>
             </button>
 
           </div>

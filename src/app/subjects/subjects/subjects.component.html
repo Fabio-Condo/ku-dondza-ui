@@ -279,6 +279,15 @@
             line-height: 1.25;
         }
 
+        .description-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #a0a8b8;
+            margin-bottom: 12px;
+        }
+
         /* Container do texto */
         .subject-description {
             position: relative;
@@ -451,239 +460,179 @@
             cursor: not-allowed;
         }
 
-        .popout-overlay {
+        /* ─── Modals ──────────────────────────────────────── */
+        .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 1000;
+            padding: 16px;
         }
 
-        .popout-container {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 600px;
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 480px;
+            max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-out;
+            animation: modalIn 0.25s ease;
         }
 
-
-        @keyframes slideIn {
+        @keyframes modalIn {
             from {
-                transform: translateY(20px);
                 opacity: 0;
+                transform: translateY(12px);
             }
 
             to {
-                transform: translateY(0);
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .popout-header {
+        .modal-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0px;
+            margin-bottom: 1.25rem;
         }
 
-        .popout-title {
-            font-size: 24px;
+        .modal-title {
+            font-size: 17px;
             font-weight: 600;
-            color: var(--color-black);
-            margin: 0;
+            color: #111827;
         }
 
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            padding: 4px;
-            transition: color 0.2s;
-        }
-
-        .close-button:hover {
-            color: var(--color-black);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            border: none;
+        .close-btn {
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
+            border: 1px solid #e5e7eb;
+            background: none;
             cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .submit-button:hover {
-            background: #1d4ed8;
-        }
-
-        /* Loading Container - Versão Moderna */
-        .loading-container {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 18px;
+            transition: background 0.15s;
+        }
+
+        .close-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* form inside modal */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group select,
+        .form-group input[type="text"] {
             width: 100%;
-            height: 100vh;
+            padding: 9px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #111827;
+            background: #fff;
+            transition: border-color 0.15s;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-group select:focus,
+        .form-group input[type="text"]:focus {
+            border-color: #4361ee;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover {
+            background: #3451d1;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ─── Loading overlay ────────────────────────────── */
+        .loading-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.8);
-            /* Fundo escuro mais moderno */
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            /* Efeito de desfoque */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .loading-container.visible {
+        .loading-overlay.visible {
             opacity: 1;
             visibility: visible;
         }
 
-        .loading-indicator {
+        .loading-box {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e8eaf0;
+            padding: 2rem 2.5rem;
             display: flex;
             flex-direction: column;
-            /* Empilha os elementos */
             align-items: center;
-            gap: 20px;
-            padding: 30px 40px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            gap: 16px;
         }
 
-        .loading-container.visible .loading-indicator {
-            transform: translateY(0);
-        }
-
-        /* Spinner moderno com gradiente */
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            position: relative;
+            border: 3px solid #e0e4f5;
+            border-top-color: #4361ee;
+            animation: spin 0.8s linear infinite;
         }
 
-        .spinner::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #4c6ef5;
-            /* Cor primária */
-            border-left-color: #ec4899;
-            /* Gradiente para roxo */
-            animation: spin 1s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite;
-        }
-
-        .spinner::after {
-            content: "";
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #ec4899;
-            /* Rosa */
-            border-left-color: #4c6ef5;
-            /* Roxo */
-            animation: spin 1.5s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite reverse;
-        }
-
-        .loading-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1e293b;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        /* Efeito de pulsação no texto */
-        .loading-text span {
-            display: inline-block;
-            opacity: 0.8;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .loading-text span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-text span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        /* Animações */
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
+            to {
                 transform: rotate(360deg);
             }
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.6;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* Versão para componente Angular (código de referência) */
-        .code-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        pre {
-            white-space: pre-wrap;
-            font-family: 'Consolas', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            overflow-x: auto;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
+        .loading-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
         }
 
         /* Botão do menu dropdown */
@@ -995,7 +944,7 @@
                     -->
                 </div>
                 <div class="card-body">
-                    <!--<div class="subject-name">{{ subject.name }}</div>-->
+                    <div class="description-label">Descrição</div>
                     <div class="subject-description">
                         <p class="description"> {{ subject.description }}</p>
                     </div>
@@ -1049,12 +998,11 @@
             </div>
         </div>
 
-        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-            <div class="loading-indicator">
+        <!-- Loading overlay -->
+        <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+            <div class="loading-box">
                 <div class="spinner"></div>
-                <div class="loading-text">
-                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-                </div>
+                <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
             </div>
         </div>
 
@@ -1119,11 +1067,11 @@
 
 </html>
 
-<div class="popout-overlay" *ngIf="displayModalSave">
-    <div class="popout-container">
-        <div class="popout-header">
-            <h2 class="popout-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
-            <button class="close-button" (click)="displayModalSave = false">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalSave">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
         </div>
 
         <form autocomplete="off" #subjectForm="ngForm" (ngSubmit)="save(subjectForm)">
@@ -1148,7 +1096,7 @@
                 </select>
             </div>
 
-            <button class="submit-button" type="submit" [disabled]="subjectForm.invalid" class="btn">
+            <button class="btn-submit" type="submit" [disabled]="subjectForm.invalid">
                 {{ showLoading ? 'Loading...' :'Salvar' }}
             </button>
 
@@ -1156,12 +1104,11 @@
     </div>
 </div>
 
-<div class="popout-overlay" *ngIf="displayModalFilter">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Filtrar</h2>
-            <button class="close-button" (click)="toggleFilter()">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalFilter">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Filtrar</h2>
+            <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
         </div>
 
         <form>
@@ -1172,7 +1119,7 @@
                     (ngModelChange)="findAll()">
             </div>
 
-            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
+            <button type="submit" class="btn-submit" (click)="limparCampos()">Reset</button>
         </form>
     </div>
 </div>

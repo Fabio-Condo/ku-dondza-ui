@@ -447,6 +447,7 @@ export class ExamesComponent implements OnInit {
     );
   }
 
+
   getWalletsByUser(userId: number): void {
     this.loadingMessage = "Obtendo dados"
     this.showLoading = true;
@@ -513,10 +514,13 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
     this.walletService.add(this.loggedUser.id, this.wallet).subscribe(
       (response) => {
+        console.log(response);
         this.wallet = response;
+
         this.userWallets.push(this.wallet);
         this.showLoading = false;
         this.displayModalAddPaymentOption = false;
+        //this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

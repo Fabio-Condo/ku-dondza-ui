@@ -181,69 +181,6 @@
                         </div>
                     </div>
 
-                    <!--
-                    <div class="quiz-stats">
-                        <div class="stats-left">
-                            <div class="stat-item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                <span *ngIf="quiz.timeLimit > quiz.timeSpent">
-                                    {{ formatTime(quiz.timeSpent) }} / {{formatTime(quiz.timeLimit) }}
-                                </span>
-                                <span *ngIf="quiz.timeLimit <= quiz.timeSpent">
-                                    {{ formatTime(quiz.timeLimit) }} / {{formatTime(quiz.timeLimit) }}
-                                </span>
-                            </div>
-                            <div class="stat-item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                    <circle cx="12" cy="17" r="1" />
-                                </svg>
-                                {{ quiz.totalQuestions }} questões
-                            </div>
-
-                        </div>
-                        <div class="stat-item score" [ngClass]="getScoreClass(quiz.accuracyRate)">
-
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="18" y1="20" x2="18" y2="10"></line>
-                                <line x1="12" y1="20" x2="12" y2="4"></line>
-                                <line x1="6" y1="20" x2="6" y2="14"></line>
-                            </svg>
-
-                            {{ quiz.accuracyRate.toFixed(1) }}% acerto
-                        </div>
-                    </div>
-                    -->
-
-                    <!--
-                    <div class="quiz-footer">
-                        <div class="update-date">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            Data: {{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}
-                        </div>
-                        <button class="start-button" [routerLink]="['/quizzes', quiz.quizId]">
-                            Ver Correção
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </button>
-                    </div>
-                    -->
                     <button class="start-btn" [routerLink]="['/quizzes', quiz.quizId]">
                         <span>Ver Correção</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -256,12 +193,11 @@
             </div>
         </div>
 
-        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-            <div class="loading-indicator">
+        <!-- Loading overlay -->
+        <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+            <div class="loading-box">
                 <div class="spinner"></div>
-                <div class="loading-text">
-                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-                </div>
+                <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
             </div>
         </div>
 
@@ -324,12 +260,11 @@
     </div>
 </body>
 
-<div class="popout-overlay" *ngIf="displayModalFilter">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2 class="popout-title">Filtrar</h2>
-            <button class="close-button" (click)="toggleFilter()">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalFilter">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Filtrar</h2>
+            <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
         </div>
 
         <form>
@@ -353,7 +288,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
+            <button type="submit" class="btn-submit" (click)="limparCampos()">Reset</button>
         </form>
     </div>
 </div>

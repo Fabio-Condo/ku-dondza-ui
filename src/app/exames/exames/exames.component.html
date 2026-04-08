@@ -236,6 +236,15 @@
             color: #718096;
         }
 
+        .description-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #a0a8b8;
+            margin-bottom: 12px;
+        }
+
         .badge {
             display: inline-flex;
             align-items: center;
@@ -505,93 +514,6 @@
             cursor: not-allowed;
         }
 
-        .popout-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popout-container,
-        .login-popout-container {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 600px;
-            overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .popout-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0px;
-        }
-
-        .popout-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--color-black);
-            margin: 0;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            padding: 4px;
-            transition: color 0.2s;
-        }
-
-        .close-button:hover {
-            color: var(--color-black);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .submit-button:hover {
-            background: #1d4ed8;
-        }
-
         /* Paginação */
         .pagination {
             display: flex;
@@ -658,173 +580,56 @@
             z-index: 9999;
         }
 
-        /* Loading Container - Versão Moderna */
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100vh;
+        /* ─── Loading overlay ────────────────────────────── */
+        .loading-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.8);
-            /* Fundo escuro mais moderno */
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            /* Efeito de desfoque */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .loading-container.visible {
+        .loading-overlay.visible {
             opacity: 1;
             visibility: visible;
         }
 
-        .loading-indicator {
+        .loading-box {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e8eaf0;
+            padding: 2rem 2.5rem;
             display: flex;
             flex-direction: column;
-            /* Empilha os elementos */
             align-items: center;
-            gap: 20px;
-            padding: 30px 40px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            gap: 16px;
         }
 
-        .loading-container.visible .loading-indicator {
-            transform: translateY(0);
-        }
-
-        /* Spinner moderno com gradiente */
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            position: relative;
+            border: 3px solid #e0e4f5;
+            border-top-color: #4361ee;
+            animation: spin 0.8s linear infinite;
         }
 
-        .spinner::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #4c6ef5;
-            /* Cor primária */
-            border-left-color: #ec4899;
-            /* Gradiente para roxo */
-            animation: spin 1s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite;
-        }
-
-        .spinner::after {
-            content: "";
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #ec4899;
-            /* Rosa */
-            border-left-color: #4c6ef5;
-            /* Roxo */
-            animation: spin 1.5s cubic-bezier(0.76, 0.35, 0.2, 0.7) infinite reverse;
-        }
-
-        .loading-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1e293b;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        /* Efeito de pulsação no texto */
-        .loading-text span {
-            display: inline-block;
-            opacity: 0.8;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .loading-text span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-text span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        /* Animações */
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
+            to {
                 transform: rotate(360deg);
             }
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.6;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* Versão para componente Angular (código de referência) */
-        .code-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        pre {
-            white-space: pre-wrap;
-            font-family: 'Consolas', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            overflow-x: auto;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-
-        @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
-
-            10% {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-
-            90% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
+        .loading-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
         }
 
         /* Botão do menu dropdown */
@@ -940,12 +745,12 @@
 
 <body>
     <div class="container">
-        <div *ngIf="showLoading" class="loading-container visible" aria-live="polite">
-            <div class="loading-indicator">
+
+        <!-- Loading overlay -->
+        <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+            <div class="loading-box">
                 <div class="spinner"></div>
-                <div class="loading-text">
-                    {{ loadingMessage || 'Carregando' }}<span>.</span><span>.</span><span>.</span>
-                </div>
+                <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
             </div>
         </div>
 
@@ -1067,6 +872,7 @@
                     -->
                 </div>
                 <div class="card-body">
+                    <div class="description-label">Descrição</div>
                     <div class="detail-row">
                         <span class="badge badge-date badge-with-icon">
                             <svg class="badge-icon" viewBox="0 0 24 24" fill="none">
@@ -1105,7 +911,7 @@
                             <span *ngIf="!exam.showLoadingDownload">Baixar Exame</span>
                             <span *ngIf="exam.showLoadingDownload">Baixando...</span>
                         </button>
-                        <button class="download-btn" (click)="onUpgradePlan()" *ngIf="isPremiumExam(exam)">
+                        <button class="download-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
                             <svg class="upgrade-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
@@ -1177,12 +983,11 @@
 
 </html>
 
-<div class="popout-overlay" *ngIf="displayModalSave">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2>{{ editing ? 'Editando' : 'Adicionando' }}</h2>
-            <button class="close-button" (click)="displayModalSave = false">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalSave">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
         </div>
 
         <form autocomplete="off" #exameForm="ngForm">
@@ -1241,7 +1046,7 @@
                     class="form-control" required />
             </div>
 
-            <button class="submit-button" type="button" (click)="save()" class="btn">
+            <button class="btn-submit" type="button" (click)="save()">
                 {{ showLoading ? 'Loading...' :'Salvar' }}
             </button>
 
@@ -1249,13 +1054,11 @@
     </div>
 </div>
 
-
-<div class="popout-overlay" *ngIf="displayModalFilter">
-    <div class="popout-container">
-
-        <div class="popout-header">
-            <h2>Filtros</h2>
-            <button class="close-button" (click)="displayModalFilter = false">&times;</button>
+<div class="modal-overlay" *ngIf="displayModalFilter">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Filtros</h2>
+            <button class="close-btn" (click)="displayModalFilter = false">&#x2715;</button>
         </div>
 
         <form autocomplete="off" #exameForm="ngForm">
@@ -1315,20 +1118,20 @@
                 </div>
             </div>
 
-            <button type="submit" class="submit-button" (click)="limparCampos()">Reset</button>
+            <button type="submit" class="btn-submit" (click)="limparCampos()">Reset</button>
         </form>
     </div>
 </div>
 
 <!-- Popout -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
-    <div class="popout-container">
+<div class="modal-overlay" *ngIf="displayModalLogin">
+    <div class="modal">
 
         <div class="login-side" *ngIf="activeTab === 1">
 
-            <div class="popout-header">
-                <h2 class="popout-title">Cadastre-se para continuar</h2>
-                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Cadastre-se para continuar</h2>
+                <button class="close-btn" (click)="onCloseLoginPopout()">&#x2715;</button>
             </div>
 
             <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
@@ -1434,176 +1237,143 @@
 </div>
 
 
-<!-- Popout Upgrade Plan -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalUpgradePlan">
-    <div class="popout-container pricing-card popular">
 
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="plan-name popout-title">Atualize para o Plano Premium</h2>
-            <button class="close-button" (click)="onCloseUpgradeModal()">&times;</button>
+<!-- ══════════════════════════════════════════
+     MODAL: Upgrade de plano
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Plano Premium</h2>
+            <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
         </div>
 
         <div class="pricing-card">
-            <div class="plan-header">
-                <!--<h3 class="plan-name">Premium</h3>-->
-                <div class="plan-price">MT 299</div>
-                <div class="plan-period">por mês</div>
-            </div>
-
-            <!-- Features -->
-            <div class="popout-body features">
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Resolução detalhada de todas as questões com dicas e comentários</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Criação de quizzes avançados e personalizados</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Mais exercícios por quiz para reforçar o aprendizado</span>
-                </div>
-            </div>
+            <div class="plan-price-big">MT 299</div>
+            <div class="plan-period">por mês</div>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg></span>
+                    Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+                </li>
+                <li>
+                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg></span>
+                    Resolução detalhada com dicas e comentários
+                </li>
+                <li>
+                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg></span>
+                    Criação de quizzes avançados e personalizados
+                </li>
+                <li>
+                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg></span>
+                    Mais exercícios por quiz para reforçar o aprendizado
+                </li>
+            </ul>
         </div>
 
-        <!-- CTA / Preço -->
-        <div class="upgrade-cta">
-            <button class="cta-button btn-upgrade" (click)="onUpgradePlan()">
-                Fazer Upgrade Agora
-            </button>
-            <!--<p class="plan-price" style="margin-top: 0.5rem; text-align:center;">299 MT/mês</p>-->
-        </div>
-
+        <button class="btn-upgrade-big" (click)="onUpgradePlan()">Fazer upgrade agora</button>
     </div>
 </div>
 
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPaymentOptions">
-    <div class="popout-container modern-card">
 
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="popout-title">Escolha o método de pagamento</h2>
-            <button class="close-button" (click)="onCloseModalPaymentOptions()">
-                &times;
-            </button>
+<!-- ══════════════════════════════════════════
+     MODAL: Método de pagamento
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Método de pagamento</h2>
+            <button class="close-btn" (click)="onCloseModalPaymentOptions()">&#x2715;</button>
         </div>
 
-        <!-- Carteiras Disponíveis -->
         <div class="wallet-options">
-            <!-- Caso existam carteiras -->
             <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-                <label class="wallet-option" *ngFor="let wallet of userWallets">
-                    <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
-                    <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
-                        <div class="wallet-left">
-                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                class="wallet-icon" />
-                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                class="wallet-icon" />
-
-                            <div class="wallet-details">
-                                <span class="wallet-type">{{ wallet.type }}</span>
-                                <span class="wallet-number">{{ wallet.phoneNumber }}</span>
-                            </div>
+                <label class="wallet-card" *ngFor="let wallet of userWallets"
+                    [class.selected]="selectedWalletId === wallet.id">
+                    <div class="wallet-left">
+                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                            class="wallet-img" />
+                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                            class="wallet-img" />
+                        <div>
+                            <div class="wallet-type">{{ wallet.type }}</div>
+                            <div class="wallet-num">{{ wallet.phoneNumber }}</div>
                         </div>
-
-                        <div class="wallet-check">
-                            <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
-                                Definir como principal
-                            </button>
-                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-                        </div>
+                    </div>
+                    <div>
+                        <button *ngIf="!wallet.default" class="btn-set-default"
+                            (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Principal</button>
+                        <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
                     </div>
                 </label>
             </ng-container>
-
-            <!-- Caso não existam carteiras -->
             <ng-template #noWallets>
-                <div class="wallet-card">
-                    <p class="empty-text">Você ainda não adicionou nenhuma carteira.</p>
-                </div>
+                <p style="font-size:13px; color:#6b7280;">Você ainda não adicionou nenhuma carteira.</p>
             </ng-template>
         </div>
 
-        <!-- Caso não tenha carteiras -->
-        <div class="upgrade-cta">
-            <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
-                Adicionar Método de Pagamento
-            </button>
-        </div>
+        <button class="btn-add-wallet" (click)="openModalAddPaymentOption()">+ Adicionar método de
+            pagamento</button>
 
-        <!-- Confirmar pagamento -->
-        <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
-            <button class="cta-button btn-upgrade" (click)="upgradePlan()">
-                Fazer Upgrade Agora
-            </button>
-            <p class="plan-price-upgrade">299 MT/mês</p>
+        <div *ngIf="userWallets.length !== 0">
+            <button class="btn-upgrade-big" (click)="upgradePlan()">Confirmar upgrade</button>
+            <p class="plan-price-note">MT 299/mês</p>
         </div>
     </div>
 </div>
 
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalAddPaymentOption">
-    <div class="popout-container pricing-card popular">
 
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="plan-name popout-title">Adicione o método de pagamento</h2>
-            <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
+<!-- ══════════════════════════════════════════
+     MODAL: Adicionar carteira
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Adicionar carteira</h2>
+            <button class="close-btn" (click)="onCloseModalAddPaymentOption()">&#x2715;</button>
         </div>
 
         <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-
-            <!-- Número de telefone -->
             <div class="form-group">
                 <label for="phoneNumber">Número de telefone</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+                <input type="text" id="phoneNumber" name="phoneNumber" class="input-control" maxlength="9" minlength="9"
                     [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" class="input-control" />
-
-                <!-- Mensagem de erro -->
-                <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" />
+                <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
                     O número deve ter exatamente 9 dígitos.
-                </small>
-                <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
-                    Parece que este número não pertence a uma carteira válida. Suportamos apenas <strong>MPESA
-                        (84/85)</strong> e
-                    <strong>EMOLA (86/87)</strong>.
-                </small>
+                </span>
+                <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
+                    Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+                </span>
             </div>
 
-            <!-- Tipo de carteira detectado automaticamente -->
-            <div class="wallet-detected" *ngIf="wallet.type">
-                <div class="wallet-card">
-                    <div class="wallet-left">
-                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                            class="wallet-icon" />
-                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                            class="wallet-icon" />
-
-                        <div class="wallet-details">
-                            <span class="wallet-type">{{ wallet.type }}</span>
-                            <span class="wallet-number">{{ wallet.phoneNumber }}</span>
-                        </div>
+            <div *ngIf="wallet.type" class="wallet-card" style="margin-bottom: 1rem; pointer-events: none;">
+                <div class="wallet-left">
+                    <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
+                    <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />
+                    <div>
+                        <div class="wallet-type">{{ wallet.type }}</div>
+                        <div class="wallet-num">{{ wallet.phoneNumber }}</div>
                     </div>
                 </div>
             </div>
 
-            <div class="upgrade-cta">
-                <button class="cta-button btn-upgrade" type="submit"
-                    [disabled]="walletTypeForm.invalid || !wallet.type">
-                    {{ showLoading ? 'Adicionando carteira...' :'Adicionar carteira' }}
-                </button>
-            </div>
-
+            <button class="btn-upgrade-big" type="submit"
+                [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
+                {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
+            </button>
         </form>
-
     </div>
 </div>
