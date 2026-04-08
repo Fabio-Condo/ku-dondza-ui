@@ -1,3 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios por Disciplina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            padding: 10px;
+        }
+
+        .profile-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            margin-top: 75px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .banner {
+            height: 128px;
+            background: #4361ee;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .edit-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            color: white;
+        }
+
+        .profile-content {
+            padding: 1.5rem;
+            margin-top: -4rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-pic {
+            color: #4361ee;
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            border: 4px solid white;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-button {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, opacity 0.3s;
+            opacity: 0.7;
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .profile-info h1 {
+            font-size: 1.5rem;
+            color: var(--color-black);
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-info p {
+            color: #6b7280;
+        }
+
+        .plan-info {
+            margin: 10px 0 15px 0;
+        }
+
+        .plan-name {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1f2937;
+        }
+
+        .plan-name i {
+            font-size: 0.9rem;
+        }
+
+        .plan-validity {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .upgrade-link {
+            margin-top: 6px;
+            background: none;
+            border: none;
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .upgrade-link:hover {
+            text-decoration: underline;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+        }
+
+        .popout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popout-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .popout-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-black);
+            margin: 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: var(--color-black);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-black);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3b82f6;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #2d3748;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        /* ─── Loading overlay ────────────────────────────── */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .loading-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-box {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e8eaf0;
+            padding: 2rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #e0e4f5;
+            border-top-color: #4361ee;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        /* CARD */
+        .payment-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .payment-card.wide {
+            grid-column: span 2;
+        }
+
+        .payment-card-title {
+            font-size: 18px;
+            margin-bottom: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .wallet-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .wallet-option input {
+            display: none;
+        }
+
+        .wallet-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 0.9rem;
+            padding: 0.9rem 1.1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background-color: #fff;
+        }
+
+        .wallet-card:hover {
+            border-color: #2563eb;
+            background-color: #f9fafb;
+        }
+
+        .wallet-card.selected {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+
+        .wallet-left {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .wallet-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            padding: 4px;
+        }
+
+        .wallet-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wallet-type {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #111827;
+            text-transform: capitalize;
+        }
+
+        .wallet-number {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .wallet-check .checkmark {
+            font-size: 1.3rem;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .wallet-card.default {
+            border: 2px solid #4361ee;
+            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.25);
+        }
+
+        .wallet-badge {
+            background-color: #4361ee;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .empty-text {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-default {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            border: 1px solid #4361ee;
+            background-color: white;
+            color: #4361ee;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-default:hover {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .upgrade-cta {
+            margin-top: 1.5rem;
+        }
+
+        .add-payment-btn {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            cursor: pointer;
+            background: transparent;
+            color: #4b5563;
+            transition: .2s;
+        }
+
+        .add-payment-btn:hover {
+            border-color: #4361ee;
+            color: #4361ee;
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 1024px) {
+            .subjects-grid {
+                grid-template-columns: repeat(3, 1fr);
+                /* Reduz para 3 colunas */
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                margin-top: 60px;
+            }
+
+            .popout-container {
+                width: 95%;
+                padding: 16px;
+            }
+
+            .popout-title {
+                font-size: 20px;
+            }
+
+            .form-input {
+                padding: 10px;
+            }
+
+            .profile-info h1 {
+                font-size: 17px;
+            }
+
+            .profile-info p {
+                font-size: 14px;
+            }
+
+            .detail-item {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-details {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .badges {
+                justify-content: center;
+            }
+
+            .subjects-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 colunas em telas menores */
+            }
+
+            .payment-card {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subjects-grid {
+                grid-template-columns: repeat(1, 1fr);
+                /* 1 coluna em telas pequenas */
+            }
+        }
+    </style>
+</head>
+
 <body>
     <!-- Loading overlay -->
     <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
@@ -8,18 +566,6 @@
     </div>
 
     <div class="container">
-
-        <!-- routerLink="/users" -->
-        <!--
-        <button class="go-back-btn" routerLink="/quizzes">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5"></path>
-                <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-            Voltar
-        </button>
-        -->
 
         <div class="profile-card">
             <div class="banner">
@@ -33,10 +579,6 @@
                         <i *ngIf="!user.profileImageUrl" class="fas fa-user" style="font-size: 3rem;"></i>
                         <img *ngIf="user.profileImageUrl" src="{{user.profileImageUrl}}" id="profile-photo" type="file"
                             alt="Foto do Perfil">
-                        <!--    
-                        <label *ngIf="currentUser.userId == user.userId" for="profile-upload"
-                            class="upload-button">Trocar</label>
-                        -->
                         <input *ngIf="currentUser.userId == user.userId" (change)="onProfilePhotoFileChange($event)"
                             type="file" id="profile-upload" class="upload-input" accept="image/*">
                     </div>
@@ -59,47 +601,9 @@
                                 Plano gratuito
                             </div>
                         </div>
-                        <!--<p>{{ user.bio }}</p>-->
                     </div>
                 </div>
 
-                <div class="profile-details">
-                    <div>
-                        <!--
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>São Paulo, Brasil</span>
-                        </div>
-                        -->
-                        <!--
-                        <div class="detail-item" *ngIf="isSuperAdmin || currentUser.userId == user.userId">
-                            <i class="fas fa-envelope"></i>
-                            <span>{{ user.email }}</span>
-                        </div>
-                        -->
-                        <!--
-                        <div class="detail-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>Membro desde Março 2024</span>
-                        </div>
-                        -->
-                    </div>
-                    <!--
-                    <button class="btn-outline" id="logout-btn" (click)="onLogOut()"
-                        *ngIf="currentUser.userId == user.userId">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </button>
-                    -->
-                </div>
-
-                <!--
-            <div class="badges">
-                <span class="badge">Especialista</span>
-                <span class="badge">Top Criadora</span>
-                <span class="badge">Mentora</span>
-            </div>
-            -->
             </div>
         </div>
 
@@ -150,197 +654,6 @@
             </div>
         </div>
 
-        <!--
-        <div class="stats-grid">
-            <div class="stat-card">
-                <i class="fas fa-book stat-icon"></i>
-                <div class="stat-value">45</div>
-                <div class="stat-label">Quizzes Criados</div>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-trophy stat-icon"></i>
-                <div class="stat-value">128</div>
-                <div class="stat-label">Quizzes Semanais Completados</div>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-briefcase stat-icon"></i>
-                <div class="stat-value">92%</div>
-                <div class="stat-label">Média de Notas</div>
-            </div>
-        </div>
-        -->
-
-        <!-- Nova seção de disciplinas de interesse -->
-        <!-- 
-        <div class="subjects-section">
-            <div class="subjects-header">
-                <h2 class="subjects-title">Disciplinas de Interesse</h2>
-                <button class="edit-button">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-
-            <div class="subjects-grid">
-                <div class="subject-card" *ngFor="let interest of user.subjectsInterests">
-                    <div class="subject-icon">
-                        <i class="fas fa-square-root-alt math" *ngIf="interest.name == 'Matemática'"></i>
-                        <i class="fas fa-atom physics" *ngIf="interest.name == 'Física'"></i>
-                        <i class="fas fa-flask chemistry" *ngIf="interest.name == 'Química'"></i>
-                        <i class="fas fa-dna biology" *ngIf="interest.name == 'Biologia'"></i>
-                        <i class="fas fa-landmark history" *ngIf="interest.name == 'História'"></i>
-                        <i class="fas fa-globe-americas geography" *ngIf="interest.name == 'Geografia'"></i>
-                        <i class="fas fa-language english" *ngIf="interest.name == 'Inglês'"></i>
-                        <i class="fas fa-book portuguese" *ngIf="interest.name == 'Português'"></i>
-                    </div>
-                    <div class="subject-name">{{ interest.name }}</div>
-                    <div class="subject-count">32 quizzes</div>
-                </div>
-            </div>
-        </div>
-        -->
-
-        <!--
-        <div class="tabs">
-            <div class="tab-list">
-                <button class="tab-button" [class.active]="activeTab === 'activity'" (click)="setActiveTab('activity')">
-                    Atividade Recente
-                </button>
-                <button class="tab-button" [class.active]="activeTab === 'quizzes'" (click)="setActiveTab('quizzes')">
-                    Meus Quizzes
-                </button>
-                <button class="tab-button" [class.active]="activeTab === 'achievements'"
-                    (click)="setActiveTab('achievements')">
-                    Conquistas
-                </button>
-            </div>
-
-            <div class="tab-content active" id="activity" *ngIf="activeTab == 'activity'">
-                <div class="activity-item">
-                    <i class="fas fa-book activity-icon"></i>
-                    <div class="activity-info">
-                        <div class="activity-title">Álgebra Linear Avançada</div>
-                        <div class="activity-date">2 dias atrás</div>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <i class="fas fa-trophy activity-icon"></i>
-                    <div class="activity-info">
-                        <div class="activity-title">Conquistou medalha Top Criadora</div>
-                        <div class="activity-date">1 semana atrás</div>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <i class="fas fa-book activity-icon"></i>
-                    <div class="activity-info">
-                        <div class="activity-title">Geometria Básica</div>
-                        <div class="activity-date">2 semanas atrás</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="quizzes" *ngIf="activeTab == 'quizzes'">
-                <div class="quiz-item">
-                    <div class="quiz-info">
-                        <div class="quiz-title">Álgebra Linear Avançada</div>
-                        <div class="quiz-stats">
-                            <span><i class="fas fa-user"></i> 145 alunos</span>
-                            <span><i class="fas fa-star"></i> 4.8/5</span>
-                            <span><i class="fas fa-clock"></i> 45 min</span>
-                        </div>
-                    </div>
-                    <button class="edit-button">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </div>
-
-                <div class="quiz-item">
-                    <div class="quiz-info">
-                        <div class="quiz-title">Geometria Básica</div>
-                        <div class="quiz-stats">
-                            <span><i class="fas fa-user"></i> 89 alunos</span>
-                            <span><i class="fas fa-star"></i> 4.6/5</span>
-                            <span><i class="fas fa-clock"></i> 30 min</span>
-                        </div>
-                    </div>
-                    <button class="edit-button">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </div>
-
-                <div class="quiz-item">
-                    <div class="quiz-info">
-                        <div class="quiz-title">Trigonometria Intermediária</div>
-                        <div class="quiz-stats">
-                            <span><i class="fas fa-user"></i> 112 alunos</span>
-                            <span><i class="fas fa-star"></i> 4.7/5</span>
-                            <span><i class="fas fa-clock"></i> 35 min</span>
-                        </div>
-                    </div>
-                    <button class="edit-button">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="tab-content" id="achievements" *ngIf="activeTab == 'achievements'">
-                <div class="achievement-grid">
-                    <div class="achievement-card">
-                        <div class="achievement-icon bronze">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h3 class="achievement-title">Iniciante</h3>
-                        <p class="achievement-description">Complete seu primeiro quiz e comece sua jornada de
-                            aprendizado!
-                        </p>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" style="width: 100%"></div>
-                        </div>
-                        <div class="achievement-stats">
-                            <span class="achievement-stat">
-                                <i class="fas fa-check"></i> Conquistado
-                            </span>
-                            <span class="achievement-stat">
-                                <i class="fas fa-calendar"></i> 15/02/2024
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon silver">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <h3 class="achievement-title">Aprendiz</h3>
-                        <p class="achievement-description">Complete 10 quizzes com nota superior a 70%</p>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" style="width: 80%"></div>
-                        </div>
-                        <div class="achievement-stats">
-                            <span class="achievement-stat">
-                                <i class="fas fa-trophy"></i> 8/10 quizzes
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card locked">
-                        <i class="fas fa-lock achievement-locked"></i>
-                        <div class="achievement-icon diamond">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <h3 class="achievement-title">Expert</h3>
-                        <p class="achievement-description">Alcance média 90% em pelo menos 100 quizzes</p>
-                        <div class="achievement-progress">
-                            <div class="progress-bar" style="width: 35%"></div>
-                        </div>
-                        <div class="achievement-stats">
-                            <span class="achievement-stat">
-                                <i class="fas fa-trophy"></i> 35/100 quizzes
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
     </div>
 </body>
 
@@ -357,13 +670,6 @@
                 <input class="form-input" [(ngModel)]="user.fullName" type="text" id="fullName" name="fullName">
             </div>
 
-            <!--
-            <div class="form-group">
-                <label class="form-label" for="lastName">Apélido</label>
-                <input class="form-input" [(ngModel)]="user.lastName" type="text" id="lastName" name="lastName">
-            </div>
-            -->
-
             <div class="form-group">
                 <label class="form-label" for="bio">Título ou Bio</label>
                 <textarea class="form-input form-textarea" [(ngModel)]="user.bio" id="bio" name="bio"></textarea>
@@ -373,26 +679,6 @@
                 <label class="form-label" for="email">Email</label>
                 <input class="form-input" disabled [(ngModel)]="user.email" type="email" id="email" name="email">
             </div>
-
-            <!--
-            <div class="form-group">
-                <label class="form-label" for="location">Localização</label>
-                <input class="form-input" type="text" id="location" name="location">
-            </div>
-            -->
-
-            <!--
-            <div class="form-group">
-                <label class="form-label">Disciplinas de Interesse</label>
-                <div class="tags-container">
-                    <div class="tag" *ngFor="let interest of user.subjectsInterests">
-                        {{ interest.name }}
-                        <button type="button" class="tag-remove" (click)="removeInterest(interest)">&times;</button>
-                    </div>
-                    <input class="add-tag-input" type="text" placeholder="Adicionar disciplina...">
-                </div>
-            </div>
-            -->
 
             <button type="submit" class="submit-button" [disabled]="userForm.invalid">
                 {{ showLoading ? 'Loading...' :'Salvar' }}
