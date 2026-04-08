@@ -166,55 +166,6 @@
             background: #eef0fd;
         }
 
-        /* ─── Dropdown ─────────────────────────────────────── */
-        .dropdown-container {
-            position: relative;
-        }
-
-        .dropdown-btn {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 13px;
-            color: #64748b;
-            cursor: pointer;
-            font-family: inherit;
-            transition: background 0.15s;
-        }
-
-        .dropdown-btn:hover {
-            background: #f8fafc;
-        }
-
-        .dropdown {
-            position: absolute;
-            right: 0;
-            top: calc(100% + 6px);
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            min-width: 200px;
-            overflow: hidden;
-        }
-
-        .dropdown a {
-            display: block;
-            padding: 10px 16px;
-            font-size: 13px;
-            color: #374151;
-            cursor: pointer;
-            transition: background 0.15s;
-            text-decoration: none;
-        }
-
-        .dropdown a:hover {
-            background: #f3f5ff;
-            color: #4361ee;
-        }
-
         /* ─── Course Header (Hero) ─────────────────────────── */
         .course-header {
             background: #4361ee;
@@ -1287,21 +1238,6 @@
                 </svg>
                 Voltar
             </button>
-
-            <div class="dropdown-container">
-                <button class="dropdown-btn" (click)="toggleDropdown(subject)">
-                    <i class="pi pi-ellipsis-h"></i>
-                </button>
-                <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
-                    <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
-                    <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no
-                        WhatsApp</a>
-                    <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no
-                        Facebook</a>
-                    <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no
-                        LinkedIn</a>
-                </div>
-            </div>
         </div>
 
         <div class="grid-container">
@@ -1346,7 +1282,7 @@
                 <div class="card modules-card">
 
                     <div class="section-header">
-                        <h2 class="section-title">Tópicos ({{ subject.totalTopics }})</h2>
+                        <h2 class="section-title">Tópicos</h2>
                         <div class="actions">
                             <button class="btn btn-outline" (click)="toggleExpandCollapseAll()">
                                 {{ areAllTopicsExpanded() ? 'Recolher todos' : 'Expandir todos' }}

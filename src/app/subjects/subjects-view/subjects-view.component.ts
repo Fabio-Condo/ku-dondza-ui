@@ -14,8 +14,6 @@ import { Role } from 'src/app/enum/role.enum';
 import { TopicContent } from 'src/app/core/model/Topic-content';
 import { TopicContentService } from 'src/app/topics/TopicContentService.service';
 import { UserService } from 'src/app/users/user.service';
-import { IUserFilter } from 'src/app/core/interface/IUserFilter';
-import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { Question } from 'src/app/core/model/Question';
 import { Topic } from 'src/app/core/model/Topic';
 import { Wallet } from 'src/app/core/model/Wallet';
@@ -488,47 +486,6 @@ export class SubjectsViewComponent {
   onCloseLoginPopout() {
     this.displayModalLogin = false;
     document.body.classList.remove('no-scroll');
-  }
-
-  toggleDropdown(subject: Subject) {
-    subject.isAdminMenuOpen = !subject.isAdminMenuOpen;
-  }
-
-  closeDropdown(subject: Subject) {
-    subject.isAdminMenuOpen = false;
-  }
-
-  shareOnSocial(network: string, subjectId: string): void {
-    const baseUrl = window.location.href; // link do item
-    let url = '';
-
-    switch (network) {
-      case 'whatsapp':
-        url = `https://api.whatsapp.com/send?text=${encodeURIComponent('Olha isto: ' + baseUrl)}`;
-        break;
-
-      case 'facebook':
-        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(baseUrl)}`;
-        break;
-
-      case 'linkedin':
-        url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(baseUrl)}`;
-        break;
-    }
-
-    if (url) {
-      window.open(url, '_blank'); // abre numa nova aba
-    }
-  }
-
-  copyLink(subjectId: string): void {
-    const link = window.location.href; // pega a URL atual, ou pode ser um link específico
-
-    navigator.clipboard.writeText(link).then(() => {
-      console.log(`Link do item ${subjectId} copiado!`);
-    }).catch(err => {
-      console.error("Erro ao copiar link: ", err);
-    });
   }
 
   getWalletsByUser(userId: number): void {
