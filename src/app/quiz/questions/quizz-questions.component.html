@@ -2833,8 +2833,7 @@
                 *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
-              <p class="lock-message"
-                *ngIf="isPremiumTopic(quiz.questions[currentQuestionIndex].topic) && quiz.questions[currentQuestionIndex].showSolution">
+              <p class="lock-message" *ngIf="isPremiumTopic(quiz.questions[currentQuestionIndex].topic) && quiz.questions[currentQuestionIndex].showSolution">
                 <span class="lock-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
@@ -2850,10 +2849,7 @@
         </div>
 
         <div class="nav-buttons">
-          <button class="btn btn-verify"
-            [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)"
-            (click)="togleCorrection()"
-            *ngIf="(!quiz.id || quiz.id === 0) && !quiz.isSubmitted && !showInitQuizScreen && quiz.type === 'TRAINING' && !quiz.questions[currentQuestionIndex].verified">
+          <button class="btn btn-verify" [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)" (click)="togleCorrection()" *ngIf="(!quiz.id || quiz.id === 0) && !quiz.isSubmitted && !showInitQuizScreen && quiz.type === 'TRAINING' && !quiz.questions[currentQuestionIndex].verified">
             Verificar
             <i class="pi pi-eye"></i>
           </button>
