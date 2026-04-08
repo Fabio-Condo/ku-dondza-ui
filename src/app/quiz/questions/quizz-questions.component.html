@@ -1,3 +1,2476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz — AcademiaApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding-top: 48px;
+    }
+
+    /* ── Loading Overlay ── */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+
+    .loading-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .loading-box {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2.5px solid #e5e7eb;
+      border-top-color: #2563eb;
+      animation: spin 0.75s linear infinite;
+    }
+
+    .loading-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: #475569;
+    }
+
+    /* ── Retry ── */
+    .retry-container {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeInUp 0.25s ease;
+    }
+
+    .retry-content {
+      background: #ffffff;
+      padding: 2rem 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      max-width: 380px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .retry-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #fef2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .retry-text {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .retry-button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .retry-button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* ── Toast ── */
+    .progress-message {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      animation: fadeInOut 3.4s ease-in-out forwards;
+      z-index: 9999;
+      white-space: nowrap;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .progress-message.info {
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #bfdbfe;
+    }
+
+    .progress-message.success {
+      background: #f0fdf4;
+      color: #14532d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .progress-message.warning {
+      background: #fffbeb;
+      color: #713f12;
+      border: 1px solid #fde68a;
+    }
+
+    .progress-message.error {
+      background: #fef2f2;
+      color: #7f1d1d;
+      border: 1px solid #fecaca;
+    }
+
+    /* ── Header ── */
+    .header-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: #475569;
+      font-family: inherit;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .back-btn:hover {
+      color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .dropdown-container {
+      position: relative;
+    }
+
+    .dropdown-btn {
+      background: transparent;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #475569;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .dropdown-btn:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      min-width: 200px;
+      overflow: hidden;
+      z-index: 100;
+      animation: slideIn 0.15s ease;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #0f172a;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown a:hover {
+      background: #f8fafc;
+    }
+
+    /* ── Init Quiz Screen ── */
+    .start-screen {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      padding: 28px;
+      max-width: 640px;
+      margin: 0 auto;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      animation: fadeInUp 0.3s ease;
+    }
+
+    .quiz-header-init {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .quiz-header-init h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .quiz-header-init span {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .quiz-close-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .quiz-close-btn:hover {
+      background: #fef2f2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    .step-progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background: #2563eb;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .step-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      animation: fadeInUp 0.3s ease;
+    }
+
+    .step-description {
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .option-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 13px;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
+    .option-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .option-card:hover {
+      border-color: #2563eb;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .option-card.selected {
+      border-color: #2563eb;
+      background: #2563eb;
+      color: white;
+    }
+
+    .option-card.selected h3 {
+      color: white;
+    }
+
+    .option-card.selected .option-description {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .option-card.unlocked {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(60%);
+    }
+
+    .option-card.unlocked:hover {
+      border-color: #e2e8f0;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .option-description {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .lock-icon {
+      display: inline-flex;
+      align-items: center;
+      color: #2563eb;
+    }
+
+    .lock-message {
+      font-size: 12px;
+      color: #475569;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .select-all {
+      font-size: 12px;
+      font-weight: 600;
+      color: #2563eb;
+      cursor: pointer;
+      margin-bottom: 10px;
+      text-align: right;
+      display: inline-block;
+      float: right;
+      transition: opacity 0.15s;
+    }
+
+    .select-all:hover {
+      opacity: 0.75;
+    }
+
+    .topics-summary {
+      font-size: 12px;
+      color: #475569;
+      margin-bottom: 10px;
+    }
+
+    .total-questions {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2563eb;
+      margin: 12px 0;
+      padding: 10px;
+      background: #eff6ff;
+      border-radius: 8px;
+      border: 1px solid #bfdbfe;
+    }
+
+    .info-note {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .start-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px;
+      margin-top: 8px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .start-button:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .start-button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* ── Quiz Screen ── */
+    .question-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      animation: fadeInUp 0.25s ease;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .quiz-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #60a5fa);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .user-info .title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .you-badge {
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .meta .dot {
+      width: 3px;
+      height: 3px;
+      background: #94a3b8;
+      border-radius: 50%;
+    }
+
+    /* ── Progress Bar ── */
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .timer {
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 42px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer.enabled {
+      color: #2563eb;
+    }
+
+    .timer.disabled {
+      color: #e5e7eb;
+      position: relative;
+    }
+
+    .timer.disabled::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: #e5e7eb;
+      transform: translateY(-50%);
+    }
+
+    .timer.warning {
+      color: #f43f5e;
+      animation: pulse 1s infinite;
+    }
+
+    .time-up {
+      color: #6b7280;
+      font-weight: 700;
+      animation: flash 0.8s infinite;
+    }
+
+    .progress-bar-container {
+      flex: 1;
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #2563eb;
+      transition: width 0.4s ease;
+      border-radius: 999px;
+    }
+
+    .question-selector-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #2563eb;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .question-selector-btn:hover:not(:disabled) {
+      background: #eff6ff;
+      border-color: #2563eb;
+    }
+
+    .question-selector-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .question-selector-btn .arrow {
+      font-size: 10px;
+    }
+
+    /* ── Question ── */
+    .question-graph {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .graph-container {
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      max-width: 60%;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto 20px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .question-text-container {
+      font-size: 16px;
+      color: #0f172a;
+      line-height: 1.7;
+      max-height: 500px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+
+    .question-topic {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 12px;
+    }
+
+    /* ── Answer Options ── */
+    .answer-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .answer-options label {
+      display: flex;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .answer-options label:hover {
+      border-color: #2563eb;
+      background: #eff6ff;
+      transform: translateX(2px);
+    }
+
+    .answer-options label .num {
+      background: #2563eb;
+      color: white;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 12px;
+      margin-top: 1px;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    }
+
+    .answer-options input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .answer-options label.selected-answer {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .answer-options label.correct-answer {
+      background: #f0fdf4;
+      border-color: #16a34a;
+      color: #14532d;
+    }
+
+    .answer-options label.correct-answer::after {
+      content: '✓';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #16a34a;
+      font-weight: 700;
+    }
+
+    .answer-options label.incorrect-answer {
+      background: #fef2f2;
+      border-color: #dc2626;
+      color: #7f1d1d;
+    }
+
+    .answer-options label.incorrect-answer::after {
+      content: '✕';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    /* ── Tip / Solution ── */
+    .tip,
+    .solution {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid;
+    }
+
+    .tip {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .solution {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    .solution-button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+      font-family: inherit;
+    }
+
+    .solution-button .title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .solution-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .chevron-icon {
+      transition: transform 0.2s ease;
+      color: #475569;
+    }
+
+    .chevron-icon.rotated {
+      transform: rotate(180deg);
+    }
+
+    .solution-content,
+    .tip-content {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.7;
+      margin-top: 10px;
+    }
+
+    .solution-content.scrollable,
+    .tip-content.scrollable {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    /* ── Navigation ── */
+    .navigation-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button.btn {
+      font-family: inherit;
+      cursor: pointer;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      transition: all 0.2s;
+    }
+
+    button.btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.5;
+    }
+
+    .btn-prev {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      color: #0f172a;
+    }
+
+    .btn-prev:hover:not(:disabled) {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .btn-next {
+      background: #2563eb;
+      border: none;
+      color: white;
+      padding: 10px 24px;
+    }
+
+    .btn-next:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-verification {
+      background: #10b981;
+      border: none;
+      color: white;
+    }
+
+    .btn-verification:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-prev:disabled,
+    .btn-next:disabled,
+    .btn-verification:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── FAB ── */
+    .fab {
+      position: fixed;
+      border: none;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 18px;
+      transition: transform 0.2s, opacity 0.2s;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      font-family: inherit;
+    }
+
+    .fab:hover:not(:disabled) {
+      transform: scale(1.08);
+    }
+
+    .fab:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .fab-primary {
+      background: #2563eb;
+      color: white;
+      bottom: 16px;
+      right: 16px;
+    }
+
+    .fab-save-as-favorite {
+      bottom: 148px;
+      right: 16px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      color: #2563eb;
+    }
+
+    .fab-show-comments {
+      bottom: 80px;
+      right: 16px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      color: #2563eb;
+      font-size: 14px;
+    }
+
+    .fab-save {
+      bottom: 80px;
+      right: 16px;
+      background: #10b981;
+      color: white;
+    }
+
+    .fab-submitte {
+      bottom: 16px;
+      right: 16px;
+      background: #2563eb;
+      color: white;
+    }
+
+    .fab-lock {
+      bottom: 80px;
+      right: 16px;
+      background: #2563eb;
+      color: white;
+    }
+
+    /* ── Results Screen ── */
+    .results-screen2 {
+      animation: fadeInUp 0.35s ease;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 28px;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .progress-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: conic-gradient(var(--color, #2563eb) var(--progress), #e5e7eb 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .progress-circle::before {
+      content: '';
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .score-ring {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .score-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-num {
+      font-size: 30px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1;
+    }
+
+    .score-of {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .grade-badge {
+      font-size: 44px;
+      font-weight: 700;
+      color: #2563eb;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .grade-label {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    .grade-label strong {
+      color: #16a34a;
+      font-weight: 600;
+    }
+
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .stat-item {
+      padding: 0 20px;
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .stat-item:first-child {
+      padding-left: 0;
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .stat-val.green {
+      color: #16a34a;
+    }
+
+    .stat-val.red {
+      color: #dc2626;
+    }
+
+    .stat-val.grey {
+      color: #94a3b8;
+    }
+
+    .stat-key {
+      font-size: 10px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    .hero-identity {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      padding-left: 28px;
+      border-left: 1px solid #e2e8f0;
+    }
+
+    .hero-discipline {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .hero-student-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      text-align: right;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .hero-meta-row {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .hero-meta-row strong {
+      color: #475569;
+      font-weight: 600;
+    }
+
+    /* ── Section Label ── */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #94a3b8;
+      margin: 28px 0 12px;
+    }
+
+    /* ── Topic Cards ── */
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .topic-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s;
+    }
+
+    .topic-card:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+    }
+
+    .topic-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      gap: 8px;
+    }
+
+    .topic-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-great {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-ok {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .badge-weak {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .topic-score-row {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      margin-bottom: 10px;
+    }
+
+    .topic-score-big {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .topic-score-den {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .topic-pct {
+      margin-left: auto;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .pct-great {
+      color: #16a34a;
+    }
+
+    .pct-ok {
+      color: #d97706;
+    }
+
+    .pct-weak {
+      color: #dc2626;
+    }
+
+    .bar-track {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .bar-great {
+      background: #16a34a;
+    }
+
+    .bar-ok {
+      background: #d97706;
+    }
+
+    .bar-weak {
+      background: #dc2626;
+    }
+
+    .topic-foot {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .topic-foot span strong {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    /* ── Table ── */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 16px;
+      margin-bottom: 48px;
+    }
+
+    .table-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead tr {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    thead th {
+      padding: 12px 18px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #94a3b8;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e2e8f0;
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    tbody td {
+      padding: 12px 18px;
+      color: #0f172a;
+    }
+
+    .td-name {
+      font-weight: 500;
+    }
+
+    .td-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-track {
+      flex: 1;
+      height: 3px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .mini-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .td-pct-label {
+      font-size: 11px;
+      color: #94a3b8;
+      min-width: 36px;
+      text-align: right;
+    }
+
+    /* ── Popovers ── */
+    .popout-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(2px);
+    }
+
+    .popout-container {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      width: 90%;
+      max-width: 480px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      animation: popIn 0.2s ease;
+      border: 1px solid #e2e8f0;
+    }
+
+    .popout-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .popout-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .close-button {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 18px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .close-button:hover {
+      background: #fef2f2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    /* ── Auth Forms ── */
+    .login-side {}
+
+    .login-side h1 {
+      font-size: 15px;
+      color: #475569;
+      margin: 12px 0;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      transition: border-color 0.15s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .options-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .remember-me input {
+      accent-color: #2563eb;
+    }
+
+    .forgot-password a {
+      font-size: 13px;
+      color: #475569;
+      text-decoration: none;
+    }
+
+    .forgot-password a:hover {
+      color: #2563eb;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .login-btn:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .message {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+      padding: 11px 14px;
+      margin-bottom: 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .message a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .resend-btn {
+      color: #0f172a;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      margin: 0 auto 12px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .resend-btn:hover {
+      opacity: 0.7;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+
+    .divider span {
+      padding: 0 14px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .signup-link {
+      text-align: center;
+      font-size: 13px;
+      color: #475569;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .signup-link a {
+      color: #2563eb;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .go-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: color 0.15s;
+      margin-bottom: 10px;
+      text-decoration: none;
+    }
+
+    .go-back-btn:hover {
+      color: #2563eb;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      transition: all 0.2s;
+    }
+
+    .auth-tab.active {
+      color: #2563eb;
+      border-bottom: 2px solid #2563eb;
+    }
+
+    /* ── Comments ── */
+    .comments-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(2px);
+    }
+
+    .comments-popup {
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      max-width: 640px;
+      width: 95%;
+      max-height: 82vh;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      animation: popIn 0.2s ease;
+    }
+
+    .comments-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      z-index: 10;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .comments-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .comments-count {
+      background: #2563eb;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #94a3b8;
+      padding: 2px;
+      transition: color 0.15s;
+    }
+
+    .close-btn:hover {
+      color: #dc2626;
+    }
+
+    .comments-scrollable {
+      overflow-y: auto;
+      padding: 16px 24px;
+      flex-grow: 1;
+    }
+
+    .no-comments-message {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      padding: 24px 0;
+    }
+
+    .comment-wrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .comment {
+      flex: 1;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      transition: all 0.2s;
+    }
+
+    .comment:hover {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .comment-author {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .comment-date {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .comment-text {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .comment-footer {
+      display: flex;
+      margin-top: 10px;
+      gap: 6px;
+    }
+
+    .comment-action {
+      background: none;
+      border: none;
+      font-size: 12px;
+      font-weight: 500;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 3px 8px;
+      border-radius: 8px;
+      transition: all 0.15s;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .comment-action:hover {
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .liked {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    .comment-form-fixed {
+      padding: 14px 24px;
+      border-top: 1px solid #e2e8f0;
+      position: sticky;
+      bottom: 0;
+      background: #ffffff;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .comment-input-wrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .comment-textarea-container {
+      position: relative;
+      flex: 1;
+    }
+
+    .comment-input {
+      width: 100%;
+      padding: 11px 44px 11px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 13px;
+      font-family: inherit;
+      resize: none;
+      min-height: 80px;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #ffffff;
+      color: #0f172a;
+      transition: border-color 0.15s;
+    }
+
+    .comment-input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .send-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      color: #2563eb;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+      transition: background 0.15s;
+    }
+
+    .send-button:hover {
+      background: #eff6ff;
+    }
+
+    .send-button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .load-more-container {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .btn-load-more {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .btn-load-more:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-load-more:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .comment-actions {
+      position: relative;
+    }
+
+    .comment-menu-button {
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 2px 6px;
+      color: #94a3b8;
+    }
+
+    .comment-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      min-width: 130px;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .comment-menu button {
+      display: block;
+      width: 100%;
+      padding: 9px 14px;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      color: #0f172a;
+      transition: background 0.15s;
+    }
+
+    .comment-menu button:hover {
+      background: #f8fafc;
+    }
+
+    /* ── Question List Popout ── */
+    .popout-container .question-item {
+      cursor: pointer;
+      padding: 12px 14px;
+      margin: 8px 0;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 13px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      transition: all 0.2s;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .popout-container .question-item:hover {
+      background: #eff6ff;
+      border-color: #2563eb;
+    }
+
+    .popout-container .selected-question {
+      background: #eff6ff;
+      border-color: #2563eb;
+    }
+
+    .popout-container .correct-question {
+      border-color: #16a34a;
+      border-width: 2px;
+    }
+
+    .popout-container .incorrect-question {
+      border-color: #dc2626;
+      border-width: 2px;
+    }
+
+    .question-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: #2563eb;
+      min-width: 24px;
+    }
+
+    .question-topic small {
+      font-size: 11px;
+      color: #94a3b8;
+      display: block;
+      margin-top: 3px;
+    }
+
+    /* ── Pricing / Upgrade ── */
+    .pricing-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .plan-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .plan-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .plan-price {
+      font-size: 36px;
+      font-weight: 800;
+      color: #2563eb;
+      line-height: 1.1;
+    }
+
+    .plan-period {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .features .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #0f172a;
+    }
+
+    .features .feature-icon {
+      width: 16px;
+      height: 16px;
+      background: #2563eb;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .features .feature-icon::after {
+      content: '✓';
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .upgrade-cta {
+      margin-top: 20px;
+    }
+
+    .cta-button.btn-upgrade {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .cta-button.btn-upgrade:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+    }
+
+    .cta-button.btn-upgrade:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .cta-button.btn-add {
+      width: 100%;
+      padding: 11px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #f8fafc;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .cta-button.btn-add:hover {
+      background: #e5e7eb;
+    }
+
+    .plan-price-upgrade {
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 8px;
+    }
+
+    /* ── Wallet ── */
+    .wallet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .wallet-option input {
+      display: none;
+    }
+
+    .wallet-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: all 0.2s;
+    }
+
+    .wallet-card:hover {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .wallet-card.selected {
+      border-color: #2563eb;
+      background: #eff6ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .wallet-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .wallet-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 4px;
+      object-fit: contain;
+    }
+
+    .wallet-type {
+      font-weight: 600;
+      font-size: 14px;
+      color: #0f172a;
+    }
+
+    .wallet-number {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .wallet-badge {
+      background: #2563eb;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .btn-default {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid #2563eb;
+      background: transparent;
+      color: #2563eb;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .btn-default:hover {
+      background: #2563eb;
+      color: white;
+    }
+
+    .empty-text {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    /* ── Form elements ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      transition: border-color 0.15s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    input.input-control {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      transition: border-color 0.15s;
+    }
+
+    input.input-control:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .wallet-detected {
+      margin: 10px 0;
+    }
+
+    .upgrade-link {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .upgrade-link:hover {
+      text-decoration: underline;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: #2563eb;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .premium-lock {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 4px;
+    }
+
+    /* ── Animations ── */
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(16px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.08);
+        opacity: 0.75;
+      }
+    }
+
+    @keyframes flash {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    @keyframes fadeInOut {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 10px);
+      }
+
+      12% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      85% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, 10px);
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.96);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .score-ring {
+        margin: 0 auto;
+      }
+
+      .stats-row {
+        justify-content: center;
+      }
+
+      .stat-item:first-child {
+        padding-left: 20px;
+      }
+
+      .hero-identity {
+        align-items: center;
+        border-left: none;
+        border-top: 1px solid #e2e8f0;
+        padding-left: 0;
+        padding-top: 16px;
+      }
+
+      .hero-student-name {
+        text-align: center;
+      }
+
+      .hero-meta {
+        align-items: center;
+      }
+
+      .question-card {
+        padding: 16px;
+      }
+
+      .navigation-buttons {
+        gap: 8px;
+      }
+
+      .btn-next {
+        padding: 10px 18px;
+      }
+
+      .comments-popup {
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        border-radius: 0;
+      }
+
+      .comments-header,
+      .comment-form-fixed {
+        border-radius: 0;
+      }
+
+      .popout-container {
+        width: 95%;
+        max-height: 80vh;
+      }
+
+      canvas {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+
 <body>
   <div class="container">
 
@@ -11,21 +2484,18 @@
 
     <div *ngIf="retryVisible" class="retry-container">
       <div class="retry-content">
-        <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
-          fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <circle cx="12" cy="16" r="1"></circle>
-        </svg>
-
-        <div class="retry-text">
-          Ocorreu um erro ao carregar.<br>
-          Por favor, tente novamente.
+        <div class="retry-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <circle cx="12" cy="16" r="1"></circle>
+          </svg>
         </div>
-
-        <button class="retry-button" (click)="retryGetQuestion()">
-          Tentar novamente
-        </button>
+        <div class="retry-text">
+          Ocorreu um erro ao carregar.<br>Por favor, tente novamente.
+        </div>
+        <button class="retry-button" (click)="retryGetQuestion()">Tentar novamente</button>
       </div>
     </div>
 
@@ -33,184 +2503,153 @@
       {{ currentMessage.text }}
     </div>
 
+    <!-- ── Init Quiz Screen ── -->
     <div *ngIf="showInitQuizScreen" class="start-screen">
-      <div class="quiz-card">
 
-        <div class="quiz-header" style="margin-bottom: 15px;">
-          <div>
+      <div class="quiz-header-init">
+        <div>
+          <h1>Configuração do Quiz</h1>
+          <span>Personalize o quiz antes de começar</span>
+        </div>
+        <button class="quiz-close-btn" routerLink="/quizzes" aria-label="Fechar quiz">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
 
-            <h1 class="title">
-              Configuração do Quiz
-            </h1>
+      <div class="step-progress-bar">
+        <div class="progress" [style.width.%]="stepProgressPercentage"></div>
+      </div>
 
-            <span>Personalize o quiz antes de começar</span>
+      <form autocomplete="off" #courseForm="ngForm">
 
+        <div class="step-card animate-step">
+          <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
+          <div class="options-grid">
+            <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
+              [class.selected]="quiz.type === type.value" class="option-card">
+              <h3>{{ type.label }}</h3>
+              <p class="option-description">{{ type.description }}</p>
+            </div>
           </div>
-          <button class="quiz-close-btn" routerLink="/quizzes" aria-label="Fechar quiz">
-            <i class="pi pi-times"></i>
-          </button>
         </div>
 
-        <!-- Barra de progresso -->
-        <div class="step-progress-bar">
-          <div class="progress" [style.width.%]="stepProgressPercentage"></div>
+        <div class="step-card animate-step" *ngIf="quiz.type">
+          <p class="step-description">Escolha a disciplina para este quiz.</p>
+          <div class="options-grid">
+            <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
+              [class.selected]="quiz.subject.id === subject.id" class="option-card">
+              {{ subject.name }}
+            </div>
+          </div>
         </div>
 
-        <form autocomplete="off" #courseForm="ngForm">
+        <div class="step-card animate-step" *ngIf="quiz.subject.id && topics.length > 0">
+          <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
 
-          <!-- Step 1: Tipo  *ngIf="quiz.difficultyLevel"-->
-          <div class="step-card animate-step">
-            <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
-            <div class="options-grid">
-              <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
-                [class.selected]="quiz.type === type.value" class="option-card">
-                <h3>{{ type.label }}</h3>
-                <p class="option-description">{{ type.description }}</p>
-              </div>
-            </div>
+          <div class="select-all" (click)="toggleSelectAllTopics()" *ngIf="!isFreeUser()">
+            {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
           </div>
 
-          <!-- Step 3: Disciplina *ngIf="quiz.anonymous !== null"-->
-          <div class="step-card animate-step" *ngIf="quiz.type">
-            <p class="step-description">Escolha a disciplina para este quiz.</p>
-            <div class="options-grid">
-              <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
-                [class.selected]="quiz.subject.id === subject.id" class="option-card">
-                {{ subject.name }}
-              </div>
-            </div>
-          </div>
+          <p class="topics-summary">Tópicos selecionados: {{ getSelectedTopicIds().length }}</p>
 
-          <!-- Step 4: Tópicos -->
-          <div class="step-card animate-step" *ngIf="quiz.subject.id && topics.length > 0">
-            <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
-
-            <!-- Botão Selecionar todos -->
-            <div class="select-all" (click)="toggleSelectAllTopics()" *ngIf="!isFreeUser()">
-              <span>
-                {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
-              </span>
-            </div>
-
-            <!-- Total de tópicos selecionados -->
-            <p class="topics-summary">
-              Total de tópicos selecionados: {{ getSelectedTopicIds().length }}
-            </p>
-
-            <div class="options-grid">
-              <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
-                [class.unlocked]="isPremiumTopic(topic)" class="option-card">
-                <p class="option-description">
-                  {{ topic.name }}
-                  <span *ngIf="isPremiumTopic(topic)" class="premium-lock">
-                    <span class="lock-icon">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
-                          stroke-linecap="round" />
-                        <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
-                      </svg>
-                    </span>
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 5: Limite por tópico -->
-          <div class="step-card animate-step" *ngIf="getSelectedTopicIds().length > 0">
-            <p class="step-description">Escolha o número de questões por tópico.</p>
-            <div class="options-grid">
-              <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)"
-                [class.selected]="quiz.limitPerTopic === limit.value" [class.unlocked]="isLockedLimit(limit.value)"
-                class="option-card">
-                {{ limit.label }}
-                <span *ngIf="isLockedLimit(limit.value)">
+          <div class="options-grid">
+            <div *ngFor="let topic of topics" (click)="toggleTopic(topic);" [class.selected]="topic.selected"
+              [class.unlocked]="isPremiumTopic(topic)" class="option-card">
+              <p class="option-description">
+                {{ topic.name }}
+                <span *ngIf="isPremiumTopic(topic)" class="premium-lock">
                   <span class="lock-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" />
                       <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
                     </svg>
                   </span>
                 </span>
-              </div>
+              </p>
             </div>
-            <p class="info-note">
-              O total de questões será igual ao número de tópicos selecionados × número de questões por tópico.
-              Quanto maior o valor, maior será o total de questões.
-            </p>
           </div>
+        </div>
 
-          <p class="total-questions" *ngIf="quiz.limitPerTopic">
-            Total de questões: {{ getSelectedTopicIds().length * quiz.limitPerTopic }}
-          </p>
-
-          <!-- Botão final -->
-          <div class="form-actions" *ngIf="quiz.limitPerTopic">
-            <button class="start-button" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
-              Gerar Questões
-            </button>
+        <div class="step-card animate-step" *ngIf="getSelectedTopicIds().length > 0">
+          <p class="step-description">Escolha o número de questões por tópico.</p>
+          <div class="options-grid">
+            <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)"
+              [class.selected]="quiz.limitPerTopic === limit.value" [class.unlocked]="isLockedLimit(limit.value)"
+              class="option-card">
+              {{ limit.label }}
+              <span *ngIf="isLockedLimit(limit.value)">
+                <span class="lock-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </span>
+              </span>
+            </div>
           </div>
+          <p class="info-note">O total de questões = tópicos selecionados × questões por tópico.</p>
+        </div>
 
-        </form>
-      </div>
+        <p class="total-questions" *ngIf="quiz.limitPerTopic">
+          Total de questões: {{ getSelectedTopicIds().length * quiz.limitPerTopic }}
+        </p>
+
+        <div *ngIf="quiz.limitPerTopic">
+          <button class="start-button" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
+            Gerar Questões
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+      </form>
     </div>
 
     <div class="header-buttons">
-
-      <!-- Back -->
       <button *ngIf="showStartScreen" class="back-btn" (click)="goBack()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5" />
           <path d="M12 19l-7-7 7-7" />
         </svg>
         Voltar
       </button>
-
       <div *ngIf="showStartScreen" class="dropdown-container">
         <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i class="pi pi-ellipsis-h"></i></button>
         <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
           <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
-          <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no
-            WhatsApp</a>
-          <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no
-            Facebook</a>
-          <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no
-            LinkedIn</a>
+          <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
+          <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
+          <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
         </div>
       </div>
     </div>
 
-
-    <!-- Tela inicial -->
+    <!-- ── Results Screen ── -->
     <div *ngIf="showStartScreen" class="results-screen2">
 
-      <!-- HERO -->
       <div class="hero">
         <div class="score-ring">
           <div class="discipline-progress">
             <div class="progress-circle" [style.--color]="
-                (result.correctAnswers / quiz.questions.length) >= 0.7 ? '#22c55e' :
-                (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#f59e0b' : '#ef4444'
+                (result.correctAnswers / quiz.questions.length) >= 0.7 ? '#16a34a' :
+                (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'
               " [style.--progress]="((result.correctAnswers / quiz.questions.length) * 100) + '%'">
               <span></span>
             </div>
           </div>
-
           <div class="score-center">
             <div class="score-num">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
             <div class="score-of">de 100</div>
           </div>
         </div>
-        <div>
-          <div class="grade-badge">
-            {{ getGrade(getPercentage(result, quiz)) }}
-          </div>
 
-          <div class="grade-label">
-            {{ getGradeLabel(getPercentage(result, quiz)) }}
-          </div>
+        <div>
+          <div class="grade-badge">{{ getGrade(getPercentage(result, quiz)) }}</div>
+          <div class="grade-label">{{ getGradeLabel(getPercentage(result, quiz)) }}</div>
           <div class="stats-row">
             <div class="stat-item">
               <div class="stat-val">{{ quiz.questions.length }}</div>
@@ -231,7 +2670,6 @@
           </div>
         </div>
 
-        <!-- Coluna 3: Identidade do aluno -->
         <div class="hero-identity">
           <div class="hero-discipline">{{ quiz.subject.name }}</div>
           <div class="hero-student-name">{{ quiz.user.fullName }}</div>
@@ -239,76 +2677,43 @@
             <div class="hero-meta-row">
               <strong>{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</strong>
             </div>
-            <!--
-            <div class="hero-meta-row">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              <strong>{{ formatTime(quiz.timeSpent) }}</strong>
-            </div>
-            -->
           </div>
         </div>
       </div>
 
-      <!-- TOPIC CARDS -->
       <div class="section-label">Desempenho por Tópico</div>
       <div class="topics-grid">
-
         <div class="topic-card" *ngFor="let topic of topics">
           <div class="topic-head">
             <div class="topic-name">{{ topic.name }}</div>
-
             <div class="badge"
               [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
-
-              {{
-              (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' :
-              (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco'
-              }}
+              {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' :
+              (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco' }}
             </div>
           </div>
-
           <div class="topic-score-row">
-            <div class="topic-score-big">
-              {{ quiz.resultsByTopic[topic.name].correct || 0 }}
-            </div>
-
-            <div class="topic-score-den">
-              &nbsp;/ {{ quiz.resultsByTopic[topic.name].total || 0 }}
-            </div>
-
+            <div class="topic-score-big">{{ quiz.resultsByTopic[topic.name].correct || 0 }}</div>
+            <div class="topic-score-den">&nbsp;/ {{ quiz.resultsByTopic[topic.name].total || 0 }}</div>
             <div class="topic-pct"
               [ngClass]="'pct-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
-
               {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
             </div>
           </div>
-
           <div class="bar-track">
             <div class="bar-fill"
               [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
-              [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0">
-            </div>
+              [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
           </div>
-
           <div class="topic-foot">
-            <span>✓ Corretas:
-              <strong>{{ quiz.resultsByTopic[topic.name].correct || 0 }}</strong>
-            </span>
-
-            <span>✗ Erradas:
-              <strong>{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</strong>
-            </span>
+            <span>✓ Corretas: <strong>{{ quiz.resultsByTopic[topic.name].correct || 0 }}</strong></span>
+            <span>✗ Erradas: <strong>{{ quiz.resultsByTopic[topic.name].incorrect || 0 }}</strong></span>
           </div>
         </div>
       </div>
 
-      <!-- TABLE -->
       <div class="section-label">Resumo Comparativo</div>
       <div class="table-wrapper">
-
         <div class="table-card">
           <table>
             <thead>
@@ -321,41 +2726,25 @@
             </thead>
             <tbody>
               <tr *ngFor="let topic of topics">
-
-                <td class="td-name">
-                  {{ topic.name }}
-                </td>
-
-                <td>
-                  {{ quiz.resultsByTopic[topic.name].correct || 0 }} /
-                  {{ quiz.resultsByTopic[topic.name].total || 0 }}
-                </td>
-
+                <td class="td-name">{{ topic.name }}</td>
+                <td>{{ quiz.resultsByTopic[topic.name].correct || 0 }} / {{ quiz.resultsByTopic[topic.name].total || 0
+                  }}</td>
                 <td>
                   <div class="td-bar-wrap">
-
                     <div class="mini-track">
                       <div class="mini-fill"
                         [ngClass]="'bar-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)"
-                        [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0">
-                      </div>
+                        [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
                     </div>
-
-                    <span class="td-pct-label">
-                      {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
-                    </span>
-
+                    <span class="td-pct-label">{{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%</span>
                   </div>
                 </td>
-
                 <td>
                   <span class="badge"
                     [ngClass]="'badge-' + getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0)">
-
                     {{ getPerformanceLabel(quiz.resultsByTopic[topic.name].percentage || 0) }}
                   </span>
                 </td>
-
               </tr>
             </tbody>
           </table>
@@ -364,80 +2753,61 @@
 
     </div>
 
+    <!-- ── Quiz Screen ── -->
     <div *ngIf="!showStartScreen">
       <div *ngIf="currentQuestionIndex < quiz.questions.length">
         <div class="question-card">
 
           <div class="quiz-header">
             <div class="quiz-user">
-
               <div class="avatar">
-                {{
-                quiz.anonymous
-                ? 'A'
-                : (quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?')
-                }}
+                {{ quiz.anonymous ? 'A' : (quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?') }}
               </div>
-
               <div class="user-info">
                 <h1 class="title">
-                  {{
-                  quiz.anonymous
-                  ? 'Usuário Anônimo'
-                  : (quiz.user.fullName || 'Nome não disponível')
-                  }}
-                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id" class="you-badge">
-                    você
-                  </span>
+                  {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName || 'Nome não disponível') }}
+                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id"
+                    class="you-badge">você</span>
                 </h1>
-
                 <div class="meta">
                   <span class="subject">{{ quiz.subject.name }}</span>
                   <span class="dot"></span>
                   <span class="type">{{ getQuizTypeValue(quiz.type) }}</span>
                 </div>
               </div>
-
             </div>
 
             <button class="quiz-close-btn" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
-              ✕
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
             </button>
           </div>
 
           <div class="progress-container">
-
-            <p class="timer" [ngClass]="{ 
-              'enabled': quiz.type === 'TEST' && !isWarning,
-              'disabled': quiz.type === 'TRAINING',
-              'warning': isWarning
-            }" *ngIf="!quiz.id">
+            <p class="timer"
+              [ngClass]="{ 'enabled': quiz.type === 'TEST' && !isWarning, 'disabled': quiz.type === 'TRAINING', 'warning': isWarning }"
+              *ngIf="!quiz.id">
               {{ formattedTime }}
             </p>
-
             <p class="timer" [ngClass]="{ 'enabled': quiz.type === 'TEST', 'disabled': quiz.type === 'TRAINING' }"
               *ngIf="quiz.id">
-              <span *ngIf="quiz.timeLimit > quiz.timeSpent">
-                {{ formatTime(quiz.timeLimit - quiz.timeSpent) }}
-              </span>
-              <span *ngIf="quiz.timeLimit <= quiz.timeSpent">
-                00:00
-              </span>
+              <span *ngIf="quiz.timeLimit > quiz.timeSpent">{{ formatTime(quiz.timeLimit - quiz.timeSpent) }}</span>
+              <span *ngIf="quiz.timeLimit <= quiz.timeSpent">00:00</span>
             </p>
             <div class="progress-bar-container">
               <div class="progress-bar" *ngIf="quiz.id" [style.width]="progressPercentage + '%'"></div>
               <div class="progress-bar" *ngIf="!quiz.id" [style.width]="progressPercentage2 + '%'"></div>
             </div>
-
             <button class="question-selector-btn" [disabled]="!quiz.isSubmitted" (click)="onShowQuestionList()">
               {{ currentQuestionIndex + 1 }}/{{ quiz.questions.length }}
               <span class="arrow">&#9662;</span>
             </button>
-
           </div>
 
           <img *ngIf="quiz.questions[currentQuestionIndex].urlFile"
-            src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico de funções" class="question-graph" />
+            src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico" class="question-graph" />
           <div class="graph-container"
             *ngIf="!quiz.questions[currentQuestionIndex].urlFile && quiz.questions[currentQuestionIndex].mathExpressions.length > 0">
             <canvas #canvas width="400" height="400"></canvas>
@@ -463,21 +2833,17 @@
             </label>
           </div>
 
-          <!-- Mostra o tópico, se existir -->
           <div class="question-topic" *ngIf="quiz.questions[currentQuestionIndex].topic">
             <small>Tópico: {{ quiz.questions[currentQuestionIndex].topic.name }}</small>
           </div>
 
-          <br>
-
-          <!-- Input para mostrar dica e solução -->
           <div class="tip">
             <div class="tip-input">
               <button class="solution-button" [disabled]="quiz.blockedTip"
                 (click)="quiz.questions[currentQuestionIndex].showTip = !quiz.questions[currentQuestionIndex].showTip; this.renderMathExpressions();">
                 <h1 class="title">Dica</h1>
-                <svg [class.rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="24"
-                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                <svg [class.rotated]="quiz.questions[currentQuestionIndex].showTip" class="chevron-icon" width="18"
+                  height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9l6 6 6-6" />
                 </svg>
@@ -489,23 +2855,22 @@
             </div>
             <p class="lock-message" *ngIf="quiz.blockedTip">
               <span class="lock-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                   <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
                 </svg>
               </span>
-              Dicas desativadas no modo Avaliação. O objetivo é medir o seu conhecimento real.
+              Dicas desativadas no modo Avaliação.
             </p>
           </div>
 
-          <!-- Input para mostrar dica e solução -->
           <div class="solution" *ngIf="showCorrection">
             <div class="solution-input">
               <button class="solution-button"
                 (click)="quiz.questions[currentQuestionIndex].showSolution = !quiz.questions[currentQuestionIndex].showSolution; this.renderMathExpressions();">
                 <h1 class="title">Resolução</h1>
-                <svg [class.rotated]="quiz.questions[currentQuestionIndex].showSolution" class="chevron-icon" width="24"
-                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                <svg [class.rotated]="quiz.questions[currentQuestionIndex].showSolution" class="chevron-icon" width="18"
+                  height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9l6 6 6-6" />
                 </svg>
@@ -514,13 +2879,10 @@
                 *ngIf="quiz.questions[currentQuestionIndex].solution && quiz.questions[currentQuestionIndex].showSolution">
                 {{ quiz.questions[currentQuestionIndex].solution }}
               </p>
-
-              <br>
-
               <p class="lock-message"
                 *ngIf="isPremiumTopic(quiz.questions[currentQuestionIndex].topic) && quiz.questions[currentQuestionIndex].showSolution">
                 <span class="lock-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
                   </svg>
@@ -533,8 +2895,7 @@
 
         </div>
 
-        <div class="navigation-buttons text-center">
-
+        <div class="navigation-buttons">
           <button class="btn btn-verification"
             [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)"
             (click)="togleCorrection()"
@@ -552,7 +2913,7 @@
           </button>
 
           <button class="btn btn-next" (click)="goToNextQuestion()"
-            *ngIf="((!quiz.id || quiz.id === 0) && quiz.type === 'TRAINING' && quiz.questions[currentQuestionIndex].verified) || (!quiz.id && quiz.type === 'TEST' ) || quiz.id"
+            *ngIf="((!quiz.id || quiz.id === 0) && quiz.type === 'TRAINING' && quiz.questions[currentQuestionIndex].verified) || (!quiz.id && quiz.type === 'TEST') || quiz.id"
             [disabled]="currentQuestionIndex === quiz.questions.length - 1 || (!quiz.id && !showCorrection && quiz.type === 'TRAINING') || (!quiz.id && !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id))">
             Próxima
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -565,15 +2926,15 @@
       <button class="fab fab-save-as-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
         *ngIf="quiz.id && showCorrection && showOptions && isUserLoggedIn">
         <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
-          [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'">
-        </i>
+          [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
         <i *ngIf="quiz.questions[currentQuestionIndex].showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
       </button>
 
       <button class="fab fab-show-comments" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
         *ngIf="quiz.id && showCorrection && showOptions">
         <i class="pi pi-comments"></i>
-        <span style="font-size: 0.8rem;">{{ quiz.questions[currentQuestionIndex].numberOfComments }}</span>
+        <span style="font-size: 11px; font-weight: 700;">{{ quiz.questions[currentQuestionIndex].numberOfComments
+          }}</span>
       </button>
 
       <button class="fab fab-primary" (click)="toggleShowOptions()" *ngIf="quiz.id && showCorrection">
@@ -614,168 +2975,118 @@
   </svg>
 </button>
 
-<!-- Popout -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
+<!-- ── Login Popout ── -->
+<div class="popout-overlay" *ngIf="displayModalLogin">
   <div class="popout-container">
 
     <div class="login-side" *ngIf="activeTab === 1">
-
       <div class="popout-header">
         <h2 class="popout-title">Entre para continuar</h2>
         <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
       </div>
 
       <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-
-      <div class="divider" *ngIf="step === 'email' && googleAuthReady">
-        <span>OU</span>
-      </div>
+      <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
 
       <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
-
-        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
-
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">← Voltar</a>
         <p class="message" *ngIf="step === 'otp'">
-          Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
+          Insira o código enviado para <strong>{{ user.email }}</strong>
         </p>
-
         <div class="input-group" *ngIf="step === 'email'">
-          <label>Email:</label>
-          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
-            email [(ngModel)]="user.email">
+          <label>Email</label>
+          <input type="email" name="email" #emailInput="ngModel" ngModel placeholder="seu@email.com" required email
+            [(ngModel)]="user.email">
         </div>
-
         <div class="input-group" *ngIf="step === 'otp'">
-          <label>OTP:</label>
-          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
-            [(ngModel)]="otp">
+          <label>Código</label>
+          <input type="text" name="otp" #otpInput="ngModel" ngModel placeholder="000000" required [(ngModel)]="otp">
         </div>
-
         <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
-          {{ step === 'email' ? 'Login' : 'Verificar' }}
+          {{ step === 'email' ? 'Continuar' : 'Verificar' }}
         </button>
-
         <p class="message" *ngIf="step === 'email'">
-          Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
-          acessar sua conta se tiver se cadastrado com gmail.
+          Enviaremos um código de acesso único para o seu e-mail.
         </p>
-
-        <div class="signup-link">
-          Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
-        </div>
-
+        <div class="signup-link">Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se</a></div>
       </form>
-
     </div>
 
     <div class="login-side" *ngIf="activeTab === 2">
-
       <div class="popout-header">
-        <h2 class="popout-title">Cadastre-se para continuar</h2>
+        <h2 class="popout-title">Criar conta</h2>
         <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
       </div>
 
       <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-
-      <div class="divider" *ngIf="step === 'email' && googleAuthReady">
-        <span>OU</span>
-      </div>
+      <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
 
       <form autocomplete="off" #registerForm="ngForm"
         (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
         <div class="input-group" *ngIf="step === 'email'">
-          <label for="name">Nome completo</label>
-          <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
-            placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+          <label>Nome completo</label>
+          <input type="text" name="fullName" ngModel placeholder="Seu nome completo" [(ngModel)]="user.fullName">
         </div>
-
         <div class="input-group" *ngIf="step === 'email'">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail" required
-            email [(ngModel)]="user.email">
+          <label>E-mail</label>
+          <input type="email" name="email" ngModel placeholder="seu@email.com" required email [(ngModel)]="user.email">
         </div>
-
-        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
-
+        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">← Voltar</a>
         <p class="message" *ngIf="step === 'otp'">
-          Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
+          Insira o código enviado para <strong>{{ user.email }}</strong>
         </p>
-
         <div class="input-group" *ngIf="step === 'otp'">
-          <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
-            [(ngModel)]="otp">
+          <input type="text" name="otp" ngModel placeholder="000000" required [(ngModel)]="otp">
         </div>
-
         <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
-          {{ step === 'email' ? 'Login' : 'Verificar' }}
+          {{ step === 'email' ? 'Criar conta' : 'Verificar' }}
         </button>
-
-        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
-
-        <p class="message" *ngIf="step === 'email'">
-          Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
-          cadastradar com
-          gmail.
-        </p>
-
+        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar código →</a>
+        <p class="message" *ngIf="step === 'email'">Enviaremos um código de acesso único para o seu e-mail.</p>
       </form>
       <div id="google-signin-button"></div>
-      <div class="signup-link">
-        Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
-      </div>
+      <div class="signup-link">Já tem conta? <a (click)="setActiveTab(1)">Faça login</a></div>
     </div>
   </div>
 </div>
 
+<!-- ── Comments ── -->
 <div class="comments-overlay" *ngIf="showComments">
   <div class="comments-popup">
-
-    <!-- Header fixo -->
     <div class="comments-header">
       <div>
         <h2 class="comments-title">Comentários</h2>
-        <span style="font-size: 0.75rem; color: #94a3b8;">Comentários sobre este exercício</span>
+        <span style="font-size: 12px; color: #94a3b8;">Dúvidas e insights sobre este exercício</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
         <div class="comments-count">{{ comments.length }}</div>
         <button class="close-btn" (click)="onCloseComments()">×</button>
       </div>
     </div>
 
-    <!-- Comentários -->
     <div class="comments-scrollable">
-
       <div *ngIf="comments.length === 0" class="no-comments-message">
-        Nenhum comentário ainda. Seja o primeiro a compartilhar sua dúvida ou insight! 💬
+        Nenhum comentário ainda. Seja o primeiro! 💬
       </div>
 
       <div *ngFor="let comment of comments" class="comment-wrapper">
         <img [src]="comment.user.profileImageUrl" alt="User" class="comment-avatar" />
-
         <div class="comment">
-          <!-- Cabeçalho -->
           <div class="comment-header">
             <div class="comment-author">{{ comment.user.fullName }}</div>
             <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
           </div>
-
-          <!-- Texto -->
-          <div class="comment-text">
-            {{ comment.content }}
-          </div>
-
-          <!-- Rodapé -->
+          <div class="comment-text">{{ comment.content }}</div>
           <div class="comment-footer">
             <button class="comment-action" (click)="onLike(comment)">
-              <span *ngIf="!comment.showLoadingLike" [ngClass]="{ 'liked': comment.likedByUser }">Gosto</span>
-              <span *ngIf="!comment.showLoadingLike">· {{ comment.numberOfLikes }}</span>
+              <span *ngIf="!comment.showLoadingLike" [ngClass]="{ 'liked': comment.likedByUser }">Gosto · {{
+                comment.numberOfLikes }}</span>
               <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
             </button>
             <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
               class="comment-action">Editar</button>
             <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
               class="comment-action">Eliminar</button>
-
             <div class="comment-actions" *ngIf="isUserLoggedIn && isSuperAdmin">
               <button class="comment-menu-button" (click)="toggleMenu(comment.id)">⋮</button>
               <div class="comment-menu" *ngIf="openedMenuId === comment.id">
@@ -786,29 +3097,20 @@
         </div>
       </div>
 
-      <!-- Botão carregar mais -->
       <div class="load-more-container" *ngIf="comments.length < totalRecordComments && totalRecordComments > 0">
-        <button class="btn-load-more" id="load-more-btn" (click)="onShowMoreComments()">
-          Buscar mais
-        </button>
+        <button class="btn-load-more" (click)="onShowMoreComments()">Carregar mais</button>
       </div>
-
     </div>
 
     <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
       <div class="comment-form-fixed">
         <div class="comment-input-wrapper">
-          <!-- Ícone do usuário -->
           <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User"
             class="comment-avatar" />
-
-          <!-- Campo de comentário -->
           <div class="comment-textarea-container">
             <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput class="comment-input"
               name="content" [(ngModel)]="comment.content" (input)="autoResize(editInput)"
-              placeholder="Compartilhe suas dúvidas ou insights sobre este exercício..." required></textarea>
-
-            <!-- Botão de envio -->
+              placeholder="Partilhe a sua dúvida ou insight..." required></textarea>
             <button type="submit" class="send-button" [disabled]="commentForm.invalid || showLoading">
               <i class="pi pi-send"></i>
             </button>
@@ -819,68 +3121,56 @@
   </div>
 </div>
 
-<!-- Popout -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalQuestionsList">
+<!-- ── Question List ── -->
+<div class="popout-overlay" *ngIf="displayModalQuestionsList">
   <div class="popout-container">
-
     <div class="popout-header">
       <h2 class="popout-title">Questões</h2>
       <button class="close-button" (click)="onCloseQuestionList()">&times;</button>
     </div>
-
     <div *ngFor="let question of quiz.questions; let i = index">
       <div class="question-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
-             'selected-question': i === currentQuestionIndex,
-             'correct-question': getQuestionStatus(question) === true,
-             'incorrect-question': getQuestionStatus(question) === false
-           }">
-
+        'selected-question': i === currentQuestionIndex,
+        'correct-question': getQuestionStatus(question) === true,
+        'incorrect-question': getQuestionStatus(question) === false
+      }">
         <span class="question-number">{{ i + 1 }}</span>
         <div class="question-content">
           <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-
-          <!-- Mostra o tópico, se existir -->
           <div class="question-topic" *ngIf="question.topic">
             <small>Tópico: {{ question.topic.name }}</small>
           </div>
         </div>
-
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- Popout Upgrade Plan -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalUpgradePlan">
-  <div class="popout-container pricing-card popular">
-
-    <!-- Header -->
+<!-- ── Upgrade Plan ── -->
+<div class="popout-overlay" *ngIf="displayModalUpgradePlan">
+  <div class="popout-container">
     <div class="popout-header">
-      <h2 class="plan-name popout-title">Atualize para o Plano Premium</h2>
+      <h2 class="popout-title">Plano Premium</h2>
       <button class="close-button" (click)="onCloseUpgradeModal()">&times;</button>
     </div>
 
     <div class="pricing-card">
       <div class="plan-header">
-        <!--<h3 class="plan-name">Premium</h3>-->
         <div class="plan-price">MT 299</div>
         <div class="plan-period">por mês</div>
       </div>
-
-      <!-- Features -->
-      <div class="popout-body features">
+      <div class="features">
         <div class="feature">
           <div class="feature-icon"></div>
-          <span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</span>
+          <span>Acesso ilimitado a todos os tópicos e conteúdos</span>
         </div>
         <div class="feature">
           <div class="feature-icon"></div>
-          <span>Resolução detalhada de todas as questões com dicas e comentários</span>
+          <span>Resoluções detalhadas com dicas e comentários</span>
         </div>
         <div class="feature">
           <div class="feature-icon"></div>
-          <span>Criação de quizzes avançados e personalizados</span>
+          <span>Quizzes avançados e personalizados</span>
         </div>
         <div class="feature">
           <div class="feature-icon"></div>
@@ -889,32 +3179,21 @@
       </div>
     </div>
 
-    <!-- CTA / Preço -->
     <div class="upgrade-cta">
-      <button class="cta-button btn-upgrade" (click)="onUpgradePlan()">
-        Fazer Upgrade Agora
-      </button>
-      <!--<p class="plan-price" style="margin-top: 0.5rem; text-align:center;">299 MT/mês</p>-->
+      <button class="cta-button btn-upgrade" (click)="onUpgradePlan()">Fazer Upgrade Agora</button>
     </div>
-
   </div>
 </div>
 
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPaymentOptions">
-  <div class="popout-container modern-card">
-
-    <!-- Header -->
+<!-- ── Payment Options ── -->
+<div class="popout-overlay" *ngIf="displayModalPaymentOptions">
+  <div class="popout-container">
     <div class="popout-header">
-      <h2 class="popout-title">Escolha o método de pagamento</h2>
-      <button class="close-button" (click)="onCloseModalPaymentOptions()">
-        &times;
-      </button>
+      <h2 class="popout-title">Método de pagamento</h2>
+      <button class="close-button" (click)="onCloseModalPaymentOptions()">&times;</button>
     </div>
 
-    <!-- Carteiras Disponíveis -->
     <div class="wallet-options">
-      <!-- Caso existam carteiras -->
       <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
         <label class="wallet-option" *ngFor="let wallet of userWallets">
           <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
@@ -922,84 +3201,67 @@
             <div class="wallet-left">
               <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
               <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
-
               <div class="wallet-details">
                 <span class="wallet-type">{{ wallet.type }}</span>
                 <span class="wallet-number">{{ wallet.phoneNumber }}</span>
               </div>
             </div>
-
             <div class="wallet-check">
-              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
-                Definir como principal
-              </button>
+              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">Principal</button>
               <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
             </div>
           </div>
         </label>
       </ng-container>
-
-      <!-- Caso não existam carteiras -->
       <ng-template #noWallets>
         <div class="wallet-card">
-          <p class="empty-text">Você ainda não adicionou nenhuma carteira.</p>
+          <p class="empty-text">Nenhuma carteira adicionada.</p>
         </div>
       </ng-template>
     </div>
 
-    <!-- Caso não tenha carteiras -->
     <div class="upgrade-cta">
       <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
-        Adicionar Método de Pagamento
+        + Adicionar Método de Pagamento
       </button>
     </div>
 
-    <!-- Confirmar pagamento -->
     <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
-      <button class="cta-button btn-upgrade" (click)="upgradePlan()">
-        Fazer Upgrade Agora
-      </button>
-      <p class="plan-price-upgrade">299 MT/mês</p>
+      <button class="cta-button btn-upgrade" (click)="upgradePlan()">Confirmar Upgrade</button>
+      <p class="plan-price-upgrade">MT 299/mês</p>
     </div>
   </div>
 </div>
 
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalAddPaymentOption">
-  <div class="popout-container pricing-card popular">
-
-    <!-- Header -->
+<!-- ── Add Payment Method ── -->
+<div class="popout-overlay" *ngIf="displayModalAddPaymentOption">
+  <div class="popout-container">
     <div class="popout-header">
-      <h2 class="plan-name popout-title">Adicione o método de pagamento</h2>
+      <h2 class="popout-title">Adicionar carteira</h2>
       <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
     </div>
 
     <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-
-      <!-- Número de telefone -->
       <div class="form-group">
-        <label for="phoneNumber">Número de telefone</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+        <label class="form-label">Número de telefone</label>
+        <input class="form-input" type="text" name="phoneNumber" maxlength="9" minlength="9"
           [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
-          required placeholder="Ex: 841234567" class="input-control" />
-
-        <!-- Mensagem de erro -->
-        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-          O número deve ter exatamente 9 dígitos.
+          required placeholder="Ex: 841234567" />
+        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9"
+          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
+          O número deve ter exactamente 9 dígitos.
         </small>
-        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
-          Parece que este número não pertence a uma carteira válida. Suportamos apenas <strong>MPESA (84/85)</strong> e
-          <strong>EMOLA (86/87)</strong>.
+        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
+          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
+          Suportamos apenas <strong>MPESA (84/85)</strong> e <strong>EMOLA (86/87)</strong>.
         </small>
       </div>
 
-      <!-- Tipo de carteira detectado automaticamente -->
       <div class="wallet-detected" *ngIf="wallet.type">
         <div class="wallet-card">
           <div class="wallet-left">
             <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
             <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
-
             <div class="wallet-details">
               <span class="wallet-type">{{ wallet.type }}</span>
               <span class="wallet-number">{{ wallet.phoneNumber }}</span>
@@ -1010,13 +3272,9 @@
 
       <div class="upgrade-cta">
         <button class="cta-button btn-upgrade" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type">
-          {{ showLoading ? 'Adicionando carteira...' :'Adicionar carteira' }}
+          {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
         </button>
       </div>
-
     </form>
-
   </div>
 </div>
-
-<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
