@@ -849,27 +849,19 @@
                         <span class="card-name">{{ exam.subject.name }} {{ exam.number }}</span>
                         <span class="card-sub">{{ getInstitution(exam.institution) }} - {{ exam.institution }}</span>
                     </div>
-                    <!--
-                    <div class="exam-title-container">
-                        <h3 class="exam-title">{{ exam.subject.name }} {{ exam.number }}</h3>
-                        <div class="dropdown-container">
-                            <button class="dropdown-btn" (click)="toggleDropdown(exam)">
-                                <i class="pi pi-ellipsis-h"></i>
-                            </button>
+                    <div class="dropdown-container">
+                        <button class="dropdown-btn" (click)="toggleDropdown(exam)">
+                            <i class="pi pi-ellipsis-h"></i>
+                        </button>
 
-                            <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                                <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
-                                    *ngIf="isUserLoggedIn && isAdmin">Editar</a>
-                                <a (click)="confirmarExclusao(exam); closeDropdown(exam)"
-                                    *ngIf="isUserLoggedIn && isAdmin">Eliminar</a>
-                                <a (click)="onDownload(exam); toggleDropdown(exam)"
-                                    *ngIf="!isPremiumExam(exam)">Baixar</a>
-                            </div>
+                        <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+                            <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
+                                *ngIf="isUserLoggedIn && isAdmin">Editar</a>
+                            <a (click)="confirmarExclusao(exam); closeDropdown(exam)"
+                                *ngIf="isUserLoggedIn && isAdmin">Eliminar</a>
+                            <a (click)="onDownload(exam); toggleDropdown(exam)" *ngIf="!isPremiumExam(exam)">Baixar</a>
                         </div>
                     </div>
-
-                    <p class="exam-institution">{{ getInstitution(exam.institution) }} - {{ exam.institution }}</p>
-                    -->
                 </div>
                 <div class="card-body">
                     <div class="description-label">Descrição</div>

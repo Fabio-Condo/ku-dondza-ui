@@ -118,6 +118,12 @@ export class ExamesComponent implements OnInit {
   institutions = [
     { label: 'Universidade Eduardo Mondlane', value: 'UEM' },
     { label: 'Universidade Pedagógica', value: 'UP' },
+    { label: 'Instituto Superior de Ciências de Saúde', value: 'ISCISA' },
+    { label: 'Instituto Superior de Contabilidade e Auditoria de Moçambique', value: 'ISCAM' },
+    { label: 'A Universidade Joaquim Chissano', value: 'UJC' },
+    { label: 'Academia de Ciências Policiais', value: 'ACIPOL' },
+    { label: 'Academia Militar', value: 'AM' },
+
     //  { label: 'Todas', value: '' },
   ];
 
