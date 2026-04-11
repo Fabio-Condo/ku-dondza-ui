@@ -101,6 +101,7 @@ export class ExamesComponent implements OnInit {
     { label: '2007', value: 2007 },
     { label: '2006', value: 2006 },
     { label: '2005', value: 2005 },
+    { label: '2004', value: 2004 },
   ];
 
   niveis = [
@@ -417,6 +418,16 @@ export class ExamesComponent implements OnInit {
         return 'Universidade Eduardo Mondlane';
       case 'UP':
         return 'Universidade Pedagógica';
+      case 'ISCISA':
+        return 'Instituto Superior de Ciências de Saúde';
+      case 'ISCAM':
+        return 'Instituto Superior de Contabilidade e Auditoria de Moçambique';
+      case 'UJC':
+        return 'A Universidade Joaquim Chissano';
+      case 'ACIPOL':
+        return 'Academia de Ciências Policiais';
+      case 'AM':
+        return 'Academia Militar';
       default:
         return '';
     }
