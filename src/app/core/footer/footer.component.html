@@ -11,322 +11,434 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        .footer {
+        /* ── FOOTER ── */
+        footer {
             background: white;
-            border-top: 1px solid #e9ecef;
-            padding: 2rem 1rem 1.5rem;
+            border-top: 0.5px solid rgba(67, 97, 238, 0.1);
+            padding: 40px 32px 24px;
         }
 
-        .footer-container {
-            max-width: 1200px;
+        .footer-inner {
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        .footer-content {
+        /* ── TOP ROW ── */
+        .footer-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
+            gap: 32px;
+            padding-bottom: 32px;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.07);
         }
 
-        .footer-links {
+        /* ── BRAND ── */
+        .footer-brand {
             display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 160px;
         }
 
-        .footer-links a {
-            color: #495057;
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s ease;
-            white-space: nowrap;
         }
 
-        .footer-links a:hover {
-            color: #4361ee;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .social-links a {
-            color: #6c757d;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            padding: 10px;
+        .logo-mark {
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
-            background: #f8f9fa;
-            width: 40px;
-            height: 40px;
+            background: #4361ee;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        .logo-mark svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #4361ee;
+        }
+
+        .tagline {
+            font-size: 12.5px;
+            color: #999;
+            max-width: 180px;
+            line-height: 1.6;
+        }
+
+        /* ── NAV GROUPS ── */
+        .footer-nav {
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-group-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 2px;
+        }
+
+        .nav-group a {
+            color: #555;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-group a:hover {
+            color: #4361ee;
+        }
+
+        /* ── RIGHT COLUMN ── */
+        .footer-right {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: flex-end;
+        }
+
+        /* ── SOCIAL ── */
+        .social-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .social-links a {
+            color: #999;
+            font-size: 14px;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
         .social-links a:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .social-links a.facebook:hover {
             background: #1877f2;
             color: white;
+            border-color: #1877f2;
         }
 
         .social-links a.twitter:hover {
             background: #1da1f2;
             color: white;
+            border-color: #1da1f2;
         }
 
         .social-links a.instagram:hover {
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
             color: white;
+            border-color: transparent;
         }
 
         .social-links a.linkedin:hover {
             background: #0077b5;
             color: white;
+            border-color: #0077b5;
         }
 
+        /* ── WHATSAPP ── */
         .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
             background: #25d366;
             color: white !important;
-            padding: 10px 18px;
-            border-radius: 25px;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+            border: none;
+            cursor: pointer;
+        }
+
+        .whatsapp-btn i {
+            font-size: 15px;
         }
 
         .whatsapp-btn:hover {
             background: #20ba5a;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
         }
 
-        .footer-bottom {
-            border-top: 1px solid #e9ecef;
-            padding-top: 1rem;
-            text-align: center;
-        }
-
-        .copyright {
-            color: #6c757d;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .brand-name {
-            color: #4361ee;
-            font-weight: 700;
-        }
-
-        .install-card {
-            display: flex;
-            justify-content: center;
-        }
-
+        /* ── INSTALL BUTTONS ── */
         .install-btn {
             display: flex;
             align-items: center;
-            gap: 12px;
-
-            padding: 14px 14px;
-            border-radius: 14px;
-
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 12px;
             text-decoration: none;
             border: none;
             cursor: pointer;
-
             font-family: inherit;
-
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
 
-        /* Play Store style */
-        .playstore {
-            background: linear-gradient(135deg, #34a853, #4285f4);
-            color: white;
-        }
-
-        /* PWA style */
-        .pwa {
-            background: #1c1c1e;
-            color: white;
-        }
-
-        /* Icon */
-        .icon {
-            font-size: 22px;
-        }
-
-        /* Text */
-        .text small {
-            display: block;
-            font-size: 11px;
-            opacity: 0.8;
-        }
-
-        .text strong {
-            font-size: 16px;
-        }
-
-        /* Hover / touch feedback */
         .install-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
         }
 
         .install-btn:active {
             transform: scale(0.97);
         }
 
-        /* Responsive Design */
+        .playstore {
+            background: linear-gradient(135deg, #34a853, #4285f4);
+            color: white;
+        }
+
+        .pwa {
+            background: #1c1c1e;
+            color: white;
+        }
+
+        .install-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .install-text small {
+            display: block;
+            font-size: 10px;
+            opacity: 0.75;
+            letter-spacing: 0.2px;
+        }
+
+        .install-text strong {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* ── BOTTOM BAR ── */
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .copyright {
+            font-size: 12.5px;
+            color: #bbb;
+            font-weight: 500;
+        }
+
+        .copyright strong {
+            color: #4361ee;
+            font-weight: 700;
+        }
+
+        .footer-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #bbb;
+        }
+
+        .footer-badge span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #25d366;
+            display: inline-block;
+        }
+
+        /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
-            .footer-content {
+            .footer-top {
                 flex-direction: column;
-                gap: 1.5rem;
+                align-items: center;
+                text-align: center;
+                gap: 28px;
+            }
+
+            .footer-brand {
                 align-items: center;
             }
 
-            .footer-links {
-                justify-content: center;
-                gap: 1.5rem;
+            .tagline {
                 text-align: center;
             }
 
-            .footer-links a {
-                font-size: 13px;
+            .footer-nav {
+                justify-content: center;
+                gap: 28px;
             }
 
-            .social-links {
-                gap: 0.8rem;
+            .footer-right {
+                align-items: center;
             }
 
-            .whatsapp-btn {
-                font-size: 12px;
-                padding: 6px 12px;
+            .footer-bottom {
+                justify-content: center;
+                text-align: center;
             }
         }
 
         @media (max-width: 480px) {
-            .footer {
-                padding: 1.5rem 0.8rem 1rem;
+            footer {
+                padding: 32px 16px 20px;
             }
 
-            .footer-links {
-                gap: 1rem;
+            .footer-nav {
                 flex-direction: column;
-            }
-
-            .footer-links a {
-                padding: 0.3rem 0;
-            }
-
-            .social-links {
-                gap: 0.6rem;
-            }
-
-            .social-links a {
-                font-size: 14px;
-                width: 36px;
-                height: 36px;
-                padding: 8px;
+                align-items: center;
+                gap: 20px;
             }
         }
     </style>
 </head>
 
 <body>
-    <!--
-        <div class="main-content">
-        <p>Conteúdo principal da página...</p>
-    </div>
-    -->
+    <footer>
+        <div class="footer-inner">
 
-    <br>
+            <div class="footer-top">
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <nav class="footer-links">
-                    <a routerLink="/home">Início</a>
-                    <a routerLink="/about-us">Sobre Nós</a>
-                    <a routerLink="/prices">Preços</a>
-                    <a routerLink="/faq">FAQ</a>
-                    <a routerLink="/privacy-policy">Políticas de Privacidade</a>
-                    <a href="#" class="whatsapp-btn" (click)="enterOnGroup()">
-                        <i class="fab fa-whatsapp" style="margin-left: 10px;"></i>
-                        <span style="margin-right: 10px;">WhatsApp</span>
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <a class="footer-logo" routerLink="/home">
+                        <div class="logo-mark">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+                            </svg>
+                        </div>
+                        <span class="logo-text">Dika<span>hub</span></span>
                     </a>
+                    <p class="tagline">A plataforma académica que te prepara para o sucesso.</p>
+                </div>
+
+                <!-- Nav groups -->
+                <nav class="footer-nav">
+                    <div class="nav-group">
+                        <span class="nav-group-title">Plataforma</span>
+                        <a routerLink="/home">Início</a>
+                        <a routerLink="/quizzes">Quizzes</a>
+                        <a routerLink="/subjects">Materiais</a>
+                        <a routerLink="/exames">Exames</a>
+                    </div>
+                    <div class="nav-group">
+                        <span class="nav-group-title">Empresa</span>
+                        <a routerLink="/about-us">Sobre Nós</a>
+                        <a routerLink="/prices">Preços</a>
+                        <a routerLink="/faq">FAQ</a>
+                        <a routerLink="/privacy-policy">Privacidade</a>
+                    </div>
                 </nav>
 
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                        class="facebook" title="Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                        class="twitter" title="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                        class="instagram" title="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                        class="linkedin" title="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
+                <!-- Right column -->
+                <div class="footer-right">
 
-                <div class="install-card" *ngIf="!isInstalled">
+                    <!-- Social -->
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                            class="facebook" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                            class="twitter" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                            class="instagram" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
+                            class="linkedin" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
 
-                    <!-- ANDROID -->
-                    <a *ngIf="isAndroid"
-                        href="https://play.google.com/store/apps/details?id=com.dikahub.app" target="_blank"
-                        class="install-btn playstore">
-
-                        <span class="icon">📱</span>
-                        <div class="text">
-                            <small>Disponível na</small>
-                            <strong>Google Play</strong>
-                        </div>
+                    <!-- WhatsApp -->
+                    <a href="#" class="whatsapp-btn" (click)="enterOnGroup()">
+                        <i class="fab fa-whatsapp"></i>
+                        Grupo WhatsApp
                     </a>
 
-                    <!-- PWA -->
-                    <button *ngIf="!isAndroid && showPwaButton" (click)="installPWA()"
-                        class="install-btn pwa">
+                    <!-- Install card -->
+                    <div *ngIf="!isInstalled">
 
-                        <span class="icon">⚡</span>
-                        <div class="text">
-                            <small>Instalar rapidamente</small>
-                            <strong>App Dikahub</strong>
-                        </div>
-                    </button>
+                        <!-- Android -->
+                        <a *ngIf="isAndroid" href="https://play.google.com/store/apps/details?id=com.dikahub.app"
+                            target="_blank" class="install-btn playstore">
+                            <span class="install-icon">📱</span>
+                            <div class="install-text">
+                                <small>Disponível na</small>
+                                <strong>Google Play</strong>
+                            </div>
+                        </a>
 
+                        <!-- PWA -->
+                        <button *ngIf="!isAndroid && showPwaButton" (click)="installPWA()" class="install-btn pwa">
+                            <span class="install-icon">⚡</span>
+                            <div class="install-text">
+                                <small>Instalar rapidamente</small>
+                                <strong>App Dikahub</strong>
+                            </div>
+                        </button>
+
+                    </div>
                 </div>
             </div>
 
+            <!-- Bottom bar -->
             <div class="footer-bottom">
                 <p class="copyright">
-                    <span class="brand-name">Dikahub</span> © 2025 Dikahub, Inc. All rights reserved.
+                    <strong>Dikahub</strong> © 2026 Dikahub, Inc. Todos os direitos reservados.
                 </p>
+                <div class="footer-badge">
+                    <span></span> Serviços online
+                </div>
             </div>
+
         </div>
     </footer>
 </body>

@@ -55,7 +55,7 @@ export class NavbarComponent implements OnInit {
     //this.router.navigate(['/progress-panel/users', 1]);
     //});
 
-    this.router.navigateByUrl('/progress-panel');
+    this.router.navigateByUrl('/progress');
   }
 
   onLogIn(): void {

@@ -11,242 +11,312 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     body {
-      background-color: #f8f9fa;
-      color: #333;
+      background-color: #f0f2f8;
+      color: #1a1a2e;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
+    /* ── NAV ── */
     nav {
-      height: 60px;
+      height: 64px;
+      display: flex;
       align-items: center;
       position: fixed;
       top: 0;
       width: 100%;
-      background-color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 0.5px solid rgba(67, 97, 238, 0.1);
       z-index: 1000;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(230, 230, 230, 0.7);
-      padding: 10px 0;
+      padding: 0 32px;
     }
 
+    .container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* ── LOGO ── */
     .logo {
       display: flex;
       align-items: center;
-      font-size: 22px;
+      gap: 8px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: #4361ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark svg {
+      width: 16px;
+      height: 16px;
+      fill: white;
+    }
+
+    .logo-text {
+      font-size: 17px;
       font-weight: 700;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
       color: #4361ee;
-      letter-spacing: -1px;
     }
 
-    .logo-icon {
-      margin-right: 10px;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 24px;
-      width: 30px;
-      height: 30px;
-      /* Diminuindo o tamanho do ícone */
-    }
-
-    .logo::before {
-      /* content: '🎓';*/
-      margin-right: 10px;
-      font-size: 24px;
-      /* Diminuindo o tamanho do emoji */
-    }
-
+    /* ── NAV LINKS ── */
     .nav-links {
       display: flex;
+      align-items: center;
+      gap: 4px;
       list-style: none;
-      gap: 24px;
-      /* Reduzindo o espaçamento entre os links */
     }
 
     .nav-links a {
       text-decoration: none;
-      color: #333;
+      color: #555;
+      font-size: 13.5px;
       font-weight: 500;
-      position: relative;
-      padding-bottom: 3px;
-      /* Reduzindo o padding */
-      transition: all 0.3s ease;
-      font-size: 14px;
-      /* Diminuindo o tamanho da fonte */
+      padding: 6px 12px;
+      border-radius: 7px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
     .nav-links a:hover {
       color: #4361ee;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -2px;
-      left: 0;
-      background: linear-gradient(90deg, #4361ee, #6c47ff);
-      transition: width 0.3s cubic-bezier(0.76, 0, 0.24, 1);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
+      background: rgba(67, 97, 238, 0.07);
     }
 
     .nav-links a.active {
       color: #4361ee;
+      background: rgba(67, 97, 238, 0.1);
+      font-weight: 600;
     }
 
-    .nav-links a.active::after {
-      width: 100%;
-    }
-
+    /* ── RIGHT SECTION ── */
     .right-section {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 8px;
     }
 
-    .auth-buttons {
-      display: flex;
-      gap: 12px;
-      /* Reduzindo o espaçamento entre os botões */
+    .divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0 4px;
     }
 
+    /* ── BUTTONS ── */
     .btn {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      padding: 8px 18px;
-      /* Reduzindo o padding dos botões */
-      border-radius: 8px;
+      font-size: 13.5px;
       font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       border: none;
-      letter-spacing: -0.2px;
-      font-size: 14px;
-      /* Reduzindo o tamanho da fonte */
+      letter-spacing: -0.1px;
+      white-space: nowrap;
     }
 
     .btn-outline {
-      border: 2px solid #4361ee;
+      border: 1.5px solid #4361ee;
       color: #4361ee;
       background: transparent;
     }
 
     .btn-outline:hover {
-      background-color: rgba(67, 97, 238, 0.05);
-      transform: translateY(-2px);
+      background: rgba(67, 97, 238, 0.07);
+      transform: translateY(-1px);
     }
 
     .btn-primary {
       background: #4361ee;
       color: white;
       border: none;
+      box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
     }
 
     .btn-primary:hover {
-      background: #4361ee;
+      background: #3451d1;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
     }
 
+    /* ── USER AVATAR ── */
     .user-icon {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: #f0f2f5;
+      background: #4361ee;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #4361ee;
-      font-size: 16px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 8px rgba(67, 97, 238, 0.25);
+      object-fit: cover;
     }
 
     .user-icon:hover {
-      background: #e6e8eb;
+      transform: scale(1.05);
     }
 
+    /* ── DROPDOWN ── */
+    .dropdown-container {
+      position: relative;
+    }
+
+    .dropdown-btn {
+      background: transparent;
+      border: 0.5px solid rgba(0, 0, 0, 0.12);
+      color: #555;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dropdown-btn:hover {
+      background: rgba(67, 97, 238, 0.07);
+      border-color: rgba(67, 97, 238, 0.3);
+      color: #4361ee;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: white;
+      border: 0.5px solid rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 6px;
+      min-width: 160px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      z-index: 100;
+    }
+
+    .dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 7px;
+      font-size: 13.5px;
+      color: #333;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .dropdown a:hover {
+      background: rgba(67, 97, 238, 0.07);
+      color: #4361ee;
+    }
+
+    .dropdown hr {
+      border: none;
+      border-top: 0.5px solid rgba(0, 0, 0, 0.08);
+      margin: 4px 0;
+    }
+
+    .dropdown a.danger {
+      color: #e24b4a;
+    }
+
+    .dropdown a.danger:hover {
+      background: rgba(226, 75, 74, 0.07);
+    }
+
+    /* ── MOBILE TOGGLE ── */
     .mobile-toggle {
       display: none;
-      font-size: 22px;
-      cursor: pointer;
-      color: #4361ee;
-      background: none;
+      background: rgba(67, 97, 238, 0.08);
       border: none;
+      color: #4361ee;
       width: 36px;
       height: 36px;
       border-radius: 8px;
-      transition: all 0.3s ease;
-      background-color: rgba(67, 97, 238, 0.1);
+      font-size: 16px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
     }
 
     .mobile-toggle:hover {
-      background-color: rgba(67, 97, 238, 0.1);
+      background: rgba(67, 97, 238, 0.15);
     }
 
+    /* ── MOBILE MENU ── */
     .mobile-menu {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #4361ee, #6c47ff);
+      inset: 0;
+      background: linear-gradient(160deg, #2a1fff, #6c47ff, #4361ee);
       z-index: 2000;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transform: translateY(-100%);
-      transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
-      overflow-y: auto;
+      padding: 80px 32px 40px;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.76, 0, 0.24, 1);
     }
 
     .mobile-menu.active {
-      transform: translateY(0);
+      transform: translateX(0);
     }
 
     .mobile-menu .close-btn {
       position: absolute;
-      top: 24px;
-      right: 24px;
-      font-size: 28px;
-      color: white;
-      background: rgba(255, 255, 255, 0.1);
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.15);
       border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      font-size: 20px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
     }
 
     .mobile-menu .close-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.25);
       transform: rotate(90deg);
     }
 
@@ -254,270 +324,241 @@
       list-style: none;
       padding: 0;
       margin: 0;
-      text-align: center;
-    }
-
-    .mobile-nav-links li {
-      margin: 20px 0;
-      /* Reduzindo a margem */
-      transform: translateY(20px);
-      opacity: 0;
-      transition: all 0.4s ease;
-    }
-
-    .mobile-menu.active .mobile-nav-links li {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(1) {
-      transition-delay: 0.1s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(2) {
-      transition-delay: 0.2s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(3) {
-      transition-delay: 0.3s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(4) {
-      transition-delay: 0.4s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(5) {
-      transition-delay: 0.5s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(6) {
-      transition-delay: 0.6s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .mobile-nav-links a {
+      color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
-      color: white;
-      font-size: 24px;
-      /* Reduzindo o tamanho da fonte */
+      font-size: 22px;
       font-weight: 600;
-      letter-spacing: -0.5px;
-      transition: all 0.3s ease;
-      padding: 8px 20px;
+      padding: 10px 16px;
       border-radius: 12px;
+      display: block;
+      transition: all 0.2s;
+      opacity: 0;
+      transform: translateX(20px);
     }
 
-    .mobile-nav-links a:hover {
-      background: rgba(255, 255, 255, 0.1);
+    .mobile-menu.active .mobile-nav-links li:nth-child(1) a { transition: all 0.35s 0.05s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(2) a { transition: all 0.35s 0.10s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(3) a { transition: all 0.35s 0.15s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(4) a { transition: all 0.35s 0.20s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(5) a { transition: all 0.35s 0.25s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(6) a { transition: all 0.35s 0.30s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(7) a { transition: all 0.35s 0.35s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(8) a { transition: all 0.35s 0.40s; }
+
+    .mobile-menu.active .mobile-nav-links a {
+      opacity: 1;
+      transform: translateX(0);
     }
 
+    .mobile-nav-links a:hover,
     .mobile-nav-links a.active {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
     }
 
-    .mobile-nav-links a.active::after {
-      width: 100%;
-    }
-
-    .mobile-auth-buttons {
-      margin-top: 36px;
-      /* Reduzindo a margem */
+    .mobile-footer {
+      margin-top: auto;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      width: 200px;
+      gap: 10px;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.4s ease 0.6s;
+      transform: translateY(12px);
+      transition: all 0.35s 0.45s;
     }
 
-    .mobile-menu.active .mobile-auth-buttons {
+    .mobile-menu.active .mobile-footer {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .mobile-auth-buttons .btn {
-      font-size: 16px;
-      text-align: center;
-      padding: 12px;
-      /* Reduzindo o padding */
-    }
-
-    .mobile-auth-buttons .btn-white {
-      background-color: white;
+    .mobile-footer .btn-white {
+      background: white;
       color: #4361ee;
-      font-weight: 600;
+      font-weight: 700;
+      border: none;
+      padding: 13px;
+      text-align: center;
+      font-size: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: all 0.2s;
     }
 
-    .mobile-auth-buttons .btn-white:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
-    }
-
-    .mobile-auth-buttons .btn-outline {
-      border: 2px solid white;
+    .mobile-footer .btn-ghost {
+      background: rgba(255, 255, 255, 0.15);
       color: white;
-    }
-
-    .mobile-auth-buttons .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(-2px);
-    }
-
-    @media (max-width: 992px) {
-      .nav-links {
-        gap: 16px;
-      }
+      font-weight: 600;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      padding: 13px;
+      text-align: center;
+      font-size: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: all 0.2s;
     }
 
     @media (max-width: 768px) {
-      .mobile-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
       .nav-links,
-      .auth-buttons {
-        display: none;
-      }
+      .auth-buttons,
+      .divider { display: none; }
 
-      /* Manter o ícone de usuário visível no mobile */
-      .user-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-      }
-    }
+      .mobile-toggle { display: flex; }
 
-    @media (max-width: 576px) {
-      .logo {
-        font-size: 20px;
-      }
-
-      .logo::before {
-        font-size: 22px;
-      }
-
-      .mobile-nav-links a {
-        font-size: 22px;
-      }
-
-      .container {
-        padding: 0 10px;
-      }
-
-      nav {
-        height: 56px;
-        /* Reduzindo ainda mais para telas menores */
-      }
+      nav { padding: 0 16px; }
     }
   </style>
 </head>
 
 <body>
   <header>
-
     <nav>
       <div class="container">
+
+        <!-- Logo -->
         <div class="logo">
-          <!--
-          <span class="logo-icon">
-            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-              fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="7" x2="12" y2="13"></line>
-              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          <div class="logo-mark">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
             </svg>
-          </span>
-          -->
-          Dikahub
+          </div>
+          <span class="logo-text">Dika<span>hub</span></span>
         </div>
+
+        <!-- Nav links -->
         <ul class="nav-links">
           <li><a [class.active]="isActive('/progress')" routerLink="/progress">Progresso</a></li>
           <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/questions')"
-              routerLink="/questions">Exercícios</a></li>
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/topics')"
-              routerLink="/topics">Tópicos</a></li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin">
+            <a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a>
+          </li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin">
+            <a [class.active]="isActive('/topics')" routerLink="/topics">Tópicos</a>
+          </li>
           <li><a [class.active]="isActive('/subjects')" routerLink="/subjects">Materiais</a></li>
           <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/payments')"
-              routerLink="/payments">Pagamentos</a></li>
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/users')"
-              routerLink="/users">Pessoas</a></li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin">
+            <a [class.active]="isActive('/payments')" routerLink="/payments">Pagamentos</a>
+          </li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin">
+            <a [class.active]="isActive('/users')" routerLink="/users">Pessoas</a>
+          </li>
         </ul>
+
+        <!-- Right section -->
         <div class="right-section">
+
+          <!-- Auth buttons (logged out) -->
           <div class="auth-buttons" *ngIf="!loggedUser">
-            <!--<a routerLink="/register" class="btn btn-primary">Cadastre-se</a>-->
             <a routerLink="/login" class="btn btn-outline">Login</a>
           </div>
-          <!--
-          <div class="auth-buttons" *ngIf="loggedUser">
-            <a (click)="onLogOut()" class="btn btn-outline">Logout</a>
+
+          <div class="divider" *ngIf="isUserLoggedIn"></div>
+
+          <!-- User avatar (with photo) -->
+          <img
+            *ngIf="!showNavButtons() && loggedUser && loggedUser.profileImageUrl"
+            [src]="loggedUser.profileImageUrl"
+            alt="Foto de perfil"
+            class="user-icon"
+            (click)="goToProfile()"
+          />
+
+          <!-- User avatar (no photo) -->
+          <div
+            *ngIf="!showNavButtons() && loggedUser && !loggedUser.profileImageUrl"
+            class="user-icon"
+            (click)="goToProfile()"
+          >
+            <i class="fas fa-user"></i>
           </div>
-          -->
+
+          <!-- Dropdown menu -->
           <div class="dropdown-container" *ngIf="isUserLoggedIn">
-            <button class="dropdown-btn"
-              style="cursor: pointer; display: flex; align-items: center; justify-content: center;"
-              (click)="toggleDropdown()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="6" r="2" fill="currentColor" />
-                <circle cx="12" cy="12" r="2" fill="currentColor" />
-                <circle cx="12" cy="18" r="2" fill="currentColor" />
+            <button class="dropdown-btn" (click)="toggleDropdown()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="2"/>
+                <circle cx="12" cy="12" r="2"/>
+                <circle cx="12" cy="19" r="2"/>
               </svg>
             </button>
             <div class="dropdown" *ngIf="isDropdownOpen">
-              <a (click)="goToProfile(); toggleDropdown()">Perfil</a>
-              <a *ngIf="isUserLoggedIn && isSuperAdmin" (click)="goToProgressPanel(); toggleDropdown()">Progresso</a>
-              <a (click)="onLogOut(); toggleDropdown()">Saír</a>
+              <a (click)="goToProfile(); toggleDropdown()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Perfil
+              </a>
+              <a *ngIf="isUserLoggedIn && isSuperAdmin" (click)="goToProgressPanel(); toggleDropdown()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                </svg>
+                Progresso
+              </a>
+              <hr>
+              <a class="danger" (click)="onLogOut(); toggleDropdown()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Sair
+              </a>
             </div>
           </div>
-          <!--
-          <div class="auth-buttons">
-            <a routerLink="/quizzes/new" class="btn btn-primary">Iniciar Quiz</a>
-          </div>
-          -->
-          <img *ngIf="!showNavButtons() && loggedUser && loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
-            alt="Foto de perfil" class="user-icon" (click)="goToProfile()" />
 
-          <div *ngIf="!showNavButtons() && loggedUser && !loggedUser.profileImageUrl" class="user-icon"
-            (click)="goToProfile()">
-            <i class="fas fa-user"></i>
-          </div>
-          <button class="mobile-toggle" id="mobile-toggle" (click)="toggleMenu()">☰</button>
+          <!-- Mobile toggle -->
+          <button class="mobile-toggle" (click)="toggleMenu()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+
         </div>
       </div>
     </nav>
   </header>
 
   <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobile-menu" [class.active]="isMenuActive">
-    <button class="close-btn" id="close-menu" (click)="toggleMenu()">✕</button>
+  <div class="mobile-menu" [class.active]="isMenuActive">
+    <button class="close-btn" (click)="toggleMenu()">✕</button>
+
     <ul class="mobile-nav-links">
-      <li><a [class.active]="isActive('/progress')" routerLink="/progress"
-          (click)="toggleMenu()">Progresso</a></li>
+      <li><a [class.active]="isActive('/progress')" routerLink="/progress" (click)="toggleMenu()">Progresso</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/questions')" routerLink="/questions"
-          (click)="toggleMenu()">Exercícios</a></li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/topics')" routerLink="/topics"
-          (click)="toggleMenu()">Tópicos</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin">
+        <a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a>
+      </li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin">
+        <a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a>
+      </li>
       <li><a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">Materiais</a></li>
       <li><a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">Exames</a></li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/payments')" routerLink="/payments"
-          (click)="toggleMenu()">Pagamentos</a></li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/users')" routerLink="/users"
-          (click)="toggleMenu()">Pessoas</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin">
+        <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="toggleMenu()">Pagamentos</a>
+      </li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin">
+        <a [class.active]="isActive('/users')" routerLink="/users" (click)="toggleMenu()">Pessoas</a>
+      </li>
     </ul>
-    <div class="mobile-auth-buttons" *ngIf="!loggedUser">
-      <a routerLink="/login" class="btn btn-white">Login</a>
-      <a routerLink="/login" class="btn btn-outline">Cadastre-se</a>
-    </div>
-    <!--
-    <div class="mobile-auth-buttons" *ngIf="loggedUser">
-      <a (click)="onLogOut()" class="btn btn-outline">Logout</a>
-    </div>
-    -->
-  </div>
-</body>
 
+    <div class="mobile-footer" *ngIf="!loggedUser">
+      <a routerLink="/login" class="btn-white">Login</a>
+      <a routerLink="/login" class="btn-ghost">Cadastre-se</a>
+    </div>
+  </div>
+
+</body>
 </html>
