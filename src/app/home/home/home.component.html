@@ -15,7 +15,6 @@
         }
 
         body {
-            background: #fff;
             color: #1a1a2e;
             line-height: 1.6;
             overflow-x: hidden;
@@ -205,7 +204,7 @@
 
         .stat-label {
             font-size: 13.5px;
-            color: #888;
+            color: #a0a8b8;
             font-weight: 500;
         }
 
@@ -240,7 +239,7 @@
 
         .section-head p {
             font-size: 16px;
-            color: #888;
+            color: #a0a8b8;;
             max-width: 540px;
             margin: 0 auto;
         }
@@ -311,126 +310,8 @@
 
         .feature-card p {
             font-size: 14px;
-            color: #888;
+            color: #a0a8b8;
             line-height: 1.6;
-        }
-
-        /* ── TESTIMONIALS ── */
-        .testimonials {
-            padding: 88px 24px;
-            background: #fafbff;
-        }
-
-        .slider-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 40px;
-        }
-
-        .testimonials-slider {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 8px 0 16px;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            flex: 1;
-        }
-
-        .testimonials-slider::-webkit-scrollbar {
-            display: none;
-        }
-
-        .testimonial-card {
-            flex: 0 0 320px;
-            background: white;
-            border: 0.5px solid #eef0f8;
-            border-radius: 18px;
-            padding: 28px;
-            scroll-snap-align: start;
-            transition: all 0.2s;
-        }
-
-        .testimonial-card:hover {
-            box-shadow: 0 8px 32px rgba(67, 97, 238, 0.08);
-            border-color: #d0d5f5;
-        }
-
-        .quote-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: #eef0fd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-
-        .quote-icon svg {
-            width: 14px;
-            height: 14px;
-            fill: #4361ee;
-        }
-
-        .t-text {
-            font-size: 14.5px;
-            color: #555;
-            line-height: 1.65;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-
-        .t-author {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .t-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4361ee, #6c47ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .t-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1a1a2e;
-        }
-
-        .t-role {
-            font-size: 12px;
-            color: #aaa;
-        }
-
-        .slider-btn {
-            background: #f0f2ff;
-            border: none;
-            color: #4361ee;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-
-        .slider-btn:hover {
-            background: #e0e3ff;
         }
 
         /* ── URGENCY BAND ── */
@@ -678,39 +559,6 @@
                         caem.</p>
                 </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!-- ── TESTIMONIALS ── -->
-    <section class="testimonials">
-        <div class="wrap">
-            <div class="section-head">
-                <span class="section-label">Depoimentos</span>
-                <h2>Quem se prepara aqui<br>chega mais confiante</h2>
-                <p>Veja o que estudantes e professores acham da plataforma Dikahub.</p>
-            </div>
-            <div class="slider-wrapper">
-                <button class="slider-btn prev-btn" (click)="scroll('prev')">&#8249;</button>
-                <div class="testimonials-slider" #slider>
-                    <div class="testimonial-card" *ngFor="let testimonial of testimonials">
-                        <div class="quote-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1zm12 0c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
-                            </svg>
-                        </div>
-                        <p class="t-text">{{ testimonial.text }}</p>
-                        <div class="t-author">
-                            <div class="t-avatar">{{ testimonial.author | slice:0:2 | uppercase }}</div>
-                            <div>
-                                <div class="t-name">{{ testimonial.author }}</div>
-                                <div class="t-role">{{ testimonial.role }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="slider-btn next-btn" (click)="scroll('next')">&#8250;</button>
             </div>
         </div>
     </section>
