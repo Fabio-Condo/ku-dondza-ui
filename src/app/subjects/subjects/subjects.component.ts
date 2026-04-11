@@ -160,7 +160,7 @@ export class SubjectsComponent implements OnInit {
       )
     ).subscribe(
       (dados: IApiResponse<Subject>) => {
-        if (this.isSuperAdmin) {
+        if (this.isUserLoggedIn && this.isSuperAdmin) {
           this.subjects = dados.content;
         }else {
           this.subjects = dados.content.filter(subject => subject.courseEnabled);
