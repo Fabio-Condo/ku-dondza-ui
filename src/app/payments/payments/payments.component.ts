@@ -10,6 +10,7 @@ import { PaymentFilter } from 'src/app/core/interface/PaymentFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -44,6 +45,8 @@ export class PaymentsComponent {
     private paymentsService: PaymentsService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router,
     private title: Title,
   ) { }
 
@@ -51,6 +54,10 @@ export class PaymentsComponent {
     this.title.setTitle('Payments page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    if (this.isUserLoggedIn && this.loggedUser.role !== 'ROLE_SUPER_ADMIN') {
+      this.router.navigate(['/nao-autorizado']);
+      return;
+    }
     //this.getPaymets();
     this.findAll();
   }
