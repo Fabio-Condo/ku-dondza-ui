@@ -145,16 +145,26 @@
                         -->
                         <div class="overall">
                             <div class="overall-ring">
-                                <div class="discipline-progress">
-                                    <div class="progress-circle" [style.--color]="
+                                <svg class="progress-svg" viewBox="0 0 44 44">
+
+                                    <!-- fundo -->
+                                    <circle class="ring-bg" cx="22" cy="22" r="18" />
+
+                                    <!-- glow base (leve profundidade) -->
+                                    <circle class="ring-glow" cx="22" cy="22" r="18" />
+
+                                    <!-- progresso -->
+                                    <circle class="ring-fill" cx="22" cy="22" r="18" [style.stroke]="
                                         (quiz.accuracyRate / 100) >= 0.7 ? '#22c55e' :
                                         (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' :
                                         '#ef4444'
-                                        " [style.--progress]="(quiz.accuracyRate) * 3.6 + 'deg'">
-                                        <span></span>
-                                    </div>
+                                    " [style.stroke-dasharray]="113.1"
+                                        [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1" />
+                                </svg>
+
+                                <div class="ring-label">
+                                    {{ quiz.accuracyRate.toFixed(0) }}%
                                 </div>
-                                <div class="ring-label">{{ quiz.accuracyRate.toFixed(0) }}%</div>
                             </div>
                             <div class="overall-text"><strong>Desenpenho geral</strong><span>{{ quiz.topics.length }}
                                     tópicos avaliados </span><span> · {{ quiz.totalQuestions }} questões</span>

@@ -218,31 +218,40 @@
             margin-bottom: 18px;
         }
 
+        /* container */
         .overall-ring {
             position: relative;
             width: 44px;
             height: 44px;
-            flex-shrink: 0;
         }
 
-        .overall-ring svg {
-            transform: rotate(-90deg);
+        .progress-svg {
             width: 44px;
             height: 44px;
+            transform: rotate(-90deg);
         }
 
         .ring-bg {
             fill: none;
             stroke: #e8eaf0;
-            stroke-width: 3.5;
+            stroke-width: 4;
+        }
+
+        .ring-glow {
+            fill: none;
+            stroke-width: 6;
         }
 
         .ring-fill {
             fill: none;
-            stroke: #4361ee;
-            stroke-width: 3.5;
+            stroke-width: 4;
             stroke-linecap: round;
-            transition: stroke-dashoffset 1s cubic-bezier(.22, .68, 0, 1.2);
+
+            stroke-dasharray: 113.1;
+            transition: stroke-dashoffset 1s cubic-bezier(0.22, 0.68, 0, 1.2),
+                stroke 0.3s ease;
+
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.08));
         }
 
         .ring-label {
@@ -251,9 +260,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+
+            font-size: 10.5px;
             font-weight: 800;
             color: #0f1117;
+            letter-spacing: -0.2px;
         }
 
         .overall-text strong {
@@ -586,14 +597,25 @@
                 <div class="divider"></div>
                 <div class="overall">
                     <div class="overall-ring">
-                        <div class="discipline-progress">
-                            <div class="progress-circle"
-                                [style.--progress]="subject.currentUserProgressRate * 3.6 + 'deg'">
-                                <span></span>
-                            </div>
+                        <svg class="progress-svg" viewBox="0 0 44 44">
+
+                            <!-- fundo -->
+                            <circle class="ring-bg" cx="22" cy="22" r="18" />
+
+                            <!-- glow base (leve profundidade) -->
+                            <circle class="ring-glow" cx="22" cy="22" r="18" />
+
+                            <!-- progresso -->
+                            <circle class="ring-fill" cx="22" cy="22" r="18" stroke="#4361ee"
+                                [style.stroke-dasharray]="113.1"
+                                [style.stroke-dashoffset]="113.1 - (subject.currentUserProgressRate / 100) * 113.1" />
+                        </svg>
+
+                        <div class="ring-label">
+                            {{ subject.currentUserProgressRate.toFixed(0) }}%
                         </div>
-                        <div class="ring-label">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
                     </div>
+
                     <div class="overall-text"><strong>Progresso geral</strong><span>{{ subject.totalTopics }}
                             tópicos</span>
                     </div>

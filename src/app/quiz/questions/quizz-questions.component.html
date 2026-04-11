@@ -955,29 +955,34 @@
     }
 
     /* Progress Circle */
-    .progress-ring {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      background: conic-gradient(var(--score-color, #2563eb) var(--score-degrees), #e5e7eb 0deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .progress-ring::before {
-      content: '';
-      position: absolute;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: #ffffff;
-    }
-
     .score-ring {
       position: relative;
       flex-shrink: 0;
+      width: 120px;
+      height: 120px;
+    }
+
+    .progress-svg {
+      width: 120px;
+      height: 120px;
+      transform: rotate(-90deg);
+    }
+
+    .track {
+      fill: none;
+      stroke: #e5e7eb;
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+
+    .fill {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 326.73;
+      /* SEM animação — o valor vem directamente do binding Angular */
+      transition: stroke-dashoffset 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
+        stroke 0.3s ease;
     }
 
     .score-center {
@@ -990,16 +995,20 @@
     }
 
     .score-number {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 700;
       color: #0f172a;
       line-height: 1;
+      letter-spacing: -0.5px;
+      animation: num-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
     }
 
     .score-max {
       font-size: 11px;
       color: #94a3b8;
-      margin-top: 2px;
+      margin-top: 3px;
+      letter-spacing: 0.3px;
+      animation: num-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.95s both;
     }
 
     .grade-letter {
@@ -2568,14 +2577,12 @@
 
       <div class="results-hero">
         <div class="score-ring">
-          <div class="discipline-progress">
-            <div class="progress-ring" [style.--score-color]="
-                (result.correctAnswers / quiz.questions.length) >= 0.7 ? '#16a34a' :
-                (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'
-              " [style.--score-degrees]="((result.correctAnswers / quiz.questions.length) * 100) + '%'">
-              <span></span>
-            </div>
-          </div>
+          <svg class="progress-svg" viewBox="0 0 120 120">
+            <circle class="track" cx="60" cy="60" r="52" />
+            <circle class="fill" cx="60" cy="60" r="52" [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.7 ? '#16a34a' :
+        (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'"
+              [style.stroke-dashoffset]="326.73 - (result.correctAnswers / quiz.questions.length) * 326.73" />
+          </svg>
           <div class="score-center">
             <div class="score-number">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
             <div class="score-max">de 100</div>
