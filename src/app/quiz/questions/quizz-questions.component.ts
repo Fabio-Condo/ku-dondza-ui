@@ -41,7 +41,7 @@ import { timer } from 'rxjs';
   styleUrls: ['./quizz-questions.component.css'],
 })
 export class QuizzQuestionsComponent implements OnInit {
-[x: string]: any;
+  [x: string]: any;
   quiz: Quiz = new Quiz();
   topics: Topic[] = [];
 
@@ -435,7 +435,8 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showLoading = true;
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados;
+        //this.subjects = dados;
+        this.subjects = dados.filter(s => s.quizEnabled);
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

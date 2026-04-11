@@ -11,4 +11,6 @@ export class SubjectProgressDTO {
     topicDtoWithTests: TopicDtoWithTests[] = [];
     currentUserProgressRate: number = 0;
     totalTopics!: number;
+
+    progressEnabled: boolean = false;
 }    

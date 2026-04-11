@@ -160,7 +160,8 @@ export class SubjectsComponent implements OnInit {
       )
     ).subscribe(
       (dados: IApiResponse<Subject>) => {
-        this.subjects = dados.content;
+        //this.subjects = dados.content;
+        this.subjects = dados.content.filter(subject => subject.courseEnabled);
         this.totalRecords = dados.totalElements;
         if (this.totalSubjects == 0) {
           this.totalSubjects = dados.totalElements;

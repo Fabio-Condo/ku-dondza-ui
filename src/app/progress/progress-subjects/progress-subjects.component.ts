@@ -74,8 +74,8 @@ export class ProgressSubjectsComponent {
       )
     ).subscribe({
       next: (dados) => {
-        this.subjects = dados;
-        //this.selectedSubject = this.subjects[0];
+        //this.subjects = dados;
+        this.subjects = dados.filter(subject => subject.progressEnabled);
         this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {

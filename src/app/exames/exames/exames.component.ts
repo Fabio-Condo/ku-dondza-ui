@@ -306,7 +306,8 @@ export class ExamesComponent implements OnInit {
   carregarDisciplinas() {
     this.subjectsService.findAll().subscribe({
       next: (dados) => {
-        this.subjects = dados;
+        //this.subjects = dados;
+        this.subjects = dados.filter(s => s.examEnabled);
       },
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
