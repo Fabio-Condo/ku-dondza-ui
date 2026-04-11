@@ -886,7 +886,7 @@
                             <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
                         </svg>
                     </div>
-                    <div class="discipline-icon" *ngIf="subject.name === 'Fisica'">
+                    <div class="discipline-icon" *ngIf="subject.name === 'Física'">
                         <svg viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="2" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" />
@@ -920,28 +920,25 @@
                         <span class="card-sub">{{ getCategoryValue(subject.category) }}</span>
                     </div>
 
-                    <!--
-                    <div>
-                        <div class="dropdown-container">
-                            <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i
-                                    class="pi pi-ellipsis-h"></i></button>
-                            <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
-                                <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
-                                <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar
-                                    no WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar
-                                    no Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar
-                                    no LinkedIn</a>
-                                <a [routerLink]="['/subjects', subject.subjectId]">Visualizar</a>
-                                <a (click)="onUpdateSubject(subject); closeDropdown(subject)"
-                                    *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
-                                <a (click)="confirmarExclusao(subject); closeDropdown(subject)"
-                                    *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
-                            </div>
+                    <div class="dropdown-container">
+                        <button class="dropdown-btn" (click)="toggleDropdown(subject)"><i
+                                class="pi pi-ellipsis-h"></i></button>
+                        <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
+                            <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
+                            <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar
+                                no WhatsApp</a>
+                            <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar
+                                no Facebook</a>
+                            <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar
+                                no LinkedIn</a>
+                            <a [routerLink]="['/subjects', subject.subjectId]">Visualizar</a>
+                            <a (click)="onUpdateSubject(subject); closeDropdown(subject)"
+                                *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
+                            <a (click)="confirmarExclusao(subject); closeDropdown(subject)"
+                                *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
                         </div>
                     </div>
-                    -->
+
                 </div>
                 <div class="card-body">
                     <div class="description-label">Descrição</div>
