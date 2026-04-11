@@ -117,14 +117,13 @@ export class ExamesComponent implements OnInit {
   ];
 
   institutions = [
-    { label: 'Universidade Eduardo Mondlane', value: 'UEM' },
-    { label: 'Universidade Pedagógica', value: 'UP' },
-    { label: 'Instituto Superior de Ciências de Saúde', value: 'ISCISA' },
-    { label: 'Instituto Superior de Contabilidade e Auditoria de Moçambique', value: 'ISCAM' },
-    { label: 'A Universidade Joaquim Chissano', value: 'UJC' },
-    { label: 'Academia de Ciências Policiais', value: 'ACIPOL' },
-    { label: 'Academia Militar', value: 'AM' },
-
+    { label: 'Universidade Eduardo Mondlane - UEM', value: 'UEM' },
+    { label: 'Universidade Pedagógica - UP', value: 'UP' },
+    { label: 'Instituto Superior de Ciências de Saúde - ISCISA', value: 'ISCISA' },
+    { label: 'Instituto Superior de Contabilidade e Auditoria de Moçambique - ISCAM', value: 'ISCAM' },
+    { label: 'A Universidade Joaquim Chissano - UJC', value: 'UJC' },
+    { label: 'Academia de Ciências Policiais - ACIPOL', value: 'ACIPOL' },
+    { label: 'Academia Militar - AM', value: 'AM' },
     //  { label: 'Todas', value: '' },
   ];
 
