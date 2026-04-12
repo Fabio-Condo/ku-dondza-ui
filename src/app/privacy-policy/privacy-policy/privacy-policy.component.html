@@ -14,319 +14,412 @@
 
         body {
             padding: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #1a1a1a;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 860px;
             margin: 0 auto;
             margin-top: 75px;
+            padding-bottom: 4rem;
         }
 
-        .policy-content {
-            background: white;
-            border-radius: 12px;
-            padding: 50px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f1f5f9;
-        }
-
-        header {
+        /* --- Hero --- */
+        .hero {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
         }
 
-        header h1 {
-            font-size: 1.5rem;
+        .hero-badge {
+            display: inline-block;
+            background: #e8eeff;
+            color: #3a52c4;
+            font-size: 12px;
             font-weight: 600;
-            color: #1e293b;
+            letter-spacing: 0.06em;
+            padding: 5px 16px;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #111;
             margin-bottom: 0.5rem;
         }
 
-        header p {
+        .hero p {
             font-size: 14px;
-            color: #718096;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.6;
         }
 
-        .last-updated-container {
+        /* --- Last updated --- */
+        .last-updated {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            border: 1px solid #ebebeb;
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 2.5rem;
+        }
+
+        .last-updated-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #3a52c4;
+            flex-shrink: 0;
+        }
+
+        .last-updated-wrap {
             text-align: center;
         }
 
-        .last-updated {
-            background: linear-gradient(135deg, #4361ee, #5a67d8);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            display: inline-block;
-            margin-bottom: 40px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            box-shadow: 0 2px 12px rgba(67, 97, 238, 0.25);
+        /* --- Policy card --- */
+        .policy-content {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 1px solid #ebebeb;
         }
 
+        /* --- Sections --- */
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 2.5rem;
         }
 
         .section h2 {
-            color: #1a202c;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 15px;
             font-weight: 600;
-            position: relative;
+            color: #111;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: #e8eeff;
+            color: #3a52c4;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
         }
 
         .section h3 {
-            color: #2d3748;
-            font-size: 1.2rem;
-            margin: 28px 0 16px;
+            font-size: 13px;
             font-weight: 600;
+            color: #333;
+            margin: 1.25rem 0 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .section p {
-            margin-bottom: 18px;
-            color: #475569;
+            font-size: 13.5px;
+            color: #555;
+            line-height: 1.75;
+            margin-bottom: 0.75rem;
             text-align: justify;
         }
 
+        .divider {
+            height: 1px;
+            background: #ebebeb;
+            margin: 2rem 0;
+        }
+
+        /* --- Data lists --- */
         .data-list {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-            border: 1px solid #f1f5f9;
+            background: #f8f9fa;
+            border: 1px solid #ebebeb;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .data-list h3 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 0 0 0.75rem;
         }
 
         .data-list ul {
             list-style: none;
-            padding-left: 0;
+            padding: 0;
         }
 
         .data-list li {
-            padding: 8px 0;
+            padding: 5px 0;
+            padding-left: 20px;
             position: relative;
-            padding-left: 25px;
+            font-size: 13.5px;
+            color: #555;
+            line-height: 1.6;
         }
 
         .data-list li::before {
-            content: '✓';
+            content: '';
             position: absolute;
             left: 0;
-            color: #48bb78;
-            font-weight: bold;
-            font-size: 1.1rem;
+            top: 12px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #3a52c4;
         }
 
+        /* --- Highlight box --- */
         .highlight-box {
-            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 25px 0;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: #f0f4ff;
+            border: 1px solid #c7d4f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
         }
 
         .highlight-box h3 {
-            color: white;
-            margin-bottom: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3a52c4;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
         }
 
+        .highlight-box p {
+            font-size: 13.5px;
+            color: #444;
+            line-height: 1.7;
+        }
+
+        /* --- Contact --- */
         .contact-info {
-            background: linear-gradient(135deg, #4361ee, #5a67d8);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 40px;
+            background: #fff;
+            border: 1px solid #ebebeb;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 2rem;
         }
 
-        .contact-info h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+        .contact-info-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #ebebeb;
         }
 
-        .contact-info p {
-            margin-bottom: 10px;
-            font-size: 1.1rem;
+        .contact-info-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111;
         }
 
-        @media (max-width: 900px) {
-            .container {
-                margin-top: 60px;
-            }
+        .contact-row {
+            display: flex;
+            gap: 8px;
+            padding: 0.75rem 1.25rem;
+            border-bottom: 1px solid #ebebeb;
+            font-size: 13.5px;
         }
 
+        .contact-row:last-child {
+            border-bottom: none;
+        }
+
+        .contact-label {
+            color: #999;
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .contact-value {
+            color: #111;
+            font-weight: 500;
+        }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.5rem;
-            }
-
-            header p {
-                font-size: 14px;
-            }
-
-            .section h2 {
-                font-size: 1.3rem;
-            }
-
-            .data-list,
-            .highlight-box,
-            .contact-info {
-                padding: 20px;
-            }
-
-            .last-updated-container {
-                text-align: center;
-            }
+            .container { margin-top: 60px; }
+            .hero h1 { font-size: 1.3rem; }
+            .policy-content { padding: 1.5rem; }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-        <header>
+
+        <div class="hero">
+            <span class="hero-badge">Privacidade</span>
             <h1>Políticas de Privacidade</h1>
-            <p>Transparência no uso dos seus dados acadêmicos</p>
-        </header>
+            <p>Transparência no uso dos seus dados académicos.</p>
+        </div>
 
-        <div class="last-updated-container">
-            <div class="last-updated">
+        <div class="last-updated-wrap">
+            <span class="last-updated">
+                <span class="last-updated-dot"></span>
                 Última atualização: 23 de maio de 2025
-            </div>
+            </span>
         </div>
 
-        <div class="section">
-            <h2>1. Introdução</h2>
-            <p>Esta Política de Privacidade descreve como coletamos, usamos e protegemos suas informações pessoais
-                quando você utiliza nossa plataforma acadêmica, incluindo artigos, cursos, biblioteca, exercícios
-                resolvidos, quizzes e competições.</p>
-            <p>Ao utilizar nossa plataforma, você concorda com as práticas descritas nesta política. Valorizamos sua
-                privacidade e nos comprometemos a proteger seus dados pessoais.</p>
-        </div>
+        <div class="policy-content">
 
-        <div class="section">
-            <h2>2. Dados Coletados</h2>
-            <p>Para oferecer nossos serviços educacionais, coletamos as seguintes informações:</p>
-
-            <div class="data-list">
-                <h3>Informações de Conta</h3>
-                <ul>
-                    <li>Nome completo e nome de usuário</li>
-                    <li>Endereço de e-mail</li>
-                    <li>Instituição educacional</li>
-                    <li>Área de estudo</li>
-                    <li>Foto de perfil (opcional)</li>
-                </ul>
+            <div class="section">
+                <h2><span class="section-num">1</span> Introdução</h2>
+                <p>Esta Política de Privacidade descreve como coletamos, usamos e protegemos suas informações pessoais quando você utiliza nossa plataforma académica, incluindo artigos, cursos, biblioteca, exercícios resolvidos, quizzes e competições.</p>
+                <p>Ao utilizar nossa plataforma, você concorda com as práticas descritas nesta política. Valorizamos sua privacidade e nos comprometemos a proteger seus dados pessoais.</p>
             </div>
 
-            <div class="data-list">
-                <h3>Dados de Atividade Acadêmica</h3>
-                <ul>
-                    <li>Progresso nos cursos e módulos</li>
-                    <li>Resultados de quizzes e exercícios</li>
-                    <li>Participação em competições</li>
-                    <li>Histórico de consultas na biblioteca</li>
-                    <li>Comentários em artigos</li>
-                    <li>Tempo de estudo e frequência de acesso</li>
-                </ul>
+            <div class="divider"></div>
+
+            <div class="section">
+                <h2><span class="section-num">2</span> Dados Coletados</h2>
+                <p>Para oferecer nossos serviços educacionais, coletamos as seguintes informações:</p>
+
+                <div class="data-list">
+                    <h3>Informações de conta</h3>
+                    <ul>
+                        <li>Nome completo e nome de usuário</li>
+                        <li>Endereço de e-mail</li>
+                        <li>Instituição educacional</li>
+                        <li>Área de estudo</li>
+                        <li>Foto de perfil (opcional)</li>
+                    </ul>
+                </div>
+
+                <div class="data-list">
+                    <h3>Dados de atividade académica</h3>
+                    <ul>
+                        <li>Progresso nos cursos e módulos</li>
+                        <li>Resultados de quizzes e exercícios</li>
+                        <li>Participação em competições</li>
+                        <li>Histórico de consultas na biblioteca</li>
+                        <li>Comentários em artigos</li>
+                        <li>Tempo de estudo e frequência de acesso</li>
+                    </ul>
+                </div>
+
+                <div class="data-list">
+                    <h3>Informações técnicas</h3>
+                    <ul>
+                        <li>Endereço IP e localização aproximada</li>
+                        <li>Tipo de dispositivo e navegador</li>
+                        <li>Logs de acesso e navegação</li>
+                        <li>Cookies essenciais para funcionamento</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="data-list">
-                <h3>Informações Técnicas</h3>
-                <ul>
-                    <li>Endereço IP e localização aproximada</li>
-                    <li>Tipo de dispositivo e navegador</li>
-                    <li>Logs de acesso e navegação</li>
-                    <li>Cookies essenciais para funcionamento</li>
-                </ul>
+            <div class="divider"></div>
+
+            <div class="section">
+                <h2><span class="section-num">3</span> Como Utilizamos Seus Dados</h2>
+
+                <h3>Serviços educacionais</h3>
+                <p>Utilizamos seus dados para personalizar sua experiência de aprendizado, recomendar conteúdos relevantes, acompanhar seu progresso académico e fornecer feedback sobre exercícios e quizzes.</p>
+
+                <h3>Funcionalidades da plataforma</h3>
+                <p>Seus dados nos permitem manter seu histórico de estudos, sincronizar progresso entre dispositivos, organizar sua biblioteca pessoal e facilitar sua participação em competições.</p>
+
+                <h3>Comunicação</h3>
+                <p>Enviamos notificações sobre novos conteúdos, lembretes de estudos, resultados de competições e atualizações importantes da plataforma.</p>
             </div>
-        </div>
 
-        <div class="section">
-            <h2>3. Como Utilizamos Seus Dados</h2>
-
-            <h3>Serviços Educacionais</h3>
-            <p>Utilizamos seus dados para personalizar sua experiência de aprendizado, recomendar conteúdos relevantes,
-                acompanhar seu progresso acadêmico e fornecer feedback sobre exercícios e quizzes.</p>
-
-            <h3>Funcionalidades da Plataforma</h3>
-            <p>Seus dados nos permitem manter seu histórico de estudos, sincronizar progresso entre dispositivos,
-                organizar sua biblioteca pessoal e facilitar sua participação em competições.</p>
-
-            <h3>Comunicação</h3>
-            <p>Enviamos notificações sobre novos conteúdos, lembretes de estudos, resultados de competições e
-                atualizações importantes da plataforma.</p>
-        </div>
-
-        <div class="highlight-box">
-            <h3>Compromisso com a Segurança</h3>
-            <p>Implementamos medidas de segurança incluindo criptografia de dados, autenticação segura, monitoramento
-                contínuo e backups regulares para proteger suas informações acadêmicas.</p>
-        </div>
-
-        <div class="section">
-            <h2>4. Compartilhamento de Dados</h2>
-            <p>Respeitamos sua privacidade e limitamos o compartilhamento de dados.</p>
-
-            <h3>Não Compartilhamos</h3>
-            <p>Não vendemos, alugamos ou comercializamos seus dados pessoais. Suas informações acadêmicas permanecem
-                confidenciais.</p>
-
-            <h3>Compartilhamento Limitado</h3>
-            <p>Podemos compartilhar dados agregados e anonimizados para pesquisas educacionais. Em competições, apenas
-                rankings podem ser exibidos publicamente, conforme suas configurações de privacidade.</p>
-        </div>
-
-        <div class="section">
-            <h2>5. Seus Direitos</h2>
-            <p>Você possui controle total sobre seus dados pessoais:</p>
-
-            <div class="data-list">
-                <ul>
-                    <li>Acessar todos os seus dados coletados</li>
-                    <li>Corrigir informações incorretas</li>
-                    <li>Excluir sua conta e dados associados</li>
-                    <li>Exportar seu histórico acadêmico</li>
-                    <li>Controlar configurações de privacidade</li>
-                    <li>Optar por não receber comunicações</li>
-                </ul>
+            <div class="highlight-box">
+                <h3>Compromisso com a segurança</h3>
+                <p>Implementamos medidas de segurança incluindo criptografia de dados, autenticação segura, monitoramento contínuo e backups regulares para proteger suas informações académicas.</p>
             </div>
-        </div>
 
-        <div class="section">
-            <h2>6. Retenção de Dados</h2>
-            <p>Mantemos seus dados pelo tempo necessário para fornecer nossos serviços educacionais. Dados de progresso
-                acadêmico são preservados para manter seu histórico de aprendizado.</p>
-            <p>Após a exclusão da conta, dados pessoais são removidos em até 30 dias, exceto quando exigido por lei.</p>
-        </div>
+            <div class="divider"></div>
 
-        <div class="section">
-            <h2>7. Cookies</h2>
-            <p>Utilizamos apenas cookies essenciais para o funcionamento da plataforma e cookies de análise para
-                melhorar a experiência do usuário. Você pode gerenciar suas preferências nas configurações do navegador.
-            </p>
-        </div>
+            <div class="section">
+                <h2><span class="section-num">4</span> Compartilhamento de Dados</h2>
 
-        <div class="section">
-            <h2>8. Atualizações da Política</h2>
-            <p>Esta política pode ser atualizada para refletir mudanças em nossos serviços. Notificaremos sobre
-                alterações significativas por e-mail e através da plataforma.</p>
-            <p>Recomendamos revisar periodicamente esta política.</p>
+                <h3>Não compartilhamos</h3>
+                <p>Não vendemos, alugamos ou comercializamos seus dados pessoais. Suas informações académicas permanecem confidenciais.</p>
+
+                <h3>Compartilhamento limitado</h3>
+                <p>Podemos compartilhar dados agregados e anonimizados para pesquisas educacionais. Em competições, apenas rankings podem ser exibidos publicamente, conforme suas configurações de privacidade.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h2><span class="section-num">5</span> Seus Direitos</h2>
+                <p>Você possui controle total sobre seus dados pessoais:</p>
+
+                <div class="data-list">
+                    <ul>
+                        <li>Acessar todos os seus dados coletados</li>
+                        <li>Corrigir informações incorretas</li>
+                        <li>Excluir sua conta e dados associados</li>
+                        <li>Exportar seu histórico académico</li>
+                        <li>Controlar configurações de privacidade</li>
+                        <li>Optar por não receber comunicações</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h2><span class="section-num">6</span> Retenção de Dados</h2>
+                <p>Mantemos seus dados pelo tempo necessário para fornecer nossos serviços educacionais. Dados de progresso académico são preservados para manter seu histórico de aprendizado.</p>
+                <p>Após a exclusão da conta, dados pessoais são removidos em até 30 dias, exceto quando exigido por lei.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h2><span class="section-num">7</span> Cookies</h2>
+                <p>Utilizamos apenas cookies essenciais para o funcionamento da plataforma e cookies de análise para melhorar a experiência do usuário. Você pode gerenciar suas preferências nas configurações do navegador.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h2><span class="section-num">8</span> Atualizações da Política</h2>
+                <p>Esta política pode ser atualizada para refletir mudanças em nossos serviços. Notificaremos sobre alterações significativas por e-mail e através da plataforma.</p>
+                <p>Recomendamos revisar periodicamente esta política.</p>
+            </div>
+
         </div>
 
         <div class="contact-info">
-            <h3>Entre em Contato</h3>
-            <p><strong>Email:</strong> {{email}}</p>
-            <p><strong>Telefone:</strong> (+258) 844505579</p>
-            <p><strong>Endereço:</strong> Rua 8, 25 de junho - choupal, Maputo</p>
-            <p>Nossa equipe está disponível para esclarecer dúvidas sobre privacidade.</p>
+            <div class="contact-info-header">
+                <h3>Entre em contacto</h3>
+            </div>
+            <div class="contact-row">
+                <span class="contact-label">Email</span>
+                <span class="contact-value">{{email}}</span>
+            </div>
+            <div class="contact-row">
+                <span class="contact-label">Telefone</span>
+                <span class="contact-value">(+258) 844 505 579</span>
+            </div>
+            <div class="contact-row">
+                <span class="contact-label">Endereço</span>
+                <span class="contact-value">Rua 8, 25 de junho — Choupal, Maputo</span>
+            </div>
+            <div class="contact-row">
+                <span class="contact-label">Suporte</span>
+                <span class="contact-value">Disponível para esclarecer dúvidas sobre privacidade</span>
+            </div>
         </div>
 
     </div>
