@@ -136,6 +136,7 @@ export class ExamesComponent implements OnInit {
     { label: 'I', value: "I" },
     { label: 'II', value: "II" },
     { label: 'III', value: "III" },
+    { label: 'IV', value: "IV" },
     { label: 'Nenhum', value: "" },
   ];
 
@@ -688,8 +689,6 @@ export class ExamesComponent implements OnInit {
     this.filtro.beginYear = undefined;
     this.filtro.endYear = undefined;
     this.filtro.pagina = 0;
-    this.filtro.itensPorPagina = 10;
-    this.filtro.ordenamento = "id,desc"
     this.findAll();
   }
 
