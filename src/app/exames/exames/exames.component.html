@@ -1548,6 +1548,13 @@
         <form autocomplete="off" #exameForm="ngForm">
 
             <div class="form-group">
+                <label for="type">Tipo</label>
+                <select id="type" [(ngModel)]="filtro.examType" (change)="findAll()" name="type">
+                    <option *ngFor="let type of examTypes" [value]="type.value">{{ type.label }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="institution">Instituição</label>
                 <select id="institution" [(ngModel)]="filtro.institution" (change)="findAll()" name="institution">
                     <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
@@ -1560,13 +1567,6 @@
                 <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject">
                     <option value="" disabled selected>Selecione a disciplina</option>
                     <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }}</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="type">Tipo</label>
-                <select id="type" [(ngModel)]="filtro.examType" (change)="findAll()" name="type">
-                    <option *ngFor="let type of examTypes" [value]="type.value">{{ type.label }}</option>
                 </select>
             </div>
 
