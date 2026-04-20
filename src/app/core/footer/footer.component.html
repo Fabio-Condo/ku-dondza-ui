@@ -1,446 +1,346 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footer Dikahub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer Dikahub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-        /* ── FOOTER ── */
-        footer {
-            background: white;
-            border-top: 0.5px solid rgba(67, 97, 238, 0.1);
-            padding: 40px 32px 24px;
-        }
+    footer {
+      background: white;
+      border-top: 0.5px solid rgba(67, 97, 238, 0.1);
+      padding: 40px 32px 24px;
+    }
 
-        .footer-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+    .footer-inner { max-width: 1000px; margin: 0 auto; }
 
-        /* ── TOP ROW ── */
-        .footer-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 32px;
-            padding-bottom: 32px;
-            border-bottom: 0.5px solid rgba(0, 0, 0, 0.07);
-        }
+    /* ── TOP ROW ── */
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      padding-bottom: 32px;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.07);
+      flex-wrap: wrap;
+    }
 
-        /* ── BRAND ── */
-        .footer-brand {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            min-width: 160px;
-        }
+    /* ── BRAND ── */
+    .footer-brand { display: flex; flex-direction: column; gap: 12px; min-width: 160px; }
 
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
+    .footer-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
 
-        .logo-mark {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            background: #4361ee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .logo-mark {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: #4361ee;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark svg { width: 14px; height: 14px; fill: white; }
 
-        .logo-mark svg {
-            width: 14px;
-            height: 14px;
-            fill: white;
-        }
+    .logo-text { font-size: 16px; font-weight: 700; color: #1a1a2e; letter-spacing: -0.5px; }
+    .logo-text span { color: #4361ee; }
 
-        .logo-text {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a1a2e;
-            letter-spacing: -0.5px;
-        }
+    .tagline { font-size: 12.5px; color: #a0a8b8; max-width: 180px; line-height: 1.6; }
 
-        .logo-text span {
-            color: #4361ee;
-        }
+    /* ── NAV GROUPS ── */
+    .footer-nav { display: flex; gap: 48px; flex-wrap: wrap; }
 
-        .tagline {
-            font-size: 12.5px;
-            color: #a0a8b8;;
-            max-width: 180px;
-            line-height: 1.6;
-        }
+    .nav-group { display: flex; flex-direction: column; gap: 10px; }
 
-        /* ── NAV GROUPS ── */
-        .footer-nav {
-            display: flex;
-            gap: 48px;
-            flex-wrap: wrap;
-        }
+    .nav-group-title {
+      font-size: 11px; font-weight: 600; color: #a0a8b8;
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px;
+    }
 
-        .nav-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .nav-group a { color: #555; text-decoration: none; font-size: 13.5px; font-weight: 500; transition: color 0.2s; }
+    .nav-group a:hover { color: #4361ee; }
 
-        .nav-group-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: #a0a8b8;;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 2px;
-        }
+    /* ── RIGHT COLUMN ── */
+    .footer-right { display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
 
-        .nav-group a {
-            color: #555;
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
+    /* ── SOCIAL ── */
+    .social-links { display: flex; gap: 8px; align-items: center; }
 
-        .nav-group a:hover {
-            color: #4361ee;
-        }
+    .social-links a {
+      color: #a0a8b8;
+      font-size: 14px;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      border: 0.5px solid rgba(0, 0, 0, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .social-links a:hover { transform: translateY(-2px); }
+    .social-links a.facebook:hover { background: #1877f2; color: white; border-color: #1877f2; }
+    .social-links a.twitter:hover  { background: #1da1f2; color: white; border-color: #1da1f2; }
+    .social-links a.instagram:hover { background: #e1306c; color: white; border-color: #e1306c; }
+    .social-links a.linkedin:hover  { background: #0077b5; color: white; border-color: #0077b5; }
 
-        /* ── RIGHT COLUMN ── */
-        .footer-right {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            align-items: flex-end;
-        }
+    /* ── WHATSAPP ── */
+    .whatsapp-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #25d366; color: white;
+      text-decoration: none;
+      padding: 8px 14px; border-radius: 20px;
+      font-size: 13px; font-weight: 600;
+      border: none; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .whatsapp-btn:hover { background: #20ba5a; transform: translateY(-2px); }
 
-        /* ── SOCIAL ── */
-        .social-links {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+    /* ── DOWNLOAD GROUP ── */
+    .dl-group { display: flex; flex-direction: column; gap: 7px; width: 100%; }
 
-        .social-links a {
-            color: #a0a8b8;;
-            font-size: 14px;
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            border: 0.5px solid rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
+    .dl-label {
+      font-size: 9px; font-weight: 600; color: #a0a8b8;
+      letter-spacing: 0.6px; text-transform: uppercase;
+    }
 
-        .social-links a:hover {
-            transform: translateY(-2px);
-        }
+    .dl-row { display: flex; gap: 7px; }
 
-        .social-links a.facebook:hover {
-            background: #1877f2;
-            color: white;
-            border-color: #1877f2;
-        }
+    .dl-chip {
+      flex: 1;
+      display: flex; align-items: center; gap: 8px;
+      background: #f5f6f9;
+      border: 0.5px solid rgba(0, 0, 0, 0.09);
+      border-radius: 11px;
+      padding: 8px 11px;
+      text-decoration: none; cursor: pointer;
+      transition: all 0.15s; min-width: 0;
+    }
+    .dl-chip:hover { transform: translateY(-2px); }
+    .dl-chip:active { transform: scale(0.96); }
 
-        .social-links a.twitter:hover {
-            background: #1da1f2;
-            color: white;
-            border-color: #1da1f2;
-        }
+    .dl-chip.pwa {
+      background: #eef1fd;
+      border-color: rgba(67, 97, 238, 0.2);
+    }
 
-        .social-links a.instagram:hover {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: white;
-            border-color: transparent;
-        }
+    .dl-chip-icon {
+      flex-shrink: 0; width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+    }
 
-        .social-links a.linkedin:hover {
-            background: #0077b5;
-            color: white;
-            border-color: #0077b5;
-        }
+    .pwa-icon-bg {
+      width: 20px; height: 20px; border-radius: 6px;
+      background: #4361ee;
+      display: flex; align-items: center; justify-content: center;
+    }
 
-        /* ── WHATSAPP ── */
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: #25d366;
-            color: white !important;
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
-            border: none;
-            cursor: pointer;
-        }
+    .dl-chip-text { min-width: 0; }
 
-        .whatsapp-btn i {
-            font-size: 15px;
-        }
+    .dl-chip-sub {
+      font-size: 8.5px; color: #a0a8b8;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .dl-chip.pwa .dl-chip-sub { color: rgba(67, 97, 238, 0.6); }
 
-        .whatsapp-btn:hover {
-            background: #20ba5a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
-        }
+    .dl-chip-name {
+      font-size: 11.5px; font-weight: 600; color: #1a1a2e;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .dl-chip.pwa .dl-chip-name { color: #4361ee; }
 
-        /* ── INSTALL BUTTONS ── */
-        .install-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            border-radius: 12px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
+    /* ── BOTTOM ── */
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 20px; gap: 16px; flex-wrap: wrap;
+    }
 
-        .install-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-        }
+    .copyright { font-size: 12.5px; color: #a0a8b8; font-weight: 500; }
+    .copyright strong { color: #4361ee; font-weight: 700; }
 
-        .install-btn:active {
-            transform: scale(0.97);
-        }
+    .footer-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #bbb; }
+    .footer-badge span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #25d366; display: inline-block;
+    }
 
-        .playstore {
-            background: linear-gradient(135deg, #34a853, #4285f4);
-            color: white;
-        }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .footer-top { flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+      .footer-brand { align-items: center; }
+      .tagline { text-align: center; }
+      .footer-nav { justify-content: center; gap: 28px; }
+      .footer-right { align-items: center; width: 100%; }
+      .dl-group { align-items: center; }
+      .dl-row { width: 100%; max-width: 360px; }
+      .footer-bottom { justify-content: center; text-align: center; }
+    }
 
-        .pwa {
-            background: #1c1c1e;
-            color: white;
-        }
+    @media (max-width: 480px) {
+      footer { padding: 32px 16px 20px; }
+      .footer-nav { flex-direction: column; align-items: center; gap: 20px; }
+      .dl-row { max-width: 100%; }
+    }
 
-        .install-icon {
-            font-size: 20px;
-            line-height: 1;
-        }
-
-        .install-text small {
-            display: block;
-            font-size: 10px;
-            opacity: 0.75;
-            letter-spacing: 0.2px;
-        }
-
-        .install-text strong {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        /* ── BOTTOM BAR ── */
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 20px;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .copyright {
-            font-size: 12.5px;
-            color: #a0a8b8;
-            font-weight: 500;
-        }
-
-        .copyright strong {
-            color: #4361ee;
-            font-weight: 700;
-        }
-
-        .footer-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: #bbb;
-        }
-
-        .footer-badge span {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #25d366;
-            display: inline-block;
-        }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 768px) {
-            .footer-top {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 28px;
-            }
-
-            .footer-brand {
-                align-items: center;
-            }
-
-            .tagline {
-                text-align: center;
-            }
-
-            .footer-nav {
-                justify-content: center;
-                gap: 28px;
-            }
-
-            .footer-right {
-                align-items: center;
-            }
-
-            .footer-bottom {
-                justify-content: center;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            footer {
-                padding: 32px 16px 20px;
-            }
-
-            .footer-nav {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
-        }
-    </style>
+    @media (max-width: 340px) {
+      .dl-chip-name { font-size: 10.5px; }
+      .dl-chip { padding: 7px 8px; gap: 6px; }
+    }
+  </style>
 </head>
 
 <body>
-    <footer>
-        <div class="footer-inner">
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
 
-            <div class="footer-top">
-
-                <!-- Brand -->
-                <div class="footer-brand">
-                    <a class="footer-logo" routerLink="/home">
-                        <div class="logo-mark">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
-                            </svg>
-                        </div>
-                        <span class="logo-text">Dika<span>hub</span></span>
-                    </a>
-                    <p class="tagline">A plataforma académica que te prepara para o sucesso.</p>
-                </div>
-
-                <!-- Nav groups -->
-                <nav class="footer-nav">
-                    <div class="nav-group">
-                        <span class="nav-group-title">Plataforma</span>
-                        <a routerLink="/home">Início</a>
-                        <a routerLink="/quizzes">Quizzes</a>
-                        <a routerLink="/subjects">Materiais</a>
-                        <a routerLink="/exames">Exames</a>
-                    </div>
-                    <div class="nav-group">
-                        <span class="nav-group-title">Empresa</span>
-                        <a routerLink="/about-us">Sobre Nós</a>
-                        <a routerLink="/prices">Preços</a>
-                        <a routerLink="/faq">FAQ</a>
-                        <a routerLink="/privacy-policy">Privacidade</a>
-                    </div>
-                </nav>
-
-                <!-- Right column -->
-                <div class="footer-right">
-
-                    <!-- Social -->
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                            class="facebook" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                            class="twitter" title="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                            class="instagram" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/f%C3%A1bio-enosse-condo-55a6b8170/" target="_blank"
-                            class="linkedin" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-
-                    <!-- WhatsApp -->
-                    <a href="#" class="whatsapp-btn" (click)="enterOnGroup()">
-                        <i class="fab fa-whatsapp"></i>
-                        Grupo WhatsApp
-                    </a>
-
-                    <!-- Install card -->
-                    <div *ngIf="!isInstalled">
-
-                        <!-- Android -->
-                        <a *ngIf="isAndroid" href="https://play.google.com/store/apps/details?id=com.dikahub.app"
-                            target="_blank" class="install-btn playstore">
-                            <span class="install-icon">📱</span>
-                            <div class="install-text">
-                                <small>Disponível na</small>
-                                <strong>Google Play</strong>
-                            </div>
-                        </a>
-
-                        <!-- PWA -->
-                        <button *ngIf="!isAndroid && showPwaButton" (click)="installPWA()" class="install-btn pwa">
-                            <span class="install-icon">⚡</span>
-                            <div class="install-text">
-                                <small>Instalar rapidamente</small>
-                                <strong>App Dikahub</strong>
-                            </div>
-                        </button>
-
-                    </div>
-                </div>
+        <!-- Brand -->
+        <div class="footer-brand">
+          <a class="footer-logo" routerLink="/home">
+            <div class="logo-mark">
+              <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
             </div>
+            <span class="logo-text">Dika<span>hub</span></span>
+          </a>
+          <p class="tagline">A plataforma académica que te prepara para o sucesso.</p>
+        </div>
 
-            <!-- Bottom bar -->
-            <div class="footer-bottom">
-                <p class="copyright">
-                    <strong>Dikahub</strong> © 2026 Dikahub, Inc. Todos os direitos reservados.
-                </p>
-                <div class="footer-badge">
-                    <span></span> Serviços online
+        <!-- Nav groups -->
+        <nav class="footer-nav">
+          <div class="nav-group">
+            <span class="nav-group-title">Plataforma</span>
+            <a routerLink="/home">Início</a>
+            <a routerLink="/quizzes">Quizzes</a>
+            <a routerLink="/subjects">Materiais</a>
+            <a routerLink="/exames">Exames</a>
+          </div>
+          <div class="nav-group">
+            <span class="nav-group-title">Empresa</span>
+            <a routerLink="/about-us">Sobre Nós</a>
+            <a routerLink="/prices">Preços</a>
+            <a routerLink="/faq">FAQ</a>
+            <a routerLink="/privacy-policy">Privacidade</a>
+          </div>
+        </nav>
+
+        <!-- Right column -->
+        <div class="footer-right">
+
+          <!-- Social -->
+          <div class="social-links">
+            <a href="#" target="_blank" class="facebook" title="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" target="_blank" class="twitter" title="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" target="_blank" class="instagram" title="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" target="_blank" class="linkedin" title="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+
+          <!-- WhatsApp -->
+          <a href="#" class="whatsapp-btn" (click)="enterOnGroup()">
+            <i class="fab fa-whatsapp"></i>
+            Grupo WhatsApp
+          </a>
+
+          <!-- Download buttons — sempre visíveis no desktop; Angular controla no mobile -->
+          <div class="dl-group" *ngIf="!isInstalled">
+            <span class="dl-label">Instalar aplicação</span>
+            <div class="dl-row">
+
+              <!-- Google Play -->
+              <a class="dl-chip"
+                 href="https://play.google.com/store/apps/details?id=com.dikahub.app"
+                 target="_blank" rel="noopener">
+                <div class="dl-chip-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M3.18 1.41C2.74 1.88 2.5 2.6 2.5 3.5v17c0 .9.24 1.62.68 2.09l.11.1 9.52-9.52v-.22L3.29 3.31z" fill="#4285F4"/>
+                    <path d="M15.84 16.29l-3.17-3.18v-.22l3.17-3.18.07.04 3.76 2.14c1.07.61 1.07 1.6 0 2.21l-3.76 2.15z" fill="#FBBC04"/>
+                    <path d="M15.91 16.25L12.67 13 3.18 22.49c.35.37.93.42 1.58.06z" fill="#EA4335"/>
+                    <path d="M15.91 9.75L4.76 3.45c-.65-.36-1.23-.31-1.58.06L12.67 13z" fill="#34A853"/>
+                  </svg>
                 </div>
+                <div class="dl-chip-text">
+                  <div class="dl-chip-sub">Google</div>
+                  <div class="dl-chip-name">Play Store</div>
+                </div>
+              </a>
+
+              <!-- App Store -->
+              <a class="dl-chip"
+                 href="https://apps.apple.com/app/SEU_APP_ID"
+                 target="_blank" rel="noopener">
+                <div class="dl-chip-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#1a1a2e">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.22.14-2.08 1.21-2.06 3.61.03 2.87 2.51 3.82 2.54 3.83-.03.07-.39 1.35-1.23 2.68zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                  </svg>
+                </div>
+                <div class="dl-chip-text">
+                  <div class="dl-chip-sub">Apple</div>
+                  <div class="dl-chip-name">App Store</div>
+                </div>
+              </a>
+
+              <!-- PWA -->
+              <button class="dl-chip pwa" id="pwa-footer-btn"
+                      *ngIf="showPwaButton" (click)="installPWA()">
+                <div class="dl-chip-icon">
+                  <div class="pwa-icon-bg">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                         stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="dl-chip-text">
+                  <div class="dl-chip-sub">Web app</div>
+                  <div class="dl-chip-name">Adicionar</div>
+                </div>
+              </button>
+
             </div>
+          </div>
 
         </div>
-    </footer>
-</body>
+      </div>
 
+      <!-- Bottom bar -->
+      <div class="footer-bottom">
+        <p class="copyright">
+          <strong>Dikahub</strong> © 2026 Dikahub, Inc. Todos os direitos reservados.
+        </p>
+        <div class="footer-badge">
+          <span></span> Serviços online
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+    const pwaBtn = document.getElementById('pwa-footer-btn');
+    if (pwaBtn) {
+      pwaBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+          deferredPrompt = null;
+        } else {
+          alert('Use o menu do browser e escolha "Adicionar ao ecrã inicial".');
+        }
+      });
+    }
+  </script>
+</body>
 </html>
