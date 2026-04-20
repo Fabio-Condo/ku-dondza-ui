@@ -14,6 +14,8 @@
 
         body {
             padding: 10px;
+            /*background-color: #f8fafc;*/
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         .container {
@@ -34,23 +36,20 @@
         .title-container {
             text-align: center;
             margin-top: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         h1 {
             font-size: 1.5rem;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
         }
 
         .subtitle {
             font-size: 14px;
-            color: #718096;
+            color: #94a3b8;
             line-height: 1.5;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
             margin-bottom: 15px;
         }
 
@@ -58,130 +57,122 @@
             display: none;
             font-size: 1.25rem;
             font-weight: 600;
-            color: #2d3748;
+            color: #1e293b;
             margin-bottom: 1rem;
+        }
+
+        /* Botões base */
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn-primary {
+            background-color: #4361ee;
+            color: white;
+            border: 1px solid #4361ee;
+        }
+
+        .btn-primary:hover {
+            background-color: #3451d1;
+            border-color: #3451d1;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f5f9;
         }
 
         .button-add-new {
             background-color: #4361ee;
             color: white;
+            border: 1px solid #4361ee;
         }
 
-        .filters {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            margin-bottom: 2rem;
+        .button-add-new:hover {
+            background-color: #3451d1;
+        }
+
+        .actions {
             display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .filter-group label {
-            display: block;
-            color: #4a5568;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .filter-group select,
-        .filter-group input {
-            width: 100%;
-            padding: 0.625rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fff;
-            font-size: 0.95rem;
-            color: #2d3748;
-            transition: border-color 0.2s;
-        }
-
-        .filter-group select:focus,
-        .filter-group input:focus {
-            outline: none;
-            border-color: #4361ee;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
-        }
-
+        /* Grid de cards */
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
         }
 
+        /* Card */
         .card {
-            background-color: white;
-            border-radius: 12px;
+            background-color: #ffffff;
+            border-radius: 14px;
             overflow: visible;
-            box-shadow: 0 2px 16px rgba(15, 17, 30, 0.06);
-            transition: transform 0.2s, box-shadow 0.2s;
-            animation: fadeUp 0.45s ease both;
-            border: 1px solid #e8eaf0;
+            border: 1px solid #e8edf2;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            animation: fadeUp 0.4s ease both;
         }
 
         .card:hover {
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.07);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card-header {
-            padding: 20px;
+            padding: 16px 18px;
             display: flex;
             align-items: center;
-            gap: 13px;
-            border-bottom: 1px solid #eee;
+            gap: 12px;
+            border-bottom: 1px solid #f1f5f9;
         }
 
         .card-body {
-            padding: 20px;
+            padding: 16px 18px;
             display: flex;
             flex-direction: column;
+            gap: 14px;
         }
 
         .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid #f1f5f9;
         }
 
-        .exam-title-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .exam-title {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: -0.2px;
-            color: #0f1117;
-            line-height: 1.25;
-        }
-
-        .exam-institution {
-            font-size: 12px;
-            color: #a0a8b8;
-        }
-
-        .exam-details {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.25rem;
-        }
-
+        /* Ícone de disciplina */
         .discipline-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 13px;
-            background: rgba(67, 97, 238, 0.10);
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #eef2ff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -189,8 +180,8 @@
         }
 
         .discipline-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 19px;
+            height: 19px;
             stroke: #4361ee;
             fill: none;
             stroke-width: 1.6;
@@ -205,118 +196,146 @@
         }
 
         .card-name {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: -0.2px;
-            color: #0f1117;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
             line-height: 1.25;
         }
 
         .card-sub {
             font-size: 12px;
-            color: #a0a8b8;
+            color: #94a3b8;
         }
 
-        .detail-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        /* Dropdown */
+        .dropdown-container {
+            margin-left: auto;
+            position: relative;
         }
 
-        .detail-item {
+        .dropdown-btn {
+            background-color: transparent;
+            border: none;
+            border-radius: 7px;
+            padding: 5px 7px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: #4a5568;
-            font-size: 0.9rem;
         }
 
-        .detail-label {
-            font-weight: 500;
-            color: #718096;
+        .dropdown-btn:hover {
+            background-color: #f1f5f9;
+            color: #475569;
         }
 
+        .dropdown {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 6px);
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+            min-width: 160px;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 9px 14px;
+            font-size: 13px;
+            color: #475569;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .dropdown a:hover {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Descrição label */
         .description-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #a0a8b8;
-            margin-bottom: 12px;
+            letter-spacing: 0.7px;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        /* Badges */
+        .detail-row {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
-            padding: 0.35rem 0.75rem;
-
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-
+            gap: 5px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
             border-radius: 6px;
-            /* meio quadrado */
-            border: 1px solid currentColor;
-
-            background-color: rgba(0, 0, 0, 0.04);
-            color: #333;
-
-            line-height: 1;
+            border: 1px solid transparent;
             white-space: nowrap;
+            line-height: 1;
+        }
+
+        .badge-icon {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+
+        .badge-date {
+            color: #475569;
+            background-color: #f8fafc;
+            border-color: #e2e8f0;
         }
 
         .badge-enunciado {
             background: #f0fdf4;
             color: #16a34a;
-            border: 1px solid #bbf7d0;
+            border-color: #bbf7d0;
         }
 
         .badge-resolvido {
-            background: #fdf6e3;
-            color: #b8892e;
-            border: 1px solid #f0dbb8;
-        }
-
-        .badge-date {
-            color: #4a5568;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-        }
-
-        .badge-with-icon {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .badge-icon {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
+            background: #fefce8;
+            color: #a16207;
+            border-color: #fde68a;
         }
 
         .badge-premium {
-            color: #805ad5;
-            /* roxo premium */
-            background-color: rgba(128, 90, 213, 0.12);
-            border: 1px solid rgba(128, 90, 213, 0.45);
+            color: #7c3aed;
+            background-color: #f5f3ff;
+            border-color: #ddd6fe;
         }
 
         .badge-free {
-            color: #4a5568;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
+            color: #475569;
+            background-color: #f8fafc;
+            border-color: #e2e8f0;
         }
 
+        /* Botão de download */
         .download-btn {
             width: 100%;
-            padding: 12px 18px;
+            padding: 10px 16px;
             background: #4361ee;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 9px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 500;
+            font-family: inherit;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -326,154 +345,71 @@
         }
 
         .download-btn:hover {
-            background: #0f1117;
-            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.18);
+            background: #1e293b;
             transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.2);
         }
 
         .download-btn:active {
             transform: translateY(0);
         }
 
+        .download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .download-btn svg {
             width: 14px;
             height: 14px;
-            transition: transform 0.2s;
             fill: none;
             stroke: currentColor;
-            stroke-width: 2.5;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.2s;
+        }
+
+        .download-btn:hover:not(:disabled) svg {
+            transform: translateY(2px);
+        }
+
+        /* Botão upgrade / premium */
+        .upgrade-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: #1e293b;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+
+        .upgrade-btn:hover {
+            background: #0f172a;
+            transform: translateY(-1px);
+        }
+
+        .upgrade-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        .download-btn:hover svg {
-            transform: translateX(3px);
-        }
-
-        .upgrade-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #1f2937;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .upgrade-btn:hover {
-            background-color: #111827;
-            border-color: #111827;
-        }
-
-        .upgrade-icon {
-            width: 18px;
-            height: 18px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #718096;
-        }
-
-        .empty-state svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .actions {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        button {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: #4361ee;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #4361ee;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-outline:hover {
-            background-color: #f8fafc;
-        }
-
-        .load-more-container {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-        }
-
-        .btn-load-more {
-            background-color: transparent;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-load-more:hover {
-            background-color: #f8fafc;
-        }
-
-        .btn-load-more:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            background-color: #3498db;
-            color: white;
-            border-color: #3498db;
-        }
-
+        /* FAB */
         .fab {
             display: none;
             position: fixed;
@@ -483,26 +419,32 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            font-size: 24px;
+            width: 52px;
+            height: 52px;
+            font-size: 22px;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.35);
             cursor: pointer;
             z-index: 1000;
         }
 
+        /* Load more */
         .load-more-container {
             display: none;
             justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding: 24px;
         }
 
         .btn-load-more {
             background-color: transparent;
-            border: 1px solid #d1d5db;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
         }
 
         .btn-load-more:hover {
@@ -510,7 +452,7 @@
         }
 
         .btn-load-more:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
         }
 
@@ -518,74 +460,56 @@
         .pagination {
             display: flex;
             justify-content: flex-end;
-            margin-top: 30px;
+            margin-top: 28px;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .pagination-info {
-            color: #718096;
-            font-size: 14px;
-            margin-right: 15px;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-right: 10px;
         }
 
         .pagination-btn {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            width: 40px;
-            height: 40px;
+            height: 36px;
+            padding: 0 12px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 5px;
             border-radius: 8px;
             border: 1px solid #e2e8f0;
             background-color: #fff;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 500;
+            font-size: 13px;
+            color: #475569;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .pagination-btn:hover {
             background-color: #f8fafc;
+            border-color: #cbd5e1;
         }
 
         .pagination-btn.active {
-            background-color: #4c6ef5;
+            background-color: #4361ee;
             color: white;
-            border-color: #4c6ef5;
-        }
-
-        .pagination-btn.prev,
-        .pagination-btn.next {
-            width: auto;
-            padding: 0 15px;
+            border-color: #4361ee;
         }
 
         .pagination-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
         }
 
-        .progress-message {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2563eb;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 16px;
-            animation: fadeInOut 3s ease-in-out forwards;
-            z-index: 9999;
-        }
-
-        /* ─── Loading overlay ────────────────────────────── */
+        /* Loading overlay */
         .loading-overlay {
             position: fixed;
             inset: 0;
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -602,22 +526,22 @@
 
         .loading-box {
             background: #fff;
-            border-radius: 16px;
-            border: 1px solid #e8eaf0;
-            padding: 2rem 2.5rem;
+            border-radius: 14px;
+            border: 1px solid #e8edf2;
+            padding: 1.75rem 2.25rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 3px solid #e0e4f5;
+            border: 2.5px solid #e0e7ff;
             border-top-color: #4361ee;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.75s linear infinite;
         }
 
         @keyframes spin {
@@ -627,22 +551,259 @@
         }
 
         .loading-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        /* Progress message toast */
+        .progress-message {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            animation: fadeInOut 3s ease-in-out forwards;
+            z-index: 9999;
+            white-space: nowrap;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(6px);
+            }
+
+            15% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #94a3b8;
             font-size: 14px;
-            font-weight: 500;
-            color: #374151;
         }
 
-        /* Botão do menu dropdown */
-        .dropdown-btn {
-            background-color: transparent;
-            display: inline-block;
-            padding: 0px 0px;
-            border-radius: 20px;
+        /* Retry */
+        .retry-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.25s ease;
+            backdrop-filter: blur(3px);
+        }
+
+        .retry-content {
+            background: #ffffff;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+            max-width: 380px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .retry-text {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .retry-button {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 9px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .retry-button:hover {
+            background-color: #3451d1;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ─── Modais ─────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 460px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalIn 0.22s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .close-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            border: 1px solid #e2e8f0;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 16px;
+            transition: background 0.15s;
+            padding: 0;
+        }
+
+        .close-btn:hover {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Formulário */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label,
+        .form-label {
+            display: block;
             font-size: 12px;
-            font-weight: 500;
-            margin-right: 10px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 5px;
+            letter-spacing: 0.2px;
         }
 
+        .form-group select,
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="file"],
+        .form-group textarea {
+            width: 100%;
+            padding: 9px 11px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1e293b;
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
+        }
+
+        .form-group input[type="file"] {
+            padding: 7px 11px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            border-radius: 9px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover {
+            background: #3451d1;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        /* Date range */
         .date-range-container {
             display: flex;
             align-items: flex-end;
@@ -657,14 +818,347 @@
             flex: 1;
         }
 
+        .field label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.3px;
+        }
+
         .separator {
             padding: 0 0.25rem;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.4rem;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
             white-space: nowrap;
         }
 
+        /* ─── Modal Login / Registro ─────────────────── */
+        .login-side {
+            width: 100%;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 9px 11px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1e293b;
+            background: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .input-group input:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 9px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+            margin-bottom: 0.75rem;
+        }
+
+        .login-btn:hover {
+            background: #3451d1;
+        }
+
+        .login-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1rem 0;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .go-back-btn {
+            display: inline-block;
+            font-size: 13px;
+            color: #4361ee;
+            cursor: pointer;
+            margin-bottom: 0.75rem;
+            text-decoration: none;
+        }
+
+        .go-back-btn:hover {
+            text-decoration: underline;
+        }
+
+        .resend-btn {
+            display: block;
+            text-align: center;
+            font-size: 13px;
+            color: #4361ee;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .message {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.55;
+            margin-bottom: 0.75rem;
+        }
+
+        .message span {
+            color: #4361ee;
+            font-weight: 500;
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 0.75rem;
+        }
+
+        .signup-link a {
+            color: #4361ee;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* ─── Modal Premium / Upgrade ─────────────────── */
+        .pricing-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .plan-price-big {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1;
+        }
+
+        .plan-period {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.45;
+        }
+
+        .feature-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #4361ee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .feature-check svg {
+            stroke: #fff;
+        }
+
+        .btn-upgrade-big {
+            width: 100%;
+            padding: 11px;
+            border-radius: 9px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .btn-upgrade-big:hover {
+            background: #3451d1;
+            transform: translateY(-1px);
+        }
+
+        .btn-upgrade-big:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ─── Modal Pagamento ─────────────────────────── */
+        .wallet-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .wallet-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+            background: #fff;
+        }
+
+        .wallet-card:hover {
+            border-color: #a5b4fc;
+            background: #f8faff;
+        }
+
+        .wallet-card.selected {
+            border-color: #4361ee;
+            background: #eef2ff;
+        }
+
+        .wallet-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wallet-img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            border-radius: 7px;
+        }
+
+        .wallet-type {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .wallet-num {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 1px;
+        }
+
+        .wallet-badge {
+            font-size: 11px;
+            font-weight: 600;
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            padding: 3px 9px;
+            border-radius: 99px;
+        }
+
+        .btn-set-default {
+            font-size: 11px;
+            font-weight: 500;
+            background: transparent;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            padding: 3px 9px;
+            border-radius: 99px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+
+        .btn-set-default:hover {
+            border-color: #4361ee;
+            color: #4361ee;
+        }
+
+        .btn-add-wallet {
+            width: 100%;
+            padding: 9px;
+            border-radius: 9px;
+            border: 1px dashed #c7d2fe;
+            background: #f8faff;
+            color: #4361ee;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-bottom: 1rem;
+        }
+
+        .btn-add-wallet:hover {
+            background: #eef2ff;
+        }
+
+        .plan-price-note {
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        .error-text {
+            display: block;
+            font-size: 11px;
+            color: #ef4444;
+            margin-top: 4px;
+        }
+
+        /* Responsividade */
         @media (max-width: 900px) {
             .container {
                 margin-top: 60px;
@@ -672,29 +1166,16 @@
         }
 
         @media (max-width: 768px) {
-
-            .exams-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .exam-card {
-                padding: 10px;
-            }
-
-            .filters {
-                flex-direction: column;
-            }
-
             .pagination {
                 display: none;
             }
 
             .card-header {
-                padding: 10px 10px;
+                padding: 12px 14px;
             }
 
             .card-body {
-                padding: 10px;
+                padding: 12px 14px;
             }
 
             .load-more-container {
@@ -705,14 +1186,6 @@
                 display: flex;
             }
 
-            .fab {
-                display: flex;
-            }
-
-            .pagination-info {
-                display: none;
-            }
-
             .title-container {
                 display: none;
             }
@@ -721,23 +1194,16 @@
                 display: none;
             }
 
-            .popout-container {
-                width: 95%;
-                padding: 10px;
-                max-width: 100%;
-                max-height: 70vh;
-                border-radius: 8px;
-                overflow-y: auto;
+            .pagination-info {
+                display: none;
             }
 
-            .popout-title {
-                font-size: 18px;
-                text-align: center;
+            .fab {
+                display: flex;
             }
 
-            .close-button {
-                font-size: 20px;
-                padding: 8px;
+            .cards-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -754,9 +1220,11 @@
             </div>
         </div>
 
+        <!-- Toast de progresso -->
         <div *ngIf="currentMessage" class="progress-message">
             {{ currentMessage }}
         </div>
+
         <div class="title-container">
             <h1>Exames</h1>
             <p class="subtitle">Encontre e baixe exames anteriores das principais instituições</p>
@@ -767,7 +1235,7 @@
             <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalExames }}</span>
             <div class="actions">
                 <button (click)="onAddNewExame()" class="button-add-new" id="add-btn" *ngIf="isUserLoggedIn && isAdmin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -775,7 +1243,7 @@
                     Novo
                 </button>
                 <button class="btn-outline" id="filter-btn" (click)="onFilter()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                     </svg>
@@ -789,9 +1257,9 @@
         </button>
 
         <div class="cards-container">
-            <!-- Card 1 -->
             <div class="card" *ngFor="let exam of exams">
                 <div class="card-header">
+                    <!-- Ícones por disciplina -->
                     <div class="discipline-icon" *ngIf="exam.subject.name === 'Matemática'">
                         <svg viewBox="0 0 24 24">
                             <path d="M4 4h16" />
@@ -847,43 +1315,34 @@
                     </div>
                     <div class="discipline-icon" *ngIf="exam.subject.name === 'Geografia'">
                         <svg viewBox="0 0 24 24">
-                            <!-- Globo -->
                             <circle cx="12" cy="12" r="9" />
-
-                            <!-- Linhas de latitude -->
                             <path d="M3 12h18" />
                             <path d="M5 8h14" />
                             <path d="M5 16h14" />
-
-                            <!-- Linhas de longitude -->
                             <path d="M12 3c3 3 3 15 0 18" />
                             <path d="M12 3c-3 3-3 15 0 18" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="exam.subject.name === 'Inglês'">
                         <svg viewBox="0 0 24 24">
-                            <!-- Globo -->
                             <circle cx="12" cy="12" r="9" />
-
-                            <!-- Linhas -->
                             <path d="M3 12h18" />
                             <path d="M12 3c3 3 3 15 0 18" />
                             <path d="M12 3c-3 3-3 15 0 18" />
-
-                            <!-- Letra A (idioma) -->
                             <path d="M9 16l3-8 3 8" />
                             <path d="M10 13h4" />
                         </svg>
                     </div>
+
                     <div class="card-title-group">
                         <span class="card-name">{{ exam.subject.name }} {{ exam.number }}</span>
-                        <span class="card-sub">{{ getInstitution(exam.institution) }} - {{ exam.institution }}</span>
+                        <span class="card-sub">{{ getInstitution(exam.institution) }} · {{ exam.institution }}</span>
                     </div>
+
                     <div class="dropdown-container">
                         <button class="dropdown-btn" (click)="toggleDropdown(exam)">
                             <i class="pi pi-ellipsis-h"></i>
                         </button>
-
                         <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
                             <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
                                 *ngIf="isUserLoggedIn && isAdmin">Editar</a>
@@ -893,101 +1352,100 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body">
-                    <div class="description-label">Descrição</div>
-                    <div class="detail-row">
-                        <span class="badge badge-date badge-with-icon">
-                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none">
-                                <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor"
-                                    stroke-width="1.8" />
-                                <path d="M3 10H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                            </svg>
-                            {{ exam.year }}
-                        </span>
-                        <span class="badge badge-enunciado badge-with-icon" [ngClass]="getBadgeClass(exam.examType)">
-                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6 C4.9 22 4 21.1 4 20V4 C4 2.9 4.9 2 6 2Z"
-                                    stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
-                            </svg>
-                            {{ getType(exam.examType) }}
-                        </span>
-                        <span class="badge badge-with-icon" [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
-                            <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" />
-                                <rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor"
-                                    stroke-width="1.8" />
-                                <circle cx="12" cy="15" r="1.2" fill="currentColor" />
-                            </svg>
-                            {{ exam.premium ? 'Premium' : 'Gratuito' }}
-                        </span>
+                    <div>
+                        <div class="description-label">Detalhes</div>
+                        <div class="detail-row">
+                            <span class="badge badge-date">
+                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <path d="M3 10H21" stroke-linecap="round" />
+                                </svg>
+                                {{ exam.year }}
+                            </span>
+                            <span class="badge badge-with-icon" [ngClass]="getBadgeClass(exam.examType)">
+                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <path
+                                        d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2Z"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                {{ getType(exam.examType) }}
+                            </span>
+                            <span class="badge" [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
+                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke-linecap="round" />
+                                    <rect x="5" y="10" width="14" height="11" rx="2" />
+                                    <circle cx="12" cy="15" r="1.2" fill="currentColor" />
+                                </svg>
+                                {{ exam.premium ? 'Premium' : 'Gratuito' }}
+                            </span>
+                        </div>
                     </div>
+
                     <div class="card-footer">
+                        <!-- Botão download (exame gratuito) -->
                         <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
                             [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
-                            <svg *ngIf="!exam.showLoadingDownload" class="download-icon" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
+                                <path
                                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                                style="font-size: 10px;"></i>
-                            <span *ngIf="!exam.showLoadingDownload">Baixar Exame</span>
-                            <span *ngIf="exam.showLoadingDownload">Baixando...</span>
+                                style="font-size:12px;"></i>
+                            <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar exame' }}</span>
                         </button>
-                        <button class="download-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
-                            <svg class="upgrade-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                        <!-- Botão upgrade (exame premium) -->
+                        <button class="upgrade-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
                             </svg>
-                            <span>Ver Resolução Completa</span>
+                            <span>Ver resolução completa</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div *ngIf="!showLoading && !retryVisible && exams.length  === 0">
-            <div class="card">
-                <span class="no-items-message">
-                    Nenhum item encontrado
-                </span>
-            </div>
+        <!-- Empty state -->
+        <div *ngIf="!showLoading && !retryVisible && exams.length === 0" class="empty-state">
+            Nenhum exame encontrado.
         </div>
 
-        <!-- Load-more -->
+        <!-- Load more (mobile) -->
         <div *ngIf="!retryVisible" class="load-more-container">
             <button class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
-                Buscar mais
+                Carregar mais
             </button>
         </div>
 
+        <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
-                <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
-                    fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="8" x2="12" y2="12"></line>
                     <circle cx="12" cy="16" r="1"></circle>
                 </svg>
-
                 <div class="retry-text">
                     Ocorreu um erro ao carregar os exames.<br>
                     Por favor, tente novamente.
                 </div>
-
                 <button class="retry-button" (click)="retryGetExames()">
                     Tentar novamente
                 </button>
             </div>
         </div>
 
-        <!-- Paginação -->
+        <!-- Paginação (desktop) -->
         <div class="pagination">
             <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalExames }}</span>
             <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
@@ -997,7 +1455,7 @@
             <button class="pagination-btn next" (click)="nextPage()"
                 [disabled]="currentPage === totalPages() || showLoading">
                 Próxima
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
@@ -1008,10 +1466,11 @@
 
 </html>
 
+<!-- Modal: Adicionar / Editar exame -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
         <div class="modal-header">
-            <h2 class="modal-title">{{ editing ? 'Editando' : 'Adicionando' }}</h2>
+            <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
             <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
         </div>
 
@@ -1020,7 +1479,7 @@
             <div class="form-group">
                 <label for="subject">Disciplina</label>
                 <select id="subject" [(ngModel)]="exam.subject.id" name="subject" required>
-                    <option value="" disabled selected>Selecione a subject</option>
+                    <option value="" disabled selected>Selecione a disciplina</option>
                     <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }}</option>
                 </select>
             </div>
@@ -1042,9 +1501,9 @@
             </div>
 
             <div class="form-group">
-                <label for="premium">Nivel</label>
+                <label for="premium">Nível de acesso</label>
                 <select id="premium" [(ngModel)]="exam.premium" name="premium" required>
-                    <option value="" disabled selected>Selecione o nivel</option>
+                    <option value="" disabled selected>Selecione o nível</option>
                     <option *ngFor="let level of accessLevels" [value]="level.value">{{ level.label }}</option>
                 </select>
             </div>
@@ -1067,31 +1526,30 @@
             </div>
 
             <div class="form-group">
-                <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf"
-                    class="form-control" required />
+                <label>Ficheiro PDF</label>
+                <input type="file" (change)="onFileSelected($event)" name="file" accept="application/pdf" required />
             </div>
 
             <button class="btn-submit" type="button" (click)="save()">
-                {{ showLoading ? 'Loading...' :'Salvar' }}
+                {{ showLoading ? 'Salvando...' : 'Salvar' }}
             </button>
-
         </form>
     </div>
 </div>
 
+<!-- Modal: Filtrar exames -->
 <div class="modal-overlay" *ngIf="displayModalFilter">
     <div class="modal">
         <div class="modal-header">
-            <h2 class="modal-title">Filtros</h2>
+            <h2 class="modal-title">Filtrar exames</h2>
             <button class="close-btn" (click)="displayModalFilter = false">&#x2715;</button>
         </div>
 
         <form autocomplete="off" #exameForm="ngForm">
 
             <div class="form-group">
-                <label for="type">Instituição</label>
-                <select id="institution" [(ngModel)]="filtro.institution" (change)="findAll()" name="institution"
-                    required>
+                <label for="institution">Instituição</label>
+                <select id="institution" [(ngModel)]="filtro.institution" (change)="findAll()" name="institution">
                     <option *ngFor="let institution of institutions" [value]="institution.value">{{ institution.label }}
                     </option>
                 </select>
@@ -1099,7 +1557,7 @@
 
             <div class="form-group">
                 <label for="subject">Disciplina</label>
-                <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject" required>
+                <select id="subject" [(ngModel)]="filtro.subject" (change)="findAll()" name="subject">
                     <option value="" disabled selected>Selecione a disciplina</option>
                     <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }}</option>
                 </select>
@@ -1107,165 +1565,121 @@
 
             <div class="form-group">
                 <label for="type">Tipo</label>
-                <select id="type" [(ngModel)]="filtro.examType" (change)="findAll()" name="type" required>
+                <select id="type" [(ngModel)]="filtro.examType" (change)="findAll()" name="type">
                     <option *ngFor="let type of examTypes" [value]="type.value">{{ type.label }}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Período</label>
-
                 <div class="date-range-container">
-
                     <div class="field">
                         <label for="beginYear">Ano inicial</label>
-                        <select id="beginYear" [(ngModel)]="filtro.beginYear" (change)="findAll()" name="beginYear"
-                            required>
+                        <select id="beginYear" [(ngModel)]="filtro.beginYear" (change)="findAll()" name="beginYear">
                             <option value="" disabled>Selecione</option>
-                            <option *ngFor="let ano of anos" [value]="ano.value">
-                                {{ ano.label }}
-                            </option>
+                            <option *ngFor="let ano of anos" [value]="ano.value">{{ ano.label }}</option>
                         </select>
                     </div>
-
                     <div class="separator">até</div>
-
                     <div class="field">
                         <label for="endYear">Ano final</label>
-                        <select id="endYear" [(ngModel)]="filtro.endYear" (change)="findAll()" name="endYear" required>
+                        <select id="endYear" [(ngModel)]="filtro.endYear" (change)="findAll()" name="endYear">
                             <option value="" disabled>Selecione</option>
-                            <option *ngFor="let ano of anos" [value]="ano.value">
-                                {{ ano.label }}
-                            </option>
+                            <option *ngFor="let ano of anos" [value]="ano.value">{{ ano.label }}</option>
                         </select>
                     </div>
-
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit" (click)="limparCampos()">Reset</button>
+            <button type="submit" class="btn-submit" (click)="limparCampos()">Limpar filtros</button>
         </form>
     </div>
 </div>
 
-<!-- Popout -->
+<!-- Modal: Login -->
 <div class="modal-overlay" *ngIf="displayModalLogin">
     <div class="modal">
-
         <div class="login-side" *ngIf="activeTab === 1">
-
             <div class="modal-header">
-                <h2 class="modal-title">Cadastre-se para continuar</h2>
+                <h2 class="modal-title">Entrar na conta</h2>
                 <button class="close-btn" (click)="onCloseLoginPopout()">&#x2715;</button>
             </div>
 
             <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-
-            <div class="divider" *ngIf="step === 'email' && googleAuthReady">
-                <span>OU</span>
-            </div>
+            <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou</span></div>
 
             <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
-
-                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
-
+                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">← Voltar</a>
                 <p class="message" *ngIf="step === 'otp'">
-                    Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
+                    Insira o código enviado para <span>{{ user.email }}</span>
                 </p>
 
                 <div class="input-group" *ngIf="step === 'email'">
-                    <label>Email:</label>
-                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
-                        required email [(ngModel)]="user.email">
+                    <label>E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="O seu e-mail" required email
+                        [(ngModel)]="user.email">
                 </div>
-
                 <div class="input-group" *ngIf="step === 'otp'">
-                    <label>OTP:</label>
-                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
-                        [(ngModel)]="otp">
+                    <label>Código OTP</label>
+                    <input type="text" id="otp" name="otp" placeholder="Código de acesso" required [(ngModel)]="otp">
                 </div>
 
                 <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
-                    {{ step === 'email' ? 'Login' : 'Verificar' }}
+                    {{ step === 'email' ? 'Continuar' : 'Verificar' }}
                 </button>
-
                 <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
-                    acessar sua conta se tiver se cadastrado com gmail.
+                    Enviaremos um código único para o seu e-mail.
                 </p>
-
                 <div class="signup-link">
-                    Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+                    Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
                 </div>
-
             </form>
-
         </div>
 
         <div class="login-side" *ngIf="activeTab === 2">
-
-            <div class="popout-header">
-                <h2 class="popout-title">Cadastre-se para continuar</h2>
-                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Criar conta</h2>
+                <button class="close-btn" (click)="onCloseLoginPopout()">&#x2715;</button>
             </div>
 
             <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-
-            <div class="divider" *ngIf="step === 'email' && googleAuthReady">
-                <span>OU</span>
-            </div>
+            <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou</span></div>
 
             <form autocomplete="off" #registerForm="ngForm"
                 (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
                 <div class="input-group" *ngIf="step === 'email'">
-                    <label for="name">Nome completo</label>
-                    <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
-                        placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+                    <label>Nome completo</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="O seu nome"
+                        [(ngModel)]="user.fullName">
                 </div>
-
                 <div class="input-group" *ngIf="step === 'email'">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
-                        required email [(ngModel)]="user.email">
+                    <label>E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="O seu e-mail" required email
+                        [(ngModel)]="user.email">
                 </div>
 
-                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
-
+                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">← Voltar</a>
                 <p class="message" *ngIf="step === 'otp'">
-                    Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
+                    Insira o código enviado para <span>{{ user.email }}</span>
                 </p>
-
                 <div class="input-group" *ngIf="step === 'otp'">
-                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
-                        [(ngModel)]="otp">
+                    <input type="text" id="otp" name="otp" placeholder="Código de acesso" required [(ngModel)]="otp">
                 </div>
 
                 <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
-                    {{ step === 'email' ? 'Login' : 'Verificar' }}
+                    {{ step === 'email' ? 'Cadastrar' : 'Verificar' }}
                 </button>
+                <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar código</a>
 
-                <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
-
-                <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
-                    cadastradar com
-                    gmail.
-                </p>
-
+                <div class="signup-link">
+                    Já tem conta? <a (click)="setActiveTab(1)">Faça login</a>
+                </div>
             </form>
-            <div id="google-signin-button"></div>
-            <div class="signup-link">
-                Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
-            </div>
         </div>
     </div>
 </div>
 
-
-
-<!-- ══════════════════════════════════════════
-     MODAL: Upgrade de plano
-════════════════════════════════════════════ -->
+<!-- Modal: Upgrade de plano -->
 <div class="modal-overlay" *ngIf="displayModalUpgradePlan">
     <div class="modal">
         <div class="modal-header">
@@ -1278,31 +1692,39 @@
             <div class="plan-period">por mês</div>
             <ul class="feature-list">
                 <li>
-                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="feature-check">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12" />
-                        </svg></span>
+                        </svg>
+                    </span>
                     Acesso ilimitado a todos os tópicos e conteúdos disponíveis
                 </li>
                 <li>
-                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="feature-check">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12" />
-                        </svg></span>
+                        </svg>
+                    </span>
                     Resolução detalhada com dicas e comentários
                 </li>
                 <li>
-                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="feature-check">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12" />
-                        </svg></span>
+                        </svg>
+                    </span>
                     Criação de quizzes avançados e personalizados
                 </li>
                 <li>
-                    <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="feature-check">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12" />
-                        </svg></span>
+                        </svg>
+                    </span>
                     Mais exercícios por quiz para reforçar o aprendizado
                 </li>
             </ul>
@@ -1312,10 +1734,7 @@
     </div>
 </div>
 
-
-<!-- ══════════════════════════════════════════
-     MODAL: Método de pagamento
-════════════════════════════════════════════ -->
+<!-- Modal: Método de pagamento -->
 <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
     <div class="modal">
         <div class="modal-header">
@@ -1339,30 +1758,26 @@
                     </div>
                     <div>
                         <button *ngIf="!wallet.default" class="btn-set-default"
-                            (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Principal</button>
+                            (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir principal</button>
                         <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
                     </div>
                 </label>
             </ng-container>
             <ng-template #noWallets>
-                <p style="font-size:13px; color:#6b7280;">Você ainda não adicionou nenhuma carteira.</p>
+                <p style="font-size:13px; color:#94a3b8;">Nenhuma carteira adicionada.</p>
             </ng-template>
         </div>
 
-        <button class="btn-add-wallet" (click)="openModalAddPaymentOption()">+ Adicionar método de
-            pagamento</button>
+        <button class="btn-add-wallet" (click)="openModalAddPaymentOption()">+ Adicionar método de pagamento</button>
 
         <div *ngIf="userWallets.length !== 0">
             <button class="btn-upgrade-big" (click)="upgradePlan()">Confirmar upgrade</button>
-            <p class="plan-price-note">MT 299/mês</p>
+            <p class="plan-price-note">MT 299 / mês</p>
         </div>
     </div>
 </div>
 
-
-<!-- ══════════════════════════════════════════
-     MODAL: Adicionar carteira
-════════════════════════════════════════════ -->
+<!-- Modal: Adicionar carteira -->
 <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
     <div class="modal">
         <div class="modal-header">
@@ -1373,7 +1788,7 @@
         <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
             <div class="form-group">
                 <label for="phoneNumber">Número de telefone</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" class="input-control" maxlength="9" minlength="9"
+                <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
                     [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
                     pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" />
                 <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
@@ -1384,7 +1799,8 @@
                 </span>
             </div>
 
-            <div *ngIf="wallet.type" class="wallet-card" style="margin-bottom: 1rem; pointer-events: none;">
+            <div *ngIf="wallet.type" class="wallet-card"
+                style="margin-bottom: 1rem; pointer-events: none; cursor: default;">
                 <div class="wallet-left">
                     <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
                     <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />

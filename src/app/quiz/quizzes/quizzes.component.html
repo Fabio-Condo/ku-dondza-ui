@@ -1,3 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 10px;
+            /*background-color: #f8fafc;*/
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            margin-top: 75px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.35rem;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .title {
+            display: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        /* Botões */
+        button {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn-primary {
+            background-color: #4361ee;
+            color: white;
+            border: 1px solid #4361ee;
+        }
+
+        .btn-primary:hover {
+            background-color: #3451d1;
+            border-color: #3451d1;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f5f9;
+        }
+
+        .start-quiz-button {
+            background-color: #4361ee;
+            color: white;
+            border: 1px solid #4361ee;
+        }
+
+        .start-quiz-button:hover {
+            background-color: #3451d1;
+            border-color: #3451d1;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Grid */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Card */
+        .card {
+            background-color: #ffffff;
+            border-radius: 14px;
+            overflow: visible;
+            border: 1px solid #e8edf2;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.07);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header do card */
+        .quiz-header {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Ícone de disciplina */
+        .discipline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .discipline-icon svg {
+            width: 19px;
+            height: 19px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .card-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            line-height: 1.25;
+        }
+
+        .card-sub {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* Dropdown */
+        .dropdown-container {
+            margin-left: auto;
+            position: relative;
+        }
+
+        .dropdown-btn {
+            background-color: transparent;
+            border: none;
+            border-radius: 7px;
+            padding: 5px 7px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-btn:hover {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+
+        .dropdown {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 6px);
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+            min-width: 170px;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 9px 14px;
+            font-size: 13px;
+            color: #475569;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .dropdown a:hover {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Corpo do card */
+        .quiz-content {
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Bloco de desempenho geral */
+        .overall {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .overall-ring {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+        }
+
+        .progress-svg {
+            width: 42px;
+            height: 42px;
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: #e8edf2;
+            stroke-width: 3.5;
+        }
+
+        .ring-fill {
+            fill: none;
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-dasharray: 113.1;
+            transition: stroke-dashoffset 1s cubic-bezier(0.22, 0.68, 0, 1.2), stroke 0.3s ease;
+        }
+
+        .ring-label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: -0.3px;
+        }
+
+        .overall-text strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 3px;
+        }
+
+        .overall-text span {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* Label de tópicos */
+        .topics-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        /* Tags de tópicos */
+        .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .topic-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 99px;
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            line-height: 1;
+        }
+
+        .tag-toggle-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            border-radius: 99px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+            line-height: 1;
+        }
+
+        .tag-toggle-button:hover {
+            background: #e0e7ff;
+        }
+
+        .tag-toggle-button i {
+            font-size: 10px;
+        }
+
+        /* Botão de ação principal */
+        .start-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+
+        .start-btn:hover {
+            background: #1e293b;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.2);
+        }
+
+        .start-btn:active {
+            transform: translateY(0);
+        }
+
+        .start-btn svg {
+            width: 13px;
+            height: 13px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.2s;
+        }
+
+        .start-btn:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 75px;
+            right: 16px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            height: 52px;
+            width: 52px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.35);
+            z-index: 1000;
+            overflow: hidden;
+            padding: 0;
+            transition: width 0.35s ease, padding 0.35s ease, border-radius 0.35s ease, box-shadow 0.3s ease;
+        }
+
+        .fab i {
+            font-size: 22px;
+        }
+
+        .fab-text {
+            position: absolute;
+            left: 52px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.25s ease, transform 0.35s ease;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .fab.expanded {
+            width: auto;
+            padding: 0 18px 0 14px;
+            border-radius: 30px;
+            justify-content: flex-start;
+        }
+
+        .fab.expanded .fab-text {
+            position: static;
+            opacity: 1;
+            transform: translateX(0);
+            margin-left: 10px;
+        }
+
+        /* Load more */
+        .load-more-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .btn-load-more {
+            background-color: transparent;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .btn-load-more:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-load-more:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 28px;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pagination-info {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-right: 10px;
+        }
+
+        .pagination-btn {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            height: 36px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background-color: #fff;
+            font-weight: 500;
+            font-size: 13px;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .pagination-btn:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .pagination-btn.active {
+            background-color: #4361ee;
+            color: white;
+            border-color: #4361ee;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .loading-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-box {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e8edf2;
+            padding: 1.75rem 2.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2.5px solid #e0e7ff;
+            border-top-color: #4361ee;
+            animation: spin 0.75s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* Retry */
+        .retry-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.25s ease;
+            backdrop-filter: blur(3px);
+        }
+
+        .retry-content {
+            background: #ffffff;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+            max-width: 380px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .retry-text {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .retry-button {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 9px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .retry-button:hover {
+            background-color: #3451d1;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Modais */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 460px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalIn 0.22s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .close-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            border: 1px solid #e2e8f0;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 16px;
+            transition: background 0.15s;
+            padding: 0;
+        }
+
+        .close-btn:hover {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Formulário */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 5px;
+            letter-spacing: 0.2px;
+        }
+
+        .form-group select,
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 9px 11px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1e293b;
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-group select:focus,
+        .form-group input[type="text"]:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            border-radius: 9px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover {
+            background: #3451d1;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .container {
+                margin-top: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .quiz-content {
+                padding: 12px 14px;
+            }
+
+            .quiz-header {
+                padding: 12px 14px;
+            }
+
+            .pagination {
+                display: none;
+            }
+
+            .load-more-container {
+                display: flex;
+            }
+
+            .start-quiz-button {
+                display: none;
+            }
+
+            .title {
+                display: flex;
+            }
+
+            .fab {
+                display: flex;
+            }
+
+            .pagination-info {
+                display: none;
+            }
+
+            .title-container {
+                display: none;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
 <body>
     <div class="container">
 
@@ -11,9 +860,8 @@
             <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
 
             <div class="actions">
-
                 <button class="start-quiz-button" id="add-btn" [routerLink]="['/quizzes', 'new']">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -21,7 +869,7 @@
                     Iniciar quiz
                 </button>
                 <button class="btn-outline" id="filter-btn" (click)="toggleFilter()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                     </svg>
@@ -37,13 +885,9 @@
 
         <div class="cards-container">
             <div class="card" *ngFor="let quiz of quizzes">
-                <div class="quiz-header">
-                    <!--
-                    <span class="badge" [ngClass]="getBadgeClass(quiz.subject.category)">
-                        {{ quiz.subject.name }}
-                    </span>
-                    -->
 
+                <div class="quiz-header">
+                    <!-- Ícones por disciplina -->
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Matemática'">
                         <svg viewBox="0 0 24 24">
                             <path d="M4 4h16" />
@@ -99,132 +943,94 @@
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Geografia'">
                         <svg viewBox="0 0 24 24">
-                            <!-- Globo -->
                             <circle cx="12" cy="12" r="9" />
-
-                            <!-- Linhas de latitude -->
                             <path d="M3 12h18" />
                             <path d="M5 8h14" />
                             <path d="M5 16h14" />
-
-                            <!-- Linhas de longitude -->
                             <path d="M12 3c3 3 3 15 0 18" />
                             <path d="M12 3c-3 3-3 15 0 18" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Inglês'">
                         <svg viewBox="0 0 24 24">
-                            <!-- Globo -->
                             <circle cx="12" cy="12" r="9" />
-
-                            <!-- Linhas -->
                             <path d="M3 12h18" />
                             <path d="M12 3c3 3 3 15 0 18" />
                             <path d="M12 3c-3 3-3 15 0 18" />
-
-                            <!-- Letra A (idioma) -->
                             <path d="M9 16l3-8 3 8" />
                             <path d="M10 13h4" />
                         </svg>
                     </div>
+
                     <div class="card-title-group">
                         <span class="card-name">{{ quiz.subject.name }}</span>
                         <span class="card-sub">{{ getCategoryValue(quiz.subject.category) }}</span>
                     </div>
-                    <!--
-                    <div>
-                        <div class="dropdown-container">
-                            <button class="dropdown-btn" (click)="toggleDropdown(quiz)"><i
-                                    class="pi pi-ellipsis-h"></i></button>
-                            <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
-                                <a *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
-                                    (click)="toggleAnonymousStatus(quiz); closeDropdown(quiz)">
-                                    <span>{{ quiz.anonymous ? 'Exibir meu nome' : 'Ocultar o nome' }}</span>
-                                </a>
-                                <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
-                                <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no
-                                    WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no
-                                    Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no
-                                    LinkedIn</a>
-                                <a [routerLink]="['/quizzes', quiz.quizId]">Visualizar</a>
-                                <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
-                                    *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
-                            </div>
+
+                    <div class="dropdown-container">
+                        <button class="dropdown-btn" (click)="toggleDropdown(quiz)">
+                            <i class="pi pi-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
+                            <a *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
+                                (click)="toggleAnonymousStatus(quiz); closeDropdown(quiz)">
+                                {{ quiz.anonymous ? 'Exibir meu nome' : 'Ocultar o nome' }}
+                            </a>
+                            <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
+                            <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                WhatsApp</a>
+                            <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                Facebook</a>
+                            <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                LinkedIn</a>
+                            <a [routerLink]="['/quizzes', quiz.quizId]">Visualizar</a>
+                            <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
+                                *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
                         </div>
                     </div>
-                    -->
                 </div>
 
                 <div class="quiz-content">
+
+                    <!-- Desempenho geral -->
+                    <div class="overall">
+                        <div class="overall-ring">
+                            <svg class="progress-svg" viewBox="0 0 44 44">
+                                <circle class="ring-bg" cx="22" cy="22" r="18" />
+                                <circle class="ring-fill" cx="22" cy="22" r="18"
+                                    [style.stroke]=" (quiz.accuracyRate / 100) >= 0.7 ? '#22c55e' : (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' : '#ef4444'"
+                                    [style.stroke-dasharray]="113.1"
+                                    [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1" />
+                            </svg>
+                            <div class="ring-label">{{ quiz.accuracyRate.toFixed(0) }}%</div>
+                        </div>
+                        <div class="overall-text">
+                            <strong>Desempenho geral</strong>
+                            <span>{{ quiz.topics.length }} tópicos · {{ quiz.totalQuestions }} questões</span>
+                        </div>
+                    </div>
+
+                    <!-- Tópicos -->
                     <div>
-
-                        <!--
-                        <div class="quiz-title">
-                            {{ quiz.anonymous ? 'Usuário Anônimo' : quiz.user.fullName }}
-                            <span *ngIf="quiz.anonymous && isUserLoggedIn && quiz.user.id == loggedUser.id"></span>
-                            <span *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id">(tú) </span>
-
-                            <i *ngIf="quiz.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
-
-                            <span *ngIf="quiz.showLoadingSave" class="save-loading-text" style="margin-left: 5px;">
-                                {{ quiz.anonymous ? 'Mostrando...' : 'Ocultando...' }}
-                            </span>
-                        </div>
-                        -->
-                        <div class="overall">
-                            <div class="overall-ring">
-                                <svg class="progress-svg" viewBox="0 0 44 44">
-
-                                    <!-- fundo -->
-                                    <circle class="ring-bg" cx="22" cy="22" r="18" />
-
-                                    <!-- glow base (leve profundidade) -->
-                                    <circle class="ring-glow" cx="22" cy="22" r="18" />
-
-                                    <!-- progresso -->
-                                    <circle class="ring-fill" cx="22" cy="22" r="18" [style.stroke]="
-                                        (quiz.accuracyRate / 100) >= 0.7 ? '#22c55e' :
-                                        (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' :
-                                        '#ef4444'
-                                    " [style.stroke-dasharray]="113.1"
-                                        [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1" />
-                                </svg>
-
-                                <div class="ring-label">
-                                    {{ quiz.accuracyRate.toFixed(0) }}%
-                                </div>
-                            </div>
-                            <div class="overall-text"><strong>Desenpenho geral</strong><span>{{ quiz.topics.length }}
-                                    tópicos avaliados </span><span> · {{ quiz.totalQuestions }} questões</span>
-                            </div>
-                        </div>
-
-                        <div class="topics-label">Tópicos Avaliados</div>
-
+                        <div class="topics-label">Tópicos avaliados</div>
                         <div class="topic-tags">
                             <span class="topic-tag"
                                 *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 2)">
                                 {{ topic.name }}
                             </span>
-
                             <button class="tag-toggle-button" *ngIf="quiz.topics.length > 2"
                                 (click)="toggleTopics(quiz.id)">
-                                <span>
-                                    {{ showAllTopicsMap[quiz.id] ? 'Ver menos' : 'Ver mais' }}
-                                </span>
-
+                                {{ showAllTopicsMap[quiz.id] ? 'Ver menos' : 'Ver mais' }}
                                 <i class="pi"
                                     [ngClass]="showAllTopicsMap[quiz.id] ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
                             </button>
                         </div>
                     </div>
 
+                    <!-- CTA -->
                     <button class="start-btn" [routerLink]="['/quizzes', quiz.quizId]">
-                        <span>Ver Correção</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <span>Ver correção</span>
+                        <svg viewBox="0 0 24 24">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
@@ -241,46 +1047,42 @@
             </div>
         </div>
 
-        <div *ngIf="!showLoading && !retryVisible && quizzes.length === 0">
-            <div class="card">
-                <span class="no-items-message">
-                    Nenhum item encontrado
-                </span>
-            </div>
+        <!-- Empty state -->
+        <div *ngIf="!showLoading && !retryVisible && quizzes.length === 0" class="empty-state">
+            Nenhum quiz encontrado.
         </div>
 
-        <!-- Load-more -->
+        <!-- Load more (mobile) -->
         <div *ngIf="!retryVisible" class="load-more-container">
             <button class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
-                Buscar mais
+                Carregar mais
             </button>
         </div>
 
+        <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
-                <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
-                    fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="8" x2="12" y2="12"></line>
                     <circle cx="12" cy="16" r="1"></circle>
                 </svg>
-
                 <div class="retry-text">
                     Ocorreu um erro ao carregar os quizzes.<br>
                     Por favor, tente novamente.
                 </div>
-
                 <button class="retry-button" (click)="retryGetQuizzes()">
                     Tentar novamente
                 </button>
             </div>
         </div>
 
-        <!-- Paginação -->
+        <!-- Paginação (desktop) -->
         <div class="pagination">
             <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
             <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
@@ -290,7 +1092,7 @@
             <button class="pagination-btn next" (click)="nextPage()"
                 [disabled]="currentPage === totalPages() || showLoading">
                 Próxima
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
@@ -300,10 +1102,13 @@
     </div>
 </body>
 
+</html>
+
+<!-- Modal: Filtrar -->
 <div class="modal-overlay" *ngIf="displayModalFilter">
     <div class="modal">
         <div class="modal-header">
-            <h2 class="modal-title">Filtrar</h2>
+            <h2 class="modal-title">Filtrar quizzes</h2>
             <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
         </div>
 
@@ -323,12 +1128,12 @@
             <div class="form-group">
                 <label for="subject">Disciplina</label>
                 <select id="subject" [(ngModel)]="filter.subject" (change)="getQuizzes()" name="subject" required>
-                    <option value="" disabled selected>Selecione a subject</option>
+                    <option value="" disabled selected>Selecione a disciplina</option>
                     <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn-submit" (click)="limparCampos()">Reset</button>
+            <button type="submit" class="btn-submit" (click)="limparCampos()">Limpar filtros</button>
         </form>
     </div>
 </div>

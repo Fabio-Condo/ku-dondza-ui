@@ -405,25 +405,6 @@
       color: #4361ee;
     }
 
-    /* ── LINKS ── */
-    .signup-link {
-      text-align: center;
-      font-size: 13px;
-      color: #6b7280;
-      margin-top: 8px;
-    }
-
-    .signup-link a {
-      color: #4361ee;
-      text-decoration: none;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .signup-link a:hover {
-      text-decoration: underline;
-    }
-
     /* ─── Loading overlay ────────────────────────────── */
     .loading-overlay {
       position: fixed;
@@ -631,13 +612,6 @@
           Enviaremos um código de acesso único para o seu e-mail. Ou use o Google se se cadastrou com Gmail.
         </p>
 
-        <div class="signup-link">
-          Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
-        </div>
-        <div class="signup-link">
-          <a routerLink="/home">Ir para menu</a>
-        </div>
-
       </form>
     </div>
 
@@ -667,7 +641,7 @@
         <div id="google-signin-button" style="display:flex;justify-content:center"></div>
       </div>
 
-      <div class="divider" *ngIf="step === 'email'">
+      <div class="divider" *ngIf="step === 'email' && googleAuthReady">
         <span>ou regista com e-mail</span>
       </div>
 
@@ -714,9 +688,6 @@
 
       <div id="google-signin-button"></div>
 
-      <div class="signup-link">
-        Já tem conta? <a (click)="setActiveTab(1)">Faça login</a>
-      </div>
     </div>
 
   </div>

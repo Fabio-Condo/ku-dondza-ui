@@ -4,10 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduTrack — Progresso</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
-        rel="stylesheet">
+    <title>Progresso</title>
     <style>
         *,
         *::before,
@@ -19,6 +16,8 @@
 
         body {
             padding: 10px;
+            /*background-color: #f8fafc;*/
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         .container {
@@ -30,142 +29,71 @@
         .title-container {
             text-align: center;
             margin-top: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         h1 {
             font-size: 1.5rem;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
         }
 
         .subtitle {
             font-size: 14px;
-            color: #718096;
+            color: #94a3b8;
             line-height: 1.5;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
             margin-bottom: 15px;
-        }
-
-        .filter-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 4px;
-            background: #ffffff;
-            border: 1px solid #e8eaf0;
-            border-radius: 99px;
-            padding: 4px;
-        }
-
-        .tab {
-            padding: 6px 16px;
-            border-radius: 99px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            color: #6b7280;
-            transition: all 0.18s;
-            user-select: none;
-        }
-
-        .tab.active {
-            background: #4361ee;
-            color: white;
-            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.18);
-        }
-
-        .tab:not(.active):hover {
-            color: #0f1117;
-        }
-
-        .summary-text {
-            font-size: 13px;
-            color: #a0a8b8;
-        }
-
-        .summary-text strong {
-            color: #6b7280;
-            font-weight: 600;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(316px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
         }
 
+        /* Card — igual ao da tela de quizzes */
         .card {
-            background: #ffffff;
-            border-radius: 18px;
-            border: 1px solid #e8eaf0;
-            padding: 20px;
-            box-shadow: 0 2px 16px rgba(15, 17, 30, 0.06);
-            transition: box-shadow 0.25s, transform 0.25s cubic-bezier(.22, .68, 0, 1.2);
+            background-color: #ffffff;
+            border-radius: 14px;
+            overflow: visible;
+            border: 1px solid #e8edf2;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            animation: fadeUp 0.4s ease both;
         }
 
         .card:hover {
-            box-shadow: 0 8px 32px rgba(15, 17, 30, 0.10);
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.07);
         }
 
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(14px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .card:nth-child(1) {
-            animation-delay: .04s
-        }
+        .card:nth-child(1) { animation-delay: .04s }
+        .card:nth-child(2) { animation-delay: .10s }
+        .card:nth-child(3) { animation-delay: .16s }
+        .card:nth-child(4) { animation-delay: .22s }
+        .card:nth-child(5) { animation-delay: .28s }
+        .card:nth-child(6) { animation-delay: .34s }
 
-        .card:nth-child(2) {
-            animation-delay: .10s
-        }
-
-        .card:nth-child(3) {
-            animation-delay: .16s
-        }
-
-        .card:nth-child(4) {
-            animation-delay: .22s
-        }
-
-        .card:nth-child(5) {
-            animation-delay: .28s
-        }
-
-        .card:nth-child(6) {
-            animation-delay: .34s
-        }
-
+        /* Header do card — igual ao quiz-header */
         .card-header {
+            padding: 16px 18px;
             display: flex;
             align-items: center;
-            gap: 13px;
-            margin-bottom: 18px;
+            gap: 12px;
+            border-bottom: 1px solid #f1f5f9;
         }
 
+        /* Ícone de disciplina — mesma aparência */
         .discipline-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 13px;
-            background: rgba(67, 97, 238, 0.10);
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #eef2ff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -173,8 +101,8 @@
         }
 
         .discipline-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 19px;
+            height: 19px;
             stroke: #4361ee;
             fill: none;
             stroke-width: 1.6;
@@ -189,69 +117,62 @@
         }
 
         .card-name {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: -0.2px;
-            color: #0f1117;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
             line-height: 1.25;
         }
 
         .card-sub {
             font-size: 12px;
-            color: #a0a8b8;
+            color: #94a3b8;
         }
 
-        .divider {
-            height: 1px;
-            background: #e8eaf0;
-            margin: 18px 0;
+        /* Corpo do card */
+        .card-content {
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
 
+        /* Bloco de progresso geral — igual ao .overall do quiz */
         .overall {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 16px;
-            background: #f7f8fc;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #f8fafc;
             border-radius: 10px;
-            border: 1px solid #e8eaf0;
-            margin-bottom: 18px;
+            border: 1px solid #f1f5f9;
         }
 
-        /* container */
         .overall-ring {
             position: relative;
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
         }
 
         .progress-svg {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             transform: rotate(-90deg);
         }
 
         .ring-bg {
             fill: none;
-            stroke: #e8eaf0;
-            stroke-width: 4;
-        }
-
-        .ring-glow {
-            fill: none;
-            stroke-width: 6;
+            stroke: #e8edf2;
+            stroke-width: 3.5;
         }
 
         .ring-fill {
             fill: none;
-            stroke-width: 4;
+            stroke: #4361ee;
+            stroke-width: 3.5;
             stroke-linecap: round;
-
             stroke-dasharray: 113.1;
-            transition: stroke-dashoffset 1s cubic-bezier(0.22, 0.68, 0, 1.2),
-                stroke 0.3s ease;
-
-            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.08));
+            transition: stroke-dashoffset 1s cubic-bezier(0.22, 0.68, 0, 1.2);
         }
 
         .ring-label {
@@ -260,74 +181,39 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
-            font-size: 10.5px;
-            font-weight: 800;
-            color: #0f1117;
-            letter-spacing: -0.2px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: -0.3px;
         }
 
         .overall-text strong {
             display: block;
-            font-size: 14px;
-            font-weight: 700;
-            color: #0f1117;
-            margin-bottom: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 3px;
         }
 
         .overall-text span {
             font-size: 12px;
-            color: #a0a8b8;
+            color: #94a3b8;
         }
 
-        .discipline-progress {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .progress-circle {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: conic-gradient(#4361ee 0deg, #4361ee var(--progress), #e2e8f0 var(--progress));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            font-size: 0.7rem;
-            color: #4361ee;
-            position: relative;
-        }
-
-        .progress-circle::before {
-            content: '';
-            position: absolute;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: #f7f8fc;
-        }
-
-        .progress-circle span {
-            position: relative;
-            z-index: 1;
-        }
-
+        /* Label de tópicos */
         .topics-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #a0a8b8;
-            margin-bottom: 12px;
+            letter-spacing: 0.7px;
+            color: #cbd5e1;
         }
 
+        /* Lista de tópicos com barra de progresso */
         .topic-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 20px;
         }
 
         .topic-row {
@@ -344,31 +230,26 @@
         }
 
         .topic-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            color: #0f1117;
+            color: #475569;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .topic-score {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            color: #6b7280;
+            color: #94a3b8;
             flex-shrink: 0;
             font-variant-numeric: tabular-nums;
         }
 
-        .topic-score .total {
-            color: #a0a8b8;
-            font-weight: 400;
-        }
-
         .track {
             width: 100%;
-            height: 5px;
-            background: #f7f8fc;
+            height: 4px;
+            background: #f1f5f9;
             border-radius: 99px;
             overflow: hidden;
         }
@@ -379,31 +260,22 @@
             transition: width 0.9s cubic-bezier(.22, .68, 0, 1.2);
         }
 
-        .fill.empty {
-            background: #e8eaf0;
-        }
+        .fill.empty   { background: #e2e8f0; }
+        .fill.low     { background: #c7d2fe; }
+        .fill.mid     { background: linear-gradient(90deg, #818cf8, #4361ee); }
+        .fill.high    { background: #4361ee; }
 
-        .fill.low {
-            background: #c7ceea;
-        }
-
-        .fill.mid {
-            background: linear-gradient(90deg, #93a0dc, #4361ee);
-        }
-
-        .fill.high {
-            background: #4361ee;
-        }
-
+        /* Botão CTA — igual ao .start-btn do quiz */
         .continue-btn {
             width: 100%;
-            padding: 12px 18px;
+            padding: 10px 16px;
             background: #4361ee;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 9px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 500;
+            font-family: inherit;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -413,36 +285,32 @@
         }
 
         .continue-btn:hover {
-            background: #0f1117;
-            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.18);
+            background: #1e293b;
             transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.2);
         }
 
-        .continue-btn:active {
-            transform: translateY(0);
-        }
+        .continue-btn:active { transform: translateY(0); }
 
         .continue-btn svg {
-            width: 14px;
-            height: 14px;
-            transition: transform 0.2s;
+            width: 13px;
+            height: 13px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2.5;
             stroke-linecap: round;
             stroke-linejoin: round;
+            transition: transform 0.2s;
         }
 
-        .continue-btn:hover svg {
-            transform: translateX(3px);
-        }
+        .continue-btn:hover svg { transform: translateX(3px); }
 
-        /* ─── Loading overlay ────────────────────────────── */
+        /* Loading overlay */
         .loading-overlay {
             position: fixed;
             inset: 0;
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -452,54 +320,53 @@
             transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .loading-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        .loading-overlay.visible { opacity: 1; visibility: visible; }
 
         .loading-box {
             background: #fff;
-            border-radius: 16px;
-            border: 1px solid #e8eaf0;
-            padding: 2rem 2.5rem;
+            border-radius: 14px;
+            border: 1px solid #e8edf2;
+            padding: 1.75rem 2.25rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 3px solid #e0e4f5;
+            border: 2.5px solid #e0e7ff;
             border-top-color: #4361ee;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.75s linear infinite;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .loading-text {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            color: #374151;
+            color: #64748b;
         }
 
-        /* Mobile médio */
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .container { margin-top: 60px; }
+        }
+
         @media (max-width: 768px) {
-
-            .container {
-                margin-top: 60px;
-            }
-
-            .card {
-                padding: 10px;
-            }
-
+            .card-content { padding: 12px 14px; }
+            .card-header  { padding: 12px 14px; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -520,162 +387,137 @@
             </div>
         </div>
 
-        <!--
-        <div class="filter-row">
-            <div class="filter-tabs">
-            <div class="tab active">Todos</div>
-            <div class="tab">Em progresso</div>
-            <div class="tab">Quase completo</div>
-            <div class="tab">Novo</div>
-            </div>
-            <span class="summary-text"><strong>6</strong> disciplinas &middot; <strong>58%</strong> média geral</span>
-        </div>
-        -->
         <div class="grid">
 
-            <!-- MATEMÁTICA -->
             <div class="card" *ngFor="let subject of subjects">
+
+                <!-- Header -->
                 <div class="card-header">
+
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'Matemática'">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M4 4h16" />
-                            <path d="M4 4l8 8-8 8" />
-                            <path d="M4 20h16" />
-                        </svg>
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16"/><path d="M4 4l8 8-8 8"/><path d="M4 20h16"/></svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'Português'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path
-                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z"/>
+                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'Quimica'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M9 3h6" />
-                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
-                            <path d="M7.5 14.5h9" />
-                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
+                            <path d="M9 3h6"/><path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3"/>
+                            <path d="M7.5 14.5h9"/>
+                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none"/>
+                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none"/>
+                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'Física'">
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="2" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+                            <circle cx="12" cy="12" r="2"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'Biologia'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
-                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
-                            <path d="M7.5 6.5h9" />
-                            <path d="M7.5 9h9" />
-                            <path d="M7.5 11.5h9" />
-                            <path d="M7 15c0 0 2 2.5 2 4" />
-                            <path d="M17 15c0 0-2 2.5-2 4" />
-                            <path d="M7.5 17h9" />
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6"/><path d="M17 3c0 0-2 2.5-2 6s2 6 2 6"/>
+                            <path d="M7.5 6.5h9"/><path d="M7.5 9h9"/><path d="M7.5 11.5h9"/>
+                            <path d="M7 15c0 0 2 2.5 2 4"/><path d="M17 15c0 0-2 2.5-2 4"/>
+                            <path d="M7.5 17h9"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'História'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M5 3h14" />
-                            <path d="M5 21h14" />
-                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
-                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
-                            <path d="M8 14.5h8" />
+                            <path d="M5 3h14"/><path d="M5 21h14"/>
+                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9"/>
+                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9"/>
+                            <path d="M8 14.5h8"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'Geografia'">
                         <svg viewBox="0 0 24 24">
-                            <!-- Globo -->
-                            <circle cx="12" cy="12" r="9" />
-
-                            <!-- Linhas de latitude -->
-                            <path d="M3 12h18" />
-                            <path d="M5 8h14" />
-                            <path d="M5 16h14" />
-
-                            <!-- Linhas de longitude -->
-                            <path d="M12 3c3 3 3 15 0 18" />
-                            <path d="M12 3c-3 3-3 15 0 18" />
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M3 12h18"/><path d="M5 8h14"/><path d="M5 16h14"/>
+                            <path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.subjectName === 'Inglês'">
                         <svg viewBox="0 0 24 24">
-                            <!-- Globo -->
-                            <circle cx="12" cy="12" r="9" />
-
-                            <!-- Linhas -->
-                            <path d="M3 12h18" />
-                            <path d="M12 3c3 3 3 15 0 18" />
-                            <path d="M12 3c-3 3-3 15 0 18" />
-
-                            <!-- Letra A (idioma) -->
-                            <path d="M9 16l3-8 3 8" />
-                            <path d="M10 13h4" />
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M3 12h18"/>
+                            <path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/>
+                            <path d="M9 16l3-8 3 8"/><path d="M10 13h4"/>
                         </svg>
                     </div>
+
                     <div class="card-title-group">
                         <span class="card-name">{{ subject.subjectName }}</span>
                         <span class="card-sub">{{ getCategoryValue(subject.subjectCategory) }}</span>
                     </div>
                 </div>
-                <div class="divider"></div>
-                <div class="overall">
-                    <div class="overall-ring">
-                        <svg class="progress-svg" viewBox="0 0 44 44">
 
-                            <!-- fundo -->
-                            <circle class="ring-bg" cx="22" cy="22" r="18" />
+                <!-- Conteúdo -->
+                <div class="card-content">
 
-                            <!-- glow base (leve profundidade) -->
-                            <circle class="ring-glow" cx="22" cy="22" r="18" />
-
-                            <!-- progresso -->
-                            <circle class="ring-fill" cx="22" cy="22" r="18" stroke="#4361ee"
-                                [style.stroke-dasharray]="113.1"
-                                [style.stroke-dashoffset]="113.1 - (subject.currentUserProgressRate / 100) * 113.1" />
-                        </svg>
-
-                        <div class="ring-label">
-                            {{ subject.currentUserProgressRate.toFixed(0) }}%
+                    <!-- Progresso geral -->
+                    <div class="overall">
+                        <div class="overall-ring">
+                            <svg class="progress-svg" viewBox="0 0 44 44">
+                                <circle class="ring-bg" cx="22" cy="22" r="18"/>
+                                <circle class="ring-fill" cx="22" cy="22" r="18"
+                                    [style.stroke-dasharray]="113.1"
+                                    [style.stroke-dashoffset]="113.1 - (subject.currentUserProgressRate / 100) * 113.1"/>
+                            </svg>
+                            <div class="ring-label">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
+                        </div>
+                        <div class="overall-text">
+                            <strong>Progresso geral</strong>
+                            <span>{{ subject.totalTopics }} tópicos</span>
                         </div>
                     </div>
 
-                    <div class="overall-text"><strong>Progresso geral</strong><span>{{ subject.totalTopics }}
-                            tópicos</span>
-                    </div>
-                </div>
-                <div class="topics-label">Tópicos</div>
-                <div class="topic-list" *ngFor="let topic of subject.topicDtoWithTests">
-                    <div class="topic-row">
-                        <div class="topic-meta"><span class="topic-name">{{ topic.topicName }}</span><span
-                                class="topic-score"><span class="total">{{ topic.progressRate.toFixed(0)
-                                    }}%</span></span></div>
-                        <div class="track">
-                            <div class="fill" [ngClass]="{
-                                'empty': topic.progressRate === 0,
-                                'low': topic.progressRate > 0 && topic.progressRate < 40,
-                                'mid': topic.progressRate >= 40 && topic.progressRate < 80,
-                                'high': topic.progressRate >= 80
+                    <!-- Tópicos -->
+                    <div class="topics-label">Tópicos</div>
+                    <div class="topic-list">
+                        <div class="topic-row" *ngFor="let topic of subject.topicDtoWithTests">
+                            <div class="topic-meta">
+                                <span class="topic-name">{{ topic.topicName }}</span>
+                                <span class="topic-score">{{ topic.progressRate.toFixed(0) }}%</span>
+                            </div>
+                            <div class="track">
+                                <div class="fill" [ngClass]="{
+                                    'empty': topic.progressRate === 0,
+                                    'low':   topic.progressRate > 0  && topic.progressRate < 40,
+                                    'mid':   topic.progressRate >= 40 && topic.progressRate < 80,
+                                    'high':  topic.progressRate >= 80
                                 }" [style.width.%]="topic.progressRate.toFixed(0)">
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- CTA -->
+                    <button class="continue-btn" [routerLink]="['/progress/subjects', subject.subjectId]">
+                        <span>Continuar</span>
+                        <svg viewBox="0 0 24 24">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+
                 </div>
-                <button class="continue-btn" [routerLink]="['/progress/subjects', subject.subjectId]">Continuar <svg
-                        viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg></button>
             </div>
 
         </div>
-    </div>
 
+        <!-- Empty state -->
+        <div *ngIf="!showLoading && subjects.length === 0" class="empty-state">
+            Nenhum progresso encontrado.
+        </div>
+
+    </div>
 </body>
 
 </html>
