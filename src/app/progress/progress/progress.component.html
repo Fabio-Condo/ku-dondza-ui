@@ -475,129 +475,6 @@
             line-height: 1.6;
         }
 
-        /* ─── Modals ──────────────────────────────────────── */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 16px;
-        }
-
-        .modal {
-            background: #fff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 480px;
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: modalIn 0.25s ease;
-        }
-
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.25rem;
-        }
-
-        .modal-title {
-            font-size: 17px;
-            font-weight: 600;
-            color: #111827;
-        }
-
-        .close-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            background: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-            font-size: 18px;
-            transition: background 0.15s;
-        }
-
-        .close-btn:hover {
-            background: #f3f4f6;
-        }
-
-        /* form inside modal */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 5px;
-            letter-spacing: 0.3px;
-        }
-
-        .form-group select,
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 9px 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #111827;
-            background: #fff;
-            transition: border-color 0.15s;
-            font-family: inherit;
-            outline: none;
-        }
-
-        .form-group select:focus,
-        .form-group input[type="text"]:focus {
-            border-color: #4361ee;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            background: #4361ee;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.15s;
-            font-family: inherit;
-        }
-
-        .btn-submit:hover {
-            background: #3451d1;
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
         /* question items in modals */
         .question-item {
             display: flex;
@@ -687,210 +564,6 @@
         .q-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-        }
-
-        /* pricing / upgrade modal */
-        .pricing-card {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .plan-price-big {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #4361ee;
-            text-align: center;
-            margin: 0.5rem 0 2px;
-        }
-
-        .plan-period {
-            font-size: 13px;
-            color: #6b7280;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .feature-list {
-            list-style: none;
-        }
-
-        .feature-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 13px;
-            color: #374151;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .feature-check {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #4361ee;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .feature-check svg {
-            stroke: #fff;
-        }
-
-        .btn-upgrade-big {
-            width: 100%;
-            padding: 11px;
-            border-radius: 10px;
-            border: none;
-            background: #4361ee;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.15s;
-            margin-top: 0.75rem;
-            font-family: inherit;
-        }
-
-        .btn-upgrade-big:hover {
-            background: #3451d1;
-        }
-
-        .btn-upgrade-big:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: #8fa4f3;
-        }
-
-        /* wallet cards */
-        .wallet-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .wallet-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.85rem 1rem;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 12px;
-            cursor: pointer;
-            background: #fff;
-            transition: border-color 0.2s, background 0.2s;
-        }
-
-        .wallet-card.selected {
-            border-color: #4361ee;
-            background: #eef1fd;
-        }
-
-        .wallet-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .wallet-img {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: #f3f4f6;
-            object-fit: contain;
-            padding: 3px;
-        }
-
-        .wallet-type {
-            font-weight: 600;
-            font-size: 14px;
-            color: #111827;
-        }
-
-        .wallet-num {
-            font-size: 12px;
-            color: #6b7280;
-        }
-
-        .wallet-badge {
-            background: #4361ee;
-            color: #fff;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        .btn-set-default {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 20px;
-            border: 1px solid #4361ee;
-            background: none;
-            color: #4361ee;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-        }
-
-        .btn-set-default:hover {
-            background: #4361ee;
-            color: #fff;
-        }
-
-        .btn-add-wallet {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid #e5e7eb;
-            background: #f9fafb;
-            color: #374151;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.15s;
-            margin-bottom: 0.75rem;
-            font-family: inherit;
-        }
-
-        .btn-add-wallet:hover {
-            background: #f1f3f9;
-        }
-
-        .plan-price-note {
-            text-align: center;
-            font-size: 13px;
-            color: #374151;
-            font-weight: 500;
-            margin-top: 6px;
-        }
-
-        .input-control {
-            width: 100%;
-            padding: 9px 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.15s;
-        }
-
-        .input-control:focus {
-            border-color: #4361ee;
-        }
-
-        .error-text {
-            font-size: 11px;
-            color: #ef4444;
-            margin-top: 4px;
-            display: block;
         }
 
         @media (max-width: 600px) {
@@ -1038,246 +711,368 @@
             </div>
 
         </div><!-- /page -->
+</body>
 
+</html>
 
-        <!-- ══════════════════════════════════════════
+<!-- ══════════════════════════════════════════
         MODAL: Adicionar / Editar Teste
         ════════════════════════════════════════════ -->
-        <div class="modal-overlay" *ngIf="displayModalSave">
-            <div class="modal">
-                <div class="modal-header">
-                    <h2 class="modal-title">{{ editing ? 'Editar teste' : 'Novo teste' }}</h2>
-                    <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
-                </div>
-
-                <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
-                    <div class="form-group">
-                        <label for="topic">Tópico</label>
-                        <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!subject.id" required>
-                            <option value="" disabled selected>Selecione o tópico</option>
-                            <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="difficultyLevel">Nível</label>
-                        <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
-                            <option value="" disabled selected>Selecione o nível</option>
-                            <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="position">Posição</label>
-                        <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                            [(ngModel)]="test.orderIndex">
-                    </div>
-                    <button class="btn-submit" type="submit" [disabled]="testForm.invalid || showLoading">
-                        {{ showLoading ? 'Salvando...' : 'Salvar' }}
-                    </button>
-                </form>
-            </div>
+<div class="modal-overlay" *ngIf="displayModalSave">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">{{ editing ? 'Editar teste' : 'Novo teste' }}</h2>
+            <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
         </div>
 
+        <form autocomplete="off" #testForm="ngForm" (ngSubmit)="save(testForm)">
+            <div class="form-group">
+                <label for="topic">Tópico</label>
+                <select id="topic" name="topic" [(ngModel)]="test.topic.id" [disabled]="!subject.id" required>
+                    <option value="" disabled selected>Selecione o tópico</option>
+                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="difficultyLevel">Nível</label>
+                <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
+                    <option value="" disabled selected>Selecione o nível</option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="position">Posição</label>
+                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
+                    [(ngModel)]="test.orderIndex">
+            </div>
+            <button class="btn-submit" type="submit" [disabled]="testForm.invalid || showLoading">
+                {{ showLoading ? 'Salvando...' : 'Salvar' }}
+            </button>
+        </form>
+    </div>
+</div>
 
-        <!-- ══════════════════════════════════════════
+
+<!-- ══════════════════════════════════════════
      MODAL: Ver questões adicionadas
 ════════════════════════════════════════════ -->
-        <div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
-            <div class="modal">
-                <div class="modal-header">
-                    <h2 class="modal-title">Questões do teste</h2>
-                    <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
-                </div>
+<div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
+    <div class="modal">
 
-                <div *ngFor="let question of selectedQuestions; let i = index">
-                    <div class="question-item" *ngIf="question.text">
-                        <span class="question-number">{{ i + 1 }}</span>
-                        <div>
-                            <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-                            <div class="question-topic-row" *ngIf="question.topic">
-                                <small>Tópico: {{ question.topic.name }}</small>
-                                <button class="q-btn q-btn-remove"
-                                    (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
-                            </div>
+        <!-- Barra de progresso no topo do modal -->
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Questões do teste</h2>
+                    <span class="modal-subtitle">Todas questões</span>
+                </div>
+                <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
+            </div>
+
+            <div *ngFor="let question of selectedQuestions; let i = index">
+                <div class="question-item" *ngIf="question.text">
+                    <span class="question-number">{{ i + 1 }}</span>
+                    <div>
+                        <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+                        <div class="question-topic-row" *ngIf="question.topic">
+                            <small>Tópico: {{ question.topic.name }}</small>
+                            <button class="q-btn q-btn-remove"
+                                (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
 
-        <!-- ══════════════════════════════════════════
+<!-- ══════════════════════════════════════════
      MODAL: Editar questões (marcar/desmarcar)
 ════════════════════════════════════════════ -->
-        <div class="modal-overlay" *ngIf="displayModalQuestionsList">
-            <div class="modal">
-                <div class="modal-header">
-                    <h2 class="modal-title">Editar questões</h2>
-                    <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
-                </div>
+<div class="modal-overlay" *ngIf="displayModalQuestionsList">
+    <div class="modal">
 
-                <div *ngFor="let question of allQuestions; let i = index">
-                    <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
-                        <span class="question-number">{{ i + 1 }}</span>
-                        <div>
-                            <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-                            <div class="question-topic-row" *ngIf="question.topic">
-                                <small>Tópico: {{ question.topic.name }}</small>
-                                <button class="q-btn q-btn-add" *ngIf="!question.selected"
-                                    (click)="onAddQuestionToTestQuestions(question.id)">Adicionar</button>
-                                <button class="q-btn q-btn-remove" *ngIf="question.selected"
-                                    (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
-                            </div>
+        <!-- Barra de progresso no topo do modal -->
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Editar questões</h2>
+                    <span class="modal-subtitle">Todas questões</span>
+                </div>
+                <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
+            </div>
+
+            <div *ngFor="let question of allQuestions; let i = index">
+                <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
+                    <span class="question-number">{{ i + 1 }}</span>
+                    <div>
+                        <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+                        <div class="question-topic-row" *ngIf="question.topic">
+                            <small>Tópico: {{ question.topic.name }}</small>
+                            <button class="q-btn q-btn-add" *ngIf="!question.selected"
+                                (click)="onAddQuestionToTestQuestions(question.id)">Adicionar</button>
+                            <button class="q-btn q-btn-remove" *ngIf="question.selected"
+                                (click)="onRemoveQuestionFromTestQuestions(question.id)">Remover</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
 
-        <!-- ══════════════════════════════════════════
-     MODAL: Upgrade de plano
-════════════════════════════════════════════ -->
-        <div class="modal-overlay" *ngIf="displayModalUpgradePlan">
-            <div class="modal">
-                <div class="modal-header">
+<!-- ══════════════════════════════════════
+     Modal: Upgrade de plano
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+    <div class="modal">
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner">
+            <div class="modal-header">
+                <div class="modal-title-group">
                     <h2 class="modal-title">Plano Premium</h2>
-                    <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
+                    <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
                 </div>
-
-                <div class="pricing-card">
-                    <div class="plan-price-big">MT 299</div>
-                    <div class="plan-period">por mês</div>
-                    <ul class="feature-list">
-                        <li>
-                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg></span>
-                            Acesso ilimitado a todos os tópicos e conteúdos disponíveis
-                        </li>
-                        <li>
-                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg></span>
-                            Resolução detalhada com dicas e comentários
-                        </li>
-                        <li>
-                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg></span>
-                            Criação de quizzes avançados e personalizados
-                        </li>
-                        <li>
-                            <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg></span>
-                            Mais exercícios por quiz para reforçar o aprendizado
-                        </li>
-                    </ul>
-                </div>
-
-                <button class="btn-upgrade-big" (click)="onUpgradePlan()">Fazer upgrade agora</button>
+                <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
             </div>
-        </div>
 
-
-        <!-- ══════════════════════════════════════════
-     MODAL: Método de pagamento
-════════════════════════════════════════════ -->
-        <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
-            <div class="modal">
-                <div class="modal-header">
-                    <h2 class="modal-title">Método de pagamento</h2>
-                    <button class="close-btn" (click)="onCloseModalPaymentOptions()">&#x2715;</button>
+            <div class="pricing-hero">
+                <div class="pricing-hero-top">
+                    <span class="plan-badge">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg>
+                        Premium
+                    </span>
+                    <div class="plan-price-wrap">
+                        <div class="plan-price-big">MT 299</div>
+                        <div class="plan-period">por mês</div>
+                    </div>
                 </div>
+                <ul class="feature-list">
+                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</li>
+                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Resolução detalhada com dicas e comentários passo a passo</li>
+                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Criação de quizzes avançados e personalizados</li>
+                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Mais exercícios por quiz para reforçar o aprendizado</li>
+                </ul>
+            </div>
 
+            <button class="btn-upgrade-big" (click)="onUpgradePlan()">
+                Fazer upgrade agora
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                </svg>
+            </button>
+            <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Modal: Método de pagamento
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+    <div class="modal">
+        <!-- Barra de progresso no topo do modal -->
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Método de pagamento</h2>
+                    <span class="modal-subtitle">Selecione como pretende pagar</span>
+                </div>
+                <button class="close-btn" (click)="onCloseModalPaymentOptions()"
+                    [disabled]="showLoading">&#x2715;</button>
+            </div>
+
+            <div class="payment-summary">
+                <div class="payment-summary-row">
+                    <span class="payment-summary-label">Plano</span>
+                    <span class="payment-summary-value">Premium</span>
+                </div>
+                <div class="payment-summary-row">
+                    <span class="payment-summary-label">Renovação</span>
+                    <span class="payment-summary-value">Mensal</span>
+                </div>
+                <div class="payment-summary-row">
+                    <span class="payment-summary-label">Total a pagar</span>
+                    <span class="payment-summary-value payment-summary-total">MT 299</span>
+                </div>
+            </div>
+
+            <!-- COM carteiras -->
+            <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
                 <div class="wallet-options">
-                    <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-                        <label class="wallet-card" *ngFor="let wallet of userWallets"
-                            [class.selected]="selectedWalletId === wallet.id">
-                            <div class="wallet-left">
+                    <label class="wallet-card" *ngFor="let wallet of userWallets"
+                        [class.selected]="selectedWalletId === wallet.id">
+                        <div class="wallet-left">
+                            <div class="wallet-img-wrap">
                                 <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
                                     class="wallet-img" />
                                 <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
                                     class="wallet-img" />
-                                <div>
-                                    <div class="wallet-type">{{ wallet.type }}</div>
-                                    <div class="wallet-num">{{ wallet.phoneNumber }}</div>
-                                </div>
                             </div>
-                            <div>
-                                <button *ngIf="!wallet.default" class="btn-set-default"
-                                    (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Principal</button>
-                                <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-                            </div>
-                        </label>
-                    </ng-container>
-                    <ng-template #noWallets>
-                        <p style="font-size:13px; color:#6b7280;">Você ainda não adicionou nenhuma carteira.</p>
-                    </ng-template>
-                </div>
-
-                <button class="btn-add-wallet" (click)="openModalAddPaymentOption()">+ Adicionar método de
-                    pagamento</button>
-
-                <div *ngIf="userWallets.length !== 0">
-                    <button class="btn-upgrade-big" (click)="upgradePlan()">Confirmar upgrade</button>
-                    <p class="plan-price-note">MT 299/mês</p>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- ══════════════════════════════════════════
-     MODAL: Adicionar carteira
-════════════════════════════════════════════ -->
-        <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
-            <div class="modal">
-                <div class="modal-header">
-                    <h2 class="modal-title">Adicionar carteira</h2>
-                    <button class="close-btn" (click)="onCloseModalAddPaymentOption()">&#x2715;</button>
-                </div>
-
-                <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-                    <div class="form-group">
-                        <label for="phoneNumber">Número de telefone</label>
-                        <input type="text" id="phoneNumber" name="phoneNumber" class="input-control" maxlength="9"
-                            minlength="9" [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                            pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" />
-                        <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-                            O número deve ter exatamente 9 dígitos.
-                        </span>
-                        <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
-                            class="error-text">
-                            Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
-                        </span>
-                    </div>
-
-                    <div *ngIf="wallet.type" class="wallet-card" style="margin-bottom: 1rem; pointer-events: none;">
-                        <div class="wallet-left">
-                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                class="wallet-img" />
-                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                class="wallet-img" />
                             <div>
                                 <div class="wallet-type">{{ wallet.type }}</div>
                                 <div class="wallet-num">{{ wallet.phoneNumber }}</div>
                             </div>
                         </div>
+                        <div>
+                            <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
+                                (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir
+                                principal</button>
+                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+                        </div>
+                    </label>
+                </div>
+
+                <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Adicionar outro método
+                </button>
+
+                <!-- Botão de confirmação de pagamento com loading inline -->
+                <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
+                    <span class="btn-spinner" *ngIf="showLoading"></span>
+                    <ng-container *ngIf="!showLoading">
+                        Confirmar e pagar
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </ng-container>
+                    <span *ngIf="showLoading">A processar pagamento...</span>
+                </button>
+                <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
+            </ng-container>
+
+            <!-- SEM carteiras -->
+            <ng-template #noWallets>
+                <div class="empty-wallets">
+                    <div class="empty-wallets-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="5" width="20" height="14" rx="2" />
+                            <path d="M2 10h20" />
+                            <path d="M6 15h.01" />
+                            <path d="M10 15h4" />
+                        </svg>
                     </div>
+                    <div class="empty-wallets-title">Nenhum método adicionado</div>
+                    <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o
+                        upgrade
+                        para Premium.</div>
+                </div>
+                <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Adicionar método de pagamento
+                </button>
+            </ng-template>
 
-                    <button class="btn-upgrade-big" type="submit"
-                        [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
-                        {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
-                    </button>
-                </form>
-            </div>
         </div>
+    </div>
+</div>
 
-</body>
+<!-- ══════════════════════════════════════
+     Modal: Adicionar carteira
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+    <div class="modal">
+        <!-- Barra de progresso no topo do modal -->
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
 
-</html>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Adicionar carteira</h2>
+                    <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
+                </div>
+                <button class="close-btn" (click)="onCloseModalAddPaymentOption()"
+                    [disabled]="showLoading">&#x2715;</button>
+            </div>
+
+            <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+                <div class="form-group">
+                    <label for="phoneNumber">Número de telefone</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+                        [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+                        pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
+                        [disabled]="showLoading" />
+                    <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+                        O número deve ter exatamente 9 dígitos.
+                    </span>
+                    <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
+                        class="error-text">
+                        Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+                    </span>
+                </div>
+
+                <div *ngIf="wallet.type" class="wallet-card"
+                    style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
+                    <div class="wallet-left">
+                        <div class="wallet-img-wrap">
+                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                class="wallet-img" />
+                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                class="wallet-img" />
+                        </div>
+                        <div>
+                            <div class="wallet-type">{{ wallet.type }}</div>
+                            <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+                        </div>
+                    </div>
+                    <span class="badge-detected">Detectado</span>
+                </div>
+
+                <!-- Botão com spinner inline durante submissão -->
+                <button class="btn-modal-primary" type="submit"
+                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
+                    <span class="btn-spinner" *ngIf="showLoading"></span>
+                    <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <span *ngIf="!showLoading">Adicionar carteira</span>
+                    <span *ngIf="showLoading">A adicionar...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

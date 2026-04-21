@@ -1352,268 +1352,6 @@
       text-align: right;
     }
 
-    /* --------------------------------------------
-       MODALS & POPOVERS
-    -------------------------------------------- */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(2px);
-    }
-
-    .modal-container {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 24px;
-      width: 90%;
-      max-width: 480px;
-      max-height: 85vh;
-      overflow-y: auto;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
-      animation: popIn 0.2s ease;
-      border: 1px solid #e2e8f0;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .modal-close {
-      width: 32px;
-      height: 32px;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      background: transparent;
-      cursor: pointer;
-      font-size: 18px;
-      color: #94a3b8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-
-    .modal-close:hover {
-      background: #fef2f2;
-      color: #dc2626;
-      border-color: #fecaca;
-    }
-
-    .form-title {
-      font-size: 15px;
-      color: #475569;
-      margin: 12px 0;
-    }
-
-    .input-group {
-      margin-bottom: 16px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #475569;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 14px;
-      font-family: inherit;
-      color: #0f172a;
-      background: #ffffff;
-      transition: border-color 0.15s;
-    }
-
-    .input-group input:focus {
-      outline: none;
-      border-color: #4361ee;
-    }
-
-    .options-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .remember-me {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      color: #475569;
-    }
-
-    .remember-me input {
-      accent-color: #4361ee;
-    }
-
-    .forgot-password a {
-      font-size: 13px;
-      color: #475569;
-      text-decoration: none;
-    }
-
-    .forgot-password a:hover {
-      color: #4361ee;
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 12px;
-      background: #4361ee;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      margin-bottom: 16px;
-      transition: all 0.2s;
-    }
-
-    .btn-login:hover:not(:disabled) {
-      opacity: 0.9;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    }
-
-    .btn-login:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    .message-box {
-      font-size: 13px;
-      color: #475569;
-      line-height: 1.6;
-      padding: 11px 14px;
-      margin-bottom: 12px;
-      background: #f8fafc;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .message-box a {
-      color: #4361ee;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .resend-link {
-      color: #0f172a;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 4px;
-      margin: 0 auto 12px;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-
-    .resend-link:hover {
-      opacity: 0.7;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      margin: 20px 0;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #e2e8f0;
-    }
-
-    .divider span {
-      padding: 0 14px;
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    .signup-link {
-      text-align: center;
-      font-size: 13px;
-      color: #475569;
-      cursor: pointer;
-      margin-top: 12px;
-    }
-
-    .signup-link a {
-      color: #4361ee;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #475569;
-      cursor: pointer;
-      transition: color 0.15s;
-      margin-bottom: 10px;
-      text-decoration: none;
-    }
-
-    .back-link:hover {
-      color: #4361ee;
-    }
-
-    .auth-tabs {
-      display: flex;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .auth-tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      color: #94a3b8;
-      transition: all 0.2s;
-    }
-
-    .auth-tab.active {
-      color: #4361ee;
-      border-bottom: 2px solid #4361ee;
-    }
-
     /* Comments Popup */
     .comments-modal {
       position: fixed;
@@ -1950,270 +1688,6 @@
       color: #94a3b8;
       display: block;
       margin-top: 3px;
-    }
-
-    /* Pricing / Upgrade */
-    .pricing-card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 16px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .plan-header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .plan-name {
-      font-size: 18px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .plan-price {
-      font-size: 36px;
-      font-weight: 800;
-      color: #4361ee;
-      line-height: 1.1;
-    }
-
-    .plan-period {
-      font-size: 13px;
-      color: #94a3b8;
-      margin-top: 2px;
-    }
-
-    .features-list .feature {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 12px;
-      font-size: 13px;
-      color: #0f172a;
-    }
-
-    .feature-icon {
-      width: 16px;
-      height: 16px;
-      background: #4361ee;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .feature-icon::after {
-      content: '✓';
-      color: white;
-      font-size: 9px;
-      font-weight: 700;
-    }
-
-    .upgrade-cta {
-      margin-top: 20px;
-    }
-
-    .btn-upgrade {
-      width: 100%;
-      padding: 13px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      background: #4361ee;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .btn-upgrade:hover:not(:disabled) {
-      opacity: 0.9;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
-    }
-
-    .btn-upgrade:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-add-payment {
-      width: 100%;
-      padding: 11px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      background: #f8fafc;
-      color: #0f172a;
-      border: 1px solid #e2e8f0;
-      cursor: pointer;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.15s;
-    }
-
-    .btn-add-payment:hover {
-      background: #e5e7eb;
-    }
-
-    .plan-price-upgrade {
-      text-align: center;
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 8px;
-    }
-
-    /* Wallet Options */
-    .wallet-options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .wallet-option input {
-      display: none;
-    }
-
-    .wallet-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 12px 14px;
-      cursor: pointer;
-      background: #ffffff;
-      transition: all 0.2s;
-    }
-
-    .wallet-card:hover {
-      border-color: #4361ee;
-      background: #eff6ff;
-    }
-
-    .wallet-card--selected {
-      border-color: #4361ee;
-      background: #eff6ff;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-
-    .wallet-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .wallet-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: #f8fafc;
-      padding: 4px;
-      object-fit: contain;
-    }
-
-    .wallet-type {
-      font-weight: 600;
-      font-size: 14px;
-      color: #0f172a;
-    }
-
-    .wallet-number {
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    .wallet-badge {
-      background: #4361ee;
-      color: white;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-    }
-
-    .btn-set-default {
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid #4361ee;
-      background: transparent;
-      color: #4361ee;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-
-    .btn-set-default:hover {
-      background: #4361ee;
-      color: white;
-    }
-
-    .empty-text {
-      font-size: 13px;
-      color: #94a3b8;
-    }
-
-    /* Form Elements */
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #475569;
-      margin-bottom: 6px;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 14px;
-      font-family: inherit;
-      color: #0f172a;
-      background: #ffffff;
-      transition: border-color 0.15s;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: #4361ee;
-    }
-
-    .input-control {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 14px;
-      font-family: inherit;
-      color: #0f172a;
-      background: #ffffff;
-      transition: border-color 0.15s;
-    }
-
-    .input-control:focus {
-      outline: none;
-      border-color: #4361ee;
-    }
-
-    .wallet-detected {
-      margin: 10px 0;
     }
 
     .upgrade-link {
@@ -2933,80 +2407,6 @@
   </svg>
 </button>
 
-<!-- ── Login Popout ── -->
-<div class="modal-overlay" *ngIf="displayModalLogin">
-  <div class="modal-container">
-
-    <div class="login-form" *ngIf="activeTab === 1">
-      <div class="modal-header">
-        <h2 class="modal-title">Entre para continuar</h2>
-        <button class="modal-close" (click)="onCloseLoginPopout()">&times;</button>
-      </div>
-
-      <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-      <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
-
-      <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
-        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="back-link">← Voltar</a>
-        <p class="message-box" *ngIf="step === 'otp'">
-          Insira o código enviado para <strong>{{ user.email }}</strong>
-        </p>
-        <div class="input-group" *ngIf="step === 'email'">
-          <label>Email</label>
-          <input type="email" name="email" #emailInput="ngModel" ngModel placeholder="seu@email.com" required email
-            [(ngModel)]="user.email">
-        </div>
-        <div class="input-group" *ngIf="step === 'otp'">
-          <label>Código</label>
-          <input type="text" name="otp" #otpInput="ngModel" ngModel placeholder="000000" required [(ngModel)]="otp">
-        </div>
-        <button class="btn-login" type="submit" [disabled]="otpForm.invalid || showLoading">
-          {{ step === 'email' ? 'Continuar' : 'Verificar' }}
-        </button>
-        <p class="message-box" *ngIf="step === 'email'">
-          Enviaremos um código de acesso único para o seu e-mail.
-        </p>
-        <div class="signup-link">Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se</a></div>
-      </form>
-    </div>
-
-    <div class="login-form" *ngIf="activeTab === 2">
-      <div class="modal-header">
-        <h2 class="modal-title">Criar conta</h2>
-        <button class="modal-close" (click)="onCloseLoginPopout()">&times;</button>
-      </div>
-
-      <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-      <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
-
-      <form autocomplete="off" #registerForm="ngForm"
-        (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
-        <div class="input-group" *ngIf="step === 'email'">
-          <label>Nome completo</label>
-          <input type="text" name="fullName" ngModel placeholder="Seu nome completo" [(ngModel)]="user.fullName">
-        </div>
-        <div class="input-group" *ngIf="step === 'email'">
-          <label>E-mail</label>
-          <input type="email" name="email" ngModel placeholder="seu@email.com" required email [(ngModel)]="user.email">
-        </div>
-        <a *ngIf="step === 'otp'" (click)="step = 'email'" class="back-link">← Voltar</a>
-        <p class="message-box" *ngIf="step === 'otp'">
-          Insira o código enviado para <strong>{{ user.email }}</strong>
-        </p>
-        <div class="input-group" *ngIf="step === 'otp'">
-          <input type="text" name="otp" ngModel placeholder="000000" required [(ngModel)]="otp">
-        </div>
-        <button class="btn-login" type="submit" [disabled]="registerForm.invalid || showLoading">
-          {{ step === 'email' ? 'Criar conta' : 'Verificar' }}
-        </button>
-        <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-link">Reenviar código →</a>
-        <p class="message-box" *ngIf="step === 'email'">Enviaremos um código de acesso único para o seu e-mail.</p>
-      </form>
-      <div id="google-signin-button"></div>
-      <div class="signup-link">Já tem conta? <a (click)="setActiveTab(1)">Faça login</a></div>
-    </div>
-  </div>
-</div>
 
 <!-- ── Comments ── -->
 <div class="comments-modal" *ngIf="showComments">
@@ -3104,136 +2504,383 @@
   </div>
 </div>
 
-<!-- ── Upgrade Plan ── -->
-<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2 class="modal-title">Plano Premium</h2>
-      <button class="modal-close" (click)="onCloseUpgradeModal()">&times;</button>
-    </div>
+<!-- ══════════════════════════════════════
+     Modal: Login
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalLogin">
+  <div class="modal">
+    <!-- Barra de progresso no topo do modal -->
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
 
-    <div class="pricing-card">
-      <div class="plan-header">
-        <div class="plan-price">MT 299</div>
-        <div class="plan-period">por mês</div>
-      </div>
-      <div class="features-list">
-        <div class="feature">
-          <div class="feature-icon"></div>
-          <span>Acesso ilimitado a todos os tópicos e conteúdos</span>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"></div>
-          <span>Resoluções detalhadas com dicas e comentários</span>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"></div>
-          <span>Quizzes avançados e personalizados</span>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"></div>
-          <span>Mais exercícios por quiz para reforçar o aprendizado</span>
-        </div>
-      </div>
-    </div>
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
 
-    <div class="upgrade-cta">
-      <button class="btn-upgrade" (click)="onUpgradePlan()">Fazer Upgrade Agora</button>
+      <div class="login-side" *ngIf="activeTab === 1">
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Entrar na conta' }}</h2>
+            <span class="modal-subtitle">{{ step === 'otp' ? 'Insira o código enviado por e-mail' :
+              'Bem-vindo de volta' }}</span>
+          </div>
+          <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
+        </div>
+
+        <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
+        <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou continue com e-mail</span>
+        </div>
+
+        <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+          <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
+            [disabled]="showLoading">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Voltar
+          </button>
+          <div class="otp-box" *ngIf="step === 'otp'">
+            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
+            entrada ou spam.
+          </div>
+          <!-- Feedback de envio de OTP -->
+          <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
+            <span class="spinner-sm"></span>
+            A enviar código para {{ user.email }}...
+          </div>
+          <div class="input-group" *ngIf="step === 'email'">
+            <label>E-mail</label>
+            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required email
+              [(ngModel)]="user.email" [disabled]="showLoading">
+          </div>
+          <div class="input-group" *ngIf="step === 'otp'">
+            <label>Código OTP</label>
+            <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp"
+              [disabled]="showLoading"
+              style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
+          </div>
+          <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+            <!-- Spinner inline durante loading -->
+            <span class="btn-spinner" *ngIf="showLoading"></span>
+            <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+            <span *ngIf="!showLoading">{{ step === 'email' ? 'Continuar' : 'Verificar e entrar' }}</span>
+            <span *ngIf="showLoading && step === 'email'">A enviar código...</span>
+            <span *ngIf="showLoading && step === 'otp'">A verificar...</span>
+          </button>
+          <div class="signup-link">Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se grátis</a></div>
+        </form>
+      </div>
+
+      <div class="login-side" *ngIf="activeTab === 2">
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Criar conta' }}</h2>
+            <span class="modal-subtitle">{{ step === 'otp' ? 'Confirme o seu e-mail' : 'É rápido e gratuito'
+              }}</span>
+          </div>
+          <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
+        </div>
+
+        <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
+        <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou registe-se com e-mail</span>
+        </div>
+
+        <form autocomplete="off" #registerForm="ngForm"
+          (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+          <div *ngIf="step === 'email'">
+            <div class="input-group">
+              <label>Nome completo</label>
+              <input type="text" id="fullName" name="fullName" placeholder="O seu nome completo"
+                [(ngModel)]="user.fullName" [disabled]="showLoading">
+            </div>
+            <div class="input-group">
+              <label>E-mail</label>
+              <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required email
+                [(ngModel)]="user.email" [disabled]="showLoading">
+            </div>
+          </div>
+          <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
+            [disabled]="showLoading">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Voltar
+          </button>
+          <div class="otp-box" *ngIf="step === 'otp'">
+            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
+            entrada ou spam.
+          </div>
+          <!-- Feedback de envio de OTP no registo -->
+          <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
+            <span class="spinner-sm"></span>
+            A criar conta e enviar código...
+          </div>
+          <div class="input-group" *ngIf="step === 'otp'">
+            <label>Código OTP</label>
+            <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp"
+              [disabled]="showLoading"
+              style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
+          </div>
+          <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+            <!-- Spinner inline durante loading -->
+            <span class="btn-spinner" *ngIf="showLoading"></span>
+            <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+            <span *ngIf="!showLoading">{{ step === 'email' ? 'Criar conta' : 'Confirmar e entrar' }}</span>
+            <span *ngIf="showLoading && step === 'email'">A criar conta...</span>
+            <span *ngIf="showLoading && step === 'otp'">A verificar código...</span>
+          </button>
+          <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não
+            recebeu?
+            Reenviar código</a>
+          <div class="signup-link">Já tem conta? <a (click)="setActiveTab(1)">Faça login</a></div>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- ── Payment Options ── -->
-<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2 class="modal-title">Método de pagamento</h2>
-      <button class="modal-close" (click)="onCloseModalPaymentOptions()">&times;</button>
-    </div>
+<!-- ══════════════════════════════════════
+     Modal: Upgrade de plano
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+  <div class="modal">
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Plano Premium</h2>
+          <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
+        </div>
+        <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
+      </div>
 
-    <div class="wallet-options">
+      <div class="pricing-hero">
+        <div class="pricing-hero-top">
+          <span class="plan-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            Premium
+          </span>
+          <div class="plan-price-wrap">
+            <div class="plan-price-big">MT 299</div>
+            <div class="plan-period">por mês</div>
+          </div>
+        </div>
+        <ul class="feature-list">
+          <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</li>
+          <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></span>Resolução detalhada com dicas e comentários passo a passo</li>
+          <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></span>Criação de quizzes avançados e personalizados</li>
+          <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></span>Mais exercícios por quiz para reforçar o aprendizado</li>
+        </ul>
+      </div>
+
+      <button class="btn-upgrade-big" (click)="onUpgradePlan()">
+        Fazer upgrade agora
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </button>
+      <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Modal: Método de pagamento
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+  <div class="modal">
+    <!-- Barra de progresso no topo do modal -->
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Método de pagamento</h2>
+          <span class="modal-subtitle">Selecione como pretende pagar</span>
+        </div>
+        <button class="close-btn" (click)="onCloseModalPaymentOptions()" [disabled]="showLoading">&#x2715;</button>
+      </div>
+
+      <div class="payment-summary">
+        <div class="payment-summary-row">
+          <span class="payment-summary-label">Plano</span>
+          <span class="payment-summary-value">Premium</span>
+        </div>
+        <div class="payment-summary-row">
+          <span class="payment-summary-label">Renovação</span>
+          <span class="payment-summary-value">Mensal</span>
+        </div>
+        <div class="payment-summary-row">
+          <span class="payment-summary-label">Total a pagar</span>
+          <span class="payment-summary-value payment-summary-total">MT 299</span>
+        </div>
+      </div>
+
+      <!-- COM carteiras -->
       <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-        <label class="wallet-option" *ngFor="let wallet of userWallets">
-          <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
-          <div class="wallet-card" [class.wallet-card--selected]="selectedWalletId === wallet.id">
+        <div class="wallet-options">
+          <label class="wallet-card" *ngFor="let wallet of userWallets"
+            [class.selected]="selectedWalletId === wallet.id">
             <div class="wallet-left">
-              <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
-              <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
-              <div class="wallet-details">
-                <span class="wallet-type">{{ wallet.type }}</span>
-                <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+              <div class="wallet-img-wrap">
+                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
+                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />
+              </div>
+              <div>
+                <div class="wallet-type">{{ wallet.type }}</div>
+                <div class="wallet-num">{{ wallet.phoneNumber }}</div>
               </div>
             </div>
-            <div class="wallet-check">
-              <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)"
-                class="btn-set-default">Principal</button>
+            <div>
+              <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
+                (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir principal</button>
               <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
             </div>
-          </div>
-        </label>
-      </ng-container>
-      <ng-template #noWallets>
-        <div class="wallet-card">
-          <p class="empty-text">Nenhuma carteira adicionada.</p>
+          </label>
         </div>
+
+        <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Adicionar outro método
+        </button>
+
+        <!-- Botão de confirmação de pagamento com loading inline -->
+        <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
+          <span class="btn-spinner" *ngIf="showLoading"></span>
+          <ng-container *ngIf="!showLoading">
+            Confirmar e pagar
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </ng-container>
+          <span *ngIf="showLoading">A processar pagamento...</span>
+        </button>
+        <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
+      </ng-container>
+
+      <!-- SEM carteiras -->
+      <ng-template #noWallets>
+        <div class="empty-wallets">
+          <div class="empty-wallets-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <path d="M2 10h20" />
+              <path d="M6 15h.01" />
+              <path d="M10 15h4" />
+            </svg>
+          </div>
+          <div class="empty-wallets-title">Nenhum método adicionado</div>
+          <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o upgrade
+            para Premium.</div>
+        </div>
+        <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Adicionar método de pagamento
+        </button>
       </ng-template>
-    </div>
 
-    <div class="upgrade-cta">
-      <button class="btn-add-payment" (click)="openModalAddPaymentOption()">
-        + Adicionar Método de Pagamento
-      </button>
-    </div>
-
-    <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
-      <button class="btn-upgrade" (click)="upgradePlan()">Confirmar Upgrade</button>
-      <p class="plan-price-upgrade">MT 299/mês</p>
     </div>
   </div>
 </div>
 
-<!-- ── Add Payment Method ── -->
+<!-- ══════════════════════════════════════
+     Modal: Adicionar carteira
+══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2 class="modal-title">Adicionar carteira</h2>
-      <button class="modal-close" (click)="onCloseModalAddPaymentOption()">&times;</button>
-    </div>
+  <div class="modal">
+    <!-- Barra de progresso no topo do modal -->
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
 
-    <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-      <div class="form-group">
-        <label class="form-label">Número de telefone</label>
-        <input class="form-input" type="text" name="phoneNumber" maxlength="9" minlength="9"
-          [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
-          required placeholder="Ex: 841234567" />
-        <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9"
-          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
-          O número deve ter exactamente 9 dígitos.
-        </small>
-        <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
-          style="font-size: 12px; color: #dc2626; margin-top: 5px; display: block;">
-          Suportamos apenas <strong>MPESA (84/85)</strong> e <strong>EMOLA (86/87)</strong>.
-        </small>
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Adicionar carteira</h2>
+          <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
+        </div>
+        <button class="close-btn" (click)="onCloseModalAddPaymentOption()" [disabled]="showLoading">&#x2715;</button>
       </div>
 
-      <div class="wallet-detected" *ngIf="wallet.type">
-        <div class="wallet-card">
+      <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+        <div class="form-group">
+          <label for="phoneNumber">Número de telefone</label>
+          <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+            [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
+            required placeholder="Ex: 841234567" [disabled]="showLoading" />
+          <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+            O número deve ter exatamente 9 dígitos.
+          </span>
+          <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
+            Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+          </span>
+        </div>
+
+        <div *ngIf="wallet.type" class="wallet-card"
+          style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
           <div class="wallet-left">
-            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
-            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
-            <div class="wallet-details">
-              <span class="wallet-type">{{ wallet.type }}</span>
-              <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+            <div class="wallet-img-wrap">
+              <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
+              <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />
+            </div>
+            <div>
+              <div class="wallet-type">{{ wallet.type }}</div>
+              <div class="wallet-num">{{ wallet.phoneNumber }}</div>
             </div>
           </div>
+          <span class="badge-detected">Detectado</span>
         </div>
-      </div>
 
-      <div class="upgrade-cta">
-        <button class="btn-upgrade" type="submit" [disabled]="walletTypeForm.invalid || !wallet.type">
-          {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
+        <!-- Botão com spinner inline durante submissão -->
+        <button class="btn-modal-primary" type="submit"
+          [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
+          <span class="btn-spinner" *ngIf="showLoading"></span>
+          <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span *ngIf="!showLoading">Adicionar carteira</span>
+          <span *ngIf="showLoading">A adicionar...</span>
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
