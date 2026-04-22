@@ -2742,6 +2742,7 @@
     <div class="modal-inner" [class.is-loading]="showLoading">
 
       <div class="login-side" *ngIf="activeTab === 1">
+
         <div class="modal-header">
           <div class="modal-title-group">
             <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Entrar na conta' }}</h2>
@@ -2749,6 +2750,11 @@
               }}</span>
           </div>
           <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
+        </div>
+
+        <div class="auth-tabs">
+          <div class="auth-tab active">Entrar</div>
+          <div class="auth-tab" (click)="setActiveTab(2)">Cadastrar</div>
         </div>
 
         <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
@@ -2793,7 +2799,6 @@
             <span *ngIf="showLoading && step === 'email'">A enviar código...</span>
             <span *ngIf="showLoading && step === 'otp'">A verificar...</span>
           </button>
-          <div class="signup-link">Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se grátis</a></div>
         </form>
       </div>
 
@@ -2804,6 +2809,11 @@
             <span class="modal-subtitle">{{ step === 'otp' ? 'Confirme o seu e-mail' : 'É rápido e gratuito' }}</span>
           </div>
           <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
+        </div>
+
+        <div class="auth-tabs">
+          <div class="auth-tab" (click)="setActiveTab(1)">Entrar</div>
+          <div class="auth-tab active">Cadastrar</div>
         </div>
 
         <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
@@ -2858,7 +2868,6 @@
           </button>
           <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não recebeu?
             Reenviar código</a>
-          <div class="signup-link">Já tem conta? <a (click)="setActiveTab(1)">Faça login</a></div>
         </form>
       </div>
 
