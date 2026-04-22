@@ -207,21 +207,21 @@
       color: #4361ee;
     }
 
-    /* --------------------------------------------
-       QUIZ SETUP SCREEN (Start Screen)
-    -------------------------------------------- */
+    /* ============================================
+       QUIZ SETUP SCREEN — REDESIGNED
+    ============================================ */
     .setup-card {
       background: #ffffff;
       border-radius: 20px;
       border: 1px solid #e2e8f0;
       padding: 28px;
-      max-width: 640px;
-      margin: 0 auto;
+      max-width: 680px;
+      margin: 16px auto 0;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
       animation: fadeInUp 0.3s ease;
-      margin-top: 16px;
     }
 
+    /* Header */
     .setup-header {
       display: flex;
       justify-content: space-between;
@@ -256,6 +256,7 @@
       justify-content: center;
       font-family: inherit;
       transition: all 0.15s;
+      flex-shrink: 0;
     }
 
     .btn-close-quiz:hover {
@@ -270,7 +271,7 @@
       height: 4px;
       background: #e5e7eb;
       border-radius: 999px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       overflow: hidden;
     }
 
@@ -286,80 +287,127 @@
       background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
       animation: fadeInUp 0.3s ease;
+    }
+
+    /* Step label row */
+    .step-label-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .step-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #4361ee;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .step-description {
       font-size: 13px;
       color: #475569;
-      margin-bottom: 14px;
       font-weight: 500;
+      margin: 0;
     }
 
     /* Options Grid */
     .options-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 10px;
+      gap: 8px;
+    }
+
+    /* Topics-specific smaller grid */
+    .options-grid--topics {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 
     .option-card {
       background: #ffffff;
       border: 1.5px solid #e2e8f0;
       border-radius: 12px;
-      padding: 14px 12px;
+      padding: 13px 12px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: border-color 0.18s, background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.15s;
       font-size: 13px;
       font-weight: 500;
       color: #0f172a;
+      position: relative;
+      user-select: none;
     }
 
     .option-card h3 {
       font-size: 14px;
       font-weight: 600;
       margin-bottom: 4px;
+      color: inherit;
     }
 
-    .option-card:hover {
+    /* Hover — unselected */
+    .option-card:not(.option-card--selected):not(.option-card--locked):hover {
       border-color: #4361ee;
       background: #eff6ff;
-      color: #4361ee;
+      color: #2e4fd6;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
+      transform: translateY(-1px);
     }
 
+    /* Selected state */
     .option-card--selected {
       border-color: #4361ee;
       background: #4361ee;
-      color: white;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
     }
 
     .option-card--selected h3 {
-      color: white;
+      color: #ffffff;
     }
 
     .option-card--selected .option-description {
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.75);
     }
 
+    /* Hover on selected — darken slightly, keep visible */
+    .option-card--selected:hover {
+      background: #2e4fd6;
+      border-color: #2e4fd6;
+      box-shadow: 0 4px 16px rgba(67, 97, 238, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Locked state */
     .option-card--locked {
-      opacity: 0.5;
+      opacity: 0.52;
       cursor: not-allowed;
-      filter: grayscale(60%);
+      filter: grayscale(50%);
     }
 
     .option-card--locked:hover {
-      border-color: #e2e8f0;
-      background: #ffffff;
-      color: #0f172a;
+      border-color: #e2e8f0 !important;
+      background: #ffffff !important;
+      color: #0f172a !important;
+      box-shadow: none !important;
+      transform: none !important;
     }
 
     .option-description {
       font-size: 12px;
       color: #94a3b8;
-      margin-top: 4px;
+      margin-top: 3px;
+      line-height: 1.4;
     }
 
     /* Lock Icon */
@@ -382,37 +430,87 @@
       gap: 6px;
     }
 
-    .select-all-link {
+    /* Topics toolbar */
+    .topics-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .topics-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .topics-counter-badge {
+      background: #4361ee;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .topics-counter-badge--changed {
+      animation: pop 0.25s ease;
+    }
+
+    .select-all-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       font-size: 12px;
       font-weight: 600;
       color: #4361ee;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 5px 11px;
       cursor: pointer;
-      margin-bottom: 10px;
-      text-align: right;
-      display: inline-block;
-      transition: opacity 0.15s;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+      white-space: nowrap;
     }
 
-    .select-all-link:hover {
-      opacity: 0.75;
+    .select-all-btn:hover {
+      background: #dbeafe;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+      transform: translateY(-1px);
     }
 
-    .topics-summary {
-      font-size: 12px;
-      color: #475569;
-      margin-bottom: 10px;
+    .select-all-btn svg {
+      flex-shrink: 0;
     }
 
+    /* Total badge */
     .total-questions-badge {
       text-align: center;
       font-size: 13px;
       font-weight: 600;
       color: #4361ee;
-      margin: 12px 0;
-      padding: 10px;
+      margin: 12px 0 4px;
+      padding: 11px 14px;
       background: #eff6ff;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid #bfdbfe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     .info-note {
@@ -422,6 +520,7 @@
       line-height: 1.5;
     }
 
+    /* Start Button */
     .btn-start-quiz {
       display: flex;
       align-items: center;
@@ -442,9 +541,9 @@
     }
 
     .btn-start-quiz:hover:not(:disabled) {
-      opacity: 0.9;
+      background: #2e4fd6;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.32);
     }
 
     .btn-start-quiz:disabled {
@@ -980,7 +1079,6 @@
       stroke-width: 8;
       stroke-linecap: round;
       stroke-dasharray: 326.73;
-      /* SEM animação — o valor vem directamente do binding Angular */
       transition: stroke-dashoffset 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
         stroke 0.3s ease;
     }
@@ -1814,6 +1912,20 @@
       }
     }
 
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.3);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
     /* --------------------------------------------
        RESPONSIVE
     -------------------------------------------- */
@@ -1822,6 +1934,82 @@
         padding-top: 44px;
       }
 
+      /* Setup card tighter on mobile */
+      .setup-card {
+        padding: 16px;
+        border-radius: 16px;
+        margin: 8px auto 0;
+      }
+
+      .setup-title {
+        font-size: 16px;
+      }
+
+      .setup-header {
+        margin-bottom: 14px;
+      }
+
+      .progress-track {
+        margin-bottom: 16px;
+      }
+
+      .step-card {
+        padding: 13px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+
+      /* Tighter grid on small screens */
+      .options-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+      }
+
+      .options-grid--topics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+      }
+
+      .option-card {
+        padding: 10px 8px;
+        font-size: 12px;
+        border-radius: 10px;
+      }
+
+      .option-card h3 {
+        font-size: 13px;
+      }
+
+      .option-description {
+        font-size: 11px;
+      }
+
+      .topics-toolbar {
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .select-all-btn {
+        padding: 4px 10px;
+        font-size: 11px;
+      }
+
+      .topics-counter {
+        font-size: 11px;
+      }
+
+      .total-questions-badge {
+        font-size: 12px;
+        padding: 9px 12px;
+      }
+
+      .btn-start-quiz {
+        padding: 12px;
+        font-size: 13px;
+      }
+
+      /* Results */
       .results-hero {
         grid-template-columns: 1fr;
         text-align: center;
@@ -1949,8 +2137,12 @@
 
       <form autocomplete="off" #courseForm="ngForm">
 
+        <!-- Step 1: Quiz type -->
         <div class="step-card">
-          <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
+          <div class="step-label-row">
+            <span class="step-badge">1</span>
+            <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
+          </div>
           <div class="options-grid">
             <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
               [class.option-card--selected]="quiz.type === type.value" class="option-card">
@@ -1960,8 +2152,12 @@
           </div>
         </div>
 
+        <!-- Step 2: Subject -->
         <div class="step-card" *ngIf="quiz.type">
-          <p class="step-description">Escolha a disciplina para este quiz.</p>
+          <div class="step-label-row">
+            <span class="step-badge">2</span>
+            <p class="step-description">Escolha a disciplina para este quiz.</p>
+          </div>
           <div class="options-grid">
             <div *ngFor="let subject of subjects" (click)="quiz.subject = subject; getTopicsBySubjectId(subject.id)"
               [class.option-card--selected]="quiz.subject.id === subject.id" class="option-card">
@@ -1970,16 +2166,33 @@
           </div>
         </div>
 
+        <!-- Step 3: Topics -->
         <div class="step-card" *ngIf="quiz.subject.id && topics.length > 0">
-          <p class="step-description">Selecione os tópicos que quer incluir no quiz.</p>
-
-          <div class="select-all-link" (click)="toggleSelectAllTopics()" *ngIf="!isFreeUser()">
-            {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
+          <div class="step-label-row">
+            <span class="step-badge">3</span>
+            <p class="step-description">Selecione os tópicos a incluir no quiz.</p>
           </div>
 
-          <p class="topics-summary">Tópicos selecionados: {{ getSelectedTopicIds().length }}</p>
+          <!-- Toolbar: counter + select-all -->
+          <div class="topics-toolbar">
+            <div class="topics-counter">
+              Selecionados
+              <span class="topics-counter-badge">{{ getSelectedTopicIds().length }}</span>
+            </div>
+            <button type="button" class="select-all-btn" (click)="toggleSelectAllTopics()" *ngIf="!isFreeUser()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline *ngIf="areAllTopicsSelected()" points="20 6 9 17 4 12"></polyline>
+                <ng-container *ngIf="!areAllTopicsSelected()">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </ng-container>
+              </svg>
+              {{ areAllTopicsSelected() ? 'Desmarcar todos' : 'Selecionar todos' }}
+            </button>
+          </div>
 
-          <div class="options-grid">
+          <div class="options-grid options-grid--topics">
             <div *ngFor="let topic of topics" (click)="toggleTopic(topic);"
               [class.option-card--selected]="topic.selected" [class.option-card--locked]="isPremiumTopic(topic)"
               class="option-card">
@@ -1997,10 +2210,24 @@
               </p>
             </div>
           </div>
+
+          <p class="lock-message" *ngIf="isFreeUser()">
+            <span class="lock-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </span>
+            Alguns tópicos estão bloqueados no plano gratuito.
+          </p>
         </div>
 
+        <!-- Step 4: Questions per topic -->
         <div class="step-card" *ngIf="getSelectedTopicIds().length > 0">
-          <p class="step-description">Escolha o número de questões por tópico.</p>
+          <div class="step-label-row">
+            <span class="step-badge">4</span>
+            <p class="step-description">Escolha o número de questões por tópico.</p>
+          </div>
           <div class="options-grid">
             <div *ngFor="let limit of limitsPerTopic" (click)="selectLimitPerTopic(limit)"
               [class.option-card--selected]="quiz.limitPerTopic === limit.value"
@@ -2016,14 +2243,21 @@
               </span>
             </div>
           </div>
-          <p class="info-note">O total de questões = tópicos selecionados × questões por tópico.</p>
+          <p class="info-note">Total de questões = tópicos selecionados × questões por tópico.</p>
         </div>
 
-        <p class="total-questions-badge" *ngIf="quiz.limitPerTopic">
-          Total de questões: {{ getSelectedTopicIds().length * quiz.limitPerTopic }}
-        </p>
-
+        <!-- Total badge + Start -->
         <div *ngIf="quiz.limitPerTopic">
+          <div class="total-questions-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <circle cx="12" cy="16" r="1" fill="currentColor"></circle>
+            </svg>
+            Total de questões: <strong>{{ getSelectedTopicIds().length * quiz.limitPerTopic }}</strong>
+          </div>
+
           <button class="btn-start-quiz" (click)="getQuestions()" [disabled]="showLoading || showGetSubjectLoading">
             Gerar Questões
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -2085,19 +2319,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Hero Identity -->
-        <!--
-        <div class="hero-identity">
-          <div class="hero-discipline">{{ quiz.subject.name }}</div>
-          <div class="hero-student-name">{{ quiz.user.fullName }}</div>
-          <div class="hero-meta">
-            <div class="hero-meta-row">
-              <strong>{{ quiz.submittedAt | date:'dd/MM/yyyy HH:mm' }}</strong>
-            </div>
-          </div>
-        </div>
-        -->
       </div>
 
       <div class="section-label">Desempenho por Tópico</div>
@@ -2516,9 +2737,7 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalLogin">
   <div class="modal">
-    <!-- Barra de progresso no topo do modal -->
     <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
     <div class="modal-handle"><span></span></div>
     <div class="modal-inner" [class.is-loading]="showLoading">
 
@@ -2526,15 +2745,14 @@
         <div class="modal-header">
           <div class="modal-title-group">
             <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Entrar na conta' }}</h2>
-            <span class="modal-subtitle">{{ step === 'otp' ? 'Insira o código enviado por e-mail' :
-              'Bem-vindo de volta' }}</span>
+            <span class="modal-subtitle">{{ step === 'otp' ? 'Insira o código enviado por e-mail' : 'Bem-vindo de volta'
+              }}</span>
           </div>
           <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
         </div>
 
         <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-        <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou continue com e-mail</span>
-        </div>
+        <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou continue com e-mail</span></div>
 
         <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
           <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
@@ -2546,10 +2764,9 @@
             Voltar
           </button>
           <div class="otp-box" *ngIf="step === 'otp'">
-            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
-            entrada ou spam.
+            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de entrada ou
+            spam.
           </div>
-          <!-- Feedback de envio de OTP -->
           <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
             <span class="spinner-sm"></span>
             A enviar código para {{ user.email }}...
@@ -2566,7 +2783,6 @@
               style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
           </div>
           <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
-            <!-- Spinner inline durante loading -->
             <span class="btn-spinner" *ngIf="showLoading"></span>
             <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2585,15 +2801,13 @@
         <div class="modal-header">
           <div class="modal-title-group">
             <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Criar conta' }}</h2>
-            <span class="modal-subtitle">{{ step === 'otp' ? 'Confirme o seu e-mail' : 'É rápido e gratuito'
-              }}</span>
+            <span class="modal-subtitle">{{ step === 'otp' ? 'Confirme o seu e-mail' : 'É rápido e gratuito' }}</span>
           </div>
           <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
         </div>
 
         <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-        <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou registe-se com e-mail</span>
-        </div>
+        <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou registe-se com e-mail</span></div>
 
         <form autocomplete="off" #registerForm="ngForm"
           (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
@@ -2618,10 +2832,9 @@
             Voltar
           </button>
           <div class="otp-box" *ngIf="step === 'otp'">
-            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
-            entrada ou spam.
+            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de entrada ou
+            spam.
           </div>
-          <!-- Feedback de envio de OTP no registo -->
           <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
             <span class="spinner-sm"></span>
             A criar conta e enviar código...
@@ -2633,7 +2846,6 @@
               style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
           </div>
           <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
-            <!-- Spinner inline durante loading -->
             <span class="btn-spinner" *ngIf="showLoading"></span>
             <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2644,8 +2856,7 @@
             <span *ngIf="showLoading && step === 'email'">A criar conta...</span>
             <span *ngIf="showLoading && step === 'otp'">A verificar código...</span>
           </button>
-          <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não
-            recebeu?
+          <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não recebeu?
             Reenviar código</a>
           <div class="signup-link">Já tem conta? <a (click)="setActiveTab(1)">Faça login</a></div>
         </form>
@@ -2723,9 +2934,7 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
   <div class="modal">
-    <!-- Barra de progresso no topo do modal -->
     <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
     <div class="modal-handle"><span></span></div>
     <div class="modal-inner" [class.is-loading]="showLoading">
       <div class="modal-header">
@@ -2751,7 +2960,6 @@
         </div>
       </div>
 
-      <!-- COM carteiras -->
       <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
         <div class="wallet-options">
           <label class="wallet-card" *ngFor="let wallet of userWallets"
@@ -2783,7 +2991,6 @@
           Adicionar outro método
         </button>
 
-        <!-- Botão de confirmação de pagamento com loading inline -->
         <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
           <span class="btn-spinner" *ngIf="showLoading"></span>
           <ng-container *ngIf="!showLoading">
@@ -2799,7 +3006,6 @@
         <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
       </ng-container>
 
-      <!-- SEM carteiras -->
       <ng-template #noWallets>
         <div class="empty-wallets">
           <div class="empty-wallets-icon">
@@ -2811,8 +3017,8 @@
             </svg>
           </div>
           <div class="empty-wallets-title">Nenhum método adicionado</div>
-          <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o upgrade
-            para Premium.</div>
+          <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o upgrade para
+            Premium.</div>
         </div>
         <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -2823,7 +3029,6 @@
           Adicionar método de pagamento
         </button>
       </ng-template>
-
     </div>
   </div>
 </div>
@@ -2833,9 +3038,7 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
   <div class="modal">
-    <!-- Barra de progresso no topo do modal -->
     <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
     <div class="modal-handle"><span></span></div>
     <div class="modal-inner" [class.is-loading]="showLoading">
       <div class="modal-header">
@@ -2875,7 +3078,6 @@
           <span class="badge-detected">Detectado</span>
         </div>
 
-        <!-- Botão com spinner inline durante submissão -->
         <button class="btn-modal-primary" type="submit"
           [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
           <span class="btn-spinner" *ngIf="showLoading"></span>
