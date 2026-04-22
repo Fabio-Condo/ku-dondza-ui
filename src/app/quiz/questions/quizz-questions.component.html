@@ -2481,22 +2481,29 @@
 
 <!-- ── Question List ── -->
 <div class="modal-overlay" *ngIf="displayModalQuestionsList">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2 class="modal-title">Questões</h2>
-      <button class="modal-close" (click)="onCloseQuestionList()">&times;</button>
-    </div>
-    <div *ngFor="let question of quiz.questions; let i = index">
-      <div class="question-list-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
+  <div class="modal">
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Questões</h2>
+          <span class="modal-subtitle">Todas as questões avaliadas</span>
+        </div>
+        <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
+      </div>
+
+      <div *ngFor="let question of quiz.questions; let i = index">
+        <div class="question-list-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
         'question-list-item--selected': i === currentQuestionIndex,
         'question-list-item--correct': getQuestionStatus(question) === true,
         'question-list-item--incorrect': getQuestionStatus(question) === false
       }">
-        <span class="question-number">{{ i + 1 }}</span>
-        <div class="question-content">
-          <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-          <div class="question-topic-badge" *ngIf="question.topic">
-            <small>Tópico: {{ question.topic.name }}</small>
+          <span class="question-number">{{ i + 1 }}</span>
+          <div class="question-content">
+            <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+            <div class="question-topic-badge" *ngIf="question.topic">
+              <small>Tópico: {{ question.topic.name }}</small>
+            </div>
           </div>
         </div>
       </div>

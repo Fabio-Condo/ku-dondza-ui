@@ -618,133 +618,6 @@
             }
         }
 
-        /* Modais */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 16px;
-            backdrop-filter: blur(2px);
-        }
-
-        .modal {
-            background: #fff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 460px;
-            max-height: 85vh;
-            overflow-y: auto;
-            animation: modalIn 0.22s ease;
-        }
-
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px) scale(0.98);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.25rem;
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .close-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 7px;
-            border: 1px solid #e2e8f0;
-            background: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 16px;
-            transition: background 0.15s;
-            padding: 0;
-        }
-
-        .close-btn:hover {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        /* Formulário */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 5px;
-            letter-spacing: 0.2px;
-        }
-
-        .form-group select,
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 9px 11px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #1e293b;
-            background: #fff;
-            transition: border-color 0.15s, box-shadow 0.15s;
-            font-family: inherit;
-            outline: none;
-        }
-
-        .form-group select:focus,
-        .form-group input[type="text"]:focus {
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 10px;
-            border-radius: 9px;
-            border: none;
-            background: #4361ee;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.15s;
-            font-family: inherit;
-        }
-
-        .btn-submit:hover {
-            background: #3451d1;
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
-
         /* Responsividade */
         @media (max-width: 900px) {
             .container {
@@ -937,10 +810,7 @@
                         <div class="overall-ring">
                             <svg class="progress-svg" viewBox="0 0 44 44">
                                 <circle class="ring-bg" cx="22" cy="22" r="18" />
-                                <circle class="ring-fill" cx="22" cy="22" r="18"
-                                    [style.stroke]=" (quiz.accuracyRate / 100) >= 0.7 ? '#22c55e' : (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' : '#ef4444'"
-                                    [style.stroke-dasharray]="113.1"
-                                    [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1" />
+                                <circle class="ring-fill" cx="22" cy="22" r="18" [style.stroke]=" (quiz.accuracyRate / 100) >= 0.7 ? '#22c55e' : (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' : '#ef4444'" [style.stroke-dasharray]="113.1" [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1" />
                             </svg>
                             <div class="ring-label">{{ quiz.accuracyRate.toFixed(0) }}%</div>
                         </div>
@@ -1044,36 +914,50 @@
 
 </html>
 
-<!-- Modal: Filtrar -->
+<!-- ══════════════════════════════════════
+     Modal: Filtrar quizzes
+══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalFilter">
     <div class="modal">
-        <div class="modal-header">
-            <h2 class="modal-title">Filtrar quizzes</h2>
-            <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Filtrar quizzes</h2>
+                    <span class="modal-subtitle">Refine os resultados por critérios</span>
+                </div>
+                <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
+            </div>
+            <form autocomplete="off" #exameForm="ngForm">
+                <div class="form-group">
+                    <label for="option">Visibilidade</label>
+                    <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option"
+                        required>
+                        <ng-container *ngFor="let option of quizFilterOptions">
+                            <option *ngIf="option.value !== 'MY_QUIZZES' || isUserLoggedIn" [value]="option.value">
+                                {{ option.label }}
+                            </option>
+                        </ng-container>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Disciplina</label>
+                    <select id="subject" [(ngModel)]="filter.subject" (change)="getQuizzes()" name="subject" required>
+                        <option value="" disabled selected>Selecione a disciplina</option>
+                        <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-modal-secondary" (click)="limparCampos()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M8 6V4h8v2" />
+                    </svg>
+                    Limpar filtros
+                </button>
+            </form>
         </div>
-
-        <form>
-            <div class="form-group">
-                <label for="option">Visibilidade</label>
-                <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option"
-                    required>
-                    <ng-container *ngFor="let option of quizFilterOptions">
-                        <option *ngIf="option.value !== 'MY_QUIZZES' || isUserLoggedIn" [value]="option.value">
-                            {{ option.label }}
-                        </option>
-                    </ng-container>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="subject">Disciplina</label>
-                <select id="subject" [(ngModel)]="filter.subject" (change)="getQuizzes()" name="subject" required>
-                    <option value="" disabled selected>Selecione a disciplina</option>
-                    <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn-submit" (click)="limparCampos()">Limpar filtros</button>
-        </form>
     </div>
 </div>

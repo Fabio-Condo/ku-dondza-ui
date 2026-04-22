@@ -125,8 +125,15 @@
         }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card-header {
@@ -261,7 +268,7 @@
             right: 0;
             width: 60%;
             height: 1.6em;
-            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1) 70%);
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 70%);
         }
 
         /* Barra de progresso */
@@ -485,140 +492,15 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .loading-text {
             font-size: 13px;
             font-weight: 500;
             color: #64748b;
-        }
-
-        /* Modais */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 16px;
-            backdrop-filter: blur(2px);
-        }
-
-        .modal {
-            background: #fff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 460px;
-            max-height: 85vh;
-            overflow-y: auto;
-            animation: modalIn 0.22s ease;
-        }
-
-        @keyframes modalIn {
-            from { opacity: 0; transform: translateY(10px) scale(0.98); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.25rem;
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .close-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 7px;
-            border: 1px solid #e2e8f0;
-            background: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 16px;
-            transition: background 0.15s;
-            padding: 0;
-        }
-
-        .close-btn:hover {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        /* Formulário */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 5px;
-            letter-spacing: 0.2px;
-        }
-
-        .form-group select,
-        .form-group input[type="text"],
-        .form-group textarea {
-            width: 100%;
-            padding: 9px 11px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #1e293b;
-            background: #fff;
-            transition: border-color 0.15s, box-shadow 0.15s;
-            font-family: inherit;
-            outline: none;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-group select:focus,
-        .form-group input[type="text"]:focus,
-        .form-group textarea:focus {
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 10px;
-            border-radius: 9px;
-            border: none;
-            background: #4361ee;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.15s;
-            font-family: inherit;
-        }
-
-        .btn-submit:hover {
-            background: #3451d1;
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
         }
 
         /* Checkbox group */
@@ -745,8 +627,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* Responsividade */
@@ -803,12 +690,12 @@
 <body>
     <div class="container">
         <div class="title-container">
-            <h1>Materiais</h1>
-            <p class="subtitle">Explore os diferentes materiais de preparação</p>
+            <h1>Cursos</h1>
+            <p class="subtitle">Explore os diferentes cursos de preparação</p>
         </div>
 
         <header>
-            <div class="title">Materiais</div>
+            <div class="title">Cursos</div>
             <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalSubjects }}</span>
 
             <div class="actions">
@@ -849,7 +736,8 @@
                     <div class="discipline-icon" *ngIf="subject.name === 'Português'">
                         <svg viewBox="0 0 24 24">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="subject.name === 'Quimica'">
@@ -923,9 +811,12 @@
                         </button>
                         <div class="dropdown" *ngIf="subject.isAdminMenuOpen">
                             <a (click)="copyLink(subject.subjectId); closeDropdown(subject)">Copiar link</a>
-                            <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar no WhatsApp</a>
-                            <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar no Facebook</a>
-                            <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar no LinkedIn</a>
+                            <a (click)="shareOnSocial('whatsapp', subject.subjectId); closeDropdown(subject)">Partilhar
+                                no WhatsApp</a>
+                            <a (click)="shareOnSocial('facebook', subject.subjectId); closeDropdown(subject)">Partilhar
+                                no Facebook</a>
+                            <a (click)="shareOnSocial('linkedin', subject.subjectId); closeDropdown(subject)">Partilhar
+                                no LinkedIn</a>
                             <a [routerLink]="['/subjects', subject.subjectId]">Visualizar</a>
                             <a (click)="onUpdateSubject(subject); closeDropdown(subject)"
                                 *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
@@ -986,8 +877,8 @@
         <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
-                    fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="8" x2="12" y2="12"></line>
                     <circle cx="12" cy="16" r="1"></circle>
@@ -1028,82 +919,119 @@
 
 </html>
 
-<!-- Modal: Adicionar / Editar -->
+
+<!-- ══════════════════════════════════════
+     Modal: Adicionar/Editar disciplina
+══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
-        <div class="modal-header">
-            <h2 class="modal-title">{{ editing ? 'Editar disciplina' : 'Nova disciplina' }}</h2>
-            <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
-        </div>
+        <!-- Barra de progresso no topo do modal -->
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
 
-        <form autocomplete="off" #subjectForm="ngForm" (ngSubmit)="save(subjectForm)">
-
-            <div class="form-group">
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="name" required minlength="1" [(ngModel)]="subject.name">
-            </div>
-
-            <div class="form-group">
-                <label for="description">Descrição</label>
-                <textarea id="description" name="description" required minlength="1"
-                    [(ngModel)]="subject.description"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="category">Categoria</label>
-                <select id="category" [(ngModel)]="subject.category" name="category" required>
-                    <option value="" disabled>Selecione a categoria</option>
-                    <option *ngFor="let category of categories" [value]="category.value">
-                        {{ category.label }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Configurações dos módulos</label>
-                <div class="checkbox-group">
-                    <label>
-                        <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.quizEnabled" name="quizEnabled">
-                        Quiz
-                    </label>
-                    <label>
-                        <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.courseEnabled" name="courseEnabled">
-                        Curso
-                    </label>
-                    <label>
-                        <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.progressEnabled" name="progressEnabled">
-                        Progresso
-                    </label>
-                    <label>
-                        <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.examEnabled" name="examEnabled">
-                        Exame
-                    </label>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">{{ editing ? 'Editar disciplina' : 'Nova disciplina' }}</h2>
+                    <span class="modal-subtitle">Adicione ou edite informações da disciplina</span>
                 </div>
+                <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
             </div>
+            <form autocomplete="off" #subjectForm="ngForm" (ngSubmit)="save(subjectForm)">
 
-            <button class="btn-submit" type="submit" [disabled]="subjectForm.invalid">
-                {{ showLoading ? 'Salvando...' : 'Salvar' }}
-            </button>
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" required minlength="1" [(ngModel)]="subject.name">
+                </div>
 
-        </form>
+                <div class="form-group">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" name="description" required minlength="1"
+                        [(ngModel)]="subject.description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Categoria</label>
+                    <select id="category" [(ngModel)]="subject.category" name="category" required>
+                        <option value="" disabled>Selecione a categoria</option>
+                        <option *ngFor="let category of categories" [value]="category.value">
+                            {{ category.label }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Configurações dos módulos</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.quizEnabled"
+                                name="quizEnabled">
+                            Quiz
+                        </label>
+                        <label>
+                            <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.courseEnabled"
+                                name="courseEnabled">
+                            Curso
+                        </label>
+                        <label>
+                            <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.progressEnabled"
+                                name="progressEnabled">
+                            Progresso
+                        </label>
+                        <label>
+                            <input type="checkbox" class="styled-checkbox" [(ngModel)]="subject.examEnabled"
+                                name="examEnabled">
+                            Exame
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-modal-secondary" [disabled]="subjectForm.invalid">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M8 6V4h8v2" />
+                    </svg>
+                    {{ showLoading ? 'Salvando...' : 'Salvar' }}
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 
-<!-- Modal: Filtrar -->
+<!-- ══════════════════════════════════════
+     Modal: Filtrar disciplinas
+══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalFilter">
     <div class="modal">
-        <div class="modal-header">
-            <h2 class="modal-title">Filtrar disciplinas</h2>
-            <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
-        </div>
+        <!-- Barra de progresso no topo do modal -->
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
 
-        <form>
-            <div class="form-group">
-                <label for="text">Nome</label>
-                <input type="text" name="text" ngModel #text="ngModel" minlength="1"
-                    [(ngModel)]="filtro.name" (ngModelChange)="findAll()">
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Filtrar disciplinas</h2>
+                    <span class="modal-subtitle">Refine os resultados por critérios</span>
+                </div>
+                <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
             </div>
-            <button type="submit" class="btn-submit" (click)="limparCampos()">Limpar filtros</button>
-        </form>
+            <form autocomplete="off" #exameForm="ngForm">
+                <div class="form-group">
+                    <label for="text">Nome</label>
+                    <input type="text" name="text" ngModel #text="ngModel" minlength="1" [(ngModel)]="filtro.name"
+                        (ngModelChange)="findAll()">
+                </div>
+                <button type="button" class="btn-modal-secondary" (click)="limparCampos()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M8 6V4h8v2" />
+                    </svg>
+                    Limpar filtros
+                </button>
+            </form>
+        </div>
     </div>
 </div>
