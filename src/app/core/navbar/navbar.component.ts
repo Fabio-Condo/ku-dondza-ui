@@ -40,6 +40,12 @@ export class NavbarComponent implements OnInit {
 
   //this.authenticationService.logOut(); // So para testes, remova depois
 
+  onPratice() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/quizzes', 'new']);
+    });
+  }
+
   goToProfile() {
     const userId = this.loggedUser.userId;
 

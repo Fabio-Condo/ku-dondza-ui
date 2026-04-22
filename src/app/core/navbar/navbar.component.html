@@ -113,6 +113,85 @@
       font-weight: 600;
     }
 
+    /* ── PRATICAR BUTTON (desktop only) ── */
+    .btn-pratice {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4361ee;
+      padding: 6px 14px 6px 10px;
+      border-radius: 9px;
+      border: 1.5px solid rgba(67, 97, 238, 0.25);
+      background: rgba(67, 97, 238, 0.05);
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: -0.1px;
+      transition: background 0.2s ease,
+                  border-color 0.2s ease,
+                  box-shadow 0.2s ease,
+                  transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-pratice::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(67,97,238,0.08) 0%, rgba(58,12,163,0.04) 100%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-pratice:hover {
+      border-color: rgba(67, 97, 238, 0.45);
+      background: rgba(67, 97, 238, 0.08);
+      box-shadow: 0 2px 12px rgba(67, 97, 238, 0.16),
+                  0 1px 3px rgba(67, 97, 238, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-pratice:hover::before {
+      opacity: 1;
+    }
+
+    .btn-pratice:active {
+      transform: translateY(0) scale(0.97);
+      box-shadow: none;
+    }
+
+    .btn-pratice .pratice-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: #4361ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-pratice:hover .pratice-icon {
+      transform: rotate(90deg) scale(1.1);
+    }
+
+    .btn-pratice .pratice-icon svg {
+      width: 11px;
+      height: 11px;
+      color: white;
+    }
+
+    .btn-pratice .pratice-text {
+      position: relative;
+      z-index: 1;
+    }
+
     /* ── RIGHT SECTION ── */
     .right-section {
       display: flex;
@@ -342,37 +421,14 @@
       transform: translateX(20px);
     }
 
-    .mobile-menu.active .mobile-nav-links li:nth-child(1) a {
-      transition: all 0.35s 0.05s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(2) a {
-      transition: all 0.35s 0.10s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(3) a {
-      transition: all 0.35s 0.15s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(4) a {
-      transition: all 0.35s 0.20s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(5) a {
-      transition: all 0.35s 0.25s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(6) a {
-      transition: all 0.35s 0.30s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(7) a {
-      transition: all 0.35s 0.35s;
-    }
-
-    .mobile-menu.active .mobile-nav-links li:nth-child(8) a {
-      transition: all 0.35s 0.40s;
-    }
+    .mobile-menu.active .mobile-nav-links li:nth-child(1) a { transition: all 0.35s 0.05s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(2) a { transition: all 0.35s 0.10s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(3) a { transition: all 0.35s 0.15s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(4) a { transition: all 0.35s 0.20s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(5) a { transition: all 0.35s 0.25s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(6) a { transition: all 0.35s 0.30s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(7) a { transition: all 0.35s 0.35s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(8) a { transition: all 0.35s 0.40s; }
 
     .mobile-menu.active .mobile-nav-links a {
       opacity: 1;
@@ -431,10 +487,10 @@
     }
 
     @media (max-width: 768px) {
-
       .nav-links,
       .auth-buttons,
-      .divider {
+      .divider,
+      .btn-praticar {
         display: none;
       }
 
@@ -489,6 +545,18 @@
 
         <!-- Right section -->
         <div class="right-section">
+
+          <!-- Praticar CTA (desktop only) -->
+          <a (click)="onPratice()" class="btn-pratice">
+            <span class="pratice-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </span>
+            <span class="pratice-text">Praticar</span>
+          </a>
 
           <!-- Auth buttons (logged out) -->
           <div class="auth-buttons" *ngIf="!loggedUser">
