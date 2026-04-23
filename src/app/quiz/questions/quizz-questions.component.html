@@ -208,7 +208,7 @@
     }
 
     /* ============================================
-       QUIZ SETUP SCREEN — REDESIGNED
+       QUIZ SETUP SCREEN
     ============================================ */
     .setup-card {
       background: #ffffff;
@@ -221,7 +221,6 @@
       animation: fadeInUp 0.3s ease;
     }
 
-    /* Header */
     .setup-header {
       display: flex;
       justify-content: space-between;
@@ -265,7 +264,6 @@
       border-color: #fecaca;
     }
 
-    /* Progress Bar */
     .progress-track {
       width: 100%;
       height: 4px;
@@ -282,7 +280,6 @@
       transition: width 0.4s ease;
     }
 
-    /* Step Card */
     .step-card {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -292,7 +289,6 @@
       animation: fadeInUp 0.3s ease;
     }
 
-    /* Step label row */
     .step-label-row {
       display: flex;
       align-items: center;
@@ -321,14 +317,12 @@
       margin: 0;
     }
 
-    /* Options Grid */
     .options-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 8px;
     }
 
-    /* Topics-specific smaller grid */
     .options-grid--topics {
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
@@ -355,7 +349,6 @@
       color: inherit;
     }
 
-    /* Hover — unselected */
     .option-card:not(.option-card--selected):not(.option-card--locked):hover {
       border-color: #4361ee;
       background: #eff6ff;
@@ -364,7 +357,6 @@
       transform: translateY(-1px);
     }
 
-    /* Selected state */
     .option-card--selected {
       border-color: #4361ee;
       background: #4361ee;
@@ -380,7 +372,6 @@
       color: rgba(255, 255, 255, 0.75);
     }
 
-    /* Hover on selected — darken slightly, keep visible */
     .option-card--selected:hover {
       background: #2e4fd6;
       border-color: #2e4fd6;
@@ -388,7 +379,6 @@
       transform: translateY(-1px);
     }
 
-    /* Locked state */
     .option-card--locked {
       opacity: 0.52;
       cursor: not-allowed;
@@ -410,7 +400,6 @@
       line-height: 1.4;
     }
 
-    /* Lock Icon */
     .lock-icon {
       display: inline-flex;
       align-items: center;
@@ -430,7 +419,6 @@
       gap: 6px;
     }
 
-    /* Topics toolbar */
     .topics-toolbar {
       display: flex;
       align-items: center;
@@ -496,7 +484,6 @@
       flex-shrink: 0;
     }
 
-    /* Total badge */
     .total-questions-badge {
       text-align: center;
       font-size: 13px;
@@ -520,7 +507,6 @@
       line-height: 1.5;
     }
 
-    /* Start Button */
     .btn-start-quiz {
       display: flex;
       align-items: center;
@@ -564,22 +550,29 @@
       margin-top: 16px;
     }
 
-    .quiz-user-info {
+    /* ── Quiz identity bar (NEW) ── */
+    .quiz-identity-bar {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      margin-bottom: 16px;
     }
 
-    .user-profile {
+    .quiz-identity-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      min-width: 0;
     }
 
-    .user-avatar {
-      width: 38px;
-      height: 38px;
+    .quiz-identity-avatar {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: #4361ee;
       color: white;
@@ -587,19 +580,30 @@
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       flex-shrink: 0;
+      text-transform: uppercase;
     }
 
-    .user-details {
+    .quiz-identity-avatar.is-anon {
+      background: #e2e8f0;
+      color: #94a3b8;
+    }
+
+    .quiz-identity-info {
       display: flex;
       flex-direction: column;
+      gap: 2px;
+      min-width: 0;
     }
 
-    .user-name {
-      font-size: 14px;
+    .quiz-identity-name {
+      font-size: 13px;
       font-weight: 700;
       color: #0f172a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -609,28 +613,110 @@
       background: #eff6ff;
       color: #4361ee;
       font-size: 10px;
-      font-weight: 600;
-      padding: 2px 7px;
+      font-weight: 700;
+      padding: 1px 7px;
       border-radius: 999px;
+      border: 1px solid #c7d2fe;
+      flex-shrink: 0;
     }
 
-    .quiz-meta {
-      font-size: 12px;
+    .quiz-identity-sub {
+      font-size: 11.5px;
       color: #94a3b8;
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 2px;
+      gap: 5px;
+      flex-wrap: wrap;
     }
 
-    .meta-dot {
+    .quiz-identity-sep {
       width: 3px;
       height: 3px;
-      background: #94a3b8;
+      background: #cbd5e1;
       border-radius: 50%;
+      flex-shrink: 0;
     }
 
-    /* Progress Area */
+    .quiz-identity-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Type badge: TREINO / TESTE */
+    .quiz-type-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .quiz-type-pill.training {
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+    }
+
+    .quiz-type-pill.test {
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #fed7aa;
+    }
+
+    .quiz-type-pill svg {
+      width: 10px;
+      height: 10px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Subject pill */
+    .quiz-subject-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #eef2ff;
+      color: #4361ee;
+      border: 1px solid #c7d2fe;
+      white-space: nowrap;
+    }
+
+    /* Datetime row */
+    .quiz-datetime {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .quiz-datetime svg {
+      width: 11px;
+      height: 11px;
+      stroke: #94a3b8;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* ── End Quiz identity bar ── */
+
     .progress-area {
       display: flex;
       align-items: center;
@@ -715,7 +801,7 @@
       font-size: 10px;
     }
 
-    /* Question Image */
+    /* Question content */
     .question-image {
       width: 100%;
       border-radius: 16px;
@@ -809,6 +895,12 @@
       color: #14532d;
     }
 
+    .answer-option--incorrect {
+      background: #fef2f2;
+      border-color: #dc2626;
+      color: #7f1d1d;
+    }
+
     .answer-option--correct::after {
       content: '✓';
       position: absolute;
@@ -817,12 +909,6 @@
       transform: translateY(-50%);
       color: #16a34a;
       font-weight: 700;
-    }
-
-    .answer-option--incorrect {
-      background: #fef2f2;
-      border-color: #dc2626;
-      color: #7f1d1d;
     }
 
     .answer-option--incorrect::after {
@@ -1040,6 +1126,134 @@
       animation: fadeInUp 0.35s ease;
     }
 
+    /* ══════════════════════════════════════════════
+       RESULTS IDENTITY STRIP — REDESENHADO
+       Layout:
+         Desktop: avatar | nome + meta numa linha
+         Mobile:  linha do avatar+nome / linha das tags
+    ══════════════════════════════════════════════ */
+    .results-identity-strip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Avatar */
+    .results-identity-strip .quiz-identity-avatar {
+      width: 40px;
+      height: 40px;
+      font-size: 14px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #4361ee;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .results-identity-strip .quiz-identity-avatar.is-anon {
+      background: #e2e8f0;
+      color: #94a3b8;
+    }
+
+    /* Bloco de texto à direita do avatar */
+    .results-strip-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    /* Linha 1: nome + badge "você" */
+    .results-strip-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      line-height: 1.3;
+    }
+
+    /* Linha 2: chips de meta */
+    .results-strip-tags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* Separador pontual entre tags inline (oculto no mobile, pois wrap cuida) */
+    .results-strip-sep {
+      width: 3px;
+      height: 3px;
+      background: #cbd5e1;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Tag genérica de datetime */
+    .results-strip-tags .quiz-datetime {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .results-strip-tags .quiz-datetime svg {
+      width: 11px;
+      height: 11px;
+      stroke: #94a3b8;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Responsividade — mobile */
+    @media (max-width: 480px) {
+      .results-identity-strip {
+        padding: 12px 14px;
+        gap: 10px;
+      }
+
+      .results-identity-strip .quiz-identity-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 13px;
+      }
+
+      .results-strip-name {
+        font-size: 13px;
+      }
+
+      /* Separa as tags que ficam "apertadas" em telas muito pequenas */
+      .results-strip-tags {
+        gap: 5px;
+      }
+
+      /* Esconde os separadores de ponto quando as tags já quebram em linha */
+      .results-strip-sep {
+        display: none;
+      }
+    }
+
+    /* ── End Results identity strip ── */
+
     .results-hero {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -1053,7 +1267,6 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
     }
 
-    /* Progress Circle */
     .score-ring {
       position: relative;
       flex-shrink: 0;
@@ -1079,8 +1292,7 @@
       stroke-width: 8;
       stroke-linecap: round;
       stroke-dasharray: 326.73;
-      transition: stroke-dashoffset 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
-        stroke 0.3s ease;
+      transition: stroke-dashoffset 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, stroke 0.3s ease;
     }
 
     .score-center {
@@ -1170,51 +1382,6 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
       margin-top: 2px;
-    }
-
-    .hero-identity {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
-      padding-left: 28px;
-      border-left: 1px solid #e2e8f0;
-    }
-
-    .hero-discipline {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #4361ee;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 3px 10px;
-      border-radius: 999px;
-    }
-
-    .hero-student-name {
-      font-size: 16px;
-      font-weight: 700;
-      color: #0f172a;
-      text-align: right;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-    }
-
-    .hero-meta-row {
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    .hero-meta-row strong {
-      color: #475569;
-      font-weight: 600;
     }
 
     /* Section Label */
@@ -1365,7 +1532,7 @@
       font-weight: 600;
     }
 
-    /* Comparison Table */
+    /* Table */
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -1450,7 +1617,7 @@
       text-align: right;
     }
 
-    /* Comments Popup */
+    /* Comments */
     .comments-modal {
       position: fixed;
       inset: 0;
@@ -1620,7 +1787,7 @@
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
       min-width: 130px;
       z-index: 20;
       overflow: hidden;
@@ -1737,7 +1904,7 @@
       cursor: not-allowed;
     }
 
-    /* Question List Popout */
+    /* Question List */
     .question-list-item {
       cursor: pointer;
       padding: 12px 14px;
@@ -1926,6 +2093,18 @@
       }
     }
 
+    @keyframes num-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* --------------------------------------------
        RESPONSIVE
     -------------------------------------------- */
@@ -1934,7 +2113,6 @@
         padding-top: 44px;
       }
 
-      /* Setup card tighter on mobile */
       .setup-card {
         padding: 16px;
         border-radius: 16px;
@@ -1959,7 +2137,6 @@
         margin-bottom: 10px;
       }
 
-      /* Tighter grid on small screens */
       .options-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 7px;
@@ -2029,22 +2206,6 @@
         padding-left: 20px;
       }
 
-      .hero-identity {
-        align-items: center;
-        border-left: none;
-        border-top: 1px solid #e2e8f0;
-        padding-left: 0;
-        padding-top: 16px;
-      }
-
-      .hero-student-name {
-        text-align: center;
-      }
-
-      .hero-meta {
-        align-items: center;
-      }
-
       .question-panel {
         padding: 16px;
       }
@@ -2067,11 +2228,6 @@
       .comments-header,
       .comment-form {
         border-radius: 0;
-      }
-
-      .modal-container {
-        width: 95%;
-        max-height: 80vh;
       }
 
       .math-canvas {
@@ -2110,10 +2266,10 @@
     </div>
 
     <div *ngIf="currentMessage" class="toast-message" [ngClass]="{
-      'toast-message--info': currentMessage.type === 'info',
+      'toast-message--info':    currentMessage.type === 'info',
       'toast-message--success': currentMessage.type === 'success',
       'toast-message--warning': currentMessage.type === 'warning',
-      'toast-message--error': currentMessage.type === 'error'
+      'toast-message--error':   currentMessage.type === 'error'
     }">
       {{ currentMessage.text }}
     </div>
@@ -2173,7 +2329,6 @@
             <p class="step-description">Selecione os tópicos a incluir no quiz.</p>
           </div>
 
-          <!-- Toolbar: counter + select-all -->
           <div class="topics-toolbar">
             <div class="topics-counter">
               Selecionados
@@ -2283,12 +2438,108 @@
     <!-- ── Results Screen ── -->
     <div *ngIf="showStartScreen" class="results-container">
 
+      <!--
+        ══════════════════════════════════════════════════
+        IDENTITY STRIP — REDESENHADO
+        Estrutura limpa em duas linhas:
+          Linha 1: avatar  |  nome + badge "você"
+          Linha 2: (indentado)  disciplina · tipo · data · hora
+        ══════════════════════════════════════════════════
+      -->
+      <div class="results-identity-strip">
+
+        <!-- Avatar -->
+        <div class="quiz-identity-avatar" [class.is-anon]="quiz.anonymous">
+          <ng-container *ngIf="!quiz.anonymous">
+            {{ quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?' }}
+          </ng-container>
+          <ng-container *ngIf="quiz.anonymous">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+          </ng-container>
+        </div>
+
+        <!-- Corpo: nome na linha 1, tags na linha 2 -->
+        <div class="results-strip-body">
+
+          <!-- Linha 1: Nome + badge "você" -->
+          <span class="results-strip-name">
+            {{ quiz.anonymous ? 'Anónimo' : (quiz.user.fullName || 'Nome não disponível') }}
+            <span class="badge-you" *ngIf="isUserLoggedIn && !quiz.anonymous && quiz.user.id === loggedUser.id">
+              você
+            </span>
+          </span>
+
+          <!-- Linha 2: chips de meta -->
+          <div class="results-strip-tags">
+
+            <!-- Disciplina -->
+            <span class="quiz-subject-pill">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+              </svg>
+              {{ quiz.subject.name }}
+            </span>
+
+            <span class="results-strip-sep"></span>
+
+            <!-- Tipo -->
+            <span class="quiz-type-pill training" *ngIf="quiz.type === 'TRAINING'">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+              Treino
+            </span>
+            <span class="quiz-type-pill test" *ngIf="quiz.type === 'TEST'">
+              <svg viewBox="0 0 24 24">
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+              Teste
+            </span>
+
+            <span class="results-strip-sep"></span>
+
+            <!-- Data -->
+            <span class="quiz-datetime">
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              {{ quiz.submittedAt | date:'dd MMM yyyy' }}
+            </span>
+
+            <span class="results-strip-sep"></span>
+
+            <!-- Hora -->
+            <span class="quiz-datetime">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 3" />
+              </svg>
+              {{ quiz.submittedAt | date:'HH:mm' }}
+            </span>
+
+          </div>
+        </div>
+      </div>
+      <!-- ── End identity strip ── -->
+
       <div class="results-hero">
         <div class="score-ring">
           <svg class="progress-svg" viewBox="0 0 120 120">
             <circle class="track" cx="60" cy="60" r="52" />
             <circle class="fill" cx="60" cy="60" r="52" [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.7 ? '#16a34a' :
-        (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'"
+              (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'"
               [style.stroke-dashoffset]="326.73 - (result.correctAnswers / quiz.questions.length) * 326.73" />
           </svg>
           <div class="score-center">
@@ -2328,8 +2579,8 @@
             <div class="topic-name">{{ topic.name }}</div>
             <div class="badge" [ngClass]="{
               'badge--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
-              'badge--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
-              'badge--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+              'badge--ok':    getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+              'badge--weak':  getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
             }">
               {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' :
               (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco' }}
@@ -2340,8 +2591,8 @@
             <div class="topic-score-den">&nbsp;/ {{ quiz.resultsByTopic[topic.name].total || 0 }}</div>
             <div class="topic-percentage" [ngClass]="{
               'percentage--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
-              'percentage--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
-              'percentage--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+              'percentage--ok':    getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+              'percentage--weak':  getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
             }">
               {{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%
             </div>
@@ -2349,8 +2600,8 @@
           <div class="bar-track">
             <div class="bar-fill" [ngClass]="{
               'bar-fill--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
-              'bar-fill--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
-              'bar-fill--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+              'bar-fill--ok':    getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+              'bar-fill--weak':  getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
             }" [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
           </div>
           <div class="topic-foot">
@@ -2382,8 +2633,8 @@
                     <div class="mini-track">
                       <div class="mini-fill" [ngClass]="{
                         'bar-fill--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
-                        'bar-fill--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
-                        'bar-fill--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+                        'bar-fill--ok':    getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+                        'bar-fill--weak':  getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
                       }" [style.width.%]="quiz.resultsByTopic[topic.name].percentage || 0"></div>
                     </div>
                     <span class="td-pct-label">{{ quiz.resultsByTopic[topic.name].percentage?.toFixed(1) }}%</span>
@@ -2392,8 +2643,8 @@
                 <td>
                   <span class="badge" [ngClass]="{
                     'badge--great': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'great',
-                    'badge--ok': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
-                    'badge--weak': getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
+                    'badge--ok':    getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
+                    'badge--weak':  getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
                   }">
                     {{ getPerformanceLabel(quiz.resultsByTopic[topic.name].percentage || 0) }}
                   </span>
@@ -2411,33 +2662,82 @@
       <div *ngIf="currentQuestionIndex < quiz.questions.length">
         <div class="question-panel">
 
-          <div class="quiz-user-info">
-            <div class="user-profile">
-              <div class="user-avatar">
-                {{ quiz.anonymous ? 'U' : (quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?') }}
+          <!--
+            ══════════════════════════════════════════════════
+            IDENTITY BAR — nome, disciplina, tipo, data/hora
+            Substitui o antigo .quiz-user-info
+            ══════════════════════════════════════════════════
+          -->
+          <div class="quiz-identity-bar">
+
+            <!-- Lado esquerdo: avatar + nome + meta -->
+            <div class="quiz-identity-left">
+
+              <!-- Avatar -->
+              <div class="quiz-identity-avatar" [class.is-anon]="quiz.anonymous">
+                <ng-container *ngIf="!quiz.anonymous">
+                  {{ quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?' }}
+                </ng-container>
+                <ng-container *ngIf="quiz.anonymous">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                  </svg>
+                </ng-container>
               </div>
-              <div class="user-details">
-                <h1 class="user-name">
-                  {{ quiz.anonymous ? 'Usuário Anônimo' : (quiz.user.fullName || 'Nome não disponível') }}
-                  <span *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id"
-                    class="badge-you">você</span>
-                </h1>
-                <div class="quiz-meta">
-                  <span class="subject">{{ quiz.subject.name }}</span>
-                  <span class="meta-dot"></span>
-                  <span class="type">{{ getQuizTypeValue(quiz.type) }}</span>
+
+              <div class="quiz-identity-info">
+
+                <!-- Nome do aluno -->
+                <span class="quiz-identity-name">
+                  {{ quiz.anonymous ? 'Anónimo' : (quiz.user.fullName || 'Nome não disponível') }}
+                  <span class="badge-you" *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id">
+                    você
+                  </span>
+                </span>
+
+                <!-- Disciplina + separador + data/hora (quando vem do histórico) -->
+                <div class="quiz-identity-sub">
+                  <span>{{ quiz.subject.name }}</span>
                 </div>
+
               </div>
             </div>
 
-            <button class="btn-close-quiz" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+            <!-- Lado direito: tipo (treino/teste) + botão fechar -->
+            <div class="quiz-identity-right">
 
+              <!-- Badge: tipo do quiz -->
+              <span class="quiz-type-pill training" *ngIf="quiz.type === 'TRAINING'">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+                Treino
+              </span>
+              <span class="quiz-type-pill test" *ngIf="quiz.type === 'TEST'">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 11l3 3L22 4" />
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                </svg>
+                Teste
+              </span>
+
+              <!-- Fechar -->
+              <button class="btn-close-quiz" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+          </div>
+          <!-- ── End identity bar ── -->
+
+          <!-- Progress + timer -->
           <div class="progress-area">
             <p class="timer" [class.timer--active]="quiz.type === 'TEST' && !isWarning"
               [class.timer--inactive]="quiz.type === 'TRAINING'" [class.timer--warning]="isWarning" *ngIf="!quiz.id">
@@ -2458,6 +2758,7 @@
             </button>
           </div>
 
+          <!-- Question image / math canvas -->
           <img *ngIf="quiz.questions[currentQuestionIndex].urlFile"
             src="{{ quiz.questions[currentQuestionIndex].urlFile }}" alt="Gráfico" class="question-image" />
           <div class="graph-container"
@@ -2465,16 +2766,18 @@
             <canvas #canvas width="400" height="400" class="math-canvas"></canvas>
           </div>
 
+          <!-- Question text -->
           <div id="math-container-{{ currentQuestionIndex }}" class="question-text"
             *ngIf="quiz.questions[currentQuestionIndex].text">
             {{ quiz.questions[currentQuestionIndex].text }}
           </div>
 
+          <!-- Answers -->
           <div class="answers-list">
             <label *ngFor="let answer of quiz.questions[currentQuestionIndex].answers; let i = index" [ngClass]="{
-              'answer-option--correct': showCorrection && answer.correct,
+              'answer-option--correct':  showCorrection && answer.correct,
               'answer-option--incorrect': showCorrection && !answer.correct && isSelected(quiz.questions[currentQuestionIndex].id, answer.id!),
-              'answer-option--selected': isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)
+              'answer-option--selected':  isSelected(quiz.questions[currentQuestionIndex].id, answer.id!)
             }" class="answer-option">
               <span class="answer-letter">{{ getOptionLetter(i) }}</span>
               <input type="radio" name="question-{{ quiz.questions[currentQuestionIndex].id }}" [value]="answer.id"
@@ -2489,6 +2792,7 @@
             <small>Tópico: {{ quiz.questions[currentQuestionIndex].topic.name }}</small>
           </div>
 
+          <!-- Tip -->
           <div class="tip-box">
             <div class="tip-input">
               <button class="toggle-section-btn" [disabled]="quiz.blockedTip"
@@ -2516,6 +2820,7 @@
             </p>
           </div>
 
+          <!-- Solution -->
           <div class="solution-box" *ngIf="showCorrection">
             <div class="solution-input">
               <button class="toggle-section-btn"
@@ -2548,6 +2853,7 @@
 
         </div>
 
+        <!-- Nav buttons -->
         <div class="nav-buttons">
           <button class="btn btn-verify"
             [disabled]="showCorrection || !isCurrentQuestionAnswered(quiz.questions[currentQuestionIndex].id)"
@@ -2576,6 +2882,7 @@
         </div>
       </div>
 
+      <!-- FABs (quiz activo) -->
       <button class="fab fab--save-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
         *ngIf="quiz.id && showCorrection && showOptions && isUserLoggedIn">
         <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
@@ -2599,6 +2906,7 @@
   </div>
 </body>
 
+<!-- FABs (globais) -->
 <button class="fab fab--submit" (click)="onSubmitAnswers()" [disabled]="quiz.isSubmitted || !allQuestionsAnswered()"
   *ngIf="(!showInitQuizScreen && !quiz.id)">
   <i class="pi pi-upload"></i>
@@ -2715,10 +3023,10 @@
 
       <div *ngFor="let question of quiz.questions; let i = index">
         <div class="question-list-item" (click)="goToQuestion(i)" *ngIf="question.text" [ngClass]="{
-        'question-list-item--selected': i === currentQuestionIndex,
-        'question-list-item--correct': getQuestionStatus(question) === true,
-        'question-list-item--incorrect': getQuestionStatus(question) === false
-      }">
+          'question-list-item--selected':  i === currentQuestionIndex,
+          'question-list-item--correct':   getQuestionStatus(question) === true,
+          'question-list-item--incorrect': getQuestionStatus(question) === false
+        }">
           <span class="question-number">{{ i + 1 }}</span>
           <div class="question-content">
             <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
@@ -2742,7 +3050,6 @@
     <div class="modal-inner" [class.is-loading]="showLoading">
 
       <div class="login-side" *ngIf="activeTab === 1">
-
         <div class="modal-header">
           <div class="modal-title-group">
             <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Entrar na conta' }}</h2>

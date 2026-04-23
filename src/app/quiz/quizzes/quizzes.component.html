@@ -61,7 +61,7 @@
             margin-bottom: 1rem;
         }
 
-        /* Botões */
+        /* ── Botões ─────────────────────────────────────────── */
         button {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             padding: 8px 16px;
@@ -114,14 +114,14 @@
             margin-bottom: 15px;
         }
 
-        /* Grid */
+        /* ── Grid ───────────────────────────────────────────── */
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
         }
 
-        /* Card */
+        /* ── Card ───────────────────────────────────────────── */
         .card {
             background-color: #ffffff;
             border-radius: 14px;
@@ -129,6 +129,8 @@
             border: 1px solid #e8edf2;
             transition: border-color 0.2s, box-shadow 0.2s;
             animation: fadeUp 0.4s ease both;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
@@ -137,31 +139,24 @@
         }
 
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Header do card */
+        /* ── Header do card ─────────────────────────────────── */
         .quiz-header {
-            padding: 16px 18px;
+            padding: 14px 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             border-bottom: 1px solid #f1f5f9;
         }
 
-        /* Ícone de disciplina */
+        /* ── Ícone de disciplina ─────────────────────────────── */
         .discipline-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 11px;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
             background: #eef2ff;
             display: flex;
             align-items: center;
@@ -170,8 +165,8 @@
         }
 
         .discipline-icon svg {
-            width: 19px;
-            height: 19px;
+            width: 18px;
+            height: 18px;
             stroke: #4361ee;
             fill: none;
             stroke-width: 1.6;
@@ -183,23 +178,71 @@
             display: flex;
             flex-direction: column;
             gap: 2px;
+            min-width: 0;
         }
 
         .card-name {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 600;
             color: #1e293b;
             line-height: 1.25;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .card-sub {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #94a3b8;
         }
 
-        /* Dropdown */
-        .dropdown-container {
+        /* ── Badges de tipo de quiz ─────────────────────────── */
+        .header-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        /* Badge: TREINO / TESTE */
+        .quiz-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 99px;
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .quiz-type-badge.training {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .quiz-type-badge.test {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fed7aa;
+        }
+
+        .quiz-type-badge svg {
+            width: 10px;
+            height: 10px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── Dropdown ────────────────────────────────────────── */
+        .dropdown-container {
             position: relative;
         }
 
@@ -249,20 +292,110 @@
             color: #1e293b;
         }
 
-        /* Corpo do card */
+        /* ── Corpo do card ──────────────────────────────────── */
         .quiz-content {
-            padding: 16px 18px;
+            padding: 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
+            flex: 1;
         }
 
-        /* Bloco de desempenho geral */
+        /* ── Linha de meta (autor + data) ───────────────────── */
+        .quiz-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-meta-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #4361ee;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .quiz-meta-avatar.is-anon {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            color: #94a3b8;
+        }
+
+        .quiz-meta-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #94a3b8;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+
+        .quiz-meta-name {
+            font-weight: 500;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        /* Badge "Você" */
+        .you-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 7px;
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            line-height: 1.6;
+            white-space: nowrap;
+        }
+
+        .quiz-meta-sep {
+            color: #cbd5e1;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        /* Data de submissão */
+        .quiz-meta-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            white-space: nowrap;
+        }
+
+        .quiz-meta-date svg {
+            width: 11px;
+            height: 11px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* ── Desempenho geral ──────────────────────────────── */
         .overall {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 14px;
+            padding: 11px 13px;
             background: #f8fafc;
             border-radius: 10px;
             border: 1px solid #f1f5f9;
@@ -307,47 +440,72 @@
             letter-spacing: -0.3px;
         }
 
+        .overall-text {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
         .overall-text strong {
             display: block;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 3px;
         }
 
         .overall-text span {
+            font-size: 11.5px;
+            color: #94a3b8;
+        }
+
+        /* ── Duração ─────────────────────────────────────────── */
+        .duration-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
             font-size: 12px;
             color: #94a3b8;
         }
 
-        /* Label de tópicos */
+        .duration-row svg {
+            width: 12px;
+            height: 12px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* ── Tópicos ─────────────────────────────────────────── */
         .topics-label {
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.7px;
             color: #cbd5e1;
-            margin-bottom: 8px;
+            margin-bottom: 7px;
         }
 
-        /* Tags de tópicos */
         .topic-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 5px;
         }
 
         .topic-tag {
             display: inline-flex;
             align-items: center;
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 3px 9px;
+            font-size: 11.5px;
             font-weight: 500;
             border-radius: 99px;
             background-color: #f1f5f9;
             color: #475569;
             border: 1px solid #e2e8f0;
-            line-height: 1;
+            line-height: 1.4;
         }
 
         .tag-toggle-button {
@@ -358,27 +516,34 @@
             color: #4361ee;
             border: 1px solid #c7d2fe;
             border-radius: 99px;
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 3px 9px;
+            font-size: 11.5px;
             font-weight: 500;
             font-family: inherit;
             cursor: pointer;
             transition: background 0.15s;
-            line-height: 1;
+            line-height: 1.4;
         }
 
-        .tag-toggle-button:hover {
-            background: #e0e7ff;
+        .tag-toggle-button:hover { background: #e0e7ff; }
+        .tag-toggle-button i { font-size: 10px; }
+
+        /* ── Separador ──────────────────────────────────────── */
+        .card-divider {
+            height: 1px;
+            background: #f1f5f9;
+            margin: 0 -16px;
         }
 
-        .tag-toggle-button i {
-            font-size: 10px;
+        /* ── Footer do card ─────────────────────────────────── */
+        .card-footer {
+            padding: 12px 16px 14px;
         }
 
-        /* Botão de ação principal */
+        /* ── Botão CTA ──────────────────────────────────────── */
         .start-btn {
             width: 100%;
-            padding: 10px 16px;
+            padding: 9px 16px;
             background: #4361ee;
             color: white;
             border: none;
@@ -400,9 +565,7 @@
             box-shadow: 0 4px 14px rgba(67, 97, 238, 0.2);
         }
 
-        .start-btn:active {
-            transform: translateY(0);
-        }
+        .start-btn:active { transform: translateY(0); }
 
         .start-btn svg {
             width: 13px;
@@ -415,11 +578,9 @@
             transition: transform 0.2s;
         }
 
-        .start-btn:hover svg {
-            transform: translateX(3px);
-        }
+        .start-btn:hover svg { transform: translateX(3px); }
 
-        /* Load more */
+        /* ── Load more ──────────────────────────────────────── */
         .load-more-container {
             display: none;
             justify-content: center;
@@ -437,16 +598,10 @@
             font-weight: 500;
         }
 
-        .btn-load-more:hover {
-            background-color: #f8fafc;
-        }
+        .btn-load-more:hover { background-color: #f8fafc; }
+        .btn-load-more:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .btn-load-more:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* Paginação */
+        /* ── Paginação ──────────────────────────────────────── */
         .pagination {
             display: flex;
             justify-content: flex-end;
@@ -489,12 +644,9 @@
             border-color: #4361ee;
         }
 
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
+        .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* Loading overlay */
+        /* ── Loading overlay ────────────────────────────────── */
         .loading-overlay {
             position: fixed;
             inset: 0;
@@ -509,10 +661,7 @@
             transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .loading-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        .loading-overlay.visible { opacity: 1; visibility: visible; }
 
         .loading-box {
             background: #fff;
@@ -534,11 +683,7 @@
             animation: spin 0.75s linear infinite;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .loading-text {
             font-size: 13px;
@@ -546,7 +691,7 @@
             color: #64748b;
         }
 
-        /* Empty state */
+        /* ── Empty state ────────────────────────────────────── */
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -554,13 +699,11 @@
             font-size: 14px;
         }
 
-        /* Retry */
+        /* ── Retry ──────────────────────────────────────────── */
         .retry-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.45);
             display: flex;
             justify-content: center;
@@ -609,58 +752,26 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to   { opacity: 1; }
         }
 
-        /* Responsividade */
+        /* ── Responsividade ─────────────────────────────────── */
         @media (max-width: 900px) {
-            .container {
-                margin-top: 60px;
-            }
+            .container { margin-top: 60px; }
         }
 
         @media (max-width: 768px) {
-            .quiz-content {
-                padding: 12px 14px;
-            }
-
-            .quiz-header {
-                padding: 12px 14px;
-            }
-
-            .pagination {
-                display: none;
-            }
-
-            .load-more-container {
-                display: flex;
-            }
-
-            .start-quiz-button {
-                display: none;
-            }
-
-            .title {
-                display: flex;
-            }
-
-            .pagination-info {
-                display: none;
-            }
-
-            .title-container {
-                display: none;
-            }
-
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
+            .quiz-content      { padding: 12px 14px; }
+            .quiz-header       { padding: 12px 14px; }
+            .card-footer       { padding: 10px 14px 12px; }
+            .pagination        { display: none; }
+            .load-more-container { display: flex; }
+            .start-quiz-button   { display: none; }
+            .title               { display: flex; }
+            .pagination-info     { display: none; }
+            .title-container     { display: none; }
+            .cards-container     { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -699,79 +810,70 @@
         <div class="cards-container">
             <div class="card" *ngFor="let quiz of quizzes">
 
+                <!-- ── Header do card ───────────────────────────────── -->
                 <div class="quiz-header">
+
                     <!-- Ícones por disciplina -->
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Matemática'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M4 4h16" />
-                            <path d="M4 4l8 8-8 8" />
-                            <path d="M4 20h16" />
+                            <path d="M4 4h16"/><path d="M4 4l8 8-8 8"/><path d="M4 20h16"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Português'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path
-                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z"/>
+                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Quimica'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M9 3h6" />
-                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
-                            <path d="M7.5 14.5h9" />
-                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
+                            <path d="M9 3h6"/>
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3"/>
+                            <path d="M7.5 14.5h9"/>
+                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none"/>
+                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none"/>
+                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Física'">
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="2" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+                            <circle cx="12" cy="12" r="2"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Biologia'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
-                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
-                            <path d="M7.5 6.5h9" />
-                            <path d="M7.5 9h9" />
-                            <path d="M7.5 11.5h9" />
-                            <path d="M7 15c0 0 2 2.5 2 4" />
-                            <path d="M17 15c0 0-2 2.5-2 4" />
-                            <path d="M7.5 17h9" />
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6"/>
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6"/>
+                            <path d="M7.5 6.5h9"/><path d="M7.5 9h9"/><path d="M7.5 11.5h9"/>
+                            <path d="M7 15c0 0 2 2.5 2 4"/>
+                            <path d="M17 15c0 0-2 2.5-2 4"/>
+                            <path d="M7.5 17h9"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'História'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M5 3h14" />
-                            <path d="M5 21h14" />
-                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
-                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
-                            <path d="M8 14.5h8" />
+                            <path d="M5 3h14"/><path d="M5 21h14"/>
+                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9"/>
+                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9"/>
+                            <path d="M8 14.5h8"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Geografia'">
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9" />
-                            <path d="M3 12h18" />
-                            <path d="M5 8h14" />
-                            <path d="M5 16h14" />
-                            <path d="M12 3c3 3 3 15 0 18" />
-                            <path d="M12 3c-3 3-3 15 0 18" />
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M3 12h18"/><path d="M5 8h14"/><path d="M5 16h14"/>
+                            <path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/>
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Inglês'">
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9" />
-                            <path d="M3 12h18" />
-                            <path d="M12 3c3 3 3 15 0 18" />
-                            <path d="M12 3c-3 3-3 15 0 18" />
-                            <path d="M9 16l3-8 3 8" />
-                            <path d="M10 13h4" />
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M3 12h18"/>
+                            <path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/>
+                            <path d="M9 16l3-8 3 8"/><path d="M10 13h4"/>
                         </svg>
                     </div>
 
@@ -780,47 +882,123 @@
                         <span class="card-sub">{{ getCategoryValue(quiz.subject.category) }}</span>
                     </div>
 
-                    <div class="dropdown-container">
-                        <button class="dropdown-btn" (click)="toggleDropdown(quiz)">
-                            <i class="pi pi-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
-                            <a *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
-                                (click)="toggleAnonymousStatus(quiz); closeDropdown(quiz)">
-                                {{ quiz.anonymous ? 'Exibir meu nome' : 'Ocultar o nome' }}
-                            </a>
-                            <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
-                            <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no
-                                WhatsApp</a>
-                            <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no
-                                Facebook</a>
-                            <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no
-                                LinkedIn</a>
-                            <a [routerLink]="['/quizzes', quiz.quizId]">Visualizar</a>
-                            <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
-                                *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
+                    <!-- Badges de tipo + menu -->
+                    <div class="header-badges">
+
+                        <!-- Badge: TREINO ou TESTE -->
+                        <span class="quiz-type-badge training" *ngIf="quiz.type === 'TRAINING'">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                            Treino
+                        </span>
+                        <span class="quiz-type-badge test" *ngIf="quiz.type === 'TEST'">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 11l3 3L22 4"/>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                            </svg>
+                            Teste
+                        </span>
+
+                        <!-- Dropdown de acções -->
+                        <div class="dropdown-container">
+                            <button class="dropdown-btn" (click)="toggleDropdown(quiz)">
+                                <i class="pi pi-ellipsis-h"></i>
+                            </button>
+                            <div class="dropdown" *ngIf="quiz.isAdminMenuOpen">
+                                <a *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id && !quiz.showLoadingSave"
+                                    (click)="toggleAnonymousStatus(quiz); closeDropdown(quiz)">
+                                    {{ quiz.anonymous ? 'Exibir meu nome' : 'Ocultar o nome' }}
+                                </a>
+                                <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
+                                <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
+                                <a [routerLink]="['/quizzes', quiz.quizId]">Visualizar</a>
+                                <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
+                                    *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- ── Corpo do card ─────────────────────────────────── -->
                 <div class="quiz-content">
+
+                    <!-- Linha de autor + data de submissão -->
+                    <div class="quiz-meta">
+                        <!-- Avatar -->
+                        <div class="quiz-meta-avatar" [class.is-anon]="quiz.anonymous">
+                            <ng-container *ngIf="!quiz.anonymous">
+                                {{ quiz.user.fullName.charAt(0) }}
+                            </ng-container>
+                            <ng-container *ngIf="quiz.anonymous">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2.2"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="8" r="4"/>
+                                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                                </svg>
+                            </ng-container>
+                        </div>
+
+                        <div class="quiz-meta-info">
+                            <!-- Nome ou Anónimo -->
+                            <span class="quiz-meta-name">
+                                {{ quiz.anonymous ? 'Anónimo' : quiz.user.fullName }}
+                            </span>
+
+                            <!-- Badge "Você" quando o quiz é do utilizador logado -->
+                            <span class="you-badge"
+                                *ngIf="isUserLoggedIn && !quiz.anonymous && quiz.user.id == loggedUser.id">
+                                Você
+                            </span>
+
+                            <span class="quiz-meta-sep">&middot;</span>
+
+                            <!-- Data de submissão -->
+                            <span class="quiz-meta-date">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                {{ quiz.submittedAt | date:'dd MMM yyyy' }}
+                            </span>
+                        </div>
+                    </div>
 
                     <!-- Desempenho geral -->
                     <div class="overall">
                         <div class="overall-ring">
                             <svg class="progress-svg" viewBox="0 0 44 44">
-                                <circle class="ring-bg" cx="22" cy="22" r="18" />
-                                <circle class="ring-fill" cx="22" cy="22" r="18" [style.stroke]=" (quiz.accuracyRate / 100) >= 0.7 ? '#22c55e' : (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' : '#ef4444'" [style.stroke-dasharray]="113.1" [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1" />
+                                <circle class="ring-bg" cx="22" cy="22" r="18"/>
+                                <circle class="ring-fill" cx="22" cy="22" r="18"
+                                    [style.stroke]="(quiz.accuracyRate / 100) >= 0.7 ? '#22c55e' : (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' : '#ef4444'"
+                                    [style.stroke-dasharray]="113.1"
+                                    [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1"/>
                             </svg>
                             <div class="ring-label">{{ quiz.accuracyRate.toFixed(0) }}%</div>
                         </div>
                         <div class="overall-text">
                             <strong>Desempenho geral</strong>
-                            <span>{{ quiz.topics.length }} tópicos · {{ quiz.totalQuestions }} questões</span>
+                            <span>{{ quiz.topics.length }} tópico{{ quiz.topics.length !== 1 ? 's' : '' }} &middot; {{ quiz.totalQuestions }} questões</span>
+
+                            <!-- Duração logo abaixo, dentro do bloco overall -->
+                            <span class="duration-row" style="margin-top: 2px;">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="9"/>
+                                    <path d="M12 7v5l3 3"/>
+                                </svg>
+                                {{ formatTime(quiz.timeLimit - quiz.timeSpent) }} minutos
+                            </span>
                         </div>
                     </div>
 
-                    <!-- Tópicos -->
+                    <!-- Tópicos avaliados -->
                     <div>
                         <div class="topics-label">Tópicos avaliados</div>
                         <div class="topic-tags">
@@ -837,7 +1015,10 @@
                         </div>
                     </div>
 
-                    <!-- CTA -->
+                </div>
+
+                <!-- ── Footer do card ────────────────────────────────── -->
+                <div class="card-footer">
                     <button class="start-btn" [routerLink]="['/quizzes', quiz.quizId]">
                         <span>Ver correção</span>
                         <svg viewBox="0 0 24 24">
@@ -846,6 +1027,7 @@
                         </svg>
                     </button>
                 </div>
+
             </div>
         </div>
 
@@ -931,8 +1113,7 @@
             <form autocomplete="off" #exameForm="ngForm">
                 <div class="form-group">
                     <label for="option">Visibilidade</label>
-                    <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option"
-                        required>
+                    <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option" required>
                         <ng-container *ngFor="let option of quizFilterOptions">
                             <option *ngIf="option.value !== 'MY_QUIZZES' || isUserLoggedIn" [value]="option.value">
                                 {{ option.label }}
@@ -940,7 +1121,6 @@
                         </ng-container>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="subject">Disciplina</label>
                     <select id="subject" [(ngModel)]="filter.subject" (change)="getQuizzes()" name="subject" required>
@@ -951,9 +1131,9 @@
                 <button type="button" class="btn-modal-secondary" (click)="limparCampos()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 6h18" />
-                        <path d="M19 6l-1 14H6L5 6" />
-                        <path d="M8 6V4h8v2" />
+                        <path d="M3 6h18"/>
+                        <path d="M19 6l-1 14H6L5 6"/>
+                        <path d="M8 6V4h8v2"/>
                     </svg>
                     Limpar filtros
                 </button>
