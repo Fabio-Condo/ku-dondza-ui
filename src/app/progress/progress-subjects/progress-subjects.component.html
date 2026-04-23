@@ -16,7 +16,6 @@
 
         body {
             padding: 10px;
-            /*background-color: #f8fafc;*/
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
@@ -52,7 +51,6 @@
             gap: 1rem;
         }
 
-        /* Card — igual ao da tela de quizzes */
         .card {
             background-color: #ffffff;
             border-radius: 14px;
@@ -79,7 +77,6 @@
         .card:nth-child(5) { animation-delay: .28s }
         .card:nth-child(6) { animation-delay: .34s }
 
-        /* Header do card — igual ao quiz-header */
         .card-header {
             padding: 16px 18px;
             display: flex;
@@ -88,7 +85,6 @@
             border-bottom: 1px solid #f1f5f9;
         }
 
-        /* Ícone de disciplina — mesma aparência */
         .discipline-icon {
             width: 40px;
             height: 40px;
@@ -128,7 +124,6 @@
             color: #94a3b8;
         }
 
-        /* Corpo do card */
         .card-content {
             padding: 16px 18px;
             display: flex;
@@ -136,7 +131,6 @@
             gap: 14px;
         }
 
-        /* Bloco de progresso geral — igual ao .overall do quiz */
         .overall {
             display: flex;
             align-items: center;
@@ -200,7 +194,6 @@
             color: #94a3b8;
         }
 
-        /* Label de tópicos */
         .topics-label {
             font-size: 10px;
             font-weight: 600;
@@ -209,18 +202,23 @@
             color: #cbd5e1;
         }
 
-        /* Lista de tópicos com barra de progresso */
         .topic-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .topic-row {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        /* ─── Fading preview ────────────────────────────────
+           1st row: fully visible.
+           2nd row: half opacity — clearly readable but dimmed.
+           3rd row: very faint — signals the list continues.
+           nth-child works because Angular renders the rows
+           sequentially inside .topic-list.
+        ──────────────────────────────────────────────────── */
+        .topic-row { display: flex; flex-direction: column; gap: 5px; }
+        .topic-row:nth-child(1) { opacity: 1;    }
+        .topic-row:nth-child(2) { opacity: 0.45; }
+        .topic-row:nth-child(3) { opacity: 0.18; }
 
         .topic-meta {
             display: flex;
@@ -260,12 +258,12 @@
             transition: width 0.9s cubic-bezier(.22, .68, 0, 1.2);
         }
 
-        .fill.empty   { background: #e2e8f0; }
-        .fill.low     { background: #c7d2fe; }
-        .fill.mid     { background: linear-gradient(90deg, #818cf8, #4361ee); }
-        .fill.high    { background: #4361ee; }
+        .fill.empty { background: #e2e8f0; }
+        .fill.low   { background: #c7d2fe; }
+        .fill.mid   { background: linear-gradient(90deg, #818cf8, #4361ee); }
+        .fill.high  { background: #4361ee; }
 
-        /* Botão CTA — igual ao .start-btn do quiz */
+        /* CTA */
         .continue-btn {
             width: 100%;
             padding: 10px 16px;
@@ -350,7 +348,6 @@
             color: #64748b;
         }
 
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -358,7 +355,6 @@
             font-size: 14px;
         }
 
-        /* Responsividade */
         @media (max-width: 900px) {
             .container { margin-top: 60px; }
         }
@@ -480,8 +476,16 @@
 
                     <!-- Tópicos -->
                     <div class="topics-label">Tópicos</div>
+
+                    <!-- ── Preview com fade ───────────────────────────────
+                         Mostra até 3 tópicos. O CSS aplica opacidade
+                         decrescente via nth-child (1 → 0.45 → 0.18),
+                         dando a sensação de que a lista continua além
+                         do visível. Nenhuma lógica extra no componente.
+                    ── -->
                     <div class="topic-list">
-                        <div class="topic-row" *ngFor="let topic of subject.topicDtoWithTests">
+                        <div class="topic-row"
+                             *ngFor="let topic of subject.topicDtoWithTests | slice:0:3">
                             <div class="topic-meta">
                                 <span class="topic-name">{{ topic.topicName }}</span>
                                 <span class="topic-score">{{ topic.progressRate.toFixed(0) }}%</span>
