@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planos - AcademiaApp</title>
+    <title>Planos - Dikahub</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -13,11 +15,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #f8f9fa;
-            color: #1a1a1a;
-            min-height: 100vh;
-            padding: 16px;
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            padding: 10px;
         }
 
         /* ── Loading overlay ── */
@@ -32,6 +31,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s;
+            backdrop-filter: blur(2px);
         }
 
         .loading-overlay.visible {
@@ -45,25 +45,29 @@
             align-items: center;
             gap: 12px;
             background: #fff;
-            border: 1px solid #ebebeb;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
-            padding: 24px 32px;
+            padding: 24px 36px;
         }
 
         .spinner {
             width: 24px;
             height: 24px;
-            border: 2px solid #ebebeb;
-            border-top-color: #3a52c4;
+            border: 2px solid #e2e8f0;
+            border-top-color: #4361ee;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .loading-text {
             font-size: 13px;
-            color: #999;
+            color: #94a3b8;
             font-weight: 500;
         }
 
@@ -82,28 +86,33 @@
         }
 
         .hero-badge {
-            display: inline-block;
-            background: #e8eeff;
-            color: #3a52c4;
-            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef0fd;
+            color: #4361ee;
+            font-size: 11.5px;
             font-weight: 600;
-            letter-spacing: 0.06em;
-            padding: 5px 16px;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            padding: 5px 14px;
             border-radius: 999px;
             margin-bottom: 1rem;
+            border: 1px solid #c7cef9;
         }
 
         .hero h1 {
             font-size: 1.6rem;
-            font-weight: 600;
-            color: #111;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.02em;
         }
 
         .hero p {
             font-size: 14px;
-            color: #666;
-            line-height: 1.6;
+            color: #64748b;
+            line-height: 1.65;
         }
 
         /* ── Pricing grid ── */
@@ -118,16 +127,16 @@
         /* ── Plan card ── */
         .pricing-card {
             background: #fff;
-            border: 1px solid #ebebeb;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
             padding: 1.75rem;
             position: relative;
-            transition: border-color 0.2s, transform 0.2s;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
         }
 
         .pricing-card:hover {
             transform: translateY(-2px);
-            border-color: #d0d0d0;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
         }
 
         .pricing-card.current-plan-free {
@@ -135,11 +144,11 @@
         }
 
         .pricing-card.popular {
-            border: 2px solid #3a52c4;
+            border: 2px solid #4361ee;
         }
 
         .pricing-card.current-plan-premium {
-            border-color: #3a52c4;
+            border-color: #4361ee;
         }
 
         /* ── Badges ── */
@@ -147,25 +156,41 @@
             position: absolute;
             top: -11px;
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
             padding: 3px 12px;
             border-radius: 999px;
             text-transform: uppercase;
+            font-family: 'DM Mono', monospace;
         }
 
-        .badge-current       { left: 18px; background: #0ca678; color: #fff; }
-        .badge-popular       { right: 18px; background: #3a52c4; color: #fff; }
-        .badge-current-premium { left: 18px; background: #3a52c4; color: #fff; }
+        .badge-current {
+            left: 18px;
+            background: #0ca678;
+            color: #fff;
+        }
+
+        .badge-popular {
+            right: 18px;
+            background: #4361ee;
+            color: #fff;
+        }
+
+        .badge-current-premium {
+            left: 18px;
+            background: #4361ee;
+            color: #fff;
+        }
 
         /* ── Plan header ── */
         .plan-name {
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: #999;
+            color: #94a3b8;
             margin-bottom: 0.75rem;
+            font-family: 'DM Mono', monospace;
         }
 
         .plan-price-row {
@@ -177,31 +202,37 @@
 
         .plan-currency {
             font-size: 15px;
-            font-weight: 500;
-            color: #999;
+            font-weight: 600;
+            color: #94a3b8;
             margin-top: 4px;
+            font-family: 'DM Mono', monospace;
         }
 
         .plan-amount {
             font-size: 42px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: -2px;
             line-height: 1;
-            color: #111;
+            color: #0f172a;
         }
 
-        .plan-amount.free    { color: #0ca678; }
-        .plan-amount.premium { color: #3a52c4; }
+        .plan-amount.free {
+            color: #0ca678;
+        }
+
+        .plan-amount.premium {
+            color: #4361ee;
+        }
 
         .plan-period {
             font-size: 13px;
-            color: #999;
+            color: #94a3b8;
             margin-bottom: 1.25rem;
         }
 
         .card-divider {
             border: none;
-            border-top: 1px solid #ebebeb;
+            border-top: 1px solid #e2e8f0;
             margin: 1.25rem 0;
         }
 
@@ -219,11 +250,13 @@
             align-items: flex-start;
             gap: 10px;
             font-size: 13.5px;
-            color: #444;
+            color: #334155;
             line-height: 1.5;
         }
 
-        .feature.limited { color: #aaa; }
+        .feature.limited {
+            color: #94a3b8;
+        }
 
         .feature-icon {
             flex-shrink: 0;
@@ -238,8 +271,16 @@
             margin-top: 2px;
         }
 
-        .feature-icon.yes { background: #e8eeff; color: #3a52c4; }
-        .feature-icon.no  { background: #f1f3f5; color: #ccc; }
+        .feature-icon.yes {
+            background: #eef0fd;
+            color: #4361ee;
+            border: 1px solid #c7cef9;
+        }
+
+        .feature-icon.no {
+            background: #f1f5f9;
+            color: #cbd5e1;
+        }
 
         /* ── CTA buttons ── */
         .cta-button {
@@ -247,7 +288,7 @@
             padding: 12px 20px;
             border: none;
             border-radius: 10px;
-            font-family: inherit;
+            font-family: 'DM Sans', inherit;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -258,19 +299,37 @@
             gap: 8px;
         }
 
-        .btn-current-free    { background: #e6fcf5; color: #0ca678; cursor: default; }
-        .btn-current-premium { background: #e8eeff; color: #3a52c4; cursor: default; }
-        .btn-secondary       { background: #f1f3f5; color: #868e96; border: 1px solid #ebebeb; }
-        .btn-secondary:hover { background: #e9ecef; }
+        .btn-current-free {
+            background: #e6fcf5;
+            color: #0ca678;
+            cursor: default;
+        }
+
+        .btn-current-premium {
+            background: #eef0fd;
+            color: #4361ee;
+            cursor: default;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
 
         .btn-upgrade {
-            background: #3a52c4;
+            background: #4361ee;
             color: #fff;
         }
 
         .btn-upgrade:hover {
-            background: #2f44b0;
+            background: #3451d1;
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
         }
 
         .btn-upgrade:disabled,
@@ -278,6 +337,7 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         /* ══════════════════════════════
@@ -286,12 +346,13 @@
         .popout-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 20, 40, 0.4);
+            background: rgba(15, 23, 42, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
             padding: 16px;
+            backdrop-filter: blur(4px);
         }
 
         .popout-container {
@@ -300,13 +361,20 @@
             padding: 1.75rem;
             width: 100%;
             max-width: 400px;
-            border: 1px solid #ebebeb;
+            border: 1px solid #e2e8f0;
             animation: modalIn 0.22s ease both;
         }
 
         @keyframes modalIn {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ── Modal header ── */
@@ -318,20 +386,21 @@
         }
 
         .popout-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #111;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.01em;
         }
 
         .close-button {
-            background: #f1f3f5;
+            background: #f1f5f9;
             border: none;
             width: 30px;
             height: 30px;
             border-radius: 50%;
             font-size: 17px;
             cursor: pointer;
-            color: #aaa;
+            color: #94a3b8;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -339,13 +408,16 @@
             line-height: 1;
         }
 
-        .close-button:hover { background: #e9ecef; color: #333; }
+        .close-button:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
 
         /* ── Auth tabs ── */
         .auth-tabs {
             display: flex;
-            background: #f1f3f5;
-            border-radius: 8px;
+            background: #f1f5f9;
+            border-radius: 10px;
             padding: 3px;
             margin-bottom: 1.25rem;
             gap: 3px;
@@ -358,16 +430,16 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            color: #aaa;
-            border-radius: 6px;
+            color: #94a3b8;
+            border-radius: 8px;
             transition: all 0.15s;
         }
 
         .auth-tab.active {
             background: #fff;
-            color: #111;
-            font-weight: 600;
-            border: 1px solid #ebebeb;
+            color: #0f172a;
+            font-weight: 700;
+            border: 1px solid #e2e8f0;
         }
 
         /* ── Input group ── */
@@ -378,32 +450,35 @@
         .input-group label {
             display: block;
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            color: #aaa;
+            color: #94a3b8;
             margin-bottom: 5px;
+            font-family: 'DM Mono', monospace;
         }
 
         .input-group input {
             width: 100%;
             padding: 10px 13px;
-            border: 1px solid #ebebeb;
-            border-radius: 8px;
-            font-family: inherit;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'DM Sans', inherit;
             font-size: 14px;
-            color: #111;
+            color: #0f172a;
             background: #fff;
             transition: border-color 0.15s, box-shadow 0.15s;
         }
 
         .input-group input:focus {
             outline: none;
-            border-color: #3a52c4;
-            box-shadow: 0 0 0 3px rgba(58, 82, 196, 0.1);
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
 
-        .input-group input::placeholder { color: #ccc; }
+        .input-group input::placeholder {
+            color: #cbd5e1;
+        }
 
         /* ── Go back ── */
         .go-back-btn {
@@ -411,39 +486,44 @@
             align-items: center;
             gap: 5px;
             font-size: 13px;
-            font-weight: 500;
-            color: #aaa;
+            font-weight: 600;
+            color: #94a3b8;
             cursor: pointer;
             margin-bottom: 1rem;
             text-decoration: none;
             transition: color 0.15s;
         }
 
-        .go-back-btn:hover { color: #111; }
+        .go-back-btn:hover {
+            color: #0f172a;
+        }
 
         /* ── Message box ── */
         .message {
             font-size: 13px;
-            color: #666;
-            line-height: 1.6;
+            color: #64748b;
+            line-height: 1.65;
             padding: 10px 13px;
             margin-bottom: 1rem;
-            background: #f8f9fa;
-            border: 1px solid #ebebeb;
-            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
         }
 
-        .message span { color: #3a52c4; font-weight: 600; }
+        .message span {
+            color: #4361ee;
+            font-weight: 600;
+        }
 
         /* ── Login button ── */
         .login-btn {
             width: 100%;
-            background: #3a52c4;
+            background: #4361ee;
             color: #fff;
             border: none;
             padding: 12px;
-            border-radius: 8px;
-            font-family: inherit;
+            border-radius: 10px;
+            font-family: 'DM Sans', inherit;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -451,8 +531,18 @@
             transition: all 0.2s;
         }
 
-        .login-btn:hover { background: #2f44b0; transform: translateY(-1px); }
-        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .login-btn:hover {
+            background: #3451d1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
         /* ── Resend ── */
         .resend-btn {
@@ -462,14 +552,16 @@
             gap: 5px;
             font-size: 13px;
             font-weight: 600;
-            color: #555;
+            color: #64748b;
             cursor: pointer;
             margin-bottom: 1rem;
             text-decoration: none;
             transition: color 0.15s;
         }
 
-        .resend-btn:hover { color: #3a52c4; }
+        .resend-btn:hover {
+            color: #4361ee;
+        }
 
         /* ── Divider ── */
         .divider {
@@ -480,28 +572,42 @@
         }
 
         .divider::before,
-        .divider::after { content: ''; flex: 1; height: 1px; background: #ebebeb; }
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
 
-        .divider span { font-size: 12px; color: #ccc; font-weight: 500; white-space: nowrap; }
+        .divider span {
+            font-size: 12px;
+            color: #cbd5e1;
+            font-weight: 500;
+            white-space: nowrap;
+        }
 
         /* ── Signup link ── */
         .signup-link {
             text-align: center;
             font-size: 13px;
-            color: #aaa;
+            color: #94a3b8;
             margin-top: 1rem;
         }
 
         .signup-link a {
-            color: #3a52c4;
+            color: #4361ee;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
         }
 
-        .signup-link a:hover { text-decoration: underline; }
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
 
-        #google-signin-button { min-height: 40px; }
+        #google-signin-button {
+            min-height: 40px;
+        }
 
         /* ══════════════════════════════
            PAYMENT MODAL
@@ -513,13 +619,15 @@
             margin-bottom: 1rem;
         }
 
-        .wallet-option input { display: none; }
+        .wallet-option input {
+            display: none;
+        }
 
         .wallet-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #ebebeb;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 13px 15px;
             cursor: pointer;
@@ -527,8 +635,15 @@
             background: #fff;
         }
 
-        .wallet-card:hover  { border-color: #3a52c4; background: #f0f4ff; }
-        .wallet-card.selected { border-color: #3a52c4; background: #f0f4ff; }
+        .wallet-card:hover {
+            border-color: #4361ee;
+            background: #eef0fd;
+        }
+
+        .wallet-card.selected {
+            border-color: #4361ee;
+            background: #eef0fd;
+        }
 
         .wallet-left {
             display: flex;
@@ -543,48 +658,73 @@
             object-fit: cover;
         }
 
-        .wallet-type   { font-size: 14px; font-weight: 600; color: #111; }
-        .wallet-number { font-size: 13px; color: #aaa; font-family: monospace; margin-top: 2px; }
+        .wallet-type {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+        }
 
-        .wallet-check .checkmark { font-size: 18px; color: #3a52c4; }
+        .wallet-number {
+            font-size: 13px;
+            color: #94a3b8;
+            font-family: 'DM Mono', monospace;
+            margin-top: 2px;
+        }
+
+        .wallet-check .checkmark {
+            font-size: 18px;
+            color: #4361ee;
+        }
 
         .wallet-badge {
-            background: #3a52c4;
+            background: #4361ee;
             color: #fff;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             padding: 3px 10px;
             border-radius: 999px;
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.04em;
         }
 
         .btn-default {
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             padding: 3px 10px;
             border-radius: 999px;
-            border: 1px solid #3a52c4;
+            border: 1px solid #c7cef9;
             background: transparent;
-            color: #3a52c4;
+            color: #4361ee;
             cursor: pointer;
             transition: all 0.15s;
             white-space: nowrap;
+            font-family: 'DM Sans', inherit;
         }
 
-        .btn-default:hover { background: #3a52c4; color: #fff; }
+        .btn-default:hover {
+            background: #4361ee;
+            color: #fff;
+            border-color: #4361ee;
+        }
 
-        .empty-text { font-size: 13.5px; color: #aaa; line-height: 1.5; padding: 4px 0; }
+        .empty-text {
+            font-size: 13.5px;
+            color: #94a3b8;
+            line-height: 1.5;
+            padding: 4px 0;
+        }
 
         /* ── Add wallet button ── */
         .btn-add {
             width: 100%;
             padding: 12px;
-            border-radius: 8px;
-            border: 1px dashed #ddd;
-            background: #f8f9fa;
-            color: #888;
-            font-family: inherit;
+            border-radius: 10px;
+            border: 1px dashed #c7cef9;
+            background: #f8fafc;
+            color: #64748b;
+            font-family: 'DM Sans', inherit;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.15s;
             display: flex;
@@ -593,41 +733,53 @@
             gap: 8px;
         }
 
-        .btn-add:hover { border-color: #3a52c4; color: #3a52c4; background: #f0f4ff; }
+        .btn-add:hover {
+            border-color: #4361ee;
+            color: #4361ee;
+            background: #eef0fd;
+        }
 
-        .upgrade-cta { margin-top: 1rem; }
+        .upgrade-cta {
+            margin-top: 1rem;
+        }
 
         .plan-price-upgrade {
             text-align: center;
             margin-top: 8px;
             font-size: 12px;
-            color: #aaa;
+            color: #94a3b8;
             font-weight: 500;
+            font-family: 'DM Mono', monospace;
         }
 
-        .plan-price-upgrade strong { color: #333; }
+        .plan-price-upgrade strong {
+            color: #334155;
+        }
 
         /* ── Add wallet form ── */
-        .form-group { margin-bottom: 1rem; }
+        .form-group {
+            margin-bottom: 1rem;
+        }
 
         .form-group label {
             display: block;
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            color: #aaa;
+            color: #94a3b8;
             margin-bottom: 5px;
+            font-family: 'DM Mono', monospace;
         }
 
         .input-control {
             width: 100%;
             padding: 10px 13px;
-            border: 1px solid #ebebeb;
-            border-radius: 8px;
-            font-family: monospace;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'DM Mono', monospace;
             font-size: 15px;
-            color: #111;
+            color: #0f172a;
             background: #fff;
             transition: border-color 0.15s, box-shadow 0.15s;
             letter-spacing: 0.05em;
@@ -635,11 +787,14 @@
 
         .input-control:focus {
             outline: none;
-            border-color: #3a52c4;
-            box-shadow: 0 0 0 3px rgba(58, 82, 196, 0.1);
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
 
-        .input-control::placeholder { color: #ccc; letter-spacing: 0; }
+        .input-control::placeholder {
+            color: #cbd5e1;
+            letter-spacing: 0;
+        }
 
         .error-text {
             display: block;
@@ -648,14 +803,19 @@
             margin-top: 5px;
         }
 
-        .wallet-detected { margin-bottom: 1rem; }
-
-        /* ── Responsive ── */
-        @media (max-width: 900px) { .container { margin-top: 56px; } }
+        .wallet-detected {
+            margin-bottom: 1rem;
+        }
 
         @media (max-width: 680px) {
-            .pricing-container { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 1.3rem; }
+            .pricing-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 1.3rem;
+            }
+
             .popout-container {
                 padding: 1.25rem;
                 max-height: 90vh;
@@ -757,8 +917,7 @@
                 </ul>
 
                 <button (click)="onUpgradePlan()" class="cta-button"
-                    [ngClass]="!isFreeUser() ? 'btn-current-premium' : 'btn-upgrade'"
-                    [disabled]="!isFreeUser()">
+                    [ngClass]="!isFreeUser() ? 'btn-current-premium' : 'btn-upgrade'" [disabled]="!isFreeUser()">
                     {{ !isFreeUser() ? 'Plano Atual' : 'Fazer Upgrade' }}
                 </button>
             </div>
@@ -809,8 +968,8 @@
 
                 <div class="input-group" *ngIf="step === 'otp'">
                     <label>Código OTP</label>
-                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel
-                        placeholder="000000" required [(ngModel)]="otp">
+                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="000000" required
+                        [(ngModel)]="otp">
                 </div>
 
                 <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
@@ -818,7 +977,8 @@
                 </button>
 
                 <div class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para o seu e-mail. Você também pode usar o Google se tiver uma conta Gmail.
+                    Enviaremos um código de acesso único para o seu e-mail. Você também pode usar o Google se tiver uma
+                    conta Gmail.
                 </div>
 
                 <div class="signup-link">
@@ -868,8 +1028,8 @@
 
                 <div class="input-group" *ngIf="step === 'otp'">
                     <label>Código OTP</label>
-                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel
-                        placeholder="000000" required [(ngModel)]="otp">
+                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="000000" required
+                        [(ngModel)]="otp">
                 </div>
 
                 <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
@@ -881,7 +1041,8 @@
                 </a>
 
                 <div class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para o seu e-mail. Você também pode usar o Google se tiver uma conta Gmail.
+                    Enviaremos um código de acesso único para o seu e-mail. Você também pode usar o Google se tiver uma
+                    conta Gmail.
                 </div>
             </form>
 
@@ -911,8 +1072,10 @@
                     <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
                     <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
                         <div class="wallet-left">
-                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
-                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
+                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                class="wallet-icon" />
+                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                class="wallet-icon" />
                             <div>
                                 <div class="wallet-type">{{ wallet.type }}</div>
                                 <div class="wallet-number">{{ wallet.phoneNumber }}</div>
@@ -967,8 +1130,7 @@
                 <label for="phoneNumber">Número de telefone</label>
                 <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
                     [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
-                    class="input-control" />
+                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" class="input-control" />
                 <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
                     O número deve ter exatamente 9 dígitos.
                 </small>
@@ -980,8 +1142,10 @@
             <div class="wallet-detected" *ngIf="wallet.type">
                 <div class="wallet-card selected" style="cursor:default;">
                     <div class="wallet-left">
-                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-icon" />
-                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-icon" />
+                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                            class="wallet-icon" />
+                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                            class="wallet-icon" />
                         <div>
                             <div class="wallet-type">{{ wallet.type }}</div>
                             <div class="wallet-number">{{ wallet.phoneNumber }}</div>

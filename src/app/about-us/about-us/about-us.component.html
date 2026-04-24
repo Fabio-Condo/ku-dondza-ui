@@ -6,19 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós - Dikahub</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
             padding: 10px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #f8f9fa;
-            color: #1a1a1a;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 780px;
             margin: 0 auto;
-            margin-top: 60px;
+            margin-top: 75px;
             padding-bottom: 4rem;
         }
 
@@ -30,29 +32,30 @@
 
         .hero-badge {
             display: inline-block;
-            background: #e8eeff;
-            color: #3a52c4;
-            font-size: 12px;
+            background: #eef0fd;
+            color: #4361ee;
+            font-size: 11.5px;
             font-weight: 600;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.07em;
             padding: 5px 16px;
             border-radius: 999px;
             margin-bottom: 1rem;
+            border: 1px solid #c7cef9;
         }
 
         .hero h1 {
             font-size: 1.6rem;
-            font-weight: 600;
-            color: #111;
+            font-weight: 700;
+            color: #0f172a;
             line-height: 1.4;
             margin-bottom: 0.75rem;
         }
 
         .hero p {
             font-size: 15px;
-            color: #666;
-            line-height: 1.7;
-            max-width: 540px;
+            color: #64748b;
+            line-height: 1.75;
+            max-width: 520px;
             margin: 0 auto;
         }
 
@@ -68,40 +71,42 @@
             background: #fff;
             padding: 1.75rem;
             border-radius: 16px;
-            border: 1px solid #ebebeb;
+            border: 1px solid #e2e8f0;
         }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
-            background: #e8eeff;
-            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #eef0fd 0%, #dde2fb 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
+            border: 1px solid #c7cef9;
         }
 
         .card-icon svg {
             width: 18px;
             height: 18px;
-            stroke: #3a52c4;
+            stroke: #4361ee;
             fill: none;
             stroke-width: 2;
             stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .card h3 {
             font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #111;
+            font-weight: 700;
+            margin-bottom: 0.45rem;
+            color: #0f172a;
         }
 
         .card p {
-            color: #666;
+            color: #64748b;
             font-size: 13.5px;
-            line-height: 1.65;
+            line-height: 1.7;
         }
 
         /* --- Stats --- */
@@ -114,40 +119,43 @@
 
         .stat-item {
             background: #fff;
-            border: 1px solid #ebebeb;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
             padding: 1.5rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .stat-number {
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 800;
             display: block;
             margin-bottom: 4px;
-            color: #3a52c4;
+            color: #4361ee;
+            letter-spacing: -0.02em;
         }
 
         .stat-label {
             font-size: 13px;
-            color: #666;
-            line-height: 1.4;
+            color: #94a3b8;
+            line-height: 1.45;
         }
 
         /* --- Divider --- */
         .divider {
             height: 1px;
-            background: #ebebeb;
+            background: #e2e8f0;
             margin: 2rem 0;
         }
 
         /* --- Team --- */
         .section-label {
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
+            font-weight: 700;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #999;
+            color: #94a3b8;
             margin-bottom: 1.25rem;
         }
 
@@ -163,41 +171,42 @@
             padding: 1.75rem;
             border-radius: 16px;
             text-align: center;
-            border: 1px solid #ebebeb;
+            border: 1px solid #e2e8f0;
         }
 
         .member-avatar {
             width: 56px;
             height: 56px;
-            background: #e8eeff;
+            background: #eef0fd;
             border-radius: 50%;
             margin: 0 auto 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 15px;
-            color: #3a52c4;
-            font-weight: 600;
+            color: #4361ee;
+            font-weight: 700;
+            border: 2px solid #c7cef9;
         }
 
         .member-name {
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 3px;
-            color: #111;
+            color: #0f172a;
         }
 
         .member-role {
-            color: #3a52c4;
+            color: #4361ee;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 0.75rem;
         }
 
         .member-bio {
-            color: #666;
+            color: #64748b;
             font-size: 13px;
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
         /* --- CTA --- */
@@ -205,42 +214,72 @@
             text-align: center;
             background: #fff;
             padding: 2.5rem;
-            border-radius: 16px;
-            border: 1px solid #ebebeb;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, #eef0fd 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .cta-title {
-            font-size: 1.3rem;
-            color: #111;
+            font-size: 1.35rem;
+            color: #0f172a;
             margin-bottom: 0.5rem;
-            font-weight: 600;
+            font-weight: 700;
+            position: relative;
         }
 
         .cta-text {
-            color: #666;
+            color: #64748b;
             margin-bottom: 1.5rem;
             font-size: 14px;
-            line-height: 1.65;
+            line-height: 1.7;
+            position: relative;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-button {
             display: inline-block;
-            background: #1a1a1a;
+            background: #4361ee;
             color: #fff;
-            padding: 0.7rem 2rem;
+            padding: 0.75rem 2.25rem;
             border-radius: 999px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
-            transition: opacity 0.15s;
+            letter-spacing: 0.01em;
+            transition: background 0.18s, transform 0.12s;
+            position: relative;
         }
 
-        .cta-button:hover { opacity: 0.8; }
+        .cta-button:hover {
+            background: #3451d1;
+            transform: translateY(-1px);
+        }
 
         @media (max-width: 600px) {
-            .hero h1 { font-size: 1.3rem; }
-            .content-grid, .stats-section, .team-grid { grid-template-columns: 1fr; }
-            .cta-section { padding: 1.75rem 1.25rem; }
+            .hero h1 {
+                font-size: 1.3rem;
+            }
+
+            .content-grid,
+            .stats-section,
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-section {
+                padding: 1.75rem 1.25rem;
+            }
         }
     </style>
 </head>
@@ -251,32 +290,43 @@
         <div class="hero">
             <span class="hero-badge">Sobre nós</span>
             <h1>Especialistas em preparação<br>para exames de admissão</h1>
-            <p>Nosso foco é um só: ajudar você a conquistar sua vaga no ensino superior com preparação estratégica e eficiente.</p>
+            <p>Nosso foco é um só: ajudar você a conquistar sua vaga no ensino superior com preparação estratégica e
+                eficiente.</p>
         </div>
 
         <div class="content-grid">
             <div class="card">
                 <div class="card-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
                 </div>
                 <h3>Nossa missão</h3>
-                <p>Ajudar estudantes a aumentar as chances de aprovação com simulados estratégicos, provas anteriores e acompanhamento focado no que realmente cai no exame.</p>
+                <p>Ajudar estudantes a aumentar as chances de aprovação com simulados estratégicos, provas anteriores e
+                    acompanhamento focado no que realmente cai no exame.</p>
             </div>
-
             <div class="card">
                 <div class="card-icon">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4l3 3" />
+                    </svg>
                 </div>
                 <h3>Nossa visão</h3>
-                <p>Ser a principal plataforma de preparação para exames de admissão, tornando o acesso ao ensino superior mais acessível e baseado em resultados reais.</p>
+                <p>Ser a principal plataforma de preparação para exames de admissão, tornando o acesso ao ensino
+                    superior mais acessível e baseado em resultados reais.</p>
             </div>
-
             <div class="card">
                 <div class="card-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
                 </div>
                 <h3>Nossos valores</h3>
-                <p>Compromisso com resultados, foco no estudante, melhoria contínua e transparência. Cada funcionalidade existe para aproximar você da aprovação.</p>
+                <p>Compromisso com resultados, foco no estudante, melhoria contínua e transparência. Cada funcionalidade
+                    existe para aproximar você da aprovação.</p>
             </div>
         </div>
 
@@ -303,13 +353,15 @@
                 <div class="member-avatar">FC</div>
                 <div class="member-name">Fábio Condo</div>
                 <div class="member-role">CEO & Fundador</div>
-                <div class="member-bio">Especialista em tecnologia educacional, desenvolveu a plataforma com foco total na preparação estratégica para exames de admissão.</div>
+                <div class="member-bio">Especialista em tecnologia educacional, desenvolveu a plataforma com foco total
+                    na preparação estratégica para exames de admissão.</div>
             </div>
         </div>
 
         <section class="cta-section">
             <h2 class="cta-title">Comece sua preparação hoje</h2>
-            <p class="cta-text">O próximo exame está se aproximando. Treine com estratégia e aumente suas chances de conquistar sua vaga.</p>
+            <p class="cta-text">O próximo exame está se aproximando. Treine com estratégia e aumente suas chances de
+                conquistar sua vaga.</p>
             <a routerLink="/login" class="cta-button">Quero me preparar agora</a>
         </section>
 
