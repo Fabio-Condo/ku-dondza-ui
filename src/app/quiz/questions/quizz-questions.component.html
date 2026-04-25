@@ -1127,11 +1127,9 @@
     }
 
     /* ══════════════════════════════════════════════
-       RESULTS IDENTITY STRIP — REDESENHADO
-       Layout:
-         Desktop: avatar | nome + meta numa linha
-         Mobile:  linha do avatar+nome / linha das tags
-    ══════════════════════════════════════════════ */
+   RESULTS IDENTITY STRIP — REDESENHADO
+   Layout: avatar | nome+meta | [tipo + disciplina]
+══════════════════════════════════════════════ */
     .results-identity-strip {
       display: flex;
       align-items: center;
@@ -1144,7 +1142,6 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     }
 
-    /* Avatar */
     .results-identity-strip .quiz-identity-avatar {
       width: 40px;
       height: 40px;
@@ -1165,16 +1162,15 @@
       color: #94a3b8;
     }
 
-    /* Bloco de texto à direita do avatar */
+    /* Bloco central: nome + data/hora */
     .results-strip-body {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       min-width: 0;
       flex: 1;
     }
 
-    /* Linha 1: nome + badge "você" */
     .results-strip-name {
       font-size: 14px;
       font-weight: 700;
@@ -1186,49 +1182,29 @@
       line-height: 1.3;
     }
 
-    /* Linha 2: chips de meta */
-    .results-strip-tags {
+    /* Linha de meta: data · hora */
+    .results-strip-meta {
       display: flex;
       align-items: center;
       gap: 6px;
       flex-wrap: wrap;
     }
 
-    /* Separador pontual entre tags inline (oculto no mobile, pois wrap cuida) */
-    .results-strip-sep {
-      width: 3px;
-      height: 3px;
-      background: #cbd5e1;
-      border-radius: 50%;
+    /* Lado direito: tipo + disciplina em coluna */
+    .results-strip-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
       flex-shrink: 0;
     }
 
-    /* Tag genérica de datetime */
-    .results-strip-tags .quiz-datetime {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: #94a3b8;
-      white-space: nowrap;
-    }
-
-    .results-strip-tags .quiz-datetime svg {
-      width: 11px;
-      height: 11px;
-      stroke: #94a3b8;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      flex-shrink: 0;
-    }
-
-    /* Responsividade — mobile */
+    /* Responsivo — mobile */
     @media (max-width: 480px) {
       .results-identity-strip {
         padding: 12px 14px;
         gap: 10px;
+        flex-wrap: wrap;
       }
 
       .results-identity-strip .quiz-identity-avatar {
@@ -1239,16 +1215,6 @@
 
       .results-strip-name {
         font-size: 13px;
-      }
-
-      /* Separa as tags que ficam "apertadas" em telas muito pequenas */
-      .results-strip-tags {
-        gap: 5px;
-      }
-
-      /* Esconde os separadores de ponto quando as tags já quebram em linha */
-      .results-strip-sep {
-        display: none;
       }
     }
 
@@ -2438,14 +2404,12 @@
     <!-- ── Results Screen ── -->
     <div *ngIf="showStartScreen" class="results-container">
 
-      <!--
-        ══════════════════════════════════════════════════
-        IDENTITY STRIP — REDESENHADO
-        Estrutura limpa em duas linhas:
-          Linha 1: avatar  |  nome + badge "você"
-          Linha 2: (indentado)  disciplina · tipo · data · hora
-        ══════════════════════════════════════════════════
-      -->
+      <!-- ══════════════════════════════════════════════════
+     IDENTITY STRIP — REDESENHADO
+     Estrutura:
+       Esquerda: avatar | nome + badge "você" / data·hora
+       Direita:  tipo (Treino/Teste) + disciplina
+     ══════════════════════════════════════════════════ -->
       <div class="results-identity-strip">
 
         <!-- Avatar -->
@@ -2462,52 +2426,15 @@
           </ng-container>
         </div>
 
-        <!-- Corpo: nome na linha 1, tags na linha 2 -->
+        <!-- Corpo central: nome + data/hora -->
         <div class="results-strip-body">
-
-          <!-- Linha 1: Nome + badge "você" -->
           <span class="results-strip-name">
             {{ quiz.anonymous ? 'Anónimo' : (quiz.user.fullName || 'Nome não disponível') }}
             <span class="badge-you" *ngIf="isUserLoggedIn && !quiz.anonymous && quiz.user.id === loggedUser.id">
               você
             </span>
           </span>
-
-          <!-- Linha 2: chips de meta -->
-          <div class="results-strip-tags">
-
-            <!-- Disciplina -->
-            <span class="quiz-subject-pill">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
-              </svg>
-              {{ quiz.subject.name }}
-            </span>
-
-            <span class="results-strip-sep"></span>
-
-            <!-- Tipo -->
-            <span class="quiz-type-pill training" *ngIf="quiz.type === 'TRAINING'">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-              Treino
-            </span>
-            <span class="quiz-type-pill test" *ngIf="quiz.type === 'TEST'">
-              <svg viewBox="0 0 24 24">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-              </svg>
-              Teste
-            </span>
-
-            <span class="results-strip-sep"></span>
-
-            <!-- Data -->
+          <div class="results-strip-meta">
             <span class="quiz-datetime">
               <svg viewBox="0 0 24 24">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -2517,10 +2444,7 @@
               </svg>
               {{ quiz.submittedAt | date:'dd MMM yyyy' }}
             </span>
-
             <span class="results-strip-sep"></span>
-
-            <!-- Hora -->
             <span class="quiz-datetime">
               <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="9" />
@@ -2528,11 +2452,21 @@
               </svg>
               {{ formatTime(quiz.timeLimit - quiz.timeSpent) }}
             </span>
-
           </div>
         </div>
+
+        <!-- Lado direito: tipo + disciplina --> 
+        <div class="results-strip-right">
+          <span class="quiz-subject-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+              <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+            </svg>
+            {{ quiz.subject.name }}
+          </span>
+        </div>
       </div>
-      <!-- ── End identity strip ── -->
 
       <div class="results-hero">
         <div class="score-ring">
