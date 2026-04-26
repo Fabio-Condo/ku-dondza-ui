@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ranking — Dikahub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        /* ─── Page ───────────────────────────────────────── */
+        .page {
+            max-width: 780px;
+            margin: 0 auto;
+            padding-top: 48px;
+            padding-bottom: 3rem;
+        }
+
+        /* ─── Back btn ───────────────────────────────────── */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            padding: 0;
+            margin-top: 0.7rem;
+            margin-bottom: 0.7rem;
+            transition: color 0.15s;
+            font-family: inherit;
+        }
+
+        .back-btn:hover {
+            color: #4361ee;
+        }
+
+        /* ─── Header ─────────────────────────────────────── */
+        .ranking-header {
+            background: #fff;
+            border: 1px solid #e8eaf0;
+            border-radius: 16px;
+            padding: 1.5rem 1.5rem 0;
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+        }
+
+        .ranking-header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ranking-header-left h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 3px;
+            letter-spacing: -0.3px;
+        }
+
+        .ranking-header-left p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #eef1fd;
+            border: 1px solid #c7d0f8;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #4361ee;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ─── Stats strip ────────────────────────────────── */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid #f0f2f8;
+        }
+
+        .stat-item {
+            padding: 1rem 0;
+            text-align: center;
+            border-right: 1px solid #f0f2f8;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4361ee;
+            line-height: 1;
+            margin-bottom: 4px;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #9ca3af;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── My position card ───────────────────────────── */
+        .my-position-card {
+            background: #4361ee;
+            border-radius: 14px;
+            padding: 1.1rem 1.25rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .my-position-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .my-position-card::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            right: 60px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .my-pos-rank {
+            font-family: 'DM Mono', monospace;
+            font-size: 32px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.35);
+            line-height: 1;
+            min-width: 52px;
+        }
+
+        .my-pos-rank span {
+            font-size: 15px;
+            vertical-align: super;
+        }
+
+        .my-pos-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .my-pos-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .my-pos-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .my-pos-sub {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .my-pos-right {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .my-pos-xp {
+            font-family: 'DM Mono', monospace;
+            font-size: 18px;
+            font-weight: 500;
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .my-pos-xp-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ─── Podium ─────────────────────────────────────── */
+        .podium {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+            align-items: flex-end;
+        }
+
+        .podium-item {
+            background: #fff;
+            border: 1px solid #e8eaf0;
+            border-radius: 14px;
+            padding: 1rem 0.75rem 1.1rem;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .podium-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .podium-item.p1 {
+            border-color: #fbbf24;
+            background: #fffbeb;
+            padding-top: 1.4rem;
+        }
+
+        .podium-item.p2 {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        .podium-item.p3 {
+            border-color: #d6a87a;
+            background: #fdf8f3;
+        }
+
+        .podium-crown {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 28px;
+            background: #fbbf24;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .podium-medal {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            margin: 0 auto 0.6rem;
+        }
+
+        .medal-gold {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fbbf24;
+        }
+
+        .medal-silver {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+        .medal-bronze {
+            background: #fef0e3;
+            color: #92400e;
+            border: 1px solid #d6a87a;
+        }
+
+        .podium-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            margin: 0 auto 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .av-gold {
+            background: #fde68a;
+            color: #92400e;
+            border: 2px solid #fbbf24;
+        }
+
+        .av-silver {
+            background: #e5e7eb;
+            color: #4b5563;
+            border: 2px solid #d1d5db;
+        }
+
+        .av-bronze {
+            background: #fde8d0;
+            color: #7c3d12;
+            border: 2px solid #d6a87a;
+        }
+
+        .podium-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #111827;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+
+        .podium-score {
+            font-family: 'DM Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4361ee;
+        }
+
+        .podium-tests {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        /* ─── Section label ──────────────────────────────── */
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            padding-left: 2px;
+        }
+
+        /* ─── Filter tabs ────────────────────────────────── */
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 5px 14px;
+            border-radius: 99px;
+            border: 1px solid #e8eaf0;
+            background: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+
+        .filter-tab.active {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: #fff;
+        }
+
+        .filter-tab:hover:not(.active) {
+            border-color: #c7d0f8;
+            color: #4361ee;
+        }
+
+        /* ─── Ranking list ───────────────────────────────── */
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ranking-row {
+            background: #fff;
+            border: 1px solid #e8eaf0;
+            border-radius: 12px;
+            padding: 0.85rem 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            transition: border-color 0.15s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ranking-row:hover {
+            border-color: #c7d0f8;
+            transform: translateX(2px);
+        }
+
+        .ranking-row.is-me {
+            border-color: #4361ee;
+            background: #f5f6ff;
+        }
+
+        .ranking-row.is-me::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #4361ee;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .row-rank {
+            font-family: 'DM Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            color: #9ca3af;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .ranking-row.is-me .row-rank {
+            color: #4361ee;
+            font-weight: 600;
+        }
+
+        .row-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #eef1fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4361ee;
+            flex-shrink: 0;
+        }
+
+        .ranking-row.is-me .row-avatar {
+            background: #4361ee;
+            color: #fff;
+        }
+
+        .row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .row-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111827;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+
+        .ranking-row.is-me .row-name {
+            color: #4361ee;
+        }
+
+        .row-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .row-sub-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .row-sub-item svg {
+            flex-shrink: 0;
+        }
+
+        .row-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+
+        .row-xp {
+            font-family: 'DM Mono', monospace;
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .ranking-row.is-me .row-xp {
+            color: #4361ee;
+        }
+
+        .row-xp-label {
+            font-size: 10px;
+            color: #9ca3af;
+            letter-spacing: 0.3px;
+        }
+
+        /* trend badges */
+        .trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            font-weight: 600;
+            border-radius: 4px;
+            padding: 2px 5px;
+        }
+
+        .trend-up {
+            color: #047857;
+            background: #d1fae5;
+        }
+
+        .trend-down {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        .trend-same {
+            color: #6b7280;
+            background: #f3f4f6;
+        }
+
+        /* you badge */
+        .you-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: #fff;
+            background: #4361ee;
+            border-radius: 4px;
+            padding: 2px 6px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        /* ─── Progress mini-bar on each row ──────────────── */
+        .row-progress {
+            height: 3px;
+            background: #edf0f8;
+            border-radius: 99px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .row-progress-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #8fa4f3, #4361ee);
+        }
+
+        .ranking-row.is-me .row-progress {
+            background: #c7d0f8;
+        }
+
+        /* ─── Empty state ────────────────────────────────── */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* ─── Load more ──────────────────────────────────── */
+        .load-more-wrap {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .load-more-info {
+            font-size: 12px;
+            color: #9ca3af;
+            letter-spacing: 0.2px;
+        }
+
+        .load-more-info span {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: 1px solid #c7d0f8;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4361ee;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .load-more-btn:hover {
+            background: #eef1fd;
+            border-color: #a5b4fb;
+        }
+
+        .load-more-btn:active {
+            transform: scale(0.98);
+        }
+
+        .load-more-btn.loading {
+            pointer-events: none;
+            color: #9ca3af;
+            border-color: #e8eaf0;
+        }
+
+        .load-more-btn .btn-spinner {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #c7d0f8;
+            border-top-color: #4361ee;
+            animation: lmspin 0.7s linear infinite;
+            display: none;
+        }
+
+        .load-more-btn.loading .btn-spinner {
+            display: block;
+        }
+
+        .load-more-btn.loading .btn-arrow {
+            display: none;
+        }
+
+        .load-more-btn.loading .btn-text {
+            color: #9ca3af;
+        }
+
+        @keyframes lmspin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .load-more-btn.all-loaded {
+            pointer-events: none;
+            color: #9ca3af;
+            border-color: #e8eaf0;
+            background: #f9fafb;
+            cursor: default;
+        }
+
+        .ranking-row.new-row {
+            animation: fadeSlideIn 0.25s ease both;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── Responsive ─────────────────────────────────── */
+        @media (max-width: 600px) {
+            .page {
+                padding-top: 44px;
+            }
+
+            .stats-strip {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .stat-value {
+                font-size: 17px;
+            }
+
+            .podium-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 12px;
+            }
+
+            .my-pos-rank {
+                font-size: 26px;
+            }
+
+            .ranking-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .page {
+                padding-top: 44px;
+            }
+
+            .podium {
+                gap: 6px;
+            }
+
+            .podium-item {
+                padding: 0.8rem 0.4rem 0.9rem;
+            }
+
+            .podium-name {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+
+        <!-- Back -->
+        <button class="back-btn" [routerLink]="['/progress']">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+            </svg>
+            Voltar
+        </button>
+
+        <!-- ── Header ── -->
+        <div class="ranking-header">
+            <div class="ranking-header-top">
+                <div class="ranking-header-left">
+                    <h1>Ranking — Matemática</h1>
+                    <p>Actualizado em tempo real · Semana actual</p>
+                </div>
+                <div class="header-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    Ao vivo
+                </div>
+            </div>
+
+            <div class="stats-strip">
+                <div class="stat-item">
+                    <div class="stat-value">48</div>
+                    <div class="stat-label">Participantes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">2 840</div>
+                    <div class="stat-label">XP médio</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Tópicos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Minha posição ── -->
+        <div class="my-position-card">
+            <div class="my-pos-rank"><span>#</span>5</div>
+            <div class="my-pos-avatar">JS</div>
+            <div class="my-pos-info">
+                <div class="my-pos-name">João Silva <span class="you-badge">Você</span></div>
+                <div class="my-pos-sub">3 posições acima vs semana passada</div>
+            </div>
+            <div class="my-pos-right">
+                <div class="my-pos-xp">3 120 XP</div>
+                <div class="my-pos-xp-label">Pontuação</div>
+            </div>
+        </div>
+
+        <!-- ── Pódio top 3 ── -->
+        <div class="section-label">Pódio</div>
+        <div class="podium">
+
+            <!-- 2º lugar -->
+            <div class="podium-item p2" style="margin-bottom: 0;">
+                <div class="podium-medal medal-silver">2</div>
+                <div class="podium-avatar av-silver">AM</div>
+                <div class="podium-name">Ana Matos</div>
+                <div class="podium-score">4 890 XP</div>
+                <div class="podium-tests">18 testes</div>
+            </div>
+
+            <!-- 1º lugar -->
+            <div class="podium-item p1">
+                <div class="podium-crown">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="#92400e" stroke="none">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                </div>
+                <div class="podium-medal medal-gold">1</div>
+                <div class="podium-avatar av-gold">LC</div>
+                <div class="podium-name">Luísa Cossa</div>
+                <div class="podium-score">6 230 XP</div>
+                <div class="podium-tests">24 testes</div>
+            </div>
+
+            <!-- 3º lugar -->
+            <div class="podium-item p3" style="margin-bottom: 0;">
+                <div class="podium-medal medal-bronze">3</div>
+                <div class="podium-avatar av-bronze">CR</div>
+                <div class="podium-name">Carlos Ramos</div>
+                <div class="podium-score">4 210 XP</div>
+                <div class="podium-tests">16 testes</div>
+            </div>
+
+        </div>
+
+        <!-- ── Lista completa ── -->
+        <div class="section-label" style="margin-top: 1.25rem;">Classificação geral</div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active">Todos</button>
+            <button class="filter-tab">Top 10</button>
+            <button class="filter-tab">Amigos</button>
+            <button class="filter-tab">Esta semana</button>
+        </div>
+
+        <div class="ranking-list">
+
+            <!-- 1 -->
+            <div class="ranking-row">
+                <div class="row-rank">#1</div>
+                <div class="row-avatar" style="background:#fef3c7;color:#92400e;">LC</div>
+                <div class="row-info">
+                    <div class="row-name">Luísa Cossa</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            24 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            6 230 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:100%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">6 230</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-up">▲ 2</span>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="ranking-row">
+                <div class="row-rank">#2</div>
+                <div class="row-avatar" style="background:#f3f4f6;color:#4b5563;">AM</div>
+                <div class="row-info">
+                    <div class="row-name">Ana Matos</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            18 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            4 890 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:78%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">4 890</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-same">— 0</span>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="ranking-row">
+                <div class="row-rank">#3</div>
+                <div class="row-avatar" style="background:#fde8d0;color:#7c3d12;">CR</div>
+                <div class="row-info">
+                    <div class="row-name">Carlos Ramos</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            16 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            4 210 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:67%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">4 210</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-down">▼ 1</span>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="ranking-row">
+                <div class="row-rank">#4</div>
+                <div class="row-avatar">MP</div>
+                <div class="row-info">
+                    <div class="row-name">Marta Pereira</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            15 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            3 750 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:60%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">3 750</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-up">▲ 1</span>
+                </div>
+            </div>
+
+            <!-- 5 — ME -->
+            <div class="ranking-row is-me">
+                <div class="row-rank">#5</div>
+                <div class="row-avatar">JS</div>
+                <div class="row-info">
+                    <div class="row-name">João Silva <span class="you-badge">Você</span></div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4361ee"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            12 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            3 120 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:50%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">3 120</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-up">▲ 3</span>
+                </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="ranking-row">
+                <div class="row-rank">#6</div>
+                <div class="row-avatar">FN</div>
+                <div class="row-info">
+                    <div class="row-name">Filipe Neves</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            11 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            2 980 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:47%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">2 980</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-down">▼ 2</span>
+                </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="ranking-row">
+                <div class="row-rank">#7</div>
+                <div class="row-avatar">BM</div>
+                <div class="row-info">
+                    <div class="row-name">Beatriz Mucavel</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            10 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            2 640 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:42%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">2 640</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-up">▲ 1</span>
+                </div>
+            </div>
+
+            <!-- 8 -->
+            <div class="ranking-row">
+                <div class="row-rank">#8</div>
+                <div class="row-avatar">RS</div>
+                <div class="row-info">
+                    <div class="row-name">Rui Sitoe</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            9 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            2 310 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:37%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">2 310</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-same">— 0</span>
+                </div>
+            </div>
+
+            <!-- 9 -->
+            <div class="ranking-row">
+                <div class="row-rank">#9</div>
+                <div class="row-avatar">TC</div>
+                <div class="row-info">
+                    <div class="row-name">Tomás Chaúque</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            8 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            1 970 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:31%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">1 970</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-down">▼ 1</span>
+                </div>
+            </div>
+
+            <!-- 10 -->
+            <div class="ranking-row">
+                <div class="row-rank">#10</div>
+                <div class="row-avatar">IG</div>
+                <div class="row-info">
+                    <div class="row-name">Inês Guambe</div>
+                    <div class="row-sub">
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            7 testes
+                        </span>
+                        <span class="row-sub-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            1 680 XP
+                        </span>
+                    </div>
+                    <div class="row-progress">
+                        <div class="row-progress-fill" style="width:26%"></div>
+                    </div>
+                </div>
+                <div class="row-right">
+                    <div class="row-xp">1 680</div>
+                    <div class="row-xp-label">XP</div>
+                    <span class="trend trend-up">▲ 2</span>
+                </div>
+            </div>
+
+        </div><!-- /ranking-list -->
+
+        <!-- ── Load more ── -->
+        <div class="load-more-wrap">
+            <div class="load-more-info">Mostrando <span id="shown-count">10</span> de <span>48</span> participantes
+            </div>
+            <button class="load-more-btn" id="load-more-btn">
+                <span class="btn-spinner"></span>
+                <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+                <span class="btn-text">Carregar mais</span>
+            </button>
+        </div>
+
+    </div><!-- /page -->
+
+    <script>
+        document.querySelectorAll('.filter-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(function (t) { t.classList.remove('active'); });
+                tab.classList.add('active');
+            });
+        });
+
+        var extraParticipants = [
+            { rank: 11, initials: 'DM', name: 'Dulce Manjate', tests: 7, xp: '1 540', prog: 24, trend: 'up', trendVal: '1' },
+            { rank: 12, initials: 'HN', name: 'Hélio Nhantumbo', tests: 6, xp: '1 390', prog: 22, trend: 'down', trendVal: '2' },
+            { rank: 13, initials: 'SC', name: 'Sofia Cumbe', tests: 6, xp: '1 280', prog: 20, trend: 'same', trendVal: '0' },
+            { rank: 14, initials: 'PM', name: 'Pedro Macuacua', tests: 5, xp: '1 140', prog: 18, trend: 'up', trendVal: '3' },
+            { rank: 15, initials: 'ZB', name: 'Zaida Bila', tests: 5, xp: '1 020', prog: 16, trend: 'down', trendVal: '1' },
+            { rank: 16, initials: 'NF', name: 'Nélio Fumo', tests: 4, xp: '940', prog: 15, trend: 'same', trendVal: '0' },
+            { rank: 17, initials: 'AT', name: 'Alice Tembe', tests: 4, xp: '870', prog: 14, trend: 'up', trendVal: '2' },
+            { rank: 18, initials: 'GC', name: 'Gildo Chirindza', tests: 3, xp: '780', prog: 12, trend: 'down', trendVal: '3' },
+            { rank: 19, initials: 'LM', name: 'Lúcia Mondlane', tests: 3, xp: '690', prog: 11, trend: 'up', trendVal: '1' },
+            { rank: 20, initials: 'OM', name: 'Osvaldo Manhiça', tests: 2, xp: '580', prog: 9, trend: 'same', trendVal: '0' },
+        ];
+
+        var shown = 10;
+        var totalExtra = extraParticipants.length;
+        var loaded = 0;
+        var total = 48;
+        var perPage = 5;
+        var btn = document.getElementById('load-more-btn');
+        var shownCount = document.getElementById('shown-count');
+        var list = document.querySelector('.ranking-list');
+
+        function xpSvg(fill) {
+            return '<svg width="10" height="10" viewBox="0 0 24 24" fill="' + fill + '" stroke="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>';
+        }
+        function checkSvg(stroke) {
+            return '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="' + stroke + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        }
+
+        function buildRow(p) {
+            var trendClass = p.trend === 'up' ? 'trend-up' : (p.trend === 'down' ? 'trend-down' : 'trend-same');
+            var trendIcon = p.trend === 'up' ? '▲' : (p.trend === 'down' ? '▼' : '—');
+            var trendText = trendIcon + ' ' + p.trendVal;
+
+            var div = document.createElement('div');
+            div.className = 'ranking-row new-row';
+            div.innerHTML =
+                '<div class="row-rank">#' + p.rank + '</div>' +
+                '<div class="row-avatar">' + p.initials + '</div>' +
+                '<div class="row-info">' +
+                '<div class="row-name">' + p.name + '</div>' +
+                '<div class="row-sub">' +
+                '<span class="row-sub-item">' + checkSvg('currentColor') + ' ' + p.tests + ' testes</span>' +
+                '<span class="row-sub-item">' + xpSvg('#d97706') + ' ' + p.xp + ' XP</span>' +
+                '</div>' +
+                '<div class="row-progress"><div class="row-progress-fill" style="width:' + p.prog + '%"></div></div>' +
+                '</div>' +
+                '<div class="row-right">' +
+                '<div class="row-xp">' + p.xp + '</div>' +
+                '<div class="row-xp-label">XP</div>' +
+                '<span class="trend ' + trendClass + '">' + trendText + '</span>' +
+                '</div>';
+            return div;
+        }
+
+        btn.addEventListener('click', function () {
+            btn.classList.add('loading');
+            btn.querySelector('.btn-text').textContent = 'Carregando...';
+
+            setTimeout(function () {
+                var batch = extraParticipants.slice(loaded, loaded + perPage);
+                batch.forEach(function (p, idx) {
+                    var row = buildRow(p);
+                    row.style.animationDelay = (idx * 50) + 'ms';
+                    list.appendChild(row);
+                });
+
+                loaded += batch.length;
+                shown += batch.length;
+                shownCount.textContent = shown;
+
+                btn.classList.remove('loading');
+
+                if (loaded >= totalExtra) {
+                    btn.classList.add('all-loaded');
+                    btn.querySelector('.btn-text').textContent = 'Todos os participantes carregados';
+                    btn.querySelector('.btn-arrow').style.display = 'none';
+                } else {
+                    btn.querySelector('.btn-text').textContent = 'Carregar mais';
+                }
+            }, 900);
+        });
+    </script>
+</body>
+
+</html>

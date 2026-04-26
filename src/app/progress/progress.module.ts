@@ -16,13 +16,15 @@ import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProgressSubjectsComponent } from './progress-subjects/progress-subjects.component';
+import { RankingComponent } from './ranking/ranking.component';
 
 
 
 @NgModule({
   declarations: [
     ProgressComponent,
-    ProgressSubjectsComponent
+    ProgressSubjectsComponent,
+    RankingComponent
   ],
   imports: [
     CommonModule,
