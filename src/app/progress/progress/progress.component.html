@@ -176,6 +176,12 @@
             color: #4361ee;
         }
 
+        /* ─── Subject info ───────────────────────────────── */
+        .subject-info {
+            flex: 1;
+            min-width: 0;
+        }
+
         .subject-info strong {
             display: block;
             font-size: 15px;
@@ -184,9 +190,86 @@
             margin-bottom: 2px;
         }
 
-        .subject-info span {
+        .subject-info > span {
             font-size: 12px;
             color: #6b7280;
+        }
+
+        /* ─── Stat pills (XP + testes) ───────────────────── */
+        .subject-pills {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 3px 8px;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .pill svg {
+            flex-shrink: 0;
+        }
+
+        .pill-xp {
+            color: #b45309;
+            background: #fef3c7;
+            border-color: #fde68a;
+        }
+
+        .pill-tests {
+            color: #047857;
+            background: #d1fae5;
+            border-color: #a7f3d0;
+        }
+
+        /* ─── Ranking badge ──────────────────────────────── */
+        .ranking-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 10px 14px;
+            background: #f5f6ff;
+            border: 1px solid #c7d0f8;
+            border-radius: 12px;
+            flex-shrink: 0;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .ranking-badge:hover {
+            background: #eef1fd;
+            border-color: #a5b4fb;
+        }
+
+        .ranking-badge-top {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ranking-position {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4361ee;
+            line-height: 1;
+        }
+
+        .ranking-label {
+            font-size: 10px;
+            color: #6b7280;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
         }
 
         /* ─── Topic block ────────────────────────────────── */
@@ -268,7 +351,6 @@
             pointer-events: none;
         }
 
-        /* card top row */
         .card-top {
             display: flex;
             align-items: center;
@@ -294,19 +376,10 @@
             border-radius: 50%;
         }
 
-        .pip-done {
-            background: rgba(255, 255, 255, 0.7);
-        }
+        .pip-done   { background: rgba(255, 255, 255, 0.7); }
+        .pip-active { background: #4361ee; }
+        .pip-locked { background: #d1d5db; }
 
-        .pip-active {
-            background: #4361ee;
-        }
-
-        .pip-locked {
-            background: #d1d5db;
-        }
-
-        /* card number */
         .test-num {
             font-size: 26px;
             font-weight: 600;
@@ -315,31 +388,23 @@
             margin-bottom: 3px;
         }
 
-        .test-card.completed .test-num {
-            color: #fff;
-        }
+        .test-card.completed .test-num { color: #fff; }
 
         .test-meta {
             font-size: 12px;
             color: #9ca3af;
         }
 
-        .test-card.completed .test-meta {
-            color: rgba(255, 255, 255, 0.65);
-        }
+        .test-card.completed .test-meta { color: rgba(255, 255, 255, 0.65); }
 
-        /* divider */
         .card-divider {
             height: 1px;
             background: #f0f2f8;
             margin: 0.9rem 0;
         }
 
-        .test-card.completed .card-divider {
-            background: rgba(255, 255, 255, 0.2);
-        }
+        .test-card.completed .card-divider { background: rgba(255, 255, 255, 0.2); }
 
-        /* action button */
         .start-btn {
             width: 100%;
             padding: 7px 0;
@@ -356,26 +421,16 @@
             font-family: inherit;
         }
 
-        .btn-start {
-            background: #4361ee;
-            color: #fff;
-        }
-
-        .btn-start:hover {
-            background: #3451d1;
-        }
+        .btn-start  { background: #4361ee; color: #fff; }
+        .btn-start:hover { background: #3451d1; }
 
         .btn-review {
             background: rgba(255, 255, 255, 0.15);
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
+        .btn-review:hover { background: rgba(255, 255, 255, 0.25); }
 
-        .btn-review:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        /* lock visual */
         .lock-row {
             display: flex;
             align-items: center;
@@ -383,74 +438,42 @@
             padding: 6px 0;
         }
 
-        .lock-icon {
-            width: 16px;
-            height: 20px;
-            position: relative;
-        }
+        .lock-icon { width: 16px; height: 20px; position: relative; }
 
         .lock-body3 {
-            width: 16px;
-            height: 11px;
+            width: 16px; height: 11px;
             background: #d1d5db;
             border-radius: 4px;
-            position: absolute;
-            bottom: 0;
+            position: absolute; bottom: 0;
         }
 
         .lock-shackle3 {
-            width: 10px;
-            height: 9px;
+            width: 10px; height: 9px;
             border: 2.5px solid #d1d5db;
             border-bottom: none;
             border-radius: 5px 5px 0 0;
-            position: absolute;
-            top: 0;
-            left: 50%;
+            position: absolute; top: 0; left: 50%;
             transform: translateX(-50%);
         }
 
         .lock-hole {
-            width: 4px;
-            height: 4px;
-            background: #fff;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
+            width: 4px; height: 4px;
+            background: #fff; border-radius: 50%;
+            position: absolute; bottom: 5px; left: 50%;
             transform: translateX(-50%);
         }
 
-        /* admin action buttons */
-        .admin-row {
-            display: flex;
-            gap: 6px;
-            margin-top: 0.5rem;
-        }
+        .admin-row { display: flex; gap: 6px; margin-top: 0.5rem; }
 
         .admin-btn {
-            padding: 3px 8px;
-            font-size: 11px;
-            border-radius: 5px;
-            cursor: pointer;
-            background: none;
-            border: 1px solid #e5e7eb;
-            color: #6b7280;
-            transition: all 0.15s;
-            font-family: inherit;
+            padding: 3px 8px; font-size: 11px; border-radius: 5px;
+            cursor: pointer; background: none;
+            border: 1px solid #e5e7eb; color: #6b7280;
+            transition: all 0.15s; font-family: inherit;
         }
 
-        .admin-btn.a-view:hover {
-            border-color: #64748b;
-            color: #64748b;
-            background: #f8fafc;
-        }
-
-        .admin-btn.a-edit:hover {
-            border-color: #4361ee;
-            color: #4361ee;
-            background: #eef1fd;
-        }
+        .admin-btn.a-view:hover { border-color: #64748b; color: #64748b; background: #f8fafc; }
+        .admin-btn.a-edit:hover { border-color: #4361ee; color: #4361ee; background: #eef1fd; }
 
         /* ─── Tip box ─────────────────────────────────────── */
         .tip-box {
@@ -462,124 +485,59 @@
         }
 
         .tip-box strong {
-            font-size: 13px;
-            font-weight: 600;
-            color: #3451d1;
-            display: block;
-            margin-bottom: 4px;
+            font-size: 13px; font-weight: 600;
+            color: #3451d1; display: block; margin-bottom: 4px;
         }
 
-        .tip-box p {
-            font-size: 13px;
-            color: #3451d1;
-            line-height: 1.6;
-        }
+        .tip-box p { font-size: 13px; color: #3451d1; line-height: 1.6; }
 
-        /* question items in modals */
+        /* ─── Question items ──────────────────────────────── */
         .question-item {
-            display: flex;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid #e8eaf0;
-            background: #f9fafb;
-            margin-bottom: 8px;
-            cursor: pointer;
+            display: flex; gap: 10px;
+            padding: 10px 12px; border-radius: 10px;
+            border: 1px solid #e8eaf0; background: #f9fafb;
+            margin-bottom: 8px; cursor: pointer;
             transition: border-color 0.15s, background 0.15s;
         }
 
-        .question-item:hover {
-            border-color: #c7d0f8;
-            background: #f3f5fd;
-        }
+        .question-item:hover        { border-color: #c7d0f8; background: #f3f5fd; }
+        .question-item.selected-question  { border-color: #4361ee; background: #eef1fd; }
+        .question-item.correct-question   { border-color: #10b981; }
+        .question-item.incorrect-question { border-color: #ef4444; }
 
-        .question-item.selected-question {
-            border-color: #4361ee;
-            background: #eef1fd;
-        }
-
-        .question-item.correct-question {
-            border-color: #10b981;
-        }
-
-        .question-item.incorrect-question {
-            border-color: #ef4444;
-        }
-
-        .question-number {
-            font-size: 13px;
-            font-weight: 700;
-            color: #4361ee;
-            min-width: 24px;
-        }
-
-        .question-text {
-            font-size: 13px;
-            color: #374151;
-            line-height: 1.5;
-        }
+        .question-number { font-size: 13px; font-weight: 700; color: #4361ee; min-width: 24px; }
+        .question-text   { font-size: 13px; color: #374151; line-height: 1.5; }
 
         .question-topic-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 5px;
+            display: flex; align-items: center;
+            justify-content: space-between; margin-top: 5px;
         }
 
-        .question-topic-row small {
-            font-size: 11px;
-            color: #9ca3af;
-        }
+        .question-topic-row small { font-size: 11px; color: #9ca3af; }
 
         .q-btn {
-            padding: 2px 8px;
-            font-size: 11px;
-            border-radius: 5px;
-            cursor: pointer;
-            background: none;
-            font-family: inherit;
-            transition: all 0.15s;
+            padding: 2px 8px; font-size: 11px; border-radius: 5px;
+            cursor: pointer; background: none; font-family: inherit; transition: all 0.15s;
         }
 
-        .q-btn-add {
-            border: 1px solid #4361ee;
-            color: #4361ee;
-        }
+        .q-btn-add    { border: 1px solid #4361ee; color: #4361ee; }
+        .q-btn-add:hover    { background: #4361ee; color: #fff; }
+        .q-btn-remove { border: 1px solid #ef4444; color: #ef4444; }
+        .q-btn-remove:hover { background: #ef4444; color: #fff; }
+        .q-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .q-btn-add:hover {
-            background: #4361ee;
-            color: #fff;
-        }
-
-        .q-btn-remove {
-            border: 1px solid #ef4444;
-            color: #ef4444;
-        }
-
-        .q-btn-remove:hover {
-            background: #ef4444;
-            color: #fff;
-        }
-
-        .q-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
+        /* ─── Responsive ─────────────────────────────────── */
         @media (max-width: 600px) {
-            .tests-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .page {
-                padding-top: 44px;
-            }
+            .tests-grid { grid-template-columns: 1fr 1fr; }
+            .page { padding-top: 44px; }
+            .ranking-badge { padding: 8px 10px; }
+            .ranking-position { font-size: 16px; }
+            .subject-hero { flex-wrap: wrap; }
+            .subject-pills { gap: 6px; }
         }
 
         @media (max-width: 400px) {
-            .tests-grid {
-                grid-template-columns: 1fr;
-            }
+            .tests-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -624,9 +582,40 @@
                 </svg>
                 <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
             </div>
+
             <div class="subject-info">
                 <strong>{{ subject.subjectName }}</strong>
                 <span>{{ subject.totalTopics }} tópicos</span>
+
+                <!-- ── Pills: XP e testes completados (NOVO) ── -->
+                <div class="subject-pills">
+                    <span class="pill pill-xp">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="#b45309" stroke="none">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                        {{ 6 | number }} XP
+                    </span>
+                    <span class="pill pill-tests"> 
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#047857"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        {{ 12 }} testes
+                    </span>
+                </div>
+            </div>
+
+            <!-- ── Posição no ranking ── -->
+            <div class="ranking-badge">
+                <div class="ranking-badge-top">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4361ee" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span class="ranking-position">#{{ 4 }}</span>
+                </div>
+                <span class="ranking-label">Ranking</span>
             </div>
         </div>
 
@@ -650,7 +639,6 @@
                     locked: isLocked(topic, test, i)
                 }">
 
-                    <!-- Top row -->
                     <div class="card-top">
                         <span class="test-label">Teste {{ i + 1 }}</span>
                         <div class="status-pip" [ngClass]="{
@@ -660,64 +648,61 @@
                         }"></div>
                     </div>
 
-                    <!-- Number + meta -->
                     <div class="test-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</div>
-                            <div class="test-meta">{{ test.totalQuestions }} questões</div>
+                    <div class="test-meta">{{ test.totalQuestions }} questões</div>
 
-                            <!-- Admin buttons -->
-                            <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
-                                <button class="admin-btn a-view"
-                                    (click)="onGetSelectedQuestionsByTopicId(test)">Ver</button>
-                                <button class="admin-btn a-edit" (click)="onGetQuestionsByTopicId(test)">Editar</button>
-                            </div>
-
-                            <!-- Action area -->
-                            <ng-container *ngIf="!isLocked(topic, test, i)">
-                                <div class="card-divider"></div>
-                                <div>
-                                    <button class="start-btn btn-review" *ngIf="isCompleted(test)"
-                                        (click)="reviewTest(test)">
-                                        Revisar
-                                    </button>
-                                    <button class="start-btn btn-start" *ngIf="isActive(topic, test, i)"
-                                        (click)="startTest(test, topic)">
-                                        Iniciar
-                                    </button>
-                                </div>
-                            </ng-container>
-
-                            <!-- Lock visual for locked cards -->
-                            <ng-container *ngIf="isLocked(topic, test, i)">
-                                <div class="card-divider"></div>
-                                <div class="lock-row">
-                                    <div class="lock-icon">
-                                        <div class="lock-shackle3"></div>
-                                        <div class="lock-body3">
-                                            <div class="lock-hole"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-container>
-
+                    <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
+                        <button class="admin-btn a-view"
+                            (click)="onGetSelectedQuestionsByTopicId(test)">Ver</button>
+                        <button class="admin-btn a-edit" (click)="onGetQuestionsByTopicId(test)">Editar</button>
                     </div>
+
+                    <ng-container *ngIf="!isLocked(topic, test, i)">
+                        <div class="card-divider"></div>
+                        <div>
+                            <button class="start-btn btn-review" *ngIf="isCompleted(test)"
+                                (click)="reviewTest(test)">
+                                Revisar
+                            </button>
+                            <button class="start-btn btn-start" *ngIf="isActive(topic, test, i)"
+                                (click)="startTest(test, topic)">
+                                Iniciar
+                            </button>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isLocked(topic, test, i)">
+                        <div class="card-divider"></div>
+                        <div class="lock-row">
+                            <div class="lock-icon">
+                                <div class="lock-shackle3"></div>
+                                <div class="lock-body3">
+                                    <div class="lock-hole"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
                 </div>
             </div>
+        </div>
 
-            <!-- Tip -->
-            <div class="tip-box">
-                <strong>Dica de estudo</strong>
-                <p>Domine todos os exercícios propostos, complete e revise cada teste para avançar com confiança no seu
-                    progresso.</p>
-            </div>
+        <!-- Tip -->
+        <div class="tip-box">
+            <strong>Dica de estudo</strong>
+            <p>Domine todos os exercícios propostos, complete e revise cada teste para avançar com confiança no seu
+                progresso.</p>
+        </div>
 
-        </div><!-- /page -->
+    </div><!-- /page -->
 </body>
 
 </html>
 
+
 <!-- ══════════════════════════════════════════
         MODAL: Adicionar / Editar Teste
-        ════════════════════════════════════════════ -->
+════════════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
         <div class="modal-header">
@@ -737,8 +722,7 @@
                 <label for="difficultyLevel">Nível</label>
                 <select id="difficultyLevel" [(ngModel)]="test.difficultyLevel" name="difficultyLevel" required>
                     <option value="" disabled selected>Selecione o nível</option>
-                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}
-                    </option>
+                    <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
                 </select>
             </div>
             <div class="form-group">
@@ -759,10 +743,7 @@
 ════════════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
     <div class="modal">
-
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
@@ -796,10 +777,7 @@
 ════════════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalQuestionsList">
     <div class="modal">
-
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
@@ -893,14 +871,13 @@
     </div>
 </div>
 
+
 <!-- ══════════════════════════════════════
      Modal: Método de pagamento
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
     <div class="modal">
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
@@ -927,7 +904,6 @@
                 </div>
             </div>
 
-            <!-- COM carteiras -->
             <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
                 <div class="wallet-options">
                     <label class="wallet-card" *ngFor="let wallet of userWallets"
@@ -962,7 +938,6 @@
                     Adicionar outro método
                 </button>
 
-                <!-- Botão de confirmação de pagamento com loading inline -->
                 <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
                     <span class="btn-spinner" *ngIf="showLoading"></span>
                     <ng-container *ngIf="!showLoading">
@@ -978,7 +953,6 @@
                 <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
             </ng-container>
 
-            <!-- SEM carteiras -->
             <ng-template #noWallets>
                 <div class="empty-wallets">
                     <div class="empty-wallets-icon">
@@ -991,8 +965,7 @@
                     </div>
                     <div class="empty-wallets-title">Nenhum método adicionado</div>
                     <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o
-                        upgrade
-                        para Premium.</div>
+                        upgrade para Premium.</div>
                 </div>
                 <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -1003,19 +976,17 @@
                     Adicionar método de pagamento
                 </button>
             </ng-template>
-
         </div>
     </div>
 </div>
+
 
 <!-- ══════════════════════════════════════
      Modal: Adicionar carteira
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
     <div class="modal">
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
@@ -1060,7 +1031,6 @@
                     <span class="badge-detected">Detectado</span>
                 </div>
 
-                <!-- Botão com spinner inline durante submissão -->
                 <button class="btn-modal-primary" type="submit"
                     [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
                     <span class="btn-spinner" *ngIf="showLoading"></span>
