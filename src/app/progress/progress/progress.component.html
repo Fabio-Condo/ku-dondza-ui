@@ -713,8 +713,7 @@
             <div class="ring-wrap">
                 <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
                     <circle class="ring-bg" cx="26" cy="26" r="22" />
-                    <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                        [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
+                    <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23" [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
                 </svg>
                 <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
             </div>
@@ -729,14 +728,14 @@
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="#b45309" stroke="none">
                             <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                         </svg>
-                        {{ 6 | number }} XP
+                        {{ subject.currentUserScore }} XP
                     </span>
                     <span class="pill pill-tests">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.5"
                             stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12" />
                         </svg>
-                        {{ 12 }} testes
+                        {{ subject.topicDtoWithTests.length }} testes
                     </span>
                 </div>
             </div>
@@ -749,7 +748,7 @@
                         <polygon
                             points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                     </svg>
-                    <span class="ranking-position">#{{ 4 }}</span>
+                    <span class="ranking-position">#{{ subject.currentUserRank }}</span>
                 </div>
                 <span class="ranking-label">Ranking</span>
             </div>

@@ -10,6 +10,10 @@ export class SubjectProgressDTO {
     orderIndex!: number;
     topicDtoWithTests: TopicDtoWithTests[] = [];
     currentUserProgressRate: number = 0;
+
+    currentUserScore: number = 0;
+    currentUserRank: number = 0;
+
     totalTopics!: number;
 
     progressEnabled: boolean = false;
