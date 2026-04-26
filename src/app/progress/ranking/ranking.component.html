@@ -896,40 +896,83 @@
         </div>
 
         <!-- ── Pódio top 3 ── -->
-        <div class="section-label">Pódio</div>
-        <div class="podium">
+        <!-- ── Pódio top 3 ── -->
+        <div class="section-label" *ngIf="rankings.length >= 1">Pódio</div>
+
+        <div class="podium" *ngIf="rankings.length >= 1">
 
             <!-- 2º lugar -->
-            <div class="podium-item p2" style="margin-bottom: 0;">
+            <div class="podium-item p2" style="margin-bottom: 0;" *ngIf="rankings.length >= 2">
                 <div class="podium-medal medal-silver">2</div>
-                <div class="podium-avatar av-silver">AM</div>
-                <div class="podium-name">Ana Matos</div>
-                <div class="podium-score">4 890 XP</div>
-                <div class="podium-tests">18 testes</div>
+
+                <div class="podium-avatar av-silver">
+                    {{ getInitials(rankings[1].fullName) }}
+                </div>
+
+                <div class="podium-name">
+                    {{ rankings[1].fullName }}
+                </div>
+
+                <div class="podium-score">
+                    {{ rankings[1].score }} XP
+                </div>
+
+                <div class="podium-tests">
+                    {{ rankings[1].accuracyRate }}%
+                </div>
             </div>
 
             <!-- 1º lugar -->
             <div class="podium-item p1">
+
                 <div class="podium-crown">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="#92400e" stroke="none">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="#92400e">
                         <polygon
                             points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                     </svg>
                 </div>
+
                 <div class="podium-medal medal-gold">1</div>
-                <div class="podium-avatar av-gold">LC</div>
-                <div class="podium-name">Luísa Cossa</div>
-                <div class="podium-score">6 230 XP</div>
-                <div class="podium-tests">24 testes</div>
+
+                <div class="podium-avatar av-gold">
+                    {{ getInitials(rankings[0].fullName) }}
+                </div>
+
+                <div class="podium-name">
+                    {{ rankings[0].fullName }}
+                </div>
+
+                <div class="podium-score">
+                    {{ rankings[0].score }} XP
+                </div>
+
+                <div class="podium-tests">
+                    {{ rankings[0].accuracyRate }}%
+                </div>
+
             </div>
 
             <!-- 3º lugar -->
-            <div class="podium-item p3" style="margin-bottom: 0;">
+            <div class="podium-item p3" style="margin-bottom: 0;" *ngIf="rankings.length >= 3">
+
                 <div class="podium-medal medal-bronze">3</div>
-                <div class="podium-avatar av-bronze">CR</div>
-                <div class="podium-name">Carlos Ramos</div>
-                <div class="podium-score">4 210 XP</div>
-                <div class="podium-tests">16 testes</div>
+
+                <div class="podium-avatar av-bronze">
+                    {{ getInitials(rankings[2].fullName) }}
+                </div>
+
+                <div class="podium-name">
+                    {{ rankings[2].fullName }}
+                </div>
+
+                <div class="podium-score">
+                    {{ rankings[2].score }} XP
+                </div>
+
+                <div class="podium-tests">
+                    {{ rankings[2].accuracyRate }}%
+                </div>
+
             </div>
 
         </div>
@@ -1020,7 +1063,8 @@
 
         <!-- ── Load more ── -->
         <div class="load-more-wrap">
-            <div class="load-more-info">Mostrando <span id="shown-count">{{ rankings.length }}</span> de <span>{{ totalRanking }}</span> participantes
+            <div class="load-more-info">Mostrando <span id="shown-count">{{ rankings.length }}</span> de <span>{{
+                    totalRanking }}</span> participantes
             </div>
             <button class="load-more-btn" id="load-more-btn" (click)="loadMore()">
                 <span class="btn-spinner"></span>
