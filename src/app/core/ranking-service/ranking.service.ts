@@ -23,7 +23,7 @@ export class RankingService {
         return this.http.get<IApiResponse<UserSubjectRankingDTO>>(`${this.host}/subject/${subjectId}`, { params });
     }
 
-    getSummary(userId: number, subjectId: number): Observable<UserSubjectRankingSummaryDTO> {
+    getSummary(userId: number, subjectId: string): Observable<UserSubjectRankingSummaryDTO> {
         return this.http.get<UserSubjectRankingSummaryDTO>(
             `${this.host}/subjects/${subjectId}/users/${userId}/summary`
         );
