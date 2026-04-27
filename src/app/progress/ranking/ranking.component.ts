@@ -67,6 +67,10 @@ export class RankingComponent {
     if (!this.loggedUser.id) return;
     const selectedSubject = this.route.snapshot.params['id'];
 
+    this.retryVisible = false;
+    this.loadingMessage = 'Carregando ranking';
+    this.showLoading = true;
+
     this.rankingService.getSummary(this.loggedUser.id, selectedSubject)
       .pipe(
         retryWhen(errors =>
@@ -85,9 +89,17 @@ export class RankingComponent {
       ).subscribe(
         (data: UserSubjectRankingSummaryDTO) => {
           this.summary = data;
+          this.showLoading = false;
         },
         (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(errorResponse.error.message);
+          this.showLoading = false;
+          this.retryVisible = true;
+
+          if (!navigator.onLine) {
+            this.sendErrorNotification('Você está sem conexão com a internet.');
+          } else {
+            this.sendErrorNotification(errorResponse.error.message);
+          }
         }
       );
   }
