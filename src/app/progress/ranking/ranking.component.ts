@@ -36,7 +36,7 @@ export class RankingComponent {
 
   filter: RankingFilter = {
     page: 0,
-    itemsPerPage: 10,
+    itemsPerPage: 5,
     sort: ''
   };
 
