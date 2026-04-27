@@ -76,9 +76,28 @@ export class FaqComponent implements OnInit {
         }
       ]
     },
-    /*
     {
-      title: 'Cursos em Vídeo',
+      title: 'Ranking e Pontuação',
+      items: [
+        {
+          question: 'Como são atribuídos os pontos no ranking?',
+          answer: 'Os pontos são atribuídos apenas quando o estudante realiza um teste e obtém aprovação. Para passar no teste é necessário alcançar pelo menos 85% de acertos. A pontuação depende da percentagem final obtida.',
+          open: false
+        },
+        {
+          question: 'Como funciona a pontuação por percentagem?',
+          answer: 'A pontuação é calculada com base no desempenho no teste: 100% de acertos = 40 pontos, entre 90% e 99% = 30 pontos, entre 85% e 89% = 20 pontos.',
+          open: false
+        },
+        {
+          question: 'O que acontece se eu tiver menos de 85%?',
+          answer: 'Resultados abaixo de 85% não são considerados aprovados e não geram pontos no ranking.',
+          open: false
+        }
+      ]
+    },
+    {
+      title: 'Cursos',
       items: [
         {
           question: 'Os cursos ajudam na preparação para o exame?',
@@ -91,38 +110,7 @@ export class FaqComponent implements OnInit {
           open: false
         }
       ]
-    },
-    {
-      title: 'Biblioteca e Materiais de Apoio',
-      items: [
-        {
-          question: 'Posso baixar materiais para estudar offline?',
-          answer: 'Sim. Disponibilizamos materiais em PDF para reforçar sua preparação, permitindo estudar mesmo sem acesso à internet.',
-          open: false
-        },
-        {
-          question: 'Os materiais são alinhados ao exame?',
-          answer: 'Sim. Todos os materiais são selecionados com foco nos conteúdos cobrados nos exames de admissão.',
-          open: false
-        }
-      ]
-    },
-    {
-      title: 'Competições e Desafios',
-      items: [
-        {
-          question: 'Como as competições ajudam na preparação?',
-          answer: 'As competições simulam pressão e tempo real de prova, ajudando você a desenvolver rapidez, estratégia e confiança para o dia do exame.',
-          open: false
-        },
-        {
-          question: 'Como funciona o ranking?',
-          answer: 'O ranking é atualizado em tempo real com base na pontuação e tempo de conclusão, incentivando você a melhorar continuamente seu desempenho.',
-          open: false
-        }
-      ]
     }
-    */
   ];
 
   toggleItem2(categoryIndex: number, itemIndex: number) {
