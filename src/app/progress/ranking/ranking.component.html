@@ -867,11 +867,11 @@
 
             <div class="stats-strip">
                 <div class="stat-item">
-                    <div class="stat-value">48</div>
+                    <div class="stat-value">{{ totalRanking }}</div>
                     <div class="stat-label">Participantes</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value">2 840</div>
+                    <div class="stat-value">{{ summary.averageScore }}</div>
                     <div class="stat-label">XP médio</div>
                 </div>
                 <div class="stat-item">
@@ -883,11 +883,20 @@
 
         <!-- ── Minha posição ── -->
         <div class="my-position-card">
-            <div class="my-pos-rank"><span>#</span>{{ summary.currentUserRank }}</div>
+            <div class="my-pos-rank">
+                <span *ngIf="summary.currentUserRank">#{{ summary.currentUserRank }}</span>
+                <span *ngIf="!summary.currentUserRank">#--</span>
+            </div>
             <div class="my-pos-avatar">{{ getInitials(summary.fullName) }}</div>
             <div class="my-pos-info">
                 <div class="my-pos-name">{{ summary.fullName }} <span class="you-badge">Você</span></div>
-                <div class="my-pos-sub">3 posições acima vs semana passada</div>
+                <div class="my-pos-sub" *ngIf="summary.currentUserRank">
+                    Continue subindo no ranking
+                </div>
+
+                <div class="my-pos-sub" *ngIf="!summary.currentUserRank">
+                    Faça testes para entrar no ranking
+                </div>
             </div>
             <div class="my-pos-right">
                 <div class="my-pos-xp">{{ summary.currentUserScore }}</div>
