@@ -40,26 +40,26 @@ export class FaqComponent implements OnInit {
           open: false
         }
       ]
-    },
+    },    
     {
       title: 'Simulados e Quizzes Estratégicos',
       items: [
         {
-          question: 'Como criar um simulado para o exame de admissão?',
-          answer: 'Selecione a disciplina, escolha os tópicos e defina o nível de dificuldade. O sistema gera automaticamente um simulado baseado no padrão do exame, focando nos conteúdos mais cobrados.',
+          question: 'Qual a diferença entre praticar e fazer testes?',
+          answer: 'A prática serve para aprender e compreender os conteúdos sem pressão e sem pontuação. Já os testes são avaliações finais onde o teu desempenho é medido e pode gerar pontos no ranking.',
           open: false
         },
         {
-          question: 'Como funcionam as dicas durante o simulado?',
-          answer: 'Durante o simulado, você pode solicitar dicas progressivas que ajudam a direcionar o raciocínio sem revelar a resposta. Isso fortalece seu aprendizado e melhora seu desempenho real.',
+          question: 'A prática conta para o ranking?',
+          answer: 'Não. Apenas testes finais aprovados (com pelo menos 85% de acertos) geram pontos no ranking. A prática é apenas para estudo e preparação.',
           open: false
         },
         {
-          question: 'Recebo análise de desempenho?',
-          answer: 'Sim. Ao finalizar, você recebe correção completa, pontuação detalhada e análise dos seus pontos fortes e fracos, ajudando a focar exatamente onde precisa melhorar antes do exame.',
+          question: 'Como são atribuídos os pontos nos testes?',
+          answer: 'Os pontos são atribuídos apenas em testes finais aprovados. 100% = 40 pontos, 90–99% = 30 pontos, 85–89% = 20 pontos. Abaixo de 85% não há aprovação nem pontos.',
           open: false
         }
-      ]
+      ],
     },
     {
       title: 'Exercícios Resolvidos',
