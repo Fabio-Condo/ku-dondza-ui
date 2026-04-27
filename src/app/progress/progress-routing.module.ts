@@ -25,7 +25,7 @@ const routes: Routes = [
     //} 
   },
   {
-    path: 'ranking/:id',
+    path: 'ranking/subjects/:id',
     component: RankingComponent,
     canActivate: [AuthenticationGuard],
     //data: { 

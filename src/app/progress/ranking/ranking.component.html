@@ -852,7 +852,7 @@
         <div class="ranking-header">
             <div class="ranking-header-top">
                 <div class="ranking-header-left">
-                    <h1>Ranking — Matemática</h1>
+                    <h1>Ranking — {{ summary.subjectName }}</h1>
                     <p>Actualizado em tempo real · Semana actual</p>
                 </div>
                 <div class="header-badge">
@@ -875,7 +875,7 @@
                     <div class="stat-label">XP médio</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value">12</div>
+                    <div class="stat-value">{{ summary.totalTopics }}</div>
                     <div class="stat-label">Tópicos</div>
                 </div>
             </div>
@@ -883,14 +883,14 @@
 
         <!-- ── Minha posição ── -->
         <div class="my-position-card">
-            <div class="my-pos-rank"><span>#</span>5</div>
-            <div class="my-pos-avatar">JS</div>
+            <div class="my-pos-rank"><span>#</span>{{ summary.currentUserRank }}</div>
+            <div class="my-pos-avatar">{{ getInitials(summary.fullName) }}</div>
             <div class="my-pos-info">
-                <div class="my-pos-name">João Silva <span class="you-badge">Você</span></div>
+                <div class="my-pos-name">{{ summary.fullName }} <span class="you-badge">Você</span></div>
                 <div class="my-pos-sub">3 posições acima vs semana passada</div>
             </div>
             <div class="my-pos-right">
-                <div class="my-pos-xp">3 120 XP</div>
+                <div class="my-pos-xp">{{ summary.currentUserScore }}</div>
                 <div class="my-pos-xp-label">Pontuação</div>
             </div>
         </div>
