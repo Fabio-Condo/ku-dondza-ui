@@ -3,5 +3,5 @@ export class UserSubjectRankingDTO {
     fullName!: string;
     profileImageUrl!: string
     score!: number;
-    accuracyRate!: number;
+    testsCompleted!: number;
 } 

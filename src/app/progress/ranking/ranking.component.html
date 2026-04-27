@@ -871,7 +871,7 @@
                     <div class="stat-label">Participantes</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value">{{ summary.averageScore }}</div>
+                    <div class="stat-value">{{ summary.averageScore.toFixed(1) }}</div>
                     <div class="stat-label">XP médio</div>
                 </div>
                 <div class="stat-item">
@@ -927,7 +927,7 @@
                 </div>
 
                 <div class="podium-tests">
-                    {{ rankings[1].accuracyRate }}%
+                    {{ rankings[1].testsCompleted }} testes
                 </div>
             </div>
 
@@ -956,7 +956,7 @@
                 </div>
 
                 <div class="podium-tests">
-                    {{ rankings[0].accuracyRate }}%
+                    {{ rankings[0].testsCompleted }} testes
                 </div>
 
             </div>
@@ -979,7 +979,7 @@
                 </div>
 
                 <div class="podium-tests">
-                    {{ rankings[2].accuracyRate }}%
+                    {{ rankings[2].testsCompleted }} testes
                 </div>
 
             </div>
@@ -1034,7 +1034,7 @@
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
-                            {{ item.accuracyRate }}%
+                            {{ item.testsCompleted }} testes
                         </span>
 
                         <!-- Score -->
@@ -1049,7 +1049,7 @@
 
                     <!-- Progress bar -->
                     <div class="row-progress">
-                        <div class="row-progress-fill" [style.width.%]="item.accuracyRate">
+                        <div class="row-progress-fill" [style.width.%]="item.testsCompleted / summary.totalTopics * 100">
                         </div>
                     </div>
 
