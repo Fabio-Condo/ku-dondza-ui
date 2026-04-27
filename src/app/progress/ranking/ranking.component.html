@@ -435,38 +435,6 @@
             padding-left: 2px;
         }
 
-        /* ─── Filter tabs ────────────────────────────────── */
-        .filter-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-tab {
-            padding: 5px 14px;
-            border-radius: 99px;
-            border: 1px solid #e8eaf0;
-            background: #fff;
-            font-size: 12px;
-            font-weight: 500;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-        }
-
-        .filter-tab.active {
-            background: #4361ee;
-            border-color: #4361ee;
-            color: #fff;
-        }
-
-        .filter-tab:hover:not(.active) {
-            border-color: #c7d0f8;
-            color: #4361ee;
-        }
-
         /* ─── Ranking list ───────────────────────────────── */
         .ranking-list {
             display: flex;
@@ -604,7 +572,7 @@
         }
 
         /* trend badges */
-        .trend {
+        .progress-fill {
             display: inline-flex;
             align-items: center;
             gap: 2px;
@@ -614,17 +582,7 @@
             padding: 2px 5px;
         }
 
-        .trend-up {
-            color: #047857;
-            background: #d1fae5;
-        }
-
-        .trend-down {
-            color: #b91c1c;
-            background: #fee2e2;
-        }
-
-        .trend-same {
+        .total-topics {
             color: #6b7280;
             background: #f3f4f6;
         }
@@ -853,7 +811,7 @@
             <div class="ranking-header-top">
                 <div class="ranking-header-left">
                     <h1>Ranking — {{ summary.subjectName }}</h1>
-                    <p>Actualizado em tempo real · Semana actual</p>
+                    <p>Atualizado em tempo real • {{ totalRanking }} participantes</p>
                 </div>
                 <div class="header-badge">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -987,15 +945,7 @@
         </div>
 
         <!-- ── Lista completa ── -->
-        <!-- ── Lista completa ── -->
         <div class="section-label" style="margin-top: 1.25rem;">Classificação geral</div>
-
-        <div class="filter-tabs">
-            <button class="filter-tab active">Todos</button>
-            <button class="filter-tab">Top 10</button>
-            <button class="filter-tab">Amigos</button>
-            <button class="filter-tab">Esta semana</button>
-        </div>
 
         <div class="ranking-list">
 
@@ -1062,7 +1012,7 @@
                     <div class="row-xp-label">XP</div>
 
                     <!-- Trend opcional (placeholder) -->
-                    <span class="trend trend-same">—</span>
+                    <span class="progress-fill total-topics">{{ item.testsCompleted }}/{{ summary.totalTopics }}</span>
 
                 </div>
 
