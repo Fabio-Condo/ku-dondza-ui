@@ -157,6 +157,10 @@ export class RankingComponent {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.rankings.length >= this.totalRecords && this.totalRecords > 0;
+  }
+
   retryGetRanking(): void {
     this.retryVisible = false;
     this.filter.page = 0;

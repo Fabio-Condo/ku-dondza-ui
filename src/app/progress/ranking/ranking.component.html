@@ -1066,7 +1066,7 @@
             <div class="load-more-info">Mostrando <span id="shown-count">{{ rankings.length }}</span> de <span>{{
                     totalRanking }}</span> participantes
             </div>
-            <button class="load-more-btn" id="load-more-btn" (click)="loadMore()">
+            <button class="load-more-btn" id="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
                 <span class="btn-spinner"></span>
                 <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
