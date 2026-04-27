@@ -2214,26 +2214,26 @@ export class QuizzQuestionsComponent implements OnInit {
   }
 
   getPerformanceClass(percentage: number): string {
-    if (percentage >= 80) return 'great';
+    if (percentage >= 85) return 'great';
     if (percentage >= 50) return 'ok';
     return 'weak';
   }
 
   getPerformanceLabel(percentage: number): string {
-    if (percentage >= 80) return 'Ótimo';
+    if (percentage >= 85) return 'Ótimo';
     if (percentage >= 50) return 'Bom';
     return 'Fraco';
   }
 
   getGrade(percent: number): string {
-    if (percent >= 80) return 'A';
+    if (percent >= 85) return 'A';
     if (percent >= 70) return 'B';
     if (percent >= 50) return 'C';
     return 'D';
   }
 
   getGradeLabel(percent: number): string {
-    if (percent >= 80) return 'Excelente desempenho';
+    if (percent >= 85) return 'Excelente desempenho';
     if (percent >= 70) return 'Bom desempenho';
     if (percent >= 50) return 'Desempenho médio';
     return 'Fraco desempenho';
