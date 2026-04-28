@@ -68,7 +68,7 @@ export class RankingComponent {
     const selectedSubject = this.route.snapshot.params['id'];
 
     this.retryVisible = false;
-    this.loadingMessage = 'Carregando ranking';
+    this.loadingMessage = 'Carregando dados do ranking';
     this.showLoading = true;
 
     this.rankingService.getSummary(this.loggedUser.id, selectedSubject)
