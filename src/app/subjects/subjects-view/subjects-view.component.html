@@ -1678,30 +1678,7 @@
 
                     <!-- Thumbnail da disciplina -->
                     <div class="course-thumb">
-                        <ng-container [ngSwitch]="subject.name">
-                            <img *ngSwitchCase="'Matemática'"
-                                src="assets/subject-images/matematica.png"
-                                [alt]="subject.name" loading="lazy">
-                            <img *ngSwitchCase="'Português'"
-                                src="assets/subject-images/portugues.png"
-                                [alt]="subject.name" loading="lazy">
-                            <img *ngSwitchCase="'Quimica'"
-                                src="assets/subject-images/quimica.png"
-                                [alt]="subject.name" loading="lazy">
-                            <img *ngSwitchCase="'Biologia'"
-                                src="assets/subject-images/biologia.png"
-                                [alt]="subject.name" loading="lazy">
-                            <img *ngSwitchCase="'Física'"
-                                src="assets/subject-images/fisica.png"
-                                [alt]="subject.name" loading="lazy">
-                            <img *ngSwitchCase="'História'"
-                                src="assets/subject-images/historia.png"
-                                [alt]="subject.name" loading="lazy">
-                            <img *ngSwitchDefault
-                                src="assets/subject-images/default-subject.png"
-                                [alt]="subject.name" loading="lazy">
-                        </ng-container>
-
+                        <img [src]="subject.urlFile" src="assets/subject-images/matematica.png" [alt]="subject.name" loading="lazy">
                         <div class="course-thumb-overlay"></div>
 
                         <!-- Badge de categoria -->
