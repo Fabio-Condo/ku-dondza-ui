@@ -23,6 +23,7 @@ export class SubjectsComponent implements OnInit {
   subjects: Subject[] = [];
   subject: Subject = new Subject();
   selectedSubject: Subject = new Subject();
+  file!: File;
 
   showLoading: boolean = false;
   retryVisible: boolean = false;
@@ -77,21 +78,23 @@ export class SubjectsComponent implements OnInit {
     return Boolean(this.subject.id);
   }
 
-  save(subjectForm: NgForm) {
+  save() {
     if (this.editing) {
-      this.update(subjectForm);
+      this.update()
     } else {
-      this.addNew(subjectForm);
+      this.addNew()
     }
   }
 
-  addNew(subjectForm: NgForm) {
+  update() {
     this.showLoading = true;
-    this.subjectsService.add(this.subject).subscribe(
-      (response) => {
-        this.subject = response;
+    this.subjectsService.update(this.subject, this.file).subscribe(
+      response => {
+        this.subject = response
+        //this.exam.date = new Date(this.exam.date);
+        this.messageService.add({ severity: 'success', detail: 'Exame actualizado com sucesso!' });
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Disciplina adicionada com sucesso!' });
+        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -100,19 +103,23 @@ export class SubjectsComponent implements OnInit {
     );
   }
 
-  update(subjectForm: NgForm) {
+  addNew() {
     this.showLoading = true;
-    this.subjectsService.update(this.subject).subscribe(
-      (response) => {
-        this.subject = response;
+    this.subjectsService.save(this.subject, this.file).subscribe(
+      response => {
+        this.messageService.add({ severity: 'success', detail: 'Exame salvo com sucesso!' });
         this.showLoading = false;
-        this.messageService.add({ severity: 'success', detail: 'Disciplina alterada com sucesso!' });
+        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
       }
     );
+  }
+
+  onFileSelected(event: any) {
+    this.file = event.target.files[0];
   }
 
   excluir(subject: Subject) {
@@ -162,7 +169,7 @@ export class SubjectsComponent implements OnInit {
       (dados: IApiResponse<Subject>) => {
         if (this.isUserLoggedIn && this.isSuperAdmin) {
           this.subjects = dados.content;
-        }else {
+        } else {
           this.subjects = dados.content.filter(subject => subject.courseEnabled);
         }
 

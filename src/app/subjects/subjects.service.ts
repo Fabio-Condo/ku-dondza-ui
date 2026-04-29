@@ -165,14 +165,41 @@ export class SubjectsService {
     return this.http.get<Subject>(`${this.host}/${id}`);
   }
 
-  add(subject: Subject): Observable<Subject> {
-    return this.http.post<Subject>(this.host, subject).pipe(
-      tap(() => this.clearCache())
+  save(subject: Subject, file: File): Observable<Subject> {
+    const formData = new FormData();
+    formData.append('name', subject.name);
+    formData.append('description', subject.description)
+    formData.append('category', subject.category);
+
+    formData.append('quizEnabled', String(subject.quizEnabled));
+    formData.append('courseEnabled', String(subject.courseEnabled));
+    formData.append('progressEnabled', String(subject.progressEnabled));
+    formData.append('examEnabled', String(subject.examEnabled));
+
+    formData.append('file', file);
+
+    //return this.http.post<Exam>(`${this.host}`, formData);
+    return this.http.post<Subject>(`${this.host}`, formData).pipe(
+      tap(() => this.clearCache()) // limpa cache após salvar
     );
   }
 
-  update(subject: Subject): Observable<Subject> {
-    return this.http.put<Subject>(`${this.host}/${subject.id}`, subject).pipe(
+  update(subject: Subject, file: File): Observable<Subject> {
+    const formData = new FormData();
+
+    formData.append('id', subject.id.toString());
+    formData.append('name', subject.name);
+    formData.append('description', subject.description);
+    formData.append('category', subject.category);
+
+    formData.append('quizEnabled', String(subject.quizEnabled));
+    formData.append('courseEnabled', String(subject.courseEnabled));
+    formData.append('progressEnabled', String(subject.progressEnabled));
+    formData.append('examEnabled', String(subject.examEnabled));
+
+    formData.append('file', file);
+
+    return this.http.put<Subject>(`${this.host}`, formData).pipe(
       tap(() => this.clearCache())
     );
   }

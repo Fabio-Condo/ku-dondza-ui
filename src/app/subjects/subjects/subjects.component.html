@@ -815,32 +815,8 @@
 
                 <!-- Thumbnail com badge de categoria e avaliação -->
                 <div class="card-thumb">
-                    <ng-container [ngSwitch]="subject.name">
-
-                        <img *ngSwitchCase="'Matemática'" src="assets/subject-images/matematica.png"
-                            [alt]="subject.name" loading="lazy">
-
-                        <img *ngSwitchCase="'Português'" src="assets/subject-images/portugues.png" [alt]="subject.name"
-                            loading="lazy">
-
-                        <img *ngSwitchCase="'Quimica'" src="assets/subject-images/quimica.png" [alt]="subject.name"
-                            loading="lazy">
-
-                        <img *ngSwitchCase="'Biologia'" src="assets/subject-images/biologia.png" [alt]="subject.name"
-                            loading="lazy">
-
-                        <img *ngSwitchCase="'Física'" src="assets/subject-images/fisica.png" [alt]="subject.name"
-                            loading="lazy">
-
-                        <img *ngSwitchCase="'História'" src="assets/subject-images/historia.png" [alt]="subject.name"
-                            loading="lazy">
-
-                        <!-- fallback -->
-                        <img *ngSwitchDefault src="assets/subject-images/default-subject.png" [alt]="subject.name"
-                            loading="lazy">
-
-                    </ng-container>
-
+                    <img [src]="subject.urlFile" alt="{{ subject.name }}"
+                        [alt]="subject.name" loading="lazy">
                     <div class="card-thumb-overlay"></div>
                     <span class="category-badge">{{ getCategoryValue(subject.category) }}</span>
                     <div class="rating-chip">
@@ -1070,23 +1046,29 @@
 
 </html>
 
-
 <!-- ══════════════════════════════════════
-     Modal: Adicionar/Editar disciplina
+     Modal: Adicionar / Editar exame
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
+        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+
         <div class="modal-handle"><span></span></div>
+
         <div class="modal-inner" [class.is-loading]="showLoading">
+
             <div class="modal-header">
                 <div class="modal-title-group">
-                    <h2 class="modal-title">{{ editing ? 'Editar disciplina' : 'Nova disciplina' }}</h2>
-                    <span class="modal-subtitle">Adicione ou edite informações da disciplina</span>
+                    <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
+                    <span class="modal-subtitle">{{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo'
+                        }}</span>
                 </div>
-                <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
+                <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
             </div>
-            <form autocomplete="off" #subjectForm="ngForm" (ngSubmit)="save(subjectForm)">
+
+            <form autocomplete="off" #exameForm="ngForm">
+
 
                 <div class="form-group">
                     <label for="name">Nome</label>
@@ -1098,7 +1080,6 @@
                     <textarea id="description" name="description" required minlength="1"
                         [(ngModel)]="subject.description"></textarea>
                 </div>
-
                 <div class="form-group">
                     <label for="category">Categoria</label>
                     <select id="category" [(ngModel)]="subject.category" name="category" required>
@@ -1108,27 +1089,11 @@
                         </option>
                     </select>
                 </div>
-
-                <!--
                 <div class="form-group">
-                    <label for="thumbnailUrl">URL da imagem de capa</label>
-                    <input type="text" id="thumbnailUrl" name="thumbnailUrl"
-                        placeholder="https://exemplo.com/imagem.jpg"
-                        [(ngModel)]="subject.thumbnailUrl">
+                    <label>Ficheiro PDF</label>
+                    <input type="file" (change)="onFileSelected($event)" name="file" accept="image/*" required
+                        [disabled]="showLoading" />
                 </div>
-
-                <div class="form-group">
-                    <label for="totalLessons">Número de aulas</label>
-                    <input type="number" id="totalLessons" name="totalLessons" min="0"
-                        [(ngModel)]="subject.totalLessons">
-                </div>
-
-                <div class="form-group">
-                    <label for="durationHours">Duração (horas)</label>
-                    <input type="number" id="durationHours" name="durationHours" min="0"
-                        [(ngModel)]="subject.durationHours">
-                </div>
-                -->
 
                 <div class="form-group">
                     <label>Configurações dos módulos</label>
@@ -1156,14 +1121,16 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-modal-secondary" [disabled]="subjectForm.invalid">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z" />
-                        <path d="M17 21v-8H7v8" />
-                        <path d="M7 3v5h8" />
+                <button class="btn-modal-primary" type="button" (click)="save()" [disabled]="showLoading">
+                    <!-- Spinner inline substitui o ícone de guardar durante loading -->
+                    <span class="btn-spinner" *ngIf="showLoading"></span>
+                    <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                        <polyline points="17 21 17 13 7 13 7 21" />
+                        <polyline points="7 3 7 8 15 8" />
                     </svg>
-                    {{ showLoading ? 'Salvando...' : 'Salvar' }}
+                    {{ showLoading ? 'Salvando...' : 'Salvar exame' }}
                 </button>
             </form>
         </div>
