@@ -767,8 +767,7 @@
             <div class="ring-wrap">
                 <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
                     <circle class="ring-bg" cx="26" cy="26" r="22" />
-                    <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                        [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
+                    <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23" [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
                 </svg>
                 <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
             </div>
@@ -848,7 +847,7 @@
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" stroke="none">
                             <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
                         </svg>
-                        {{ 10 }}%
+                        {{ test.accuracyRate.toFixed(1) }}%
                     </div>
 
                     <!--

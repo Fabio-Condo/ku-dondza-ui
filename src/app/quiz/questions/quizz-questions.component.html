@@ -2422,9 +2422,9 @@
 
         <!-- Corpo central: nome + data/hora -->
         <div class="results-strip-body">
-          <span class="results-strip-name">
+          <span class="quiz-identity-name">
             {{ quiz.anonymous ? 'Anónimo' : (quiz.user.fullName || 'Nome não disponível') }}
-            <span class="badge-you" *ngIf="isUserLoggedIn && !quiz.anonymous && quiz.user.id === loggedUser.id">
+            <span class="badge-you" *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id">
               você
             </span>
           </span>

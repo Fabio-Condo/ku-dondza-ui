@@ -24,6 +24,7 @@ import { HeaderType } from 'src/app/enum/header-type.enum';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { UserService } from 'src/app/users/user.service';
 import { delayWhen, retryWhen, scan, timer } from 'rxjs';
+import { Quiz } from 'src/app/core/model/Quiz';
 
 @Component({
   selector: 'app-progress',
@@ -760,6 +761,32 @@ export class ProgressComponent implements OnInit {
         );
       });
     }, 0);
+  }
+
+  calculateAccuracyRate(quiz: Quiz): number {
+    const questions = quiz.questions || [];
+    const userAnswers = quiz.answers || [];
+
+    let correctAnswers = 0;
+
+    for (const question of questions) {
+      for (const userAnswer of userAnswers) {
+        if (
+          userAnswer.question.id === question.id &&
+          userAnswer.correct
+        ) {
+          correctAnswers++;
+          break; // encontrou resposta correta para essa questão
+        }
+      }
+    }
+
+    if (questions.length === 0) {
+      return 0;
+    }
+
+    console.log(`Correct Answers: ${correctAnswers}, Total Questions: ${questions.length}`); 
+    return (correctAnswers / questions.length) * 100;
   }
 
   private sendErrorNotification(message: string): void {
