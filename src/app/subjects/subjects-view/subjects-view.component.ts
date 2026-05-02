@@ -127,9 +127,9 @@ export class SubjectsViewComponent {
     ).subscribe(
       (response) => {
         this.subject = response;
-        if (this.subject.topics.length > 0) {
-          this.expandedTopics = [this.subject.topics[0].id];
-        }
+        //if (this.subject.topics.length > 0) {
+        //  this.expandedTopics = [this.subject.topics[0].id];
+        //}
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

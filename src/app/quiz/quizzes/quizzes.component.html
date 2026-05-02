@@ -1004,10 +1004,10 @@
                         <div class="topics-label">Tópicos avaliados</div>
                         <div class="topic-tags">
                             <span class="topic-tag"
-                                *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 5)">
+                                *ngFor="let topic of showAllTopicsMap[quiz.id] ? quiz.topics : quiz.topics.slice(0, 2)">
                                 {{ topic.name }}
                             </span>
-                            <button class="tag-toggle-button" *ngIf="quiz.topics.length > 5"
+                            <button class="tag-toggle-button" *ngIf="quiz.topics.length > 2"
                                 (click)="toggleTopics(quiz.id)">
                                 {{ showAllTopicsMap[quiz.id] ? 'Ver menos' : 'Ver mais' }}
                                 <i class="pi"
