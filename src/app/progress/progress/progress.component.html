@@ -190,7 +190,7 @@
             margin-bottom: 2px;
         }
 
-        .subject-info>span {
+        .subject-info > span {
             font-size: 12px;
             color: #6b7280;
         }
@@ -288,6 +288,28 @@
             margin-bottom: 6px;
         }
 
+        /* ── Numbered topic label ── */
+        .topic-name-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .topic-index-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            background: #4361ee;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
         .topic-name {
             font-size: 14px;
             font-weight: 600;
@@ -346,7 +368,14 @@
             border-color: #4361ee;
         }
 
-        .test-card.locked {
+        /*
+         * Locked cards: dim only the non-admin content.
+         * The admin-row sits OUTSIDE these selectors so it stays fully opaque.
+         */
+        .test-card.locked > .card-top,
+        .test-card.locked > .test-num,
+        .test-card.locked > .test-meta,
+        .test-card.locked > .locked-footer {
             opacity: 0.48;
             pointer-events: none;
         }
@@ -407,6 +436,21 @@
 
         .test-card.completed .test-meta {
             color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* ── Score badge — visible only on completed cards ── */
+        .test-score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-top: 5px;
+            padding: 2px 7px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.92);
         }
 
         .card-divider {
@@ -499,10 +543,18 @@
             transform: translateX(-50%);
         }
 
+        /* ─── Admin row
+         * Must NEVER be disabled, even on locked cards.
+         * Placed as a direct child of .test-card but NOT targeted
+         * by the .test-card.locked child selectors above.
+         * The !important guards against any accidental cascade.
+         * ──────────────────────────────────────────────────── */
         .admin-row {
             display: flex;
             gap: 6px;
             margin-top: 0.5rem;
+            opacity: 1 !important;
+            pointer-events: all !important;
         }
 
         .admin-btn {
@@ -515,6 +567,8 @@
             color: #6b7280;
             transition: all 0.15s;
             font-family: inherit;
+            pointer-events: all !important;
+            opacity: 1 !important;
         }
 
         .admin-btn.a-view:hover {
@@ -713,16 +767,15 @@
             <div class="ring-wrap">
                 <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
                     <circle class="ring-bg" cx="26" cy="26" r="22" />
-                    <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23" [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
+                    <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                        [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
                 </svg>
                 <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
             </div>
 
             <div class="subject-info">
                 <strong>{{ subject.subjectName }}</strong>
-                <!--<span>{{ subject.totalTopics }} tópicos</span>-->
 
-                <!-- ── Pills: XP e testes completados (NOVO) ── -->
                 <div class="subject-pills">
                     <span class="pill pill-xp">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="#b45309" stroke="none">
@@ -740,7 +793,7 @@
                 </div>
             </div>
 
-            <!-- ── Posição no ranking ── -->
+            <!-- Posição no ranking -->
             <div class="ranking-badge">
                 <div class="ranking-badge-top">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4361ee" stroke-width="2.5"
@@ -755,11 +808,15 @@
         </div>
 
         <!-- Topics -->
-        <div *ngFor="let topic of subject.topicDtoWithTests" class="topic-block">
+        <div *ngFor="let topic of subject.topicDtoWithTests; let topicIndex = index" class="topic-block">
 
             <div class="topic-header">
                 <div class="topic-meta">
-                    <span class="topic-name">{{ topic.topicName }}</span>
+                    <!-- Numbered topic name -->
+                    <div class="topic-name-group">
+                        <span class="topic-index-badge">{{ topicIndex + 1 }}</span>
+                        <span class="topic-name">{{ topic.topicName }}</span>
+                    </div>
                     <span class="topic-pct">{{ topic.progressRate.toFixed(0) }}%</span>
                 </div>
                 <div class="track">
@@ -784,41 +841,58 @@
                     </div>
 
                     <div class="test-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</div>
-                            <div class="test-meta">{{ test.totalQuestions }} questões</div>
+                    <div class="test-meta">{{ test.totalQuestions }} questões</div>
 
-                            <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
-                                <button class="admin-btn a-view"
-                                    (click)="onGetSelectedQuestionsByTopicId(test)">Ver</button>
-                                <button class="admin-btn a-edit" (click)="onGetQuestionsByTopicId(test)">Editar</button>
-                            </div>
+                    <!-- Score badge: only shown when test is completed and score exists && test.score != null-->
+                    <div class="test-score-badge" *ngIf="isCompleted(test)">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" stroke="none">
+                            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+                        </svg>
+                        {{ 10 }}%
+                    </div>
 
-                            <ng-container *ngIf="!isLocked(topic, test, i)">
-                                <div class="card-divider"></div>
-                                <div>
-                                    <button class="start-btn btn-review" *ngIf="isCompleted(test)"
-                                        (click)="reviewTest(test)">
-                                        Revisar
-                                    </button>
-                                    <button class="start-btn btn-start" *ngIf="isActive(topic, test, i)"
-                                        (click)="startTest(test, topic)">
-                                        Iniciar
-                                    </button>
-                                </div>
-                            </ng-container>
+                    <!--
+                        Admin row is a direct child of .test-card but NOT targeted
+                        by the .test-card.locked > child selectors, so it remains
+                        fully visible and interactive regardless of the card state.
+                    -->
+                    <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
+                        <button class="admin-btn a-view"
+                            (click)="$event.stopPropagation(); onGetSelectedQuestionsByTopicId(test)">Ver</button>
+                        <button class="admin-btn a-edit"
+                            (click)="$event.stopPropagation(); onGetQuestionsByTopicId(test)">Editar</button>
+                    </div>
 
-                            <ng-container *ngIf="isLocked(topic, test, i)">
-                                <div class="card-divider"></div>
-                                <div class="lock-row">
-                                    <div class="lock-icon">
-                                        <div class="lock-shackle3"></div>
-                                        <div class="lock-body3">
-                                            <div class="lock-hole"></div>
-                                        </div>
+                    <!-- Active / completed footer -->
+                    <ng-container *ngIf="!isLocked(topic, test, i)">
+                        <div class="card-divider"></div>
+                        <div>
+                            <button class="start-btn btn-review" *ngIf="isCompleted(test)"
+                                (click)="reviewTest(test)">
+                                Revisar
+                            </button>
+                            <button class="start-btn btn-start" *ngIf="isActive(topic, test, i)"
+                                (click)="startTest(test, topic)">
+                                Iniciar
+                            </button>
+                        </div>
+                    </ng-container>
+
+                    <!-- Locked footer — wrapped in .locked-footer so the dim selector targets it -->
+                    <ng-container *ngIf="isLocked(topic, test, i)">
+                        <div class="locked-footer">
+                            <div class="card-divider"></div>
+                            <div class="lock-row">
+                                <div class="lock-icon">
+                                    <div class="lock-shackle3"></div>
+                                    <div class="lock-body3">
+                                        <div class="lock-hole"></div>
                                     </div>
                                 </div>
-                            </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
 
-                    </div>
                 </div>
             </div>
 
@@ -829,7 +903,9 @@
                     progresso.</p>
             </div>
 
-        </div><!-- /page -->
+        </div>
+
+    </div><!-- /page -->
 </body>
 
 </html>
