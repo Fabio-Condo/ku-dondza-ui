@@ -14,15 +14,17 @@ import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { FormsModule } from '@angular/forms';
+import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
 
 
 @NgModule({
   declarations: [
     NavbarComponent,
     FooterComponent,
+    MobileFooterComponent,
     PaginaNaoEncontradaComponent,
     NaoAutorizadoComponent,
-   /* , */
+    /* , */
   ],
   imports: [
     CommonModule,
@@ -34,6 +36,7 @@ import { FormsModule } from '@angular/forms';
   exports: [
     NavbarComponent,
     FooterComponent,
+    MobileFooterComponent,
     ToastModule,
     ConfirmDialogModule
   ],

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer Mobile Fixo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+
+    /* ── BARRA FIXA ── */
+    .mobile-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-top: 0.5px solid rgba(67, 97, 238, 0.12);
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+      z-index: 1000;
+    }
+
+    @media (min-width: 769px) {
+      .mobile-footer {
+        display: none;
+      }
+    }
+
+    /* ── NAV ── */
+    .footer-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      max-width: 480px;
+      margin: 0 auto;
+      gap: 4px;
+    }
+
+    /* ── NAV ITEM ── */
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      text-decoration: none;
+      color: #a0a8b8;
+      padding: 8px 6px 6px;
+      border-radius: 14px;
+      position: relative;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-item:active {
+      transform: scale(0.93);
+    }
+
+    /* ── ICON WRAPPER ── */
+    .icon-wrap {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      transition: all 0.25s ease;
+    }
+
+    /* ── ACTIVE STATE ── */
+    .nav-item.active {
+      color: #4361ee;
+    }
+
+    .nav-item.active .icon-wrap {
+      background: rgba(67, 97, 238, 0.12);
+      transform: translateY(-2px) scale(1.1);
+    }
+
+    /* ── LABEL ── */
+    .nav-text {
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-item.active .nav-text {
+      font-weight: 700;
+    }
+
+    /* ── ACTIVE DOT ── */
+    .active-dot {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #4361ee;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-item.active .active-dot {
+      opacity: 1;
+    }
+
+    /* ── NOTIFICATION DOT ── */
+    .notif {
+      position: absolute;
+      top: 6px;
+      right: 12px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #e24b4a;
+      border: 1.5px solid white;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .nav-item.has-notification .notif {
+      opacity: 1;
+    }
+
+    /* ── CTA CENTRAL BUTTON ── */
+    .nav-cta-wrapper {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      margin-top: -24px;
+      padding: 0 6px 6px;
+    }
+
+    .cta-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1.5px solid rgba(67, 97, 238, 0.18);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+      box-shadow:
+        0 4px 16px rgba(67, 97, 238, 0.14),
+        0 1px 4px rgba(67, 97, 238, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+
+    /* Subtle top shine */
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 2px 3px auto 3px;
+      height: 35%;
+      border-radius: 12px 12px 50% 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+
+    /* Soft pulsing ring */
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 23px;
+      border: 1.5px solid rgba(67, 97, 238, 0.15);
+      animation: ring-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes ring-pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0;
+        transform: scale(1.16);
+      }
+    }
+
+    .cta-btn:active {
+      transform: scale(0.92);
+      box-shadow:
+        0 2px 8px rgba(67, 97, 238, 0.12),
+        0 1px 2px rgba(67, 97, 238, 0.08);
+      background: rgba(67, 97, 238, 0.04);
+    }
+
+    /* Plus icon */
+    .cta-btn .plus-icon {
+      width: 22px;
+      height: 22px;
+      position: relative;
+      z-index: 1;
+      color: #4361ee;
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .cta-btn:active .plus-icon {
+      transform: rotate(90deg) scale(1.15);
+    }
+
+    .cta-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #a0a8b8;
+      letter-spacing: 0.1px;
+      white-space: nowrap;
+    }
+
+    /* ── SMALL SCREENS ── */
+    @media (max-width: 360px) {
+      .nav-text {
+        font-size: 9.5px;
+      }
+
+      .icon-wrap {
+        width: 24px;
+        height: 24px;
+      }
+
+      .nav-item svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .cta-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <footer class="mobile-footer">
+    <nav class="footer-nav">
+
+      <!-- Materiais -->
+      <a [class.active]="isActive('/subjects')" routerLink="/subjects" class="nav-item" data-section="disciplinas">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            <line x1="9" y1="9" x2="15" y2="9" />
+            <line x1="9" y1="13" x2="13" y2="13" />
+          </svg>
+        </div>
+        <span class="nav-text">Estudar</span>
+        <div class="active-dot"></div>
+        <div class="notif"></div>
+      </a>
+
+      <!-- Exames -->
+      <a [class.active]="isActive('/exames')" routerLink="/exames" class="nav-item" data-section="exames">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" />
+            <line x1="9" y1="7" x2="15" y2="7" />
+            <line x1="9" y1="11" x2="15" y2="11" />
+            <polyline points="9 15 11 17 15 13" />
+          </svg>
+        </div>
+        <span class="nav-text">Exames</span>
+        <div class="active-dot"></div>
+        <div class="notif"></div>
+      </a>
+
+      <!-- ★ CTA CENTRAL ★ -->
+      <div class="nav-cta-wrapper">
+        <button class="cta-btn" [routerLink]="['/quizzes', 'new']" aria-label="Iniciar Quiz">
+          <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
+        <span class="cta-label">Praticar</span>
+      </div>
+
+      <!-- Quizzes -->
+      <a [class.active]="isActive('/quizzes')" routerLink="/quizzes" class="nav-item" data-section="quizzes">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M9.5 9.5a3 3 0 0 1 5 2.2c0 1.7-2 2.5-2 4" />
+            <circle cx="12" cy="17.5" r=".5" fill="currentColor" />
+          </svg>
+        </div>
+        <span class="nav-text">Quizzes</span>
+        <div class="active-dot"></div>
+        <div class="notif"></div>
+      </a>
+
+      <!-- Progresso -->
+      <a [class.active]="isActive('/progress')" (click)="onGoToProgress()" class="nav-item" data-section="progresso">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <rect x="4" y="10" width="3" height="10" rx="1.5" />
+            <rect x="10.5" y="6" width="3" height="14" rx="1.5" />
+            <rect x="17" y="13" width="3" height="7" rx="1.5" />
+          </svg>
+        </div>
+        <span class="nav-text">Progresso</span>
+        <div class="active-dot"></div>
+        <div class="notif"></div>
+      </a>
+
+    </nav>
+  </footer>
+</body>
+
+</html>
+
+<!-- ══════════════════════════════════════
+     Modal: Login
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalLogin">
+    <div class="modal">
+        <!-- Barra de progresso no topo do modal -->
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+
+            <div class="login-side" *ngIf="activeTab === 1">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Entrar na conta' }}</h2>
+                        <span class="modal-subtitle">{{ step === 'otp' ? 'Insira o código enviado por e-mail' :
+                            'Bem-vindo de volta' }}</span>
+                    </div>
+                    <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
+                </div>
+
+                <div class="auth-tabs">
+                    <div class="auth-tab active">Entrar</div>
+                    <div class="auth-tab" (click)="setActiveTab(2)">Cadastrar</div>
+                </div>
+
+                <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
+                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou continue com e-mail</span>
+                </div>
+
+                <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+                    <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
+                        [disabled]="showLoading">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        Voltar
+                    </button>
+                    <div class="otp-box" *ngIf="step === 'otp'">
+                        Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
+                        entrada ou spam.
+                    </div>
+                    <!-- Feedback de envio de OTP -->
+                    <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
+                        <span class="spinner-sm"></span>
+                        A enviar código para {{ user.email }}...
+                    </div>
+                    <div class="input-group" *ngIf="step === 'email'">
+                        <label>E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required email
+                            [(ngModel)]="user.email" [disabled]="showLoading">
+                    </div>
+                    <div class="input-group" *ngIf="step === 'otp'">
+                        <label>Código OTP</label>
+                        <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp"
+                            [disabled]="showLoading"
+                            style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
+                    </div>
+                    <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
+                        <!-- Spinner inline durante loading -->
+                        <span class="btn-spinner" *ngIf="showLoading"></span>
+                        <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                        <span *ngIf="!showLoading">{{ step === 'email' ? 'Continuar' : 'Verificar e entrar' }}</span>
+                        <span *ngIf="showLoading && step === 'email'">A enviar código...</span>
+                        <span *ngIf="showLoading && step === 'otp'">A verificar...</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="login-side" *ngIf="activeTab === 2">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Criar conta' }}</h2>
+                        <span class="modal-subtitle">{{ step === 'otp' ? 'Confirme o seu e-mail' : 'É rápido e gratuito'
+                            }}</span>
+                    </div>
+                    <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
+                </div>
+
+                <div class="auth-tabs">
+                    <div class="auth-tab" (click)="setActiveTab(1)">Entrar</div>
+                    <div class="auth-tab active">Cadastrar</div>
+                </div>
+
+                <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
+                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou registe-se com e-mail</span>
+                </div>
+
+                <form autocomplete="off" #registerForm="ngForm"
+                    (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+                    <div *ngIf="step === 'email'">
+                        <div class="input-group">
+                            <label>Nome completo</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="O seu nome completo"
+                                [(ngModel)]="user.fullName" [disabled]="showLoading">
+                        </div>
+                        <div class="input-group">
+                            <label>E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required
+                                email [(ngModel)]="user.email" [disabled]="showLoading">
+                        </div>
+                    </div>
+                    <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
+                        [disabled]="showLoading">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        Voltar
+                    </button>
+                    <div class="otp-box" *ngIf="step === 'otp'">
+                        Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
+                        entrada ou spam.
+                    </div>
+                    <!-- Feedback de envio de OTP no registo -->
+                    <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
+                        <span class="spinner-sm"></span>
+                        A criar conta e enviar código...
+                    </div>
+                    <div class="input-group" *ngIf="step === 'otp'">
+                        <label>Código OTP</label>
+                        <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp"
+                            [disabled]="showLoading"
+                            style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
+                    </div>
+                    <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
+                        <!-- Spinner inline durante loading -->
+                        <span class="btn-spinner" *ngIf="showLoading"></span>
+                        <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                        <span *ngIf="!showLoading">{{ step === 'email' ? 'Criar conta' : 'Confirmar e entrar' }}</span>
+                        <span *ngIf="showLoading && step === 'email'">A criar conta...</span>
+                        <span *ngIf="showLoading && step === 'otp'">A verificar código...</span>
+                    </button>
+                    <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não
+                        recebeu?
+                        Reenviar código</a>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
