@@ -1167,7 +1167,7 @@
                     </select>
                 </div>
                 -->
-                <div class="form-group">
+                <div class="form-group" *ngIf="isUserLoggedIn && isSuperAdmin">
                     <label for="filterCategory">Categoria</label>
                     <select id="filterCategory" name="filterCategory" [(ngModel)]="filtro.enabled"
                         (ngModelChange)="findAll()">
