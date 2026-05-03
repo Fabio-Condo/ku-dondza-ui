@@ -938,19 +938,16 @@
                     <!-- Estatísticas: aulas, duração, alunos -->
                     <div class="stats-row">
                         <div class="stat-item">
-                            <!--<div class="stat-value">{{ subject.totalLessons || '—' }}</div>-->
-                            <div class="stat-value">{{ 5 }}</div>
+                            <div class="stat-value">{{ subject.totalLessons || 0 }}</div>
                             <div class="stat-label">Aulas</div>
                         </div>
                         <div class="stat-item">
-                            <!--<div class="stat-value">{{ subject.durationHours ? subject.durationHours + 'h' : '—' }}</div>-->
-                            <div class="stat-value">{{ 2 }}</div>
-                            <div class="stat-label">Duração</div>
+                            <div class="stat-value">{{ subject.totalFiles ? (subject.totalFiles | number) : 0 }}</div>
+                            <div class="stat-label">Ficheiros</div>
                         </div>
                         <div class="stat-item">
-                            <!--<div class="stat-value">{{ subject.totalStudents ? (subject.totalStudents | number) : '—' }}</div>-->
-                            <div class="stat-value">{{ 10 }}</div>
-                            <div class="stat-label">Alunos</div>
+                            <div class="stat-value">{{ subject.totalTopics ? subject.totalTopics: 0 }}</div>
+                            <div class="stat-label">Tópicos</div>
                         </div>
                     </div>
 

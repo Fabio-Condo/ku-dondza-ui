@@ -17,6 +17,11 @@ export class Subject {
     topics: Topic[] = [];
 
     totalTopics!: number;
+    durationHours!: number;
+    totalLessons!: number;
+    totalFiles!: number;
+    totalStudents!: number;
+
     currentUserMarkedContentRate!: number;
     currentUserProgressRate!: number;
 
