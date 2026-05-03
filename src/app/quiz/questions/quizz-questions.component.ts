@@ -708,6 +708,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.blockedTip = false; // Desbloqueia dicas ao submeter o quiz
 
     this.stopTimer();
+    this.quiz.submittedAt = new Date();
     this.quiz.isSubmitted = true;
     this.quiz.id = 0; // Força a criação de um novo quiz
     this.quiz.answers = this.submittedAnswers;
