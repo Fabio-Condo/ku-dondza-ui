@@ -815,8 +815,7 @@
 
                 <!-- Thumbnail com badge de categoria e avaliação -->
                 <div class="card-thumb">
-                    <img [src]="subject.urlFile" alt="{{ subject.name }}"
-                        [alt]="subject.name" loading="lazy">
+                    <img [src]="subject.urlFile" alt="{{ subject.name }}" [alt]="subject.name" loading="lazy">
                     <div class="card-thumb-overlay"></div>
                     <span class="category-badge">{{ getCategoryValue(subject.category) }}</span>
                     <div class="rating-chip">
@@ -1168,6 +1167,16 @@
                     </select>
                 </div>
                 -->
+                <div class="form-group">
+                    <label for="filterCategory">Categoria</label>
+                    <select id="filterCategory" name="filterCategory" [(ngModel)]="filtro.enabled"
+                        (ngModelChange)="findAll()">
+                            <option value="">Todas as opções</option>
+                        <option *ngFor="let option of enabledOptions" [value]="option.value">
+                            {{ option.label }}
+                        </option>
+                    </select>
+                </div>
                 <button type="button" class="btn-modal-secondary" (click)="limparCampos()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">

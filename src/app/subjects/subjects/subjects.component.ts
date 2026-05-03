@@ -45,12 +45,18 @@ export class SubjectsComponent implements OnInit {
     { label: 'Línguas', value: 'LANGUAGES' },
   ];
 
+  enabledOptions = [
+    { label: 'Habilitados', value: 'true' },
+    { label: 'Inabilitados', value: 'false' },
+  ];
+
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   filtro: SubjectFilter = {
     pagina: 0,
     itensPorPagina: 6,
+    enabled: true,
     ordenamento: 'id,asc'
   };
 
@@ -167,12 +173,7 @@ export class SubjectsComponent implements OnInit {
       )
     ).subscribe(
       (dados: IApiResponse<Subject>) => {
-        if (this.isUserLoggedIn && this.isSuperAdmin) {
-          this.subjects = dados.content;
-        } else {
-          this.subjects = dados.content.filter(subject => subject.courseEnabled);
-        }
-
+        this.subjects = dados.content;
         this.totalRecords = dados.totalElements;
         if (this.totalSubjects == 0) {
           this.totalSubjects = dados.totalElements;

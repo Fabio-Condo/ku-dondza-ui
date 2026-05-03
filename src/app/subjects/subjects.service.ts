@@ -118,6 +118,10 @@ export class SubjectsService {
       .set('sort', filtro.ordenamento)
       .set('size', filtro.itensPorPagina);
 
+    if (filtro.enabled !== undefined && filtro.enabled !== null) {
+      params = params.set('enabled', filtro.enabled.toString());
+    }
+
     if (filtro.name) {
       params = params.set('name', filtro.name);
     }
