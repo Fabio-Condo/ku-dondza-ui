@@ -550,7 +550,7 @@
       margin-top: 16px;
     }
 
-    /* ── Quiz identity bar (NEW) ── */
+    /* ── Quiz identity bar ── */
     .quiz-identity-bar {
       display: flex;
       align-items: center;
@@ -644,7 +644,7 @@
       flex-shrink: 0;
     }
 
-    /* Type badge: TREINO / TESTE */
+    /* Type badge */
     .quiz-type-pill {
       display: inline-flex;
       align-items: center;
@@ -715,8 +715,6 @@
       stroke-linejoin: round;
       flex-shrink: 0;
     }
-
-    /* ── End Quiz identity bar ── */
 
     .progress-area {
       display: flex;
@@ -1046,78 +1044,212 @@
       transform: none;
     }
 
-    /* --------------------------------------------
-       FLOATING ACTION BUTTONS (FAB)
-    -------------------------------------------- */
-    .fab {
+    /* ============================================
+       FAB — REDESENHADO COM LABEL
+       Cada botão FAB agora é um wrapper vertical:
+       ícone circular em cima + label de texto abaixo
+    ============================================ */
+
+    /* Wrapper externo: posicionamento fixo + layout coluna */
+    .fab-wrapper {
       position: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      z-index: 1000;
+      /* Cursor herdado pelo botão interno */
+    }
+
+    /* Label do FAB */
+    .fab-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      line-height: 1;
+      white-space: nowrap;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    /* Botão circular */
+    .fab {
       border: none;
       border-radius: 50%;
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 1000;
-      font-size: 18px;
-      transition: transform 0.2s, opacity 0.2s;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+      font-size: 17px;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
       font-family: inherit;
+      outline: none;
     }
 
-    .fab:hover:not(:disabled) {
-      transform: scale(1.08);
+    /* Hover no wrapper levanta tudo junto */
+    .fab-wrapper:not(.fab-wrapper--disabled):hover .fab {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16), 0 4px 8px rgba(0, 0, 0, 0.10);
     }
 
-    .fab:disabled {
-      opacity: 0.4;
+    .fab-wrapper:not(.fab-wrapper--disabled):hover .fab-label {
+      transform: translateY(-1px);
+    }
+
+    /* Estado desabilitado */
+    .fab-wrapper--disabled {
+      pointer-events: none;
+    }
+
+    .fab-wrapper--disabled .fab {
+      opacity: 0.38;
       cursor: not-allowed;
+      box-shadow: none;
     }
 
+    .fab-wrapper--disabled .fab-label {
+      opacity: 0.38;
+    }
+
+    /* Active press */
+    .fab-wrapper:not(.fab-wrapper--disabled):active .fab {
+      transform: scale(0.93);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ── Variantes de cor ── */
+
+    /* Azul primário */
     .fab--primary {
       background: #4361ee;
-      color: white;
-      bottom: 16px;
-      right: 16px;
+      color: #ffffff;
     }
 
-    .fab--save-favorite {
-      bottom: 148px;
-      right: 16px;
-      background: #ffffff;
-      border: 1.5px solid #e2e8f0;
+    .fab-wrapper.fab-wrapper--primary .fab-label {
       color: #4361ee;
     }
 
-    .fab--comments {
-      bottom: 80px;
-      right: 16px;
-      background: #ffffff;
-      border: 1.5px solid #e2e8f0;
-      color: #4361ee;
-      font-size: 14px;
-    }
-
+    /* Verde (salvar quiz) */
     .fab--save-quiz {
-      bottom: 80px;
-      right: 16px;
       background: #10b981;
-      color: white;
+      color: #ffffff;
     }
 
-    .fab--submit {
+    .fab-wrapper.fab-wrapper--save-quiz .fab-label {
+      color: #10b981;
+    }
+
+    /* Branco com borda (favorito + comentários) */
+    .fab--outline {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      color: #4361ee;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .fab-wrapper.fab-wrapper--outline .fab-label {
+      color: #475569;
+    }
+
+    /* ── Posicionamento dos grupos de FABs ── */
+
+    /* Coluna direita — pilha vertical da base para cima */
+    /* Cada wrapper ocupa ~68px (48 botão + 5 gap + 15 label) */
+
+    .fab-wrapper--pos-bottom-right-1 {
       bottom: 16px;
       right: 16px;
-      background: #4361ee;
-      color: white;
     }
 
-    .fab--lock {
-      bottom: 80px;
+    .fab-wrapper--pos-bottom-right-2 {
+      bottom: 100px;
       right: 16px;
-      background: #4361ee;
-      color: white;
+    }
+
+    .fab-wrapper--pos-bottom-right-3 {
+      bottom: 184px;
+      right: 16px;
+    }
+
+    /* ── Animação de entrada ── */
+    .fab-wrapper {
+      animation: fabSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .fab-wrapper--pos-bottom-right-2 {
+      animation-delay: 0.05s;
+    }
+
+    .fab-wrapper--pos-bottom-right-3 {
+      animation-delay: 0.10s;
+    }
+
+    @keyframes fabSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.88);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ── Badge de contagem nos FABs (ex: nº comentários) ── */
+    .fab-count-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      min-width: 17px;
+      height: 17px;
+      background: #f43f5e;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #fff;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .fab {
+      position: relative; /* para o badge ficar relativo ao botão */
+    }
+
+    /* ── Responsivo mobile ── */
+    @media (max-width: 480px) {
+      .fab {
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+      }
+
+      .fab-label {
+        font-size: 9px;
+      }
+
+      .fab-wrapper--pos-bottom-right-1 {
+        bottom: 14px;
+        right: 14px;
+      }
+
+      .fab-wrapper--pos-bottom-right-2 {
+        bottom: 92px;
+        right: 14px;
+      }
+
+      .fab-wrapper--pos-bottom-right-3 {
+        bottom: 170px;
+        right: 14px;
+      }
     }
 
     /* --------------------------------------------
@@ -1127,10 +1259,6 @@
       animation: fadeInUp 0.35s ease;
     }
 
-    /* ══════════════════════════════════════════════
-   RESULTS IDENTITY STRIP — REDESENHADO
-   Layout: avatar | nome+meta | [tipo + disciplina]
-══════════════════════════════════════════════ */
     .results-identity-strip {
       display: flex;
       align-items: center;
@@ -1163,7 +1291,6 @@
       color: #94a3b8;
     }
 
-    /* Bloco central: nome + data/hora */
     .results-strip-body {
       display: flex;
       flex-direction: column;
@@ -1183,7 +1310,6 @@
       line-height: 1.3;
     }
 
-    /* Linha de meta: data · hora */
     .results-strip-meta {
       display: flex;
       align-items: center;
@@ -1191,7 +1317,6 @@
       flex-wrap: wrap;
     }
 
-    /* Lado direito: tipo + disciplina em coluna */
     .results-strip-right {
       display: flex;
       flex-direction: column;
@@ -1200,7 +1325,6 @@
       flex-shrink: 0;
     }
 
-    /* Responsivo — mobile */
     @media (max-width: 480px) {
       .results-identity-strip {
         padding: 12px 14px;
@@ -1218,8 +1342,6 @@
         font-size: 13px;
       }
     }
-
-    /* ── End Results identity strip ── */
 
     .results-hero {
       display: grid;
@@ -1351,7 +1473,6 @@
       margin-top: 2px;
     }
 
-    /* Section Label */
     .section-label {
       font-size: 10px;
       font-weight: 700;
@@ -1361,7 +1482,6 @@
       margin: 28px 0 12px;
     }
 
-    /* Topics Grid */
     .topics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -1499,7 +1619,6 @@
       font-weight: 600;
     }
 
-    /* Table */
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -2422,7 +2541,7 @@
 
         <!-- Corpo central: nome + data/hora -->
         <div class="results-strip-body">
-          <span class="quiz-identity-name">
+          <span class="results-strip-name">
             {{ quiz.anonymous ? 'Anónimo' : (quiz.user.fullName || 'Nome não disponível') }}
             <span class="badge-you" *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id">
               você
@@ -2449,7 +2568,7 @@
           </div>
         </div>
 
-        <!-- Lado direito: tipo + disciplina --> 
+        <!-- Lado direito: tipo + disciplina -->
         <div class="results-strip-right">
           <span class="quiz-subject-pill">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -2590,18 +2709,9 @@
       <div *ngIf="currentQuestionIndex < quiz.questions.length">
         <div class="question-panel">
 
-          <!--
-            ══════════════════════════════════════════════════
-            IDENTITY BAR — nome, disciplina, tipo, data/hora
-            Substitui o antigo .quiz-user-info
-            ══════════════════════════════════════════════════
-          -->
           <div class="quiz-identity-bar">
 
-            <!-- Lado esquerdo: avatar + nome + meta -->
             <div class="quiz-identity-left">
-
-              <!-- Avatar -->
               <div class="quiz-identity-avatar" [class.is-anon]="quiz.anonymous">
                 <ng-container *ngIf="!quiz.anonymous">
                   {{ quiz.user.fullName ? quiz.user.fullName.charAt(0) : '?' }}
@@ -2616,27 +2726,19 @@
               </div>
 
               <div class="quiz-identity-info">
-
-                <!-- Nome do aluno -->
                 <span class="quiz-identity-name">
                   {{ quiz.anonymous ? 'Anónimo' : (quiz.user.fullName || 'Nome não disponível') }}
                   <span class="badge-you" *ngIf="(isUserLoggedIn && quiz.user.id === loggedUser.id) || !quiz.id">
                     você
                   </span>
                 </span>
-
-                <!-- Disciplina + separador + data/hora (quando vem do histórico) -->
                 <div class="quiz-identity-sub">
                   <span>{{ quiz.subject.name }}</span>
                 </div>
-
               </div>
             </div>
 
-            <!-- Lado direito: tipo (treino/teste) + botão fechar -->
             <div class="quiz-identity-right">
-
-              <!-- Badge: tipo do quiz -->
               <span class="quiz-type-pill training" *ngIf="quiz.type === 'TRAINING'">
                 <svg viewBox="0 0 24 24">
                   <path d="M12 2L2 7l10 5 10-5-10-5z" />
@@ -2653,7 +2755,6 @@
                 Teste
               </span>
 
-              <!-- Fechar -->
               <button class="btn-close-quiz" (click)="onStopCurrentRunningQuiz()" aria-label="Fechar quiz">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                   stroke-linecap="round">
@@ -2663,7 +2764,6 @@
             </div>
 
           </div>
-          <!-- ── End identity bar ── -->
 
           <!-- Progress + timer -->
           <div class="progress-area">
@@ -2810,59 +2910,108 @@
         </div>
       </div>
 
-      <!-- FABs (quiz activo) -->
-      <button class="fab fab--save-favorite" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
-        *ngIf="quiz.id && showCorrection && showOptions && isUserLoggedIn">
-        <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
-          [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
-        <i *ngIf="quiz.questions[currentQuestionIndex].showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
-      </button>
+      <!-- ════════════════════════════════════════
+           FABs — quiz activo (com labels)
+      ════════════════════════════════════════ -->
 
-      <button class="fab fab--comments" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
+      <!-- FAB: Guardar nos favoritos (posição 3 — mais acima) -->
+      <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-bottom-right-3"
+        *ngIf="quiz.id && showCorrection && showOptions && isUserLoggedIn"
+        [class.fab-wrapper--disabled]="quiz.questions[currentQuestionIndex].showLoadingSave">
+        <button class="fab fab--outline" (click)="onSaveQuestion(quiz.questions[currentQuestionIndex])"
+          aria-label="Guardar questão nos favoritos">
+          <i class="pi" *ngIf="!quiz.questions[currentQuestionIndex].showLoadingSave"
+            [ngClass]="quiz.questions[currentQuestionIndex].savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+          <i *ngIf="quiz.questions[currentQuestionIndex].showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
+        </button>
+        <span class="fab-label">
+          {{ quiz.questions[currentQuestionIndex].savedByUser ? 'Guardado' : 'Favoritar' }}
+        </span>
+      </div>
+
+      <!-- FAB: Comentários (posição 2) -->
+      <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-bottom-right-2"
         *ngIf="quiz.id && showCorrection && showOptions">
-        <i class="pi pi-comments"></i>
-        <span style="font-size: 11px; font-weight: 700;">{{ quiz.questions[currentQuestionIndex].numberOfComments
-          }}</span>
-      </button>
+        <button class="fab fab--outline" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
+          aria-label="Ver comentários da questão">
+          <i class="pi pi-comments"></i>
+          <span class="fab-count-badge"
+            *ngIf="quiz.questions[currentQuestionIndex].numberOfComments > 0">
+            {{ quiz.questions[currentQuestionIndex].numberOfComments }}
+          </span>
+        </button>
+        <span class="fab-label">Comentários</span>
+      </div>
 
-      <button class="fab fab--primary" (click)="toggleShowOptions()" *ngIf="quiz.id && showCorrection">
-        <i class="pi pi-ellipsis-h"></i>
-      </button>
+      <!-- FAB: Mais opções / recolher (posição 1 — base) -->
+      <div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1"
+        *ngIf="quiz.id && showCorrection">
+        <button class="fab fab--primary" (click)="toggleShowOptions()"
+          aria-label="Mostrar ou ocultar opções">
+          <i class="pi pi-ellipsis-h"></i>
+        </button>
+        <span class="fab-label">Opções</span>
+      </div>
 
     </div>
 
   </div>
 </body>
 
-<!-- FABs (globais) -->
-<button class="fab fab--submit" (click)="onSubmitAnswers()" [disabled]="quiz.isSubmitted || !allQuestionsAnswered()"
-  *ngIf="(!showInitQuizScreen && !quiz.id)">
-  <i class="pi pi-upload"></i>
-</button>
+<!-- ════════════════════════════════════════
+     FABs — globais (com labels)
+════════════════════════════════════════ -->
 
-<button class="fab fab--save-quiz" (click)="onSaveQuiz()"
-  [ngStyle]="{ bottom: quiz.isSubmitted && showStartScreen ? '84px' : '84px' }"
+<!-- FAB: Submeter respostas -->
+<div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1"
+  *ngIf="(!showInitQuizScreen && !quiz.id)"
+  [class.fab-wrapper--disabled]="quiz.isSubmitted || !allQuestionsAnswered()">
+  <button class="fab fab--primary" (click)="onSubmitAnswers()"
+    [disabled]="quiz.isSubmitted || !allQuestionsAnswered()"
+    aria-label="Submeter respostas">
+    <i class="pi pi-upload"></i>
+  </button>
+  <span class="fab-label">Submeter</span>
+</div>
+
+<!-- FAB: Guardar quiz (posição 2, acima de "Ver questões") -->
+<div class="fab-wrapper fab-wrapper--save-quiz fab-wrapper--pos-bottom-right-2"
   *ngIf="quiz.isSubmitted && (!quiz.id || quiz.id === 0)">
-  <i class="pi pi-save"></i>
-</button>
+  <button class="fab fab--save-quiz" (click)="onSaveQuiz()"
+    aria-label="Guardar quiz">
+    <i class="pi pi-save"></i>
+  </button>
+  <span class="fab-label">Guardar</span>
+</div>
 
-<button class="fab fab--lock" (click)="toggleDisableEditing()"
+<!-- FAB: Bloquear / desbloquear edição -->
+<div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-2"
   *ngIf="!quiz.id && !showInitQuizScreen && quiz.type == 'TEST' && !quiz.isSubmitted">
-  <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
-  <i *ngIf="!disableEditing" class="pi pi-lock"></i>
-</button>
+  <button class="fab fab--primary" (click)="toggleDisableEditing()"
+    aria-label="Bloquear ou desbloquear edição de respostas">
+    <i *ngIf="disableEditing" class="pi pi-lock-open"></i>
+    <i *ngIf="!disableEditing" class="pi pi-lock"></i>
+  </button>
+  <span class="fab-label">{{ disableEditing ? 'Desbloquear' : 'Bloquear' }}</span>
+</div>
 
-<button class="fab fab--primary" (click)="startCorretion()" *ngIf="showStartScreen">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <line x1="8" y1="6" x2="21" y2="6"></line>
-    <line x1="8" y1="12" x2="21" y2="12"></line>
-    <line x1="8" y1="18" x2="21" y2="18"></line>
-    <circle cx="3" cy="6" r="1"></circle>
-    <circle cx="3" cy="12" r="1"></circle>
-    <circle cx="3" cy="18" r="1"></circle>
-  </svg>
-</button>
+<!-- FAB: Ver questões (resultados) -->
+<div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1"
+  *ngIf="showStartScreen">
+  <button class="fab fab--primary" (click)="startCorretion()"
+    aria-label="Ver lista de questões">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <circle cx="3" cy="6" r="1"></circle>
+      <circle cx="3" cy="12" r="1"></circle>
+      <circle cx="3" cy="18" r="1"></circle>
+    </svg>
+  </button>
+  <span class="fab-label">Ver questões</span>
+</div>
 
 
 <!-- ── Comments ── -->
