@@ -278,6 +278,47 @@
     }
 }
 
+/* ── Faixa de progresso no topo do modal ── */
+.modal-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #e0e7ff;
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
+    display: none;
+}
+
+.modal-progress-bar.visible {
+    display: block;
+}
+
+.modal-progress-bar::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 40%;
+    background: #4361ee;
+    border-radius: 3px;
+    animation: progress-slide 1.2s ease-in-out infinite;
+}
+
+@keyframes progress-slide {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(350%);
+    }
+}
+
+/* Wrapper relativo para o modal ter a barra posicionada */
+.modal {
+    position: relative;
+}
 
 .divider {
     display: flex;
