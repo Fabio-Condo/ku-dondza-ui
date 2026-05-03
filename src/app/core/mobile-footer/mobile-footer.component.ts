@@ -52,6 +52,7 @@ export class MobileFooterComponent implements OnInit {
     }
 
     this.displayModalLogin = true;
+    document.body.classList.add('no-scroll');    
     setTimeout(() => {
       this.displayModalLogin = true;
       this.initializeGoogleAuth();

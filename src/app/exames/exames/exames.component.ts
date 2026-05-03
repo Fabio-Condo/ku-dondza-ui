@@ -333,6 +333,12 @@ export class ExamesComponent implements OnInit {
 
   onFilter(): void {
     this.displayModalFilter = true;
+    document.body.classList.add('no-scroll');    
+  }
+
+  onCloseFilter(): void {
+    this.displayModalFilter = false;
+    document.body.classList.remove('no-scroll');
   }
 
   get isLoadMoreDisabled(): boolean {
