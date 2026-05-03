@@ -45,16 +45,7 @@ export class MobileFooterComponent implements OnInit {
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
   }
 
-  onGoToProgress1(): void {
-    if (!this.isUserLoggedIn) {
-      this.displayModalLogin = true;
-      return;
-    }
-
-    this.router.navigateByUrl('/progress');
-  }
-
-  onGoToProgress(): void {
+  onGoToProgressPanel(): void {
     if (this.isUserLoggedIn) {
       this.router.navigateByUrl('/progress');
       return;
@@ -77,6 +68,10 @@ export class MobileFooterComponent implements OnInit {
 
   public get isSuperAdmin(): boolean {
     return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   sendOtp() {
@@ -224,11 +219,6 @@ export class MobileFooterComponent implements OnInit {
     this.displayModalLogin = false;
     document.body.classList.remove('no-scroll');
   }
-
-  private getUserRole(): string {
-    return this.authenticationService.getUserFromLocalCache().role;
-  }
-
 
   private sendErrorNotification(message: string): void {
     if (message) {
