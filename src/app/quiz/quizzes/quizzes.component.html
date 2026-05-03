@@ -1102,8 +1102,9 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalFilter">
     <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
         <div class="modal-handle"><span></span></div>
-        <div class="modal-inner">
+        <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
                 <div class="modal-title-group">
                     <h2 class="modal-title">Filtrar quizzes</h2>
