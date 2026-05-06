@@ -40,7 +40,8 @@ export class FaqComponent implements OnInit {
           open: false
         }
       ]
-    },    
+    },
+
     {
       title: 'Simulados e Quizzes Estratégicos',
       items: [
@@ -51,16 +52,17 @@ export class FaqComponent implements OnInit {
         },
         {
           question: 'A prática conta para o ranking?',
-          answer: 'Não. Apenas testes finais aprovados (com pelo menos 85% de acertos) geram pontos no ranking. A prática é apenas para estudo e preparação.',
+          answer: 'Não. Apenas testes finais aprovados (com pelo menos 80% de acertos) geram pontos no ranking. A prática é apenas para estudo e preparação.',
           open: false
         },
         {
           question: 'Como são atribuídos os pontos nos testes?',
-          answer: 'Os pontos são atribuídos apenas em testes finais aprovados. 100% = 40 pontos, 90–99% = 30 pontos, 85–89% = 20 pontos. Abaixo de 85% não há aprovação nem pontos.',
+          answer: 'Os pontos são atribuídos apenas em testes finais aprovados. Para ser aprovado é necessário atingir pelo menos 80% de acertos e cada resposta correta vale 10 pontos.',
           open: false
         }
-      ],
+      ]
     },
+
     {
       title: 'Exercícios Resolvidos',
       items: [
@@ -76,26 +78,33 @@ export class FaqComponent implements OnInit {
         }
       ]
     },
+
     {
       title: 'Ranking e Pontuação',
       items: [
         {
           question: 'Como são atribuídos os pontos no ranking?',
-          answer: 'Os pontos são atribuídos apenas quando o estudante realiza um teste e obtém aprovação. Para passar no teste é necessário alcançar pelo menos 85% de acertos. A pontuação depende da percentagem final obtida.',
+          answer: 'Os pontos são atribuídos apenas quando o estudante realiza um teste e obtém aprovação. Para passar no teste é necessário alcançar pelo menos 80% de acertos.',
           open: false
         },
         {
-          question: 'Como funciona a pontuação por percentagem?',
-          answer: 'A pontuação é calculada com base no desempenho no teste: 100% de acertos = 40 pontos, entre 90% e 99% = 30 pontos, entre 85% e 89% = 20 pontos.',
+          question: 'Como funciona a pontuação?',
+          answer: 'Após atingir os 80% mínimos para aprovação, cada resposta correta vale 10 pontos. Quanto mais questões acertar, maior será a sua pontuação no ranking.',
           open: false
         },
         {
-          question: 'O que acontece se eu tiver menos de 85%?',
-          answer: 'Resultados abaixo de 85% não são considerados aprovados e não geram pontos no ranking.',
+          question: 'Exemplo de pontuação',
+          answer: 'Se você acertar 8 questões recebe 80 pontos, 9 questões recebe 90 pontos e 10 questões recebe 100 pontos, desde que atinja o mínimo de 80% para aprovação.',
+          open: false
+        },
+        {
+          question: 'O que acontece se eu tiver menos de 80%?',
+          answer: 'Resultados abaixo de 80% não são considerados aprovados e não geram pontos no ranking.',
           open: false
         }
       ]
     },
+
     {
       title: 'Cursos',
       items: [
@@ -112,7 +121,7 @@ export class FaqComponent implements OnInit {
       ]
     }
   ];
-
+  
   toggleItem2(categoryIndex: number, itemIndex: number) {
     const item = this.categories[categoryIndex].items[itemIndex];
     item.open = !item.open;

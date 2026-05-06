@@ -6,6 +6,7 @@ export class Test {
   difficultyLevel!: string; // BEGINNER, INTERMEDIATE, ADVANCED
   orderIndex!: number;
   accuracyRate!: number;
+  earnedPoints!: number;
   totalQuestions!: number;
   topic = new Topic(); // id, name, position
   submittedQuizzes: Quiz[] = [];
