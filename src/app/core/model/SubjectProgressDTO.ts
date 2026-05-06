@@ -15,6 +15,7 @@ export class SubjectProgressDTO {
     currentUserRank: number = 0;
 
     totalTopics!: number;
+    totalTests!: number;
 
     progressEnabled: boolean = false;
 }    

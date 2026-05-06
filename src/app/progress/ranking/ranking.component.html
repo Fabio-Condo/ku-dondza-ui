@@ -833,8 +833,8 @@
                     <div class="stat-label">XP médio</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value">{{ summary.totalTopics }}</div>
-                    <div class="stat-label">Tópicos</div>
+                    <div class="stat-value">{{ summary.totalTests }}</div>
+                    <div class="stat-label">Testes</div>
                 </div>
             </div>
         </div>
@@ -999,7 +999,7 @@
 
                     <!-- Progress bar -->
                     <div class="row-progress">
-                        <div class="row-progress-fill" [style.width.%]="item.testsCompleted / summary.totalTopics * 100">
+                        <div class="row-progress-fill" [style.width.%]="item.testsCompleted / summary.totalTests * 100">
                         </div>
                     </div>
 
@@ -1012,7 +1012,7 @@
                     <div class="row-xp-label">XP</div>
 
                     <!-- Trend opcional (placeholder) -->
-                    <span class="progress-fill total-topics">{{ item.testsCompleted }}/{{ summary.totalTopics }}</span>
+                    <span class="progress-fill total-topics">{{ item.testsCompleted }}/{{ summary.totalTests }}</span>
 
                 </div>
 

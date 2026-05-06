@@ -11,4 +11,5 @@ export class UserSubjectRankingSummaryDTO {
     accuracyRate!: number;
     averageScore!: number;
     totalTopics!: number;
+    totalTests!: number;
 }

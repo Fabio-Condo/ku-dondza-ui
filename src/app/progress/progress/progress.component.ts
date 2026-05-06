@@ -763,6 +763,13 @@ export class ProgressComponent implements OnInit {
     }, 0);
   }
 
+  getTotalTests(subject: any): number {
+    return subject.topicDtoWithTests.reduce(
+      (total: number, topic: any) => total + (topic.tests?.length || 0),
+      0
+    ) || 0;
+  }
+
   private sendErrorNotification(message: string): void {
     this.messageService.add({
       severity: 'error',
