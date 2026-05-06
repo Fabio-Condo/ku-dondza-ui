@@ -2585,7 +2585,7 @@
         <div class="score-ring">
           <svg class="progress-svg" viewBox="0 0 120 120">
             <circle class="track" cx="60" cy="60" r="52" />
-            <circle class="fill" cx="60" cy="60" r="52" [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.85 ? '#16a34a' :
+            <circle class="fill" cx="60" cy="60" r="52" [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.80 ? '#16a34a' :
               (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'"
               [style.stroke-dashoffset]="326.73 - (result.correctAnswers / quiz.questions.length) * 326.73" />
           </svg>
@@ -2629,7 +2629,7 @@
               'badge--ok':    getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'ok',
               'badge--weak':  getPerformanceClass(quiz.resultsByTopic[topic.name].percentage || 0) === 'weak'
             }">
-              {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 85 ? 'Ótimo' :
+              {{ (quiz.resultsByTopic[topic.name].percentage || 0) >= 80 ? 'Ótimo' :
               (quiz.resultsByTopic[topic.name].percentage || 0) >= 50 ? 'Bom' : 'Fraco' }}
             </div>
           </div>
