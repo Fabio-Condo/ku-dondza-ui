@@ -44,6 +44,8 @@ import { ProgressModule } from './progress/progress.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PaymentsRoutingModule } from './payments/payments-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ChallengesModule } from './challenges/challenges.module';
+import { ChallengesRoutingModule } from './challenges/challenges-routing.module';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AboutUsRoutingModule,
     ProgressRoutingModule,
     PaymentsRoutingModule,
+    ChallengesRoutingModule,
 
     SubjectsModule,
     TopicsModule,
@@ -83,6 +86,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AboutUsModule,
     ProgressModule,
     PaymentsModule,
+    ChallengesModule,
 
     CoreRoutingModule,
     AppRoutingModule,

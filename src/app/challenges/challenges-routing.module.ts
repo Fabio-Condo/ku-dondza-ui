@@ -1,28 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { QuizzesComponent } from './quizzes/quizzes.component';
-import { QuizzQuestionsComponent } from './questions/quizz-questions.component';
 import { AuthenticationGuard } from '../security/Guard/authentication.guard';
+import { ChallengesComponent } from './challenges/challenges.component';
 
 const routes: Routes = [
   { 
-    path: 'quizzes', 
-    component: QuizzesComponent,
+    path: 'challenges', 
+    component: ChallengesComponent,
     //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
     //} 
   },
-  { 
-    path: 'quizzes/:id', 
-    component: QuizzQuestionsComponent,
+  //{ 
+    //path: 'challenges/:id', 
+    //component: ChallengesComponent,
     //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
     //  requiresRoleCheck: true
     //} 
-  }
+  //}
 
 ];
 
@@ -30,5 +29,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class QuizRoutingModule { }
+export class ChallengesRoutingModule { }
 
