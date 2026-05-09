@@ -515,7 +515,7 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        margin-top: 32px;
+        margin: 32px;
     }
 
     .page-btn {
@@ -579,7 +579,7 @@
     /* Load more — mobile */
     .load-more-wrap {
         display: none;
-        margin-top: 24px;
+        padding: 24px;
         justify-content: center
     }
 
@@ -612,6 +612,163 @@
         stroke-width: 2.5;
         stroke-linecap: round;
         stroke-linejoin: round;
+    }
+
+    .loading-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .loading-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .loading-box {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8edf2;
+        padding: 1.75rem 2.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .spinner {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2.5px solid #e0e7ff;
+        border-top-color: #4361ee;
+        animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .loading-text {
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+    }
+
+    .progress-message {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e293b;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        animation: fadeInOut 3s ease-in-out forwards;
+        z-index: 9999;
+        white-space: nowrap;
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(6px);
+        }
+
+        15% {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        80% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .retry-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.45);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        animation: fadeIn 0.25s ease;
+        backdrop-filter: blur(3px);
+    }
+
+    .retry-content {
+        background: #ffffff;
+        padding: 2rem 2.5rem;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+        max-width: 380px;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .retry-text {
+        font-size: 14px;
+        color: #475569;
+        line-height: 1.5;
+    }
+
+    .retry-button {
+        background-color: #4361ee;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 9px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .retry-button:hover {
+        background-color: #3451d1;
+        transform: translateY(-1px);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     /* MODAL */
@@ -1007,6 +1164,13 @@
 <!-- PAGE -->
 <div class="page-wrap">
 
+    <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+        </div>
+    </div>
+
     <div class="page-header">
         <h1>Quizzes &amp; Testes Semanais</h1>
         <p class="page-subtitle">Desafios abertos a todos. Teste os seus conhecimentos, ganhe XP e suba no ranking.</p>
@@ -1016,10 +1180,13 @@
     <div class="filter-bar">
         <div class="tabs-scroll">
             <div class="tabs">
-                <button class="tab active">Todos</button>
-                <button class="tab">Disponíveis</button>
-                <button class="tab">Em curso</button>
-                <button class="tab">Encerrados</button>
+                <button class="tab" [class.active]="filtro.status == undefined" (click)="onReset()">Todos</button>
+                <button class="tab" [class.active]="filtro.status == 'UPCOMING'"
+                    (click)="onGetByStatus('UPCOMING')">Disponíveis</button>
+                <button class="tab" [class.active]="filtro.status == 'ONGOING'" (click)="onGetByStatus('ONGOING')">Em
+                    curso</button>
+                <button class="tab" [class.active]="filtro.status == 'DONE'"
+                    (click)="onGetByStatus('DONE')">Encerrados</button>
             </div>
         </div>
         <button class="filter-btn" title="Mais filtros">
@@ -1052,13 +1219,12 @@
                         getDifficultyLabel(challenge.difficultyLevel) }}</span>
                 </div>
                 <span class="status-badge" [ngClass]="{
-          open:    challenge.status === 'UPCOMING',
-          ongoing: challenge.status === 'ONGOING',
-          done:    challenge.status === 'DONE'
-        }">
-                    <span class="dot"></span>
-                    {{ challenge.status === 'UPCOMING' ? 'Aberto' : challenge.status === 'ONGOING' ? 'Em curso' :
-                    'Encerrado' }}
+                        open:    challenge.status === 'UPCOMING',
+                        ongoing: challenge.status === 'ONGOING',
+                        done:    challenge.status === 'DONE'
+                        }">
+                    <span class="dot"></span> {{ challenge.status === 'UPCOMING' ? 'Aberto' : challenge.status ===
+                    'ONGOING' ? 'Em curso' :'Encerrado' }}
                 </span>
             </div>
 
@@ -1166,18 +1332,34 @@
 
     <!-- Paginação desktop -->
     <div class="pagination-desktop">
-        <button class="page-btn nav" disabled>
+
+        <!-- botão anterior -->
+        <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+
             <svg viewBox="0 0 24 24">
                 <polyline points="15 18 9 12 15 6" />
             </svg>
             Anterior
         </button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <span class="page-dots">…</span>
-        <button class="page-btn">8</button>
-        <button class="page-btn nav">
+
+        <!-- números dinâmicos -->
+        <ng-container *ngFor="let page of getVisiblePages()">
+
+            <!-- mostrar ... -->
+            <span *ngIf="page === -1" class="page-dots">...</span>
+
+            <!-- botão da página -->
+            <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage" (click)="goToPage(page)"
+                [disabled]="showLoading">
+
+                {{ page }}
+            </button>
+
+        </ng-container>
+
+        <!-- botão seguinte -->
+        <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+
             Seguinte
             <svg viewBox="0 0 24 24">
                 <polyline points="9 18 15 12 9 6" />
@@ -1186,8 +1368,8 @@
     </div>
 
     <!-- Load more mobile -->
-    <div class="load-more-wrap">
-        <button class="btn-load-more">
+    <div class="load-more-wrap" *ngIf="!retryVisible">
+        <button class="btn-load-more" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
             <svg viewBox="0 0 24 24">
                 <polyline points="6 9 12 15 18 9" />
             </svg>

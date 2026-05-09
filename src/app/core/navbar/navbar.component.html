@@ -554,7 +554,8 @@
           <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
           <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()"
               style="cursor: pointer;">Progresso</a></li>
-          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/challenges')" routerLink="/challenges">Challenges</a></li>
+          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/challenges')"
+              routerLink="/challenges">Challenges</a></li>
 
           <li *ngIf="isUserLoggedIn && isSuperAdmin">
             <a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a>
@@ -660,6 +661,7 @@
       <li><a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">Estudar</a></li>
       <li><a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">Exames</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin"><a routerLink="/challenges" (click)="toggleMenu()">Challenges</a></li>
       <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()" (click)="toggleMenu()">Progresso</a>
       </li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin">

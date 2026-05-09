@@ -55,7 +55,6 @@ export class ChallengesComponent implements OnInit {
     sort: 'id,asc',
   };
 
-
   constructor(
     private challengeService: ChallengeService,
     private questionService: QuestionService,
@@ -64,6 +63,11 @@ export class ChallengesComponent implements OnInit {
 
   ngOnInit(): void {
     this.findAll();
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   findAll(pagina: number = 0): void {
@@ -122,10 +126,97 @@ export class ChallengesComponent implements OnInit {
     );
   }
 
+  get isLoadMoreDisabled(): boolean {
+    return this.challenges.length >= this.totalRecords && this.totalRecords > 0;
+  }
+
   retryGetChallenges(): void {
     this.retryVisible = false;
     this.filtro.page = 0;
     this.findAll(this.currentPage);
+  }
+
+  changePageSize(event: any): void {
+    this.filtro.itemsPerPage = +event.target.value;
+    this.currentPage = 1; // Resetar para a primeira página ao mudar o número de itens por página
+    this.findAll();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.findAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.findAll();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalRecords / this.filtro.itemsPerPage);
+  }
+
+
+  goToPage(page: number): void {
+    if (
+      page >= 1 &&
+      page <= this.totalPages() &&
+      page !== this.currentPage
+    ) {
+      this.currentPage = page;
+      this.findAll();
+    }
+  }
+
+  getVisiblePages(): number[] {
+    const total = this.totalPages();
+    const current = this.currentPage;
+
+    if (total <= 5) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    const pages: number[] = [];
+
+    // primeira página sempre aparece
+    pages.push(1);
+
+    // mostrar ... se estiver longe do início
+    if (current > 3) {
+      pages.push(-1);
+    }
+
+    // páginas ao redor da atual
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    // mostrar ... se estiver longe do fim
+    if (current < total - 2) {
+      pages.push(-1);
+    }
+
+    // última página sempre aparece
+    pages.push(total);
+
+    return pages;
+  }
+
+  onGetByStatus(status: string) {
+    this.filtro.status = status;
+    this.findAll();
+  }
+
+  onReset() {
+    this.filtro.status = undefined;
+    this.findAll();
   }
 
   getById(id: string): void {

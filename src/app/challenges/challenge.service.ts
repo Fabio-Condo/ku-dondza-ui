@@ -8,8 +8,8 @@ import { ChallengeFilter } from '../core/interface/ChallengeFilter';
 import { IApiResponse } from '../core/interface/IApiResponse';
 
 interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
+    data: T;
+    timestamp: number;
 }
 
 @Injectable({
@@ -43,6 +43,10 @@ export class ChallengeService {
             .set('page', filtro.page)
             .set('sort', filtro.sort)
             .set('size', filtro.itemsPerPage);
+
+        if (filtro.status) {
+            params = params.set('status', filtro.status);
+        }
 
         const cacheKey = params.toString();
         const cachedEntry = this.challengesCache.get(cacheKey);
