@@ -48,6 +48,7 @@ export class ChallengesComponent implements OnInit {
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
 
+  displayFilterModal = false;
 
   filtro: ChallengeFilter = {
     page: 0,
@@ -366,6 +367,38 @@ export class ChallengesComponent implements OnInit {
         this.showLoading = false;
       }
     });
+  }
+
+  openFilterModal(): void {
+    this.displayFilterModal = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  closeFilterModal(): void {
+    this.displayFilterModal = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  applyAdvancedFilters(): void {
+    this.currentPage = 1;
+    this.filtro.page = 0;
+
+    this.closeFilterModal();
+    this.findAll();
+  }
+
+  clearAdvancedFilters(): void {
+    this.filtro.title = undefined;
+    this.filtro.description = undefined;
+    this.filtro.difficultyLevel = undefined;
+    this.filtro.subject = undefined;
+    this.filtro.sort = 'id,asc';
+
+    this.currentPage = 1;
+    this.filtro.page = 0;
+
+    this.closeFilterModal();
+    this.findAll();
   }
 
   getFormattedText(text: string): string {

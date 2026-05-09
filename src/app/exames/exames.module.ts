@@ -24,7 +24,7 @@ import { ExamesComponent } from './exames/exames.component';
 
 @NgModule({
   declarations: [
-        ExamesComponent
+    ExamesComponent
   ],
   imports: [
     CommonModule,

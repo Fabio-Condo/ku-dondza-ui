@@ -1,7 +1,16 @@
+import { Subject } from "../model/Subject";
+
 export interface ChallengeFilter {
+
+    title?: string;
+    description?: string;
+    difficultyLevel?: string;
+    startDate?: Date;
+    endDate?: Date;
+    subject?: Subject;
     status?: string;
 
-    page: number,
-    itemsPerPage: number,
-    sort: string,
+    page: number;
+    itemsPerPage: number;
+    sort: string;
 }

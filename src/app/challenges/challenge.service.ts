@@ -34,30 +34,76 @@ export class ChallengeService {
         this.challengeCache.clear();
     }
 
-
     constructor(private http: HttpClient) { }
 
     findAll(filtro: ChallengeFilter): Observable<IApiResponse<Challenge>> {
 
         let params = new HttpParams()
-            .set('page', filtro.page)
+            .set('page', filtro.page.toString())
             .set('sort', filtro.sort)
-            .set('size', filtro.itemsPerPage);
+            .set('size', filtro.itemsPerPage.toString());
 
+        // status
         if (filtro.status) {
             params = params.set('status', filtro.status);
         }
 
+        // título
+        if (filtro.title?.trim()) {
+            params = params.set('title', filtro.title.trim());
+        }
+
+        // descrição
+        if (filtro.description?.trim()) {
+            params = params.set('description', filtro.description.trim());
+        }
+
+        // dificuldade
+        if (filtro.difficultyLevel) {
+            params = params.set(
+                'difficultyLevel',
+                filtro.difficultyLevel
+            );
+        }
+
+        // disciplina
+        if (filtro.subject?.id) {
+            params = params.set(
+                'subject.id',
+                filtro.subject.id.toString()
+            );
+        }
+
+        // data inicial
+        if (filtro.startDate) {
+            params = params.set(
+                'startDate',
+                filtro.startDate.toISOString()
+            );
+        }
+
+        // data final
+        if (filtro.endDate) {
+            params = params.set(
+                'endDate',
+                filtro.endDate.toISOString()
+            );
+        }
+
         const cacheKey = params.toString();
+
         const cachedEntry = this.challengesCache.get(cacheKey);
 
-        // Se cache existir e ainda for válido
+        // Retorna cache se ainda estiver válido
         if (cachedEntry && this.isCacheValid(cachedEntry)) {
             return of(cachedEntry.data);
         }
 
-        // Caso contrário, chama API
-        return this.http.get<IApiResponse<Challenge>>(`${this.baseUrl}/filter`, { params }).pipe(
+        // Faz chamada API
+        return this.http.get<IApiResponse<Challenge>>(
+            `${this.baseUrl}/filter`,
+            { params }
+        ).pipe(
             tap(response => {
                 this.challengesCache.set(cacheKey, {
                     data: response,
@@ -65,7 +111,6 @@ export class ChallengeService {
                 });
             })
         );
-
     }
 
     getById(challengeId: string): Observable<Challenge> {

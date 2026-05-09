@@ -1189,7 +1189,7 @@
                     (click)="onGetByStatus('DONE')">Encerrados</button>
             </div>
         </div>
-        <button class="filter-btn" title="Mais filtros">
+        <button class="filter-btn" title="Mais filtros" (click)="openFilterModal()">
             <svg viewBox="0 0 24 24">
                 <line x1="4" y1="6" x2="20" y2="6" />
                 <line x1="7" y1="12" x2="17" y2="12" />
@@ -1440,6 +1440,70 @@
                     </div>
                 </div>
             </ng-container>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL FILTROS -->
+<div class="modal-overlay" *ngIf="displayFilterModal">
+    <div class="modal filter-modal">
+
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <h2 class="modal-title">Filtros avançados</h2>
+                <span class="modal-subtitle">
+                    Refine os desafios exibidos
+                </span>
+            </div>
+
+            <button class="close-btn" (click)="closeFilterModal()">
+                ✕
+            </button>
+        </div>
+
+        <div class="filter-form">
+
+            <!-- título -->
+            <div class="filter-group">
+                <label>Título</label>
+                <input
+                    type="text"
+                    [(ngModel)]="filtro.title"
+                    placeholder="Pesquisar por título">
+            </div>
+
+            <!-- dificuldade -->
+            <div class="filter-group">
+                <label>Dificuldade</label>
+                <select [(ngModel)]="filtro.difficultyLevel">
+                    <option value="">Todas</option>
+                    <option value="BEGINNER">Iniciante</option>
+                    <option value="INTERMEDIATE">Intermediário</option>
+                    <option value="ADVANCED">Avançado</option>
+                </select>
+            </div>
+
+            <!-- ordenação -->
+            <div class="filter-group">
+                <label>Ordenar por</label>
+                <select [(ngModel)]="filtro.sort">
+                    <option value="id,desc">Mais recentes</option>
+                    <option value="id,asc">Mais antigos</option>
+                    <option value="title,asc">Título A-Z</option>
+                    <option value="title,desc">Título Z-A</option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button class="btn sec full" (click)="clearAdvancedFilters()">
+                    Limpar
+                </button>
+
+                <button class="btn full" (click)="applyAdvancedFilters()">
+                    Aplicar filtros
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
