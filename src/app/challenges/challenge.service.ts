@@ -133,7 +133,7 @@ export class ChallengeService {
         );
     }
 
-    getQuestionsByTestId(id: number): Observable<Question[]> {
+    getQuestionsByChallengeId(id: number): Observable<Question[]> {
         return this.http.get<Question[]>(`${this.baseUrl}/${id}/questions`);
     }
 

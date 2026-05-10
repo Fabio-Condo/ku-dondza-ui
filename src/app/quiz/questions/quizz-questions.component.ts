@@ -33,6 +33,7 @@ declare const MathJax: any;
 import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
+import { ChallengeService } from 'src/app/challenges/challenge.service';
 
 
 @Component({
@@ -87,6 +88,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   origem: string = '';
   progressTestId: number = 0;
+  challengeId: number = 0;
 
   correctSound = new Audio('assets/sounds/correct.mpeg');
   wrongSound = new Audio('assets/sounds/wrong.mpeg');
@@ -283,6 +285,7 @@ export class QuizzQuestionsComponent implements OnInit {
     private ngZone: NgZone,
     private googleAuthService: GoogleAuthService,
     private progressService: ProgressService,
+    private challengeService: ChallengeService,
     private walletService: WalletService,
     private quizService: QuizService,
     private topicService: TopicService,
@@ -304,7 +307,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
     const quizId = this.route.snapshot.params['id'];
-    if (quizId && quizId !== 'new' && quizId !== 'test' && quizId !== 'training') {
+    if (quizId && quizId !== 'new' && quizId !== 'test' && quizId !== 'training' && quizId !== 'challenge') {
       this.getQuizByQuizId(quizId);
     }
 
@@ -313,6 +316,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.origem = params['from'];
       this.progressTestId = params['progressTestId'];
+      this.challengeId = params['challengeId'];
     });
 
     if (quizId && quizId == 'new' && !this.origem) {
@@ -321,6 +325,10 @@ export class QuizzQuestionsComponent implements OnInit {
 
     if (quizId && quizId == 'test' && this.origem === 'progress/subjects' && this.progressTestId) {
       this.StartProgressTopicTest(this.progressTestId);
+    }
+
+    if (quizId && quizId == 'challenge' && this.origem === 'challenges' && this.challengeId) {
+      this.StartChallenge(this.challengeId);
     }
 
     // Pré-carrega os sons para evitar atrasos
@@ -498,6 +506,53 @@ export class QuizzQuestionsComponent implements OnInit {
     this.quiz.blockedTip = true; // Bloqueia dicas para testes de progresso
 
     this.progressService.getQuestionsByTestId(topicId).subscribe(
+      (questions: Question[]) => {
+        this.questions = questions;
+        this.quiz.questions = this.questions;
+
+        this.quiz.subject = this.quiz.questions[0].topic.subject;
+
+        this.topics = [{
+          ...this.quiz.questions[0].topic,
+          selected: true
+        }];
+
+        // Se o utilizador não for premium → limitar o texto da solução
+        this.quiz.questions = this.quiz.questions.map(q => ({
+          ...q,
+          solution: this.isPremiumTopic(q.topic)
+            ? this.limitSolutionSafe(q.solution, 4)
+            : q.solution
+        }));
+
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.startQuiz();
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  StartChallenge(challengeId: number): void {
+    this.loadingMessage = "Iniciando teste de desafio";
+    this.showLoading = true;
+
+    this.showInitQuizScreen = false;
+    this.showStartScreen = false;
+    this.showCorrection = false;
+
+    this.quiz.anonymous = true;
+    this.quiz.type = 'TEST';
+    this.quiz.difficultyLevel = 'BEGINNER';
+    this.quiz.limitPerTopic = 10;
+
+    this.quiz.blockedTip = true; // Bloqueia dicas para testes de progresso
+
+    this.challengeService.getQuestionsByChallengeId(challengeId).subscribe(
       (questions: Question[]) => {
         this.questions = questions;
         this.quiz.questions = this.questions;

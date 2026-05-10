@@ -269,7 +269,7 @@ export class ChallengesComponent implements OnInit {
     this.loadingMessage = "Buscando questões";
     this.showLoading = true;
 
-    this.challengeService.getQuestionsByTestId(challenge.id).subscribe(
+    this.challengeService.getQuestionsByChallengeId(challenge.id).subscribe(
       (dados: Question[]) => {
         this.selectedQuestions = dados;
         this.showLoading = false;
@@ -535,7 +535,18 @@ export class ChallengesComponent implements OnInit {
   }
 
   startChallenge(challenge: Challenge) {
+    //console.log("Premium: " + topic.premium)
+    //if (this.isPremiumTopic(topic)) {
+    //  this.displayModalUpgradePlan = true;
+    //  return;
+    //}
 
+    this.router.navigate(['/quizzes', 'challenge'], {
+      queryParams: {
+        from: 'challenges',
+        challengeId: challenge.id
+      }
+    });
   }
 
   saveChallenge(challenge: Challenge) {
