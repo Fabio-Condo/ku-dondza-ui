@@ -10,6 +10,8 @@ import { QuestionService } from 'src/app/questions/question.service';
 import { ChallengeFilter } from 'src/app/core/interface/ChallengeFilter';
 import { delayWhen, retryWhen, scan, timer } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 declare const MathJax: any;
 
 
@@ -60,6 +62,8 @@ export class ChallengesComponent implements OnInit {
     private challengeService: ChallengeService,
     private questionService: QuestionService,
     private messageService: MessageService,
+    private title: Title,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -530,9 +534,17 @@ export class ChallengesComponent implements OnInit {
     }, 0);
   }
 
-  startChallenge(challenge: Challenge) { }
-  saveChallenge(challenge: Challenge) { }
-  viewResults(challenge: Challenge) { }
+  startChallenge(challenge: Challenge) {
+
+  }
+
+  saveChallenge(challenge: Challenge) {
+
+  }
+
+  viewResults(challenge: Challenge) {
+    this.router.navigate(['/challenges', challenge.challengeId, 'results']);
+  }
 
   private sendErrorNotification(message: string): void {
     this.messageService.add({

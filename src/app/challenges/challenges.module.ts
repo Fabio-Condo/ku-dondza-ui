@@ -16,12 +16,14 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { ResultsComponent } from './results/results.component';
 
 
 
 @NgModule({
   declarations: [
-    ChallengesComponent
+    ChallengesComponent,
+    ResultsComponent
   ],
   imports: [
     CommonModule,

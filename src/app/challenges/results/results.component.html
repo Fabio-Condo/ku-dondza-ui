@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resultados — Quiz Competição</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    /* ── Page ── */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding-top: 48px;
+      padding-bottom: 3rem;
+    }
+
+    /* ── Back ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      padding: 0;
+      margin-top: 0.7rem;
+      margin-bottom: 0.7rem;
+      transition: color 0.15s;
+      font-family: inherit;
+    }
+    .back-btn:hover { color: #4361ee; }
+
+    /* ── Header card ── */
+    .quiz-header {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.5rem 1.5rem 0;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+    }
+
+    .quiz-header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .quiz-header-left h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 3px;
+      letter-spacing: -0.3px;
+    }
+    .quiz-header-left p { font-size: 13px; color: #6b7280; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff4f4;
+      border: 1px solid #fca5a5;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #ef4444;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid #f0f2f8;
+    }
+    .stat-item {
+      padding: 1rem 0;
+      text-align: center;
+      border-right: 1px solid #f0f2f8;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 20px;
+      font-weight: 500;
+      color: #4361ee;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-value.sv-green  { color: #059669; }
+    .stat-value.sv-orange { color: #d97706; }
+    .stat-value.sv-red    { color: #ef4444; }
+    .stat-label { font-size: 11px; color: #9ca3af; letter-spacing: 0.3px; }
+
+    /* ── My position card ── */
+    .my-card {
+      background: #4361ee;
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .my-card::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .my-card::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: 60px;
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .my-pos-rank {
+      font-family: 'DM Mono', monospace;
+      font-size: 32px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.35);
+      line-height: 1;
+      min-width: 52px;
+    }
+    .my-pos-rank span { font-size: 15px; vertical-align: super; }
+
+    .my-pos-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .my-pos-info { flex: 1; min-width: 0; }
+    .my-pos-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .my-pos-sub { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+    .my-pos-right {
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .my-score-block { text-align: right; }
+    .my-score-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 18px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .my-score-val.xp-val { color: #86efac; }
+    .my-score-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9ca3af;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      padding-left: 2px;
+    }
+
+    /* ── Podium ── */
+    .podium {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+      align-items: flex-end;
+    }
+
+    .podium-item {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 14px;
+      padding: 1rem 0.75rem 1.1rem;
+      text-align: center;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .podium-item:hover { transform: translateY(-2px); }
+    .podium-item.p1 { border-color: #fbbf24; background: #fffbeb; padding-top: 1.4rem; }
+    .podium-item.p2 { border-color: #d1d5db; background: #f9fafb; }
+    .podium-item.p3 { border-color: #d6a87a; background: #fdf8f3; }
+
+    .podium-crown {
+      position: absolute;
+      top: -14px; left: 50%;
+      transform: translateX(-50%);
+      width: 28px; height: 28px;
+      background: #fbbf24;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .podium-medal {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      margin: 0 auto 0.6rem;
+    }
+    .medal-gold   { background: #fef3c7; color: #92400e; border: 1px solid #fbbf24; }
+    .medal-silver { background: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; }
+    .medal-bronze { background: #fef0e3; color: #92400e; border: 1px solid #d6a87a; }
+
+    .podium-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      margin: 0 auto 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .av-gold   { background: #fde68a; color: #92400e; border: 2px solid #fbbf24; }
+    .av-silver { background: #e5e7eb; color: #4b5563; border: 2px solid #d1d5db; }
+    .av-bronze { background: #fde8d0; color: #7c3d12; border: 2px solid #d6a87a; }
+
+    .podium-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .podium-pct {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      margin-bottom: 3px;
+    }
+    .pct-gold-tag   { background: #fef3c7; color: #92400e; }
+    .pct-silver-tag { background: #f3f4f6; color: #4b5563; }
+    .pct-bronze-tag { background: #fef0e3; color: #92400e; }
+
+    .podium-score {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: #4361ee;
+      margin-bottom: 3px;
+    }
+    .podium-xp { font-size: 10px; color: #059669; font-weight: 600; }
+
+    /* ── Ranking list ── */
+    .ranking-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ranking-row {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 12px;
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      transition: border-color 0.15s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .ranking-row:hover {
+      border-color: #c7d0f8;
+      transform: translateX(2px);
+    }
+    .ranking-row.is-me {
+      border-color: #4361ee;
+      background: #f5f6ff;
+    }
+    .ranking-row.is-me::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: #4361ee;
+      border-radius: 3px 0 0 3px;
+    }
+
+    .row-rank {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: #9ca3af;
+      min-width: 28px;
+      text-align: center;
+    }
+    .ranking-row.is-me .row-rank { color: #4361ee; font-weight: 600; }
+
+    .row-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #eef1fd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4361ee;
+      flex-shrink: 0;
+    }
+    .ranking-row.is-me .row-avatar { background: #4361ee; color: #fff; }
+
+    .row-info { flex: 1; min-width: 0; }
+    .row-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+    .ranking-row.is-me .row-name { color: #4361ee; }
+
+    .you-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #fff;
+      background: #4361ee;
+      border-radius: 4px;
+      padding: 2px 6px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    .row-sub {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .row-sub-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .row-progress {
+      height: 3px;
+      background: #edf0f8;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    .row-progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #8fa4f3, #4361ee);
+    }
+    .ranking-row.is-me .row-progress { background: #c7d0f8; }
+
+    .row-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .row-score {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+    }
+    .ranking-row.is-me .row-score { color: #4361ee; }
+
+    .row-pct {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+    .pct-high { background: #d1fae5; color: #065f46; }
+    .pct-mid  { background: #fef3c7; color: #92400e; }
+    .pct-low  { background: #fee2e2; color: #991b1b; }
+
+    .row-xp { font-size: 10px; color: #059669; font-weight: 600; }
+
+    /* ── See answers button ── */
+    .see-answers-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: 1px solid #e8eaf0;
+      border-radius: 7px;
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .see-answers-btn:hover {
+      background: #eef1fd;
+      border-color: #c7d0f8;
+      color: #4361ee;
+    }
+    .ranking-row.is-me .see-answers-btn { border-color: #c7d0f8; color: #4361ee; }
+    .ranking-row.is-me .see-answers-btn:hover { background: #dde3fb; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17,24,39,0.4);
+      backdrop-filter: blur(6px);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+
+    .modal {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 82vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      transform: translateY(12px) scale(0.98);
+      transition: transform 0.25s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #f0f2f8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .modal-header-left h3 { font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 2px; }
+    .modal-header-left p  { font-size: 12px; color: #9ca3af; }
+
+    .modal-close {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      background: #f3f4f6;
+      border: 1px solid #e8eaf0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #6b7280;
+      transition: all 0.15s;
+    }
+    .modal-close:hover { background: #e8eaf0; color: #111827; }
+
+    .modal-body {
+      overflow-y: auto;
+      padding: 1.25rem 1.5rem;
+      flex: 1;
+    }
+    .modal-body::-webkit-scrollbar { width: 5px; }
+    .modal-body::-webkit-scrollbar-track { background: transparent; }
+    .modal-body::-webkit-scrollbar-thumb { background: #e8eaf0; border-radius: 99px; }
+
+    .modal-user-strip {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      background: #f8f9ff;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border: 1px solid #eef1fd;
+    }
+    .modal-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: #4361ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .modal-user-name { font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 2px; }
+    .modal-user-sub  { font-size: 11px; color: #9ca3af; }
+
+    .modal-chips { margin-left: auto; display: flex; gap: 8px; }
+    .m-chip {
+      text-align: center;
+      padding: 5px 12px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #e8eaf0;
+    }
+    .m-chip-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4361ee;
+    }
+    .m-chip-val.green { color: #059669; }
+    .m-chip-lbl { font-size: 9px; color: #9ca3af; letter-spacing: 0.4px; text-transform: uppercase; }
+
+    /* ── Summary bar ── */
+    .modal-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+    .ms-item {
+      text-align: center;
+      padding: 0.65rem 0.5rem;
+      border-radius: 10px;
+      border: 1px solid #e8eaf0;
+    }
+    .ms-item.correct-bg { background: #f0fdf4; border-color: #bbf7d0; }
+    .ms-item.wrong-bg   { background: #fff1f2; border-color: #fecdd3; }
+    .ms-item.skip-bg    { background: #f9fafb; border-color: #e5e7eb; }
+    .ms-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    .ms-val.c { color: #059669; }
+    .ms-val.w { color: #ef4444; }
+    .ms-val.s { color: #9ca3af; }
+    .ms-lbl { font-size: 10px; color: #9ca3af; }
+
+    /* ── Question list ── */
+    .q-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .q-item {
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      border: 1px solid transparent;
+    }
+    .q-item.correct { background: #f0fdf4; border-color: #bbf7d0; }
+    .q-item.wrong   { background: #fff1f2; border-color: #fecdd3; }
+    .q-item.skipped { background: #f9fafb; border-color: #e5e7eb; }
+
+    .q-num  { font-size: 10px; font-weight: 600; color: #9ca3af; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .q-text { font-size: 13px; color: #374151; font-weight: 500; margin-bottom: 8px; line-height: 1.45; }
+
+    .q-answer-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .q-label       { color: #9ca3af; min-width: 80px; }
+    .q-val-correct { color: #059669; font-weight: 600; }
+    .q-val-wrong   { color: #ef4444; font-weight: 600; }
+    .q-val-skip    { color: #9ca3af; font-style: italic; }
+
+    .q-status-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .icon-correct { background: #d1fae5; }
+    .icon-wrong   { background: #fee2e2; }
+    .icon-skip    { background: #f3f4f6; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .page { padding-top: 44px; }
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3),
+      .stat-item:nth-child(4) { border-top: 1px solid #f0f2f8; }
+      .stat-item:nth-child(4) { border-right: none; }
+      .quiz-header-top { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .my-pos-right { gap: 0.75rem; }
+      .my-score-val { font-size: 16px; }
+    }
+    @media (max-width: 400px) {
+      .podium { gap: 6px; }
+      .podium-item { padding: 0.8rem 0.4rem 0.9rem; }
+      .podium-name { font-size: 11px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <button class="back-btn" onclick="history.back()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+    </svg>
+    Voltar
+  </button>
+
+  <!-- ── Header ── -->
+  <div class="quiz-header">
+    <div class="quiz-header-top">
+      <div class="quiz-header-left">
+        <h1>Resultados — Anatomia Humana</h1>
+        <p>Turma B · 12 de Junho 2025 · 28 participantes</p>
+      </div>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        Encerrado
+      </div>
+    </div>
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-value">28</div>
+        <div class="stat-label">Participantes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value sv-red">20</div>
+        <div class="stat-label">Questões</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value sv-green">72%</div>
+        <div class="stat-label">Média geral</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value sv-orange">14m</div>
+        <div class="stat-label">Tempo médio</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Minha posição ── -->
+  <div class="my-card">
+    <div class="my-pos-rank"><span>#</span>4</div>
+    <div class="my-pos-avatar">AM</div>
+    <div class="my-pos-info">
+      <div class="my-pos-name">André Machava <span class="you-badge">Você</span></div>
+      <div class="my-pos-sub">16/20 correctas · 11m 42s · Continue a melhorar!</div>
+    </div>
+    <div class="my-pos-right">
+      <div class="my-score-block">
+        <div class="my-score-val">80%</div>
+        <div class="my-score-label">Percentual</div>
+      </div>
+      <div class="my-score-block">
+        <div class="my-score-val xp-val">+320</div>
+        <div class="my-score-label">XP ganho</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Pódio ── -->
+  <div class="section-label">Pódio</div>
+  <div class="podium">
+
+    <!-- 2º -->
+    <div class="podium-item p2" style="margin-bottom:0;">
+      <div class="podium-medal medal-silver">2</div>
+      <div class="podium-avatar av-silver">LC</div>
+      <div class="podium-name">Lúcia Cossa</div>
+      <div class="podium-pct pct-silver-tag">95%</div>
+      <div class="podium-score">19/20</div>
+      <div class="podium-xp">+380 XP</div>
+    </div>
+
+    <!-- 1º -->
+    <div class="podium-item p1">
+      <div class="podium-crown">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="#92400e">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <div class="podium-medal medal-gold">1</div>
+      <div class="podium-avatar av-gold">JM</div>
+      <div class="podium-name">João Maputo</div>
+      <div class="podium-pct pct-gold-tag">100%</div>
+      <div class="podium-score">20/20</div>
+      <div class="podium-xp">+400 XP</div>
+    </div>
+
+    <!-- 3º -->
+    <div class="podium-item p3" style="margin-bottom:0;">
+      <div class="podium-medal medal-bronze">3</div>
+      <div class="podium-avatar av-bronze">FC</div>
+      <div class="podium-name">Fátima Chivite</div>
+      <div class="podium-pct pct-bronze-tag">90%</div>
+      <div class="podium-score">18/20</div>
+      <div class="podium-xp">+360 XP</div>
+    </div>
+
+  </div>
+
+  <!-- ── Lista completa ── -->
+  <div class="section-label" style="margin-top:1.25rem;">Classificação geral</div>
+
+  <div class="ranking-list">
+
+    <!-- 1 -->
+    <div class="ranking-row">
+      <div class="row-rank">#1</div>
+      <div class="row-avatar">JM</div>
+      <div class="row-info">
+        <div class="row-name">João Maputo</div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            20/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            09m 12s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:100%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">20/20</div>
+        <div class="row-pct pct-high">100%</div>
+        <div class="row-xp">+400 XP</div>
+        <button class="see-answers-btn" onclick="openModal('João Maputo','JM',20,20,100,400)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="ranking-row">
+      <div class="row-rank">#2</div>
+      <div class="row-avatar">LC</div>
+      <div class="row-info">
+        <div class="row-name">Lúcia Cossa</div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            19/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10m 05s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:95%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">19/20</div>
+        <div class="row-pct pct-high">95%</div>
+        <div class="row-xp">+380 XP</div>
+        <button class="see-answers-btn" onclick="openModal('Lúcia Cossa','LC',19,20,95,380)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="ranking-row">
+      <div class="row-rank">#3</div>
+      <div class="row-avatar">FC</div>
+      <div class="row-info">
+        <div class="row-name">Fátima Chivite</div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            18/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            11m 30s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:90%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">18/20</div>
+        <div class="row-pct pct-high">90%</div>
+        <div class="row-xp">+360 XP</div>
+        <button class="see-answers-btn" onclick="openModal('Fátima Chivite','FC',18,20,90,360)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 — LOGGED USER -->
+    <div class="ranking-row is-me">
+      <div class="row-rank">#4</div>
+      <div class="row-avatar">AM</div>
+      <div class="row-info">
+        <div class="row-name">André Machava <span class="you-badge">Você</span></div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            16/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            11m 42s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:80%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">16/20</div>
+        <div class="row-pct pct-high">80%</div>
+        <div class="row-xp">+320 XP</div>
+        <button class="see-answers-btn" onclick="openModal('André Machava','AM',16,20,80,320)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="ranking-row">
+      <div class="row-rank">#5</div>
+      <div class="row-avatar">MS</div>
+      <div class="row-info">
+        <div class="row-name">Mário Sitoe</div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            15/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            13m 10s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:75%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">15/20</div>
+        <div class="row-pct pct-mid">75%</div>
+        <div class="row-xp">+300 XP</div>
+        <button class="see-answers-btn" onclick="openModal('Mário Sitoe','MS',15,20,75,300)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="ranking-row">
+      <div class="row-rank">#6</div>
+      <div class="row-avatar">NM</div>
+      <div class="row-info">
+        <div class="row-name">Nelsa Mutemba</div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            14/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            14m 00s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:70%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">14/20</div>
+        <div class="row-pct pct-mid">70%</div>
+        <div class="row-xp">+280 XP</div>
+        <button class="see-answers-btn" onclick="openModal('Nelsa Mutemba','NM',14,20,70,280)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="ranking-row">
+      <div class="row-rank">#7</div>
+      <div class="row-avatar">BN</div>
+      <div class="row-info">
+        <div class="row-name">Beatriz Nuvunga</div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            12/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            16m 22s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:60%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">12/20</div>
+        <div class="row-pct pct-mid">60%</div>
+        <div class="row-xp">+240 XP</div>
+        <button class="see-answers-btn" onclick="openModal('Beatriz Nuvunga','BN',12,20,60,240)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="ranking-row">
+      <div class="row-rank">#8</div>
+      <div class="row-avatar">CT</div>
+      <div class="row-info">
+        <div class="row-name">Carlos Tembe</div>
+        <div class="row-sub">
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            10/20 correctas
+          </span>
+          <span class="row-sub-item">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            18m 05s
+          </span>
+        </div>
+        <div class="row-progress"><div class="row-progress-fill" style="width:50%"></div></div>
+      </div>
+      <div class="row-right">
+        <div class="row-score">10/20</div>
+        <div class="row-pct pct-low">50%</div>
+        <div class="row-xp">+200 XP</div>
+        <button class="see-answers-btn" onclick="openModal('Carlos Tembe','CT',10,20,50,200)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver respostas
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /ranking-list -->
+
+</div><!-- /page -->
+
+<!-- ── Modal respostas ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <h3 id="modal-title">Respostas submetidas</h3>
+        <p id="modal-sub">20 questões avaliadas</p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="modal-user-strip">
+        <div class="modal-avatar" id="modal-avatar">AM</div>
+        <div>
+          <div class="modal-user-name" id="modal-user-name">André Machava</div>
+          <div class="modal-user-sub">Anatomia Humana · Turma B</div>
+        </div>
+        <div class="modal-chips">
+          <div class="m-chip">
+            <div class="m-chip-val" id="modal-pct">80%</div>
+            <div class="m-chip-lbl">Acerto</div>
+          </div>
+          <div class="m-chip">
+            <div class="m-chip-val green" id="modal-xp">+320</div>
+            <div class="m-chip-lbl">XP</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-summary">
+        <div class="ms-item correct-bg">
+          <div class="ms-val c" id="ms-correct">16</div>
+          <div class="ms-lbl">Correctas</div>
+        </div>
+        <div class="ms-item wrong-bg">
+          <div class="ms-val w" id="ms-wrong">4</div>
+          <div class="ms-lbl">Erradas</div>
+        </div>
+        <div class="ms-item skip-bg">
+          <div class="ms-val s" id="ms-skip">0</div>
+          <div class="ms-lbl">Sem resposta</div>
+        </div>
+      </div>
+
+      <div class="q-list" id="q-list"></div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const questions = [
+    { text: "Qual é o osso mais longo do corpo humano?",               correct: "Fémur" },
+    { text: "Quantas vértebras tem a coluna vertebral humana?",         correct: "33" },
+    { text: "Qual é a função principal dos glóbulos vermelhos?",        correct: "Transportar oxigénio" },
+    { text: "O coração humano possui quantas câmaras?",                 correct: "4 câmaras" },
+    { text: "Qual vitamina é produzida quando a pele é exposta ao sol?",correct: "Vitamina D" },
+    { text: "Qual é o nome do maior músculo do corpo humano?",          correct: "Glúteo máximo" },
+    { text: "Onde se localiza o fígado no corpo humano?",              correct: "Quadrante superior direito" },
+    { text: "Quantos pares de nervos cranianos existem no ser humano?", correct: "12 pares" },
+    { text: "Qual é a unidade funcional do rim?",                       correct: "Néfron" },
+    { text: "O pâncreas pertence a qual(is) sistema(s)?",               correct: "Digestivo e endócrino" },
+    { text: "Qual estrutura conecta o músculo ao osso?",                correct: "Tendão" },
+    { text: "Qual é o principal açúcar encontrado no sangue?",          correct: "Glicose" },
+    { text: "Quantos cromossomos tem uma célula humana normal?",        correct: "46" },
+    { text: "Qual é a função das plaquetas?",                           correct: "Coagulação sanguínea" },
+    { text: "O esfincter pilórico separa qual órgão do intestino?",     correct: "Estômago" },
+    { text: "Qual gás é eliminado durante a expiração pulmonar?",       correct: "Dióxido de carbono" },
+    { text: "Onde se produz a bílis?",                                  correct: "Fígado" },
+    { text: "Qual é o nome da membrana que reveste os pulmões?",        correct: "Pleura" },
+    { text: "Qual vitamina ajuda na coagulação do sangue?",             correct: "Vitamina K" },
+    { text: "Qual é o osso da coxa?",                                   correct: "Fémur" },
+  ];
+
+  const wrongOpts = [
+    "Tíbia","Húmero","Rádio","Ulna","Rótula",
+    "Transportar CO₂","Produzir glicose","Baço","Cérebro",
+    "Ligamento","Frutose","23","48","Vitamina C","Vitamina A"
+  ];
+
+  function openModal(name, initials, correct, total, pct, xp) {
+    const wrong = total - correct;
+    document.getElementById('modal-title').textContent     = 'Respostas — ' + name;
+    document.getElementById('modal-sub').textContent       = total + ' questões avaliadas';
+    document.getElementById('modal-avatar').textContent    = initials;
+    document.getElementById('modal-user-name').textContent = name;
+    document.getElementById('modal-pct').textContent       = pct + '%';
+    document.getElementById('modal-xp').textContent        = '+' + xp;
+    document.getElementById('ms-correct').textContent      = correct;
+    document.getElementById('ms-wrong').textContent        = wrong;
+    document.getElementById('ms-skip').textContent         = 0;
+
+    const qList = document.getElementById('q-list');
+    qList.innerHTML = '';
+
+    questions.forEach(function(q, i) {
+      var isCorrect = i < correct;
+      var isWrong   = !isCorrect && (i - correct) < wrong;
+      var cls       = isCorrect ? 'correct' : (isWrong ? 'wrong' : 'skipped');
+      var choice    = wrongOpts[i % wrongOpts.length];
+
+      var iconC = '<div class="q-status-icon icon-correct"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
+      var iconW = '<div class="q-status-icon icon-wrong"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>';
+      var iconS = '<div class="q-status-icon icon-skip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></div>';
+
+      qList.innerHTML += '<div class="q-item ' + cls + '">'
+        + '<div class="q-num">Questão ' + (i + 1) + '</div>'
+        + '<div class="q-text">' + q.text + '</div>'
+        + '<div class="q-answer-row">'
+        +   '<span class="q-label">Resposta dada:</span>'
+        +   '<span class="' + (isCorrect ? 'q-val-correct' : isWrong ? 'q-val-wrong' : 'q-val-skip') + '">'
+        +     (isCorrect ? q.correct : isWrong ? choice : '— Não respondeu')
+        +   '</span>'
+        +   (isCorrect ? iconC : isWrong ? iconW : iconS)
+        + '</div>'
+        + (isWrong ? '<div class="q-answer-row" style="margin-top:5px;"><span class="q-label">Correcta:</span><span class="q-val-correct">' + q.correct + '</span></div>' : '')
+        + '</div>';
+    });
+
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOnBg(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>
