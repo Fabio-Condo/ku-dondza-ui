@@ -786,6 +786,12 @@ export class QuizzQuestionsComponent implements OnInit {
         return;
       }
 
+      if (this.origem === 'challenges' && this.challengeId) {
+        this.saveQuizChallenge();
+        //this.subjectsService.clearProgressSubjectsCache();
+        return;
+      }
+
       this.saveQuiz();
     }
 
@@ -851,6 +857,32 @@ export class QuizzQuestionsComponent implements OnInit {
     const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
 
     this.quizService.saveQuizTopicTest(this.quiz, questionIds, userAnswerIds, this.progressTestId, this.loggedUser.id).subscribe(
+      (response) => {
+        this.showLoading = false;
+        this.quiz = response;
+        this.quiz.isSubmitted = true;
+        if (this.quiz.answers) {
+          this.calculateResults();
+        }
+        this.router.navigate(['/quizzes', this.quiz.quizId], { replaceUrl: true });
+        this.showStartScreen = true
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  saveQuizChallenge() {
+    this.loadingMessage = "Salvando o quiz"
+    this.showLoading = true;
+    this.quiz.topics = this.getSelectedTopics();
+
+    const questionIds = this.quiz.questions.map(question => question.id);
+    const userAnswerIds = this.submittedAnswers.map(answer => answer.id);
+
+    this.quizService.saveQuizChallenge(this.quiz, questionIds, userAnswerIds, this.challengeId, this.loggedUser.id).subscribe(
       (response) => {
         this.showLoading = false;
         this.quiz = response;
@@ -1230,8 +1262,10 @@ export class QuizzQuestionsComponent implements OnInit {
       this.stopTimer();
       if (this.origem === 'progress/subjects' && this.progressTestId) {
         this.router.navigate(['/progress/subjects', this.quiz.subject.subjectId]);
+      } else if (this.origem === 'challenges' && this.challengeId) {
+        this.router.navigate(['/challenges']);
       } else {
-        this.router.navigateByUrl('/quizzes');
+        this.router.navigateByUrl('/quizzes');``
       }
       return;
     }
