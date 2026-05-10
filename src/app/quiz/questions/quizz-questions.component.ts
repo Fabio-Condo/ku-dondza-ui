@@ -1265,7 +1265,7 @@ export class QuizzQuestionsComponent implements OnInit {
       } else if (this.origem === 'challenges' && this.challengeId) {
         this.router.navigate(['/challenges']);
       } else {
-        this.router.navigateByUrl('/quizzes');``
+        this.router.navigateByUrl('/quizzes'); ``
       }
       return;
     }
@@ -1276,6 +1276,8 @@ export class QuizzQuestionsComponent implements OnInit {
   goBack(): void {
     if (this.origem === 'progress/subjects') {
       this.router.navigate(['/progress/subjects', this.quiz.subject.subjectId]);
+    } else if (this.origem === 'challenges') {
+      this.router.navigate(['/challenges']);
     } else {
       this.router.navigate(['/quizzes']);
     }
