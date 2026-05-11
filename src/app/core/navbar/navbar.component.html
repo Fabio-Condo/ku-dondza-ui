@@ -554,7 +554,7 @@
           <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
           <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()"
               style="cursor: pointer;">Progresso</a></li>
-          <li><a [class.active]="isActive('/challenges')"
+          <li *ngIf="isUserLoggedIn && isSuperAdmin"><a [class.active]="isActive('/challenges')"
               routerLink="/challenges">Challenges</a></li>
 
           <li *ngIf="isUserLoggedIn && isSuperAdmin">
