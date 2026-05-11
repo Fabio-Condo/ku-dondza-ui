@@ -117,13 +117,19 @@
             gap: 1rem;
         }
 
+        /* ══════════════════════════════════════
+           CARD — novo design sem badges
+        ══════════════════════════════════════ */
+
         .card {
             background-color: #ffffff;
             border-radius: 14px;
-            overflow: visible;
+            overflow: hidden;
             border: 1px solid #e8edf2;
             transition: border-color 0.2s, box-shadow 0.2s;
             animation: fadeUp 0.4s ease both;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
@@ -136,7 +142,6 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -144,22 +149,19 @@
         }
 
         .card-header {
-            padding: 16px 18px;
+            padding: 16px 18px 12px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid #f1f5f9;
         }
 
         .card-body {
-            padding: 16px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
+            padding: 0 18px 14px;
+            flex: 1;
         }
 
         .card-footer {
-            padding-top: 14px;
+            padding: 12px 18px 16px;
             border-top: 1px solid #f1f5f9;
         }
 
@@ -184,10 +186,20 @@
             stroke-linejoin: round;
         }
 
+        .discipline-icon.premium {
+            background: #f5f3ff;
+        }
+
+        .discipline-icon.premium svg {
+            stroke: #7c3aed;
+        }
+
         .card-title-group {
             display: flex;
             flex-direction: column;
             gap: 2px;
+            flex: 1;
+            min-width: 0;
         }
 
         .card-name {
@@ -195,16 +207,23 @@
             font-weight: 600;
             color: #1e293b;
             line-height: 1.25;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .card-sub {
             font-size: 12px;
             color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .dropdown-container {
             margin-left: auto;
             position: relative;
+            flex-shrink: 0;
         }
 
         .dropdown-btn {
@@ -253,75 +272,65 @@
             color: #1e293b;
         }
 
-        .description-label {
+        /* ── Meta grid (substitui os badges) ── */
+        .card-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.7px;
+            letter-spacing: 0.6px;
             color: #cbd5e1;
-            margin-bottom: 6px;
         }
 
-        .detail-row {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 10px;
-            font-size: 12px;
+        .meta-value {
+            font-size: 13px;
             font-weight: 500;
-            border-radius: 99px;
-            border: 1px solid transparent;
-            white-space: nowrap;
-            line-height: 1;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            line-height: 1.2;
         }
 
-        .badge-icon {
+        .meta-value svg {
             width: 13px;
             height: 13px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             flex-shrink: 0;
         }
 
-        /* Data / neutro elegante */
-        .badge-date {
-            color: #334155;
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-        }
-
-        /* Mantido */
-        .badge-enunciado {
-            background: #f0fdf4;
-            color: #15803d;
-            border: 1px solid #bbf7d0;
-        }
-
-        /* Mantido */
-        .badge-resolvido {
-            background: #fff7ed;
-            color: #c2410c;
-            border: 1px solid #fed7aa;
-        }
-
-        /* Premium mais sofisticado */
-        .badge-premium {
+        .meta-value.premium-val {
             color: #7c3aed;
-            background-color: #faf5ff;
-            border-color: #d8b4fe;
         }
 
-        /* Free mais moderno / clean */
-        .badge-free {
-            color: #0369a1;
-            background-color: #f0f9ff;
-            border-color: #bae6fd;
+        .meta-value.premium-val svg {
+            stroke: #a855f7;
         }
 
+        .meta-value.free-val {
+            color: #2563eb;
+        }
+
+        .meta-value.free-val svg {
+            stroke: #60a5fa;
+        }
+
+        /* ── Botões de acção ── */
         .download-btn {
             width: 100%;
             padding: 10px 16px;
@@ -374,9 +383,9 @@
         .upgrade-btn {
             width: 100%;
             padding: 10px 16px;
-            background: #1e293b;
-            color: white;
-            border: none;
+            background: #ffffff;
+            color: #7c3aed;
+            border: 1px solid #d8b4fe;
             border-radius: 9px;
             font-size: 13px;
             font-weight: 500;
@@ -390,7 +399,8 @@
         }
 
         .upgrade-btn:hover {
-            background: #0f172a;
+            background: #faf5ff;
+            border-color: #a855f7;
             transform: translateY(-1px);
         }
 
@@ -403,6 +413,10 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
+
+        /* ══════════════════════════════════════
+           FIM CARD
+        ══════════════════════════════════════ */
 
         .fab {
             display: none;
@@ -536,9 +550,7 @@
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         .loading-text {
@@ -564,23 +576,10 @@
         }
 
         @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(6px);
-            }
-
-            15% {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
+            0%   { opacity: 0; transform: translateX(-50%) translateY(6px); }
+            15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+            80%  { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         .empty-state {
@@ -644,13 +643,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to   { opacity: 1; }
         }
 
         /* ═══════════════════════════════════════════════════════
@@ -672,13 +666,8 @@
         }
 
         @keyframes overlayIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to   { opacity: 1; }
         }
 
         @media (min-width: 600px) {
@@ -700,6 +689,7 @@
             display: flex;
             flex-direction: column;
             -webkit-overflow-scrolling: touch;
+            position: relative;
         }
 
         @media (min-width: 600px) {
@@ -711,27 +701,13 @@
         }
 
         @keyframes sheetUp {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(60px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(14px) scale(0.97);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .modal-handle {
@@ -750,9 +726,7 @@
         }
 
         @media (min-width: 600px) {
-            .modal-handle {
-                display: none;
-            }
+            .modal-handle { display: none; }
         }
 
         .modal-inner {
@@ -762,7 +736,6 @@
             flex-direction: column;
         }
 
-        /* ── Modal bloqueado durante loading ── */
         .modal-inner.is-loading {
             pointer-events: none;
         }
@@ -819,7 +792,6 @@
             color: #1e293b;
         }
 
-        /* Desabilita o close-btn quando loading */
         .close-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -875,7 +847,6 @@
             box-shadow: 0 0 0 3.5px rgba(67, 97, 238, 0.09);
         }
 
-        /* Campos desabilitados durante loading */
         .form-group select:disabled,
         .form-group input:disabled,
         .form-group textarea:disabled {
@@ -889,11 +860,8 @@
             color: #64748b;
         }
 
-        /* ── Spinner inline para botões ── */
         @keyframes btn-spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         .btn-spinner {
@@ -916,24 +884,15 @@
             flex-shrink: 0;
         }
 
-        /* ── Loading skeleton leve nos inputs ── */
         .input-skeleton {
             animation: skeleton-pulse 1.4s ease-in-out infinite;
         }
 
         @keyframes skeleton-pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.55;
-            }
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.55; }
         }
 
-        /* ── Faixa de progresso no topo do modal ── */
         .modal-progress-bar {
             position: absolute;
             top: 0;
@@ -961,21 +920,10 @@
         }
 
         @keyframes progress-slide {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(350%);
-            }
+            0%   { transform: translateX(-100%); }
+            100% { transform: translateX(350%); }
         }
 
-        /* Wrapper relativo para o modal ter a barra posicionada */
-        .modal {
-            position: relative;
-        }
-
-        /* ── Overlay interno do modal (blur suave nos campos) ── */
         .modal-loading-overlay {
             display: none;
             position: absolute;
@@ -1009,7 +957,6 @@
             color: #4361ee;
         }
 
-        /* Botão primário modal */
         .btn-modal-primary {
             width: 100%;
             padding: 13px;
@@ -1047,7 +994,6 @@
             box-shadow: none;
         }
 
-        /* Botão secundário modal */
         .btn-modal-secondary {
             width: 100%;
             padding: 12px;
@@ -1077,7 +1023,6 @@
             cursor: not-allowed;
         }
 
-        /* Alias btn-submit */
         .btn-submit {
             width: 100%;
             padding: 13px;
@@ -1144,7 +1089,6 @@
             box-shadow: none;
         }
 
-        /* Date range */
         .date-range-container {
             display: flex;
             align-items: flex-end;
@@ -1192,7 +1136,6 @@
             background: #e8edf2;
         }
 
-        /* ── Login / Registo ── */
         .login-side {
             width: 100%;
         }
@@ -1346,7 +1289,6 @@
             text-decoration: underline;
         }
 
-        /* ── Status de envio de OTP ── */
         .otp-sending-row {
             display: none;
             align-items: center;
@@ -1374,7 +1316,6 @@
             flex-shrink: 0;
         }
 
-        /* ── Plano Premium ── */
         .pricing-hero {
             border: 1.5px solid #e8edf2;
             border-radius: 16px;
@@ -1464,7 +1405,6 @@
             margin-top: 10px;
         }
 
-        /* ── Pagamento ── */
         .wallet-options {
             display: flex;
             flex-direction: column;
@@ -1594,7 +1534,6 @@
             font-weight: 600;
         }
 
-        /* Resumo de pagamento */
         .payment-summary {
             border: 1.5px solid #e8edf2;
             border-radius: 13px;
@@ -1609,7 +1548,7 @@
             align-items: center;
         }
 
-        .payment-summary-row+.payment-summary-row {
+        .payment-summary-row + .payment-summary-row {
             margin-top: 9px;
             padding-top: 9px;
             border-top: 1px solid #e8edf2;
@@ -1632,7 +1571,6 @@
             color: #4361ee;
         }
 
-        /* Estado vazio — sem carteiras */
         .empty-wallets {
             display: flex;
             flex-direction: column;
@@ -1690,51 +1628,24 @@
 
         /* Responsividade */
         @media (max-width: 900px) {
-            .container {
-                margin-top: 60px;
-            }
+            .container { margin-top: 60px; }
         }
 
         @media (max-width: 768px) {
-            .pagination {
-                display: none;
-            }
+            .pagination { display: none; }
 
-            .card-header {
-                padding: 12px 14px;
-            }
+            .card-header { padding: 12px 14px 10px; }
+            .card-body   { padding: 0 14px 12px; }
+            .card-footer { padding: 10px 14px 14px; }
+            .card-meta   { gap: 8px; }
 
-            .card-body {
-                padding: 12px 14px;
-            }
-
-            .load-more-container {
-                display: flex;
-            }
-
-            .title {
-                display: flex;
-            }
-
-            .title-container {
-                display: none;
-            }
-
-            .button-add-new {
-                display: none;
-            }
-
-            .pagination-info {
-                display: none;
-            }
-
-            .fab {
-                display: flex;
-            }
-
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
+            .load-more-container { display: flex; }
+            .title               { display: flex; }
+            .title-container     { display: none; }
+            .button-add-new      { display: none; }
+            .pagination-info     { display: none; }
+            .fab                 { display: flex; }
+            .cards-container     { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1778,37 +1689,40 @@
             </div>
         </header>
 
-        <button class="fab" (click)="onAddNewExame()" *ngIf="isUserLoggedIn && isAdmin"><i
-                class="pi pi-plus"></i></button>
+        <button class="fab" (click)="onAddNewExame()" *ngIf="isUserLoggedIn && isAdmin">
+            <i class="pi pi-plus"></i>
+        </button>
 
         <div class="cards-container">
             <div class="card" *ngFor="let exam of exams">
+
                 <div class="card-header">
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'Matemática'"><svg viewBox="0 0 24 24">
+                    <!-- Ícone da disciplina -->
+                    <div class="discipline-icon" [ngClass]="{ premium: exam.premium }">
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Matemática'">
                             <path d="M4 4h16" />
                             <path d="M4 4l8 8-8 8" />
                             <path d="M4 20h16" />
-                        </svg></div>
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'Português'"><svg viewBox="0 0 24 24">
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Português'">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path
-                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
-                        </svg></div>
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'Quimica'"><svg viewBox="0 0 24 24">
+                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Quimica'">
                             <path d="M9 3h6" />
                             <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
                             <path d="M7.5 14.5h9" />
                             <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
                             <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
                             <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
-                        </svg></div>
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'Física'"><svg viewBox="0 0 24 24">
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Física'">
                             <circle cx="12" cy="12" r="2" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                        </svg></div>
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'Biologia'"><svg viewBox="0 0 24 24">
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Biologia'">
                             <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
                             <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
                             <path d="M7.5 6.5h9" />
@@ -1817,101 +1731,114 @@
                             <path d="M7 15c0 0 2 2.5 2 4" />
                             <path d="M17 15c0 0-2 2.5-2 4" />
                             <path d="M7.5 17h9" />
-                        </svg></div>
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'História'"><svg viewBox="0 0 24 24">
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'História'">
                             <path d="M5 3h14" />
                             <path d="M5 21h14" />
                             <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
                             <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
                             <path d="M8 14.5h8" />
-                        </svg></div>
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'Geografia'"><svg viewBox="0 0 24 24">
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Geografia'">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M3 12h18" />
                             <path d="M5 8h14" />
                             <path d="M5 16h14" />
                             <path d="M12 3c3 3 3 15 0 18" />
                             <path d="M12 3c-3 3-3 15 0 18" />
-                        </svg></div>
-                    <div class="discipline-icon" *ngIf="exam.subject.name === 'Inglês'"><svg viewBox="0 0 24 24">
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Inglês'">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M3 12h18" />
                             <path d="M12 3c3 3 3 15 0 18" />
                             <path d="M12 3c-3 3-3 15 0 18" />
                             <path d="M9 16l3-8 3 8" />
                             <path d="M10 13h4" />
-                        </svg></div>
+                        </svg>
+                    </div>
+
                     <div class="card-title-group">
                         <span class="card-name">{{ exam.subject.name }} {{ exam.number }}</span>
                         <span class="card-sub">{{ getInstitution(exam.institution) }} · {{ exam.institution }}</span>
                     </div>
+
                     <div class="dropdown-container">
-                        <button class="dropdown-btn" (click)="toggleDropdown(exam)"><i
-                                class="pi pi-ellipsis-h"></i></button>
+                        <button class="dropdown-btn" (click)="toggleDropdown(exam)">
+                            <i class="pi pi-ellipsis-h"></i>
+                        </button>
                         <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
                             <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
                                 *ngIf="isUserLoggedIn && isAdmin">Editar</a>
                             <a (click)="confirmarExclusao(exam); closeDropdown(exam)"
                                 *ngIf="isUserLoggedIn && isAdmin">Eliminar</a>
-                            <a (click)="onDownload(exam); toggleDropdown(exam)" *ngIf="!isPremiumExam(exam)">Baixar</a>
+                            <a (click)="onDownload(exam); toggleDropdown(exam)"
+                                *ngIf="!isPremiumExam(exam)">Baixar</a>
                         </div>
                     </div>
                 </div>
+
+                <!-- Meta grid: Ano · Tipo · Acesso (substitui os badges) -->
                 <div class="card-body">
-                    <div>
-                        <div class="description-label">Detalhes</div>
-                        <div class="detail-row">
-                            <span class="badge badge-date">
-                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.8">
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Ano</span>
+                            <span class="meta-value">
+                                <svg viewBox="0 0 24 24">
                                     <rect x="3" y="4" width="18" height="18" rx="2" />
                                     <path d="M3 10H21" stroke-linecap="round" />
                                 </svg>
                                 {{ exam.year }}
                             </span>
-                            <span class="badge badge-with-icon" [ngClass]="getBadgeClass(exam.examType)">
-                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.8">
-                                    <path
-                                        d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2Z"
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Tipo</span>
+                            <span class="meta-value">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2Z"
                                         stroke-linejoin="round" />
                                 </svg>
                                 {{ getType(exam.examType) }}
                             </span>
-                            <span class="badge" [ngClass]="exam.premium ? 'badge-premium' : 'badge-free'">
-                                <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.8">
-                                    <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke-linecap="round" />
-                                    <rect x="5" y="10" width="14" height="11" rx="2" />
-                                    <circle cx="12" cy="15" r="1.2" fill="currentColor" />
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Acesso</span>
+                            <span class="meta-value" [ngClass]="exam.premium ? 'premium-val' : 'free-val'">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" />
+                                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                                    <circle *ngIf="!exam.premium" cx="12" cy="16" r="1.2" fill="currentColor"
+                                        stroke="none" />
                                 </svg>
                                 {{ exam.premium ? 'Premium' : 'Gratuito' }}
                             </span>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
-                            [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
-                            <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                                style="font-size:12px;"></i>
-                            <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar exame' }}</span>
-                        </button>
-                        <button class="upgrade-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-                            </svg>
-                            <span>Ver resolução completa</span>
-                        </button>
-                    </div>
                 </div>
+
+                <div class="card-footer">
+                    <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
+                        [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
+                        <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
+                            <path
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                            style="font-size:12px;"></i>
+                        <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar exame' }}</span>
+                    </button>
+                    <button class="upgrade-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                        </svg>
+                        <span>Ver resolução completa</span>
+                    </button>
+                </div>
+
             </div>
         </div>
 
-        <div *ngIf="!showLoading && !retryVisible && exams.length === 0" class="empty-state">Nenhum exame encontrado.
+        <div *ngIf="!showLoading && !retryVisible && exams.length === 0" class="empty-state">
+            Nenhum exame encontrado.
         </div>
 
         <div *ngIf="!retryVisible" class="load-more-container">
@@ -1961,9 +1888,7 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
@@ -2024,7 +1949,6 @@
                         [disabled]="showLoading" />
                 </div>
                 <button class="btn-modal-primary" type="button" (click)="save()" [disabled]="showLoading">
-                    <!-- Spinner inline substitui o ícone de guardar durante loading -->
                     <span class="btn-spinner" *ngIf="showLoading"></span>
                     <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2114,9 +2038,7 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalLogin">
     <div class="modal">
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
 
@@ -2136,8 +2058,7 @@
                 </div>
 
                 <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou continue com e-mail</span>
-                </div>
+                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou continue com e-mail</span></div>
 
                 <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
                     <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
@@ -2152,7 +2073,6 @@
                         Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
                         entrada ou spam.
                     </div>
-                    <!-- Feedback de envio de OTP -->
                     <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
                         <span class="spinner-sm"></span>
                         A enviar código para {{ user.email }}...
@@ -2169,7 +2089,6 @@
                             style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
                     </div>
                     <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
-                        <!-- Spinner inline durante loading -->
                         <span class="btn-spinner" *ngIf="showLoading"></span>
                         <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
@@ -2188,8 +2107,7 @@
                 <div class="modal-header">
                     <div class="modal-title-group">
                         <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Criar conta' }}</h2>
-                        <span class="modal-subtitle">{{ step === 'otp' ? 'Confirme o seu e-mail' : 'É rápido e gratuito'
-                            }}</span>
+                        <span class="modal-subtitle">{{ step === 'otp' ? 'Confirme o seu e-mail' : 'É rápido e gratuito' }}</span>
                     </div>
                     <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
                 </div>
@@ -2200,8 +2118,7 @@
                 </div>
 
                 <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou registe-se com e-mail</span>
-                </div>
+                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou registe-se com e-mail</span></div>
 
                 <form autocomplete="off" #registerForm="ngForm"
                     (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
@@ -2229,7 +2146,6 @@
                         Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de
                         entrada ou spam.
                     </div>
-                    <!-- Feedback de envio de OTP no registo -->
                     <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
                         <span class="spinner-sm"></span>
                         A criar conta e enviar código...
@@ -2241,7 +2157,6 @@
                             style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
                     </div>
                     <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
-                        <!-- Spinner inline durante loading -->
                         <span class="btn-spinner" *ngIf="showLoading"></span>
                         <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
@@ -2253,9 +2168,9 @@
                         <span *ngIf="showLoading && step === 'email'">A criar conta...</span>
                         <span *ngIf="showLoading && step === 'otp'">A verificar código...</span>
                     </button>
-                    <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não
-                        recebeu?
-                        Reenviar código</a>
+                    <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">
+                        Não recebeu? Reenviar código
+                    </a>
                 </form>
             </div>
 
@@ -2294,22 +2209,42 @@
                     </div>
                 </div>
                 <ul class="feature-list">
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</li>
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            </svg>
+                        </span>
+                        Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Resolução detalhada com dicas e comentários passo a passo</li>
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            </svg>
+                        </span>
+                        Resolução detalhada com dicas e comentários passo a passo
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Criação de quizzes avançados e personalizados</li>
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            </svg>
+                        </span>
+                        Criação de quizzes avançados e personalizados
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Mais exercícios por quiz para reforçar o aprendizado</li>
+                            </svg>
+                        </span>
+                        Mais exercícios por quiz para reforçar o aprendizado
+                    </li>
                 </ul>
             </div>
 
@@ -2331,9 +2266,7 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
     <div class="modal">
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
@@ -2360,7 +2293,6 @@
                 </div>
             </div>
 
-            <!-- COM carteiras -->
             <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
                 <div class="wallet-options">
                     <label class="wallet-card" *ngFor="let wallet of userWallets"
@@ -2394,7 +2326,6 @@
                     Adicionar outro método
                 </button>
 
-                <!-- Botão de confirmação de pagamento com loading inline -->
                 <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
                     <span class="btn-spinner" *ngIf="showLoading"></span>
                     <ng-container *ngIf="!showLoading">
@@ -2410,7 +2341,6 @@
                 <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
             </ng-container>
 
-            <!-- SEM carteiras -->
             <ng-template #noWallets>
                 <div class="empty-wallets">
                     <div class="empty-wallets-icon">
@@ -2444,9 +2374,7 @@
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
     <div class="modal">
-        <!-- Barra de progresso no topo do modal -->
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
         <div class="modal-handle"><span></span></div>
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
@@ -2491,7 +2419,6 @@
                     <span class="badge-detected">Detectado</span>
                 </div>
 
-                <!-- Botão com spinner inline durante submissão -->
                 <button class="btn-modal-primary" type="submit"
                     [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
                     <span class="btn-spinner" *ngIf="showLoading"></span>

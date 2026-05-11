@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Question } from '../core/model/Question';
 import { ChallengeFilter } from '../core/interface/ChallengeFilter';
 import { IApiResponse } from '../core/interface/IApiResponse';
+import { ChallengeRankingResultDTO } from '../core/model/ChallengeRankingResultDTO';
 
 interface CacheEntry<T> {
     data: T;
@@ -143,5 +144,11 @@ export class ChallengeService {
 
     removeQuestionFromChallengeQuestions(challengeId: number, questionId: number): Observable<Challenge> {
         return this.http.delete<Challenge>(`${this.baseUrl}/${challengeId}/questions/${questionId}`, {});
+    }
+
+    getRanking(challengeId: string): Observable<ChallengeRankingResultDTO[]> {
+        return this.http.get<ChallengeRankingResultDTO[]>(
+            `${this.baseUrl}/${challengeId}/ranking`
+        );
     }
 }
