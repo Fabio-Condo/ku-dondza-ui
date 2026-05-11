@@ -550,7 +550,7 @@ export class ChallengesComponent implements OnInit {
   }
 
   saveChallenge(challenge: Challenge) {
-
+    this.router.navigate(['/challenges', challenge.challengeId, 'results']);
   }
 
   viewResults(challenge: Challenge) {
