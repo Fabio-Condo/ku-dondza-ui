@@ -1060,8 +1060,8 @@
         <div class="quiz-header">
             <div class="quiz-header-top">
                 <div class="quiz-header-left">
-                    <h1>Resultados — Anatomia Humana</h1>
-                    <p>Turma B · 12 de Junho 2025 · 28 participantes</p>
+                    <h1>Resultados — {{ challenge.subjectName }}</h1>
+                    <p>{{ challenge.description }}</p>
                 </div>
                 <div class="status-badge">
                     <div class="status-dot"></div>
@@ -1070,42 +1070,74 @@
             </div>
             <div class="stats-strip">
                 <div class="stat-item">
-                    <div class="stat-value">28</div>
+                    <div class="stat-value">{{ challenge.totalParticipants }}</div>
                     <div class="stat-label">Participantes</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value sv-red">20</div>
+                    <div class="stat-value sv-red">{{ challenge.totalQuestions }}</div>
                     <div class="stat-label">Questões</div>
                 </div>
+                <!--
                 <div class="stat-item">
                     <div class="stat-value sv-green">72%</div>
                     <div class="stat-label">Média geral</div>
                 </div>
+                -->
                 <div class="stat-item">
-                    <div class="stat-value sv-orange">14m</div>
-                    <div class="stat-label">Tempo médio</div>
+                    <div class="stat-value sv-orange">{{ challenge.xpReward }}</div>
+                    <div class="stat-label">XP possível</div>
                 </div>
             </div>
         </div>
 
         <!-- ── Minha posição ── -->
-        <div class="my-card">
-            <div class="my-pos-rank"><span>#</span>4</div>
-            <div class="my-pos-avatar">{{ getInitials(loggedUser.fullName) }}</div>
+        <div class="my-card" *ngIf="myRanking">
+
+            <div class="my-pos-rank">
+                <span>#</span>{{ myRanking.rankingPosition }}
+            </div>
+
+            <div class="my-pos-avatar">
+                {{ getInitials(myRanking.username) }}
+            </div>
+
             <div class="my-pos-info">
-                <div class="my-pos-name">{{ loggedUser.fullName }} <span class="you-badge">Você</span></div>
-                <div class="my-pos-sub">16/20 correctas · 11m 42s · Continue a melhorar!</div>
+                <div class="my-pos-name">
+                    {{ myRanking.username }}
+                    <span class="you-badge">Você</span>
+                </div>
+
+                <div class="my-pos-sub">
+                    {{ myRanking.correctAnswers }}/{{ myRanking.totalQuestions }} correctas
+                    <!--
+                    · {{ formatTime(myRanking.timeSpent) }}
+                    · Continue a melhorar!
+                    -->
+                </div>
             </div>
+
             <div class="my-pos-right">
+
                 <div class="my-score-block">
-                    <div class="my-score-val">80%</div>
-                    <div class="my-score-label">Percentual</div>
+                    <div class="my-score-val">
+                        {{ myRanking.percentage.toFixed(1) }}%
+                    </div>
+                    <div class="my-score-label">
+                        Percentual
+                    </div>
                 </div>
+
                 <div class="my-score-block">
-                    <div class="my-score-val xp-val">+320</div>
-                    <div class="my-score-label">XP ganho</div>
+                    <div class="my-score-val xp-val">
+                        +{{ myRanking.xpEarned }}
+                    </div>
+                    <div class="my-score-label">
+                        XP ganho
+                    </div>
                 </div>
+
             </div>
+
         </div>
 
         <!-- ── Pódio ── -->

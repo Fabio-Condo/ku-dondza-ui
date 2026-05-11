@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { ActivatedRoute } from '@angular/router';
+import { Challenge } from 'src/app/core/model/Challenge';
 
 @Component({
   selector: 'app-results',
@@ -15,6 +16,10 @@ import { ActivatedRoute } from '@angular/router';
 export class ResultsComponent implements OnInit {
 
   rankings: ChallengeRankingResultDTO[] = [];
+  myRanking: ChallengeRankingResultDTO | null = null;
+
+  challenge!: Challenge;
+  challengeId!: string;
 
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
@@ -32,9 +37,11 @@ export class ResultsComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-    const questionId = this.route.snapshot.params['id'];
-    if (questionId) {
-      this.loadRanking(questionId);
+    const challengeId = this.route.snapshot.params['id'];
+    if (challengeId) {
+      this.challengeId = challengeId;
+      this.loadChallenge();
+      this.loadRanking(challengeId );
     }
 
     this.scrollToTop();
@@ -44,15 +51,41 @@ export class ResultsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  loadChallenge(): void {
+    this.challengeService.getById(this.challengeId).subscribe({
+      next: (response) => {
+        this.challenge = response;
+        console.log('Challenge carregado:', response);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar challenge', error);
+      }
+    });
+  }
+
   loadRanking(challengeId: string): void {
     this.challengeService.getRanking(challengeId).subscribe({
       next: (response) => {
         this.rankings = response;
+
+        this.myRanking = this.rankings.find(
+          r => r.userId === this.loggedUser.id
+        ) || null;
+
       },
       error: (error) => {
         console.error('Erro ao carregar ranking:', error);
       }
     });
+  }
+
+  formatTime(seconds: number): string {
+    if (!seconds) return '0s';
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${minutes}m ${remainingSeconds}s`;
   }
 
   getInitials(name: string): string {
