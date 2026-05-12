@@ -7,6 +7,7 @@ import { User } from 'src/app/core/model/User';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { ActivatedRoute } from '@angular/router';
 import { Challenge } from 'src/app/core/model/Challenge';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-results',
@@ -24,12 +25,16 @@ export class ResultsComponent implements OnInit {
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
 
+  showLoading = false;
+  loadingMessage = 'Carregando';
+
   constructor(
     private challengeService: ChallengeService,
     private router: Router,
     private title: Title,
     private authenticationService: AuthenticationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +46,7 @@ export class ResultsComponent implements OnInit {
     if (challengeId) {
       this.challengeId = challengeId;
       this.loadChallenge();
-      this.loadRanking(challengeId );
+      this.loadRanking(challengeId);
     }
 
     this.scrollToTop();
@@ -52,18 +57,22 @@ export class ResultsComponent implements OnInit {
   }
 
   loadChallenge(): void {
+    this.showLoading = true;
     this.challengeService.getById(this.challengeId).subscribe({
       next: (response) => {
         this.challenge = response;
-        console.log('Challenge carregado:', response);
+        this.showLoading = false;
       },
-      error: (error) => {
-        console.error('Erro ao carregar challenge', error);
+      error: (errorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     });
   }
 
   loadRanking(challengeId: string): void {
+    this.showLoading = true;
+
     this.challengeService.getRanking(challengeId).subscribe({
       next: (response) => {
         this.rankings = response;
@@ -71,10 +80,12 @@ export class ResultsComponent implements OnInit {
         this.myRanking = this.rankings.find(
           r => r.userId === this.loggedUser.id
         ) || null;
+        this.showLoading = false;
 
       },
-      error: (error) => {
-        console.error('Erro ao carregar ranking:', error);
+      error: (errorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
       }
     });
   }
@@ -114,6 +125,13 @@ export class ResultsComponent implements OnInit {
     if (index === 0) return 'av-gold';
     if (index === 1) return 'av-silver';
     return 'av-bronze';
+  }
+
+  private sendErrorNotification(message: string): void {
+    this.messageService.add({
+      severity: 'error',
+      detail: message || 'Ocorreu um erro. Por favor, tente novamente.'
+    });
   }
 
 }

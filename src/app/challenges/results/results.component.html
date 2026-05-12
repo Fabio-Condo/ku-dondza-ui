@@ -1047,6 +1047,13 @@
 
     <div class="page">
 
+        <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+            <div class="loading-box">
+                <div class="spinner"></div>
+                <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+            </div>
+        </div>
+
         <button class="back-btn" onclick="history.back()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
