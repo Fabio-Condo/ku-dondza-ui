@@ -8,6 +8,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 import { ActivatedRoute } from '@angular/router';
 import { Challenge } from 'src/app/core/model/Challenge';
 import { MessageService } from 'primeng/api';
+import { delayWhen, retryWhen, scan, timer } from 'rxjs';
 
 @Component({
   selector: 'app-results',
@@ -27,6 +28,8 @@ export class ResultsComponent implements OnInit {
 
   showLoading = false;
   loadingMessage = 'Carregando';
+
+  retryVisible: boolean = false;
 
   constructor(
     private challengeService: ChallengeService,
@@ -57,23 +60,54 @@ export class ResultsComponent implements OnInit {
   }
 
   loadChallenge(): void {
+    this.retryVisible = false;
     this.showLoading = true;
-    this.challengeService.getById(this.challengeId).subscribe({
+    this.challengeService.getById(this.challengeId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe({
       next: (response) => {
         this.challenge = response;
-        this.showLoading = false;
+        //this.showLoading = false;
       },
       error: (errorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
       }
     });
   }
 
   loadRanking(challengeId: string): void {
+    this.retryVisible = false;
     this.showLoading = true;
 
-    this.challengeService.getRanking(challengeId).subscribe({
+    this.challengeService.getRanking(challengeId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe({
       next: (response) => {
         this.rankings = response;
 
@@ -84,10 +118,21 @@ export class ResultsComponent implements OnInit {
 
       },
       error: (errorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
       }
     });
+  }
+
+  retryGetChallengeAndRanking(): void {
+    this.retryVisible = false;
+    this.loadChallenge();
+    this.loadRanking(this.challengeId);
   }
 
   formatTime(seconds: number): string {
