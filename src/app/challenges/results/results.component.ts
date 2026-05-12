@@ -49,7 +49,6 @@ export class ResultsComponent implements OnInit {
     if (challengeId) {
       this.challengeId = challengeId;
       this.loadChallenge();
-      this.loadRanking(challengeId);
     }
 
     this.scrollToTop();
@@ -62,33 +61,36 @@ export class ResultsComponent implements OnInit {
   loadChallenge(): void {
     this.retryVisible = false;
     this.showLoading = true;
+
     this.challengeService.getById(this.challengeId).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
-            if (retryCount >= 3) throw error; // 3 tentativas
+            if (retryCount >= 3) throw error;
             const nextRetry = retryCount + 1;
             this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
             return nextRetry;
           }, 0),
-          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
         )
       )
-    ).subscribe({
-      next: (response) => {
+    ).subscribe(
+      (response) => {
         this.challenge = response;
-        //this.showLoading = false;
+        this.loadRanking(this.challengeId);
+        // this.showLoading = false;
       },
-      error: (errorResponse) => {
+      (errorResponse) => {
         this.showLoading = false;
         this.retryVisible = true;
+
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
         } else {
           this.sendErrorNotification(errorResponse.error.message);
         }
       }
-    });
+    );
   }
 
   loadRanking(challengeId: string): void {
@@ -99,34 +101,35 @@ export class ResultsComponent implements OnInit {
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
-            if (retryCount >= 3) throw error; // 3 tentativas
+            if (retryCount >= 3) throw error;
             const nextRetry = retryCount + 1;
             this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
             return nextRetry;
           }, 0),
-          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
         )
       )
-    ).subscribe({
-      next: (response) => {
+    ).subscribe(
+      (response) => {
         this.rankings = response;
 
         this.myRanking = this.rankings.find(
           r => r.userId === this.loggedUser.id
         ) || null;
-        this.showLoading = false;
 
+        this.showLoading = false;
       },
-      error: (errorResponse) => {
+      (errorResponse) => {
         this.showLoading = false;
         this.retryVisible = true;
+
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
         } else {
           this.sendErrorNotification(errorResponse.error.message);
         }
       }
-    });
+    );
   }
 
   retryGetChallengeAndRanking(): void {
