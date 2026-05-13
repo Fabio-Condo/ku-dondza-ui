@@ -103,11 +103,18 @@ export class ChallengesComponent implements OnInit {
   update() {
     this.showLoading = true;
     this.challengeService.update(this.challenge).subscribe(
-      response => {
-        this.challenge = response
+      challenge => {
+        this.challenge = challenge
+        this.challenge.startDate = challenge.startDate
+          ? new Date(challenge.startDate).toISOString().split('T')[0] as any
+          : null;
+
+        this.challenge.endDate = challenge.endDate
+          ? new Date(challenge.endDate).toISOString().split('T')[0] as any
+          : null;
+
         this.messageService.add({ severity: 'success', detail: 'Desafio actualizado com sucesso!' });
         this.showLoading = false;
-        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -119,10 +126,18 @@ export class ChallengesComponent implements OnInit {
   addNew() {
     this.showLoading = true;
     this.challengeService.add(this.challenge).subscribe(
-      response => {
+      challenge => {
+        this.challenge = challenge
+        this.challenge.startDate = challenge.startDate
+          ? new Date(challenge.startDate).toISOString().split('T')[0] as any
+          : null;
+
+        this.challenge.endDate = challenge.endDate
+          ? new Date(challenge.endDate).toISOString().split('T')[0] as any
+          : null;
+
         this.messageService.add({ severity: 'success', detail: 'Desafio salvo com sucesso!' });
         this.showLoading = false;
-        this.findAll();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
@@ -294,6 +309,15 @@ export class ChallengesComponent implements OnInit {
 
   onUpdateChallenge(challenge: Challenge): void {
     this.challenge = challenge;
+
+    this.challenge.startDate = challenge.startDate
+      ? new Date(challenge.startDate).toISOString().split('T')[0] as any
+      : null;
+
+    this.challenge.endDate = challenge.endDate
+      ? new Date(challenge.endDate).toISOString().split('T')[0] as any
+      : null;
+
     this.displayModalSave = true;
   }
 
