@@ -1,3 +1,5 @@
+import { Subject } from "./Subject";
+
 export class Challenge {
 
   id!: number;
@@ -7,6 +9,8 @@ export class Challenge {
   description?: string;
 
   difficultyLevel!: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
+
+  subject = new Subject();
 
   xpReward!: number;
 
@@ -24,4 +28,6 @@ export class Challenge {
   submitted!: boolean;
 
   totalParticipants!: number;
+
+  isAdminMenuOpen: boolean = false;
 }

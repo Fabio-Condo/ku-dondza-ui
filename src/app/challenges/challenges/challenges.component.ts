@@ -12,6 +12,8 @@ import { delayWhen, retryWhen, scan, timer } from 'rxjs';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { Subject } from 'src/app/core/model/Subject';
 declare const MathJax: any;
 
 
@@ -26,6 +28,7 @@ export class ChallengesComponent implements OnInit {
 
   challenges: Challenge[] = [];
   selectedChallenge?: Challenge;
+  displayModalSave: boolean = false;
 
   allQuestions: Question[] = [];
   displayModalQuestionsList: boolean = false;
@@ -36,6 +39,8 @@ export class ChallengesComponent implements OnInit {
 
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
+
+  subjects: Subject[] = [];
 
   showLoading = false;
   loadingMessage = 'Carregando';
@@ -52,6 +57,12 @@ export class ChallengesComponent implements OnInit {
 
   displayFilterModal = false;
 
+  difficultyLevelOptions = [
+    { label: 'Iniciante', value: 'BEGINNER' },
+    { label: 'Intermediário', value: 'INTERMEDIATE' },
+    { label: 'Avançado', value: 'ADVANCED' },
+  ];
+
   filtro: ChallengeFilter = {
     page: 0,
     itemsPerPage: 6,
@@ -61,18 +72,63 @@ export class ChallengesComponent implements OnInit {
   constructor(
     private challengeService: ChallengeService,
     private questionService: QuestionService,
+    private subjectsService: SubjectsService,
     private messageService: MessageService,
     private title: Title,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.carregarDisciplinas();
     this.findAll();
     this.scrollToTop();
   }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  get editing() {
+    return Boolean(this.challenge.id);
+  }
+
+  save() {
+    if (this.editing) {
+      this.update()
+    } else {
+      this.addNew()
+    }
+  }
+
+  update() {
+    this.showLoading = true;
+    this.challengeService.update(this.challenge).subscribe(
+      response => {
+        this.challenge = response
+        this.messageService.add({ severity: 'success', detail: 'Desafio actualizado com sucesso!' });
+        this.showLoading = false;
+        this.findAll();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
+  }
+
+  addNew() {
+    this.showLoading = true;
+    this.challengeService.add(this.challenge).subscribe(
+      response => {
+        this.messageService.add({ severity: 'success', detail: 'Desafio salvo com sucesso!' });
+        this.showLoading = false;
+        this.findAll();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    );
   }
 
   findAll(pagina: number = 0): void {
@@ -165,7 +221,6 @@ export class ChallengesComponent implements OnInit {
     return Math.ceil(this.totalRecords / this.filtro.itemsPerPage);
   }
 
-
   goToPage(page: number): void {
     if (
       page >= 1 &&
@@ -235,6 +290,16 @@ export class ChallengesComponent implements OnInit {
 
   openChallenge(id: string): void {
     this.getById(id);
+  }
+
+  onUpdateChallenge(challenge: Challenge): void {
+    this.challenge = challenge;
+    this.displayModalSave = true;
+  }
+
+  onAddNewChallenge(): void {
+    this.challenge = new Challenge();
+    this.displayModalSave = true;
   }
 
   getDifficultyLabel(level: string): string {
@@ -373,6 +438,14 @@ export class ChallengesComponent implements OnInit {
     });
   }
 
+  toggleDropdown(challenge: Challenge) {
+    challenge.isAdminMenuOpen = !challenge.isAdminMenuOpen
+  }
+
+  closeDropdown(challenge: Challenge) {
+    challenge.isAdminMenuOpen = false;
+  }
+
   openFilterModal(): void {
     this.displayFilterModal = true;
     document.body.classList.add('no-scroll');
@@ -403,6 +476,17 @@ export class ChallengesComponent implements OnInit {
 
     this.closeFilterModal();
     this.findAll();
+  }
+
+  carregarDisciplinas() {
+    this.subjectsService.findAll().subscribe({
+      next: (dados) => {
+        this.subjects = dados;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    });
   }
 
   getFormattedText(text: string): string {

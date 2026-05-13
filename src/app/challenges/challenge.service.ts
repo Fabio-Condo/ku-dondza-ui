@@ -134,6 +134,24 @@ export class ChallengeService {
         );
     }
 
+    add(challenge: Challenge): Observable<Challenge> {
+        return this.http.post<Challenge>(this.baseUrl, challenge).pipe(
+            tap(() => this.clearCache())
+        );
+    }
+
+    update(challenge: Challenge): Observable<Challenge> {
+        return this.http.put<Challenge>(`${this.baseUrl}/${challenge.id}`, challenge).pipe(
+            tap(() => this.clearCache())
+        );
+    }
+
+    delete(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
+            tap(() => this.clearCache())
+        );
+    }
+
     getQuestionsByChallengeId(id: number): Observable<Question[]> {
         return this.http.get<Question[]>(`${this.baseUrl}/${id}/questions`);
     }
