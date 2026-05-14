@@ -1245,7 +1245,8 @@
                     </button>
                     <div class="dropdown" *ngIf="challenge.isAdminMenuOpen">
                         <a (click)="onUpdateChallenge(challenge); closeDropdown(challenge)">Editar</a>
-                        <a (click)="onGetSelectedQuestionsByTopicId(challenge); closeDropdown(challenge)">Ver Questões</a>
+                        <a (click)="onGetSelectedQuestionsByTopicId(challenge); closeDropdown(challenge)">Ver
+                            Questões</a>
                         <a (click)="onGetQuestionsByTopicId(challenge); closeDropdown(challenge)">Editar Questões</a>
                     </div>
                 </div>
@@ -1683,6 +1684,15 @@
                     <span class="modal-subtitle">Todas questões</span>
                 </div>
                 <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Tópico</label>
+                <select id="course" name="course" [(ngModel)]="selectedTopic.id" [disabled]="!challenge.subject.id"
+                    (change)="findAllByTopicAndMarkSelected()" required>
+                    <option value="" disabled selected>Selecione o tópico</option>
+                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+                </select>
             </div>
 
             <div *ngFor="let question of allQuestions; let i = index">

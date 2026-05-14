@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
+import { TopicService } from 'src/app/topics/topicsService.service';
+import { Topic } from 'src/app/core/model/Topic';
 declare const MathJax: any;
 
 
@@ -36,6 +38,9 @@ export class ChallengesComponent implements OnInit {
 
   selectedQuestions: Question[] = [];
   displayModalSelectedQuestionsList: boolean = false;
+
+  topics: Topic[] = [];
+  selectedTopic: Topic = new Topic();
 
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
@@ -73,6 +78,7 @@ export class ChallengesComponent implements OnInit {
     private challengeService: ChallengeService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
+    private topicService: TopicService,
     private messageService: MessageService,
     private title: Title,
     private router: Router
@@ -374,7 +380,10 @@ export class ChallengesComponent implements OnInit {
 
   onGetQuestionsByTopicId(challenge: Challenge) {
     this.challenge = challenge;
-    this.findAllByTopicAndMarkSelected(this.challenge);
+    this.selectedTopic = new Topic();
+    this.topics = [];
+    this.allQuestions = [];
+    this.getTopicsBySubjectId(this.challenge.subject.id);
     this.displayModalQuestionsList = true;
     document.body.classList.add('no-scroll');
   }
@@ -385,12 +394,12 @@ export class ChallengesComponent implements OnInit {
   }
 
   // USADO PARA ADD QUESTIONS NOS TESTES DE PROGRESSO
-  findAllByTopicAndMarkSelected(challenge: Challenge): void {
+  findAllByTopicAndMarkSelected(): void {
     this.loadingMessage = "Buscando questões";
     this.showLoading = true;
-
-    this.questionService.findAllByTopicAndMarkSelected(challenge.id).subscribe(
-      (dados: Question[]) => {
+    //this.questionService.findAllByTopicAndMarkSelected(challenge.id).subscribe(
+    this.questionService.getQuestionsByTopicId(this.selectedTopic.id).subscribe(
+    (dados: Question[]) => {
         this.allQuestions = dados;
         this.currentQuestionIndex = 0;
         this.showLoading = false;
@@ -458,6 +467,39 @@ export class ChallengesComponent implements OnInit {
       error: (error: HttpErrorResponse) => {
         this.sendErrorNotification(error.error.message);
         this.showLoading = false;
+      }
+    });
+  }
+
+  getTopicsBySubjectId(subjectId: number): void {
+
+    this.loadingMessage = "Obtendo tópicos";
+    this.showLoading = true;
+
+    this.topicService.getBySubjectIdWithCache(subjectId).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+        )
+      )
+    ).subscribe({
+      next: (dados: Topic[]) => {
+        this.topics = dados;
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
       }
     });
   }
