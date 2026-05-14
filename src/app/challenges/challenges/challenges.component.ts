@@ -404,11 +404,11 @@ export class ChallengesComponent implements OnInit {
     );
   }
 
-  onAddQuestionToTestQuestions(questionId: number): void {
-    this.addQuestionToTestQuestions(questionId);
+  onAddQuestionToChallengeQuestions(questionId: number): void {
+    this.addQuestionToChallengeQuestions(questionId);
   }
 
-  addQuestionToTestQuestions(questionId: number): void {
+  addQuestionToChallengeQuestions(questionId: number): void {
     this.loadingMessage = 'Adicionando questão';
     this.showLoading = true;
 
@@ -431,7 +431,7 @@ export class ChallengesComponent implements OnInit {
     });
   }
 
-  onRemoveQuestionFromTestQuestions(questionId: number): void {
+  onRemoveQuestionFromChallengeQuestions(questionId: number): void {
     this.removeQuestionFromChallengeQuestions(questionId);
   }
 
