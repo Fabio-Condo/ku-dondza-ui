@@ -99,10 +99,10 @@ export class SubjectsService {
 
   // FIND ALL COM CACHE
   findAll(): Observable<Subject[]> {
-    //if (this.subjectsListCache) {
-    //  console.log('Returning subjects from cache');
-    //  return of(this.subjectsListCache);
-    //}
+    if (this.subjectsListCache) {
+      console.log('Returning subjects from cache');
+      return of(this.subjectsListCache);
+    }
 
     console.log('Fetching subjects from API')
     return this.http.get<Subject[]>(this.host).pipe(
