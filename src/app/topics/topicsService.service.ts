@@ -97,7 +97,7 @@ export class TopicService {
         // Se já existe no cache, retorna
         if (!this.subjectTopicListCache[subjectId]) {
             this.subjectTopicListCache[subjectId] = this.http
-                .get<Topic[]>(`${this.host}/${subjectId}/subjects`)
+                .get<Topic[]>(`${this.host}/subjects/${subjectId}`)
                 .pipe(
                     shareReplay(1) // mantém resposta em memória
                 );
