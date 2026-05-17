@@ -222,7 +222,7 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
 
     this.filtro.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.examesService.findAll(this.filtro).pipe(
+    this.examesService.filterWithCash(this.filtro).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {

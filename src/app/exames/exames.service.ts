@@ -34,6 +34,41 @@ export class ExamesService {
     this.examCache.clear();
   }
 
+  filterWithCash(filtro: ExameFilter): Observable<IApiResponse<Exam>> {
+
+    let params = new HttpParams()
+      .set('page', filtro.pagina)
+      .set('sort', filtro.ordenamento)
+      .set('size', filtro.itensPorPagina);
+
+    if (filtro.searchParam) {
+      params = params.set('searchParam', filtro.searchParam);
+    }
+
+    if (filtro.subject) {
+      params = params.set('subject', filtro.subject);
+    }
+
+    if (filtro.examType) {
+      params = params.set('examType', filtro.examType);
+    }
+
+    if (filtro.institution) {
+      params = params.set('institution', filtro.institution);
+    }
+
+    if (filtro.beginYear) {
+      params = params.set('beginYear', filtro.beginYear.toString());
+    }
+
+    if (filtro.endYear) {
+      params = params.set('endYear', filtro.endYear.toString());
+    }
+
+    return this.http.get<IApiResponse<Exam>>(`${this.host}/filter-with-cash`, { params });
+
+  }
+
   findAll(filtro: ExameFilter): Observable<IApiResponse<Exam>> {
 
     let params = new HttpParams()

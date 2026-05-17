@@ -34,6 +34,28 @@ export class QuizService {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
   }
 
+  getQuizzesWithCash(filter: QuizFilter): Observable<IApiResponse<Quiz>> {
+
+    let params = new HttpParams()
+      .set('page', filter.page)
+      .set('sort', filter.sort)
+      .set('size', filter.itemsPerPage);
+
+    if (filter.searchParam) {
+      params = params.set('searchParam', filter.searchParam);
+    }
+
+    if (filter.subject) {
+      params = params.set('subject', filter.subject);
+    }
+
+    if (filter.user) {
+      params = params.set('user', filter.user);
+    }
+
+    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/filter-with-cache`, { params });
+  }
+
   getQuizzes(filter: QuizFilter): Observable<IApiResponse<Quiz>> {
 
     let params = new HttpParams()
