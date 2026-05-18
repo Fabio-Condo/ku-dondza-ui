@@ -22,8 +22,8 @@ export class ExamesService {
   private examsCache = new Map<string, CacheEntry<IApiResponse<Exam>>>();
   private examCache = new Map<string, CacheEntry<Exam>>();
 
-  //private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
-  private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
+  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+  //private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
 
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
@@ -65,7 +65,23 @@ export class ExamesService {
       params = params.set('endYear', filtro.endYear.toString());
     }
 
-    return this.http.get<IApiResponse<Exam>>(`${this.host}/filter-with-cash`, { params });
+    const cacheKey = params.toString();
+    const cachedEntry = this.examsCache.get(cacheKey);
+
+    // Se cache existir e ainda for válido
+    if (cachedEntry && this.isCacheValid(cachedEntry)) {
+      return of(cachedEntry.data);
+    }
+
+    // Caso contrário, chama API
+    return this.http.get<IApiResponse<Exam>>(`${this.host}/filter-with-cash`, { params }).pipe(
+      tap(response => {
+        this.examsCache.set(cacheKey, {
+          data: response,
+          timestamp: Date.now()
+        });
+      })
+    );
 
   }
 

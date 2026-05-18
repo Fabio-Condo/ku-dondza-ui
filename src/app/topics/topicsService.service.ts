@@ -22,8 +22,8 @@ export class TopicService {
     private topicCache = new Map<string, CacheEntry<Topic>>();
     private subjectTopicListCache: { [key: number]: Observable<Topic[]> } = {};
 
-    //private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
-    private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
+    private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+    //private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
 
     private isCacheValid(entry: CacheEntry<any>): boolean {
         return (Date.now() - entry.timestamp) < this.CACHE_TTL;
@@ -92,21 +92,21 @@ export class TopicService {
         );
     }
 
-    //getSubjectsById(subjectId: number): Observable<Topic[]> {
+    getBySubjectIdWithCache(subjectId: number): Observable<Topic[]> {
 
         // Se já existe no cache, retorna
-    //    if (!this.subjectTopicListCache[subjectId]) {
-    //        this.subjectTopicListCache[subjectId] = this.http
-    //            .get<Topic[]>(`${this.host}/subjects/${subjectId}`)
-    //            .pipe(
-    //                shareReplay(1) // mantém resposta em memória
-    //            );
-    //    }
+        if (!this.subjectTopicListCache[subjectId]) {
+            this.subjectTopicListCache[subjectId] = this.http
+                .get<Topic[]>(`${this.host}/subjects/${subjectId}`)
+                .pipe(
+                    shareReplay(1) // mantém resposta em memória
+                );
+        }
 
-    //    return this.subjectTopicListCache[subjectId];
-    //}
+        return this.subjectTopicListCache[subjectId];
+    }
 
-    getBySubjectIdWithCache(subjectId: number): Observable<Topic[]> {
+    getSubjectsById(subjectId: number): Observable<Topic[]> {
         return this.http.get<Topic[]>(`${this.host}/subjects/${subjectId}`);
     }
 
@@ -114,7 +114,7 @@ export class TopicService {
         return this.http.get<Topic>(`${this.host}/${id}`, {});
     }
 
-    getBySubjectId(subjectId: number): Observable<Topic[]> {
+    getBySubjectId2(subjectId: number): Observable<Topic[]> {
         return this.http.get<Topic[]>(`${this.host}/subjects/${subjectId}`);
     }
 

@@ -174,7 +174,7 @@ export class ProgressComponent implements OnInit {
     this.loadingMessage = "Carregando tópicos"
     this.showLoading = true;
 
-    this.topicService.getBySubjectId(this.subject.id!).subscribe({
+    this.topicService.getBySubjectIdWithCache(this.subject.id!).subscribe({
       next: (dados) => {
         this.topics = [];
         this.topics = dados;

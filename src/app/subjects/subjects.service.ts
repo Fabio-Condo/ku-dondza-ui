@@ -29,8 +29,8 @@ export class SubjectsService {
   private subjectsListCache: Subject[] | null = null;
 
 
-  //private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
-  private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
+  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+  //private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
 
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
@@ -97,22 +97,22 @@ export class SubjectsService {
     );
   }
 
-  findAll(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(this.host);
-  }
+  //findAll(): Observable<Subject[]> {
+  //  return this.http.get<Subject[]>(this.host);
+  //}
 
   // FIND ALL COM CACHE
-  //findAll(): Observable<Subject[]> {
-  //  if (this.subjectsListCache) {
-  //    console.log('Returning subjects from cache');
-  //    return of(this.subjectsListCache);
-  //  }
+  findAll(): Observable<Subject[]> {
+    if (this.subjectsListCache) {
+      console.log('Returning subjects from cache');
+      return of(this.subjectsListCache);
+    }
 
-  //  console.log('Fetching subjects from API')
-  //  return this.http.get<Subject[]>(this.host).pipe(
-  //    tap(subjects => this.subjectsListCache = subjects)
-  //  );
-  //}
+    console.log('Fetching subjects from API')
+    return this.http.get<Subject[]>(this.host).pipe(
+      tap(subjects => this.subjectsListCache = subjects)
+    );
+  }
 
   filter(filtro: SubjectFilter, currentUserId: number): Observable<IApiResponse<Subject>> {
 
