@@ -92,30 +92,30 @@ export class TopicService {
         );
     }
 
-    getBySubjectIdWithCache(subjectId: number): Observable<Topic[]> {
+    //getSubjectsById(subjectId: number): Observable<Topic[]> {
 
         // Se já existe no cache, retorna
-        if (!this.subjectTopicListCache[subjectId]) {
-            this.subjectTopicListCache[subjectId] = this.http
-                .get<Topic[]>(`${this.host}/subjects/${subjectId}`)
-                .pipe(
-                    shareReplay(1) // mantém resposta em memória
-                );
-        }
+    //    if (!this.subjectTopicListCache[subjectId]) {
+    //        this.subjectTopicListCache[subjectId] = this.http
+    //            .get<Topic[]>(`${this.host}/subjects/${subjectId}`)
+    //            .pipe(
+    //                shareReplay(1) // mantém resposta em memória
+    //            );
+    //    }
 
-        return this.subjectTopicListCache[subjectId];
-    }
-
-    //getSubjectsById(subjectId: number): Observable<Topic[]> {
-    //    return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
+    //    return this.subjectTopicListCache[subjectId];
     //}
+
+    getBySubjectIdWithCache(subjectId: number): Observable<Topic[]> {
+        return this.http.get<Topic[]>(`${this.host}/subjects/${subjectId}`);
+    }
 
     findById(id: number): Observable<Topic> {
         return this.http.get<Topic>(`${this.host}/${id}`, {});
     }
 
     getBySubjectId(subjectId: number): Observable<Topic[]> {
-        return this.http.get<Topic[]>(`${this.host}/${subjectId}/subjects`);
+        return this.http.get<Topic[]>(`${this.host}/subjects/${subjectId}`);
     }
 
     //getTopicByTopicId(topicId: string): Observable<Topic> {

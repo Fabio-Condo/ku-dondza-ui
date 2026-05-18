@@ -166,9 +166,9 @@ export class QuestionsComponent implements OnInit {
 
     // Pré-carrega as disciplinas para melhorar a experiência do usuário (evitar espera depois de escolher a disciplina)
     //this.subjectsService.findAll().subscribe();
-    this.topicService.getBySubjectIdWithCache(1).subscribe(); // Matematica
-    this.topicService.getBySubjectIdWithCache(2).subscribe(); // Portugues
-    this.topicService.getBySubjectIdWithCache(3).subscribe(); // Quimica
+    //this.topicService.getBySubjectIdWithCache(1).subscribe(); // Matematica
+    //this.topicService.getBySubjectIdWithCache(2).subscribe(); // Portugues
+    //this.topicService.getBySubjectIdWithCache(3).subscribe(); // Quimica
   }
 
   ngOnDestroy(): void {
