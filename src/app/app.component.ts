@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { SubjectsService } from './subjects/subjects.service';
+import { TopicService } from './topics/topicsService.service';
 
 declare let gtag: Function;
 
@@ -10,7 +12,11 @@ declare let gtag: Function;
 })
 export class AppComponent {
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private subjectsService: SubjectsService,
+    private topicService: TopicService,
+  ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         gtag('config', 'G-8ZHNYCTQ04', {
@@ -18,6 +24,12 @@ export class AppComponent {
         });
       }
     });
+
+    // Pré-carrega as disciplinas para melhorar a experiência do usuário (evitar espera depois de escolher a disciplina)
+    this.subjectsService.findAll().subscribe();
+    this.topicService.getBySubjectIdWithCache(1).subscribe(); // Matematica
+    this.topicService.getBySubjectIdWithCache(2).subscribe(); // Portugues
+    this.topicService.getBySubjectIdWithCache(3).subscribe(); // Quimica
   }
 
   title = 'dikahub';
