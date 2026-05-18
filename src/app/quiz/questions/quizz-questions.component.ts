@@ -953,7 +953,7 @@ export class QuizzQuestionsComponent implements OnInit {
     this.showLoading = true;
     this.loadingMessage = "Carregando dados";
 
-    this.quizService.getQuizByQuizId(quizId, this.loggedUser.id).pipe(
+    this.quizService.getQuizByQuizIdWithCash(quizId, this.loggedUser.id).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {

@@ -259,7 +259,7 @@ export class ExamesComponent implements OnInit {
 
     this.filtro.pagina++;
 
-    this.examesService.findAll(this.filtro).subscribe(
+    this.examesService.filterWithCash(this.filtro).subscribe(
       (data: IApiResponse<Exam>) => {
         this.exams = [...this.exams, ...data.content];
         this.totalRecords = data.totalElements;

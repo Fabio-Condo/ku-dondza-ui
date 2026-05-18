@@ -53,7 +53,15 @@ export class QuizService {
       params = params.set('user', filter.user);
     }
 
-    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/filter-with-cache`, { params });
+    return this.http.get<IApiResponse<Quiz>>(`${this.baseUrl}/filter-with-cach`, { params });
+  }
+
+  getQuizByQuizIdWithCash(quizId: string, currentUserId: number): Observable<Quiz> {
+
+    let params = new HttpParams()
+      .set('currentUserId', currentUserId.toString());
+
+    return this.http.get<Quiz>(`${this.baseUrl}/find-by-quizId/${quizId}`, { params });
   }
 
   getQuizzes(filter: QuizFilter): Observable<IApiResponse<Quiz>> {

@@ -109,7 +109,7 @@ export class QuizzesComponent implements OnInit {
     if (this.selectQuizOption == 'ALL_QUIZZES') this.filter.user = 0;
     this.filter.page = this.currentPage - 1;
 
-    this.quizService.getQuizzes(this.filter).pipe(
+    this.quizService.getQuizzesWithCash(this.filter).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
@@ -156,7 +156,7 @@ export class QuizzesComponent implements OnInit {
     this.showLoading = true;
     this.filter.page++;
 
-    this.quizService.getQuizzes(this.filter).subscribe(
+    this.quizService.getQuizzesWithCash(this.filter).subscribe(
       (data: IApiResponse<Quiz>) => {
         this.quizzes = [...this.quizzes, ...data.content];
         this.totalRecords = data.totalElements;
