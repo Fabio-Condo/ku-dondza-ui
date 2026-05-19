@@ -751,22 +751,6 @@
             cursor: default;
         }
 
-        .ranking-row.new-row {
-            animation: fadeSlideIn 0.25s ease both;
-        }
-
-        @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* ═══════════════════════════════════════════════════════
            MODAIS
            ═══════════════════════════════════════════════════════ */
@@ -2039,35 +2023,6 @@
             Nenhum exame encontrado.
         </div>
 
-        <!--
-        <div *ngIf="!retryVisible" class="load-more-container">
-            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()"
-                [disabled]="isLoadMoreDisabled">Carregar mais</button>
-        </div>
-        -->
-
-        <!--
-        <div class="pagination">
-            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalExames }}</span>
-            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-                Anterior
-            </button>
-            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-            <button class="pagination-btn next" (click)="nextPage()"
-                [disabled]="currentPage === totalPages() || showLoading">
-                Próxima
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
-        </div>
-        -->
-
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
@@ -2083,34 +2038,25 @@
 
         <!-- Paginação desktop -->
         <div class="pagination-desktop">
-
-            <!-- botão anterior -->
             <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-
                 <svg viewBox="0 0 24 24">
                     <polyline points="15 18 9 12 15 6" />
                 </svg>
                 Anterior
             </button>
 
-            <!-- números dinâmicos -->
             <ng-container *ngFor="let page of getVisiblePages()">
 
-                <!-- mostrar ... -->
                 <span *ngIf="page === -1" class="page-dots">...</span>
 
-                <!-- botão da página -->
                 <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
                     (click)="goToPage(page)" [disabled]="showLoading">
-
                     {{ page }}
                 </button>
 
             </ng-container>
 
-            <!-- botão seguinte -->
             <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
-
                 Seguinte
                 <svg viewBox="0 0 24 24">
                     <polyline points="9 18 15 12 9 6" />
@@ -2148,7 +2094,9 @@
             <div class="modal-header">
                 <div class="modal-title-group">
                     <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
-                    <span class="modal-subtitle">{{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo' }}</span>
+                    <span class="modal-subtitle">
+                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os camposabaixo' }}
+                    </span>
                 </div>
                 <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
             </div>

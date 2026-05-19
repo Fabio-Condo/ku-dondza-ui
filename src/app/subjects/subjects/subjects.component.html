@@ -464,79 +464,160 @@
             z-index: 1000;
         }
 
-        /* Paginação */
-        .pagination {
+        /* PAGINATION — desktop */
+        .pagination-desktop {
             display: flex;
-            justify-content: flex-end;
-            margin-top: 28px;
             align-items: center;
+            justify-content: center;
             gap: 6px;
+            margin: 32px;
         }
 
-        .pagination-info {
+        .page-btn {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 9px;
+            border: 1px solid #e8edf2;
+            background: #fff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all .2s;
+        }
+
+        .page-btn:hover {
+            border-color: #c7d2fe;
+            color: #4361ee
+        }
+
+        .page-btn.active {
+            background: #4361ee;
+            color: #fff;
+            border-color: #4361ee
+        }
+
+        .page-btn.nav {
+            padding: 0 14px
+        }
+
+        .page-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+            pointer-events: none
+        }
+
+        .page-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .page-dots {
             color: #94a3b8;
             font-size: 13px;
-            margin-right: 10px;
+            padding: 0 2px;
+            user-select: none
         }
 
-        .pagination-btn {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            height: 36px;
-            padding: 0 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            background-color: #fff;
-            font-weight: 500;
-            font-size: 13px;
-            color: #475569;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .pagination-btn:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-        }
-
-        .pagination-btn.active {
-            background-color: #4361ee;
-            color: white;
-            border-color: #4361ee;
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* Load more */
-        .load-more-container {
+        /* ─── Load more ──────────────────────────────────── */
+        .load-more-wrap {
+            margin-top: 1rem;
             display: none;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 24px;
+            gap: 10px;
         }
 
-        .btn-load-more {
-            background-color: transparent;
-            border: 1px solid #e2e8f0;
-            color: #64748b;
-            padding: 9px 20px;
-            border-radius: 8px;
+        .load-more-info {
+            font-size: 12px;
+            color: #9ca3af;
+            letter-spacing: 0.2px;
+        }
+
+        .load-more-info span {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: 1px solid #c7d0f8;
+            background: #fff;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
+            color: #4361ee;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            width: 100%;
+            justify-content: center;
         }
 
-        .btn-load-more:hover {
-            background-color: #f8fafc;
+        .load-more-btn:hover {
+            background: #eef1fd;
+            border-color: #a5b4fb;
         }
 
-        .btn-load-more:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
+        .load-more-btn:active {
+            transform: scale(0.98);
+        }
+
+        .load-more-btn.loading {
+            pointer-events: none;
+            color: #9ca3af;
+            border-color: #e8eaf0;
+        }
+
+        .load-more-btn .btn-spinner {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #c7d0f8;
+            border-top-color: #4361ee;
+            animation: lmspin 0.7s linear infinite;
+            display: none;
+        }
+
+        .load-more-btn.loading .btn-spinner {
+            display: block;
+        }
+
+        .load-more-btn.loading .btn-arrow {
+            display: none;
+        }
+
+        .load-more-btn.loading .btn-text {
+            color: #9ca3af;
+        }
+
+        @keyframes lmspin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .load-more-btn.all-loaded {
+            pointer-events: none;
+            color: #9ca3af;
+            border-color: #e8eaf0;
+            background: #f9fafb;
+            cursor: default;
         }
 
         /* Loading overlay */
@@ -728,20 +809,12 @@
         }
 
         @media (max-width: 768px) {
-            .pagination {
-                display: none;
-            }
-
             .card-header {
                 padding: 10px 12px 0;
             }
 
             .card-body {
                 padding: 10px 12px;
-            }
-
-            .load-more-container {
-                display: flex;
             }
 
             .title {
@@ -756,16 +829,29 @@
                 display: none;
             }
 
-            .pagination-info {
-                display: none;
-            }
-
             .fab {
                 display: flex;
             }
 
             .cards-container {
                 grid-template-columns: 1fr;
+            }
+
+            .pagination {
+                display: none;
+            }
+
+            .pagination-desktop {
+                display: none
+            }
+
+            .load-more-wrap {
+                display: flex
+            }
+
+            header .load-more-info {
+                /*Depois eliminar e fazer do jeito certo*/
+                display: none;
             }
         }
     </style>
@@ -781,8 +867,9 @@
 
         <header>
             <div class="title">Cursos</div>
-            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalSubjects }}</span>
-
+            <div class="load-more-info">Mostrando <span id="shown-count">{{ totalRecords }}</span> de <span>{{
+                    totalSubjects }}</span> cursos
+            </div>
             <div class="actions">
                 <button class="btn-primary button-add-new" id="add-btn" *ngIf="isUserLoggedIn && isSuperAdmin"
                     (click)="onAddNewSubject()">
@@ -990,13 +1077,6 @@
             Nenhuma disciplina encontrada.
         </div>
 
-        <!-- Load more (mobile) -->
-        <div *ngIf="!retryVisible" class="load-more-container">
-            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
-                Carregar mais
-            </button>
-        </div>
-
         <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
@@ -1016,24 +1096,46 @@
             </div>
         </div>
 
-        <!-- Paginação (desktop) -->
-        <div class="pagination">
-            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalSubjects }}</span>
-            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
+        <!-- Paginação desktop -->
+        <div class="pagination-desktop">
+            <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="15 18 9 12 15 6" />
                 </svg>
                 Anterior
             </button>
-            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-            <button class="pagination-btn next" (click)="nextPage()"
-                [disabled]="currentPage === totalPages() || showLoading">
-                Próxima
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
+
+            <ng-container *ngFor="let page of getVisiblePages()">
+
+                <span *ngIf="page === -1" class="page-dots">...</span>
+
+                <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)" [disabled]="showLoading">
+                    {{ page }}
+                </button>
+
+            </ng-container>
+
+            <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+                Seguinte
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6" />
                 </svg>
+            </button>
+        </div>
+
+        <!-- Load more mobile -->
+        <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
+            <div class="load-more-info">Mostrando <span id="shown-count">{{ totalRecords }}</span> de <span>{{
+                    totalSubjects }}</span> cursos
+            </div>
+            <button class="load-more-btn" id="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
+                <span class="btn-spinner"></span>
+                <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+                <span class="btn-text">Carregar mais</span>
             </button>
         </div>
 
@@ -1057,8 +1159,9 @@
             <div class="modal-header">
                 <div class="modal-title-group">
                     <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
-                    <span class="modal-subtitle">{{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo'
-                        }}</span>
+                    <span class="modal-subtitle">
+                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo'}}
+                    </span>
                 </div>
                 <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
             </div>
@@ -1171,7 +1274,7 @@
                     <label for="filterCategory">Categoria</label>
                     <select id="filterCategory" name="filterCategory" [(ngModel)]="filtro.enabled"
                         (ngModelChange)="findAll()">
-                            <option value="">Todas as opções</option>
+                        <option value="">Todas as opções</option>
                         <option *ngFor="let option of enabledOptions" [value]="option.value">
                             {{ option.label }}
                         </option>
