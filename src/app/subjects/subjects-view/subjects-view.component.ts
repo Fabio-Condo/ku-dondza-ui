@@ -116,6 +116,9 @@ export class SubjectsViewComponent {
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
+            if (error.status && error.status >= 400 && error.status < 500) {
+              throw error;
+            }
             if (retryCount >= 3) throw error; // 3 tentativas
             const nextRetry = retryCount + 1;
             this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;

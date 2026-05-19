@@ -162,12 +162,17 @@ export class ChallengesComponent implements OnInit {
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
+            if (error.status && error.status >= 400 && error.status < 500) {
+              throw error;
+            }
             if (retryCount >= 3) throw error; // 3 tentativas
             const nextRetry = retryCount + 1;
             this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
             return nextRetry;
           }, 0),
-          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          delayWhen(retryCount =>
+            timer(Math.pow(2, retryCount) * 1000) // 2s → 4s → 8s
+          )
         )
       )
     ).subscribe(
@@ -399,7 +404,7 @@ export class ChallengesComponent implements OnInit {
     this.showLoading = true;
     //this.questionService.findAllByTopicAndMarkSelected(challenge.id).subscribe(
     this.questionService.getQuestionsByTopicId(this.selectedTopic.id).subscribe(
-    (dados: Question[]) => {
+      (dados: Question[]) => {
         this.allQuestions = dados;
         this.currentQuestionIndex = 0;
         this.showLoading = false;
@@ -480,12 +485,17 @@ export class ChallengesComponent implements OnInit {
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
+            if (error.status && error.status >= 400 && error.status < 500) {
+              throw error;
+            }
             if (retryCount >= 3) throw error; // 3 tentativas
             const nextRetry = retryCount + 1;
             this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
             return nextRetry;
           }, 0),
-          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // 2s → 4s → 8s
+          delayWhen(retryCount =>
+            timer(Math.pow(2, retryCount) * 1000) // 2s → 4s → 8s
+          )
         )
       )
     ).subscribe({
