@@ -279,13 +279,56 @@ export class QuizzesComponent implements OnInit {
     }
   }
 
-  goToPage(page: number): void {
-    this.currentPage = page;
-    this.getQuizzes();
-  }
-
   totalPages(): number {
     return Math.ceil(this.totalRecords / this.filter.itemsPerPage);
+  }
+
+  goToPage(page: number): void {
+    if (
+      page >= 1 &&
+      page <= this.totalPages() &&
+      page !== this.currentPage
+    ) {
+      this.currentPage = page;
+      this.getQuizzes();
+    }
+  }
+
+  getVisiblePages(): number[] {
+    const total = this.totalPages();
+    const current = this.currentPage;
+
+    if (total <= 5) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    const pages: number[] = [];
+
+    // primeira página sempre aparece
+    pages.push(1);
+
+    // mostrar ... se estiver longe do início
+    if (current > 3) {
+      pages.push(-1);
+    }
+
+    // páginas ao redor da atual
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    // mostrar ... se estiver longe do fim
+    if (current < total - 2) {
+      pages.push(-1);
+    }
+
+    // última página sempre aparece
+    pages.push(total);
+
+    return pages;
   }
 
   /** Retorna a lista de páginas visíveis com reticências */

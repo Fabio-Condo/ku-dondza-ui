@@ -139,8 +139,15 @@
         }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ── Header do card ─────────────────────────────────── */
@@ -526,8 +533,13 @@
             line-height: 1.4;
         }
 
-        .tag-toggle-button:hover { background: #e0e7ff; }
-        .tag-toggle-button i { font-size: 10px; }
+        .tag-toggle-button:hover {
+            background: #e0e7ff;
+        }
+
+        .tag-toggle-button i {
+            font-size: 10px;
+        }
 
         /* ── Separador ──────────────────────────────────────── */
         .card-divider {
@@ -566,7 +578,9 @@
             box-shadow: 0 4px 14px rgba(67, 97, 238, 0.2);
         }
 
-        .start-btn:active { transform: translateY(0); }
+        .start-btn:active {
+            transform: translateY(0);
+        }
 
         .start-btn svg {
             width: 13px;
@@ -579,73 +593,165 @@
             transition: transform 0.2s;
         }
 
-        .start-btn:hover svg { transform: translateX(3px); }
-
-        /* ── Load more ──────────────────────────────────────── */
-        .load-more-container {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
+        .start-btn:hover svg {
+            transform: translateX(3px);
         }
 
-        .btn-load-more {
-            background-color: transparent;
-            border: 1px solid #e2e8f0;
-            color: #64748b;
-            padding: 9px 20px;
-            border-radius: 8px;
+        /* PAGINATION — desktop */
+        .pagination-desktop {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 32px;
+        }
+
+        .page-btn {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 9px;
+            border: 1px solid #e8edf2;
+            background: #fff;
+            color: #475569;
             font-size: 13px;
             font-weight: 500;
-        }
-
-        .btn-load-more:hover { background-color: #f8fafc; }
-        .btn-load-more:disabled { opacity: 0.4; cursor: not-allowed; }
-
-        /* ── Paginação ──────────────────────────────────────── */
-        .pagination {
+            font-family: inherit;
+            cursor: pointer;
             display: flex;
-            justify-content: flex-end;
-            margin-top: 28px;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 5px;
+            transition: all .2s;
         }
 
-        .pagination-info {
+        .page-btn:hover {
+            border-color: #c7d2fe;
+            color: #4361ee
+        }
+
+        .page-btn.active {
+            background: #4361ee;
+            color: #fff;
+            border-color: #4361ee
+        }
+
+        .page-btn.nav {
+            padding: 0 14px
+        }
+
+        .page-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+            pointer-events: none
+        }
+
+        .page-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .page-dots {
             color: #94a3b8;
             font-size: 13px;
-            margin-right: 10px;
+            padding: 0 2px;
+            user-select: none
         }
 
-        .pagination-btn {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            height: 36px;
-            padding: 0 12px;
-            display: flex;
+        /* ─── Load more ──────────────────────────────────── */
+        .load-more-wrap {
+            margin-top: 1rem;
+            display: none;
+            flex-direction: column;
             align-items: center;
-            gap: 5px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            background-color: #fff;
-            font-weight: 500;
+            gap: 10px;
+        }
+
+        .load-more-info {
+            font-size: 12px;
+            color: #9ca3af;
+            letter-spacing: 0.2px;
+        }
+
+        .load-more-info span {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: 1px solid #c7d0f8;
+            background: #fff;
             font-size: 13px;
-            color: #475569;
+            font-weight: 600;
+            color: #4361ee;
             cursor: pointer;
-            transition: all 0.15s ease;
+            font-family: inherit;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            width: 100%;
+            justify-content: center;
         }
 
-        .pagination-btn:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
+        .load-more-btn:hover {
+            background: #eef1fd;
+            border-color: #a5b4fb;
         }
 
-        .pagination-btn.active {
-            background-color: #4361ee;
-            color: white;
-            border-color: #4361ee;
+        .load-more-btn:active {
+            transform: scale(0.98);
         }
 
-        .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .load-more-btn.loading {
+            pointer-events: none;
+            color: #9ca3af;
+            border-color: #e8eaf0;
+        }
+
+        .load-more-btn .btn-spinner {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #c7d0f8;
+            border-top-color: #4361ee;
+            animation: lmspin 0.7s linear infinite;
+            display: none;
+        }
+
+        .load-more-btn.loading .btn-spinner {
+            display: block;
+        }
+
+        .load-more-btn.loading .btn-arrow {
+            display: none;
+        }
+
+        .load-more-btn.loading .btn-text {
+            color: #9ca3af;
+        }
+
+        @keyframes lmspin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .load-more-btn.all-loaded {
+            pointer-events: none;
+            color: #9ca3af;
+            border-color: #e8eaf0;
+            background: #f9fafb;
+            cursor: default;
+        }
 
         /* ── Loading overlay ────────────────────────────────── */
         .loading-overlay {
@@ -662,7 +768,10 @@
             transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .loading-overlay.visible { opacity: 1; visibility: visible; }
+        .loading-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
 
         .loading-box {
             background: #fff;
@@ -684,7 +793,11 @@
             animation: spin 0.75s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .loading-text {
             font-size: 13px;
@@ -703,8 +816,10 @@
         /* ── Retry ──────────────────────────────────────────── */
         .retry-container {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(15, 23, 42, 0.45);
             display: flex;
             justify-content: center;
@@ -753,26 +868,67 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* ── Responsividade ─────────────────────────────────── */
         @media (max-width: 900px) {
-            .container { margin-top: 60px; }
+            .container {
+                margin-top: 60px;
+            }
         }
 
         @media (max-width: 768px) {
-            .quiz-content      { padding: 12px 14px; }
-            .quiz-header       { padding: 12px 14px; }
-            .card-footer       { padding: 10px 14px 12px; }
-            .pagination        { display: none; }
-            .load-more-container { display: flex; }
-            .start-quiz-button   { display: none; }
-            .title               { display: flex; }
-            .pagination-info     { display: none; }
-            .title-container     { display: none; }
-            .cards-container     { grid-template-columns: 1fr; }
+            .quiz-content {
+                padding: 12px 14px;
+            }
+
+            .quiz-header {
+                padding: 12px 14px;
+            }
+
+            .card-footer {
+                padding: 10px 14px 12px;
+            }
+
+            .start-quiz-button {
+                display: none;
+            }
+
+            .title {
+                display: flex;
+            }
+
+            .title-container {
+                display: none;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            .pagination {
+                display: none;
+            }
+
+            .pagination-desktop {
+                display: none
+            }
+
+            .load-more-wrap {
+                display: flex
+            }
+
+            header .load-more-info {
+                /*Depois eliminar e fazer do jeito certo*/
+                display: none;
+            }
         }
     </style>
 </head>
@@ -787,8 +943,9 @@
 
         <header>
             <div class="title">Quizzes</div>
-            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
-
+            <div class="load-more-info">Mostrando <span id="shown-count">{{ totalRecords }}</span> de <span>{{
+                    totalQuizzes }}</span> quizzes
+            </div>
             <div class="actions">
                 <button class="start-quiz-button" id="add-btn" [routerLink]="['/quizzes', 'new']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -817,64 +974,75 @@
                     <!-- Ícones por disciplina -->
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Matemática'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M4 4h16"/><path d="M4 4l8 8-8 8"/><path d="M4 20h16"/>
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Português'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z"/>
-                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z"/>
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Quimica'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M9 3h6"/>
-                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3"/>
-                            <path d="M7.5 14.5h9"/>
-                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none"/>
-                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none"/>
-                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none"/>
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                            <path d="M7.5 14.5h9" />
+                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
+                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
+                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Física'">
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="2"/>
-                            <ellipse cx="12" cy="12" rx="10" ry="4"/>
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Biologia'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6"/>
-                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6"/>
-                            <path d="M7.5 6.5h9"/><path d="M7.5 9h9"/><path d="M7.5 11.5h9"/>
-                            <path d="M7 15c0 0 2 2.5 2 4"/>
-                            <path d="M17 15c0 0-2 2.5-2 4"/>
-                            <path d="M7.5 17h9"/>
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 6.5h9" />
+                            <path d="M7.5 9h9" />
+                            <path d="M7.5 11.5h9" />
+                            <path d="M7 15c0 0 2 2.5 2 4" />
+                            <path d="M17 15c0 0-2 2.5-2 4" />
+                            <path d="M7.5 17h9" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'História'">
                         <svg viewBox="0 0 24 24">
-                            <path d="M5 3h14"/><path d="M5 21h14"/>
-                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9"/>
-                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9"/>
-                            <path d="M8 14.5h8"/>
+                            <path d="M5 3h14" />
+                            <path d="M5 21h14" />
+                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
+                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
+                            <path d="M8 14.5h8" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Geografia'">
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9"/>
-                            <path d="M3 12h18"/><path d="M5 8h14"/><path d="M5 16h14"/>
-                            <path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/>
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M5 8h14" />
+                            <path d="M5 16h14" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
                         </svg>
                     </div>
                     <div class="discipline-icon" *ngIf="quiz.subject.name === 'Inglês'">
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9"/>
-                            <path d="M3 12h18"/>
-                            <path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/>
-                            <path d="M9 16l3-8 3 8"/><path d="M10 13h4"/>
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                            <path d="M9 16l3-8 3 8" />
+                            <path d="M10 13h4" />
                         </svg>
                     </div>
 
@@ -889,16 +1057,16 @@
                         <!-- Badge: TREINO ou TESTE -->
                         <span class="quiz-type-badge training" *ngIf="quiz.type === 'TRAINING'">
                             <svg viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                <path d="M2 17l10 5 10-5"/>
-                                <path d="M2 12l10 5 10-5"/>
+                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                <path d="M2 17l10 5 10-5" />
+                                <path d="M2 12l10 5 10-5" />
                             </svg>
                             Treino
                         </span>
                         <span class="quiz-type-badge test" *ngIf="quiz.type === 'TEST'">
                             <svg viewBox="0 0 24 24">
-                                <path d="M9 11l3 3L22 4"/>
-                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                <path d="M9 11l3 3L22 4" />
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                             </svg>
                             Teste
                         </span>
@@ -914,9 +1082,12 @@
                                     {{ quiz.anonymous ? 'Exibir meu nome' : 'Ocultar o nome' }}
                                 </a>
                                 <a (click)="copyLink(quiz.quizId); closeDropdown(quiz)">Copiar link</a>
-                                <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no WhatsApp</a>
-                                <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no Facebook</a>
-                                <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no LinkedIn</a>
+                                <a (click)="shareOnSocial('whatsapp', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                    WhatsApp</a>
+                                <a (click)="shareOnSocial('facebook', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                    Facebook</a>
+                                <a (click)="shareOnSocial('linkedin', quiz.quizId); closeDropdown(quiz)">Partilhar no
+                                    LinkedIn</a>
                                 <a [routerLink]="['/quizzes', quiz.quizId]">Visualizar</a>
                                 <a (click)="confirmarExclusao(quiz); closeDropdown(quiz)"
                                     *ngIf="isUserLoggedIn && isSuperAdmin">Eliminar</a>
@@ -936,11 +1107,10 @@
                                 {{ quiz.user.fullName.charAt(0) }}
                             </ng-container>
                             <ng-container *ngIf="quiz.anonymous">
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2.2"
-                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="8" r="4"/>
-                                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="8" r="4" />
+                                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
                                 </svg>
                             </ng-container>
                         </div>
@@ -952,8 +1122,7 @@
                             </span>
 
                             <!-- Badge "Você" quando o quiz é do utilizador logado -->
-                            <span class="you-badge"
-                                *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id">
+                            <span class="you-badge" *ngIf="isUserLoggedIn && quiz.user.id == loggedUser.id">
                                 Você
                             </span>
 
@@ -962,10 +1131,10 @@
                             <!-- Data de submissão -->
                             <span class="quiz-meta-date">
                                 <svg viewBox="0 0 24 24">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                                    <line x1="16" y1="2" x2="16" y2="6"/>
-                                    <line x1="8" y1="2" x2="8" y2="6"/>
-                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
                                 </svg>
                                 {{ quiz.submittedAt | date:'dd MMM yyyy' }}
                             </span>
@@ -976,23 +1145,24 @@
                     <div class="overall">
                         <div class="overall-ring">
                             <svg class="progress-svg" viewBox="0 0 44 44">
-                                <circle class="ring-bg" cx="22" cy="22" r="18"/>
+                                <circle class="ring-bg" cx="22" cy="22" r="18" />
                                 <circle class="ring-fill" cx="22" cy="22" r="18"
                                     [style.stroke]="(quiz.accuracyRate / 100) >= 0.85 ? '#22c55e' : (quiz.accuracyRate / 100) >= 0.4 ? '#f59e0b' : '#ef4444'"
                                     [style.stroke-dasharray]="113.1"
-                                    [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1"/>
+                                    [style.stroke-dashoffset]="113.1 - (quiz.accuracyRate / 100) * 113.1" />
                             </svg>
                             <div class="ring-label">{{ quiz.accuracyRate.toFixed(0) }}%</div>
                         </div>
                         <div class="overall-text">
                             <strong>Desempenho geral</strong>
-                            <span>{{ quiz.topics.length }} tópico{{ quiz.topics.length !== 1 ? 's' : '' }} &middot; {{ quiz.totalQuestions }} questões</span>
+                            <span>{{ quiz.topics.length }} tópico{{ quiz.topics.length !== 1 ? 's' : '' }} &middot; {{
+                                quiz.totalQuestions }} questões</span>
 
                             <!-- Duração logo abaixo, dentro do bloco overall -->
                             <span class="duration-row">
                                 <svg viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="9"/>
-                                    <path d="M12 7v5l3 3"/>
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 7v5l3 3" />
                                 </svg>
                                 {{ formatTime(quiz.timeLimit - quiz.timeSpent) }} minutos
                             </span>
@@ -1045,13 +1215,6 @@
             Nenhum quiz encontrado.
         </div>
 
-        <!-- Load more (mobile) -->
-        <div *ngIf="!retryVisible" class="load-more-container">
-            <button class="btn-load-more" id="load-more-btn" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
-                Carregar mais
-            </button>
-        </div>
-
         <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
@@ -1071,24 +1234,46 @@
             </div>
         </div>
 
-        <!-- Paginação (desktop) -->
-        <div class="pagination">
-            <span class="pagination-info">Mostrando {{ totalRecords }} de {{ totalQuizzes }}</span>
-            <button class="pagination-btn prev" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
+        <!-- Paginação desktop -->
+        <div class="pagination-desktop">
+            <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="15 18 9 12 15 6" />
                 </svg>
                 Anterior
             </button>
-            <span class="pagination-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-            <button class="pagination-btn next" (click)="nextPage()"
-                [disabled]="currentPage === totalPages() || showLoading">
-                Próxima
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
+
+            <ng-container *ngFor="let page of getVisiblePages()">
+
+                <span *ngIf="page === -1" class="page-dots">...</span>
+
+                <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)" [disabled]="showLoading">
+                    {{ page }}
+                </button>
+
+            </ng-container>
+
+            <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+                Seguinte
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6" />
                 </svg>
+            </button>
+        </div>
+
+        <!-- Load more mobile -->
+        <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
+            <div class="load-more-info">Mostrando <span id="shown-count">{{ totalRecords }}</span> de <span>{{
+                    totalQuizzes }}</span> quizzes
+            </div>
+            <button class="load-more-btn" id="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
+                <span class="btn-spinner"></span>
+                <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+                <span class="btn-text">Carregar mais</span>
             </button>
         </div>
 
@@ -1115,7 +1300,8 @@
             <form autocomplete="off" #exameForm="ngForm">
                 <div class="form-group">
                     <label for="option">Visibilidade</label>
-                    <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option" required>
+                    <select id="option" [(ngModel)]="selectQuizOption" (ngModelChange)="getQuizzes()" name="option"
+                        required>
                         <ng-container *ngFor="let option of quizFilterOptions">
                             <option *ngIf="option.value !== 'MY_QUIZZES' || isUserLoggedIn" [value]="option.value">
                                 {{ option.label }}
@@ -1133,9 +1319,9 @@
                 <button type="button" class="btn-modal-secondary" (click)="limparCampos()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 6h18"/>
-                        <path d="M19 6l-1 14H6L5 6"/>
-                        <path d="M8 6V4h8v2"/>
+                        <path d="M3 6h18" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M8 6V4h8v2" />
                     </svg>
                     Limpar filtros
                 </button>
