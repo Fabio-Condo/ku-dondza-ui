@@ -45,12 +45,12 @@ export class QuizService {
       params = params.set('searchParam', filter.searchParam);
     }
 
-    if (filter.subject) {
-      params = params.set('subject', filter.subject);
+    if (filter.subjectId) {
+      params = params.set('subjectId', filter.subjectId.toString());
     }
 
-    if (filter.user) {
-      params = params.set('user', filter.user);
+    if (filter.userId) {
+      params = params.set('userId', filter.userId.toString());
     }
 
     const cacheKey = params.toString();
@@ -106,12 +106,12 @@ export class QuizService {
       params = params.set('searchParam', filter.searchParam);
     }
 
-    if (filter.subject) {
-      params = params.set('subject', filter.subject);
+    if (filter.subjectId) {
+      params = params.set('subjectId', filter.subjectId.toString());
     }
 
-    if (filter.user) {
-      params = params.set('user', filter.user);
+    if (filter.userId) {
+      params = params.set('userId', filter.userId.toString());
     }
 
     const cacheKey = params.toString();

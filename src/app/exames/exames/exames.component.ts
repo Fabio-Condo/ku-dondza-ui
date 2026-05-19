@@ -689,7 +689,7 @@ export class ExamesComponent implements OnInit {
 
   limparCampos() {
     this.filtro.searchParam = "";
-    this.filtro.subject = undefined;
+    this.filtro.subjectId = undefined;
     this.filtro.examType = "";
     this.filtro.institution = "";
     this.filtro.beginYear = undefined;

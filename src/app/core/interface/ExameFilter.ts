@@ -2,7 +2,7 @@ export interface ExameFilter {
     searchParam?: string,
     examType?: string;
     institution?: string;
-    subject?: number;
+    subjectId?: number;
 
     beginYear?: number,
     endYear?: number,

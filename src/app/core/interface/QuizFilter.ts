@@ -1,7 +1,7 @@
 export interface QuizFilter {
     searchParam?: string;
-    subject?: number;
-    user?: number;
+    subjectId?: number;
+    userId?: number;
 
     page: number,
     itemsPerPage: number,

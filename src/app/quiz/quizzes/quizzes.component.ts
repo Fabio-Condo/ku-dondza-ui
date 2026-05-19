@@ -105,8 +105,8 @@ export class QuizzesComponent implements OnInit {
     this.loadingMessage = "Carregando dados";
     this.showLoading = true;
 
-    if (this.selectQuizOption == 'MY_QUIZZES') this.filter.user = this.loggedUser.id;
-    if (this.selectQuizOption == 'ALL_QUIZZES') this.filter.user = 0;
+    if (this.selectQuizOption == 'MY_QUIZZES') this.filter.userId = this.loggedUser.id;
+    if (this.selectQuizOption == 'ALL_QUIZZES') this.filter.userId = 0;
     this.filter.page = this.currentPage - 1;
 
     this.quizService.getQuizzesWithCash(this.filter).pipe(
@@ -146,11 +146,11 @@ export class QuizzesComponent implements OnInit {
     if (this.showLoading) return;
 
     if (this.selectQuizOption == 'MY_QUIZZES') {
-      this.filter.user = this.loggedUser.id;
+      this.filter.userId = this.loggedUser.id;
     }
 
     if (this.selectQuizOption == 'ALL_QUIZZES') {
-      this.filter.user = 0;
+      this.filter.userId = 0;
     }
 
     this.showLoading = true;
@@ -370,7 +370,8 @@ export class QuizzesComponent implements OnInit {
 
   limparCampos() {
     this.filter.searchParam = "";
-    this.filter.subject = undefined;
+    this.filter.subjectId = undefined;
+    this.filter.userId = undefined;
     this.selectQuizOption = 'ALL_QUIZZES';
     this.getQuizzes();
   }
