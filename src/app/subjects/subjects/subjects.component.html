@@ -20,86 +20,216 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            margin-top: 75px;
         }
 
-        header {
+        /* ══════════════════════════════════════
+           APP HEADER
+        ══════════════════════════════════════ */
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            margin-top: 50px;
+            z-index: 20;
+            background: #ffffff;
+            border-bottom: 1px solid #e8edf2;
+            margin-bottom: 24px;
+        }
+
+        .header-top {
+            padding: 20px 24px 14px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-top: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
+            gap: 4px;
         }
 
-        .title-container {
-            text-align: center;
-            margin-top: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 1.5rem;
+        .header-title {
+            font-size: 20px;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 0.35rem;
+            letter-spacing: -0.4px;
+            line-height: 1.2;
         }
 
-        .subtitle {
-            font-size: 14px;
-            color: #94a3b8;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .title {
-            display: none;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 1rem;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        button {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
+        .header-subtitle {
             font-size: 13px;
+            color: #94a3b8;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* ── Barra de tabs + acções numa só linha ── */
+
+        .tabs-bar {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
+            padding: 0 16px 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
-        .btn-primary {
-            background-color: #4361ee;
-            color: white;
-            border: 1px solid #4361ee;
+        .tabs-bar::-webkit-scrollbar {
+            display: none;
         }
 
-        .btn-primary:hover {
-            background-color: #3451d1;
-            border-color: #3451d1;
+        .tabs {
+            display: flex;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
-        .btn-outline {
-            background-color: transparent;
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .tab-btn.active {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .tab-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .tab-count {
+            font-size: 11px;
+            font-weight: 600;
+            background: #e0e7ff;
+            color: #4361ee;
+            padding: 1px 6px;
+            border-radius: 99px;
+            line-height: 1.5;
+        }
+
+        .tab-btn.active .tab-count {
+            background: #c7d2fe;
+        }
+
+        /* ── Divisor vertical entre tabs e acções ── */
+
+        .tabs-divider {
+            width: 1px;
+            height: 24px;
+            background: #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        /* ── Acções alinhadas com as tabs ── */
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .btn-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 10px;
             border: 1px solid #e2e8f0;
+            background: #ffffff;
             color: #475569;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .btn-outline:hover {
-            background-color: #f1f5f9;
+        .btn-filter:hover {
+            border-color: #c7d2fe;
+            background: #fafbff;
+            color: #4361ee;
         }
+
+        .btn-filter svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .btn-add-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 10px;
+            border: none;
+            background: #4361ee;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-add-header:hover {
+            background: #3451d1;
+        }
+
+        .btn-add-header svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ══════════════════════════════════════
+           FIM APP HEADER
+        ══════════════════════════════════════ */
 
         /* Grid de cards */
         .cards-container {
@@ -802,13 +932,17 @@
         }
 
         /* Responsividade */
-        @media (max-width: 900px) {
-            .container {
-                margin-top: 60px;
-            }
-        }
-
         @media (max-width: 768px) {
+
+            .header-top {
+                padding: 16px 16px 10px;
+            }
+
+            .tabs-bar {
+                padding: 0 12px 12px;
+                gap: 6px;
+            }
+
             .card-header {
                 padding: 10px 12px 0;
             }
@@ -817,15 +951,7 @@
                 padding: 10px 12px;
             }
 
-            .title {
-                display: flex;
-            }
-
-            .title-container {
-                display: none;
-            }
-
-            .button-add-new {
+            .btn-add-header {
                 display: none;
             }
 
@@ -859,36 +985,121 @@
 
 <body>
     <div class="container">
+        <!-- ══════════════════════════════════════
+             APP HEADER
+        ══════════════════════════════════════ -->
+        <div class="app-header">
 
-        <div class="title-container">
-            <h1>Cursos</h1>
-            <p class="subtitle">Explore os diferentes cursos de preparação</p>
+            <!-- Título e subtítulo centralizados -->
+            <div class="header-top">
+                <div class="header-title">Cursos</div>
+                <div class="header-subtitle">Explore os diferentes cursos de preparação</div>
+            </div>
+
+            <!-- Tabs + divisor + acções numa única linha com scroll horizontal -->
+            <div class="tabs-bar">
+
+                <div class="tabs">
+                    <button class="tab-btn" [class.active]="!filtro.subjectId" (click)="limparCampos()">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <rect x="14" y="14" width="7" height="7" rx="1" />
+                        </svg>
+                        Todos
+                        <span class="tab-count">{{ totalSubjects }}</span>
+                    </button>
+
+                    <button class="tab-btn" *ngFor="let subject of subjects"
+                        [class.active]="filtro.subjectId === subject.id"
+                        (click)="filtro.subjectId = subject.id; findAll()">
+
+                        <!-- Ícone Matemática -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Matemática'">
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
+                        </svg>
+
+                        <!-- Ícone Português -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+
+                        <!-- Ícone Quimica -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Quimica'">
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        </svg>
+
+                        <!-- Ícone Física -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Física'">
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                        </svg>
+
+                        <!-- Ícone Biologia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Biologia'">
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 9h9" />
+                        </svg>
+
+                        <!-- Ícone História -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'História'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
+
+                        <!-- Ícone Geografia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Geografia'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                        </svg>
+
+                        <!-- Ícone Inglês -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Inglês'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                        </svg>
+
+                        {{ subject.name }}
+                    </button>
+                </div>
+
+                <!-- Divisor vertical -->
+                <div class="tabs-divider"></div>
+
+                <!-- Acções: Filtrar + Novo -->
+                <div class="header-actions">
+                    <button class="btn-filter" (click)="toggleFilter()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6" />
+                            <line x1="7" y1="12" x2="17" y2="12" />
+                            <line x1="10" y1="18" x2="14" y2="18" />
+                        </svg>
+                        Filtrar
+                    </button>
+
+                    <button class="btn-add-header" (click)="onAddNewSubject()" *ngIf="isUserLoggedIn && isAdmin">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Novo
+                    </button>
+                </div>
+
+            </div>
         </div>
-
-        <header>
-            <div class="title">Cursos</div>
-            <div class="load-more-info">Mostrando <span id="shown-count">{{ totalRecords }}</span> de <span>{{
-                    totalSubjects }}</span> cursos
-            </div>
-            <div class="actions">
-                <button class="btn-primary button-add-new" id="add-btn" *ngIf="isUserLoggedIn && isSuperAdmin"
-                    (click)="onAddNewSubject()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Novo
-                </button>
-                <button class="btn-outline" id="filter-btn" (click)="toggleFilter()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg>
-                    Filtrar
-                </button>
-            </div>
-        </header>
+        <!-- FIM APP HEADER -->
 
         <button class="fab" (click)="onAddNewSubject()" *ngIf="isUserLoggedIn && isSuperAdmin">
             <i class="pi pi-plus"></i>
