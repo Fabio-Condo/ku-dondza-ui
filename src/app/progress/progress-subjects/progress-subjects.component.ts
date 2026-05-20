@@ -29,6 +29,9 @@ export class ProgressSubjectsComponent {
   showLoading = false;
   loadingMessage = 'Carregando';
 
+  subjectsForSelects: SubjectProgressDTO[] = [];
+  selectedSubject: SubjectProgressDTO = new SubjectProgressDTO();
+
   //selectedSubject: Subject = new Subject();
 
   constructor(
@@ -81,13 +84,34 @@ export class ProgressSubjectsComponent {
       next: (dados) => {
         //this.subjects = dados;
         this.subjects = dados.filter(subject => subject.progressEnabled);
+
         this.showLoading = false;
+
+        if (this.subjectsForSelects.length == 0) {
+          this.subjectsForSelects = dados.filter(subject => subject.progressEnabled);
+        }
       },
       error: (error: HttpErrorResponse) => {
         this.sendErrorNotification(error.error.message);
         this.showLoading = false;
       }
     });
+  }
+
+  onfilter(selectedId: number) {
+
+    this.selectedSubject.id = selectedId;
+
+    // Mostrar todos
+    if (selectedId === 0) {
+      this.subjects = [...this.subjectsForSelects];
+      return;
+    }
+
+    // Filtrar disciplina selecionada
+    this.subjects = this.subjectsForSelects.filter(
+      subject => subject.id === selectedId
+    );
   }
 
   getCategoryValue(category: string) {

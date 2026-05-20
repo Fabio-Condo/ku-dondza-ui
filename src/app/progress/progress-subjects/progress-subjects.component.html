@@ -22,27 +22,6 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            margin-top: 75px;
-        }
-
-        .title-container {
-            text-align: center;
-            margin-top: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.35rem;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            color: #94a3b8;
-            line-height: 1.5;
-            margin-bottom: 15px;
         }
 
         .grid {
@@ -556,13 +535,16 @@
             font-size: 14px;
         }
 
-        @media (max-width: 900px) {
-            .container {
-                margin-top: 60px;
-            }
-        }
-
         @media (max-width: 768px) {
+            .header-top {
+                padding: 16px 16px 10px;
+            }
+
+            .tabs-bar {
+                padding: 0 12px 12px;
+                gap: 6px;
+            }
+
             .card-content {
                 padding: 12px 14px;
             }
@@ -575,9 +557,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .title-container h1 {
-                font-size: 1.25rem;
-            }
         }
 
         @media (max-width: 360px) {
@@ -591,11 +570,6 @@
 <body>
     <div class="container">
 
-        <div class="title-container">
-            <h1>Seu Progresso</h1>
-            <p class="subtitle">Acompanhe sua evolução por disciplina.</p>
-        </div>
-
         <!-- Loading overlay -->
         <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
             <div class="loading-box">
@@ -603,6 +577,100 @@
                 <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
             </div>
         </div>
+
+        <!-- ══════════════════════════════════════
+             APP HEADER
+        ══════════════════════════════════════ -->
+        <div class="app-header">
+
+            <!-- Título e subtítulo centralizados -->
+            <div class="header-top">
+                <div class="header-title">Seu Progresso</div>
+                <div class="header-subtitle">Acompanhe sua evolução por disciplina.</div>
+            </div>
+
+            <!-- Tabs + divisor + acções numa única linha com scroll horizontal -->
+            <div class="tabs-bar">
+
+                <div class="tabs">
+                    <button class="tab-btn" [class.active]="!selectedSubject.id" (click)="onfilter(0)">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <rect x="14" y="14" width="7" height="7" rx="1" />
+                        </svg>
+                        Todos
+                        <span class="tab-count">{{ subjectsForSelects.length }}</span>
+                    </button>
+
+                    <button class="tab-btn" *ngFor="let subj of subjectsForSelects"
+                        [class.active]="selectedSubject.id === subj.id" (click)="selectedSubject.id = subj.id; onfilter(selectedSubject.id)">
+
+                        <!-- Ícone Matemática -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'Matemática'">
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
+                        </svg>
+
+                        <!-- Ícone Português -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'Português'">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+
+                        <!-- Ícone Quimica -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'Quimica'">
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        </svg>
+
+                        <!-- Ícone Física -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'Física'">
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                        </svg>
+
+                        <!-- Ícone Biologia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'Biologia'">
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 9h9" />
+                        </svg>
+
+                        <!-- Ícone História -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'História'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
+
+                        <!-- Ícone Geografia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'Geografia'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                        </svg>
+
+                        <!-- Ícone Inglês -->
+                        <svg viewBox="0 0 24 24" *ngIf="subj.subjectName === 'Inglês'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                        </svg>
+
+                        {{ subj.subjectName }}
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <!-- ══════════════════════════════════
+             Cards de disciplinas
+        ══════════════════════════════════ -->
 
         <div class="grid">
 
