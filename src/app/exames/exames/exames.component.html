@@ -33,6 +33,7 @@
             z-index: 20;
             background: #ffffff;
             border-bottom: 1px solid #e8edf2;
+            margin-bottom: 24px;
         }
 
         .header-top {
@@ -229,34 +230,6 @@
         /* ══════════════════════════════════════
            FIM APP HEADER
         ══════════════════════════════════════ */
-
-        .container-body {
-            padding-top: 24px;
-        }
-
-        button {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #e2e8f0;
-            color: #475569;
-        }
-
-        .btn-outline:hover {
-            background-color: #f1f5f9;
-        }
 
         .cards-container {
             display: grid;
@@ -1988,7 +1961,8 @@
                         <!-- Ícone Português -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
 
                         <!-- Ícone Quimica -->
@@ -2076,203 +2050,203 @@
             <i class="pi pi-plus"></i>
         </button>
 
-        <div class="container-body">
-            <div class="cards-container">
-                <div class="card" *ngFor="let exam of exams">
+        <div class="cards-container">
+            <div class="card" *ngFor="let exam of exams">
 
-                    <div class="card-header">
-                        <div class="discipline-icon" [ngClass]="{ premium: exam.premium }">
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Matemática'">
-                                <path d="M4 4h16" />
-                                <path d="M4 4l8 8-8 8" />
-                                <path d="M4 20h16" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Português'">
-                                <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                                <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Quimica'">
-                                <path d="M9 3h6" />
-                                <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
-                                <path d="M7.5 14.5h9" />
-                                <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                                <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                                <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Física'">
-                                <circle cx="12" cy="12" r="2" />
-                                <ellipse cx="12" cy="12" rx="10" ry="4" />
-                                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Biologia'">
-                                <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
-                                <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
-                                <path d="M7.5 6.5h9" />
-                                <path d="M7.5 9h9" />
-                                <path d="M7.5 11.5h9" />
-                                <path d="M7 15c0 0 2 2.5 2 4" />
-                                <path d="M17 15c0 0-2 2.5-2 4" />
-                                <path d="M7.5 17h9" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'História'">
-                                <path d="M5 3h14" />
-                                <path d="M5 21h14" />
-                                <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
-                                <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
-                                <path d="M8 14.5h8" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Geografia'">
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M3 12h18" />
-                                <path d="M5 8h14" />
-                                <path d="M5 16h14" />
-                                <path d="M12 3c3 3 3 15 0 18" />
-                                <path d="M12 3c-3 3-3 15 0 18" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Inglês'">
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M3 12h18" />
-                                <path d="M12 3c3 3 3 15 0 18" />
-                                <path d="M12 3c-3 3-3 15 0 18" />
-                                <path d="M9 16l3-8 3 8" />
-                                <path d="M10 13h4" />
-                            </svg>
-                        </div>
-
-                        <div class="card-title-group">
-                            <span class="card-name">{{ exam.subject.name }} {{ exam.number }}</span>
-                            <span class="card-sub">{{ getInstitution(exam.institution) }} · {{ exam.institution }}</span>
-                        </div>
-
-                        <div class="dropdown-container">
-                            <button class="dropdown-btn" (click)="toggleDropdown(exam)">
-                                <i class="pi pi-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                                <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
-                                    *ngIf="isUserLoggedIn && isAdmin">Editar</a>
-                                <a (click)="confirmarExclusao(exam); closeDropdown(exam)"
-                                    *ngIf="isUserLoggedIn && isAdmin">Eliminar</a>
-                                <a (click)="onDownload(exam); toggleDropdown(exam)"
-                                    *ngIf="!isPremiumExam(exam)">Baixar</a>
-                            </div>
-                        </div>
+                <div class="card-header">
+                    <div class="discipline-icon" [ngClass]="{ premium: exam.premium }">
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Matemática'">
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Português'">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Quimica'">
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                            <path d="M7.5 14.5h9" />
+                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
+                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
+                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Física'">
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Biologia'">
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 6.5h9" />
+                            <path d="M7.5 9h9" />
+                            <path d="M7.5 11.5h9" />
+                            <path d="M7 15c0 0 2 2.5 2 4" />
+                            <path d="M17 15c0 0-2 2.5-2 4" />
+                            <path d="M7.5 17h9" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'História'">
+                            <path d="M5 3h14" />
+                            <path d="M5 21h14" />
+                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
+                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
+                            <path d="M8 14.5h8" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Geografia'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M5 8h14" />
+                            <path d="M5 16h14" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Inglês'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                            <path d="M9 16l3-8 3 8" />
+                            <path d="M10 13h4" />
+                        </svg>
                     </div>
 
-                    <div class="card-body">
-                        <div class="card-meta">
-                            <div class="meta-item">
-                                <span class="meta-label">Ano</span>
-                                <span class="meta-value">
-                                    <svg viewBox="0 0 24 24">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" />
-                                        <path d="M3 10H21" stroke-linecap="round" />
-                                    </svg>
-                                    {{ exam.year }}
-                                </span>
-                            </div>
-                            <div class="meta-item">
-                                <span class="meta-label">Tipo</span>
-                                <span class="meta-value">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2Z"
-                                            stroke-linejoin="round" />
-                                    </svg>
-                                    {{ getType(exam.examType) }}
-                                </span>
-                            </div>
-                            <div class="meta-item">
-                                <span class="meta-label">Acesso</span>
-                                <span class="meta-value" [ngClass]="exam.premium ? 'premium-val' : 'free-val'">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" />
-                                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                                        <circle *ngIf="!exam.premium" cx="12" cy="16" r="1.2" fill="currentColor"
-                                            stroke="none" />
-                                    </svg>
-                                    {{ exam.premium ? 'Premium' : 'Gratuito' }}
-                                </span>
-                            </div>
-                        </div>
+                    <div class="card-title-group">
+                        <span class="card-name">{{ exam.subject.name }} {{ exam.number }}</span>
+                        <span class="card-sub">{{ getInstitution(exam.institution) }} · {{ exam.institution }}</span>
                     </div>
 
-                    <div class="card-footer">
-                        <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
-                            [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
-                            <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
-                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                                style="font-size:12px;"></i>
-                            <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar exame' }}</span>
+                    <div class="dropdown-container">
+                        <button class="dropdown-btn" (click)="toggleDropdown(exam)">
+                            <i class="pi pi-ellipsis-h"></i>
                         </button>
-                        <button class="upgrade-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-                            </svg>
-                            <span>Ver resolução completa</span>
-                        </button>
+                        <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+                            <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
+                                *ngIf="isUserLoggedIn && isAdmin">Editar</a>
+                            <a (click)="confirmarExclusao(exam); closeDropdown(exam)"
+                                *ngIf="isUserLoggedIn && isAdmin">Eliminar</a>
+                            <a (click)="onDownload(exam); toggleDropdown(exam)" *ngIf="!isPremiumExam(exam)">Baixar</a>
+                        </div>
                     </div>
-
                 </div>
-            </div>
 
-            <div *ngIf="!showLoading && !retryVisible && exams.length === 0" class="empty-state">
-                Nenhum exame encontrado.
-            </div>
-
-            <div *ngIf="retryVisible" class="retry-container">
-                <div class="retry-content">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                        stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <circle cx="12" cy="16" r="1"></circle>
-                    </svg>
-                    <div class="retry-text">Ocorreu um erro ao carregar os exames.<br>Por favor, tente novamente.</div>
-                    <button class="retry-button" (click)="retryGetExames()">Tentar novamente</button>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Ano</span>
+                            <span class="meta-value">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <path d="M3 10H21" stroke-linecap="round" />
+                                </svg>
+                                {{ exam.year }}
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Tipo</span>
+                            <span class="meta-value">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2Z"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                {{ getType(exam.examType) }}
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Acesso</span>
+                            <span class="meta-value" [ngClass]="exam.premium ? 'premium-val' : 'free-val'">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" />
+                                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                                    <circle *ngIf="!exam.premium" cx="12" cy="16" r="1.2" fill="currentColor"
+                                        stroke="none" />
+                                </svg>
+                                {{ exam.premium ? 'Premium' : 'Gratuito' }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Paginação desktop -->
-            <div class="pagination-desktop">
-                <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="15 18 9 12 15 6" />
-                    </svg>
-                    Anterior
-                </button>
-
-                <ng-container *ngFor="let page of getVisiblePages()">
-                    <span *ngIf="page === -1" class="page-dots">...</span>
-                    <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
-                        (click)="goToPage(page)" [disabled]="showLoading">
-                        {{ page }}
+                <div class="card-footer">
+                    <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
+                        [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
+                        <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
+                            <path
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                            style="font-size:12px;"></i>
+                        <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar exame' }}</span>
                     </button>
-                </ng-container>
+                    <button class="upgrade-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                        </svg>
+                        <span>Ver resolução completa</span>
+                    </button>
+                </div>
 
-                <button class="page-btn nav" (click)="nextPage()"
-                    [disabled]="currentPage === totalPages() || showLoading">
-                    Seguinte
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                </button>
             </div>
+        </div>
 
-            <!-- Load more mobile -->
-            <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
-                <div class="load-more-info">Mostrando <span>{{ totalRecords }}</span> de <span>{{ totalExames }}</span> exames</div>
-                <button class="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
-                    <span class="btn-spinner"></span>
-                    <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14M5 12l7 7 7-7" />
-                    </svg>
-                    <span class="btn-text">Carregar mais</span>
-                </button>
+        <div *ngIf="!showLoading && !retryVisible && exams.length === 0" class="empty-state">
+            Nenhum exame encontrado.
+        </div>
+
+        <div *ngIf="retryVisible" class="retry-container">
+            <div class="retry-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <circle cx="12" cy="16" r="1"></circle>
+                </svg>
+                <div class="retry-text">Ocorreu um erro ao carregar os exames.<br>Por favor, tente novamente.</div>
+                <button class="retry-button" (click)="retryGetExames()">Tentar novamente</button>
             </div>
+        </div>
+
+        <!-- Paginação desktop -->
+        <div class="pagination-desktop">
+            <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Anterior
+            </button>
+
+            <ng-container *ngFor="let page of getVisiblePages()">
+                <span *ngIf="page === -1" class="page-dots">...</span>
+                <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)" [disabled]="showLoading">
+                    {{ page }}
+                </button>
+            </ng-container>
+
+            <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+                Seguinte
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Load more mobile -->
+        <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
+            <div class="load-more-info">Mostrando <span>{{ totalRecords }}</span> de <span>{{ totalExames }}</span>
+                exames</div>
+            <button class="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
+                <span class="btn-spinner"></span>
+                <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+                <span class="btn-text">Carregar mais</span>
+            </button>
         </div>
     </div>
 </body>
