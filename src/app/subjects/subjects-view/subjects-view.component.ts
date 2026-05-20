@@ -140,6 +140,9 @@ export class SubjectsViewComponent {
         this.retryVisible = true;
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else if (errorResponse.status == 400) {
+          // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
         } else {
           this.sendErrorNotification(errorResponse.error.message);
         }

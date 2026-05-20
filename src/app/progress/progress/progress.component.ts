@@ -382,8 +382,15 @@ export class ProgressComponent implements OnInit {
         this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
-        this.sendErrorNotification(error.error.message);
         this.showLoading = false;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else if (error.status == 400) {
+          // BAD_REQUEST
+          this.router.navigateByUrl('/pagina-nao-encontrada');
+        } else {
+          this.sendErrorNotification(error.error.message);
+        }
       }
     });
   }
