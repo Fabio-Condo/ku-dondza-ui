@@ -20,44 +20,218 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            margin-top: 75px;
         }
 
-        header {
+        /* ══════════════════════════════════════
+           APP HEADER
+        ══════════════════════════════════════ */
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            margin-top: 50px;
+            z-index: 20;
+            background: #ffffff;
+            border-bottom: 1px solid #e8edf2;
+        }
+
+        .header-top {
+            padding: 20px 24px 14px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-top: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
+            gap: 4px;
         }
 
-        .title-container {
-            text-align: center;
-            margin-top: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 1.5rem;
+        .header-title {
+            font-size: 20px;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 0.35rem;
+            letter-spacing: -0.4px;
+            line-height: 1.2;
         }
 
-        .subtitle {
-            font-size: 14px;
+        .header-subtitle {
+            font-size: 13px;
             color: #94a3b8;
+            text-align: center;
             line-height: 1.5;
-            margin-bottom: 15px;
         }
 
-        .title {
+        /* ── Barra de tabs + acções numa só linha ── */
+
+        .tabs-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tabs-bar::-webkit-scrollbar {
             display: none;
-            font-size: 1.25rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .tab-btn.active {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .tab-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .tab-count {
+            font-size: 11px;
             font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 1rem;
+            background: #e0e7ff;
+            color: #4361ee;
+            padding: 1px 6px;
+            border-radius: 99px;
+            line-height: 1.5;
+        }
+
+        .tab-btn.active .tab-count {
+            background: #c7d2fe;
+        }
+
+        /* ── Divisor vertical entre tabs e acções ── */
+
+        .tabs-divider {
+            width: 1px;
+            height: 24px;
+            background: #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        /* ── Acções alinhadas com as tabs ── */
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .btn-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-filter:hover {
+            border-color: #c7d2fe;
+            background: #fafbff;
+            color: #4361ee;
+        }
+
+        .btn-filter svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .btn-add-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 10px;
+            border: none;
+            background: #4361ee;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-add-header:hover {
+            background: #3451d1;
+        }
+
+        .btn-add-header svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ══════════════════════════════════════
+           FIM APP HEADER
+        ══════════════════════════════════════ */
+
+        .container-body {
+            padding-top: 24px;
         }
 
         button {
@@ -74,17 +248,6 @@
             gap: 7px;
         }
 
-        .btn-primary {
-            background-color: #4361ee;
-            color: white;
-            border: 1px solid #4361ee;
-        }
-
-        .btn-primary:hover {
-            background-color: #3451d1;
-            border-color: #3451d1;
-        }
-
         .btn-outline {
             background-color: transparent;
             border: 1px solid #e2e8f0;
@@ -95,22 +258,6 @@
             background-color: #f1f5f9;
         }
 
-        .button-add-new {
-            background-color: #4361ee;
-            color: white;
-            border: 1px solid #4361ee;
-        }
-
-        .button-add-new:hover {
-            background-color: #3451d1;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -118,7 +265,7 @@
         }
 
         /* ══════════════════════════════════════
-           CARD — novo design sem badges
+           CARD
         ══════════════════════════════════════ */
 
         .card {
@@ -273,7 +420,6 @@
             color: #1e293b;
         }
 
-        /* ── Meta grid (substitui os badges) ── */
         .card-meta {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -331,7 +477,6 @@
             stroke: #60a5fa;
         }
 
-        /* ── Botões de acção ── */
         .download-btn {
             width: 100%;
             padding: 10px 16px;
@@ -414,10 +559,6 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
-
-        /* ══════════════════════════════════════
-           FIM CARD
-        ══════════════════════════════════════ */
 
         .fab {
             display: none;
@@ -595,7 +736,6 @@
             }
         }
 
-        /* PAGINATION — desktop */
         .pagination-desktop {
             display: flex;
             align-items: center;
@@ -625,23 +765,23 @@
 
         .page-btn:hover {
             border-color: #c7d2fe;
-            color: #4361ee
+            color: #4361ee;
         }
 
         .page-btn.active {
             background: #4361ee;
             color: #fff;
-            border-color: #4361ee
+            border-color: #4361ee;
         }
 
         .page-btn.nav {
-            padding: 0 14px
+            padding: 0 14px;
         }
 
         .page-btn:disabled {
             opacity: .4;
             cursor: not-allowed;
-            pointer-events: none
+            pointer-events: none;
         }
 
         .page-btn svg {
@@ -659,10 +799,9 @@
             color: #94a3b8;
             font-size: 13px;
             padding: 0 2px;
-            user-select: none
+            user-select: none;
         }
 
-        /* ─── Load more ──────────────────────────────────── */
         .load-more-wrap {
             margin-top: 1rem;
             display: none;
@@ -1009,22 +1148,6 @@
             border-top-color: #4361ee;
             animation: btn-spin 0.65s linear infinite;
             flex-shrink: 0;
-        }
-
-        .input-skeleton {
-            animation: skeleton-pulse 1.4s ease-in-out infinite;
-        }
-
-        @keyframes skeleton-pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.55;
-            }
         }
 
         .modal-progress-bar {
@@ -1765,14 +1888,18 @@
             border-radius: 99px;
         }
 
-        /* Responsividade */
-        @media (max-width: 900px) {
-            .container {
-                margin-top: 60px;
-            }
-        }
+        /* ── Responsividade ── */
 
         @media (max-width: 768px) {
+            .header-top {
+                padding: 16px 16px 10px;
+            }
+
+            .tabs-bar {
+                padding: 0 12px 12px;
+                gap: 6px;
+            }
+
             .card-header {
                 padding: 12px 14px 10px;
             }
@@ -1789,15 +1916,7 @@
                 gap: 8px;
             }
 
-            .title {
-                display: flex;
-            }
-
-            .title-container {
-                display: none;
-            }
-
-            .button-add-new {
+            .btn-add-header {
                 display: none;
             }
 
@@ -1809,20 +1928,15 @@
                 grid-template-columns: 1fr;
             }
 
-            .pagination {
+            .pagination-desktop {
                 display: none;
             }
 
-            .pagination-desktop {
-                display: none
-            }
-
             .load-more-wrap {
-                display: flex
+                display: flex;
             }
 
-            header .load-more-info {
-                /*Depois eliminar e fazer do jeito certo*/
+            .tabs-divider {
                 display: none;
             }
         }
@@ -1830,7 +1944,124 @@
 </head>
 
 <body>
+
     <div class="container">
+
+        <!-- ══════════════════════════════════════
+             APP HEADER
+        ══════════════════════════════════════ -->
+        <div class="app-header">
+
+            <!-- Título e subtítulo centralizados -->
+            <div class="header-top">
+                <div class="header-title">Exames</div>
+                <div class="header-subtitle">Encontre e baixe exames anteriores das principais instituições</div>
+            </div>
+
+            <!-- Tabs + divisor + acções numa única linha com scroll horizontal -->
+            <div class="tabs-bar">
+
+                <div class="tabs">
+                    <button class="tab-btn" [class.active]="!filtro.subjectId"
+                        (click)="filtro.subjectId = undefined; findAll()">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <rect x="14" y="14" width="7" height="7" rx="1" />
+                        </svg>
+                        Todos
+                        <span class="tab-count">{{ totalExames }}</span>
+                    </button>
+
+                    <button class="tab-btn" *ngFor="let subject of subjects"
+                        [class.active]="filtro.subjectId === subject.id"
+                        (click)="filtro.subjectId = subject.id; findAll()">
+
+                        <!-- Ícone Matemática -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Matemática'">
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
+                        </svg>
+
+                        <!-- Ícone Português -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+
+                        <!-- Ícone Quimica -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Quimica'">
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        </svg>
+
+                        <!-- Ícone Física -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Física'">
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                        </svg>
+
+                        <!-- Ícone Biologia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Biologia'">
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 9h9" />
+                        </svg>
+
+                        <!-- Ícone História -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'História'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
+
+                        <!-- Ícone Geografia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Geografia'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                        </svg>
+
+                        <!-- Ícone Inglês -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Inglês'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                        </svg>
+
+                        {{ subject.name }}
+                    </button>
+                </div>
+
+                <!-- Divisor vertical -->
+                <div class="tabs-divider"></div>
+
+                <!-- Acções: Filtrar + Novo -->
+                <div class="header-actions">
+                    <button class="btn-filter" (click)="onFilter()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6" />
+                            <line x1="7" y1="12" x2="17" y2="12" />
+                            <line x1="10" y1="18" x2="14" y2="18" />
+                        </svg>
+                        Filtrar
+                    </button>
+
+                    <button class="btn-add-header" (click)="onAddNewExame()" *ngIf="isUserLoggedIn && isAdmin">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Novo
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <!-- FIM APP HEADER -->
 
         <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
             <div class="loading-box">
@@ -1841,242 +2072,207 @@
 
         <div *ngIf="currentMessage" class="progress-message">{{ currentMessage }}</div>
 
-        <div class="title-container">
-            <h1>Exames</h1>
-            <p class="subtitle">Encontre e baixe exames anteriores das principais instituições</p>
-        </div>
-
-        <header>
-            <div class="title">Exames</div>
-            <div class="load-more-info">Mostrando <span id="shown-count">{{ totalRecords }}</span> de <span>{{
-                    totalExames }}</span> exames
-            </div>
-            <div class="actions">
-                <button (click)="onAddNewExame()" class="button-add-new" id="add-btn" *ngIf="isUserLoggedIn && isAdmin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Novo
-                </button>
-                <button class="btn-outline" id="filter-btn" (click)="onFilter()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg>
-                    Filtrar
-                </button>
-            </div>
-        </header>
-
         <button class="fab" (click)="onAddNewExame()" *ngIf="isUserLoggedIn && isAdmin">
             <i class="pi pi-plus"></i>
         </button>
 
-        <div class="cards-container">
-            <div class="card" *ngFor="let exam of exams">
+        <div class="container-body">
+            <div class="cards-container">
+                <div class="card" *ngFor="let exam of exams">
 
-                <div class="card-header">
-                    <!-- Ícone da disciplina -->
-                    <div class="discipline-icon" [ngClass]="{ premium: exam.premium }">
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Matemática'">
-                            <path d="M4 4h16" />
-                            <path d="M4 4l8 8-8 8" />
-                            <path d="M4 20h16" />
-                        </svg>
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Português'">
-                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path
-                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
-                        </svg>
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Quimica'">
-                            <path d="M9 3h6" />
-                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
-                            <path d="M7.5 14.5h9" />
-                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
-                        </svg>
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Física'">
-                            <circle cx="12" cy="12" r="2" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                        </svg>
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Biologia'">
-                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
-                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
-                            <path d="M7.5 6.5h9" />
-                            <path d="M7.5 9h9" />
-                            <path d="M7.5 11.5h9" />
-                            <path d="M7 15c0 0 2 2.5 2 4" />
-                            <path d="M17 15c0 0-2 2.5-2 4" />
-                            <path d="M7.5 17h9" />
-                        </svg>
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'História'">
-                            <path d="M5 3h14" />
-                            <path d="M5 21h14" />
-                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
-                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
-                            <path d="M8 14.5h8" />
-                        </svg>
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Geografia'">
-                            <circle cx="12" cy="12" r="9" />
-                            <path d="M3 12h18" />
-                            <path d="M5 8h14" />
-                            <path d="M5 16h14" />
-                            <path d="M12 3c3 3 3 15 0 18" />
-                            <path d="M12 3c-3 3-3 15 0 18" />
-                        </svg>
-                        <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Inglês'">
-                            <circle cx="12" cy="12" r="9" />
-                            <path d="M3 12h18" />
-                            <path d="M12 3c3 3 3 15 0 18" />
-                            <path d="M12 3c-3 3-3 15 0 18" />
-                            <path d="M9 16l3-8 3 8" />
-                            <path d="M10 13h4" />
-                        </svg>
+                    <div class="card-header">
+                        <div class="discipline-icon" [ngClass]="{ premium: exam.premium }">
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Matemática'">
+                                <path d="M4 4h16" />
+                                <path d="M4 4l8 8-8 8" />
+                                <path d="M4 20h16" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Português'">
+                                <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                                <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Quimica'">
+                                <path d="M9 3h6" />
+                                <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                                <path d="M7.5 14.5h9" />
+                                <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
+                                <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
+                                <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Física'">
+                                <circle cx="12" cy="12" r="2" />
+                                <ellipse cx="12" cy="12" rx="10" ry="4" />
+                                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Biologia'">
+                                <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                                <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                                <path d="M7.5 6.5h9" />
+                                <path d="M7.5 9h9" />
+                                <path d="M7.5 11.5h9" />
+                                <path d="M7 15c0 0 2 2.5 2 4" />
+                                <path d="M17 15c0 0-2 2.5-2 4" />
+                                <path d="M7.5 17h9" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'História'">
+                                <path d="M5 3h14" />
+                                <path d="M5 21h14" />
+                                <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
+                                <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
+                                <path d="M8 14.5h8" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Geografia'">
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M3 12h18" />
+                                <path d="M5 8h14" />
+                                <path d="M5 16h14" />
+                                <path d="M12 3c3 3 3 15 0 18" />
+                                <path d="M12 3c-3 3-3 15 0 18" />
+                            </svg>
+                            <svg viewBox="0 0 24 24" *ngIf="exam.subject.name === 'Inglês'">
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M3 12h18" />
+                                <path d="M12 3c3 3 3 15 0 18" />
+                                <path d="M12 3c-3 3-3 15 0 18" />
+                                <path d="M9 16l3-8 3 8" />
+                                <path d="M10 13h4" />
+                            </svg>
+                        </div>
+
+                        <div class="card-title-group">
+                            <span class="card-name">{{ exam.subject.name }} {{ exam.number }}</span>
+                            <span class="card-sub">{{ getInstitution(exam.institution) }} · {{ exam.institution }}</span>
+                        </div>
+
+                        <div class="dropdown-container">
+                            <button class="dropdown-btn" (click)="toggleDropdown(exam)">
+                                <i class="pi pi-ellipsis-h"></i>
+                            </button>
+                            <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
+                                <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
+                                    *ngIf="isUserLoggedIn && isAdmin">Editar</a>
+                                <a (click)="confirmarExclusao(exam); closeDropdown(exam)"
+                                    *ngIf="isUserLoggedIn && isAdmin">Eliminar</a>
+                                <a (click)="onDownload(exam); toggleDropdown(exam)"
+                                    *ngIf="!isPremiumExam(exam)">Baixar</a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="card-title-group">
-                        <span class="card-name">{{ exam.subject.name }} {{ exam.number }}</span>
-                        <span class="card-sub">{{ getInstitution(exam.institution) }} · {{ exam.institution }}</span>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Ano</span>
+                                <span class="meta-value">
+                                    <svg viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                        <path d="M3 10H21" stroke-linecap="round" />
+                                    </svg>
+                                    {{ exam.year }}
+                                </span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Tipo</span>
+                                <span class="meta-value">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2Z"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                    {{ getType(exam.examType) }}
+                                </span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Acesso</span>
+                                <span class="meta-value" [ngClass]="exam.premium ? 'premium-val' : 'free-val'">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" />
+                                        <rect x="5" y="11" width="14" height="10" rx="2" />
+                                        <circle *ngIf="!exam.premium" cx="12" cy="16" r="1.2" fill="currentColor"
+                                            stroke="none" />
+                                    </svg>
+                                    {{ exam.premium ? 'Premium' : 'Gratuito' }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="dropdown-container">
-                        <button class="dropdown-btn" (click)="toggleDropdown(exam)">
-                            <i class="pi pi-ellipsis-h"></i>
+                    <div class="card-footer">
+                        <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
+                            [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
+                            <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
+                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                                style="font-size:12px;"></i>
+                            <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar exame' }}</span>
                         </button>
-                        <div class="dropdown" *ngIf="exam.isAdminMenuOpen">
-                            <a (click)="onUpdate(exam, file); toggleDropdown(exam)"
-                                *ngIf="isUserLoggedIn && isAdmin">Editar</a>
-                            <a (click)="confirmarExclusao(exam); closeDropdown(exam)"
-                                *ngIf="isUserLoggedIn && isAdmin">Eliminar</a>
-                            <a (click)="onDownload(exam); toggleDropdown(exam)" *ngIf="!isPremiumExam(exam)">Baixar</a>
-                        </div>
+                        <button class="upgrade-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                            </svg>
+                            <span>Ver resolução completa</span>
+                        </button>
                     </div>
-                </div>
 
-                <!-- Meta grid: Ano · Tipo · Acesso (substitui os badges) -->
-                <div class="card-body">
-                    <div class="card-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Ano</span>
-                            <span class="meta-value">
-                                <svg viewBox="0 0 24 24">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                                    <path d="M3 10H21" stroke-linecap="round" />
-                                </svg>
-                                {{ exam.year }}
-                            </span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Tipo</span>
-                            <span class="meta-value">
-                                <svg viewBox="0 0 24 24">
-                                    <path
-                                        d="M6 2H14L18 6V20C18 21.1 17.1 22 16 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2Z"
-                                        stroke-linejoin="round" />
-                                </svg>
-                                {{ getType(exam.examType) }}
-                            </span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Acesso</span>
-                            <span class="meta-value" [ngClass]="exam.premium ? 'premium-val' : 'free-val'">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" />
-                                    <rect x="5" y="11" width="14" height="10" rx="2" />
-                                    <circle *ngIf="!exam.premium" cx="12" cy="16" r="1.2" fill="currentColor"
-                                        stroke="none" />
-                                </svg>
-                                {{ exam.premium ? 'Premium' : 'Gratuito' }}
-                            </span>
-                        </div>
-                    </div>
                 </div>
-
-                <div class="card-footer">
-                    <button class="download-btn" (click)="onDownload(exam)" *ngIf="!isPremiumExam(exam)"
-                        [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
-                        <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
-                            <path
-                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                            style="font-size:12px;"></i>
-                        <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar exame' }}</span>
-                    </button>
-                    <button class="upgrade-btn" (click)="openUpgradeModal()" *ngIf="isPremiumExam(exam)">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M3 7l4 4 5-6 5 6 4-4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-                        </svg>
-                        <span>Ver resolução completa</span>
-                    </button>
-                </div>
-
             </div>
-        </div>
 
-        <div *ngIf="!showLoading && !retryVisible && exams.length === 0" class="empty-state">
-            Nenhum exame encontrado.
-        </div>
-
-        <div *ngIf="retryVisible" class="retry-container">
-            <div class="retry-content">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                    stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <circle cx="12" cy="16" r="1"></circle>
-                </svg>
-                <div class="retry-text">Ocorreu um erro ao carregar os exames.<br>Por favor, tente novamente.</div>
-                <button class="retry-button" (click)="retryGetExames()">Tentar novamente</button>
+            <div *ngIf="!showLoading && !retryVisible && exams.length === 0" class="empty-state">
+                Nenhum exame encontrado.
             </div>
-        </div>
 
-        <!-- Paginação desktop -->
-        <div class="pagination-desktop">
-            <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-                <svg viewBox="0 0 24 24">
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>
-                Anterior
-            </button>
+            <div *ngIf="retryVisible" class="retry-container">
+                <div class="retry-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                        stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <circle cx="12" cy="16" r="1"></circle>
+                    </svg>
+                    <div class="retry-text">Ocorreu um erro ao carregar os exames.<br>Por favor, tente novamente.</div>
+                    <button class="retry-button" (click)="retryGetExames()">Tentar novamente</button>
+                </div>
+            </div>
 
-            <ng-container *ngFor="let page of getVisiblePages()">
-
-                <span *ngIf="page === -1" class="page-dots">...</span>
-
-                <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
-                    (click)="goToPage(page)" [disabled]="showLoading">
-                    {{ page }}
+            <!-- Paginação desktop -->
+            <div class="pagination-desktop">
+                <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                    Anterior
                 </button>
 
-            </ng-container>
+                <ng-container *ngFor="let page of getVisiblePages()">
+                    <span *ngIf="page === -1" class="page-dots">...</span>
+                    <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
+                        (click)="goToPage(page)" [disabled]="showLoading">
+                        {{ page }}
+                    </button>
+                </ng-container>
 
-            <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
-                Seguinte
-                <svg viewBox="0 0 24 24">
-                    <polyline points="9 18 15 12 9 6" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Load more mobile -->
-        <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
-            <div class="load-more-info">Mostrando <span id="shown-count">{{ totalRecords }}</span> de <span>{{
-                    totalExames }}</span> exames
+                <button class="page-btn nav" (click)="nextPage()"
+                    [disabled]="currentPage === totalPages() || showLoading">
+                    Seguinte
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </button>
             </div>
-            <button class="load-more-btn" id="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
-                <span class="btn-spinner"></span>
-                <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 5v14M5 12l7 7 7-7" />
-                </svg>
-                <span class="btn-text">Carregar mais</span>
-            </button>
+
+            <!-- Load more mobile -->
+            <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
+                <div class="load-more-info">Mostrando <span>{{ totalRecords }}</span> de <span>{{ totalExames }}</span> exames</div>
+                <button class="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
+                    <span class="btn-spinner"></span>
+                    <svg class="btn-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12l7 7 7-7" />
+                    </svg>
+                    <span class="btn-text">Carregar mais</span>
+                </button>
+            </div>
         </div>
     </div>
 </body>
@@ -2095,7 +2291,7 @@
                 <div class="modal-title-group">
                     <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
                     <span class="modal-subtitle">
-                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os camposabaixo' }}
+                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo' }}
                     </span>
                 </div>
                 <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
