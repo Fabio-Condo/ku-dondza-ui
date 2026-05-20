@@ -126,8 +126,8 @@ export class SubjectsService {
       params = params.set('enabled', filtro.enabled.toString());
     }
 
-    if (filtro.name) {
-      params = params.set('name', filtro.name);
+    if (filtro.subjectId) {
+      params = params.set('subjectId', filtro.subjectId);
     }
 
     const cacheKey = params.toString();

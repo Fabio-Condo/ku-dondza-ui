@@ -1011,7 +1011,7 @@
                         <span class="tab-count">{{ totalSubjects }}</span>
                     </button>
 
-                    <button class="tab-btn" *ngFor="let subject of subjects"
+                    <button class="tab-btn" *ngFor="let subject of subjectsForSelects"
                         [class.active]="filtro.subjectId === subject.id"
                         (click)="filtro.subjectId = subject.id; findAll()">
 
@@ -1465,9 +1465,11 @@
             </div>
             <form autocomplete="off" #exameForm="ngForm">
                 <div class="form-group">
-                    <label for="text">Nome</label>
-                    <input type="text" name="text" ngModel #text="ngModel" minlength="1" [(ngModel)]="filtro.name"
-                        (ngModelChange)="findAll()">
+                    <label for="subject">Disciplina</label>
+                    <select id="subject" [(ngModel)]="filtro.subjectId" (change)="findAll()" name="subject" required>
+                        <option value="" disabled selected>Selecione a disciplina</option>
+                        <option *ngFor="let subject of subjectsForSelects" [value]="subject.id">{{ subject.name }}</option>
+                    </select>
                 </div>
                 <!--
                 <div class="form-group">

@@ -25,6 +25,8 @@ export class SubjectsComponent implements OnInit {
   selectedSubject: Subject = new Subject();
   file!: File;
 
+  subjectsForSelects: Subject[] = [];
+
   showLoading: boolean = false;
   retryVisible: boolean = false;
 
@@ -72,6 +74,7 @@ export class SubjectsComponent implements OnInit {
     this.title.setTitle('Subjects page');
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    //this.carregarDisciplinas();
     this.findAll();
     this.scrollToTop();
   }
@@ -184,6 +187,10 @@ export class SubjectsComponent implements OnInit {
           this.totalSubjects = dados.totalElements;
         }
         this.showLoading = false;
+
+        if (this.subjectsForSelects.length == 0) {
+          this.subjectsForSelects = dados.content;
+        }
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
@@ -338,7 +345,7 @@ export class SubjectsComponent implements OnInit {
 
   limparCampos() {
     this.filtro.searchParam = "";
-    this.filtro.name = "";
+    this.filtro.subjectId = undefined
     this.findAll();
   }
 
