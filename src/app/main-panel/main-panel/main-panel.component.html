@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StudyHub — Painel Principal</title>
+    <title>EduPlus — Home</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
     <style>
         *,
@@ -17,245 +17,619 @@
             box-sizing: border-box;
         }
 
+        html {
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
         body {
-            /*background: #F5F2EE;*/
-            color: #1A1714;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 10px;
         }
 
-        /* ── Header ── */
-        header {
-            padding: 2rem 3rem 1.5rem;
+        /* ── CONTAINER ── */
+        .page {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* ── SECTION HEADER ── */
+        .sec-head {
             display: flex;
+            align-items: baseline;
             justify-content: space-between;
-            align-items: flex-end;
-            border-bottom: 1px solid #E2DDD8;
-            background: #FDFCFA;
-            animation: fadeDown .5s ease both;
+            margin: 32px 0 14px;
         }
 
-        /* ── Main ── */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 2rem 4rem;
+        .sec-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f1117;
+            letter-spacing: -.2px;
         }
 
-        .title-container {
-            text-align: center;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: 1.5rem;
+        .sec-link {
+            font-size: 12.5px;
             font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            color: #718096;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        /* ── Grid ── */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
-            width: 100%;
-            max-width: 780px;
-        }
-
-        .card {
-            background: #f7fafc;
-            /* cinzento muito claro moderno */
-            border: 1px solid #e2e8f0;
-            /* cinzento suave */
-            border-radius: 16px;
-            padding: 2rem 1.75rem 1.75rem;
-            cursor: pointer;
+            color: #4361ee;
             text-decoration: none;
-            color: #1a202c;
-            /* texto mais escuro e moderno */
-            display: flex;
-            flex-direction: column;
-            gap: .75rem;
+            opacity: .8;
+            transition: opacity .15s;
+        }
 
-            box-shadow: 0 2px 12px rgba(113, 128, 150, 0.10),
-                0 1px 3px rgba(113, 128, 150, 0.08);
+        .sec-link:hover {
+            opacity: 1;
+        }
 
-            transition: transform .22s ease,
-                box-shadow .22s ease,
-                border-color .22s ease,
-                background .22s ease;
-
+        /* ── HERO ── */
+        .hero {
+            margin-top: 60px;
+            border-radius: 22px;
+            background: #4361ee;
+            padding: 28px;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
         }
 
-        .card:nth-child(1) {
-            animation-delay: .15s;
+        @media (min-width: 700px) {
+            .hero {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 36px 40px;
+                gap: 32px;
+            }
         }
 
-        .card:nth-child(2) {
-            animation-delay: .22s;
-        }
-
-        .card:nth-child(3) {
-            animation-delay: .29s;
-        }
-
-        .card:nth-child(4) {
-            animation-delay: .36s;
-        }
-
-        .card::before {
+        .hero::before {
             content: '';
             position: absolute;
             inset: 0;
+            background: repeating-linear-gradient(-45deg,
+                    rgba(255, 255, 255, .03) 0px, rgba(255, 255, 255, .03) 1px,
+                    transparent 1px, transparent 16px);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .06);
+            pointer-events: none;
+        }
+
+        .hero-left {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .6px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .7);
+            margin-bottom: 10px;
+        }
+
+        .hero-tag-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #86efac;
+            box-shadow: 0 0 0 3px rgba(134, 239, 172, .25);
+            animation: blink 2.2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .35;
+            }
+        }
+
+        .hero-title {
+            font-size: 23px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.25;
+            max-width: 280px;
+        }
+
+        @media (min-width: 700px) {
+            .hero-title {
+                font-size: 28px;
+                max-width: 380px;
+            }
+        }
+
+        .hero-right {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+            gap: 20px;
+        }
+
+        @media (min-width: 700px) {
+            .hero-right {
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: center;
+                gap: 18px;
+            }
+        }
+
+        .hero-stat-val {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+            text-align: right;
+        }
+
+        .hero-stat-lbl {
+            font-size: 11.5px;
+            color: rgba(255, 255, 255, .6);
+            font-weight: 500;
+            margin-top: 2px;
+            text-align: right;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            color: #4361ee;
+            border: none;
+            border-radius: 14px;
+            padding: 13px 22px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .12);
+            transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), box-shadow .18s;
+            white-space: nowrap;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
+        }
+
+        .hero-cta:active {
+            transform: scale(.96);
+        }
+
+        .hero-cta svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        /* ── GERAR QUIZ ── */
+        .qa-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(67, 97, 238, .07);
+            border: 1.5px solid rgba(67, 97, 238, .15);
             border-radius: 16px;
-            background: #EEF1FD;
-            opacity: 0;
-            transition: opacity .22s ease;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), background .15s;
+            text-align: left;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 32px rgba(26, 23, 20, 0.12), 0 2px 8px rgba(26, 23, 20, 0.08);
-            border-color: #4361ee;
+        .qa-btn:hover {
+            background: rgba(67, 97, 238, .11);
+            transform: translateY(-1px);
         }
 
-        .card:hover::before {
-            opacity: 1;
+        .qa-btn:active {
+            transform: scale(.98);
         }
 
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: #EEF1FD;
-            border: 1px solid #C9D3F9;
+        .qa-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            background: #4361ee;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            z-index: 1;
-            transition: background .22s ease;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, .28);
         }
 
-        .card:hover .card-icon {
-            background: #4361ee;
-        }
-
-        .card:hover .card-icon svg {
-            stroke: #fff;
-        }
-
-        .card-icon svg {
+        .qa-icon svg {
             width: 22px;
             height: 22px;
-            stroke: #4361ee;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: stroke .22s ease;
+            color: #fff;
         }
 
-        .card-label {
-            font-size: .7rem;
-            font-weight: 600;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: #718096;
-            position: relative;
-            z-index: 1;
+        .qa-title {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #0f1117;
+            margin-bottom: 2px;
         }
 
-        .card-title {
-            font-size: 1.35rem;
-            line-height: 1.2;
-            position: relative;
-            z-index: 1;
+        .qa-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            font-weight: 500;
         }
 
-        .card-desc {
-            font-size: .875rem;
-            color: #718096;
-            font-weight: 300;
-            line-height: 1.55;
-            position: relative;
-            z-index: 1;
+        .qa-arrow {
+            color: #4361ee;
+            flex-shrink: 0;
         }
 
-        .card-arrow {
-            margin-top: auto;
+        .qa-arrow svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ── PROGRESS CARDS ── */
+        .prog-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 560px) {
+            .prog-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .prog-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
+            }
+        }
+
+        .prog-card {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, .08);
+            border-radius: 16px;
+            padding: 15px 16px;
             display: flex;
             align-items: center;
-            gap: .3rem;
-            font-size: .8rem;
-            font-weight: 500;
-            color: #4361ee;
-            position: relative;
-            z-index: 1;
-            transition: gap .2s ease;
+            gap: 13px;
+            cursor: pointer;
+            transition: transform .15s cubic-bezier(.34, 1.56, .64, 1), box-shadow .15s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
         }
 
-        .card:hover .card-arrow {
-            gap: .55rem;
+        .prog-card:hover {
+            box-shadow: 0 4px 18px rgba(0, 0, 0, .08);
+            transform: translateY(-1px);
         }
 
-        .card-arrow svg {
-            width: 14px;
-            height: 14px;
-            stroke: #4361ee;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        .prog-card:active {
+            transform: scale(.98);
         }
 
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 1.5rem;
-            right: 1.5rem;
-            height: 2px;
-            border-radius: 0 0 4px 4px;
+        .prog-thumb {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .prog-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .prog-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .prog-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f1117;
+            margin-bottom: 6px;
+        }
+
+        .prog-track {
+            height: 3px;
+            border-radius: 3px;
+            background: #f1f3f9;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .prog-fill {
+            height: 100%;
+            border-radius: 3px;
             background: #4361ee;
-            opacity: 0;
-            transition: opacity .22s ease;
         }
 
-        .card:hover::after {
-            opacity: 1;
+        .prog-pct {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #9ca3af;
         }
 
-        @keyframes fadeDown {
-            from {
-                opacity: 0;
-                transform: translateY(-12px);
+        .prog-continue-btn {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            background: rgba(67, 97, 238, .08);
+            border: 1px solid rgba(67, 97, 238, .15);
+            font-family: inherit;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #4361ee;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .15s;
+        }
+
+        .prog-continue-btn:hover {
+            background: rgba(67, 97, 238, .14);
+        }
+
+        .prog-continue-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* ── COURSES ── */
+        .courses-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 4px 0 8px;
+        }
+
+        .courses-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .courses-track {
+            display: flex;
+            gap: 13px;
+            min-width: max-content;
+        }
+
+        @media (min-width: 700px) {
+            .courses-scroll {
+                overflow-x: visible;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .courses-track {
+                display: grid;
+                grid-template-columns: repeat(6, 1fr);
+                gap: 14px;
+                min-width: 0;
             }
         }
 
+        .course-card {
+            flex: 0 0 148px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, .07);
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+            cursor: pointer;
+            transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), box-shadow .18s;
+        }
+
+        @media (min-width: 700px) {
+            .course-card {
+                flex: none;
+            }
+        }
+
+        .course-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .09);
+        }
+
+        .course-card:active {
+            transform: scale(.97);
+        }
+
+        .course-img {
+            width: 100%;
+            height: 84px;
+            object-fit: cover;
+            display: block;
+            background: #f3f4f6;
+        }
+
+        .course-info {
+            padding: 11px 13px 13px;
+        }
+
+        .course-name {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #0f1117;
+            margin-bottom: 7px;
+        }
+
+        .course-progress-track {
+            height: 3px;
+            border-radius: 3px;
+            background: #f1f3f9;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .course-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: #4361ee;
+        }
+
+        .course-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .course-pct {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4361ee;
+        }
+
+        .course-topics {
+            font-size: 10.5px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        /* ── CHALLENGES ── */
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 560px) {
+            .challenge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .challenge-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+        }
+
+        .challenge-card {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, .08);
+            border-radius: 16px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            transition: transform .15s cubic-bezier(.34, 1.56, .64, 1), box-shadow .15s;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, .08);
+        }
+
+        .challenge-card:active {
+            transform: scale(.98);
+        }
+
+        .chal-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .ci-gold {
+            background: #fef9c3;
+        }
+
+        .ci-blue {
+            background: #eff6ff;
+        }
+
+        .ci-green {
+            background: #f0fdf4;
+        }
+
+        .chal-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chal-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0f1117;
+            margin-bottom: 5px;
+        }
+
+        .chal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .chal-tag {
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .ct-xp {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .ct-sub {
+            background: rgba(67, 97, 238, .09);
+            color: #4361ee;
+        }
+
+        .ct-time {
+            background: #faf5ff;
+            color: #7c3aed;
+        }
+
+        .chal-arrow {
+            color: #d1d5db;
+            flex-shrink: 0;
+        }
+
+        .chal-arrow svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ── FADE-UP ANIMATIONS ── */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -268,260 +642,621 @@
             }
         }
 
-        /* ───────── RESPONSIVIDADE ───────── */
+        .f1 {
+            animation: fadeUp .36s .04s ease both;
+        }
 
-        /* Tablets */
-        @media (max-width: 992px) {
-            main {
-                padding: 2.5rem 1.5rem 3rem;
-            }
+        .f2 {
+            animation: fadeUp .36s .10s ease both;
+        }
 
-            .grid {
-                max-width: 640px;
-                gap: 1rem;
-            }
+        .f3 {
+            animation: fadeUp .36s .16s ease both;
+        }
 
-            .card {
-                padding: 1.75rem 1.5rem;
+        .f4 {
+            animation: fadeUp .36s .22s ease both;
+        }
+
+        .f5 {
+            animation: fadeUp .36s .28s ease both;
+        }
+
+        /* ── QUIZ MODAL ── */
+        .quiz-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+            background: rgba(15, 17, 23, .45);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .quiz-overlay.open {
+            display: flex;
+        }
+
+        @media (min-width: 600px) {
+            .quiz-overlay {
+                align-items: center;
             }
         }
 
-        /* Mobile médio */
-        @media (max-width: 768px) {
+        .quiz-modal {
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 520px;
+            padding-bottom: calc(24px + env(safe-area-inset-bottom));
+            animation: slideUp .3s cubic-bezier(.34, 1.56, .64, 1) both;
+        }
 
-            header {
-                padding: 1.25rem 1.5rem 1rem;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: .5rem;
-            }
-
-            main {
-                padding: 2rem 1.25rem 3rem;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-                max-width: 480px;
-            }
-
-            h1 {
-                font-size: 1.3rem;
-            }
-
-            .card-title {
-                font-size: 1.2rem;
-            }
-
-            .card-desc {
-                font-size: .82rem;
+        @media (min-width: 600px) {
+            .quiz-modal {
+                border-radius: 24px;
+                max-width: 460px;
+                padding-bottom: 28px;
+                animation: popIn .28s cubic-bezier(.34, 1.56, .64, 1) both;
             }
         }
 
-        @media (max-width: 580px) {
-            header {
-                padding: 1.25rem 1.5rem 1rem;
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
             }
 
-            .grid {
-                grid-template-columns: 1fr;
-                max-width: 400px;
+            to {
+                transform: translateY(0);
+                opacity: 1;
             }
         }
 
-        /* Mobile pequeno */
-        @media (max-width: 480px) {
-
-            main {
-                padding: 2.5rem 1rem 2.5rem;
+        @keyframes popIn {
+            from {
+                transform: scale(.92);
+                opacity: 0;
             }
 
-            .card {
-                padding: 1.5rem 1.25rem;
-                border-radius: 14px;
+            to {
+                transform: scale(1);
+                opacity: 1;
             }
+        }
 
-            .card-icon {
-                width: 42px;
-                height: 42px;
-            }
+        .qm-handle {
+            display: flex;
+            justify-content: center;
+            padding: 14px 0 10px;
+        }
 
-            .card-icon svg {
-                width: 20px;
-                height: 20px;
-            }
+        .qm-handle span {
+            width: 36px;
+            height: 4px;
+            border-radius: 4px;
+            background: #e5e7eb;
+        }
 
-            .card-title {
-                font-size: 1.1rem;
+        @media (min-width: 600px) {
+            .qm-handle {
+                display: none;
             }
+        }
 
-            .card-desc {
-                font-size: .8rem;
-                line-height: 1.45;
-            }
+        .qm-body {
+            padding: 8px 26px 0;
+        }
 
-            .card-arrow {
-                font-size: .75rem;
+        @media (min-width: 600px) {
+            .qm-body {
+                padding: 26px 30px 0;
             }
+        }
 
-            h1 {
-                font-size: 1.5rem;
-            }
+        .qm-title {
+            font-family: 'Lora', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f1117;
+            margin-bottom: 4px;
+        }
+
+        .qm-sub {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 24px;
+        }
+
+        .qm-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4b5264;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .qm-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .qm-chip {
+            padding: 8px 16px;
+            border-radius: 100px;
+            border: 1.5px solid rgba(0, 0, 0, .09);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5264;
+            cursor: pointer;
+            background: #fff;
+            transition: all .15s;
+        }
+
+        .qm-chip.sel {
+            border-color: #4361ee;
+            background: rgba(67, 97, 238, .08);
+            color: #4361ee;
+        }
+
+        .qm-chip:hover:not(.sel) {
+            border-color: rgba(67, 97, 238, .3);
+        }
+
+        .qm-range-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .qm-range-lbl {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4b5264;
+        }
+
+        .qm-range-val {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4361ee;
+        }
+
+        input[type=range].qm-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #4361ee 0%, #4361ee 50%, #e5e7eb 50%, #e5e7eb 100%);
+            outline: none;
+            margin-bottom: 26px;
+        }
+
+        input[type=range].qm-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #4361ee;
+            border: 3px solid #fff;
+            box-shadow: 0 1px 6px rgba(67, 97, 238, .35);
+            cursor: pointer;
+        }
+
+        .qm-go-btn {
+            width: 100%;
+            background: #4361ee;
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, .28);
+            transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), box-shadow .18s;
+        }
+
+        .qm-go-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(67, 97, 238, .32);
+        }
+
+        .qm-go-btn:active {
+            transform: scale(.97);
+        }
+
+        .qm-go-btn svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .qm-cancel {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 12px;
+        }
+
+        .qm-cancel:hover {
+            color: #6b7280;
+        }
+
+        .spacer {
+            height: 40px;
         }
     </style>
 </head>
 
 <body>
 
-    <main>
-        <div class="title-container">
-            <h1>Menú</h1>
-            <p class="subtitle">Escolhe uma das áreas abaixo para continuar o teu percurso académico.</p>
+    <div class="page">
+
+        <!-- HERO -->
+        <div class="hero f1">
+            <div class="hero-left">
+                <div class="hero-tag">
+                    <div class="hero-tag-dot"></div>
+                    Desafio da semana activo
+                </div>
+                <div class="hero-title">Supera o teu recorde esta semana</div>
+            </div>
+            <div class="hero-right">
+                <div>
+                    <div class="hero-stat-val">82%</div>
+                    <div class="hero-stat-lbl">taxa de acertos</div>
+                </div>
+                <button class="hero-cta">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
+                    </svg>
+                    Praticar agora
+                </button>
+            </div>
         </div>
 
-        <div class="grid">
+        <!-- GERAR QUIZ -->
+        <div class="sec-head f2">
+            <span class="sec-title">Gerar Quiz</span>
+        </div>
+        <button class="qa-btn f2">
+            <div class="qa-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M9.5 9.5a3 3 0 0 1 5 2.2c0 1.7-2 2.5-2 4" />
+                    <circle cx="12" cy="17.5" r=".5" fill="currentColor" />
+                </svg>
+            </div>
+            <div class="qa-body">
+                <div class="qa-title">Criar quiz personalizado</div>
+                <div class="qa-sub">Escolhe disciplina, tópico e dificuldade</div>
+            </div>
+            <div class="qa-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+            </div>
+        </button>
 
-            <!-- Progresso -->
-            <a routerLink="/progress" class="card">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24">
-                        <line x1="18" y1="20" x2="18" y2="10" />
-                        <line x1="12" y1="20" x2="12" y2="4" />
-                        <line x1="6" y1="20" x2="6" y2="14" />
-                    </svg>
-                </div>
-                <span class="card-label">Acompanhamento</span>
-                <h2 class="card-title">Progresso</h2>
-                <p class="card-desc">Acompanha a evolução do teu desempenho, conquistas e áreas a melhorar.</p>
-                <span class="card-arrow">
-                    Ver Progresso
-                    <svg viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </span>
-            </a>
+        <!-- MEU PROGRESSO -->
+        <div class="sec-head f3">
+            <span class="sec-title">Meu progresso</span>
+            <a href="#" class="sec-link">Ver tudo</a>
+        </div>
+        <div class="prog-grid f3">
 
-            <!-- Quizzes -->
-            <a routerLink="/quizzes" class="card">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                        <line x1="12" y1="17" x2="12.01" y2="17" />
-                    </svg>
+            <div class="prog-card">
+                <div class="prog-thumb">
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=92&h=92&fit=crop&q=80"
+                        alt="Matemática" />
                 </div>
-                <span class="card-label">Avaliação</span>
-                <h2 class="card-title">Quizzes</h2>
-                <p class="card-desc">Testa os teus conhecimentos com questões interactivas e recebe feedback imediato.
-                </p>
-                <span class="card-arrow">
-                    Começar
-                    <svg viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
+                <div class="prog-body">
+                    <div class="prog-name">Matemática</div>
+                    <div class="prog-track">
+                        <div class="prog-fill" style="width:63%"></div>
+                    </div>
+                    <div class="prog-pct">63% — 14 de 22 testes</div>
+                </div>
+                <button class="prog-continue-btn">
+                    Continuar
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
                     </svg>
-                </span>
-            </a>
+                </button>
+            </div>
 
-            <!-- Cursos -->
-            <a routerLink="/subjects" class="card">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                    </svg>
+            <div class="prog-card">
+                <div class="prog-thumb">
+                    <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=92&h=92&fit=crop&q=80"
+                        alt="Português" />
                 </div>
-                <span class="card-label">Aprendizagem</span>
-                <h2 class="card-title">Materiais</h2>
-                <p class="card-desc">Navega pelos módulos e conteúdos estruturados para aprendizagem guiada e
-                    aprofundada.</p>
-                <span class="card-arrow">
-                    Ver Materiais
-                    <svg viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
+                <div class="prog-body">
+                    <div class="prog-name">Português</div>
+                    <div class="prog-track">
+                        <div class="prog-fill" style="width:45%"></div>
+                    </div>
+                    <div class="prog-pct">45% — 8 de 18 testes</div>
+                </div>
+                <button class="prog-continue-btn">
+                    Continuar
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
                     </svg>
-                </span>
-            </a>
+                </button>
+            </div>
 
-            <!-- Exames Anteriores -->
-            <a routerLink="/exames" class="card">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="8" y1="13" x2="16" y2="13" />
-                        <line x1="8" y1="17" x2="16" y2="17" />
-                    </svg>
+            <div class="prog-card">
+                <div class="prog-thumb">
+                    <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=92&h=92&fit=crop&q=80"
+                        alt="Química" />
                 </div>
-                <span class="card-label">Preparação</span>
-                <h2 class="card-title">Exames Anteriores</h2>
-                <p class="card-desc">
-                    Consulta exames de anos anteriores e pratica com provas reais para melhorar o teu desempenho.
-                </p>
-                <span class="card-arrow">
-                    Ver Exames
-                    <svg viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
+                <div class="prog-body">
+                    <div class="prog-name">Química</div>
+                    <div class="prog-track">
+                        <div class="prog-fill" style="width:28%"></div>
+                    </div>
+                    <div class="prog-pct">28% — 5 de 20 testes</div>
+                </div>
+                <button class="prog-continue-btn">
+                    Continuar
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
                     </svg>
-                </span>
-            </a>
+                </button>
+            </div>
 
-            <!-- Repositório -->
-            <!--
-            <a routerLink="/questions" class="card">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                    </svg>
+            <div class="prog-card">
+                <div class="prog-thumb">
+                    <img src="https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=92&h=92&fit=crop&q=80"
+                        alt="Física" />
                 </div>
-                <span class="card-label">Estudo</span>
-                <h2 class="card-title">Repositório de questões</h2>
-                <p class="card-desc">Acede à colecção de questões e exercícios organizados por tema e nível de
-                    dificuldade.</p>
-                <span class="card-arrow">
-                    Explorar
-                    <svg viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </span>
-            </a>
-            -->
-
-            <!-- Tópicos -->
-            <!--
-            <a routerLink="/topics" class="card">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="6" cy="6" r="2" />
-                        <circle cx="6" cy="12" r="2" />
-                        <circle cx="6" cy="18" r="2" />
-                        <line x1="10" y1="6" x2="20" y2="6" />
-                        <line x1="10" y1="12" x2="20" y2="12" />
-                        <line x1="10" y1="18" x2="20" y2="18" />
-                    </svg>
+                <div class="prog-body">
+                    <div class="prog-name">Física</div>
+                    <div class="prog-track">
+                        <div class="prog-fill" style="width:51%"></div>
+                    </div>
+                    <div class="prog-pct">51% — 9 de 16 testes</div>
                 </div>
-                <span class="card-label">Conteúdo</span>
-                <h2 class="card-title">Tópicos</h2>
-                <p class="card-desc">
-                    Explora os conteúdos organizados por tópicos específicos e estuda cada tema de forma estruturada.
-                </p>
-                <span class="card-arrow">
-                    Ver Tópicos
-                    <svg viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
+                <button class="prog-continue-btn">
+                    Continuar
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
                     </svg>
-                </span>
-            </a>
-            -->
+                </button>
+            </div>
 
         </div>
-    </main>
+
+        <!-- EXPLORAR CURSOS -->
+        <div class="sec-head f4">
+            <span class="sec-title">Explorar cursos</span>
+            <a href="#" class="sec-link">Ver todos</a>
+        </div>
+        <div class="courses-scroll f4">
+            <div class="courses-track">
+
+                <div class="course-card">
+                    <img class="course-img"
+                        src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=296&h=168&fit=crop&q=80"
+                        alt="Matemática" />
+                    <div class="course-info">
+                        <div class="course-name">Matemática</div>
+                        <div class="course-progress-track">
+                            <div class="course-progress-fill" style="width:63%"></div>
+                        </div>
+                        <div class="course-footer"><span class="course-pct">63%</span><span class="course-topics">24
+                                tópicos</span></div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img class="course-img"
+                        src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=296&h=168&fit=crop&q=80"
+                        alt="Português" />
+                    <div class="course-info">
+                        <div class="course-name">Português</div>
+                        <div class="course-progress-track">
+                            <div class="course-progress-fill" style="width:45%"></div>
+                        </div>
+                        <div class="course-footer"><span class="course-pct">45%</span><span class="course-topics">18
+                                tópicos</span></div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img class="course-img"
+                        src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=296&h=168&fit=crop&q=80"
+                        alt="Química" />
+                    <div class="course-info">
+                        <div class="course-name">Química</div>
+                        <div class="course-progress-track">
+                            <div class="course-progress-fill" style="width:28%"></div>
+                        </div>
+                        <div class="course-footer"><span class="course-pct">28%</span><span class="course-topics">20
+                                tópicos</span></div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img class="course-img"
+                        src="https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=296&h=168&fit=crop&q=80"
+                        alt="Física" />
+                    <div class="course-info">
+                        <div class="course-name">Física</div>
+                        <div class="course-progress-track">
+                            <div class="course-progress-fill" style="width:51%"></div>
+                        </div>
+                        <div class="course-footer"><span class="course-pct">51%</span><span class="course-topics">16
+                                tópicos</span></div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img class="course-img"
+                        src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?w=296&h=168&fit=crop&q=80"
+                        alt="Biologia" />
+                    <div class="course-info">
+                        <div class="course-name">Biologia</div>
+                        <div class="course-progress-track">
+                            <div class="course-progress-fill" style="width:37%"></div>
+                        </div>
+                        <div class="course-footer"><span class="course-pct">37%</span><span class="course-topics">22
+                                tópicos</span></div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img class="course-img"
+                        src="https://images.unsplash.com/photo-1461360228754-6e81c478b882?w=296&h=168&fit=crop&q=80"
+                        alt="História" />
+                    <div class="course-info">
+                        <div class="course-name">História</div>
+                        <div class="course-progress-track">
+                            <div class="course-progress-fill" style="width:12%"></div>
+                        </div>
+                        <div class="course-footer"><span class="course-pct">12%</span><span class="course-topics">15
+                                tópicos</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- DESAFIOS SEMANAIS -->
+        <div class="sec-head f5">
+            <span class="sec-title">Desafios semanais</span>
+            <a href="#" class="sec-link">Ver todos</a>
+        </div>
+        <div class="challenge-grid f5">
+
+            <div class="challenge-card">
+                <div class="chal-icon ci-gold">🏆</div>
+                <div class="chal-body">
+                    <div class="chal-title">Mestre dos Limites</div>
+                    <div class="chal-tags">
+                        <span class="chal-tag ct-sub">Matemática</span>
+                        <span class="chal-tag ct-xp">+80 XP</span>
+                        <span class="chal-tag ct-time">20 min</span>
+                    </div>
+                </div>
+                <div class="chal-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="challenge-card">
+                <div class="chal-icon ci-blue">⚡</div>
+                <div class="chal-body">
+                    <div class="chal-title">Ligações Químicas</div>
+                    <div class="chal-tags">
+                        <span class="chal-tag ct-sub">Química</span>
+                        <span class="chal-tag ct-xp">+60 XP</span>
+                        <span class="chal-tag ct-time">15 min</span>
+                    </div>
+                </div>
+                <div class="chal-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="challenge-card">
+                <div class="chal-icon ci-green">📖</div>
+                <div class="chal-body">
+                    <div class="chal-title">Análise Literária</div>
+                    <div class="chal-tags">
+                        <span class="chal-tag ct-sub">Português</span>
+                        <span class="chal-tag ct-xp">+50 XP</span>
+                        <span class="chal-tag ct-time">10 min</span>
+                    </div>
+                </div>
+                <div class="chal-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="spacer"></div>
+    </div><!-- /page -->
+
+    <!-- QUIZ MODAL -->
+    <div class="quiz-overlay" id="quizOverlay">
+        <div class="quiz-modal" id="quizModal">
+            <div class="qm-handle"><span></span></div>
+            <div class="qm-body">
+                <div class="qm-title">Criar Quiz</div>
+                <div class="qm-sub">Personaliza e começa a praticar</div>
+
+                <div class="qm-label">Disciplina</div>
+                <div class="qm-chips">
+                    <button class="qm-chip sel" data-group="sub">Matemática</button>
+                    <button class="qm-chip" data-group="sub">Português</button>
+                    <button class="qm-chip" data-group="sub">Química</button>
+                    <button class="qm-chip" data-group="sub">Física</button>
+                    <button class="qm-chip" data-group="sub">Biologia</button>
+                    <button class="qm-chip" data-group="sub">História</button>
+                </div>
+
+                <div class="qm-label">Dificuldade</div>
+                <div class="qm-chips">
+                    <button class="qm-chip sel" data-group="dif">Fácil</button>
+                    <button class="qm-chip" data-group="dif">Médio</button>
+                    <button class="qm-chip" data-group="dif">Difícil</button>
+                </div>
+
+                <div class="qm-range-row">
+                    <span class="qm-range-lbl">Número de perguntas</span>
+                    <span class="qm-range-val" id="qVal">10</span>
+                </div>
+                <input type="range" class="qm-slider" id="qSlider" min="5" max="30" step="5" value="10"
+                    oninput="syncSlider(this)" />
+
+                <button class="qm-go-btn">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
+                    </svg>
+                    Iniciar Quiz
+                </button>
+                <button class="qm-cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
 
 </body>
 
