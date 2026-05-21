@@ -857,7 +857,7 @@
         <div class="sec-head f2">
             <span class="sec-title">Gerar Quiz</span>
         </div>
-        <button class="qa-btn f2" onclick="document.getElementById('quizOverlay').classList.add('open')">
+        <button class="qa-btn f2" [routerLink]="['/quizzes', 'new']">
             <div class="qa-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -882,7 +882,7 @@
         <div class="sec-head f3">
             <span class="sec-title">Meu progresso</span>
 
-            <a routerLink="/subjects" class="sec-link">
+            <a routerLink="/progress" class="sec-link">
                 Ver tudo
             </a>
         </div>
@@ -914,7 +914,7 @@
 
                     <div class="prog-pct">
 
-                        {{ subject.currentUserProgressRate }}%
+                        {{ subject.currentUserProgressRate.toFixed(1) }}%
                         —
                         {{ subject.currentUserScore }}
                         de
@@ -1007,7 +1007,7 @@
         <!-- DESAFIOS SEMANAIS -->
         <div class="sec-head f5">
             <span class="sec-title">Desafios semanais</span>
-            <a href="#" class="sec-link">Ver todos</a>
+            <a href="#" class="sec-link" routerLink="/challenges">Ver todos</a>
         </div>
         <div class="challenge-grid f5">
 
