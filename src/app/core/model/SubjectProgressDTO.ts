@@ -4,6 +4,7 @@ export class SubjectProgressDTO {
     id!: number;
     subjectId!: number;
     subjectName!: string;
+    subjectUrlFile!: string;
 
     subjectDescription!: string;
     subjectCategory!: string

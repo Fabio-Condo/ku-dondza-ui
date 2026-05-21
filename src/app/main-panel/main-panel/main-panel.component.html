@@ -768,46 +768,89 @@
 
     <div class="page">
 
-        <!-- HERO: primeiro desafio semanal -->
-        <div class="hero f1">
+        <!-- HERO: primeiro desafio -->
+        <div class="hero f1" *ngIf="challenges && challenges.length > 0">
+
             <div class="hero-left">
+
                 <div class="hero-tag">
                     <div class="hero-tag-dot"></div>
-                    Desafio da semana activo
+
+                    {{
+                    challenges[0].status === 'ONGOING'
+                    ? 'Desafio activo'
+                    : challenges[0].status === 'UPCOMING'
+                    ? 'Próximo desafio'
+                    : 'Desafio concluído'
+                    }}
                 </div>
-                <div class="hero-title">Mestre dos Limites</div>
+
+                <div class="hero-title">
+                    {{ challenges[0].title }}
+                </div>
+
                 <div class="hero-meta">
+
+                    <!-- Disciplina -->
                     <span class="hero-badge">
-                        <svg viewBox="0 0 24 24">
+
+                        <!-- Ícone -->
+                        <svg *ngIf="challenges[0].subjectName === 'Matemática'" viewBox="0 0 24 24">
                             <path d="M4 19l7-7-7-7" />
                             <path d="M13 5l7 7-7 7" />
                         </svg>
-                        Matemática
+
+                        <svg *ngIf="challenges[0].subjectName !== 'Matemática'" viewBox="0 0 24 24">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+
+                        {{ challenges[0].subjectName || challenges[0].subject?.name }}
                     </span>
-                    <span class="hero-badge">
+
+                    <!-- Tempo -->
+                    <span class="hero-badge" *ngIf="challenges[0].remainingHours !== undefined">
                         <svg viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M12 7v5l3 3" />
                         </svg>
-                        20 min
+
+                        {{ challenges[0].remainingHours }}h restantes
                     </span>
+
+                    <!-- XP -->
                     <span class="hero-badge">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                         </svg>
-                        +80 XP
+
+                        +{{ challenges[0].xpReward }} XP
                     </span>
+
                 </div>
+
             </div>
+
             <div class="hero-right">
-                <button class="hero-cta" onclick="document.getElementById('quizOverlay').classList.add('open')">
+
+                <button class="hero-cta">
+
                     <svg viewBox="0 0 24 24" fill="none">
                         <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
                     </svg>
-                    Participar agora
+
+                    {{
+                    challenges[0].submitted
+                    ? 'Ver resultado'
+                    : 'Participar agora'
+                    }}
+
                 </button>
+
             </div>
+
         </div>
 
         <!-- GERAR QUIZ -->
@@ -838,193 +881,127 @@
         <!-- MEU PROGRESSO -->
         <div class="sec-head f3">
             <span class="sec-title">Meu progresso</span>
-            <a href="#" class="sec-link">Ver tudo</a>
+
+            <a routerLink="/subjects" class="sec-link">
+                Ver tudo
+            </a>
         </div>
+
         <div class="prog-grid f3">
 
-            <div class="prog-card">
-                <div class="prog-thumb">
-                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=92&h=92&fit=crop&q=80"
-                        alt="Matemática" />
-                </div>
-                <div class="prog-body">
-                    <div class="prog-name">Matemática</div>
-                    <div class="prog-track">
-                        <div class="prog-fill" style="width:63%"></div>
-                    </div>
-                    <div class="prog-pct">63% — 14 de 22 testes</div>
-                </div>
-                <button class="prog-continue-btn">
-                    Continuar
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                    </svg>
-                </button>
-            </div>
+            <div class="prog-card" *ngFor="let subject of subjectsProgress">
 
-            <div class="prog-card">
+                <!-- Thumbnail -->
                 <div class="prog-thumb">
-                    <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=92&h=92&fit=crop&q=80"
-                        alt="Português" />
-                </div>
-                <div class="prog-body">
-                    <div class="prog-name">Português</div>
-                    <div class="prog-track">
-                        <div class="prog-fill" style="width:45%"></div>
-                    </div>
-                    <div class="prog-pct">45% — 8 de 18 testes</div>
-                </div>
-                <button class="prog-continue-btn">
-                    Continuar
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                    </svg>
-                </button>
-            </div>
 
-            <div class="prog-card">
-                <div class="prog-thumb">
-                    <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=92&h=92&fit=crop&q=80"
-                        alt="Química" />
-                </div>
-                <div class="prog-body">
-                    <div class="prog-name">Química</div>
-                    <div class="prog-track">
-                        <div class="prog-fill" style="width:28%"></div>
-                    </div>
-                    <div class="prog-pct">28% — 5 de 20 testes</div>
-                </div>
-                <button class="prog-continue-btn">
-                    Continuar
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                    </svg>
-                </button>
-            </div>
+                    <img [src]="subject.subjectUrlFile" [alt]="subject.subjectName" loading="lazy" />
 
-            <div class="prog-card">
-                <div class="prog-thumb">
-                    <img src="https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=92&h=92&fit=crop&q=80"
-                        alt="Física" />
                 </div>
+
+                <!-- Conteúdo -->
                 <div class="prog-body">
-                    <div class="prog-name">Física</div>
-                    <div class="prog-track">
-                        <div class="prog-fill" style="width:51%"></div>
+
+                    <div class="prog-name">
+                        {{ subject.subjectName }}
                     </div>
-                    <div class="prog-pct">51% — 9 de 16 testes</div>
+
+                    <div class="prog-track">
+
+                        <div class="prog-fill" [style.width.%]="subject.currentUserProgressRate">
+                        </div>
+
+                    </div>
+
+                    <div class="prog-pct">
+
+                        {{ subject.currentUserProgressRate }}%
+                        —
+                        {{ subject.currentUserScore }}
+                        de
+                        {{ subject.totalTests }}
+                        testes
+
+                    </div>
+
                 </div>
+
+                <!-- Botão -->
                 <button class="prog-continue-btn">
+
                     Continuar
+
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
                         stroke-linejoin="round">
+
                         <path d="M5 12h14" />
                         <path d="m12 5 7 7-7 7" />
+
                     </svg>
+
                 </button>
+
             </div>
 
         </div>
 
         <!-- EXPLORAR CURSOS -->
         <div class="sec-head f4">
-            <span class="sec-title">Explorar cursos</span>
-            <a href="#" class="sec-link">Ver todos</a>
+
+            <span class="sec-title">
+                Explorar cursos
+            </span>
+
+            <a routerLink="/subjects" class="sec-link">
+
+                Ver todos
+
+            </a>
+
         </div>
+
         <div class="courses-scroll f4">
+
             <div class="courses-track">
 
-                <div class="course-card">
-                    <img class="course-img"
-                        src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=296&h=168&fit=crop&q=80"
-                        alt="Matemática" />
-                    <div class="course-info">
-                        <div class="course-name">Matemática</div>
-                        <div class="course-progress-track">
-                            <div class="course-progress-fill" style="width:63%"></div>
-                        </div>
-                        <div class="course-footer"><span class="course-pct">63%</span><span class="course-topics">24
-                                tópicos</span></div>
-                    </div>
-                </div>
+                <div class="course-card" *ngFor="let subject of subjectCourses">
 
-                <div class="course-card">
-                    <img class="course-img"
-                        src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=296&h=168&fit=crop&q=80"
-                        alt="Português" />
-                    <div class="course-info">
-                        <div class="course-name">Português</div>
-                        <div class="course-progress-track">
-                            <div class="course-progress-fill" style="width:45%"></div>
-                        </div>
-                        <div class="course-footer"><span class="course-pct">45%</span><span class="course-topics">18
-                                tópicos</span></div>
-                    </div>
-                </div>
+                    <!-- Imagem -->
+                    <img class="course-img" [src]="subject.urlFile" [alt]="subject.name" loading="lazy" />
 
-                <div class="course-card">
-                    <img class="course-img"
-                        src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=296&h=168&fit=crop&q=80"
-                        alt="Química" />
+                    <!-- Conteúdo -->
                     <div class="course-info">
-                        <div class="course-name">Química</div>
-                        <div class="course-progress-track">
-                            <div class="course-progress-fill" style="width:28%"></div>
-                        </div>
-                        <div class="course-footer"><span class="course-pct">28%</span><span class="course-topics">20
-                                tópicos</span></div>
-                    </div>
-                </div>
 
-                <div class="course-card">
-                    <img class="course-img"
-                        src="https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=296&h=168&fit=crop&q=80"
-                        alt="Física" />
-                    <div class="course-info">
-                        <div class="course-name">Física</div>
-                        <div class="course-progress-track">
-                            <div class="course-progress-fill" style="width:51%"></div>
+                        <div class="course-name">
+                            {{ subject.name }}
                         </div>
-                        <div class="course-footer"><span class="course-pct">51%</span><span class="course-topics">16
-                                tópicos</span></div>
-                    </div>
-                </div>
 
-                <div class="course-card">
-                    <img class="course-img"
-                        src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?w=296&h=168&fit=crop&q=80"
-                        alt="Biologia" />
-                    <div class="course-info">
-                        <div class="course-name">Biologia</div>
+                        <!-- Barra -->
                         <div class="course-progress-track">
-                            <div class="course-progress-fill" style="width:37%"></div>
-                        </div>
-                        <div class="course-footer"><span class="course-pct">37%</span><span class="course-topics">22
-                                tópicos</span></div>
-                    </div>
-                </div>
 
-                <div class="course-card">
-                    <img class="course-img"
-                        src="https://images.unsplash.com/photo-1461360228754-6e81c478b882?w=296&h=168&fit=crop&q=80"
-                        alt="História" />
-                    <div class="course-info">
-                        <div class="course-name">História</div>
-                        <div class="course-progress-track">
-                            <div class="course-progress-fill" style="width:12%"></div>
+                            <div class="course-progress-fill" [style.width.%]="subject.currentUserProgressRate">
+                            </div>
+
                         </div>
-                        <div class="course-footer"><span class="course-pct">12%</span><span class="course-topics">15
-                                tópicos</span></div>
+
+                        <!-- Footer -->
+                        <div class="course-footer">
+
+                            <span class="course-pct">
+                                {{ subject.currentUserProgressRate || 0 }}%
+                            </span>
+
+                            <span class="course-topics">
+                                {{ subject.totalTopics }} tópicos
+                            </span>
+
+                        </div>
+
                     </div>
+
                 </div>
 
             </div>
+
         </div>
 
         <!-- DESAFIOS SEMANAIS -->
@@ -1034,77 +1011,78 @@
         </div>
         <div class="challenge-grid f5">
 
-            <div class="challenge-card">
-                <div class="chal-icon ci-gold">
-                    <svg viewBox="0 0 24 24">
+            <div class="challenge-card" *ngFor="let challenge of challenges">
+
+                <!-- Ícone -->
+                <div class="chal-icon" [ngClass]="{
+                'ci-gold': challenge.difficultyLevel === 'ADVANCED',
+                'ci-blue': challenge.difficultyLevel === 'INTERMEDIATE',
+                'ci-green': challenge.difficultyLevel === 'BEGINNER'
+            }">
+
+                    <!-- Matemática -->
+                    <svg *ngIf="challenge.subjectName === 'Matemática'" viewBox="0 0 24 24">
                         <path d="M4 19l7-7-7-7" />
                         <path d="M13 5l7 7-7 7" />
                     </svg>
-                </div>
-                <div class="chal-body">
-                    <div class="chal-title">Mestre dos Limites</div>
-                    <div class="chal-tags">
-                        <span class="chal-tag ct-sub">Matemática</span>
-                        <span class="chal-tag ct-xp">+80 XP</span>
-                        <span class="chal-tag ct-time">20 min</span>
-                    </div>
-                </div>
-                <div class="chal-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M9 18l6-6-6-6" />
-                    </svg>
-                </div>
-            </div>
 
-            <div class="challenge-card">
-                <div class="chal-icon ci-blue">
-                    <svg viewBox="0 0 24 24">
+                    <!-- Química -->
+                    <svg *ngIf="challenge.subjectName === 'Química'" viewBox="0 0 24 24">
                         <path d="M9 3h6" />
                         <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
                         <path d="M7.5 14.5h9" />
-                        <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                        <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                        <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
                     </svg>
-                </div>
-                <div class="chal-body">
-                    <div class="chal-title">Ligações Químicas</div>
-                    <div class="chal-tags">
-                        <span class="chal-tag ct-sub">Química</span>
-                        <span class="chal-tag ct-xp">+60 XP</span>
-                        <span class="chal-tag ct-time">15 min</span>
-                    </div>
-                </div>
-                <div class="chal-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M9 18l6-6-6-6" />
-                    </svg>
-                </div>
-            </div>
 
-            <div class="challenge-card">
-                <div class="chal-icon ci-green">
-                    <svg viewBox="0 0 24 24">
+                    <!-- Default -->
+                    <svg *ngIf="challenge.subjectName !== 'Matemática' && challenge.subjectName !== 'Química'"
+                        viewBox="0 0 24 24">
                         <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
                         <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                     </svg>
+
                 </div>
+
+                <!-- Conteúdo -->
                 <div class="chal-body">
-                    <div class="chal-title">Análise Literária</div>
+
+                    <div class="chal-title">
+                        {{ challenge.title }}
+                    </div>
+
                     <div class="chal-tags">
-                        <span class="chal-tag ct-sub">Português</span>
-                        <span class="chal-tag ct-xp">+50 XP</span>
-                        <span class="chal-tag ct-time">10 min</span>
+
+                        <span class="chal-tag ct-sub">
+                            {{ challenge.subjectName || challenge.subject?.name }}
+                        </span>
+
+                        <span class="chal-tag ct-xp">
+                            +{{ challenge.xpReward }} XP
+                        </span>
+
+                        <span class="chal-tag ct-time" *ngIf="challenge.remainingHours !== undefined">
+                            {{ challenge.remainingHours }}h
+                        </span>
+
+                        <span class="chal-tag" [ngClass]="{
+                        'ct-green': challenge.status === 'ONGOING',
+                        'ct-yellow': challenge.status === 'UPCOMING',
+                        'ct-gray': challenge.status === 'DONE'
+                    }">
+
+                            {{ challenge.status }}
+                        </span>
+
                     </div>
                 </div>
+
+                <!-- Seta -->
                 <div class="chal-arrow">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M9 18l6-6-6-6" />
                     </svg>
                 </div>
+
             </div>
 
         </div>

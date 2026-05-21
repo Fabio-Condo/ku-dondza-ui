@@ -8,11 +8,8 @@ import { TopicService } from 'src/app/topics/topicsService.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { ProgressService } from '../progress.service';
 import { User } from 'src/app/core/model/User';
-import { Subject } from 'src/app/core/model/Subject';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Test } from 'src/app/core/model/Test';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
-import { TopicDtoWithTests } from 'src/app/core/model/TopicDtoWithTests';
 import { delayWhen, retryWhen, scan, timer } from 'rxjs';
 
 @Component({
@@ -35,15 +32,9 @@ export class ProgressSubjectsComponent {
   //selectedSubject: Subject = new Subject();
 
   constructor(
-    private progressService: ProgressService,
     private subjectsService: SubjectsService,
-    private topicService: TopicService,
-    private questionService: QuestionService,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private confirmationService: ConfirmationService,
     private title: Title,
   ) { }
 
