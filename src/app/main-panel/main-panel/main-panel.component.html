@@ -109,6 +109,7 @@
         .hero-left {
             position: relative;
             z-index: 1;
+            flex: 1;
         }
 
         .hero-tag {
@@ -149,48 +150,57 @@
             font-weight: 700;
             color: #fff;
             line-height: 1.25;
-            max-width: 280px;
+            max-width: 320px;
+            margin-bottom: 12px;
         }
 
         @media (min-width: 700px) {
             .hero-title {
                 font-size: 28px;
-                max-width: 380px;
+                max-width: 420px;
             }
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 11px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
+        }
+
+        .hero-badge svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
         }
 
         .hero-right {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             position: relative;
             z-index: 1;
-            gap: 20px;
         }
 
         @media (min-width: 700px) {
             .hero-right {
-                flex-direction: column;
-                align-items: flex-end;
-                justify-content: center;
-                gap: 18px;
+                justify-content: flex-end;
             }
-        }
-
-        .hero-stat-val {
-            font-size: 32px;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1;
-            text-align: right;
-        }
-
-        .hero-stat-lbl {
-            font-size: 11.5px;
-            color: rgba(255, 255, 255, .6);
-            font-weight: 500;
-            margin-top: 2px;
-            text-align: right;
         }
 
         .hero-cta {
@@ -283,6 +293,7 @@
         .qa-arrow {
             color: #4361ee;
             flex-shrink: 0;
+            margin-left: auto;
         }
 
         .qa-arrow svg {
@@ -299,7 +310,7 @@
 
         @media (min-width: 560px) {
             .prog-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -314,13 +325,23 @@
             background: #fff;
             border: 1px solid rgba(0, 0, 0, .08);
             border-radius: 16px;
-            padding: 15px 16px;
+            padding: 18px 16px;
             display: flex;
+            flex-direction: row;
             align-items: center;
             gap: 13px;
             cursor: pointer;
             transition: transform .15s cubic-bezier(.34, 1.56, .64, 1), box-shadow .15s;
             box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+        }
+
+        @media (min-width: 900px) {
+            .prog-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 20px 18px;
+            }
         }
 
         .prog-card:hover {
@@ -340,6 +361,14 @@
             overflow: hidden;
         }
 
+        @media (min-width: 900px) {
+            .prog-thumb {
+                width: 100%;
+                height: 80px;
+                border-radius: 10px;
+            }
+        }
+
         .prog-thumb img {
             width: 100%;
             height: 100%;
@@ -350,31 +379,38 @@
         .prog-body {
             flex: 1;
             min-width: 0;
+            width: 100%;
         }
 
         .prog-name {
             font-size: 13px;
             font-weight: 700;
             color: #0f1117;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        @media (min-width: 900px) {
+            .prog-name {
+                font-size: 14px;
+            }
         }
 
         .prog-track {
-            height: 3px;
-            border-radius: 3px;
+            height: 4px;
+            border-radius: 4px;
             background: #f1f3f9;
             overflow: hidden;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
         .prog-fill {
             height: 100%;
-            border-radius: 3px;
+            border-radius: 4px;
             background: #4361ee;
         }
 
         .prog-pct {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 600;
             color: #9ca3af;
         }
@@ -395,6 +431,14 @@
             cursor: pointer;
             white-space: nowrap;
             transition: background .15s;
+        }
+
+        @media (min-width: 900px) {
+            .prog-continue-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 9px 12px;
+            }
         }
 
         .prog-continue-btn:hover {
@@ -564,19 +608,72 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
         }
 
+        .chal-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* discipline icon colours */
         .ci-gold {
             background: #fef9c3;
+        }
+
+        .ci-gold svg {
+            stroke: #b45309;
         }
 
         .ci-blue {
             background: #eff6ff;
         }
 
+        .ci-blue svg {
+            stroke: #4361ee;
+        }
+
         .ci-green {
             background: #f0fdf4;
+        }
+
+        .ci-green svg {
+            stroke: #059669;
+        }
+
+        .ci-purple {
+            background: #f5f3ff;
+        }
+
+        .ci-purple svg {
+            stroke: #7c3aed;
+        }
+
+        .ci-red {
+            background: #fff1f2;
+        }
+
+        .ci-red svg {
+            stroke: #e11d48;
+        }
+
+        .ci-orange {
+            background: #fff7ed;
+        }
+
+        .ci-orange svg {
+            stroke: #d97706;
+        }
+
+        .ci-teal {
+            background: #f0fdfa;
+        }
+
+        .ci-teal svg {
+            stroke: #0d9488;
         }
 
         .chal-body {
@@ -909,25 +1006,47 @@
 
     <div class="page">
 
-        <!-- HERO -->
+        <!-- HERO: primeiro desafio semanal -->
         <div class="hero f1">
             <div class="hero-left">
                 <div class="hero-tag">
                     <div class="hero-tag-dot"></div>
                     Desafio da semana activo
                 </div>
-                <div class="hero-title">Supera o teu recorde esta semana</div>
+                <div class="hero-title">Mestre dos Limites</div>
+                <div class="hero-meta">
+                    <span class="hero-badge">
+                        <!-- ícone Matemática -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 19l7-7-7-7" />
+                            <path d="M13 5l7 7-7 7" />
+                        </svg>
+                        Matemática
+                    </span>
+                    <span class="hero-badge">
+                        <!-- ícone tempo -->
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
+                        20 min
+                    </span>
+                    <span class="hero-badge">
+                        <!-- ícone XP -->
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        +80 XP
+                    </span>
+                </div>
             </div>
             <div class="hero-right">
-                <div>
-                    <div class="hero-stat-val">82%</div>
-                    <div class="hero-stat-lbl">taxa de acertos</div>
-                </div>
-                <button class="hero-cta">
+                <button class="hero-cta" onclick="document.getElementById('quizOverlay').classList.add('open')">
                     <svg viewBox="0 0 24 24" fill="none">
                         <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
                     </svg>
-                    Praticar agora
+                    Participar agora
                 </button>
             </div>
         </div>
@@ -936,7 +1055,7 @@
         <div class="sec-head f2">
             <span class="sec-title">Gerar Quiz</span>
         </div>
-        <button class="qa-btn f2">
+        <button class="qa-btn f2" onclick="document.getElementById('quizOverlay').classList.add('open')">
             <div class="qa-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -1156,8 +1275,14 @@
         </div>
         <div class="challenge-grid f5">
 
+            <!-- Matemática: ícone genérico de cálculo -->
             <div class="challenge-card">
-                <div class="chal-icon ci-gold">🏆</div>
+                <div class="chal-icon ci-gold">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 19l7-7-7-7" />
+                        <path d="M13 5l7 7-7 7" />
+                    </svg>
+                </div>
                 <div class="chal-body">
                     <div class="chal-title">Mestre dos Limites</div>
                     <div class="chal-tags">
@@ -1174,8 +1299,18 @@
                 </div>
             </div>
 
+            <!-- Química -->
             <div class="challenge-card">
-                <div class="chal-icon ci-blue">⚡</div>
+                <div class="chal-icon ci-blue">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 3h6" />
+                        <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        <path d="M7.5 14.5h9" />
+                        <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
+                        <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
+                        <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
+                    </svg>
+                </div>
                 <div class="chal-body">
                     <div class="chal-title">Ligações Químicas</div>
                     <div class="chal-tags">
@@ -1192,8 +1327,14 @@
                 </div>
             </div>
 
+            <!-- Português -->
             <div class="challenge-card">
-                <div class="chal-icon ci-green">📖</div>
+                <div class="chal-icon ci-green">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                        <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                    </svg>
+                </div>
                 <div class="chal-body">
                     <div class="chal-title">Análise Literária</div>
                     <div class="chal-tags">
@@ -1253,10 +1394,31 @@
                     </svg>
                     Iniciar Quiz
                 </button>
-                <button class="qm-cancel">Cancelar</button>
+                <button class="qm-cancel"
+                    onclick="document.getElementById('quizOverlay').classList.remove('open')">Cancelar</button>
             </div>
         </div>
     </div>
+
+    <script>
+        function syncSlider(el) {
+            var pct = (el.value - el.min) / (el.max - el.min) * 100;
+            el.style.background = 'linear-gradient(to right,#4361ee 0%,#4361ee ' + pct + '%,#e5e7eb ' + pct + '%,#e5e7eb 100%)';
+            document.getElementById('qVal').textContent = el.value;
+        }
+
+        document.querySelectorAll('.qm-chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                var g = this.dataset.group;
+                document.querySelectorAll('.qm-chip[data-group="' + g + '"]').forEach(function (c) { c.classList.remove('sel'); });
+                this.classList.add('sel');
+            });
+        });
+
+        document.getElementById('quizOverlay').addEventListener('click', function (e) {
+            if (e.target === this) this.classList.remove('open');
+        });
+    </script>
 
 </body>
 
