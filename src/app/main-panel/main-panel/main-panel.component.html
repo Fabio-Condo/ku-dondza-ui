@@ -923,8 +923,8 @@
 
                         {{ subject.currentUserProgressRate.toFixed(1) }}%
                         —
-                        {{ subject.currentUserScore }}
-                        de
+                        {{ subject.currentUserScore }} XP
+                        —
                         {{ subject.totalTests }}
                         testes
 
@@ -986,7 +986,7 @@
                         <!-- Barra -->
                         <div class="course-progress-track">
 
-                            <div class="course-progress-fill" [style.width.%]="subject.currentUserProgressRate">
+                            <div class="course-progress-fill" [style.width.%]="subject.currentUserMarkedContentRate">
                             </div>
 
                         </div>
@@ -995,7 +995,7 @@
                         <div class="course-footer">
 
                             <span class="course-pct">
-                                {{ subject.currentUserProgressRate || 0 }}%
+                                {{ subject.currentUserMarkedContentRate.toFixed(1) }}%
                             </span>
 
                             <span class="course-topics">
