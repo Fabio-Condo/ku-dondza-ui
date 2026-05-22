@@ -1325,6 +1325,20 @@
                 </div>
 
                 <div class="card-footer">
+
+                    <button class="btn"
+                        [disabled]="isChallengeButtonDisabled(challenge)"
+                        (click)="onChallengeAction(challenge)">
+
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
+                        </svg>
+
+                        {{ getChallengeButtonText(challenge) }}
+
+                    </button>
+
+                    <!--
                     <ng-container *ngIf="challenge.status !== 'DONE'; else doneActions">
                         <button class="btn" (click)="onChallengeAction(challenge)">
                             <span>{{ challenge.status === 'ONGOING' ? 'Participar agora' : 'Começar agora' }}</span>
@@ -1349,6 +1363,7 @@
                             </svg>
                         </button>
                     </ng-template>
+                    -->
                 </div>
             </div>
 

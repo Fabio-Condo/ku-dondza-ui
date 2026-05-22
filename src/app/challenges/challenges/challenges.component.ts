@@ -16,6 +16,7 @@ import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { Subject } from 'src/app/core/model/Subject';
 import { TopicService } from 'src/app/topics/topicsService.service';
 import { Topic } from 'src/app/core/model/Topic';
+import { AuthenticationService } from 'src/app/users/authentication.service';
 declare const MathJax: any;
 
 
@@ -75,6 +76,7 @@ export class ChallengesComponent implements OnInit {
   };
 
   constructor(
+    private authenticationService: AuthenticationService,
     private challengeService: ChallengeService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
@@ -85,6 +87,9 @@ export class ChallengesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Main painel page');
+    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    this.loggedUser = this.authenticationService.getUserFromLocalCache();
     this.carregarDisciplinas();
     this.findAll();
     this.scrollToTop();
@@ -693,12 +698,77 @@ export class ChallengesComponent implements OnInit {
     }, 0);
   }
 
-  onChallengeAction(challenge: Challenge): void {
-    if (challenge.hasCurrentUserSubmitted) {
-      this.viewResults(challenge);
-    } else {
-      this.startChallenge(challenge);
+  onChallengeAction(challenge: Challenge | null | undefined): void {
+
+    // Segurança
+    if (!challenge) {
+      return;
     }
+
+    // Não autenticado
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Finalizado
+    if (remainingHours <= 0) {
+      this.viewResults(challenge);
+      return;
+    }
+
+    // Já submeteu
+    if (challenge.hasCurrentUserSubmitted === true) {
+      return;
+    }
+
+    // Pode participar
+    this.startChallenge(challenge);
+  }
+
+  getChallengeButtonText(challenge: Challenge | null | undefined): string {
+
+    // Segurança
+    if (!challenge) {
+      return 'Indisponível';
+    }
+
+    // Não autenticado
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      return 'Entrar para participar';
+    }
+
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Finalizado
+    if (remainingHours <= 0) {
+      return 'Ver resultado';
+    }
+
+    // Já submeteu
+    if (challenge.hasCurrentUserSubmitted === true) {
+      return 'Você já submeteu este desafio';
+    }
+
+    return 'Participar agora';
+  }
+
+  isChallengeButtonDisabled(challenge: Challenge | null | undefined): boolean {
+
+    // Segurança
+    if (!challenge) {
+      return true;
+    }
+
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Já submeteu enquanto ainda está activo
+    return (
+      challenge.hasCurrentUserSubmitted === true &&
+      remainingHours > 0
+    );
   }
 
   startChallenge(challenge: Challenge) {
@@ -711,10 +781,6 @@ export class ChallengesComponent implements OnInit {
   }
 
   viewResults(challenge: Challenge) {
-    this.router.navigate(['/challenges', challenge.challengeId, 'results']);
-  }
-
-  saveChallenge(challenge: Challenge) {
     this.router.navigate(['/challenges', challenge.challengeId, 'results']);
   }
 
