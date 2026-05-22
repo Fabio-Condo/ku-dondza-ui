@@ -782,7 +782,6 @@
 
                 <div class="hero-tag">
                     <div class="hero-tag-dot"></div>
-
                     {{
                     challenges[0].status === 'ONGOING'
                     ? 'Desafio activo'
@@ -812,7 +811,6 @@
                             <path
                                 d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
-
                         {{ challenges[0].subjectName || challenges[0].subject.name }}
                     </span>
 
@@ -822,7 +820,6 @@
                             <circle cx="12" cy="12" r="9" />
                             <path d="M12 7v5l3 3" />
                         </svg>
-
                         {{ challenges[0].remainingHours }}h restantes
                     </span>
 
@@ -832,10 +829,8 @@
                             <path
                                 d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                         </svg>
-
                         +{{ challenges[0].xpReward }} XP
                     </span>
-
                 </div>
 
             </div>
@@ -843,7 +838,6 @@
             <div class="hero-right">
 
                 <button class="hero-cta" *ngIf="challenges[0].submitted" (click)="onChallengeAction(challenges[0])">
-
                     <svg viewBox="0 0 24 24" fill="none">
                         <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
                     </svg>
@@ -862,9 +856,13 @@
         </div>
 
         <!-- GERAR QUIZ -->
-        <div class="sec-head f2">
+        <div class="sec-head f2" *ngIf="subjectCourses && subjectCourses.length > 0">
             <span class="sec-title">Gerar Quiz</span>
+            <a routerLink="/quizzes" class="sec-link">
+                Ver Historico
+            </a>
         </div>
+
         <button class="qa-btn f2" [routerLink]="['/quizzes', 'new']">
             <div class="qa-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
@@ -889,7 +887,6 @@
         <!-- MEU PROGRESSO -->
         <div class="sec-head f3" *ngIf="isUserLoggedIn">
             <span class="sec-title">Meu progresso</span>
-
             <a routerLink="/progress" class="sec-link">
                 Ver tudo
             </a>
@@ -898,12 +895,8 @@
         <div class="prog-grid f3" *ngIf="isUserLoggedIn">
 
             <div class="prog-card" *ngFor="let subjectProg of subjectsProgress">
-
-                <!-- Thumbnail -->
                 <div class="prog-thumb">
-
                     <img [src]="subjectProg.subjectUrlFile" [alt]="subjectProg.subjectName" loading="lazy" />
-
                 </div>
 
                 <!-- Conteúdo -->
@@ -914,38 +907,29 @@
                     </div>
 
                     <div class="prog-track">
-
                         <div class="prog-fill" [style.width.%]="subjectProg.currentUserProgressRate">
                         </div>
-
                     </div>
 
                     <div class="prog-pct">
-
                         {{ subjectProg.currentUserProgressRate.toFixed(1) }}%
                         —
                         {{ subjectProg.currentUserScore }} XP
                         —
                         {{ subjectProg.totalTests }}
                         testes
-
                     </div>
 
                 </div>
 
                 <!-- Botão -->
                 <button class="prog-continue-btn" [routerLink]="['/progress/subjects', subjectProg.subjectId]">
-
                     Continuar
-
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
                         stroke-linejoin="round">
-
                         <path d="M5 12h14" />
                         <path d="m12 5 7 7-7 7" />
-
                     </svg>
-
                 </button>
 
             </div>
@@ -954,17 +938,12 @@
 
         <!-- EXPLORAR CURSOS -->
         <div class="sec-head f4" *ngIf="subjectCourses && subjectCourses.length > 0">
-
             <span class="sec-title">
                 Explorar cursos
             </span>
-
             <a routerLink="/subjects" class="sec-link">
-
                 Ver todos
-
             </a>
-
         </div>
 
         <div class="courses-scroll f4" *ngIf="subjectCourses && subjectCourses.length > 0">
@@ -974,7 +953,6 @@
                 <div class="course-card" *ngFor="let subjectCourse of subjectCourses"
                     [routerLink]="['/subjects', subjectCourse.subjectId]">
 
-                    <!-- Imagem -->
                     <img class="course-img" [src]="subjectCourse.urlFile" [alt]="subjectCourse.name" loading="lazy" />
 
                     <!-- Conteúdo -->
@@ -986,24 +964,19 @@
 
                         <!-- Barra -->
                         <div class="course-progress-track" *ngIf="isUserLoggedIn">
-
                             <div class="course-progress-fill"
                                 [style.width.%]="subjectCourse.currentUserMarkedContentRate">
                             </div>
-
                         </div>
 
                         <!-- Footer -->
                         <div class="course-footer">
-
                             <span class="course-pct" *ngIf="isUserLoggedIn">
                                 {{ subjectCourse.currentUserMarkedContentRate.toFixed(1) }}%
                             </span>
-
                             <span class="course-topics">
                                 {{ subjectCourse.totalTopics }} tópicos
                             </span>
-
                         </div>
 
                     </div>
@@ -1021,8 +994,7 @@
         </div>
         <div class="challenge-grid f5" *ngIf="challenges && challenges.length > 0">
 
-            <div class="challenge-card" *ngFor="let challenge of challenges"
-                (click)="onChallengeAction(challenge)">
+            <div class="challenge-card" *ngFor="let challenge of challenges" (click)="onChallengeAction(challenge)">
 
                 <!-- Ícone -->
                 <div class="chal-icon" [ngClass]="{
@@ -1075,11 +1047,10 @@
                         </span>
 
                         <span class="chal-tag" [ngClass]="{
-                        'ct-green': challenge.status === 'ONGOING',
-                        'ct-yellow': challenge.status === 'UPCOMING',
-                        'ct-gray': challenge.status === 'DONE'
-                    }">
-
+                            'ct-green': challenge.status === 'ONGOING',
+                            'ct-yellow': challenge.status === 'UPCOMING',
+                            'ct-gray': challenge.status === 'DONE'
+                        }">
                             {{ challenge.status }}
                         </span>
 
