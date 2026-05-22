@@ -936,6 +936,12 @@
             stroke-linejoin: round;
         }
 
+        .exam-download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         /* ── FADE-UP ANIMATIONS ── */
         @keyframes fadeUp {
             from {
@@ -1361,9 +1367,9 @@
                         }">
                             <span class="chal-status-dot"></span>
                             {{
-                                challenge.status === 'UPCOMING' ? 'Aberto' :
-                                challenge.status === 'ONGOING'  ? 'Em curso' :
-                                'Encerrado'
+                            challenge.status === 'UPCOMING' ? 'Aberto' :
+                            challenge.status === 'ONGOING' ? 'Em curso' :
+                            'Encerrado'
                             }}
                         </span>
 
@@ -1431,13 +1437,16 @@
                 </div>
 
                 <!-- Botão download -->
-                <button class="exam-download-btn" (click)="$event.stopPropagation()">
+                <button class="exam-download-btn" (click)="onDownload(exam); $event.stopPropagation()"
+                    [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 15V3" />
                         <path d="M7 10l5 5 5-5" />
                         <path d="M20 21H4" />
                     </svg>
-                    Download
+                    <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                        style="font-size:12px;"></i>
+                    <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar' }}</span>
                 </button>
 
             </div>

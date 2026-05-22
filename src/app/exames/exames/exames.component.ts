@@ -479,7 +479,6 @@ export class ExamesComponent implements OnInit {
     );
   }
 
-
   getWalletsByUser(userId: number): void {
     this.loadingMessage = "Obtendo dados"
     this.showLoading = true;

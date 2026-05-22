@@ -267,6 +267,55 @@ export class MainPanelComponent implements OnInit {
     );
   }
 
+  onDownload(exam: Exam) {
+    this.download(exam);
+  }
+
+  download(exam: Exam): void {
+    exam.showLoadingDownload = true;
+    this.examesService.download(exam.id, exam.fileName).subscribe((data: Blob) => {
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+
+      // Criar um link temporário para o Blob
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+
+      // Definir o atributo "download" com o nome do arquivo
+      link.download = exam.fileName;
+
+      // Simular um clique no link para iniciar o download
+      link.click();
+
+      // Limpar o link após o download iniciar
+      window.URL.revokeObjectURL(link.href);
+      //this.findAll(this.paginaAtual)
+      exam.showLoadingDownload = false;
+    },
+      (errorResponse: HttpErrorResponse) => {
+        exam.showLoadingDownload = false;
+        this.sendErrorNotification(errorResponse.error.message);
+      }
+    );
+  }
+
+  // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
+  isPremiumExam(exam: Exam): boolean {
+    if (!exam.premium) return false;
+
+    // ADMIN sempre tem acesso
+    if (this.isUserLoggedIn && this.isAdmin) return false;
+
+    // desabilita se não estiver logado ou se estiver no plano FREE
+    return this.isFreeUser(); ``
+  }
+
+  isFreeUser(): boolean {
+    if (!this.loggedUser || this.loggedUser.id === 0) return true;
+
+    const planExpiresAt = this.loggedUser.planExpiresAt ? new Date(this.loggedUser.planExpiresAt) : null;
+    return this.loggedUser.plan === 'FREE' || !planExpiresAt || planExpiresAt <= new Date();
+  }
+
   onChallengeAction(challenge: Challenge): void {
     if (challenge.submitted) {
       this.viewResults(challenge);
