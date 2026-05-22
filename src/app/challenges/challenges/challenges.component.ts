@@ -694,13 +694,15 @@ export class ChallengesComponent implements OnInit {
     }, 0);
   }
 
-  startChallenge(challenge: Challenge) {
-    //console.log("Premium: " + topic.premium)
-    //if (this.isPremiumTopic(topic)) {
-    //  this.displayModalUpgradePlan = true;
-    //  return;
-    //}
+  onChallengeAction(challenge: Challenge): void {
+    if (challenge.submitted) {
+      this.viewResults(challenge);
+    } else {
+      this.startChallenge(challenge);
+    }
+  }
 
+  startChallenge(challenge: Challenge) {
     this.router.navigate(['/quizzes', 'challenge'], {
       queryParams: {
         from: 'challenges',
@@ -709,11 +711,11 @@ export class ChallengesComponent implements OnInit {
     });
   }
 
-  saveChallenge(challenge: Challenge) {
+  viewResults(challenge: Challenge) {
     this.router.navigate(['/challenges', challenge.challengeId, 'results']);
   }
 
-  viewResults(challenge: Challenge) {
+  saveChallenge(challenge: Challenge) {
     this.router.navigate(['/challenges', challenge.challengeId, 'results']);
   }
 

@@ -208,6 +208,27 @@ export class MainPanelComponent implements OnInit {
       }
     );
   }
+  
+  onChallengeAction(challenge: Challenge): void {
+    if (challenge.submitted) {
+      this.viewResults(challenge);
+    } else {
+      this.startChallenge(challenge);
+    }
+  }
+
+  startChallenge(challenge: Challenge) {
+    this.router.navigate(['/quizzes', 'challenge'], {
+      queryParams: {
+        from: 'challenges',
+        challengeId: challenge.id
+      }
+    });
+  }
+
+  viewResults(challenge: Challenge) {
+    this.router.navigate(['/challenges', challenge.challengeId, 'results']);
+  }
 
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;

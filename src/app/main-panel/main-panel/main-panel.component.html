@@ -842,18 +842,19 @@
 
             <div class="hero-right">
 
-                <button class="hero-cta" [routerLink]="['/challenges', challenges[0].challengeId, 'results']">
+                <button class="hero-cta" *ngIf="challenges[0].submitted" (click)="onChallengeAction(challenges[0])">
 
                     <svg viewBox="0 0 24 24" fill="none">
                         <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
                     </svg>
+                    Ver resultado
+                </button>
 
-                    {{
-                    challenges[0].submitted
-                    ? 'Ver resultado'
-                    : 'Participar agora'
-                    }}
-
+                <button class="hero-cta" *ngIf="!challenges[0].submitted" (click)="onChallengeAction(challenges[0])">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
+                    </svg>
+                    Participar agora
                 </button>
 
             </div>
@@ -1021,7 +1022,7 @@
         <div class="challenge-grid f5" *ngIf="challenges && challenges.length > 0">
 
             <div class="challenge-card" *ngFor="let challenge of challenges"
-                [routerLink]="['/challenges', challenge.challengeId, 'results']">
+                (click)="onChallengeAction(challenge)">
 
                 <!-- Ícone -->
                 <div class="chal-icon" [ngClass]="{
