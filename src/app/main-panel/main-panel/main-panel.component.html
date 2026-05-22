@@ -401,7 +401,7 @@
             border-radius: 99px;
             background: #f1f5f9;
             overflow: hidden;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .prog-fill {
@@ -410,10 +410,52 @@
             background: linear-gradient(90deg, #a5b4fc, #4361ee);
         }
 
+        /* ── PROG-PCT melhorado ── */
         .prog-pct {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px 0;
+        }
+
+        .prog-pct-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
             font-size: 11px;
             font-weight: 600;
-            color: #94a3b8;
+            color: #64748b;
+        }
+
+        .prog-pct-item svg {
+            width: 10px;
+            height: 10px;
+            flex-shrink: 0;
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .prog-pct-item.ppi-progress svg {
+            stroke: #4361ee;
+        }
+
+        .prog-pct-item.ppi-xp svg {
+            stroke: #f59e0b;
+        }
+
+        .prog-pct-item.ppi-tests svg {
+            stroke: #059669;
+        }
+
+        .prog-pct-sep {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            margin: 0 5px;
+            flex-shrink: 0;
         }
 
         .prog-continue-btn {
@@ -897,6 +939,29 @@
             color: #475569;
         }
 
+        /* ── PREMIUM BADGE ── */
+        .exam-premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+            letter-spacing: .1px;
+        }
+
+        .exam-premium-badge svg {
+            width: 10px;
+            height: 10px;
+            fill: #f59e0b;
+            stroke: none;
+            flex-shrink: 0;
+        }
+
         .exam-download-btn {
             flex-shrink: 0;
             display: inline-flex;
@@ -1181,13 +1246,41 @@
                         </div>
                     </div>
 
+                    <!-- prog-pct melhorado: ícones + separadores visuais -->
                     <div class="prog-pct">
-                        {{ subjectProg.currentUserProgressRate.toFixed(1) }}%
-                        —
-                        {{ subjectProg.currentUserScore }} XP
-                        —
-                        {{ subjectProg.totalTests }}
-                        testes
+
+                        <span class="prog-pct-item ppi-progress">
+                            <!-- ícone gráfico de barra -->
+                            <svg viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M18 20V10" />
+                                <path d="M12 20V4" />
+                                <path d="M6 20v-6" />
+                            </svg>
+                            {{ subjectProg.currentUserProgressRate.toFixed(1) }}%
+                        </span>
+
+                        <span class="prog-pct-sep"></span>
+
+                        <span class="prog-pct-item ppi-xp">
+                            <!-- ícone estrela XP -->
+                            <svg viewBox="0 0 24 24">
+                                <path stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            {{ subjectProg.currentUserScore }} XP
+                        </span>
+
+                        <span class="prog-pct-sep"></span>
+
+                        <span class="prog-pct-item ppi-tests">
+                            <!-- ícone documento/teste -->
+                            <svg viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M9 11l3 3L22 4" />
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                            </svg>
+                            {{ subjectProg.totalTests }} testes
+                        </span>
+
                     </div>
 
                 </div>
@@ -1433,6 +1526,15 @@
                         <span class="exam-tag et-institution">{{ exam.institution }}</span>
                         <span class="exam-tag et-year">{{ exam.year }}</span>
                         <span class="exam-tag et-subject">{{ exam.subject.name }}</span>
+
+                        <!-- Badge Premium -->
+                        <span class="exam-premium-badge" *ngIf="isPremiumExam(exam)">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            Premium
+                        </span>
                     </div>
                 </div>
 
