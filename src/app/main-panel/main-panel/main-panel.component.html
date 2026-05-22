@@ -768,6 +768,13 @@
 
     <div class="page">
 
+        <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+            <div class="loading-box">
+                <div class="spinner"></div>
+                <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+            </div>
+        </div>
+
         <!-- HERO: primeiro desafio -->
         <div class="hero f1" *ngIf="challenges && challenges.length > 0">
 
@@ -963,7 +970,8 @@
 
             <div class="courses-track">
 
-                <div class="course-card" *ngFor="let subject of subjectCourses" [routerLink]="['/subjects', subject.subjectId]">
+                <div class="course-card" *ngFor="let subject of subjectCourses"
+                    [routerLink]="['/subjects', subject.subjectId]">
 
                     <!-- Imagem -->
                     <img class="course-img" [src]="subject.urlFile" [alt]="subject.name" loading="lazy" />
@@ -1011,7 +1019,8 @@
         </div>
         <div class="challenge-grid f5">
 
-            <div class="challenge-card" *ngFor="let challenge of challenges" [routerLink]="['/challenges', challenge.challengeId, 'results']">
+            <div class="challenge-card" *ngFor="let challenge of challenges"
+                [routerLink]="['/challenges', challenge.challengeId, 'results']">
 
                 <!-- Ícone -->
                 <div class="chal-icon" [ngClass]="{

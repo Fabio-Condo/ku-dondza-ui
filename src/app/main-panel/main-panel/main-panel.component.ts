@@ -59,7 +59,7 @@ export class MainPanelComponent implements OnInit {
 
   // Subject Progress
   subjectsProgress: SubjectProgressDTO[] = [];
-  
+
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -88,8 +88,6 @@ export class MainPanelComponent implements OnInit {
 
   getChallenges(pagina: number = 0): void {
     this.retryVisible = false;
-    this.loadingMessage = "Carregando dados"
-    this.showLoading = true;
 
     this.challengeFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.challengeService.findAll(this.challengeFilter).pipe(
@@ -114,7 +112,7 @@ export class MainPanelComponent implements OnInit {
         this.challenges = dados.content;
         this.totalRecords = dados.totalElements;
         this.totalChallenges = this.totalChallenges || dados.totalElements;
-        this.showLoading = false;
+        //this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
@@ -152,7 +150,7 @@ export class MainPanelComponent implements OnInit {
     ).subscribe({
       next: (dados) => {
         this.subjectsProgress = dados.filter(subject => subject.progressEnabled);
-        this.showLoading = false;
+        //this.showLoading = false;
       },
       error: (error: HttpErrorResponse) => {
         this.sendErrorNotification(error.error.message);
