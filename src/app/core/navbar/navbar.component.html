@@ -546,6 +546,7 @@
 
         <!-- Nav links -->
         <ul class="nav-links">
+          <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel">Home</a></li>
           <li><a [class.active]="isActive('/subjects')" routerLink="/subjects">Estudar</a></li>
           <!--
           <li><a [class.active]="isActive('/quizzes/new')" [routerLink]="['/quizzes', 'new']" >Praticar</a></li>
@@ -554,8 +555,7 @@
           <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
           <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()"
               style="cursor: pointer;">Progresso</a></li>
-          <li><a [class.active]="isActive('/challenges')"
-              routerLink="/challenges">Campeonatos</a></li>
+          <li><a [class.active]="isActive('/challenges')" routerLink="/challenges">Campeonatos</a></li>
 
           <li *ngIf="isUserLoggedIn && isSuperAdmin">
             <a [class.active]="isActive('/questions')" routerLink="/questions">Exercícios</a>
