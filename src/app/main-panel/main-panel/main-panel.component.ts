@@ -42,7 +42,7 @@ export class MainPanelComponent implements OnInit {
   challengeFilter: ChallengeFilter = {
     page: 0,
     itemsPerPage: 6,
-    sort: 'id,asc',
+    sort: 'id,desc',
   };
 
   // Courses
