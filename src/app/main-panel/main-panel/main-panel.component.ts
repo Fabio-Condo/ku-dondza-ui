@@ -75,8 +75,10 @@ export class MainPanelComponent implements OnInit {
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-    this.getChallenges();
-    this.getUserProgress();
+    if (this.isUserLoggedIn) {
+      this.getChallenges();
+      this.getUserProgress();
+    }
     this.getCourses();
 
     this.scrollToTop();

@@ -886,7 +886,7 @@
         </button>
 
         <!-- MEU PROGRESSO -->
-        <div class="sec-head f3">
+        <div class="sec-head f3" *ngIf="isUserLoggedIn">
             <span class="sec-title">Meu progresso</span>
 
             <a routerLink="/progress" class="sec-link">
@@ -894,14 +894,14 @@
             </a>
         </div>
 
-        <div class="prog-grid f3">
+        <div class="prog-grid f3" *ngIf="isUserLoggedIn">
 
-            <div class="prog-card" *ngFor="let subject of subjectsProgress">
+            <div class="prog-card" *ngFor="let subjectProg of subjectsProgress">
 
                 <!-- Thumbnail -->
                 <div class="prog-thumb">
 
-                    <img [src]="subject.subjectUrlFile" [alt]="subject.subjectName" loading="lazy" />
+                    <img [src]="subjectProg.subjectUrlFile" [alt]="subjectProg.subjectName" loading="lazy" />
 
                 </div>
 
@@ -909,23 +909,23 @@
                 <div class="prog-body">
 
                     <div class="prog-name">
-                        {{ subject.subjectName }}
+                        {{ subjectProg.subjectName }}
                     </div>
 
                     <div class="prog-track">
 
-                        <div class="prog-fill" [style.width.%]="subject.currentUserProgressRate">
+                        <div class="prog-fill" [style.width.%]="subjectProg.currentUserProgressRate">
                         </div>
 
                     </div>
 
                     <div class="prog-pct">
 
-                        {{ subject.currentUserProgressRate.toFixed(1) }}%
+                        {{ subjectProg.currentUserProgressRate.toFixed(1) }}%
                         —
-                        {{ subject.currentUserScore }} XP
+                        {{ subjectProg.currentUserScore }} XP
                         —
-                        {{ subject.totalTests }}
+                        {{ subjectProg.totalTests }}
                         testes
 
                     </div>
@@ -933,7 +933,7 @@
                 </div>
 
                 <!-- Botão -->
-                <button class="prog-continue-btn" [routerLink]="['/progress/subjects', subject.subjectId]">
+                <button class="prog-continue-btn" [routerLink]="['/progress/subjects', subjectProg.subjectId]">
 
                     Continuar
 
@@ -952,7 +952,7 @@
         </div>
 
         <!-- EXPLORAR CURSOS -->
-        <div class="sec-head f4">
+        <div class="sec-head f4" *ngIf="subjectCourses && subjectCourses.length > 0">
 
             <span class="sec-title">
                 Explorar cursos
@@ -966,27 +966,28 @@
 
         </div>
 
-        <div class="courses-scroll f4">
+        <div class="courses-scroll f4" *ngIf="subjectCourses && subjectCourses.length > 0">
 
             <div class="courses-track">
 
-                <div class="course-card" *ngFor="let subject of subjectCourses"
-                    [routerLink]="['/subjects', subject.subjectId]">
+                <div class="course-card" *ngFor="let subjectCourse of subjectCourses"
+                    [routerLink]="['/subjects', subjectCourse.subjectId]">
 
                     <!-- Imagem -->
-                    <img class="course-img" [src]="subject.urlFile" [alt]="subject.name" loading="lazy" />
+                    <img class="course-img" [src]="subjectCourse.urlFile" [alt]="subjectCourse.name" loading="lazy" />
 
                     <!-- Conteúdo -->
                     <div class="course-info">
 
                         <div class="course-name">
-                            {{ subject.name }}
+                            {{ subjectCourse.name }}
                         </div>
 
                         <!-- Barra -->
-                        <div class="course-progress-track">
+                        <div class="course-progress-track" *ngIf="isUserLoggedIn">
 
-                            <div class="course-progress-fill" [style.width.%]="subject.currentUserMarkedContentRate">
+                            <div class="course-progress-fill"
+                                [style.width.%]="subjectCourse.currentUserMarkedContentRate">
                             </div>
 
                         </div>
@@ -994,12 +995,12 @@
                         <!-- Footer -->
                         <div class="course-footer">
 
-                            <span class="course-pct">
-                                {{ subject.currentUserMarkedContentRate.toFixed(1) }}%
+                            <span class="course-pct" *ngIf="isUserLoggedIn">
+                                {{ subjectCourse.currentUserMarkedContentRate.toFixed(1) }}%
                             </span>
 
                             <span class="course-topics">
-                                {{ subject.totalTopics }} tópicos
+                                {{ subjectCourse.totalTopics }} tópicos
                             </span>
 
                         </div>
@@ -1013,11 +1014,11 @@
         </div>
 
         <!-- DESAFIOS SEMANAIS -->
-        <div class="sec-head f5">
+        <div class="sec-head f5" *ngIf="challenges && challenges.length > 0">
             <span class="sec-title">Desafios semanais</span>
             <a href="#" class="sec-link" routerLink="/challenges">Ver todos</a>
         </div>
-        <div class="challenge-grid f5">
+        <div class="challenge-grid f5" *ngIf="challenges && challenges.length > 0">
 
             <div class="challenge-card" *ngFor="let challenge of challenges"
                 [routerLink]="['/challenges', challenge.challengeId, 'results']">
