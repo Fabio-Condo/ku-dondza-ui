@@ -104,10 +104,16 @@ export class MainPanelComponent implements OnInit {
   }
 
   getChallenges(pagina: number = 0): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.retryVisible = false;
 
     this.challengeFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.challengeService.findAll(this.challengeFilter).pipe(
+    this.challengeService.findAll(this.challengeFilter, this.loggedUser.id).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
@@ -316,12 +322,77 @@ export class MainPanelComponent implements OnInit {
     return this.loggedUser.plan === 'FREE' || !planExpiresAt || planExpiresAt <= new Date();
   }
 
-  onChallengeAction(challenge: Challenge): void {
-    if (challenge.submitted) {
-      this.viewResults(challenge);
-    } else {
-      this.startChallenge(challenge);
+  onChallengeAction(challenge: Challenge | null | undefined): void {
+
+    // Segurança
+    if (!challenge) {
+      return;
     }
+
+    // Não autenticado
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Finalizado
+    if (remainingHours <= 0) {
+      this.viewResults(challenge);
+      return;
+    }
+
+    // Já submeteu
+    if (challenge.hasCurrentUserSubmitted === true) {
+      return;
+    }
+
+    // Pode participar
+    this.startChallenge(challenge);
+  }
+
+  getChallengeButtonText(challenge: Challenge | null | undefined): string {
+
+    // Segurança
+    if (!challenge) {
+      return 'Indisponível';
+    }
+
+    // Não autenticado
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      return 'Entrar para participar';
+    }
+
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Finalizado
+    if (remainingHours <= 0) {
+      return 'Ver resultado';
+    }
+
+    // Já submeteu
+    if (challenge.hasCurrentUserSubmitted === true) {
+      return 'Você já submeteu este desafio';
+    }
+
+    return 'Participar agora';
+  }
+
+  isChallengeButtonDisabled(challenge: Challenge | null | undefined): boolean {
+
+    // Segurança
+    if (!challenge) {
+      return true;
+    }
+
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Já submeteu enquanto ainda está activo
+    return (
+      challenge.hasCurrentUserSubmitted === true &&
+      remainingHours > 0
+    );
   }
 
   startChallenge(challenge: Challenge) {

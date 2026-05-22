@@ -59,10 +59,16 @@ export class ResultsComponent implements OnInit {
   }
 
   loadChallenge(): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.retryVisible = false;
     this.showLoading = true;
 
-    this.challengeService.getById(this.challengeId).pipe(
+    this.challengeService.getById(this.challengeId, this.loggedUser.id).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {

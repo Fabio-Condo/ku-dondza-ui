@@ -37,9 +37,10 @@ export class ChallengeService {
 
     constructor(private http: HttpClient) { }
 
-    findAll(filtro: ChallengeFilter): Observable<IApiResponse<Challenge>> {
+    findAll(filtro: ChallengeFilter, currentUserId: number): Observable<IApiResponse<Challenge>> {
 
         let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString())
             .set('page', filtro.page.toString())
             .set('sort', filtro.sort)
             .set('size', filtro.itemsPerPage.toString());
@@ -114,7 +115,11 @@ export class ChallengeService {
         );
     }
 
-    getById(challengeId: string): Observable<Challenge> {
+    getById(challengeId: string, currentUserId: number): Observable<Challenge> {
+
+        let params = new HttpParams()
+            .set('currentUserId', currentUserId.toString());
+
         const cacheKey = challengeId;
         const cachedEntry = this.challengeCache.get(cacheKey);
 
@@ -124,7 +129,7 @@ export class ChallengeService {
         }
 
         // Caso contrário, chama API
-        return this.http.get<Challenge>(`${this.baseUrl}/${challengeId}`).pipe(
+        return this.http.get<Challenge>(`${this.baseUrl}/${challengeId}`, { params }).pipe(
             tap(response => {
                 this.challengeCache.set(cacheKey, {
                     data: response,

@@ -29,7 +29,7 @@ export class ChallengesComponent implements OnInit {
   challenge: Challenge = new Challenge();
 
   challenges: Challenge[] = [];
-  selectedChallenge?: Challenge;
+  //selectedChallenge?: Challenge;
   displayModalSave: boolean = false;
 
   allQuestions: Question[] = [];
@@ -153,12 +153,18 @@ export class ChallengesComponent implements OnInit {
   }
 
   findAll(pagina: number = 0): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.retryVisible = false;
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
     this.filtro.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
-    this.challengeService.findAll(this.filtro).pipe(
+    this.challengeService.findAll(this.filtro, this.loggedUser.id).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
@@ -195,12 +201,18 @@ export class ChallengesComponent implements OnInit {
   }
 
   loadMore(page: number = 0): void {
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
     this.loadingMessage = "Carregando dados"
     this.showLoading = true;
 
     this.filtro.page++;
 
-    this.challengeService.findAll(this.filtro).subscribe(
+    this.challengeService.findAll(this.filtro, this.loggedUser.id).subscribe(
       (data: IApiResponse<Challenge>) => {
         this.challenges = [...this.challenges, ...data.content];
         this.totalRecords = data.totalElements;
@@ -303,19 +315,6 @@ export class ChallengesComponent implements OnInit {
   onReset() {
     this.filtro.status = undefined;
     this.findAll();
-  }
-
-  getById(id: string): void {
-    this.challengeService.getById(id)
-      .subscribe({
-        next: (res) => {
-          this.selectedChallenge = res;
-        }
-      });
-  }
-
-  openChallenge(id: string): void {
-    this.getById(id);
   }
 
   onUpdateChallenge(challenge: Challenge): void {
@@ -695,7 +694,7 @@ export class ChallengesComponent implements OnInit {
   }
 
   onChallengeAction(challenge: Challenge): void {
-    if (challenge.submitted) {
+    if (challenge.hasCurrentUserSubmitted) {
       this.viewResults(challenge);
     } else {
       this.startChallenge(challenge);

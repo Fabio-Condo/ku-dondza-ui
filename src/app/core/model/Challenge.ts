@@ -25,7 +25,7 @@ export class Challenge {
 
   remainingHours?: number;
 
-  submitted!: boolean;
+  hasCurrentUserSubmitted!: boolean;
 
   totalParticipants!: number;
 

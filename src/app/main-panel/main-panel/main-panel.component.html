@@ -134,8 +134,15 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .35; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .35;
+            }
         }
 
         .hero-title {
@@ -226,6 +233,13 @@
         .hero-cta svg {
             width: 15px;
             height: 15px;
+        }
+
+        .hero-cta:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         /* ── GERAR QUIZ ── */
@@ -430,9 +444,17 @@
             stroke-linejoin: round;
         }
 
-        .prog-pct-item.ppi-progress svg { stroke: #4361ee; }
-        .prog-pct-item.ppi-xp svg { stroke: #f59e0b; }
-        .prog-pct-item.ppi-tests svg { stroke: #059669; }
+        .prog-pct-item.ppi-progress svg {
+            stroke: #4361ee;
+        }
+
+        .prog-pct-item.ppi-xp svg {
+            stroke: #f59e0b;
+        }
+
+        .prog-pct-item.ppi-tests svg {
+            stroke: #059669;
+        }
 
         .prog-pct-sep {
             width: 3px;
@@ -538,7 +560,9 @@
             }
         }
 
-        .prog-continue-btn:hover { background: #e0e7ff; }
+        .prog-continue-btn:hover {
+            background: #e0e7ff;
+        }
 
         .prog-continue-btn svg {
             width: 12px;
@@ -553,7 +577,9 @@
             padding: 4px 0 8px;
         }
 
-        .courses-scroll::-webkit-scrollbar { display: none; }
+        .courses-scroll::-webkit-scrollbar {
+            display: none;
+        }
 
         .courses-track {
             display: flex;
@@ -562,7 +588,10 @@
         }
 
         @media (min-width: 700px) {
-            .courses-scroll { overflow-x: visible; }
+            .courses-scroll {
+                overflow-x: visible;
+            }
+
             .courses-track {
                 display: grid;
                 grid-template-columns: repeat(6, 1fr);
@@ -583,7 +612,9 @@
         }
 
         @media (min-width: 700px) {
-            .course-card { flex: none; }
+            .course-card {
+                flex: none;
+            }
         }
 
         .course-card:hover {
@@ -592,7 +623,9 @@
             transform: translateY(-2px);
         }
 
-        .course-card:active { transform: scale(.97); }
+        .course-card:active {
+            transform: scale(.97);
+        }
 
         .course-img {
             width: 100%;
@@ -602,7 +635,9 @@
             background: #f8fafc;
         }
 
-        .course-info { padding: 11px 13px 13px; }
+        .course-info {
+            padding: 11px 13px 13px;
+        }
 
         .course-name {
             font-size: 12.5px;
@@ -651,7 +686,9 @@
         }
 
         @media (min-width: 560px) {
-            .challenge-grid { grid-template-columns: repeat(2, 1fr); }
+            .challenge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (min-width: 900px) {
@@ -680,7 +717,9 @@
             transform: translateY(-1px);
         }
 
-        .challenge-card:active { transform: scale(.98); }
+        .challenge-card:active {
+            transform: scale(.98);
+        }
 
         .chal-icon {
             width: 46px;
@@ -701,22 +740,66 @@
             stroke-linejoin: round;
         }
 
-        .ci-gold { background: #fef9c3; }
-        .ci-gold svg { stroke: #b45309; }
-        .ci-blue { background: #eef2ff; }
-        .ci-blue svg { stroke: #4361ee; }
-        .ci-green { background: #f0fdf4; }
-        .ci-green svg { stroke: #059669; }
-        .ci-purple { background: #f5f3ff; }
-        .ci-purple svg { stroke: #7c3aed; }
-        .ci-red { background: #fff1f2; }
-        .ci-red svg { stroke: #e11d48; }
-        .ci-orange { background: #fff7ed; }
-        .ci-orange svg { stroke: #d97706; }
-        .ci-teal { background: #f0fdfa; }
-        .ci-teal svg { stroke: #0d9488; }
+        .ci-gold {
+            background: #fef9c3;
+        }
 
-        .chal-body { flex: 1; min-width: 0; }
+        .ci-gold svg {
+            stroke: #b45309;
+        }
+
+        .ci-blue {
+            background: #eef2ff;
+        }
+
+        .ci-blue svg {
+            stroke: #4361ee;
+        }
+
+        .ci-green {
+            background: #f0fdf4;
+        }
+
+        .ci-green svg {
+            stroke: #059669;
+        }
+
+        .ci-purple {
+            background: #f5f3ff;
+        }
+
+        .ci-purple svg {
+            stroke: #7c3aed;
+        }
+
+        .ci-red {
+            background: #fff1f2;
+        }
+
+        .ci-red svg {
+            stroke: #e11d48;
+        }
+
+        .ci-orange {
+            background: #fff7ed;
+        }
+
+        .ci-orange svg {
+            stroke: #d97706;
+        }
+
+        .ci-teal {
+            background: #f0fdfa;
+        }
+
+        .ci-teal svg {
+            stroke: #0d9488;
+        }
+
+        .chal-body {
+            flex: 1;
+            min-width: 0;
+        }
 
         .chal-title {
             font-size: 13.5px;
@@ -738,9 +821,20 @@
             border-radius: 6px;
         }
 
-        .ct-xp { background: #ecfdf5; color: #059669; }
-        .ct-sub { background: #e0e7ff; color: #4361ee; }
-        .ct-time { background: #f5f3ff; color: #7c3aed; }
+        .ct-xp {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .ct-sub {
+            background: #e0e7ff;
+            color: #4361ee;
+        }
+
+        .ct-time {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
 
         .chal-status {
             display: inline-flex;
@@ -759,18 +853,53 @@
             flex-shrink: 0;
         }
 
-        .cs-ongoing { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-        .cs-ongoing .chal-status-dot { background: #059669; animation: blink 2.2s ease-in-out infinite; }
-        .cs-upcoming { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
-        .cs-upcoming .chal-status-dot { background: #f59e0b; }
-        .cs-done { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
-        .cs-done .chal-status-dot { background: #94a3b8; }
+        .cs-ongoing {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
 
-        .chal-arrow { color: #94a3b8; flex-shrink: 0; }
-        .chal-arrow svg { width: 16px; height: 16px; }
+        .cs-ongoing .chal-status-dot {
+            background: #059669;
+            animation: blink 2.2s ease-in-out infinite;
+        }
+
+        .cs-upcoming {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .cs-upcoming .chal-status-dot {
+            background: #f59e0b;
+        }
+
+        .cs-done {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cs-done .chal-status-dot {
+            background: #94a3b8;
+        }
+
+        .chal-arrow {
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+
+        .chal-arrow svg {
+            width: 16px;
+            height: 16px;
+        }
 
         /* ── EXAMS ── */
-        .exam-list { display: flex; flex-direction: column; gap: 10px; }
+        .exam-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
         .exam-card {
             background: #fff;
@@ -809,12 +938,26 @@
             stroke-linejoin: round;
         }
 
-        .ei-enunciado { background: #eef2ff; }
-        .ei-enunciado svg { stroke: #4361ee; }
-        .ei-resolucao { background: #f0fdf4; }
-        .ei-resolucao svg { stroke: #059669; }
+        .ei-enunciado {
+            background: #eef2ff;
+        }
 
-        .exam-body { flex: 1; min-width: 0; }
+        .ei-enunciado svg {
+            stroke: #4361ee;
+        }
+
+        .ei-resolucao {
+            background: #f0fdf4;
+        }
+
+        .ei-resolucao svg {
+            stroke: #059669;
+        }
+
+        .exam-body {
+            flex: 1;
+            min-width: 0;
+        }
 
         .exam-title {
             font-size: 13.5px;
@@ -840,11 +983,30 @@
             border-radius: 6px;
         }
 
-        .et-type-enunciado { background: #eef2ff; color: #4361ee; }
-        .et-type-resolucao { background: #ecfdf5; color: #059669; }
-        .et-institution { background: #fff7ed; color: #c2410c; }
-        .et-year { background: #f5f3ff; color: #7c3aed; }
-        .et-subject { background: #f1f5f9; color: #475569; }
+        .et-type-enunciado {
+            background: #eef2ff;
+            color: #4361ee;
+        }
+
+        .et-type-resolucao {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .et-institution {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .et-year {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        .et-subject {
+            background: #f1f5f9;
+            color: #475569;
+        }
 
         .exam-premium-badge {
             display: inline-flex;
@@ -893,7 +1055,9 @@
             box-shadow: 0 5px 14px rgba(67, 97, 238, .30);
         }
 
-        .exam-download-btn:active { transform: scale(.96); }
+        .exam-download-btn:active {
+            transform: scale(.96);
+        }
 
         .exam-download-btn svg {
             width: 13px;
@@ -913,16 +1077,40 @@
 
         /* ── FADE-UP ANIMATIONS ── */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .f1 { animation: fadeUp .4s .04s ease both; }
-        .f2 { animation: fadeUp .4s .10s ease both; }
-        .f3 { animation: fadeUp .4s .16s ease both; }
-        .f4 { animation: fadeUp .4s .22s ease both; }
-        .f5 { animation: fadeUp .4s .28s ease both; }
-        .f6 { animation: fadeUp .4s .34s ease both; }
+        .f1 {
+            animation: fadeUp .4s .04s ease both;
+        }
+
+        .f2 {
+            animation: fadeUp .4s .10s ease both;
+        }
+
+        .f3 {
+            animation: fadeUp .4s .16s ease both;
+        }
+
+        .f4 {
+            animation: fadeUp .4s .22s ease both;
+        }
+
+        .f5 {
+            animation: fadeUp .4s .28s ease both;
+        }
+
+        .f6 {
+            animation: fadeUp .4s .34s ease both;
+        }
     </style>
 </head>
 
@@ -943,43 +1131,103 @@
                 <div class="hero-tag">
                     <div class="hero-tag-dot"></div>
                     {{
-                        challenges[0].status === 'ONGOING' ? 'Desafio activo' :
-                        challenges[0].status === 'UPCOMING' ? 'Próximo desafio' :
-                        'Desafio concluído'
+                    challenges[0].status === 'ONGOING' ? 'Desafio activo' :
+                    challenges[0].status === 'UPCOMING' ? 'Próximo desafio' :
+                    'Desafio concluído'
                     }}
                 </div>
                 <div class="hero-title">{{ challenges[0].title }}</div>
                 <div class="hero-meta">
                     <span class="hero-badge">
-                        <svg *ngIf="challenges[0].subjectName === 'Matemática'" viewBox="0 0 24 24"><path d="M4 4h16"/><path d="M4 4l8 8-8 8"/><path d="M4 20h16"/></svg>
-                        <svg *ngIf="challenges[0].subjectName === 'Português'" viewBox="0 0 24 24"><path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z"/><path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z"/></svg>
-                        <svg *ngIf="challenges[0].subjectName === 'Química'" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3"/><path d="M7.5 14.5h9"/><circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none"/><circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none"/><circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none"/></svg>
-                        <svg *ngIf="challenges[0].subjectName === 'Física'" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>
-                        <svg *ngIf="challenges[0].subjectName === 'Biologia'" viewBox="0 0 24 24"><path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6"/><path d="M17 3c0 0-2 2.5-2 6s2 6 2 6"/><path d="M7.5 6.5h9"/><path d="M7.5 9h9"/><path d="M7.5 11.5h9"/><path d="M7 15c0 0 2 2.5 2 4"/><path d="M17 15c0 0-2 2.5-2 4"/><path d="M7.5 17h9"/></svg>
-                        <svg *ngIf="challenges[0].subjectName === 'História'" viewBox="0 0 24 24"><path d="M5 3h14"/><path d="M5 21h14"/><path d="M5 3c0 7 5 9 7 9s7-2 7-9"/><path d="M5 21c0-7 5-9 7-9s7 2 7 9"/><path d="M8 14.5h8"/></svg>
-                        <svg *ngIf="challenges[0].subjectName === 'Geografia'" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M5 8h14"/><path d="M5 16h14"/><path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/></svg>
-                        <svg *ngIf="challenges[0].subjectName === 'Inglês'" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/><path d="M9 16l3-8 3 8"/><path d="M10 13h4"/></svg>
+                        <svg *ngIf="challenges[0].subjectName === 'Matemática'" viewBox="0 0 24 24">
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
+                        </svg>
+                        <svg *ngIf="challenges[0].subjectName === 'Português'" viewBox="0 0 24 24">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+                        <svg *ngIf="challenges[0].subjectName === 'Química'" viewBox="0 0 24 24">
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                            <path d="M7.5 14.5h9" />
+                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
+                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
+                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
+                        </svg>
+                        <svg *ngIf="challenges[0].subjectName === 'Física'" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+                        </svg>
+                        <svg *ngIf="challenges[0].subjectName === 'Biologia'" viewBox="0 0 24 24">
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 6.5h9" />
+                            <path d="M7.5 9h9" />
+                            <path d="M7.5 11.5h9" />
+                            <path d="M7 15c0 0 2 2.5 2 4" />
+                            <path d="M17 15c0 0-2 2.5-2 4" />
+                            <path d="M7.5 17h9" />
+                        </svg>
+                        <svg *ngIf="challenges[0].subjectName === 'História'" viewBox="0 0 24 24">
+                            <path d="M5 3h14" />
+                            <path d="M5 21h14" />
+                            <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
+                            <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
+                            <path d="M8 14.5h8" />
+                        </svg>
+                        <svg *ngIf="challenges[0].subjectName === 'Geografia'" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M5 8h14" />
+                            <path d="M5 16h14" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                        </svg>
+                        <svg *ngIf="challenges[0].subjectName === 'Inglês'" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                            <path d="M9 16l3-8 3 8" />
+                            <path d="M10 13h4" />
+                        </svg>
                         {{ challenges[0].subjectName }}
                     </span>
                     <span class="hero-badge" *ngIf="challenges[0].remainingHours !== undefined">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
                         {{ challenges[0].remainingHours }}h restantes
                     </span>
                     <span class="hero-badge">
-                        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
                         +{{ challenges[0].xpReward }} XP
                     </span>
                 </div>
             </div>
             <div class="hero-right">
-                <button class="hero-cta" *ngIf="challenges[0].submitted" (click)="onChallengeAction(challenges[0])">
-                    <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>
-                    Ver resultado
+
+                <button class="hero-cta"
+                    [disabled]="isChallengeButtonDisabled(challenges.length ? challenges[0] : null)"
+                    (click)="onChallengeAction(challenges.length ? challenges[0] : null)">
+
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
+                    </svg>
+
+                    {{ getChallengeButtonText(challenges.length ? challenges[0] : null) }}
+
                 </button>
-                <button class="hero-cta" *ngIf="!challenges[0].submitted" (click)="onChallengeAction(challenges[0])">
-                    <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>
-                    Participar agora
-                </button>
+
             </div>
         </div>
 
@@ -991,10 +1239,11 @@
 
         <button class="qa-btn f2" [routerLink]="['/quizzes', 'new']">
             <div class="qa-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="9"/>
-                    <path d="M9.5 9.5a3 3 0 0 1 5 2.2c0 1.7-2 2.5-2 4"/>
-                    <circle cx="12" cy="17.5" r=".5" fill="currentColor"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M9.5 9.5a3 3 0 0 1 5 2.2c0 1.7-2 2.5-2 4" />
+                    <circle cx="12" cy="17.5" r=".5" fill="currentColor" />
                 </svg>
             </div>
             <div class="qa-body">
@@ -1002,8 +1251,9 @@
                 <div class="qa-sub">Escolhe disciplina, tópico e dificuldade</div>
             </div>
             <div class="qa-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 18l6-6-6-6"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6" />
                 </svg>
             </div>
         </button>
@@ -1032,7 +1282,9 @@
 
                         <span class="prog-pct-item ppi-progress">
                             <svg viewBox="0 0 24 24" stroke="currentColor">
-                                <path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/>
+                                <path d="M18 20V10" />
+                                <path d="M12 20V4" />
+                                <path d="M6 20v-6" />
                             </svg>
                             {{ subjectProg.currentUserProgressRate.toFixed(1) }}%
                         </span>
@@ -1042,7 +1294,7 @@
                         <span class="prog-pct-item ppi-xp">
                             <svg viewBox="0 0 24 24">
                                 <path stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                             </svg>
                             {{ subjectProg.currentUserScore }} XP
                         </span>
@@ -1051,8 +1303,8 @@
 
                         <span class="prog-pct-item ppi-tests">
                             <svg viewBox="0 0 24 24" stroke="currentColor">
-                                <path d="M9 11l3 3L22 4"/>
-                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                <path d="M9 11l3 3L22 4" />
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                             </svg>
                             {{ subjectProg.totalTests }} testes
                         </span>
@@ -1064,8 +1316,7 @@
                             Assumindo que currentUserRank é um número (ex: 1, 2, 3, 12).
                             Ajuste o helper getRankClass(rank) no .ts se necessário.
                         -->
-                        <span *ngIf="subjectProg.currentUserRank" class="rank-badge"
-                              [ngClass]="{
+                        <span *ngIf="subjectProg.currentUserRank" class="rank-badge" [ngClass]="{
                                 'rank-gold':    subjectProg.currentUserRank === 1,
                                 'rank-silver':  subjectProg.currentUserRank === 2,
                                 'rank-bronze':  subjectProg.currentUserRank === 3,
@@ -1074,15 +1325,15 @@
 
                             <!-- Ícone estrela para top 3 -->
                             <svg *ngIf="subjectProg.currentUserRank <= 3" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                             </svg>
 
                             <!-- Ícone pessoa para demais posições -->
-                            <svg *ngIf="subjectProg.currentUserRank > 3" viewBox="0 0 24 24"
-                                 fill="none" stroke="#4361ee" stroke-width="1.8"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="8" r="4"/>
-                                <path d="M6 20v-2a6 6 0 0 1 12 0v2"/>
+                            <svg *ngIf="subjectProg.currentUserRank > 3" viewBox="0 0 24 24" fill="none"
+                                stroke="#4361ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M6 20v-2a6 6 0 0 1 12 0v2" />
                             </svg>
 
                             {{ subjectProg.currentUserRank }}º lugar
@@ -1093,9 +1344,10 @@
 
                 <button class="prog-continue-btn" [routerLink]="['/progress/subjects', subjectProg.subjectId]">
                     Continuar
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
                     </svg>
                 </button>
 
@@ -1112,12 +1364,13 @@
         <div class="courses-scroll f4" *ngIf="subjectCourses && subjectCourses.length > 0">
             <div class="courses-track">
                 <div class="course-card" *ngFor="let subjectCourse of subjectCourses"
-                     [routerLink]="['/subjects', subjectCourse.subjectId]">
-                    <img class="course-img" [src]="subjectCourse.urlFile" [alt]="subjectCourse.name" loading="lazy"/>
+                    [routerLink]="['/subjects', subjectCourse.subjectId]">
+                    <img class="course-img" [src]="subjectCourse.urlFile" [alt]="subjectCourse.name" loading="lazy" />
                     <div class="course-info">
                         <div class="course-name">{{ subjectCourse.name }}</div>
                         <div class="course-progress-track" *ngIf="isUserLoggedIn">
-                            <div class="course-progress-fill" [style.width.%]="subjectCourse.currentUserMarkedContentRate"></div>
+                            <div class="course-progress-fill"
+                                [style.width.%]="subjectCourse.currentUserMarkedContentRate"></div>
                         </div>
                         <div class="course-footer">
                             <span class="course-pct" *ngIf="isUserLoggedIn">
@@ -1143,14 +1396,62 @@
                     'ci-blue':   challenge.difficultyLevel === 'INTERMEDIATE',
                     'ci-green':  challenge.difficultyLevel === 'BEGINNER'
                 }">
-                    <svg *ngIf="challenge.subjectName === 'Matemática'" viewBox="0 0 24 24"><path d="M4 4h16"/><path d="M4 4l8 8-8 8"/><path d="M4 20h16"/></svg>
-                    <svg *ngIf="challenge.subjectName === 'Português'" viewBox="0 0 24 24"><path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z"/><path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z"/></svg>
-                    <svg *ngIf="challenge.subjectName === 'Química'" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3"/><path d="M7.5 14.5h9"/><circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none"/><circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none"/><circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none"/></svg>
-                    <svg *ngIf="challenge.subjectName === 'Física'" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>
-                    <svg *ngIf="challenge.subjectName === 'Biologia'" viewBox="0 0 24 24"><path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6"/><path d="M17 3c0 0-2 2.5-2 6s2 6 2 6"/><path d="M7.5 6.5h9"/><path d="M7.5 9h9"/><path d="M7.5 11.5h9"/><path d="M7 15c0 0 2 2.5 2 4"/><path d="M17 15c0 0-2 2.5-2 4"/><path d="M7.5 17h9"/></svg>
-                    <svg *ngIf="challenge.subjectName === 'História'" viewBox="0 0 24 24"><path d="M5 3h14"/><path d="M5 21h14"/><path d="M5 3c0 7 5 9 7 9s7-2 7-9"/><path d="M5 21c0-7 5-9 7-9s7 2 7 9"/><path d="M8 14.5h8"/></svg>
-                    <svg *ngIf="challenge.subjectName === 'Geografia'" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M5 8h14"/><path d="M5 16h14"/><path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/></svg>
-                    <svg *ngIf="challenge.subjectName === 'Inglês'" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/><path d="M9 16l3-8 3 8"/><path d="M10 13h4"/></svg>
+                    <svg *ngIf="challenge.subjectName === 'Matemática'" viewBox="0 0 24 24">
+                        <path d="M4 4h16" />
+                        <path d="M4 4l8 8-8 8" />
+                        <path d="M4 20h16" />
+                    </svg>
+                    <svg *ngIf="challenge.subjectName === 'Português'" viewBox="0 0 24 24">
+                        <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                        <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                    </svg>
+                    <svg *ngIf="challenge.subjectName === 'Química'" viewBox="0 0 24 24">
+                        <path d="M9 3h6" />
+                        <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        <path d="M7.5 14.5h9" />
+                        <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
+                        <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
+                        <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
+                    </svg>
+                    <svg *ngIf="challenge.subjectName === 'Física'" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="2" />
+                        <ellipse cx="12" cy="12" rx="10" ry="4" />
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+                    </svg>
+                    <svg *ngIf="challenge.subjectName === 'Biologia'" viewBox="0 0 24 24">
+                        <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                        <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                        <path d="M7.5 6.5h9" />
+                        <path d="M7.5 9h9" />
+                        <path d="M7.5 11.5h9" />
+                        <path d="M7 15c0 0 2 2.5 2 4" />
+                        <path d="M17 15c0 0-2 2.5-2 4" />
+                        <path d="M7.5 17h9" />
+                    </svg>
+                    <svg *ngIf="challenge.subjectName === 'História'" viewBox="0 0 24 24">
+                        <path d="M5 3h14" />
+                        <path d="M5 21h14" />
+                        <path d="M5 3c0 7 5 9 7 9s7-2 7-9" />
+                        <path d="M5 21c0-7 5-9 7-9s7 2 7 9" />
+                        <path d="M8 14.5h8" />
+                    </svg>
+                    <svg *ngIf="challenge.subjectName === 'Geografia'" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M3 12h18" />
+                        <path d="M5 8h14" />
+                        <path d="M5 16h14" />
+                        <path d="M12 3c3 3 3 15 0 18" />
+                        <path d="M12 3c-3 3-3 15 0 18" />
+                    </svg>
+                    <svg *ngIf="challenge.subjectName === 'Inglês'" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M3 12h18" />
+                        <path d="M12 3c3 3 3 15 0 18" />
+                        <path d="M12 3c-3 3-3 15 0 18" />
+                        <path d="M9 16l3-8 3 8" />
+                        <path d="M10 13h4" />
+                    </svg>
                 </div>
 
                 <div class="chal-body">
@@ -1158,7 +1459,8 @@
                     <div class="chal-tags">
                         <span class="chal-tag ct-sub">{{ challenge.subjectName || challenge.subject.name }}</span>
                         <span class="chal-tag ct-xp">+{{ challenge.xpReward }} XP</span>
-                        <span class="chal-tag ct-time" *ngIf="challenge.remainingHours !== undefined">{{ challenge.remainingHours }}h</span>
+                        <span class="chal-tag ct-time" *ngIf="challenge.remainingHours !== undefined">{{
+                            challenge.remainingHours }}h</span>
                         <span class="chal-status" [ngClass]="{
                             'cs-ongoing':  challenge.status === 'ONGOING',
                             'cs-upcoming': challenge.status === 'UPCOMING',
@@ -1166,18 +1468,18 @@
                         }">
                             <span class="chal-status-dot"></span>
                             {{
-                                challenge.status === 'UPCOMING' ? 'Aberto' :
-                                challenge.status === 'ONGOING'  ? 'Em curso' :
-                                'Encerrado'
+                            challenge.status === 'UPCOMING' ? 'Aberto' :
+                            challenge.status === 'ONGOING' ? 'Em curso' :
+                            'Encerrado'
                             }}
                         </span>
                     </div>
                 </div>
 
                 <div class="chal-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 18l6-6-6-6"/>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6" />
                     </svg>
                 </div>
             </div>
@@ -1195,8 +1497,17 @@
                     'ei-enunciado': exam.examType === 'ENUNCIADO',
                     'ei-resolucao': exam.examType === 'RESOLUCAO'
                 }">
-                    <svg *ngIf="exam.examType === 'ENUNCIADO'" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
-                    <svg *ngIf="exam.examType === 'RESOLUCAO'" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15l2 2 4-4"/></svg>
+                    <svg *ngIf="exam.examType === 'ENUNCIADO'" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                        <path d="M8 13h8" />
+                        <path d="M8 17h5" />
+                    </svg>
+                    <svg *ngIf="exam.examType === 'RESOLUCAO'" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                        <path d="M9 15l2 2 4-4" />
+                    </svg>
                 </div>
 
                 <div class="exam-body">
@@ -1214,17 +1525,24 @@
                         <span class="exam-tag et-year">{{ exam.year }}</span>
                         <span class="exam-tag et-subject">{{ exam.subject.name }}</span>
                         <span class="exam-premium-badge" *ngIf="isPremiumExam(exam)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
                             Premium
                         </span>
                     </div>
                 </div>
 
-                <button class="exam-download-btn"
-                        (click)="onDownload(exam); $event.stopPropagation()"
-                        [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
-                    <svg viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M7 10l5 5 5-5"/><path d="M20 21H4"/></svg>
-                    <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted" style="font-size:12px;"></i>
+                <button class="exam-download-btn" (click)="onDownload(exam); $event.stopPropagation()"
+                    [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 15V3" />
+                        <path d="M7 10l5 5 5-5" />
+                        <path d="M20 21H4" />
+                    </svg>
+                    <i *ngIf="exam.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                        style="font-size:12px;"></i>
                     <span>{{ exam.showLoadingDownload ? 'Baixando...' : 'Baixar' }}</span>
                 </button>
             </div>
@@ -1234,4 +1552,5 @@
     </div>
 
 </body>
+
 </html>
