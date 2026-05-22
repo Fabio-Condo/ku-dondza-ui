@@ -782,7 +782,7 @@
                                 <circle class="ring-fill" cx="22" cy="22" r="18" [style.stroke-dasharray]="113.1"
                                     [style.stroke-dashoffset]="113.1 - (subject.currentUserProgressRate / 100) * 113.1" />
                             </svg>
-                            <div class="ring-label">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
+                            <div class="ring-label">{{ subject.currentUserProgressRate.toFixed(1) }}%</div>
                         </div>
 
                         <div class="overall-text">
@@ -810,7 +810,7 @@
                         <div class="topic-row" *ngFor="let topic of subject.topicDtoWithTests | slice:0:3">
                             <div class="topic-meta">
                                 <span class="topic-name">{{ topic.topicName }}</span>
-                                <span class="topic-score">{{ topic.progressRate.toFixed(0) }}%</span>
+                                <span class="topic-score">{{ topic.progressRate.toFixed(1) }}%</span>
                             </div>
                             <div class="track">
                                 <div class="fill" [ngClass]="{
@@ -818,7 +818,7 @@
                                     'low':   topic.progressRate > 0  && topic.progressRate < 40,
                                     'mid':   topic.progressRate >= 40 && topic.progressRate < 80,
                                     'high':  topic.progressRate >= 80
-                                }" [style.width.%]="topic.progressRate.toFixed(0)">
+                                }" [style.width.%]="topic.progressRate.toFixed(1)">
                                 </div>
                             </div>
                         </div>

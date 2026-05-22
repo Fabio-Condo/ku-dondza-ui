@@ -885,7 +885,7 @@
                     <circle class="ring-bg" cx="26" cy="26" r="22" />
                     <circle class="ring-fg" cx="26" cy="26" r="22" stroke-dasharray="138.23" [attr.stroke-dashoffset]="138.23 - (subject.currentUserProgressRate / 100) * 138.23" />
                 </svg>
-                <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(0) }}%</div>
+                <div class="ring-pct">{{ subject.currentUserProgressRate.toFixed(1) }}%</div>
             </div>
 
             <div class="subject-info">
@@ -932,10 +932,10 @@
                         <span class="topic-index-badge">{{ topicIndex + 1 }}</span>
                         <span class="topic-name">{{ topic.topicName }}</span>
                     </div>
-                    <span class="topic-pct">{{ topic.progressRate.toFixed(0) }}%</span>
+                    <span class="topic-pct">{{ topic.progressRate.toFixed(1) }}%</span>
                 </div>
                 <div class="track">
-                    <div class="fill" [style.width.%]="topic.progressRate.toFixed(0)"></div>
+                    <div class="fill" [style.width.%]="topic.progressRate.toFixed(1)"></div>
                 </div>
             </div>
 
