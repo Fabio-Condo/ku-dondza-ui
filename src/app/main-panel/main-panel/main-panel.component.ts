@@ -6,13 +6,16 @@ import { MessageService } from 'primeng/api';
 import { retryWhen, scan, delayWhen, timer } from 'rxjs';
 import { ChallengeService } from 'src/app/challenges/challenge.service';
 import { ChallengeFilter } from 'src/app/core/interface/ChallengeFilter';
+import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { SubjectFilter } from 'src/app/core/interface/SubjectFilter';
 import { Challenge } from 'src/app/core/model/Challenge';
+import { Exam } from 'src/app/core/model/Exame';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 import { User } from 'src/app/core/model/User';
 import { Role } from 'src/app/enum/role.enum';
+import { ExamesService } from 'src/app/exames/exames.service';
 import { QuestionService } from 'src/app/questions/question.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { TopicService } from 'src/app/topics/topicsService.service';
@@ -57,6 +60,16 @@ export class MainPanelComponent implements OnInit {
     ordenamento: 'id,asc'
   };
 
+  // Exams
+  exams: Exam[] = [];
+  totalExames: number = 0;
+
+  exameFilter: ExameFilter = {
+    pagina: 0,
+    itensPorPagina: 6,
+    ordenamento: 'id,asc'
+  };
+
   // Subject Progress
   subjectsProgress: SubjectProgressDTO[] = [];
 
@@ -65,6 +78,7 @@ export class MainPanelComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private challengeService: ChallengeService,
     private subjectsService: SubjectsService,
+    private examesService: ExamesService,
     private messageService: MessageService,
     private title: Title,
     private router: Router
@@ -79,6 +93,7 @@ export class MainPanelComponent implements OnInit {
     if (this.isUserLoggedIn) {
       this.getUserProgress();
     }
+    this.getExames();
     this.getCourses();
 
     this.scrollToTop();
@@ -208,7 +223,50 @@ export class MainPanelComponent implements OnInit {
       }
     );
   }
-  
+
+  getExames(pagina: number = 0): void {
+    this.retryVisible = false;
+    this.loadingMessage = "Carregando dados"
+    this.showLoading = true;
+
+    this.exameFilter.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+    this.examesService.filterWithCash(this.exameFilter).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (error.status && error.status >= 400 && error.status < 500) {
+              throw error;
+            }
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount =>
+            timer(Math.pow(2, retryCount) * 1000) // 2s → 4s → 8s
+          )
+        )
+      )
+    ).subscribe(
+      (dados: IApiResponse<Exam>) => {
+        //this.exams = dados.content
+        this.exams = dados.content.slice(0, 3);
+        this.totalRecords = dados.totalElements;
+        this.totalExames = this.totalExames || dados.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      }
+    );
+  }
+
   onChallengeAction(challenge: Challenge): void {
     if (challenge.submitted) {
       this.viewResults(challenge);

@@ -719,6 +719,58 @@
             color: #7c3aed;
         }
 
+        /* ── STATUS BADGES (melhorados) ── */
+        .chal-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .chal-status-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ONGOING — verde vibrante com dot pulsante */
+        .cs-ongoing {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .cs-ongoing .chal-status-dot {
+            background: #059669;
+            animation: blink 2.2s ease-in-out infinite;
+        }
+
+        /* UPCOMING — âmbar/amarelo */
+        .cs-upcoming {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .cs-upcoming .chal-status-dot {
+            background: #f59e0b;
+        }
+
+        /* DONE — cinza neutro */
+        .cs-done {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cs-done .chal-status-dot {
+            background: #94a3b8;
+        }
+
         .chal-arrow {
             color: #94a3b8;
             flex-shrink: 0;
@@ -727,6 +779,161 @@
         .chal-arrow svg {
             width: 16px;
             height: 16px;
+        }
+
+        /* ── EXAMS ── */
+        .exam-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .exam-card {
+            background: #fff;
+            border: 1px solid #e8edf2;
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            transition: border-color .2s, box-shadow .2s, transform .15s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .exam-card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, .07);
+            transform: translateY(-1px);
+        }
+
+        .exam-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .exam-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Enunciado — azul */
+        .ei-enunciado {
+            background: #eef2ff;
+        }
+
+        .ei-enunciado svg {
+            stroke: #4361ee;
+        }
+
+        /* Resolução — verde */
+        .ei-resolucao {
+            background: #f0fdf4;
+        }
+
+        .ei-resolucao svg {
+            stroke: #059669;
+        }
+
+        .exam-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .exam-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .exam-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .exam-tag {
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .et-type-enunciado {
+            background: #eef2ff;
+            color: #4361ee;
+        }
+
+        .et-type-resolucao {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .et-institution {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .et-year {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        .et-subject {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .exam-download-btn {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: #4361ee;
+            border: none;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .15s, transform .15s cubic-bezier(.34, 1.56, .64, 1), box-shadow .15s;
+            box-shadow: 0 3px 10px rgba(67, 97, 238, .25);
+        }
+
+        .exam-download-btn:hover {
+            background: #3451d1;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(67, 97, 238, .30);
+        }
+
+        .exam-download-btn:active {
+            transform: scale(.96);
+        }
+
+        .exam-download-btn svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         /* ── FADE-UP ANIMATIONS ── */
@@ -760,6 +967,10 @@
 
         .f5 {
             animation: fadeUp .4s .28s ease both;
+        }
+
+        .f6 {
+            animation: fadeUp .4s .34s ease both;
         }
     </style>
 </head>
@@ -1142,14 +1353,18 @@
                             {{ challenge.remainingHours }}h
                         </span>
 
-                        <span class="chal-tag" [ngClass]="{
-                            'ct-green': challenge.status === 'ONGOING',
-                            'ct-yellow': challenge.status === 'UPCOMING',
-                            'ct-gray': challenge.status === 'DONE'
+                        <!-- Status melhorado -->
+                        <span class="chal-status" [ngClass]="{
+                            'cs-ongoing':  challenge.status === 'ONGOING',
+                            'cs-upcoming': challenge.status === 'UPCOMING',
+                            'cs-done':     challenge.status === 'DONE'
                         }">
-                            <span class="dot"></span> {{ challenge.status === 'UPCOMING' ? 'Aberto' : challenge.status
-                            ===
-                            'ONGOING' ? 'Em curso' :'Encerrado' }}
+                            <span class="chal-status-dot"></span>
+                            {{
+                                challenge.status === 'UPCOMING' ? 'Aberto' :
+                                challenge.status === 'ONGOING'  ? 'Em curso' :
+                                'Encerrado'
+                            }}
                         </span>
 
                     </div>
@@ -1162,6 +1377,68 @@
                         <path d="M9 18l6-6-6-6" />
                     </svg>
                 </div>
+
+            </div>
+
+        </div>
+
+        <!-- EXAMES -->
+        <div class="sec-head f6" *ngIf="exams && exams.length > 0">
+            <span class="sec-title">Exames</span>
+            <a routerLink="/exams" class="sec-link">Ver todos</a>
+        </div>
+
+        <div class="exam-list f6" *ngIf="exams && exams.length > 0">
+
+            <div class="exam-card" *ngFor="let exam of exams">
+
+                <!-- Ícone por tipo -->
+                <div class="exam-icon" [ngClass]="{
+                    'ei-enunciado': exam.examType === 'ENUNCIADO',
+                    'ei-resolucao': exam.examType === 'RESOLUCAO'
+                }">
+                    <!-- ENUNCIADO: ícone de documento com linhas -->
+                    <svg *ngIf="exam.examType === 'ENUNCIADO'" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                        <path d="M8 13h8" />
+                        <path d="M8 17h5" />
+                    </svg>
+                    <!-- RESOLUCAO: ícone de documento com check -->
+                    <svg *ngIf="exam.examType === 'RESOLUCAO'" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                        <path d="M9 15l2 2 4-4" />
+                    </svg>
+                </div>
+
+                <!-- Info -->
+                <div class="exam-body">
+                    <div class="exam-title">
+                        {{ exam.subject.name }} — {{ exam.institution }} {{ exam.year }}
+                    </div>
+                    <div class="exam-meta">
+                        <span class="exam-tag" [ngClass]="{
+                            'et-type-enunciado': exam.examType === 'ENUNCIADO',
+                            'et-type-resolucao': exam.examType === 'RESOLUCAO'
+                        }">
+                            {{ exam.examType === 'ENUNCIADO' ? 'Enunciado' : 'Resolução' }}
+                        </span>
+                        <span class="exam-tag et-institution">{{ exam.institution }}</span>
+                        <span class="exam-tag et-year">{{ exam.year }}</span>
+                        <span class="exam-tag et-subject">{{ exam.subject.name }}</span>
+                    </div>
+                </div>
+
+                <!-- Botão download -->
+                <button class="exam-download-btn" (click)="$event.stopPropagation()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 15V3" />
+                        <path d="M7 10l5 5 5-5" />
+                        <path d="M20 21H4" />
+                    </svg>
+                    Download
+                </button>
 
             </div>
 
