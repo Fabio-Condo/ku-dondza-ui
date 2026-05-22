@@ -1238,7 +1238,7 @@
         <div class="ranking-list">
 
             <div class="ranking-row" *ngFor="let user of rankings; let i = index"
-                [ngClass]="{ 'is-me': user.userId === loggedUser.id }">
+                [ngClass]="{ 'is-me': isUserLoggedIn && user.userId === loggedUser.id }">
 
                 <!-- RANK -->
                 <div class="row-rank">#{{ user.rankingPosition || (i + 1) }}</div>
@@ -1253,7 +1253,7 @@
                     <div class="row-name">
                         {{ user.username }}
 
-                        <span *ngIf="user.userId === loggedUser.id" class="you-badge">
+                        <span *ngIf="isUserLoggedIn && user.userId === loggedUser.id" class="you-badge">
                             Você
                         </span>
                     </div>

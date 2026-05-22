@@ -125,9 +125,11 @@ export class ResultsComponent implements OnInit {
       (response) => {
         this.rankings = response;
 
-        this.myRanking = this.rankings.find(
-          r => r.userId === this.loggedUser.id
-        ) || null;
+        if (this.isUserLoggedIn) {
+          this.myRanking = this.rankings.find(
+            r => r.userId === this.loggedUser.id
+          ) || null;
+        }
 
         this.showLoading = false;
       },
