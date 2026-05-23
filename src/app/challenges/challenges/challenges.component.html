@@ -350,36 +350,6 @@
             color: #94a3b8
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 9px;
-            border-radius: 99px;
-            font-size: 11px;
-            font-weight: 600;
-            flex-shrink: 0;
-            white-space: nowrap;
-        }
-
-        .status-badge.open {
-            background: #dcfce7;
-            color: #166534;
-            border: 1px solid #bbf7d0
-        }
-
-        .status-badge.ongoing {
-            background: #fef3c7;
-            color: #92400e;
-            border: 1px solid #fde68a
-        }
-
-        .status-badge.done {
-            background: #f1f5f9;
-            color: #64748b;
-            border: 1px solid #e2e8f0
-        }
-
         .dot {
             width: 6px;
             height: 6px;
@@ -692,7 +662,7 @@
         }
 
         /* Load more — mobile */
-       .load-more-wrap {
+        .load-more-wrap {
             margin-top: 1rem;
             display: none;
             flex-direction: column;
@@ -1545,19 +1515,16 @@
                     </div>
                     <div class="header-text">
                         <span class="card-name">{{ challenge.title }}</span>
-                        <span class="card-sub">{{ challenge.subjectName }} · {{
-                            getDifficultyLabel(challenge.difficultyLevel) }}</span>
+                        <span class="card-sub">{{ challenge.subjectName }}</span>
                     </div>
-                    <span class="status-badge" [ngClass]="{
-            open:    challenge.status === 'UPCOMING',
-            ongoing: challenge.status === 'ONGOING',
-            done:    challenge.status === 'DONE'
-          }">
-                        <span class="dot"></span>
-                        {{ challenge.status === 'UPCOMING' ? 'Aberto' : challenge.status === 'ONGOING' ? 'Em curso'
-                        : 'Encerrado' }}
+                    <span class="diff-pill" [ngClass]="{
+                        'diff-beginner':     challenge.difficultyLevel === 'BEGINNER',
+                        'diff-intermediate': challenge.difficultyLevel === 'INTERMEDIATE',
+                        'diff-advanced':     challenge.difficultyLevel === 'ADVANCED'
+                        }">
+                        {{ getDifficultyLabel(challenge.difficultyLevel) }}
                     </span>
-                    <div class="dropdown-container">
+                    <div class="dropdown-container" *ngIf="isUserLoggedIn && isAdmin">
                         <button class="dropdown-btn" (click)="toggleDropdown(challenge)">
                             <i class="pi pi-ellipsis-h"></i>
                         </button>
@@ -1608,15 +1575,6 @@
                             </svg>
                             <span class="meta-value xp">+{{ challenge.xpReward }}</span>
                             <span class="meta-label">XP</span>
-                        </div>
-
-                        <div class="meta-item">
-                            <span class="diff-pill" [ngClass]="{
-              'diff-beginner':     challenge.difficultyLevel === 'BEGINNER',
-              'diff-intermediate': challenge.difficultyLevel === 'INTERMEDIATE',
-              'diff-advanced':     challenge.difficultyLevel === 'ADVANCED'
-            }">{{ getDifficultyLabel(challenge.difficultyLevel) }}</span>
-                            <span class="meta-label" style="margin-top:4px">Nível</span>
                         </div>
 
                     </div>
