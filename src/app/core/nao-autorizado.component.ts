@@ -6,168 +6,145 @@ import { Router } from '@angular/router';
   selector: 'app-nao-autorizado',
   template: `
     <div class="page">
-      <div class="wrap">
+      <div class="content">
 
-        <div class="content">
-          <div class="badge">
-            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            Erro 401
-          </div>
-
-          <div class="num"><span>4</span>0<span>1</span></div>
-          <h1 class="title">Acesso negado</h1>
-
-          <p class="desc">
-            Não tens permissão para aceder a esta página.
-            Verifica as tuas credenciais ou volta ao início.
-          </p>
-
-          <div class="actions">
-            <button class="btn-primary" (click)="voltarParaHome()">
-              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"/>
-              </svg>
-              Voltar ao início
-            </button>
-
-            <button class="btn-ghost" (click)="irParaLogin()">
-              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                <polyline points="10 17 15 12 10 7"/>
-                <line x1="15" y1="12" x2="3" y2="12"/>
-              </svg>
-              Fazer login
-            </button>
-          </div>
+        <div class="glitch-wrap">
+          <span class="glitch" data-text="401">401</span>
         </div>
 
-        <div class="scene">
-          <div class="lock-wrap">
-            <svg class="lock-svg" viewBox="0 0 120 140" fill="none">
-              <rect x="10" y="60" width="100" height="75" rx="14"
-                fill="#e8ecfd" stroke="#b8c4f8" stroke-width="1"/>
+        <h1 class="title">Acesso negado</h1>
+        <p class="desc">Não tens permissão para aceder a esta página.</p>
 
-              <path d="M35 60V42a25 25 0 0 1 50 0v18"
-                stroke="#9aa3b8"
-                stroke-width="10"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
+        <div class="actions">
+          <button class="btn" (click)="voltarParaHome()">
+            Ir para o início
+          </button>
 
-              <circle cx="60" cy="97" r="12" fill="#4361ee"/>
-              <rect x="56" y="97" width="8" height="14" rx="4" fill="#2a3fa8"/>
-            </svg>
-
-            <div class="pulse-ring r1"></div>
-            <div class="pulse-ring r2"></div>
-          </div>
+          <button class="btn-ghost" (click)="irParaLogin()">
+            Fazer login
+          </button>
         </div>
 
       </div>
     </div>
   `,
   styles: [`
-    :host {
+    .page {
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #ffffff;
-    }
-
-    .page {
-      width: 100%;
-      padding: 3rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .wrap {
-      display: flex;
-      align-items: center;
-      gap: 5rem;
-      max-width: 900px;
-      width: 100%;
+      font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
     }
 
     .content {
-      flex: 1;
-      min-width: 0;
+      text-align: center;
+      padding: 2rem;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #e8ecfd;
-      color: #2a3fa8;
-      border: 0.5px solid #b8c4f8;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 4px 12px;
-      border-radius: 20px;
+    .glitch-wrap {
       margin-bottom: 1.5rem;
-    }
-
-    .num {
-      font-size: 7rem;
-      font-weight: 500;
       line-height: 1;
-      color: #1a1a2e;
-      letter-spacing: -6px;
-      margin-bottom: 0.5rem;
     }
 
-    .num span {
+    .glitch {
+      position: relative;
+      display: inline-block;
+      font-size: clamp(5rem, 18vw, 10rem);
+      font-weight: 800;
+      letter-spacing: -6px;
       color: #4361ee;
+      font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .glitch::before {
+      color: #c0c8ff;
+      animation: glitch-top 3.2s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+      transform: translate(-4px, -2px);
+    }
+
+    .glitch::after {
+      color: #a5b4fc;
+      animation: glitch-bot 3.2s infinite;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+      transform: translate(4px, 2px);
+    }
+
+    @keyframes glitch-top {
+      0%, 90%, 100% { transform: translate(-4px, -2px); opacity: 1; }
+      92%            { transform: translate(6px, -2px);  opacity: 0.8; }
+      94%            { transform: translate(-6px, 0);    opacity: 0.9; }
+      96%            { transform: translate(2px, -4px);  opacity: 1; }
+    }
+
+    @keyframes glitch-bot {
+      0%, 90%, 100% { transform: translate(4px, 2px);  opacity: 1; }
+      92%            { transform: translate(-6px, 2px); opacity: 0.8; }
+      94%            { transform: translate(4px, 4px);  opacity: 0.9; }
+      96%            { transform: translate(-2px, 0);   opacity: 1; }
     }
 
     .title {
-      font-size: 22px;
-      font-weight: 500;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-weight: 600;
       color: #1a1a2e;
-      margin: 0 0 0.75rem;
+      margin: 0 0 0.6rem;
+      letter-spacing: -0.3px;
     }
 
     .desc {
-      font-size: 15px;
-      color: #9aa3b8;
-      line-height: 1.7;
-      margin: 0 0 2rem;
-      max-width: 380px;
+      font-size: 0.95rem;
+      color: #8b92aa;
+      margin: 0 0 2.2rem;
+      line-height: 1.6;
     }
 
     .actions {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .btn-primary {
+    .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       background: #4361ee;
       color: #ffffff;
       border: none;
-      border-radius: 12px;
-      padding: 10px 20px;
+      border-radius: 50px;
+      padding: 13px 28px;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
-      transition: opacity 0.2s;
+      letter-spacing: 0.1px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 4px 18px rgba(67, 97, 238, 0.32);
     }
 
-    .btn-primary:hover {
-      opacity: 0.8;
+    .btn:hover {
+      background: #3451d1;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.42);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(67, 97, 238, 0.25);
     }
 
     .btn-ghost {
@@ -175,126 +152,26 @@ import { Router } from '@angular/router';
       align-items: center;
       gap: 8px;
       background: transparent;
-      color: #9aa3b8;
-      border: 0.5px solid #9aa3b8;
-      border-radius: 12px;
-      padding: 10px 20px;
+      color: #4361ee;
+      border: 1.5px solid #4361ee;
+      border-radius: 50px;
+      padding: 12px 28px;
       font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
-      transition: background 0.2s;
+      letter-spacing: 0.1px;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
     }
 
     .btn-ghost:hover {
-      background: #f0f2fd;
+      background: #4361ee;
+      color: #ffffff;
+      transform: translateY(-2px);
     }
 
-    /* Ilustração */
-    .scene {
-      flex-shrink: 0;
-      width: 240px;
-      height: 240px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lock-wrap {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lock-svg {
-      width: 120px;
-      height: 140px;
-      position: relative;
-      z-index: 2;
-      animation: float 4s ease-in-out infinite;
-    }
-
-    .pulse-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 0.5px solid #b8c4f8;
-      animation: pulse-out 3s ease-out infinite;
-    }
-
-    .r1 {
-      width: 130px;
-      height: 130px;
-      animation-delay: 0s;
-    }
-
-    .r2 {
-      width: 170px;
-      height: 170px;
-      animation-delay: 0.8s;
-    }
-
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    @keyframes pulse-out {
-      0% {
-        opacity: 0.6;
-        transform: scale(0.9);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(1.2);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .wrap {
-        flex-direction: column;
-        gap: 2rem;
-        text-align: center;
-      }
-
-      .scene {
-        order: -1;
-        width: 160px;
-        height: 160px;
-      }
-
-      .lock-wrap {
-        width: 130px;
-        height: 130px;
-      }
-
-      .lock-svg {
-        width: 80px;
-        height: 94px;
-      }
-
-      .r1 {
-        width: 90px;
-        height: 90px;
-      }
-
-      .r2 {
-        width: 120px;
-        height: 120px;
-      }
-
-      .desc {
-        max-width: none;
-      }
-
-      .num {
-        font-size: 5rem;
-        letter-spacing: -4px;
-      }
-
-      .actions {
-        justify-content: center;
-      }
+    .btn-ghost:active {
+      transform: translateY(0);
     }
   `]
 })
@@ -310,7 +187,7 @@ export class NaoAutorizadoComponent implements OnInit {
   }
 
   voltarParaHome(): void {
-    this.router.navigate(['/quizzes']);
+    this.router.navigate(['/main-panel']);
   }
 
   irParaLogin(): void {
