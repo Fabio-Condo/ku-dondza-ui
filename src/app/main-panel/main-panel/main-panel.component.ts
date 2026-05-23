@@ -470,6 +470,24 @@ export class MainPanelComponent implements OnInit {
     this.router.navigate(['/challenges', challenge.challengeId, 'results']);
   }
 
+  circumference = 2 * Math.PI * 16; // raio = 16
+
+  getStrokeOffset(rate: number): number {
+    return this.circumference * (1 - rate / 100);
+  }
+
+  getAccuracyClass(rate: number): string {
+    if (rate >= 80) {
+      return 'ring-fill-high';
+    }
+
+    if (rate >= 50) {
+      return 'ring-fill-mid';
+    }
+
+    return 'ring-fill-low';
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
