@@ -538,14 +538,37 @@
       transform: translateX(20px);
     }
 
-    .mobile-menu.active .mobile-nav-links li:nth-child(1) a { transition: all 0.35s 0.05s; }
-    .mobile-menu.active .mobile-nav-links li:nth-child(2) a { transition: all 0.35s 0.10s; }
-    .mobile-menu.active .mobile-nav-links li:nth-child(3) a { transition: all 0.35s 0.15s; }
-    .mobile-menu.active .mobile-nav-links li:nth-child(4) a { transition: all 0.35s 0.20s; }
-    .mobile-menu.active .mobile-nav-links li:nth-child(5) a { transition: all 0.35s 0.25s; }
-    .mobile-menu.active .mobile-nav-links li:nth-child(6) a { transition: all 0.35s 0.30s; }
-    .mobile-menu.active .mobile-nav-links li:nth-child(7) a { transition: all 0.35s 0.35s; }
-    .mobile-menu.active .mobile-nav-links li:nth-child(8) a { transition: all 0.35s 0.40s; }
+    .mobile-menu.active .mobile-nav-links li:nth-child(1) a {
+      transition: all 0.35s 0.05s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(2) a {
+      transition: all 0.35s 0.10s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(3) a {
+      transition: all 0.35s 0.15s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(4) a {
+      transition: all 0.35s 0.20s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(5) a {
+      transition: all 0.35s 0.25s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(6) a {
+      transition: all 0.35s 0.30s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(7) a {
+      transition: all 0.35s 0.35s;
+    }
+
+    .mobile-menu.active .mobile-nav-links li:nth-child(8) a {
+      transition: all 0.35s 0.40s;
+    }
 
     .mobile-menu.active .mobile-nav-links a {
       opacity: 1;
@@ -604,6 +627,7 @@
     }
 
     @media (max-width: 768px) {
+
       .nav-links,
       .auth-buttons,
       .section-divider,
@@ -643,18 +667,15 @@
           <li><a [class.active]="isActive('/subjects')" routerLink="/subjects">Estudar</a></li>
           <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
           <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
-          <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()" style="cursor: pointer;">Progresso</a></li>
+          <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()"
+              style="cursor: pointer;">Progresso</a></li>
 
           <!-- ── MAIS BUTTON ── -->
           <li class="nav-more">
-            <button
-              class="nav-more-btn"
-              [class.open]="isMoreMenuOpen"
-              (click)="toggleMoreMenu()"
-              type="button"
-            >
+            <button class="nav-more-btn" [class.open]="isMoreMenuOpen" (click)="toggleMoreMenu()" type="button">
               Mais
-              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
             </button>
@@ -665,7 +686,12 @@
               <div class="menu-section-label">Explorar</div>
               <a [class.active]="isActive('/challenges')" routerLink="/challenges" (click)="isMoreMenuOpen = false">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                  <path d="M4 22h16" />
+                  <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                  <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                  <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
                 </svg>
                 Campeonatos
               </a>
@@ -676,25 +702,30 @@
                 <div class="menu-section-label">Administração</div>
                 <a [class.active]="isActive('/questions')" routerLink="/questions" (click)="isMoreMenuOpen = false">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                    <polyline points="14 2 14 8 20 8" />
                   </svg>
                   Exercícios
                 </a>
                 <a [class.active]="isActive('/topics')" routerLink="/topics" (click)="isMoreMenuOpen = false">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 6h16M4 12h16M4 18h7"/>
+                    <path d="M4 6h16M4 12h16M4 18h7" />
                   </svg>
                   Tópicos
                 </a>
                 <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="isMoreMenuOpen = false">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>
+                    <rect width="20" height="14" x="2" y="5" rx="2" />
+                    <path d="M2 10h20" />
                   </svg>
                   Pagamentos
                 </a>
                 <a [class.active]="isActive('/users')" routerLink="/users" (click)="isMoreMenuOpen = false">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                   Pessoas
                 </a>
@@ -711,7 +742,8 @@
           <!-- Praticar CTA (desktop only) -->
           <a (click)="onPratice()" class="btn-pratice">
             <span class="pratice-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
@@ -727,15 +759,11 @@
           <div class="section-divider" *ngIf="isUserLoggedIn"></div>
 
           <!-- User avatar (with photo) -->
-          <img *ngIf="!showNavButtons() && loggedUser && loggedUser.profileImageUrl"
-            [src]="loggedUser.profileImageUrl"
-            alt="Foto de perfil"
-            class="user-icon"
-            (click)="goToProfile()" />
+          <img *ngIf="!showNavButtons() && loggedUser && loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
+            alt="Foto de perfil" class="user-icon" (click)="goToProfile()" />
 
           <!-- User avatar (no photo) -->
-          <div *ngIf="!showNavButtons() && loggedUser && !loggedUser.profileImageUrl"
-            class="user-icon"
+          <div *ngIf="!showNavButtons() && loggedUser && !loggedUser.profileImageUrl" class="user-icon"
             (click)="goToProfile()">
             <i class="fas fa-user"></i>
           </div>
@@ -777,7 +805,8 @@
 
           <!-- Mobile toggle -->
           <button class="mobile-toggle" (click)="toggleMenu()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round">
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="18" x2="21" y2="18" />
@@ -798,8 +827,8 @@
       <li><a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">Estudar</a></li>
       <li><a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">Exames</a></li>
       <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
-      <li><a routerLink="/challenges" (click)="toggleMenu()">Campeonatos</a></li>
       <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel(); toggleMenu()">Progresso</a></li>
+      <li><a routerLink="/challenges" (click)="toggleMenu()">Campeonatos</a></li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
         <a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a>
       </li>
@@ -838,7 +867,8 @@
         <div class="modal-header">
           <div class="modal-title-group">
             <h2 class="modal-title">{{ step === 'otp' ? 'Verificar código' : 'Entrar na conta' }}</h2>
-            <span class="modal-subtitle">{{ step === 'otp' ? 'Insira o código enviado por e-mail' : 'Bem-vindo de volta' }}</span>
+            <span class="modal-subtitle">{{ step === 'otp' ? 'Insira o código enviado por e-mail' : 'Bem-vindo de volta'
+              }}</span>
           </div>
           <button class="close-btn" (click)="onCloseLoginPopout()" [disabled]="showLoading">&#x2715;</button>
         </div>
@@ -852,14 +882,17 @@
         <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou continue com e-mail</span></div>
 
         <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
-          <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn" [disabled]="showLoading">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
+            [disabled]="showLoading">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
             Voltar
           </button>
           <div class="otp-box" *ngIf="step === 'otp'">
-            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de entrada ou spam.
+            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de entrada ou
+            spam.
           </div>
           <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
             <span class="spinner-sm"></span>
@@ -867,16 +900,21 @@
           </div>
           <div class="input-group" *ngIf="step === 'email'">
             <label>E-mail</label>
-            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required email [(ngModel)]="user.email" [disabled]="showLoading">
+            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required email
+              [(ngModel)]="user.email" [disabled]="showLoading">
           </div>
           <div class="input-group" *ngIf="step === 'otp'">
             <label>Código OTP</label>
-            <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp" [disabled]="showLoading" style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
+            <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp"
+              [disabled]="showLoading"
+              style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
           </div>
           <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
             <span class="btn-spinner" *ngIf="showLoading"></span>
-            <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
             </svg>
             <span *ngIf="!showLoading">{{ step === 'email' ? 'Continuar' : 'Verificar e entrar' }}</span>
             <span *ngIf="showLoading && step === 'email'">A enviar código...</span>
@@ -902,25 +940,31 @@
         <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
         <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>ou registe-se com e-mail</span></div>
 
-        <form autocomplete="off" #registerForm="ngForm" (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+        <form autocomplete="off" #registerForm="ngForm"
+          (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
           <div *ngIf="step === 'email'">
             <div class="input-group">
               <label>Nome completo</label>
-              <input type="text" id="fullName" name="fullName" placeholder="O seu nome completo" [(ngModel)]="user.fullName" [disabled]="showLoading">
+              <input type="text" id="fullName" name="fullName" placeholder="O seu nome completo"
+                [(ngModel)]="user.fullName" [disabled]="showLoading">
             </div>
             <div class="input-group">
               <label>E-mail</label>
-              <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required email [(ngModel)]="user.email" [disabled]="showLoading">
+              <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required email
+                [(ngModel)]="user.email" [disabled]="showLoading">
             </div>
           </div>
-          <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn" [disabled]="showLoading">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <button *ngIf="step === 'otp'" type="button" (click)="step = 'email'" class="go-back-btn"
+            [disabled]="showLoading">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
             Voltar
           </button>
           <div class="otp-box" *ngIf="step === 'otp'">
-            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de entrada ou spam.
+            Enviámos um código de 6 dígitos para <strong>{{ user.email }}</strong>. Verifique a caixa de entrada ou
+            spam.
           </div>
           <div class="otp-sending-row" [class.visible]="step === 'email' && showLoading">
             <span class="spinner-sm"></span>
@@ -928,18 +972,23 @@
           </div>
           <div class="input-group" *ngIf="step === 'otp'">
             <label>Código OTP</label>
-            <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp" [disabled]="showLoading" style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
+            <input type="text" id="otp" name="otp" placeholder="• • • • • •" required [(ngModel)]="otp"
+              [disabled]="showLoading"
+              style="letter-spacing: 6px; text-align: center; font-size: 20px; font-weight: 700;">
           </div>
           <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
             <span class="btn-spinner" *ngIf="showLoading"></span>
-            <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            <svg *ngIf="step === 'email' && !showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
             </svg>
             <span *ngIf="!showLoading">{{ step === 'email' ? 'Criar conta' : 'Confirmar e entrar' }}</span>
             <span *ngIf="showLoading && step === 'email'">A criar conta...</span>
             <span *ngIf="showLoading && step === 'otp'">A verificar código...</span>
           </button>
-          <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não recebeu? Reenviar código</a>
+          <a *ngIf="step === 'otp' && !showLoading" (click)="startRegistrationViaOtp()" class="resend-btn">Não recebeu?
+            Reenviar código</a>
         </form>
       </div>
 
