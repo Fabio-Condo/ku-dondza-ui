@@ -147,7 +147,8 @@ export class MainPanelComponent implements OnInit {
       )
     ).subscribe(
       (dados: IApiResponse<Challenge>) => {
-        this.challenges = dados.content;
+        //this.challenges = dados.content;
+        this.challenges = dados.content.slice(0, 3);
         this.totalRecords = dados.totalElements;
         this.totalChallenges = this.totalChallenges || dados.totalElements;
         //this.showLoading = false;
