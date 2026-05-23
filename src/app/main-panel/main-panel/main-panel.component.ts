@@ -322,7 +322,7 @@ export class MainPanelComponent implements OnInit {
         this.exams = dados.content.slice(0, 3);
         this.totalRecords = dados.totalElements;
         this.totalExames = this.totalExames || dados.totalElements;
-        this.showLoading = false;
+        //this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
