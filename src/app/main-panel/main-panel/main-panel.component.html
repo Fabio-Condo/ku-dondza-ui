@@ -1075,6 +1075,293 @@
             transform: none;
         }
 
+        /* ══════════════════════════════════════
+           ── QUIZZES RECENTES ──
+        ══════════════════════════════════════ */
+
+        .quiz-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-card {
+            background: #fff;
+            border: 1px solid #e8edf2;
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            transition: border-color .2s, box-shadow .2s, transform .15s cubic-bezier(.34, 1.56, .64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, .07);
+            transform: translateY(-1px);
+        }
+
+        .quiz-card:active {
+            transform: scale(.98);
+        }
+
+        /* ícone da disciplina */
+        .quiz-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quiz-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* reutiliza paleta de cores das disciplinas */
+        .qi-mat {
+            background: #eef2ff;
+        }
+
+        .qi-mat svg {
+            stroke: #4361ee;
+        }
+
+        .qi-port {
+            background: #f0fdf4;
+        }
+
+        .qi-port svg {
+            stroke: #059669;
+        }
+
+        .qi-qui {
+            background: #fff7ed;
+        }
+
+        .qi-qui svg {
+            stroke: #d97706;
+        }
+
+        .qi-fis {
+            background: #f5f3ff;
+        }
+
+        .qi-fis svg {
+            stroke: #7c3aed;
+        }
+
+        .qi-bio {
+            background: #f0fdfa;
+        }
+
+        .qi-bio svg {
+            stroke: #0d9488;
+        }
+
+        .qi-his {
+            background: #fef9c3;
+        }
+
+        .qi-his svg {
+            stroke: #b45309;
+        }
+
+        .qi-geo {
+            background: #ecfdf5;
+        }
+
+        .qi-geo svg {
+            stroke: #059669;
+        }
+
+        .qi-ing {
+            background: #ffe4e6;
+        }
+
+        .qi-ing svg {
+            stroke: #e11d48;
+        }
+
+        /* conteúdo central */
+        .quiz-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .quiz-header {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-subject {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* badge "Meu quiz" */
+        .quiz-mine-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: #eef2ff;
+            color: #3730a3;
+            border: 1px solid #c7d2fe;
+            letter-spacing: .1px;
+            line-height: 1.5;
+        }
+
+        .quiz-mine-badge svg {
+            width: 10px;
+            height: 10px;
+            fill: none;
+            stroke: #4361ee;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* meta tags na linha inferior */
+        .quiz-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .quiz-tag {
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* tipo */
+        .qt-tag-treino {
+            background: #eef2ff;
+            color: #4361ee;
+        }
+
+        .qt-tag-teste {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        /* taxa de acerto */
+        .qr-high {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .qr-mid {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .qr-low {
+            background: #fff1f2;
+            color: #be123c;
+        }
+
+        /* questões */
+        .qq-tag {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* data */
+        .qd-tag {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        /* barra de acerto lateral direita */
+        .quiz-score-wrap {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 48px;
+        }
+
+        .quiz-score-ring {
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .quiz-score-ring svg {
+            width: 40px;
+            height: 40px;
+            transform: rotate(-90deg);
+        }
+
+        .quiz-score-ring .ring-bg {
+            fill: none;
+            stroke: #f1f5f9;
+            stroke-width: 4;
+        }
+
+        .quiz-score-ring .ring-fill {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset .5s ease;
+        }
+
+        .ring-fill-high {
+            stroke: #10b981;
+        }
+
+        .ring-fill-mid {
+            stroke: #f59e0b;
+        }
+
+        .ring-fill-low {
+            stroke: #f43f5e;
+        }
+
+        .quiz-score-pct {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .quiz-score-label {
+            font-size: 9.5px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-align: center;
+            line-height: 1.2;
+        }
+
         /* ── FADE-UP ANIMATIONS ── */
         @keyframes fadeUp {
             from {
@@ -1548,9 +1835,70 @@
             </div>
         </div>
 
-        <div class="spacer"></div>
-    </div>
+        <!-- ══════════════════════════════════════
+             QUIZZES RECENTES
+             Angular: *ngIf="recentQuizzes && recentQuizzes.length > 0"
+        ══════════════════════════════════════ -->
+        <div class="sec-head f3" *ngIf="quizzes && quizzes.length > 0">
+            <span class="sec-title">Quizzes recentes</span>
+            <a routerLink="/quizzes" class="sec-link">Ver todos</a>
+        </div>
 
+        <!-- Card 3 – Treino, baixo acerto, meu quiz -->
+        <div class="quiz-list f3" *ngIf="quizzes && quizzes.length > 0">
+
+            <div class="quiz-card" *ngFor="let quiz of quizzes" [routerLink]="['/quizzes', quiz.quizId]">
+                <div class="quiz-icon qi-qui">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 3h6" />
+                        <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        <path d="M7.5 14.5h9" />
+                        <circle cx="9.5" cy="16.5" r=".75" fill="#d97706" stroke="none" />
+                        <circle cx="13" cy="15.5" r=".75" fill="#d97706" stroke="none" />
+                        <circle cx="11" cy="17.5" r=".75" fill="#d97706" stroke="none" />
+                    </svg>
+                </div>
+                <div class="quiz-body">
+                    <div class="quiz-header">
+                        <span class="quiz-subject">{{ quiz.subject.name }}</span>
+                        <!--
+                        <span class="quiz-mine-badge" *ngIf="isUserLoggedIn && quiz.user.id === loggedUser.id">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M6 20v-2a6 6 0 0 1 12 0v2" />
+                            </svg>
+                            Você
+                        </span>
+                        -->
+                    </div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag qt-tag-treino" *ngIf="quiz.type === 'TRAINING'">
+                            Treino
+                        </span>
+                        <span class="quiz-tag qt-tag-treino" *ngIf="quiz.type === 'TEST'">
+                            Teste
+                        </span>
+                        <!--<span class="quiz-tag qr-low">{{ quiz.accuracyRate.toFixed(1) }}%</span>-->
+                        <span class="quiz-tag qq-tag">{{ quiz.totalQuestions }} questões</span>
+                        <span class="quiz-tag qd-tag">{{ quiz.submittedAt | date:'dd MMM yyyy' }}</span>
+                    </div>
+                </div>
+                <div class="quiz-score-wrap">
+                    <div class="quiz-score-ring">
+                        <svg viewBox="0 0 40 40">
+                            <circle class="ring-bg" cx="20" cy="20" r="16" />
+                            <circle class="ring-fill ring-fill-low" cx="20" cy="20" r="16" stroke-dasharray="100.53"
+                                stroke-dashoffset="68.36" /><!-- 100.53×(1-0.32) -->
+                        </svg>
+                        <div class="quiz-score-pct">{{ quiz.accuracyRate.toFixed(1) }}%</div>
+                    </div>
+                    <div class="quiz-score-label">acerto</div>
+                </div>
+            </div>
+
+            <div class="spacer"></div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -11,12 +11,14 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { SubjectFilter } from 'src/app/core/interface/SubjectFilter';
 import { Challenge } from 'src/app/core/model/Challenge';
 import { Exam } from 'src/app/core/model/Exame';
+import { Quiz } from 'src/app/core/model/Quiz';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 import { User } from 'src/app/core/model/User';
 import { Role } from 'src/app/enum/role.enum';
 import { ExamesService } from 'src/app/exames/exames.service';
 import { QuestionService } from 'src/app/questions/question.service';
+import { QuizService } from 'src/app/quiz/quiz.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { TopicService } from 'src/app/topics/topicsService.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
@@ -60,6 +62,17 @@ export class MainPanelComponent implements OnInit {
     ordenamento: 'id,asc'
   };
 
+  // Quizzes
+  quizzes: Quiz[] = [];
+  totalQuizzes: number = 0;
+
+  quizFilter = {
+    userId: 0,
+    page: 0,
+    itemsPerPage: 6,
+    sort: 'id,desc'
+  };
+
   // Exams
   exams: Exam[] = [];
   totalExames: number = 0;
@@ -78,6 +91,7 @@ export class MainPanelComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private challengeService: ChallengeService,
     private subjectsService: SubjectsService,
+    private quizService: QuizService,
     private examesService: ExamesService,
     private messageService: MessageService,
     private title: Title,
@@ -93,8 +107,9 @@ export class MainPanelComponent implements OnInit {
     if (this.isUserLoggedIn) {
       this.getUserProgress();
     }
-    this.getExames();
     this.getCourses();
+    this.getExames();
+    this.getQuizzes();
 
     this.scrollToTop();
   }
@@ -228,6 +243,53 @@ export class MainPanelComponent implements OnInit {
         }
       }
     );
+  }
+
+  getQuizzes(page: number = 0): void {
+    this.retryVisible = false;
+    this.loadingMessage = "Carregando dados";
+    this.showLoading = true;
+
+    this.quizFilter.userId = 0; // Todos quizzes, mesmo para não autenticados
+    this.quizFilter.page = this.currentPage - 1;
+
+    this.quizService.getQuizzesWithCash(this.quizFilter).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (error.status && error.status >= 400 && error.status < 500) {
+              throw error;
+            }
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount =>
+            timer(Math.pow(2, retryCount) * 1000) // 2s → 4s → 8s
+          )
+        )
+      )
+    )
+      .subscribe(
+        (data: IApiResponse<Quiz>) => {
+          //this.quizzes = data.content;
+          this.quizzes = data.content.slice(0, 3);
+          this.totalRecords = data.totalElements;
+          this.totalQuizzes = this.totalQuizzes || data.totalElements;
+          this.showLoading = false;
+          this.loadingMessage = "";
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+          if (!navigator.onLine) {
+            this.sendErrorNotification("Você está sem conexão com a internet.");
+          } else {
+            this.sendErrorNotification(errorResponse.error.message);
+          }
+        }
+      );
   }
 
   getExames(pagina: number = 0): void {
