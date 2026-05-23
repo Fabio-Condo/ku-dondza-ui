@@ -37,6 +37,8 @@ export class NavbarComponent implements OnInit {
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
+  isMoreMenuOpen: boolean = false; // Controla a exibição do menu "Mais"
+
 
   constructor(
     private router: Router,
@@ -124,6 +126,10 @@ export class NavbarComponent implements OnInit {
   togglePopout() {
     //this.isPopoutVisible = !this.isPopoutVisible;
     //this.isMenuActive = false;
+  }
+
+  toggleMoreMenu() {
+    this.isMoreMenuOpen = !this.isMoreMenuOpen;
   }
 
   showNavButtons() {
