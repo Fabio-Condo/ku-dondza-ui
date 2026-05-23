@@ -69,10 +69,10 @@ export class ChallengeService {
         }
 
         // disciplina
-        if (filtro.subject?.id) {
+        if (filtro.subjectId) {
             params = params.set(
                 'subject.id',
-                filtro.subject.id.toString()
+                filtro.subjectId.toString()
             );
         }
 

@@ -7,8 +7,8 @@ export interface ChallengeFilter {
     difficultyLevel?: string;
     startDate?: Date;
     endDate?: Date;
-    subject?: Subject;
     status?: string;
+    subjectId?: number;
 
     page: number;
     itemsPerPage: number;

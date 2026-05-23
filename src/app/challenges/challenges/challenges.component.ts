@@ -17,6 +17,7 @@ import { Subject } from 'src/app/core/model/Subject';
 import { TopicService } from 'src/app/topics/topicsService.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+import { Role } from 'src/app/enum/role.enum';
 declare const MathJax: any;
 
 
@@ -319,6 +320,8 @@ export class ChallengesComponent implements OnInit {
 
   onReset() {
     this.filtro.status = undefined;
+    this.filtro.subjectId = undefined;
+    this.filtro.title = undefined;
     this.findAll();
   }
 
@@ -548,7 +551,7 @@ export class ChallengesComponent implements OnInit {
     this.filtro.title = undefined;
     this.filtro.description = undefined;
     this.filtro.difficultyLevel = undefined;
-    this.filtro.subject = undefined;
+    this.filtro.subjectId = undefined;
     this.filtro.sort = 'id,asc';
 
     this.currentPage = 1;
@@ -782,6 +785,18 @@ export class ChallengesComponent implements OnInit {
 
   viewResults(challenge: Challenge) {
     this.router.navigate(['/challenges', challenge.challengeId, 'results']);
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {
