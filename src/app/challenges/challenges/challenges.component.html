@@ -1,1687 +1,1459 @@
 <!-- quizzes.component.html -->
 
 <style>
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0
-    }
-
-    body {
-        padding: 10px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-
-    /* PAGE */
-    .page-wrap {
-        max-width: 1000px;
-        margin: 0 auto;
-        margin-top: 75px;
-    }
-
-    .page-header {
-        text-align: center;
-        margin-bottom: 24px
-    }
-
-    .page-header h1 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 6px
-    }
-
-    .page-subtitle {
-        font-size: 14px;
-        color: #94a3b8;
-        line-height: 1.5
-    }
-
-    /* FILTER BAR */
-    .filter-bar {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 20px
-    }
-
-    .tabs-scroll {
-        flex: 1;
-        min-width: 0;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .tabs-scroll::-webkit-scrollbar {
-        display: none
-    }
-
-    .tabs {
-        display: flex;
-        gap: 6px;
-        width: max-content
-    }
-
-    .tab {
-        padding: 7px 16px;
-        border-radius: 99px;
-        font-size: 13px;
-        font-weight: 500;
-        border: 1px solid #e8edf2;
-        background: #fff;
-        color: #94a3b8;
-        cursor: pointer;
-        transition: all .2s;
-        font-family: inherit;
-        white-space: nowrap;
-    }
-
-    .tab:hover {
-        border-color: #c7d2fe;
-        color: #4361ee
-    }
-
-    .tab.active {
-        background: #4361ee;
-        color: #fff;
-        border-color: #4361ee
-    }
-
-    .filter-btn {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 14px;
-        border-radius: 99px;
-        font-size: 13px;
-        font-weight: 500;
-        border: 1px solid #e8edf2;
-        background: #fff;
-        color: #475569;
-        cursor: pointer;
-        font-family: inherit;
-        white-space: nowrap;
-        transition: all .2s;
-        flex-shrink: 0;
-        position: relative;
-    }
-
-    .filter-btn:hover {
-        border-color: #c7d2fe;
-        color: #4361ee
-    }
-
-    .filter-btn svg {
-        width: 14px;
-        height: 14px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .filter-badge {
-        position: absolute;
-        top: -4px;
-        right: -4px;
-        width: 16px;
-        height: 16px;
-        background: #4361ee;
-        color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid #fff;
-    }
-
-    .filter-label {
-        display: inline
-    }
-
-    /* GRID */
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 14px
-    }
-
-    /* CARD */
-    .card {
-        background: #fff;
-        border-radius: 14px;
-        border: 1px solid #e8edf2;
-        transition: border-color .2s, box-shadow .2s;
-        animation: fadeUp .4s ease both;
-    }
-
-    .card:hover {
-        border-color: #c7d2fe;
-        box-shadow: 0 4px 20px rgba(67, 97, 238, .07)
-    }
-
-    @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(10px)
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0)
-        }
-    }
-
-    .card:nth-child(1) {
-        animation-delay: .04s
-    }
-
-    .card:nth-child(2) {
-        animation-delay: .10s
-    }
-
-    .card:nth-child(3) {
-        animation-delay: .16s
-    }
-
-    .card:nth-child(4) {
-        animation-delay: .22s
-    }
-
-    .card:nth-child(5) {
-        animation-delay: .28s
-    }
-
-    .card:nth-child(6) {
-        animation-delay: .34s
-    }
-
-    /* Card header */
-    .card-header {
-        padding: 14px 16px;
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        border-bottom: 1px solid #f1f5f9
-    }
-
-    .disc-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: #eef2ff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .disc-icon svg {
-        width: 18px;
-        height: 18px;
-        stroke: #4361ee;
-        fill: none;
-        stroke-width: 1.6;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .header-text {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        flex: 1;
-        min-width: 0
-    }
-
-    .card-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: #1e293b;
-        line-height: 1.3;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .card-sub {
-        font-size: 11px;
-        color: #94a3b8
-    }
-
-    /* Status badge */
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        padding: 4px 9px;
-        border-radius: 99px;
-        font-size: 11px;
-        font-weight: 600;
-        flex-shrink: 0;
-        white-space: nowrap;
-    }
-
-    .status-badge.open {
-        background: #dcfce7;
-        color: #166534;
-        border: 1px solid #bbf7d0
-    }
-
-    .status-badge.ongoing {
-        background: #fef3c7;
-        color: #92400e;
-        border: 1px solid #fde68a
-    }
-
-    .status-badge.done {
-        background: #f1f5f9;
-        color: #64748b;
-        border: 1px solid #e2e8f0
-    }
-
-    .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        flex-shrink: 0
-    }
-
-    .open .dot {
-        background: #22c55e
-    }
-
-    .ongoing .dot {
-        background: #f59e0b
-    }
-
-    .done .dot {
-        background: #94a3b8
-    }
-
-    /* Card body */
-    .card-body {
-        padding: 14px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 11px
-    }
-
-    /* Stats 2x2 */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 7px
-    }
-
-    .stat-block {
-        background: #f8fafc;
-        border: 1px solid #f1f5f9;
-        border-radius: 9px;
-        padding: 9px 11px;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-
-    .stat-label {
-        font-size: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: .6px;
-        color: #cbd5e1
-    }
-
-    .stat-value {
-        font-size: 12px;
-        font-weight: 600;
-        color: #1e293b;
-        display: flex;
-        align-items: center;
-        gap: 4px
-    }
-
-    .stat-value svg {
-        width: 12px;
-        height: 12px;
-        stroke: #4361ee;
-        fill: none;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        flex-shrink: 0;
-    }
-
-    .stat-value.urgent {
-        color: #a32d2d
-    }
-
-    .stat-value.urgent svg {
-        stroke: #a32d2d
-    }
-
-    .stat-value.xp {
-        color: #3b6d11
-    }
-
-    .stat-value.xp svg {
-        stroke: #3b6d11;
-        fill: #3b6d11
-    }
-
-    /* Difficulty */
-    .diff-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 2px 7px;
-        border-radius: 99px;
-        font-size: 11px;
-        font-weight: 600
-    }
-
-    .diff-beginner {
-        background: #dcfce7;
-        color: #166534
-    }
-
-    .diff-intermediate {
-        background: #fef3c7;
-        color: #92400e
-    }
-
-    .diff-advanced {
-        background: #fee2e2;
-        color: #991b1b
-    }
-
-    /* Timer row */
-    .timer-row {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        padding: 9px 11px;
-        background: #f5f6ff;
-        border: 1px solid #c7d0f8;
-        border-radius: 9px;
-    }
-
-    .timer-row.done-row {
-        background: #f8fafc;
-        border-color: #e2e8f0
-    }
-
-    .timer-icon svg {
-        width: 13px;
-        height: 13px;
-        stroke: #4361ee;
-        fill: none;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        display: block;
-        flex-shrink: 0;
-    }
-
-    .done-row .timer-icon svg {
-        stroke: #94a3b8
-    }
-
-    .timer-text {
-        font-size: 12px;
-        color: #4361ee;
-        font-weight: 500;
-        flex: 1
-    }
-
-    .done-row .timer-text {
-        color: #94a3b8
-    }
-
-    /* Buttons */
-    .card-footer {
-        display: flex;
-        gap: 7px
-    }
-
-    .btn {
-        flex: 1;
-        padding: 10px 12px;
-        background: #4361ee;
-        color: #fff;
-        border: none;
-        border-radius: 9px;
-        font-size: 13px;
-        font-weight: 500;
-        font-family: inherit;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        transition: all .2s;
-    }
-
-    .btn:hover {
-        background: #1e293b;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 14px rgba(67, 97, 238, .2)
-    }
-
-    .btn:active {
-        transform: translateY(0)
-    }
-
-    .btn svg {
-        width: 13px;
-        height: 13px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        flex-shrink: 0;
-    }
-
-    .btn.sec {
-        background: #fff;
-        color: #4361ee;
-        border: 1px solid #c7d0f8;
-        flex: none;
-        padding: 10px 12px;
-    }
-
-    .btn.sec:hover {
-        background: #eef1fd;
-        border-color: #a5b4fb;
-        box-shadow: none;
-        transform: translateY(-1px)
-    }
-
-    .btn.sec.full {
-        flex: 1
-    }
-
-    /* PAGINATION — desktop */
-    .pagination-desktop {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        margin: 32px;
-    }
-
-    .page-btn {
-        min-width: 36px;
-        height: 36px;
-        padding: 0 10px;
-        border-radius: 9px;
-        border: 1px solid #e8edf2;
-        background: #fff;
-        color: #475569;
-        font-size: 13px;
-        font-weight: 500;
-        font-family: inherit;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        transition: all .2s;
-    }
-
-    .page-btn:hover {
-        border-color: #c7d2fe;
-        color: #4361ee
-    }
-
-    .page-btn.active {
-        background: #4361ee;
-        color: #fff;
-        border-color: #4361ee
-    }
-
-    .page-btn.nav {
-        padding: 0 14px
-    }
-
-    .page-btn:disabled {
-        opacity: .4;
-        cursor: not-allowed;
-        pointer-events: none
-    }
-
-    .page-btn svg {
-        width: 14px;
-        height: 14px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        flex-shrink: 0;
-    }
-
-    .page-dots {
-        color: #94a3b8;
-        font-size: 13px;
-        padding: 0 2px;
-        user-select: none
-    }
-
-    /* Load more — mobile */
-    .load-more-wrap {
-        display: none;
-        padding: 24px;
-        justify-content: center
-    }
-
-    .btn-load-more {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        padding: 11px 28px;
-        background: #fff;
-        color: #4361ee;
-        border: 1px solid #c7d0f8;
-        border-radius: 99px;
-        font-size: 13px;
-        font-weight: 500;
-        font-family: inherit;
-        cursor: pointer;
-        transition: all .2s;
-    }
-
-    .btn-load-more:hover {
-        background: #eef1fd;
-        border-color: #a5b4fb
-    }
-
-    .btn-load-more svg {
-        width: 14px;
-        height: 14px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .loading-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(6px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-    }
-
-    .loading-overlay.visible {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .loading-box {
-        background: #fff;
-        border-radius: 14px;
-        border: 1px solid #e8edf2;
-        padding: 1.75rem 2.25rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 14px;
-    }
-
-    .spinner {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 2.5px solid #e0e7ff;
-        border-top-color: #4361ee;
-        animation: spin 0.75s linear infinite;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .loading-text {
-        font-size: 13px;
-        font-weight: 500;
-        color: #64748b;
-    }
-
-    .progress-message {
-        position: fixed;
-        bottom: 24px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #1e293b;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 10px;
-        font-size: 13px;
-        font-weight: 500;
-        animation: fadeInOut 3s ease-in-out forwards;
-        z-index: 9999;
-        white-space: nowrap;
-    }
-
-    @keyframes fadeInOut {
-        0% {
-            opacity: 0;
-            transform: translateX(-50%) translateY(6px);
-        }
-
-        15% {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        80% {
-            opacity: 1;
-        }
-
-        100% {
-            opacity: 0;
-        }
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        color: #94a3b8;
-        font-size: 14px;
-    }
-
-    .retry-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 23, 42, 0.45);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        animation: fadeIn 0.25s ease;
-        backdrop-filter: blur(3px);
-    }
-
-    .retry-content {
-        background: #ffffff;
-        padding: 2rem 2.5rem;
-        border-radius: 16px;
-        text-align: center;
-        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
-        max-width: 380px;
-        width: 90%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .retry-text {
-        font-size: 14px;
-        color: #475569;
-        line-height: 1.5;
-    }
-
-    .retry-button {
-        background-color: #4361ee;
-        color: white;
-        border: none;
-        padding: 10px 24px;
-        font-size: 14px;
-        font-weight: 600;
-        border-radius: 9px;
-        cursor: pointer;
-        font-family: inherit;
-        transition: background-color 0.2s ease, transform 0.1s ease;
-    }
-
-    .retry-button:hover {
-        background-color: #3451d1;
-        transform: translateY(-1px);
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-
-    /* MODAL */
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(15, 23, 42, 0.45);
-        backdrop-filter: blur(3px);
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        z-index: 99999;
-    }
-
-    .modal {
-        background: #fff;
-        border-radius: 18px 18px 0 0;
-        width: 100%;
-        max-width: 640px;
-        max-height: 85vh;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .modal-progress-bar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 3px;
-        width: 100%;
-        background: #eef2ff;
-        overflow: hidden;
-        opacity: 0;
-        transition: opacity .2s;
-    }
-
-    .modal-progress-bar.visible {
-        opacity: 1
-    }
-
-    .modal-progress-bar::after {
-        content: '';
-        display: block;
-        height: 100%;
-        width: 40%;
-        background: #4361ee;
-        border-radius: 99px;
-        animation: progressPulse 1.4s ease-in-out infinite;
-    }
-
-    @keyframes progressPulse {
-        0% {
-            transform: translateX(-100%)
-        }
-
-        100% {
-            transform: translateX(350%)
-        }
-    }
-
-    .modal-handle {
-        display: flex;
-        justify-content: center;
-        padding: 12px 0 4px;
-        flex-shrink: 0
-    }
-
-    .modal-handle span {
-        width: 36px;
-        height: 4px;
-        background: #e2e8f0;
-        border-radius: 99px
-    }
-
-    .modal-inner {
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        flex: 1;
-        padding: 0 20px 24px;
-        transition: opacity .2s;
-    }
-
-    .modal-inner.is-loading {
-        opacity: .45;
-        pointer-events: none
-    }
-
-    .modal-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px 20px 14px;
-        position: sticky;
-        top: 0;
-        background: #fff;
-        border-bottom: 1px solid #f1f5f9;
-        margin-bottom: 12px;
-        flex-shrink: 0;
-    }
-
-    .modal-title-group {
-        display: flex;
-        flex-direction: column;
-        gap: 2px
-    }
-
-    .modal-title {
-        font-size: 15px;
-        font-weight: 600;
-        color: #1e293b
-    }
-
-    .modal-subtitle {
-        font-size: 12px;
-        color: #94a3b8
-    }
-
-    .close-btn {
-        width: 30px;
-        height: 30px;
-        border-radius: 8px;
-        border: 1px solid #e8edf2;
-        background: #fff;
-        color: #64748b;
-        font-size: 14px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all .15s;
-        font-family: inherit;
-    }
-
-    .close-btn:hover {
-        background: #f8fafc;
-        color: #1e293b;
-        border-color: #cbd5e1
-    }
-
-    .question-item {
-        display: flex;
-        gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid #f1f5f9
-    }
-
-    .question-item:last-child {
-        border-bottom: none
-    }
-
-    .question-item.selected-question {
-        background: #f5f6ff;
-        margin: 0 -20px;
-        padding: 12px 20px;
-        border-bottom: 1px solid #eef2ff;
-    }
-
-    .question-number {
-        width: 24px;
-        height: 24px;
-        border-radius: 7px;
-        background: #eef2ff;
-        color: #4361ee;
-        font-size: 11px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        margin-top: 1px;
-    }
-
-    .question-text {
-        font-size: 13px;
-        color: #334155;
-        line-height: 1.5
-    }
-
-    .question-topic-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 6px
-    }
-
-    .question-topic-row small {
-        font-size: 11px;
-        color: #94a3b8;
-        background: #f1f5f9;
-        padding: 2px 8px;
-        border-radius: 99px;
-    }
-
-    .q-btn {
-        padding: 4px 11px;
-        border-radius: 7px;
-        font-size: 11px;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        font-family: inherit;
-        transition: all .15s
-    }
-
-    .q-btn-add {
-        background: #dcfce7;
-        color: #166534
-    }
-
-    .q-btn-add:hover {
-        background: #bbf7d0
-    }
-
-    .q-btn-remove {
-        background: #fee2e2;
-        color: #991b1b
-    }
-
-    .q-btn-remove:hover {
-        background: #fecaca
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-        .page-wrap {
-            margin-top: 70px
-        }
-    }
-
-    /* tablet / large phone */
-    @media (max-width: 768px) {
-        .page-wrap {
-            padding: 0 12px
-        }
-
-        .page-header h1 {
-            font-size: 1.25rem
-        }
-
-        .grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 10px
-        }
-
-        .pagination-desktop {
-            display: none
-        }
-
-        .load-more-wrap {
-            display: flex
-        }
-
-        .modal {
-            max-height: 90vh
-        }
-    }
-
-    /* small phone — 1-col */
-    @media (max-width: 560px) {
-        .page-wrap {
-            padding: 0 10px
-        }
-
-        .page-header h1 {
-            font-size: 1.1rem
-        }
-
-        .page-subtitle {
-            font-size: 13px
-        }
-
-        .filter-label {
-            display: none
-        }
-
-        .filter-btn {
-            padding: 7px 11px
-        }
-
-        .grid {
-            grid-template-columns: 1fr;
-            gap: 10px
-        }
-
-        .card-header {
-            padding: 12px 14px;
-            gap: 10px
-        }
-
-        .card-body {
-            padding: 12px 14px;
-            gap: 10px
-        }
-
-        .disc-icon {
-            width: 36px;
-            height: 36px
-        }
-
-        .disc-icon svg {
-            width: 16px;
-            height: 16px
-        }
-
-        .card-name {
-            font-size: 13px
-        }
-
-        .stat-block {
-            padding: 8px 10px
-        }
-
-        .stat-label {
-            font-size: 9px;
-            letter-spacing: 0
-        }
-
-        .stat-value {
-            font-size: 12px
-        }
-
-        .timer-row {
-            padding: 8px 10px
-        }
-
-        .timer-text {
-            font-size: 11px
-        }
-
-        .btn {
-            font-size: 12px;
-            padding: 9px 10px
-        }
-    }
-
-    /* very small phone */
-    @media (max-width: 360px) {
-        .page-wrap {
-            padding: 0 8px
-        }
-
-        .card-name {
-            font-size: 12px
-        }
-
-        .card-sub {
-            display: none
-        }
-
-        .stat-value {
-            font-size: 11px
-        }
-
-        .timer-text {
-            font-size: 11px
-        }
-
-        .status-badge span:not(.dot) {
-            display: none
-        }
-
-        .status-badge {
-            padding: 5px 7px
-        }
-
-        .btn {
-            font-size: 12px;
-            padding: 9px 8px
-        }
-    }
-
-    /* desktop: modal centered */
-    @media (min-width: 600px) {
-        .modal-overlay {
-            align-items: center
-        }
-
-        .modal {
-            border-radius: 18px;
-            max-height: 80vh
-        }
-
-        .modal-handle {
-            display: none
-        }
-    }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+  }
+
+  body {
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* PAGE */
+  .page-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 75px;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 24px
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 6px
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.5
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px
+  }
+
+  .tabs-scroll {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tabs-scroll::-webkit-scrollbar {
+    display: none
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    width: max-content
+  }
+
+  .tab {
+    padding: 7px 16px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e8edf2;
+    background: #fff;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .tab:hover {
+    border-color: #c7d2fe;
+    color: #4361ee
+  }
+
+  .tab.active {
+    background: #4361ee;
+    color: #fff;
+    border-color: #4361ee
+  }
+
+  .filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e8edf2;
+    background: #fff;
+    color: #475569;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: all .2s;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .filter-btn:hover {
+    border-color: #c7d2fe;
+    color: #4361ee
+  }
+
+  .filter-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .filter-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    background: #4361ee;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+  }
+
+  .filter-label {
+    display: inline
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px
+  }
+
+  /* CARD */
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e8edf2;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+    animation: fadeUp .4s ease both;
+  }
+
+  .card:hover {
+    border-color: #c7d2fe;
+    box-shadow: 0 4px 20px rgba(67, 97, 238, .07)
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px)
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0)
+    }
+  }
+
+  .card:nth-child(1) { animation-delay: .04s }
+  .card:nth-child(2) { animation-delay: .10s }
+  .card:nth-child(3) { animation-delay: .16s }
+  .card:nth-child(4) { animation-delay: .22s }
+  .card:nth-child(5) { animation-delay: .28s }
+  .card:nth-child(6) { animation-delay: .34s }
+
+  /* Card header — NÃO ALTERADO */
+  .card-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    border-bottom: 1px solid #f1f5f9
+  }
+
+  .disc-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .disc-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: #4361ee;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0
+  }
+
+  .card-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-sub {
+    font-size: 11px;
+    color: #94a3b8
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 9px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .status-badge.open {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0
+  }
+
+  .status-badge.ongoing {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a
+  }
+
+  .status-badge.done {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0
+  }
+
+  .open .dot { background: #22c55e }
+  .ongoing .dot { background: #f59e0b }
+  .done .dot { background: #94a3b8 }
+
+  /* ─── CARD BODY NOVO ─────────────────────────── */
+  .card-body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Barra de métricas */
+  .meta-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .meta-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 6px;
+    gap: 3px;
+    text-align: center;
+  }
+
+  .meta-item:not(:last-child) {
+    border-right: 1px solid #f1f5f9;
+  }
+
+  .meta-icon {
+    width: 15px;
+    height: 15px;
+    stroke: #94a3b8;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.2;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 600;
+  }
+
+  .meta-value.xp { color: #3b6d11; }
+  .meta-value.urgent { color: #a32d2d; }
+  .meta-value.muted { color: #94a3b8; }
+
+  /* Pill de dificuldade */
+  .diff-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .diff-beginner     { background: #dcfce7; color: #166534; }
+  .diff-intermediate { background: #fef3c7; color: #92400e; }
+  .diff-advanced     { background: #fee2e2; color: #991b1b; }
+
+  /* Linha de contexto temporal */
+  .timeline-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px;
+    background: #f5f6ff;
+    border-bottom: 1px solid #eef0fd;
+  }
+
+  .timeline-row.done-row {
+    background: #f8fafc;
+    border-bottom-color: #f1f5f9;
+  }
+
+  .timeline-icon {
+    width: 13px;
+    height: 13px;
+    stroke: #4361ee;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .done-row .timeline-icon { stroke: #94a3b8; }
+
+  .timeline-text {
+    font-size: 12px;
+    color: #4361ee;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .done-row .timeline-text { color: #94a3b8; }
+
+  .timeline-text strong { font-weight: 700; }
+
+  /* Rodapé do card */
+  .card-footer {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+
+  /* Botão primário */
+  .btn-primary {
+    flex: 1;
+    padding: 10px 14px;
+    background: #4361ee;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .2s;
+  }
+
+  .btn-primary:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(67, 97, 238, .2)
+  }
+
+  .btn-primary:active { transform: translateY(0) }
+
+  .btn-primary:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn-primary svg {
+    width: 13px;
+    height: 13px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* Botão secundário */
+  .btn-sec {
+    padding: 10px 12px;
+    background: #fff;
+    color: #4361ee;
+    border: 1px solid #c7d0f8;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .2s;
+  }
+
+  .btn-sec:hover {
+    background: #eef1fd;
+    border-color: #a5b4fb;
+    transform: translateY(-1px);
+  }
+
+  .btn-sec svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .btn-sec.btn-full { flex: 1; }
+
+  /* ─── PAGINAÇÃO DESKTOP ───────────────────────── */
+  .pagination-desktop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 32px;
+  }
+
+  .page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 9px;
+    border: 1px solid #e8edf2;
+    background: #fff;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all .2s;
+  }
+
+  .page-btn:hover {
+    border-color: #c7d2fe;
+    color: #4361ee
+  }
+
+  .page-btn.active {
+    background: #4361ee;
+    color: #fff;
+    border-color: #4361ee
+  }
+
+  .page-btn.nav { padding: 0 14px }
+
+  .page-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    pointer-events: none
+  }
+
+  .page-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .page-dots {
+    color: #94a3b8;
+    font-size: 13px;
+    padding: 0 2px;
+    user-select: none
+  }
+
+  /* Load more — mobile */
+  .load-more-wrap {
+    display: none;
+    padding: 24px;
+    justify-content: center
+  }
+
+  .btn-load-more {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 28px;
+    background: #fff;
+    color: #4361ee;
+    border: 1px solid #c7d0f8;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .btn-load-more:hover {
+    background: #eef1fd;
+    border-color: #a5b4fb
+  }
+
+  .btn-load-more svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Loading overlay */
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .loading-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .loading-box {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e8edf2;
+    padding: 1.75rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2.5px solid #e0e7ff;
+    border-top-color: #4361ee;
+    animation: spin 0.75s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+  }
+
+  .progress-message {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    animation: fadeInOut 3s ease-in-out forwards;
+    z-index: 9999;
+    white-space: nowrap;
+  }
+
+  @keyframes fadeInOut {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(6px); }
+    15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+
+  .retry-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.25s ease;
+    backdrop-filter: blur(3px);
+  }
+
+  .retry-content {
+    background: #ffffff;
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+    max-width: 380px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .retry-text {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.5;
+  }
+
+  .retry-button {
+    background-color: #4361ee;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .retry-button:hover {
+    background-color: #3451d1;
+    transform: translateY(-1px);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ─── MODAL ───────────────────────────────────── */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 99999;
+  }
+
+  .modal {
+    background: #fff;
+    border-radius: 18px 18px 0 0;
+    width: 100%;
+    max-width: 640px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .modal-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: #eef2ff;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+
+  .modal-progress-bar.visible { opacity: 1 }
+
+  .modal-progress-bar::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 40%;
+    background: #4361ee;
+    border-radius: 99px;
+    animation: progressPulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes progressPulse {
+    0%   { transform: translateX(-100%) }
+    100% { transform: translateX(350%) }
+  }
+
+  .modal-handle {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 4px;
+    flex-shrink: 0
+  }
+
+  .modal-handle span {
+    width: 36px;
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 99px
+  }
+
+  .modal-inner {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+    padding: 0 20px 24px;
+    transition: opacity .2s;
+  }
+
+  .modal-inner.is-loading {
+    opacity: .45;
+    pointer-events: none
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 14px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+
+  .modal-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px
+  }
+
+  .modal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b
+  }
+
+  .modal-subtitle {
+    font-size: 12px;
+    color: #94a3b8
+  }
+
+  .close-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid #e8edf2;
+    background: #fff;
+    color: #64748b;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+    font-family: inherit;
+  }
+
+  .close-btn:hover {
+    background: #f8fafc;
+    color: #1e293b;
+    border-color: #cbd5e1
+  }
+
+  .question-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9
+  }
+
+  .question-item:last-child { border-bottom: none }
+
+  .question-item.selected-question {
+    background: #f5f6ff;
+    margin: 0 -20px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #eef2ff;
+  }
+
+  .question-number {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: #eef2ff;
+    color: #4361ee;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .question-text {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.5
+  }
+
+  .question-topic-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px
+  }
+
+  .question-topic-row small {
+    font-size: 11px;
+    color: #94a3b8;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 99px;
+  }
+
+  .q-btn {
+    padding: 4px 11px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all .15s
+  }
+
+  .q-btn-add    { background: #dcfce7; color: #166534 }
+  .q-btn-add:hover { background: #bbf7d0 }
+  .q-btn-remove { background: #fee2e2; color: #991b1b }
+  .q-btn-remove:hover { background: #fecaca }
+
+  /* Filtros modal extras */
+  .filter-modal .modal-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .filter-form {
+    padding: 16px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .filter-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .filter-group input,
+  .filter-group select {
+    padding: 9px 12px;
+    border: 1px solid #e8edf2;
+    border-radius: 9px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #1e293b;
+    background: #fff;
+    outline: none;
+    transition: border-color .2s;
+    appearance: none;
+  }
+
+  .filter-group input:focus,
+  .filter-group select:focus {
+    border-color: #4361ee;
+  }
+
+  .filter-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  /* Form modal */
+  .modal-inner form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 4px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 9px 12px;
+    border: 1px solid #e8edf2;
+    border-radius: 9px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #1e293b;
+    background: #fff;
+    outline: none;
+    transition: border-color .2s;
+    appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #4361ee;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+  }
+
+  /* Botão save do form */
+  .btn-save {
+    width: 100%;
+    padding: 11px 16px;
+    background: #4361ee;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all .2s;
+    margin-top: 4px;
+  }
+
+  .btn-save:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+  }
+
+  .btn-save:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn-save svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .btn-spinner {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top-color: #fff;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  /* Dropdown */
+  .dropdown-container {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .dropdown-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 1px solid #e8edf2;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+    font-size: 14px;
+  }
+
+  .dropdown-btn:hover {
+    background: #f8fafc;
+    color: #1e293b;
+    border-color: #cbd5e1
+  }
+
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: #fff;
+    border: 1px solid #e8edf2;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(15,23,42,.1);
+    min-width: 160px;
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .dropdown a {
+    display: block;
+    padding: 9px 14px;
+    font-size: 13px;
+    color: #334155;
+    cursor: pointer;
+    transition: background .15s;
+  }
+
+  .dropdown a:hover {
+    background: #f5f6ff;
+    color: #4361ee;
+  }
+
+  /* ─── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 900px) {
+    .page-wrap { margin-top: 70px }
+  }
+
+  @media (max-width: 768px) {
+    .page-wrap { padding: 0 12px }
+    .page-header h1 { font-size: 1.25rem }
+    .grid { grid-template-columns: 1fr 1fr; gap: 10px }
+    .pagination-desktop { display: none }
+    .load-more-wrap { display: flex }
+    .modal { max-height: 90vh }
+  }
+
+  @media (max-width: 560px) {
+    .page-wrap { padding: 0 10px }
+    .page-header h1 { font-size: 1.1rem }
+    .page-subtitle { font-size: 13px }
+    .filter-label { display: none }
+    .filter-btn { padding: 7px 11px }
+    .grid { grid-template-columns: 1fr; gap: 10px }
+    .card-header { padding: 12px 14px; gap: 10px }
+    .disc-icon { width: 36px; height: 36px }
+    .disc-icon svg { width: 16px; height: 16px }
+    .card-name { font-size: 13px }
+    .meta-item { padding: 11px 5px }
+    .meta-value { font-size: 12px }
+    .meta-label { font-size: 9px; letter-spacing: 0 }
+    .timeline-row { padding: 9px 14px }
+    .timeline-text { font-size: 11px }
+    .card-footer { padding: 10px 14px }
+    .btn-primary { font-size: 12px; padding: 9px 10px }
+    .btn-sec { font-size: 12px; padding: 9px 10px }
+  }
+
+  @media (max-width: 360px) {
+    .page-wrap { padding: 0 8px }
+    .card-name { font-size: 12px }
+    .card-sub { display: none }
+    .meta-value { font-size: 11px }
+    .timeline-text { font-size: 11px }
+    .status-badge span:not(.dot) { display: none }
+    .status-badge { padding: 5px 7px }
+    .btn-primary { font-size: 12px; padding: 9px 8px }
+  }
+
+  @media (min-width: 600px) {
+    .modal-overlay { align-items: center }
+    .modal { border-radius: 18px; max-height: 80vh }
+    .modal-handle { display: none }
+  }
 </style>
 
 
 <!-- PAGE -->
 <div class="page-wrap">
 
-    <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
-        <div class="loading-box">
-            <div class="spinner"></div>
-            <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+  <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <h1>Campeonatos</h1>
+    <p class="page-subtitle">Teste os seus conhecimentos, ganhe XP e suba no ranking.</p>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="tabs-scroll">
+      <div class="tabs">
+        <button class="tab" [class.active]="filtro.status == undefined" (click)="onReset()">Todos</button>
+        <button class="tab" [class.active]="filtro.status == 'UPCOMING'" (click)="onGetByStatus('UPCOMING')">Disponíveis</button>
+        <button class="tab" [class.active]="filtro.status == 'ONGOING'" (click)="onGetByStatus('ONGOING')">Em curso</button>
+        <button class="tab" [class.active]="filtro.status == 'DONE'" (click)="onGetByStatus('DONE')">Encerrados</button>
+      </div>
+    </div>
+    <button class="filter-btn" title="Adicionar Desafio" (click)="onAddNewChallenge()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span class="filter-label">Adicionar</span>
+    </button>
+    <button class="filter-btn" title="Mais filtros" (click)="openFilterModal()">
+      <svg viewBox="0 0 24 24">
+        <line x1="4" y1="6" x2="20" y2="6" />
+        <line x1="7" y1="12" x2="17" y2="12" />
+        <line x1="10" y1="18" x2="14" y2="18" />
+      </svg>
+      <span class="filter-label">Filtros</span>
+    </button>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid">
+    <div class="card" *ngFor="let challenge of challenges">
+
+      <!-- Header — NÃO ALTERADO -->
+      <div class="card-header">
+        <div class="disc-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 4h16" />
+            <path d="M4 4l8 8-8 8" />
+            <path d="M4 20h16" />
+          </svg>
         </div>
-    </div>
-
-    <div class="page-header">
-        <h1>Campeonatos</h1>
-        <p class="page-subtitle">Teste os seus conhecimentos, ganhe XP e suba no ranking.</p>
-    </div>
-
-    <!-- Filter bar: tabs scrolláveis + botão filtros avançados -->
-    <div class="filter-bar">
-        <div class="tabs-scroll">
-            <div class="tabs">
-                <button class="tab" [class.active]="filtro.status == undefined" (click)="onReset()">Todos</button>
-                <button class="tab" [class.active]="filtro.status == 'UPCOMING'"
-                    (click)="onGetByStatus('UPCOMING')">Disponíveis</button>
-                <button class="tab" [class.active]="filtro.status == 'ONGOING'" (click)="onGetByStatus('ONGOING')">Em
-                    curso</button>
-                <button class="tab" [class.active]="filtro.status == 'DONE'"
-                    (click)="onGetByStatus('DONE')">Encerrados</button>
-            </div>
+        <div class="header-text">
+          <span class="card-name">{{ challenge.title }}</span>
+          <span class="card-sub">{{ challenge.subjectName }} · {{ getDifficultyLabel(challenge.difficultyLevel) }}</span>
         </div>
-        <button class="filter-btn" title="Adicionar Desafio" (click)="onAddNewChallenge()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
+        <span class="status-badge" [ngClass]="{
+            open:    challenge.status === 'UPCOMING',
+            ongoing: challenge.status === 'ONGOING',
+            done:    challenge.status === 'DONE'
+          }">
+          <span class="dot"></span>
+          {{ challenge.status === 'UPCOMING' ? 'Aberto' : challenge.status === 'ONGOING' ? 'Em curso' : 'Encerrado' }}
+        </span>
+        <div class="dropdown-container">
+          <button class="dropdown-btn" (click)="toggleDropdown(challenge)">
+            <i class="pi pi-ellipsis-h"></i>
+          </button>
+          <div class="dropdown" *ngIf="challenge.isAdminMenuOpen">
+            <a (click)="onUpdateChallenge(challenge); closeDropdown(challenge)">Editar</a>
+            <a (click)="onGetSelectedQuestionsByTopicId(challenge); closeDropdown(challenge)">Ver Questões</a>
+            <a (click)="onGetQuestionsByTopicId(challenge); closeDropdown(challenge)">Editar Questões</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+
+        <!-- Barra de 4 métricas -->
+        <div class="meta-row">
+
+          <div class="meta-item">
+            <svg class="meta-icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3 3" />
             </svg>
-            <span class="filter-label">Adicionar</span>
-        </button>
-        <button class="filter-btn" title="Mais filtros" (click)="openFilterModal()">
-            <svg viewBox="0 0 24 24">
-                <line x1="4" y1="6" x2="20" y2="6" />
-                <line x1="7" y1="12" x2="17" y2="12" />
-                <line x1="10" y1="18" x2="14" y2="18" />
+            <span class="meta-value"
+              [ngClass]="{ urgent: challenge.status !== 'DONE', muted: challenge.status === 'DONE' }">
+              {{ challenge.remainingHours ? challenge.remainingHours + 'h' : '—' }}
+            </span>
+            <span class="meta-label">Restante</span>
+          </div>
+
+          <div class="meta-item">
+            <svg class="meta-icon" viewBox="0 0 24 24">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
             </svg>
-            <span class="filter-label">Filtros</span>
-            <!-- descomenta quando houver filtros activos: <span class="filter-badge">2</span> -->
-        </button>
-    </div>
+            <span class="meta-value">{{ challenge.totalQuestions }}</span>
+            <span class="meta-label">Perguntas</span>
+          </div>
 
-    <!-- Grid -->
-    <div class="grid">
-        <div class="card" *ngFor="let challenge of challenges">
+          <div class="meta-item">
+            <svg class="meta-icon" viewBox="0 0 24 24" style="stroke:#3b6d11">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+            <span class="meta-value xp">+{{ challenge.xpReward }}</span>
+            <span class="meta-label">XP</span>
+          </div>
 
-            <!-- Header -->
-            <div class="card-header">
-                <div class="disc-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 4h16" />
-                        <path d="M4 4l8 8-8 8" />
-                        <path d="M4 20h16" />
-                    </svg>
-                </div>
-                <div class="header-text">
-                    <span class="card-name">{{ challenge.title }}</span>
-                    <span class="card-sub">{{ challenge.subjectName }} · {{
-                        getDifficultyLabel(challenge.difficultyLevel) }}</span>
-                </div>
-                <span class="status-badge" [ngClass]="{
-                        open:    challenge.status === 'UPCOMING',
-                        ongoing: challenge.status === 'ONGOING',
-                        done:    challenge.status === 'DONE'
-                        }">
-                    <span class="dot"></span> {{ challenge.status === 'UPCOMING' ? 'Aberto' : challenge.status ===
-                    'ONGOING' ? 'Em curso' :'Encerrado' }}
-                </span>
-                <div class="dropdown-container">
-                    <button class="dropdown-btn" (click)="toggleDropdown(challenge)">
-                        <i class="pi pi-ellipsis-h"></i>
-                    </button>
-                    <div class="dropdown" *ngIf="challenge.isAdminMenuOpen">
-                        <a (click)="onUpdateChallenge(challenge); closeDropdown(challenge)">Editar</a>
-                        <a (click)="onGetSelectedQuestionsByTopicId(challenge); closeDropdown(challenge)">Ver
-                            Questões</a>
-                        <a (click)="onGetQuestionsByTopicId(challenge); closeDropdown(challenge)">Editar Questões</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Body -->
-            <div class="card-body">
-                <div class="stats-grid">
-
-                    <div class="stat-block">
-                        <span class="stat-label">Tempo restante</span>
-                        <span class="stat-value" [ngClass]="{ urgent: challenge.status !== 'DONE' }">
-                            <svg viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M12 7v5l3 3" />
-                            </svg>
-                            {{ challenge.remainingHours ? 'Termina em ' + challenge.remainingHours + 'h' :
-                            'Indisponível' }}
-                        </span>
-                    </div>
-
-                    <div class="stat-block">
-                        <span class="stat-label">Perguntas</span>
-                        <span class="stat-value">
-                            <svg viewBox="0 0 24 24">
-                                <line x1="8" y1="6" x2="21" y2="6" />
-                                <line x1="8" y1="12" x2="21" y2="12" />
-                                <line x1="8" y1="18" x2="21" y2="18" />
-                                <line x1="3" y1="6" x2="3.01" y2="6" />
-                                <line x1="3" y1="12" x2="3.01" y2="12" />
-                                <line x1="3" y1="18" x2="3.01" y2="18" />
-                            </svg>
-                            {{ challenge.totalQuestions }} perguntas
-                        </span>
-                    </div>
-
-                    <div class="stat-block">
-                        <span class="stat-label">XP possível</span>
-                        <span class="stat-value xp">
-                            <svg viewBox="0 0 24 24">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                            </svg>
-                            +{{ challenge.xpReward }} XP
-                        </span>
-                    </div>
-
-                    <div class="stat-block">
-                        <span class="stat-label">Dificuldade</span>
-                        <span class="stat-value">
-                            <span class="diff-badge" [ngClass]="{
-                                'diff-beginner':     challenge.difficultyLevel === 'BEGINNER',
-                                'diff-intermediate': challenge.difficultyLevel === 'INTERMEDIATE',
-                                'diff-advanced':     challenge.difficultyLevel === 'ADVANCED'}">
-                                {{ getDifficultyLabel(challenge.difficultyLevel) }}
-                            </span>
-                        </span>
-                    </div>
-
-                </div>
-
-                <div class="timer-row" [ngClass]="{ 'done-row': challenge.status === 'DONE' }">
-                    <span class="timer-icon">
-                        <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9" />
-                            <path d="M12 7v5l3 3" />
-                        </svg>
-                    </span>
-                    <span class="timer-text">
-                        <ng-container [ngSwitch]="challenge.status">
-                            <ng-container *ngSwitchCase="'ONGOING'">A decorrer — termina em <strong>{{
-                                    challenge.remainingHours }}h</strong></ng-container>
-                            <ng-container *ngSwitchCase="'UPCOMING'">Inscrições abertas</ng-container>
-                            <ng-container *ngSwitchCase="'DONE'">Quiz encerrado</ng-container>
-                        </ng-container>
-                    </span>
-                </div>
-
-                <div class="card-footer">
-
-                    <button class="btn"
-                        [disabled]="isChallengeButtonDisabled(challenge)"
-                        (click)="onChallengeAction(challenge)">
-
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
-                        </svg>
-
-                        {{ getChallengeButtonText(challenge) }}
-
-                    </button>
-
-                    <!--
-                    <ng-container *ngIf="challenge.status !== 'DONE'; else doneActions">
-                        <button class="btn" (click)="onChallengeAction(challenge)">
-                            <span>{{ challenge.status === 'ONGOING' ? 'Participar agora' : 'Começar agora' }}</span>
-                            <svg viewBox="0 0 24 24">
-                                <polygon points="5 3 19 12 5 21 5 3" />
-                            </svg>
-                        </button>
-                        <button class="btn sec" title="Guardar">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-                            </svg>
-                        </button>
-                    </ng-container>
-                    <ng-template #doneActions>
-                        <button class="btn sec full" (click)="onChallengeAction(challenge)">
-                            <span>Ver resultados</span>
-                            <svg viewBox="0 0 24 24">
-                                <rect x="3" y="3" width="18" height="18" rx="2" />
-                                <path d="M9 17V11" />
-                                <path d="M12 17V7" />
-                                <path d="M15 17v-4" />
-                            </svg>
-                        </button>
-                    </ng-template>
-                    -->
-                </div>
-            </div>
+          <div class="meta-item">
+            <span class="diff-pill" [ngClass]="{
+              'diff-beginner':     challenge.difficultyLevel === 'BEGINNER',
+              'diff-intermediate': challenge.difficultyLevel === 'INTERMEDIATE',
+              'diff-advanced':     challenge.difficultyLevel === 'ADVANCED'
+            }">{{ getDifficultyLabel(challenge.difficultyLevel) }}</span>
+            <span class="meta-label" style="margin-top:4px">Nível</span>
+          </div>
 
         </div>
-    </div><!-- /grid -->
 
-    <!-- Paginação desktop -->
-    <div class="pagination-desktop">
-
-        <!-- botão anterior -->
-        <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
-
-            <svg viewBox="0 0 24 24">
-                <polyline points="15 18 9 12 15 6" />
-            </svg>
-            Anterior
-        </button>
-
-        <!-- números dinâmicos -->
-        <ng-container *ngFor="let page of getVisiblePages()">
-
-            <!-- mostrar ... -->
-            <span *ngIf="page === -1" class="page-dots">...</span>
-
-            <!-- botão da página -->
-            <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage" (click)="goToPage(page)"
-                [disabled]="showLoading">
-
-                {{ page }}
-            </button>
-
-        </ng-container>
-
-        <!-- botão seguinte -->
-        <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
-
-            Seguinte
-            <svg viewBox="0 0 24 24">
-                <polyline points="9 18 15 12 9 6" />
-            </svg>
-        </button>
-    </div>
-
-    <!-- Load more mobile -->
-    <div class="load-more-wrap" *ngIf="!retryVisible">
-        <button class="btn-load-more" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
-            <svg viewBox="0 0 24 24">
-                <polyline points="6 9 12 15 18 9" />
-            </svg>
-            Carregar mais
-        </button>
-    </div>
-
-    <div *ngIf="retryVisible" class="retry-container">
-        <div class="retry-content">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="12"></line>
-                <circle cx="12" cy="16" r="1"></circle>
-            </svg>
-            <div class="retry-text">Ocorreu um erro ao carregar os dados.<br>Por favor, tente novamente.</div>
-            <button class="retry-button" (click)="retryGetChallenges()">Tentar novamente</button>
+        <!-- Linha de contexto temporal -->
+        <div class="timeline-row" [ngClass]="{ 'done-row': challenge.status === 'DONE' }">
+          <svg class="timeline-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3 3" />
+          </svg>
+          <span class="timeline-text">
+            <ng-container [ngSwitch]="challenge.status">
+              <ng-container *ngSwitchCase="'ONGOING'">
+                A decorrer — termina em <strong>{{ challenge.remainingHours }}h</strong>
+              </ng-container>
+              <ng-container *ngSwitchCase="'UPCOMING'">
+                Inscrições abertas — termina em <strong>{{ challenge.remainingHours }}h</strong>
+              </ng-container>
+              <ng-container *ngSwitchCase="'DONE'">
+                Quiz encerrado
+              </ng-container>
+            </ng-container>
+          </span>
         </div>
+
+        <!-- Rodapé com acções -->
+        <div class="card-footer">
+
+          <!-- Botão principal (aberto / em curso) -->
+          <button class="btn-primary"
+            *ngIf="challenge.status !== 'DONE'"
+            [disabled]="isChallengeButtonDisabled(challenge)"
+            (click)="onChallengeAction(challenge)">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;flex-shrink:0">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            {{ getChallengeButtonText(challenge) }}
+          </button>
+
+          <!-- Botão guardar (apenas aberto / em curso) -->
+          <button class="btn-sec" *ngIf="challenge.status !== 'DONE'" title="Guardar">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+          </button>
+
+          <!-- Botão resultados (encerrado) -->
+          <button class="btn-sec btn-full"
+            *ngIf="challenge.status === 'DONE'"
+            (click)="onChallengeAction(challenge)">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M9 17V11" />
+              <path d="M12 17V7" />
+              <path d="M15 17v-4" />
+            </svg>
+            Ver resultados
+          </button>
+
+        </div>
+      </div>
+
     </div>
+  </div><!-- /grid -->
+
+  <!-- Paginação desktop -->
+  <div class="pagination-desktop">
+    <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
+      Anterior
+    </button>
+
+    <ng-container *ngFor="let page of getVisiblePages()">
+      <span *ngIf="page === -1" class="page-dots">...</span>
+      <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
+        (click)="goToPage(page)" [disabled]="showLoading">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+      Seguinte
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+    </button>
+  </div>
+
+  <!-- Load more mobile -->
+  <div class="load-more-wrap" *ngIf="!retryVisible">
+    <button class="btn-load-more" (click)="loadMore()" [disabled]="isLoadMoreDisabled">
+      <svg viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+      Carregar mais
+    </button>
+  </div>
+
+  <div *ngIf="retryVisible" class="retry-container">
+    <div class="retry-content">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+        stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <circle cx="12" cy="16" r="1"></circle>
+      </svg>
+      <div class="retry-text">Ocorreu um erro ao carregar os dados.<br>Por favor, tente novamente.</div>
+      <button class="retry-button" (click)="retryGetChallenges()">Tentar novamente</button>
+    </div>
+  </div>
 
 </div><!-- /page-wrap -->
 
-
-<!-- MODAL: Ver questões adicionadas -->
-<div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Questões do teste</h2>
-                    <span class="modal-subtitle">{{ selectedQuestions.length }} questões</span>
-                </div>
-                <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
-            </div>
-            <ng-container *ngFor="let question of selectedQuestions; let i = index">
-                <div class="question-item" *ngIf="question.text">
-                    <span class="question-number">{{ i + 1 }}</span>
-                    <div>
-                        <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-                        <div class="question-topic-row" *ngIf="question.topic">
-                            <small>{{ question.topic.name }}</small>
-                            <button class="q-btn q-btn-remove"
-                                (click)="onRemoveQuestionFromChallengeQuestions(question.id)">Remover</button>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-    </div>
-</div>
-
-
-<!-- MODAL: Editar questões -->
-<div class="modal-overlay" *ngIf="displayModalQuestionsList">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Editar questões</h2>
-                    <span class="modal-subtitle">{{ allQuestions.length }} questões</span>
-                </div>
-                <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
-            </div>
-            <ng-container *ngFor="let question of allQuestions; let i = index">
-                <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
-                    <span class="question-number">{{ i + 1 }}</span>
-                    <div>
-                        <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-                        <div class="question-topic-row" *ngIf="question.topic">
-                            <small>{{ question.topic.name }}</small>
-                            <button class="q-btn" [ngClass]="question.selected ? 'q-btn-remove' : 'q-btn-add'" (click)="question.selected
-                                ? onRemoveQuestionFromChallengeQuestions(question.id)
-                                : onAddQuestionToChallengeQuestions(question.id)">
-                                {{ question.selected ? 'Remover' : 'Adicionar' }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL FILTROS -->
-<div class="modal-overlay" *ngIf="displayFilterModal">
-    <div class="modal filter-modal">
-
-        <div class="modal-header">
-            <div class="modal-title-group">
-                <h2 class="modal-title">Filtros avançados</h2>
-                <span class="modal-subtitle">
-                    Refine os desafios exibidos
-                </span>
-            </div>
-
-            <button class="close-btn" (click)="closeFilterModal()">
-                ✕
-            </button>
-        </div>
-
-        <div class="filter-form">
-
-            <!-- título -->
-            <div class="filter-group">
-                <label>Título</label>
-                <input type="text" [(ngModel)]="filtro.title" placeholder="Pesquisar por título">
-            </div>
-
-            <!-- dificuldade -->
-            <div class="filter-group">
-                <label>Dificuldade</label>
-                <select [(ngModel)]="filtro.difficultyLevel">
-                    <option value="">Todas</option>
-                    <option value="BEGINNER">Iniciante</option>
-                    <option value="INTERMEDIATE">Intermediário</option>
-                    <option value="ADVANCED">Avançado</option>
-                </select>
-            </div>
-
-            <!-- ordenação -->
-            <div class="filter-group">
-                <label>Ordenar por</label>
-                <select [(ngModel)]="filtro.sort">
-                    <option value="id,desc">Mais recentes</option>
-                    <option value="id,asc">Mais antigos</option>
-                    <option value="title,asc">Título A-Z</option>
-                    <option value="title,desc">Título Z-A</option>
-                </select>
-            </div>
-
-            <div class="filter-actions">
-                <button class="btn sec full" (click)="clearAdvancedFilters()">
-                    Limpar
-                </button>
-
-                <button class="btn full" (click)="applyAdvancedFilters()">
-                    Aplicar filtros
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     Modal: Adicionar / Editar exame
-══════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalSave">
-    <div class="modal">
-        <!-- Barra de progresso no topo do modal -->
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-
-        <div class="modal-handle"><span></span></div>
-
-        <div class="modal-inner" [class.is-loading]="showLoading">
-
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
-                    <span class="modal-subtitle">
-                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo' }}
-                    </span>
-                </div>
-                <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">
-                    &#x2715;
-                </button>
-            </div>
-
-            <form autocomplete="off" #exameForm="ngForm">
-
-                <div class="form-group">
-                    <label for="name">Nome</label>
-                    <input type="text" id="name" name="name" required minlength="1" [(ngModel)]="challenge.title">
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Descrição</label>
-                    <textarea id="description" name="description" required minlength="1"
-                        [(ngModel)]="challenge.description">
-                    </textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="subject">Disciplina</label>
-                    <select id="subject" [(ngModel)]="challenge.subject.id" name="subject" required>
-                        <option value="" disabled selected>
-                            Selecione a disciplina
-                        </option>
-                        <option *ngFor="let subject of subjects" [ngValue]="subject.id">
-                            {{ subject.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="difficultyLevel">Dificuldade</label>
-                    <select id="difficultyLevel" [(ngModel)]="challenge.difficultyLevel" name="difficultyLevel"
-                        required>
-                        <option value="" disabled>
-                            Selecione a dificuldade
-                        </option>
-                        <option *ngFor="let difficultyLevel of difficultyLevelOptions" [value]="difficultyLevel.value">
-                            {{ difficultyLevel.label }}
-                        </option>
-                    </select>
-                </div>
-
-                <!-- Start Date -->
-                <div class="form-group">
-                    <label for="startDate">Data de Início</label>
-                    <input type="date" id="startDate" name="startDate" required [(ngModel)]="challenge.startDate">
-                </div>
-
-                <!-- End Date -->
-                <div class="form-group">
-                    <label for="endDate">Data de Término</label>
-                    <input type="date" id="endDate" name="endDate" required [(ngModel)]="challenge.endDate">
-                </div>
-
-                <button class="btn" type="button" (click)="save()" [disabled]="showLoading">
-
-                    <span class="btn-spinner" *ngIf="showLoading"></span>
-
-                    <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                        <polyline points="17 21 17 13 7 13 7 21" />
-                        <polyline points="7 3 7 8 15 8" />
-                    </svg>
-
-                    {{ showLoading ? 'Salvando...' : 'Salvar' }}
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!-- ══════════════════════════════════════════
      MODAL: Ver questões adicionadas
 ════════════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSelectedQuestionsList">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">{{ challenge.title }} - Questões do teste</h2>
-                    <span class="modal-subtitle">{{ selectedQuestions.length }} questões</span>
-                </div>
-                <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
-            </div>
-
-            <div *ngFor="let question of selectedQuestions; let i = index">
-                <div class="question-item" *ngIf="question.text">
-                    <span class="question-number">{{ i + 1 }}</span>
-                    <div>
-                        <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-                        <div class="question-topic-row" *ngIf="question.topic">
-                            <small>Tópico: {{ question.topic.name }}</small>
-                            <button class="q-btn q-btn-remove"
-                                (click)="onRemoveQuestionFromChallengeQuestions(question.id)">Remover</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="modal">
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">{{ challenge.title }} — Questões do teste</h2>
+          <span class="modal-subtitle">{{ selectedQuestions.length }} questões</span>
         </div>
+        <button class="close-btn" (click)="onCloseSelectedQuestionsList()">&#x2715;</button>
+      </div>
+
+      <div *ngFor="let question of selectedQuestions; let i = index">
+        <div class="question-item" *ngIf="question.text">
+          <span class="question-number">{{ i + 1 }}</span>
+          <div>
+            <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+            <div class="question-topic-row" *ngIf="question.topic">
+              <small>{{ question.topic.name }}</small>
+              <button class="q-btn q-btn-remove"
+                (click)="onRemoveQuestionFromChallengeQuestions(question.id)">Remover</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 
@@ -1689,42 +1461,163 @@
      MODAL: Editar questões (marcar/desmarcar)
 ════════════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalQuestionsList">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">{{ challenge.title }} - Editar questões</h2>
-                    <span class="modal-subtitle">Todas questões</span>
-                </div>
-                <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
-            </div>
-
-            <div class="form-group">
-                <label for="course">Tópico</label>
-                <select id="course" name="course" [(ngModel)]="selectedTopic.id" [disabled]="!challenge.subject.id"
-                    (change)="findAllByTopicAndMarkSelected()" required>
-                    <option value="" disabled selected>Selecione o tópico</option>
-                    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-                </select>
-            </div>
-
-            <div *ngFor="let question of allQuestions; let i = index">
-                <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
-                    <span class="question-number">{{ i + 1 }}</span>
-                    <div>
-                        <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
-                        <div class="question-topic-row" *ngIf="question.topic">
-                            <small>Tópico: {{ question.topic.name }}</small>
-                            <button class="q-btn q-btn-add" *ngIf="!question.selected"
-                                (click)="onAddQuestionToChallengeQuestions(question.id)">Adicionar</button>
-                            <button class="q-btn q-btn-remove" *ngIf="question.selected"
-                                (click)="onRemoveQuestionFromChallengeQuestions(question.id)">Remover</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="modal">
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">{{ challenge.title }} — Editar questões</h2>
+          <span class="modal-subtitle">Todas as questões</span>
         </div>
+        <button class="close-btn" (click)="onCloseQuestionList()">&#x2715;</button>
+      </div>
+
+      <div class="form-group" style="margin-bottom:4px">
+        <label for="course">Tópico</label>
+        <select id="course" name="course" [(ngModel)]="selectedTopic.id"
+          [disabled]="!challenge.subject.id"
+          (change)="findAllByTopicAndMarkSelected()" required>
+          <option value="" disabled selected>Selecione o tópico</option>
+          <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+        </select>
+      </div>
+
+      <div *ngFor="let question of allQuestions; let i = index">
+        <div class="question-item" *ngIf="question.text" [class.selected-question]="question.selected">
+          <span class="question-number">{{ i + 1 }}</span>
+          <div>
+            <span class="question-text" [innerHTML]="getFormattedText(question.text || '')"></span>
+            <div class="question-topic-row" *ngIf="question.topic">
+              <small>{{ question.topic.name }}</small>
+              <button class="q-btn q-btn-add" *ngIf="!question.selected"
+                (click)="onAddQuestionToChallengeQuestions(question.id)">Adicionar</button>
+              <button class="q-btn q-btn-remove" *ngIf="question.selected"
+                (click)="onRemoveQuestionFromChallengeQuestions(question.id)">Remover</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Filtros avançados
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayFilterModal">
+  <div class="modal filter-modal">
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <h2 class="modal-title">Filtros avançados</h2>
+        <span class="modal-subtitle">Refine os desafios exibidos</span>
+      </div>
+      <button class="close-btn" (click)="closeFilterModal()">&#x2715;</button>
+    </div>
+
+    <div class="filter-form">
+      <div class="filter-group">
+        <label>Título</label>
+        <input type="text" [(ngModel)]="filtro.title" placeholder="Pesquisar por título">
+      </div>
+
+      <div class="filter-group">
+        <label>Dificuldade</label>
+        <select [(ngModel)]="filtro.difficultyLevel">
+          <option value="">Todas</option>
+          <option value="BEGINNER">Iniciante</option>
+          <option value="INTERMEDIATE">Intermediário</option>
+          <option value="ADVANCED">Avançado</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Ordenar por</label>
+        <select [(ngModel)]="filtro.sort">
+          <option value="id,desc">Mais recentes</option>
+          <option value="id,asc">Mais antigos</option>
+          <option value="title,asc">Título A–Z</option>
+          <option value="title,desc">Título Z–A</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-sec btn-full" (click)="clearAdvancedFilters()">Limpar</button>
+        <button class="btn-primary" style="flex:1" (click)="applyAdvancedFilters()">Aplicar filtros</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     MODAL: Adicionar / Editar exame
+════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalSave">
+  <div class="modal">
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
+          <span class="modal-subtitle">{{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo' }}</span>
+        </div>
+        <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
+      </div>
+
+      <form autocomplete="off" #exameForm="ngForm">
+
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input type="text" id="name" name="name" required minlength="1" [(ngModel)]="challenge.title">
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição</label>
+          <textarea id="description" name="description" required minlength="1"
+            [(ngModel)]="challenge.description"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Disciplina</label>
+          <select id="subject" [(ngModel)]="challenge.subject.id" name="subject" required>
+            <option value="" disabled selected>Selecione a disciplina</option>
+            <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="difficultyLevel">Dificuldade</label>
+          <select id="difficultyLevel" [(ngModel)]="challenge.difficultyLevel" name="difficultyLevel" required>
+            <option value="" disabled>Selecione a dificuldade</option>
+            <option *ngFor="let d of difficultyLevelOptions" [value]="d.value">{{ d.label }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="startDate">Data de início</label>
+          <input type="date" id="startDate" name="startDate" required [(ngModel)]="challenge.startDate">
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">Data de término</label>
+          <input type="date" id="endDate" name="endDate" required [(ngModel)]="challenge.endDate">
+        </div>
+
+        <button class="btn-save" type="button" (click)="save()" [disabled]="showLoading">
+          <span class="btn-spinner" *ngIf="showLoading"></span>
+          <svg *ngIf="!showLoading" viewBox="0 0 24 24">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+            <polyline points="17 21 17 13 7 13 7 21" />
+            <polyline points="7 3 7 8 15 8" />
+          </svg>
+          {{ showLoading ? 'Salvando...' : 'Salvar' }}
+        </button>
+
+      </form>
+    </div>
+  </div>
 </div>
