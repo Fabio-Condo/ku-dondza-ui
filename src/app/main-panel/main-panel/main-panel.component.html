@@ -9,6 +9,7 @@
         href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
     <style>
+        /* ── RESET ── */
         *,
         *::before,
         *::after {
@@ -38,22 +39,22 @@
             display: flex;
             align-items: baseline;
             justify-content: space-between;
-            margin: 32px 0 14px;
+            margin: 32px 0 12px;
         }
 
         .sec-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
             color: #1e293b;
-            letter-spacing: -.2px;
+            letter-spacing: -.1px;
         }
 
         .sec-link {
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 600;
             color: #4361ee;
             text-decoration: none;
-            opacity: .8;
+            opacity: .75;
             transition: opacity .15s;
         }
 
@@ -61,10 +62,63 @@
             opacity: 1;
         }
 
-        /* ── HERO ── */
+        /* ── ANIMATIONS ── */
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .3;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .f1 {
+            animation: fadeUp .4s .04s ease both;
+        }
+
+        .f2 {
+            animation: fadeUp .4s .10s ease both;
+        }
+
+        .f3 {
+            animation: fadeUp .4s .16s ease both;
+        }
+
+        .f4 {
+            animation: fadeUp .4s .22s ease both;
+        }
+
+        .f5 {
+            animation: fadeUp .4s .28s ease both;
+        }
+
+        .f6 {
+            animation: fadeUp .4s .34s ease both;
+        }
+
+
+        /* ══════════════════════════════════════
+           ── HERO
+        ══════════════════════════════════════ */
+
         .hero {
             margin-top: 60px;
-            border-radius: 22px;
+            border-radius: 20px;
             background: #4361ee;
             padding: 28px;
             position: relative;
@@ -89,20 +143,20 @@
             position: absolute;
             inset: 0;
             background: repeating-linear-gradient(-45deg,
-                    rgba(255, 255, 255, .03) 0px, rgba(255, 255, 255, .03) 1px,
-                    transparent 1px, transparent 16px);
+                    rgba(255, 255, 255, .025) 0px, rgba(255, 255, 255, .025) 1px,
+                    transparent 1px, transparent 18px);
             pointer-events: none;
         }
 
         .hero::after {
             content: '';
             position: absolute;
-            right: -50px;
-            top: -50px;
-            width: 220px;
-            height: 220px;
+            right: -40px;
+            top: -40px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, .06);
+            background: rgba(255, 255, 255, .05);
             pointer-events: none;
         }
 
@@ -115,12 +169,12 @@
         .hero-tag {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: 10.5px;
             font-weight: 700;
-            letter-spacing: .6px;
+            letter-spacing: .7px;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, .7);
+            color: rgba(255, 255, 255, .65);
             margin-bottom: 10px;
         }
 
@@ -129,41 +183,29 @@
             height: 6px;
             border-radius: 50%;
             background: #86efac;
-            box-shadow: 0 0 0 3px rgba(134, 239, 172, .25);
+            box-shadow: 0 0 0 3px rgba(134, 239, 172, .2);
             animation: blink 2.2s ease-in-out infinite;
         }
 
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .35;
-            }
-        }
-
         .hero-title {
-            font-size: 23px;
+            font-size: 22px;
             font-weight: 700;
             color: #fff;
-            line-height: 1.25;
-            max-width: 320px;
-            margin-bottom: 12px;
+            line-height: 1.3;
+            max-width: 360px;
+            margin-bottom: 14px;
         }
 
         @media (min-width: 700px) {
             .hero-title {
-                font-size: 28px;
+                font-size: 27px;
                 max-width: 420px;
             }
         }
 
         .hero-meta {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
@@ -171,17 +213,17 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 600;
-            padding: 5px 11px;
+            padding: 5px 10px;
             border-radius: 8px;
-            background: rgba(255, 255, 255, .15);
+            background: rgba(255, 255, 255, .13);
             color: #fff;
         }
 
         .hero-badge svg {
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             stroke: currentColor;
             stroke-width: 2;
             fill: none;
@@ -210,20 +252,20 @@
             background: #fff;
             color: #4361ee;
             border: none;
-            border-radius: 14px;
-            padding: 13px 22px;
+            border-radius: 12px;
+            padding: 12px 20px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, .20);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .12);
             transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), box-shadow .18s;
             white-space: nowrap;
         }
 
         .hero-cta:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, .25);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
         }
 
         .hero-cta:active {
@@ -231,34 +273,40 @@
         }
 
         .hero-cta svg {
-            width: 15px;
-            height: 15px;
+            width: 14px;
+            height: 14px;
         }
 
         .hero-cta:disabled {
-            opacity: .6;
+            opacity: .55;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
-        /* ── GERAR QUIZ ── */
+
+        /* ══════════════════════════════════════
+           ── GERAR QUIZ
+        ══════════════════════════════════════ */
+
         .qa-btn {
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: #eef2ff;
-            border: 1.5px solid #c7d2fe;
-            border-radius: 16px;
-            padding: 16px 20px;
+            gap: 14px;
+            background: #fff;
+            border: 1px solid #e8edf2;
+            border-radius: 14px;
+            padding: 14px 18px;
             cursor: pointer;
-            transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), background .15s;
+            transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), border-color .15s, box-shadow .15s;
             text-align: left;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
         }
 
         .qa-btn:hover {
-            background: #e0e7ff;
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 16px rgba(67, 97, 238, .08);
             transform: translateY(-1px);
         }
 
@@ -267,25 +315,24 @@
         }
 
         .qa-icon {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             flex-shrink: 0;
-            border-radius: 13px;
+            border-radius: 12px;
             background: #4361ee;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 14px rgba(67, 97, 238, .25);
         }
 
         .qa-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             color: #fff;
         }
 
         .qa-title {
-            font-size: 14.5px;
+            font-size: 14px;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 2px;
@@ -298,17 +345,21 @@
         }
 
         .qa-arrow {
-            color: #4361ee;
+            color: #94a3b8;
             flex-shrink: 0;
             margin-left: auto;
         }
 
         .qa-arrow svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
 
-        /* ── PROGRESS CARDS ── */
+
+        /* ══════════════════════════════════════
+           ── PROGRESS CARDS
+        ══════════════════════════════════════ */
+
         .prog-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -331,15 +382,15 @@
         .prog-card {
             background: #fff;
             border: 1px solid #e8edf2;
-            border-radius: 16px;
-            padding: 18px 16px;
+            border-radius: 14px;
+            padding: 16px;
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 13px;
+            gap: 12px;
             cursor: pointer;
             transition: border-color .2s, box-shadow .2s, transform .15s cubic-bezier(.34, 1.56, .64, 1);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
         }
 
         @media (min-width: 900px) {
@@ -347,13 +398,13 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 12px;
-                padding: 20px 18px;
+                padding: 18px 16px;
             }
         }
 
         .prog-card:hover {
             border-color: #c7d2fe;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, .07);
+            box-shadow: 0 4px 16px rgba(67, 97, 238, .07);
             transform: translateY(-1px);
         }
 
@@ -362,18 +413,18 @@
         }
 
         .prog-thumb {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             flex-shrink: 0;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
         }
 
         @media (min-width: 900px) {
             .prog-thumb {
                 width: 100%;
-                height: 80px;
-                border-radius: 10px;
+                height: 78px;
+                border-radius: 9px;
             }
         }
 
@@ -399,25 +450,25 @@
 
         @media (min-width: 900px) {
             .prog-name {
-                font-size: 14px;
+                font-size: 13.5px;
             }
         }
 
         .prog-track {
-            height: 5px;
+            height: 4px;
             border-radius: 99px;
             background: #f1f5f9;
             overflow: hidden;
             margin-bottom: 6px;
         }
 
+        /* Barra de progresso — cor única azul */
         .prog-fill {
             height: 100%;
             border-radius: 99px;
-            background: linear-gradient(90deg, #a5b4fc, #4361ee);
+            background: #4361ee;
         }
 
-        /* ── PROG-PCT ── */
         .prog-pct {
             display: flex;
             align-items: center;
@@ -465,12 +516,12 @@
             flex-shrink: 0;
         }
 
-        /* ── RANK BADGE ── */
+        /* Rank badges */
         .rank-badge {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 700;
             padding: 2px 7px;
             border-radius: 6px;
@@ -478,12 +529,11 @@
         }
 
         .rank-badge svg {
-            width: 11px;
-            height: 11px;
+            width: 10px;
+            height: 10px;
             flex-shrink: 0;
         }
 
-        /* 1º lugar — ouro */
         .rank-gold {
             background: #fef9c3;
             color: #92400e;
@@ -495,7 +545,6 @@
             stroke: none;
         }
 
-        /* 2º lugar — prata */
         .rank-silver {
             background: #f1f5f9;
             color: #475569;
@@ -507,7 +556,6 @@
             stroke: none;
         }
 
-        /* 3º lugar — bronze */
         .rank-bronze {
             background: #fff7ed;
             color: #9a3412;
@@ -519,7 +567,6 @@
             stroke: none;
         }
 
-        /* demais posições — azul neutro */
         .rank-default {
             background: #eef2ff;
             color: #3730a3;
@@ -540,11 +587,11 @@
             align-items: center;
             gap: 5px;
             padding: 7px 12px;
-            border-radius: 10px;
+            border-radius: 9px;
             background: #eef2ff;
             border: 1px solid #c7d2fe;
             font-family: inherit;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 700;
             color: #4361ee;
             cursor: pointer;
@@ -565,11 +612,15 @@
         }
 
         .prog-continue-btn svg {
-            width: 12px;
-            height: 12px;
+            width: 11px;
+            height: 11px;
         }
 
-        /* ── COURSES ── */
+
+        /* ══════════════════════════════════════
+           ── COURSES
+        ══════════════════════════════════════ */
+
         .courses-scroll {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -583,7 +634,7 @@
 
         .courses-track {
             display: flex;
-            gap: 13px;
+            gap: 12px;
             min-width: max-content;
         }
 
@@ -595,18 +646,18 @@
             .courses-track {
                 display: grid;
                 grid-template-columns: repeat(6, 1fr);
-                gap: 14px;
+                gap: 12px;
                 min-width: 0;
             }
         }
 
         .course-card {
-            flex: 0 0 148px;
-            border-radius: 14px;
+            flex: 0 0 142px;
+            border-radius: 13px;
             overflow: hidden;
             border: 1px solid #e8edf2;
             background: #fff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
             cursor: pointer;
             transition: border-color .2s, box-shadow .2s, transform .18s cubic-bezier(.34, 1.56, .64, 1);
         }
@@ -619,7 +670,7 @@
 
         .course-card:hover {
             border-color: #c7d2fe;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, .07);
+            box-shadow: 0 4px 16px rgba(67, 97, 238, .07);
             transform: translateY(-2px);
         }
 
@@ -629,35 +680,36 @@
 
         .course-img {
             width: 100%;
-            height: 84px;
+            height: 80px;
             object-fit: cover;
             display: block;
             background: #f8fafc;
         }
 
         .course-info {
-            padding: 11px 13px 13px;
+            padding: 10px 12px 12px;
         }
 
         .course-name {
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 7px;
         }
 
         .course-progress-track {
-            height: 5px;
+            height: 4px;
             border-radius: 99px;
             background: #f1f5f9;
             overflow: hidden;
             margin-bottom: 5px;
         }
 
+        /* Barra de progresso — cor única azul */
         .course-progress-fill {
             height: 100%;
             border-radius: 99px;
-            background: linear-gradient(90deg, #a5b4fc, #4361ee);
+            background: #4361ee;
         }
 
         .course-footer {
@@ -678,122 +730,72 @@
             font-weight: 500;
         }
 
-        /* ── CHALLENGES ── */
-        .challenge-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+
+        /* ══════════════════════════════════════
+           ── CHALLENGES
+        ══════════════════════════════════════ */
+
+        .challenge-list {
+            display: flex;
+            flex-direction: column;
             gap: 10px;
-        }
-
-        @media (min-width: 560px) {
-            .challenge-grid {
-                grid-template-columns: repeat(1, 1fr);
-            }
-        }
-
-        @media (min-width: 900px) {
-            .challenge-grid {
-                grid-template-columns: repeat(1, 1fr);
-                gap: 12px;
-            }
         }
 
         .challenge-card {
             background: #fff;
             border: 1px solid #e8edf2;
             border-radius: 14px;
-            padding: 16px 18px;
+            padding: 14px 16px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 13px;
             cursor: pointer;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
             transition: border-color .2s, box-shadow .2s, transform .15s cubic-bezier(.34, 1.56, .64, 1);
         }
 
         .challenge-card:hover {
             border-color: #c7d2fe;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, .07);
+            box-shadow: 0 4px 16px rgba(67, 97, 238, .07);
             transform: translateY(-1px);
+        }
+
+        .challenge-card.is-ongoing:hover {
+            border-left-color: #059669;
+        }
+
+        .challenge-card.is-upcoming:hover {
+            border-left-color: #f59e0b;
+        }
+
+        .challenge-card.is-done:hover {
+            border-left-color: #94a3b8;
         }
 
         .challenge-card:active {
             transform: scale(.98);
         }
 
+        /* Ícone das disciplinas — cor única azul em todos os estados */
         .chal-icon {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             flex-shrink: 0;
-            border-radius: 13px;
+            border-radius: 12px;
+            background: #eef2ff;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .chal-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: none;
             stroke-width: 1.9;
             stroke-linecap: round;
             stroke-linejoin: round;
-        }
-
-        .ci-gold {
-            background: #fef9c3;
-        }
-
-        .ci-gold svg {
-            stroke: #b45309;
-        }
-
-        .ci-blue {
-            background: #eef2ff;
-        }
-
-        .ci-blue svg {
             stroke: #4361ee;
-        }
-
-        .ci-green {
-            background: #f0fdf4;
-        }
-
-        .ci-green svg {
-            stroke: #059669;
-        }
-
-        .ci-purple {
-            background: #f5f3ff;
-        }
-
-        .ci-purple svg {
-            stroke: #7c3aed;
-        }
-
-        .ci-red {
-            background: #fff1f2;
-        }
-
-        .ci-red svg {
-            stroke: #e11d48;
-        }
-
-        .ci-orange {
-            background: #fff7ed;
-        }
-
-        .ci-orange svg {
-            stroke: #d97706;
-        }
-
-        .ci-teal {
-            background: #f0fdfa;
-        }
-
-        .ci-teal svg {
-            stroke: #0d9488;
         }
 
         .chal-body {
@@ -802,7 +804,7 @@
         }
 
         .chal-title {
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 5px;
@@ -812,6 +814,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 5px;
+            align-items: center;
         }
 
         .chal-tag {
@@ -827,7 +830,7 @@
         }
 
         .ct-sub {
-            background: #e0e7ff;
+            background: #eef2ff;
             color: #4361ee;
         }
 
@@ -836,11 +839,12 @@
             color: #7c3aed;
         }
 
+        /* Status pill */
         .chal-status {
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 700;
             padding: 3px 8px;
             border-radius: 6px;
@@ -885,16 +889,20 @@
         }
 
         .chal-arrow {
-            color: #94a3b8;
+            color: #c7d2fe;
             flex-shrink: 0;
         }
 
         .chal-arrow svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
         }
 
-        /* ── EXAMS ── */
+
+        /* ══════════════════════════════════════
+           ── EXAMS
+        ══════════════════════════════════════ */
+
         .exam-list {
             display: flex;
             flex-direction: column;
@@ -905,53 +913,40 @@
             background: #fff;
             border: 1px solid #e8edf2;
             border-radius: 14px;
-            padding: 14px 18px;
+            padding: 13px 16px;
             display: flex;
             align-items: center;
-            gap: 14px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            gap: 13px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
             transition: border-color .2s, box-shadow .2s, transform .15s cubic-bezier(.34, 1.56, .64, 1);
         }
 
         .exam-card:hover {
             border-color: #c7d2fe;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, .07);
+            box-shadow: 0 4px 16px rgba(67, 97, 238, .07);
             transform: translateY(-1px);
         }
 
+        /* Ícone dos exames — cor única azul */
         .exam-icon {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             flex-shrink: 0;
-            border-radius: 12px;
+            border-radius: 11px;
+            background: #eef2ff;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .exam-icon svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: none;
             stroke-width: 1.9;
             stroke-linecap: round;
             stroke-linejoin: round;
-        }
-
-        .ei-enunciado {
-            background: #eef2ff;
-        }
-
-        .ei-enunciado svg {
             stroke: #4361ee;
-        }
-
-        .ei-resolucao {
-            background: #f0fdf4;
-        }
-
-        .ei-resolucao svg {
-            stroke: #059669;
         }
 
         .exam-body {
@@ -960,7 +955,7 @@
         }
 
         .exam-title {
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 5px;
@@ -1012,14 +1007,13 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 6px;
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            background: #fef9c3;
             color: #92400e;
-            border: 1px solid #fcd34d;
-            letter-spacing: .1px;
+            border: 1px solid #fde68a;
         }
 
         .exam-premium-badge svg {
@@ -1036,7 +1030,7 @@
             align-items: center;
             gap: 6px;
             padding: 8px 14px;
-            border-radius: 10px;
+            border-radius: 9px;
             background: #4361ee;
             border: none;
             font-family: inherit;
@@ -1045,14 +1039,13 @@
             color: #fff;
             cursor: pointer;
             white-space: nowrap;
-            transition: background .15s, transform .15s cubic-bezier(.34, 1.56, .64, 1), box-shadow .15s;
-            box-shadow: 0 3px 10px rgba(67, 97, 238, .25);
+            transition: background .15s, transform .15s cubic-bezier(.34, 1.56, .64, 1);
+            box-shadow: 0 2px 8px rgba(67, 97, 238, .22);
         }
 
         .exam-download-btn:hover {
             background: #3451d1;
             transform: translateY(-1px);
-            box-shadow: 0 5px 14px rgba(67, 97, 238, .30);
         }
 
         .exam-download-btn:active {
@@ -1070,13 +1063,14 @@
         }
 
         .exam-download-btn:disabled {
-            opacity: 0.5;
+            opacity: .5;
             cursor: not-allowed;
             transform: none;
         }
 
+
         /* ══════════════════════════════════════
-           ── QUIZZES RECENTES ──
+           ── QUIZZES RECENTES
         ══════════════════════════════════════ */
 
         .quiz-list {
@@ -1089,20 +1083,18 @@
             background: #fff;
             border: 1px solid #e8edf2;
             border-radius: 14px;
-            padding: 14px 18px;
+            padding: 13px 16px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 13px;
             cursor: pointer;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
             transition: border-color .2s, box-shadow .2s, transform .15s cubic-bezier(.34, 1.56, .64, 1);
-            position: relative;
-            overflow: hidden;
         }
 
         .quiz-card:hover {
             border-color: #c7d2fe;
-            box-shadow: 0 4px 20px rgba(67, 97, 238, .07);
+            box-shadow: 0 4px 16px rgba(67, 97, 238, .07);
             transform: translateY(-1px);
         }
 
@@ -1110,21 +1102,21 @@
             transform: scale(.98);
         }
 
-        /* ícone da disciplina */
+        /* Ícone dos quizzes — cor única azul */
         .quiz-icon {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             flex-shrink: 0;
-            border-radius: 12px;
+            border-radius: 11px;
+            background: #eef2ff;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #eef2ff;
         }
 
         .quiz-icon svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: none;
             stroke-width: 1.9;
             stroke-linecap: round;
@@ -1132,7 +1124,6 @@
             stroke: #4361ee;
         }
 
-        /* conteúdo central */
         .quiz-body {
             flex: 1;
             min-width: 0;
@@ -1142,12 +1133,12 @@
             display: flex;
             align-items: center;
             gap: 7px;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             flex-wrap: wrap;
         }
 
         .quiz-subject {
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 700;
             color: #1e293b;
         }
@@ -1167,7 +1158,6 @@
             white-space: nowrap;
         }
 
-        /* meta tags na linha inferior */
         .quiz-meta {
             display: flex;
             flex-wrap: wrap;
@@ -1182,7 +1172,6 @@
             border-radius: 6px;
         }
 
-        /* tipo */
         .qt-tag-treino {
             background: #eef2ff;
             color: #4361ee;
@@ -1193,7 +1182,6 @@
             color: #7c3aed;
         }
 
-        /* taxa de acerto */
         .qr-high {
             background: #ecfdf5;
             color: #059669;
@@ -1209,26 +1197,24 @@
             color: #be123c;
         }
 
-        /* questões */
         .qq-tag {
             background: #f1f5f9;
             color: #475569;
         }
 
-        /* data */
         .qd-tag {
             background: #f5f3ff;
             color: #7c3aed;
         }
 
-        /* barra de acerto lateral direita */
+        /* Score ring */
         .quiz-score-wrap {
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            min-width: 48px;
+            gap: 3px;
+            min-width: 46px;
         }
 
         .quiz-score-ring {
@@ -1280,48 +1266,11 @@
         }
 
         .quiz-score-label {
-            font-size: 9.5px;
+            font-size: 9px;
             font-weight: 600;
             color: #94a3b8;
             text-align: center;
             line-height: 1.2;
-        }
-
-        /* ── FADE-UP ANIMATIONS ── */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .f1 {
-            animation: fadeUp .4s .04s ease both;
-        }
-
-        .f2 {
-            animation: fadeUp .4s .10s ease both;
-        }
-
-        .f3 {
-            animation: fadeUp .4s .16s ease both;
-        }
-
-        .f4 {
-            animation: fadeUp .4s .22s ease both;
-        }
-
-        .f5 {
-            animation: fadeUp .4s .28s ease both;
-        }
-
-        .f6 {
-            animation: fadeUp .4s .34s ease both;
         }
     </style>
 </head>
@@ -1337,7 +1286,9 @@
             </div>
         </div>
 
-        <!-- HERO -->
+        <!-- ══════════════════════════════════════
+             HERO
+        ══════════════════════════════════════ -->
         <div class="hero f1" *ngIf="challenges && challenges.length > 0">
             <div class="hero-left">
                 <div class="hero-tag">
@@ -1365,9 +1316,6 @@
                             <path d="M9 3h6" />
                             <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
                             <path d="M7.5 14.5h9" />
-                            <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                            <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
                         </svg>
                         <svg *ngIf="challenges[0].subjectName === 'Física'" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="2" />
@@ -1427,26 +1375,24 @@
                 </div>
             </div>
             <div class="hero-right">
-
                 <button class="hero-cta"
                     [disabled]="isChallengeButtonDisabled(challenges.length ? challenges[0] : null)"
                     (click)="onChallengeAction(challenges.length ? challenges[0] : null)">
-
                     <svg viewBox="0 0 24 24" fill="none">
                         <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
                     </svg>
-
                     {{ getChallengeButtonText(challenges.length ? challenges[0] : null) }}
-
                 </button>
-
             </div>
         </div>
 
-        <!-- GERAR QUIZ -->
+
+        <!-- ══════════════════════════════════════
+             GERAR QUIZ
+        ══════════════════════════════════════ -->
         <div class="sec-head f2" *ngIf="subjectCourses && subjectCourses.length > 0">
-            <span class="sec-title">Gerar Quiz</span>
-            <a routerLink="/quizzes" class="sec-link">Ver historico</a>
+            <span class="sec-title">Gerar quiz</span>
+            <a routerLink="/quizzes" class="sec-link">Ver histórico</a>
         </div>
 
         <button class="qa-btn f2" [routerLink]="['/quizzes', 'new']">
@@ -1470,14 +1416,16 @@
             </div>
         </button>
 
-        <!-- MEU PROGRESSO -->
+
+        <!-- ══════════════════════════════════════
+             MEU PROGRESSO
+        ══════════════════════════════════════ -->
         <div class="sec-head f3" *ngIf="isUserLoggedIn">
             <span class="sec-title">Meu progresso</span>
             <a routerLink="/progress" class="sec-link">Ver tudo</a>
         </div>
 
         <div class="prog-grid f3" *ngIf="isUserLoggedIn">
-
             <div class="prog-card" *ngFor="let subjectProg of subjectsProgress">
                 <div class="prog-thumb">
                     <img [src]="subjectProg.subjectUrlFile" [alt]="subjectProg.subjectName" loading="lazy" />
@@ -1491,7 +1439,6 @@
                     </div>
 
                     <div class="prog-pct">
-
                         <span class="prog-pct-item ppi-progress">
                             <svg viewBox="0 0 24 24" stroke="currentColor">
                                 <path d="M18 20V10" />
@@ -1523,34 +1470,23 @@
 
                         <span *ngIf="subjectProg.currentUserRank" class="prog-pct-sep"></span>
 
-                        <!--
-                            RANK BADGE — lógica Angular:
-                            Assumindo que currentUserRank é um número (ex: 1, 2, 3, 12).
-                            Ajuste o helper getRankClass(rank) no .ts se necessário.
-                        -->
                         <span *ngIf="subjectProg.currentUserRank" class="rank-badge" [ngClass]="{
-                                'rank-gold':    subjectProg.currentUserRank === 1,
-                                'rank-silver':  subjectProg.currentUserRank === 2,
-                                'rank-bronze':  subjectProg.currentUserRank === 3,
-                                'rank-default': subjectProg.currentUserRank > 3
-                              }">
-
-                            <!-- Ícone estrela para top 3 -->
+                            'rank-gold':    subjectProg.currentUserRank === 1,
+                            'rank-silver':  subjectProg.currentUserRank === 2,
+                            'rank-bronze':  subjectProg.currentUserRank === 3,
+                            'rank-default': subjectProg.currentUserRank > 3
+                        }">
                             <svg *ngIf="subjectProg.currentUserRank <= 3" viewBox="0 0 24 24">
                                 <path
                                     d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                             </svg>
-
-                            <!-- Ícone pessoa para demais posições -->
                             <svg *ngIf="subjectProg.currentUserRank > 3" viewBox="0 0 24 24" fill="none"
                                 stroke="#4361ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="8" r="4" />
                                 <path d="M6 20v-2a6 6 0 0 1 12 0v2" />
                             </svg>
-
                             {{ subjectProg.currentUserRank }}º lugar
                         </span>
-
                     </div>
                 </div>
 
@@ -1562,12 +1498,13 @@
                         <path d="m12 5 7 7-7 7" />
                     </svg>
                 </button>
-
             </div>
-
         </div>
 
-        <!-- EXPLORAR CURSOS -->
+
+        <!-- ══════════════════════════════════════
+             EXPLORAR CURSOS
+        ══════════════════════════════════════ -->
         <div class="sec-head f4" *ngIf="subjectCourses && subjectCourses.length > 0">
             <span class="sec-title">Explorar cursos</span>
             <a routerLink="/subjects" class="sec-link">Ver todos</a>
@@ -1595,19 +1532,24 @@
             </div>
         </div>
 
-        <!-- DESAFIOS SEMANAIS -->
+
+        <!-- ══════════════════════════════════════
+             DESAFIOS SEMANAIS
+        ══════════════════════════════════════ -->
         <div class="sec-head f5" *ngIf="challenges && challenges.length > 0">
             <span class="sec-title">Desafios semanais</span>
-            <a href="#" class="sec-link" routerLink="/challenges">Ver todos</a>
+            <a routerLink="/challenges" class="sec-link">Ver todos</a>
         </div>
 
-        <div class="challenge-grid f5" *ngIf="challenges && challenges.length > 0">
-            <div class="challenge-card" *ngFor="let challenge of challenges" (click)="onChallengeAction(challenge)">
-                <div class="chal-icon" [ngClass]="{
-                    'ci-gold':   challenge.difficultyLevel === 'ADVANCED',
-                    'ci-blue':   challenge.difficultyLevel === 'INTERMEDIATE',
-                    'ci-green':  challenge.difficultyLevel === 'BEGINNER'
-                }">
+        <div class="challenge-list f5" *ngIf="challenges && challenges.length > 0">
+            <div class="challenge-card" *ngFor="let challenge of challenges" [ngClass]="{
+                    'is-ongoing':  challenge.status === 'ONGOING',
+                    'is-upcoming': challenge.status === 'UPCOMING',
+                    'is-done':     challenge.status === 'DONE'
+                }" (click)="onChallengeAction(challenge)">
+
+                <!-- Ícone da disciplina — sempre azul -->
+                <div class="chal-icon">
                     <svg *ngIf="challenge.subjectName === 'Matemática'" viewBox="0 0 24 24">
                         <path d="M4 4h16" />
                         <path d="M4 4l8 8-8 8" />
@@ -1621,9 +1563,6 @@
                         <path d="M9 3h6" />
                         <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
                         <path d="M7.5 14.5h9" />
-                        <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                        <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                        <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
                     </svg>
                     <svg *ngIf="challenge.subjectName === 'Física'" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="2" />
@@ -1671,8 +1610,10 @@
                     <div class="chal-tags">
                         <span class="chal-tag ct-sub">{{ challenge.subjectName || challenge.subject.name }}</span>
                         <span class="chal-tag ct-xp">+{{ challenge.xpReward }} XP</span>
-                        <span class="chal-tag ct-time" *ngIf="challenge.remainingHours !== undefined">{{
-                            challenge.remainingHours }}h</span>
+                        <span class="chal-tag ct-time" *ngIf="challenge.remainingHours !== undefined">
+                            {{ challenge.remainingHours }}h
+                        </span>
+                        <!-- Estado do desafio sempre visível -->
                         <span class="chal-status" [ngClass]="{
                             'cs-ongoing':  challenge.status === 'ONGOING',
                             'cs-upcoming': challenge.status === 'UPCOMING',
@@ -1697,7 +1638,10 @@
             </div>
         </div>
 
-        <!-- EXAMES -->
+
+        <!-- ══════════════════════════════════════
+             EXAMES
+        ══════════════════════════════════════ -->
         <div class="sec-head f6" *ngIf="exams && exams.length > 0">
             <span class="sec-title">Exames</span>
             <a routerLink="/exames" class="sec-link">Ver todos</a>
@@ -1705,10 +1649,8 @@
 
         <div class="exam-list f6" *ngIf="exams && exams.length > 0">
             <div class="exam-card" *ngFor="let exam of exams">
-                <div class="exam-icon" [ngClass]="{
-                    'ei-enunciado': exam.examType === 'ENUNCIADO',
-                    'ei-resolucao': exam.examType === 'RESOLUCAO'
-                }">
+                <!-- Ícone sempre azul -->
+                <div class="exam-icon">
                     <svg *ngIf="exam.examType === 'ENUNCIADO'" viewBox="0 0 24 24">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                         <path d="M14 2v6h6" />
@@ -1760,17 +1702,19 @@
             </div>
         </div>
 
-        <!-- QUIZZES RECENTES -->
+
+        <!-- ══════════════════════════════════════
+             QUIZZES RECENTES
+        ══════════════════════════════════════ -->
         <div class="sec-head f3" *ngIf="quizzes && quizzes.length > 0">
             <span class="sec-title">Quizzes recentes</span>
             <a routerLink="/quizzes" class="sec-link">Ver todos</a>
         </div>
 
-        <!-- Card 3 -->
         <div class="quiz-list f3" *ngIf="quizzes && quizzes.length > 0">
-
             <div class="quiz-card" *ngFor="let quiz of quizzes" [routerLink]="['/quizzes', quiz.quizId]">
 
+                <!-- Ícone da disciplina — sempre azul -->
                 <div class="quiz-icon">
                     <svg *ngIf="quiz.subject.name === 'Matemática'" viewBox="0 0 24 24">
                         <path d="M4 4h16" />
@@ -1785,9 +1729,6 @@
                         <path d="M9 3h6" />
                         <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
                         <path d="M7.5 14.5h9" />
-                        <circle cx="9.5" cy="16.5" r=".75" fill="#4361ee" stroke="none" />
-                        <circle cx="13" cy="15.5" r=".75" fill="#4361ee" stroke="none" />
-                        <circle cx="11" cy="17.5" r=".75" fill="#4361ee" stroke="none" />
                     </svg>
                     <svg *ngIf="quiz.subject.name === 'Física'" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="2" />
@@ -1835,17 +1776,13 @@
                         <span class="quiz-subject">{{ quiz.subject.name }}</span>
                     </div>
                     <div class="quiz-meta">
-                        <span class="quiz-tag qt-tag-treino" *ngIf="quiz.type === 'TRAINING'">
-                            Treino
-                        </span>
-                        <span class="quiz-tag qt-tag-treino" *ngIf="quiz.type === 'TEST'">
-                            Teste
-                        </span>
-                        <!--<span class="quiz-tag qr-low">{{ quiz.accuracyRate.toFixed(1) }}%</span>-->
+                        <span class="quiz-tag qt-tag-treino" *ngIf="quiz.type === 'TRAINING'">Treino</span>
+                        <span class="quiz-tag qt-tag-teste" *ngIf="quiz.type === 'TEST'">Teste</span>
                         <span class="quiz-tag qq-tag">{{ quiz.totalQuestions }} questões</span>
                         <span class="quiz-tag qd-tag">{{ quiz.submittedAt | date:'dd MMM yyyy' }}</span>
                     </div>
                 </div>
+
                 <div class="quiz-score-wrap">
                     <div class="quiz-score-ring">
                         <svg viewBox="0 0 40 40">
@@ -1854,20 +1791,15 @@
                                 r="16" [attr.stroke-dasharray]="circumference"
                                 [attr.stroke-dashoffset]="getStrokeOffset(quiz.accuracyRate)" />
                         </svg>
-
-                        <div class="quiz-score-pct">
-                            {{ quiz.accuracyRate.toFixed(0) }}%
-                        </div>
+                        <div class="quiz-score-pct">{{ quiz.accuracyRate.toFixed(0) }}%</div>
                     </div>
-
                     <div class="quiz-score-label">acerto</div>
                 </div>
             </div>
-
-            <div class="spacer"></div>
         </div>
 
     </div>
+
 </body>
 
 </html>
