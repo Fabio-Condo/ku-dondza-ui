@@ -787,7 +787,7 @@
 
                         <div class="overall-text">
                             <strong>Progresso geral</strong>
-                            <span>{{ subject.totalTests }} testes</span>
+                            <span>{{ subject.currentUserTotalTestsScore }} de {{ subject.totalTests }} testes</span>
                         </div>
 
                         <!-- XP no canto direito (NOVO) -->
@@ -827,7 +827,8 @@
                     <!-- Footer: Continuar + Ver Ranking -->
                     <div class="card-footer">
                         <button class="continue-btn" [routerLink]="['/progress/subjects', subject.subjectId]">
-                            <span>Continuar</span>
+                            <span *ngIf="subject.currentUserTotalTestsScore > 0">Continuar</span>
+                            <span *ngIf="subject.currentUserTotalTestsScore === 0">Começar</span>
                             <svg viewBox="0 0 24 24">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>

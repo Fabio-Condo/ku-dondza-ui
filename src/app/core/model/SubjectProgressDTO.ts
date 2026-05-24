@@ -12,6 +12,7 @@ export class SubjectProgressDTO {
     topicDtoWithTests: TopicDtoWithTests[] = [];
     currentUserProgressRate: number = 0;
 
+    currentUserTotalTestsScore: number = 0;
     currentUserScore: number = 0;
     currentUserRank: number = 0;
 
