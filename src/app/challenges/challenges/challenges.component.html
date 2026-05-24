@@ -1649,7 +1649,7 @@
                 </div>
                 <div class="filter-group">
                     <label>Dificuldade</label>
-                    <select [(ngModel)]="filtro.difficultyLevel">
+                    <select [(ngModel)]="filtro.difficultyLevel" (change)="findAll()" name="difficultyLevel">
                         <option value="">Todas</option>
                         <option value="BEGINNER">Iniciante</option>
                         <option value="INTERMEDIATE">Intermediário</option>
@@ -1659,7 +1659,7 @@
 
                 <div class="filter-group">
                     <label>Ordenar por</label>
-                    <select [(ngModel)]="filtro.sort">
+                    <select [(ngModel)]="filtro.sort" (change)="findAll()" name="sort">
                         <option value="id,desc">Mais recentes</option>
                         <option value="id,asc">Mais antigos</option>
                         <option value="title,asc">Título A–Z</option>
