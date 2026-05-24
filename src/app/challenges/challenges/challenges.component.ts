@@ -18,6 +18,7 @@ import { TopicService } from 'src/app/topics/topicsService.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Role } from 'src/app/enum/role.enum';
+import { AuthModalService } from 'src/app/core/auth-modal.service';
 declare const MathJax: any;
 
 
@@ -77,6 +78,7 @@ export class ChallengesComponent implements OnInit {
   };
 
   constructor(
+    private authModalService: AuthModalService,
     private authenticationService: AuthenticationService,
     private challengeService: ChallengeService,
     private questionService: QuestionService,
@@ -98,6 +100,10 @@ export class ChallengesComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  openLogin() {
+    this.authModalService.open();
   }
 
   get editing() {
@@ -710,7 +716,7 @@ export class ChallengesComponent implements OnInit {
 
     // Não autenticado
     if (!this.isUserLoggedIn || !this.loggedUser) {
-      this.router.navigate(['/login']);
+      this.openLogin();
       return;
     }
 

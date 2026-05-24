@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { retryWhen, scan, delayWhen, timer } from 'rxjs';
 import { ChallengeService } from 'src/app/challenges/challenge.service';
+import { AuthModalService } from 'src/app/core/auth-modal.service';
 import { ChallengeFilter } from 'src/app/core/interface/ChallengeFilter';
 import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
@@ -17,10 +18,8 @@ import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 import { User } from 'src/app/core/model/User';
 import { Role } from 'src/app/enum/role.enum';
 import { ExamesService } from 'src/app/exames/exames.service';
-import { QuestionService } from 'src/app/questions/question.service';
 import { QuizService } from 'src/app/quiz/quiz.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
-import { TopicService } from 'src/app/topics/topicsService.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 
 @Component({
@@ -88,6 +87,7 @@ export class MainPanelComponent implements OnInit {
 
 
   constructor(
+    private authModalService: AuthModalService,
     private authenticationService: AuthenticationService,
     private challengeService: ChallengeService,
     private subjectsService: SubjectsService,
@@ -116,6 +116,10 @@ export class MainPanelComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  openLogin() {
+    this.authModalService.open();
   }
 
   getChallenges(pagina: number = 0): void {
@@ -394,7 +398,7 @@ export class MainPanelComponent implements OnInit {
 
     // Não autenticado
     if (!this.isUserLoggedIn || !this.loggedUser) {
-      this.router.navigate(['/login']);
+      this.openLogin();
       return;
     }
 

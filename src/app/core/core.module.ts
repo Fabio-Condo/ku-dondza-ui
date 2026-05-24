@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
+import { AuthModalComponent } from './auth-modal/auth-modal.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
     NavbarComponent,
     FooterComponent,
     MobileFooterComponent,
+    AuthModalComponent,
     PaginaNaoEncontradaComponent,
     NaoAutorizadoComponent,
     /* , */
@@ -36,6 +38,7 @@ import { MobileFooterComponent } from './mobile-footer/mobile-footer.component';
   exports: [
     NavbarComponent,
     FooterComponent,
+    AuthModalComponent,
     MobileFooterComponent,
     ToastModule,
     ConfirmDialogModule
