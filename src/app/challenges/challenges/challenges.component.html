@@ -906,151 +906,6 @@
             }
         }
 
-        /* ─── MODAL ───────────────────────────────────── */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(15, 23, 42, 0.45);
-            backdrop-filter: blur(3px);
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 99999;
-        }
-
-        .modal {
-            background: #fff;
-            border-radius: 18px 18px 0 0;
-            width: 100%;
-            max-width: 640px;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .modal-progress-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 3px;
-            width: 100%;
-            background: #eef2ff;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity .2s;
-        }
-
-        .modal-progress-bar.visible {
-            opacity: 1
-        }
-
-        .modal-progress-bar::after {
-            content: '';
-            display: block;
-            height: 100%;
-            width: 40%;
-            background: #4361ee;
-            border-radius: 99px;
-            animation: progressPulse 1.4s ease-in-out infinite;
-        }
-
-        @keyframes progressPulse {
-            0% {
-                transform: translateX(-100%)
-            }
-
-            100% {
-                transform: translateX(350%)
-            }
-        }
-
-        .modal-handle {
-            display: flex;
-            justify-content: center;
-            padding: 12px 0 4px;
-            flex-shrink: 0
-        }
-
-        .modal-handle span {
-            width: 36px;
-            height: 4px;
-            background: #e2e8f0;
-            border-radius: 99px
-        }
-
-        .modal-inner {
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            flex: 1;
-            padding: 0 20px 24px;
-            transition: opacity .2s;
-        }
-
-        .modal-inner.is-loading {
-            opacity: .45;
-            pointer-events: none
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px 14px;
-            position: sticky;
-            top: 0;
-            background: #fff;
-            border-bottom: 1px solid #f1f5f9;
-            margin-bottom: 12px;
-            flex-shrink: 0;
-        }
-
-        .modal-title-group {
-            display: flex;
-            flex-direction: column;
-            gap: 2px
-        }
-
-        .modal-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1e293b
-        }
-
-        .modal-subtitle {
-            font-size: 12px;
-            color: #94a3b8
-        }
-
-        .close-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            border: 1px solid #e8edf2;
-            background: #fff;
-            color: #64748b;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .15s;
-            font-family: inherit;
-        }
-
-        .close-btn:hover {
-            background: #f8fafc;
-            color: #1e293b;
-            border-color: #cbd5e1
-        }
-
         .question-item {
             display: flex;
             gap: 12px;
@@ -1769,62 +1624,65 @@
      MODAL: Filtros avançados
 ════════════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayFilterModal">
-    <div class="modal filter-modal">
+    <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
         <div class="modal-handle"><span></span></div>
-        <div class="modal-header">
-            <div class="modal-title-group">
-                <h2 class="modal-title">Filtros avançados</h2>
-                <span class="modal-subtitle">Refine os desafios exibidos</span>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Filtrar quizzes</h2>
+                    <span class="modal-subtitle">Refine os resultados por critérios</span>
+                </div>
+                <button class="close-btn" (click)="closeFilterModal()">&#x2715;</button>
             </div>
-            <button class="close-btn" (click)="closeFilterModal()">&#x2715;</button>
-        </div>
+            <form autocomplete="off" #exameForm="ngForm">
+                <div class="filter-group">
+                    <label>Título</label>
+                    <input type="text" [(ngModel)]="filtro.title" placeholder="Pesquisar por título">
+                </div>
+                <div class="form-group">
+                    <label for="subject">Disciplina</label>
+                    <select id="subject" [(ngModel)]="filtro.subjectId" (change)="findAll()" name="subject">
+                        <option value="" disabled selected>Selecione a disciplina</option>
+                        <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }}</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Dificuldade</label>
+                    <select [(ngModel)]="filtro.difficultyLevel">
+                        <option value="">Todas</option>
+                        <option value="BEGINNER">Iniciante</option>
+                        <option value="INTERMEDIATE">Intermediário</option>
+                        <option value="ADVANCED">Avançado</option>
+                    </select>
+                </div>
 
-        <div class="filter-form">
-            <div class="filter-group">
-                <label>Título</label>
-                <input type="text" [(ngModel)]="filtro.title" placeholder="Pesquisar por título">
-            </div>
-
-            <div class="form-group">
-                <label for="subject">Disciplina</label>
-                <select id="subject" [(ngModel)]="filtro.subjectId" (change)="findAll()" name="subject">
-                    <option value="" disabled selected>Selecione a disciplina</option>
-                    <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }}</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label>Dificuldade</label>
-                <select [(ngModel)]="filtro.difficultyLevel">
-                    <option value="">Todas</option>
-                    <option value="BEGINNER">Iniciante</option>
-                    <option value="INTERMEDIATE">Intermediário</option>
-                    <option value="ADVANCED">Avançado</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label>Ordenar por</label>
-                <select [(ngModel)]="filtro.sort">
-                    <option value="id,desc">Mais recentes</option>
-                    <option value="id,asc">Mais antigos</option>
-                    <option value="title,asc">Título A–Z</option>
-                    <option value="title,desc">Título Z–A</option>
-                </select>
-            </div>
-
-            <div class="filter-actions">
-                <button class="btn-sec btn-full" (click)="clearAdvancedFilters()">Limpar</button>
-                <button class="btn-primary" style="flex:1" (click)="applyAdvancedFilters()">Aplicar
-                    filtros</button>
-            </div>
+                <div class="filter-group">
+                    <label>Ordenar por</label>
+                    <select [(ngModel)]="filtro.sort">
+                        <option value="id,desc">Mais recentes</option>
+                        <option value="id,asc">Mais antigos</option>
+                        <option value="title,asc">Título A–Z</option>
+                        <option value="title,desc">Título Z–A</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-modal-secondary" (click)="clearAdvancedFilters()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M8 6V4h8v2" />
+                    </svg>
+                    Limpar filtros
+                </button>
+            </form>
         </div>
     </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-     MODAL: Adicionar / Editar exame
+     MODAL: Adicionar / Editar 
 ════════════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
@@ -1833,9 +1691,9 @@
         <div class="modal-inner" [class.is-loading]="showLoading">
             <div class="modal-header">
                 <div class="modal-title-group">
-                    <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
+                    <h2 class="modal-title">{{ editing ? 'Editar desafio' : 'Novo desafio' }}</h2>
                     <span class="modal-subtitle">
-                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo' }}
+                        {{ editing ? 'Actualize os dados do desafio' : 'Preencha os campos abaixo' }}
                     </span>
                 </div>
                 <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
