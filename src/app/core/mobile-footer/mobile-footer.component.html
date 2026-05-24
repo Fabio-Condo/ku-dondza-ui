@@ -218,8 +218,8 @@
       background: rgba(67, 97, 238, 0.04);
     }
 
-    /* Plus icon */
-    .cta-btn .plus-icon {
+    /* Quiz icon */
+    .cta-btn .quiz-icon {
       width: 22px;
       height: 22px;
       position: relative;
@@ -228,8 +228,8 @@
       transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .cta-btn:active .plus-icon {
-      transform: rotate(90deg) scale(1.15);
+    .cta-btn:active .quiz-icon {
+      transform: scale(1.15) rotate(-6deg);
     }
 
     .cta-label {
@@ -304,10 +304,12 @@
       <!-- ★ CTA CENTRAL — Praticar ★ -->
       <div class="nav-cta-wrapper">
         <button class="cta-btn" [routerLink]="['/quizzes', 'new']" aria-label="Praticar">
-          <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          <!-- Ícone de quiz: folha com linhas de resposta e lápis -->
+          <svg class="quiz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
             stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
+            <circle cx="12" cy="12" r="8.5" />
+            <path d="M9.8 9.8a2.5 2.5 0 0 1 4.8.8c0 1.6-1.8 2.4-2.6 3.4v.8" />
+            <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
           </svg>
         </button>
         <span class="cta-label">Praticar</span>
