@@ -3,12 +3,11 @@ import { AuthModalService } from '../auth-modal.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { Role } from 'src/app/enum/role.enum';
-import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { Subscription } from 'rxjs';
 import { User } from '../model/User';
+import { GoogleAuthServiceV2 } from 'src/app/users/google-auth.service';
 
 @Component({
   selector: 'app-auth-modal',
@@ -20,6 +19,8 @@ export class AuthModalComponent implements OnInit {
   visible = false;
 
   showLoading: boolean = false;
+  isGoogleLoading : boolean = false;
+
   googleAuthReady = true;
   loadingMessage: string = "Carregando...";
 
@@ -39,14 +40,15 @@ export class AuthModalComponent implements OnInit {
   constructor(
     public authModalService: AuthModalService,
     private ngZone: NgZone,
-    private googleAuthService: GoogleAuthService,
+    private googleAuthService: GoogleAuthServiceV2,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
     //this.authModalService.close();
-    this.initializeGoogleAuth();
+    //this.initializeGoogleAuth();
+    this.googleAuthService.initOnce();
   }
 
   closeLogin() {
@@ -145,64 +147,11 @@ export class AuthModalComponent implements OnInit {
     });
   }
 
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton =
-        await this.googleAuthService.initializeGoogleButton('google-signin-button');
-
-      setupButton((credential) => this.handleGoogleCredential(credential));
-
-      // só ativa o botão se tudo correr bem
-      this.googleAuthReady = true;
-
-    } catch (error) {
-      this.googleAuthReady = false;
-
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
-  private handleGoogleCredential(googleCredential: string): void {
-    this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá";
-      this.showLoading = true;
-    });
-
-    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.ngZone.run(() => {
-          //this.submitAnswers();
-          this.showLoading = false;
-          this.displayModalLogin = false;
-          document.body.classList.remove('no-scroll');
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(sub);
-  }
-
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
-    setTimeout(() => {
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
+    //setTimeout(() => {
+    //  this.initializeGoogleAuth();
+    //}, 100); // Espera para o botão estar no DOM
   }
 
   onCloseLoginPopout() {
@@ -219,6 +168,51 @@ export class AuthModalComponent implements OnInit {
         detail: 'Ocorreu um erro. Por favor, tente novamente.',
       });
     }
+  }
+
+  loginWithGoogle() {
+    this.isGoogleLoading  = true;
+
+    this.googleAuthService.login((credential) => {
+      this.handleGoogleCredential(credential);
+      this.isGoogleLoading  = false;
+    });
+
+    // fallback de segurança (caso user feche popup)
+    setTimeout(() => {
+      this.isGoogleLoading  = false;
+    }, 5000);
+  }
+
+  private handleGoogleCredential(credential: string) {
+
+    this.ngZone.run(() => {
+      this.showLoading = true;
+    });
+
+    this.authenticationService.loginWithGoogle(credential)
+      .subscribe({
+        next: (res: HttpResponse<User>) => {
+
+          const token = res.headers.get(HeaderType.JWT_TOKEN);
+
+          this.authenticationService.saveToken(token);
+          this.authenticationService.addUserToLocalCache(res.body);
+          this.authenticationService.notifyLoginStatus(true);
+
+          this.ngZone.run(() => {
+            this.showLoading = false;
+            this.authModalService.close();
+          });
+        },
+        error: (err: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.messageService.add({
+            severity: 'error',
+            detail: err.error?.message || 'Erro login Google'
+          });
+        }
+      });
   }
 
 }
