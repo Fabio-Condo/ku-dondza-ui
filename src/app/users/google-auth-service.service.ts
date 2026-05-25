@@ -8,8 +8,8 @@ declare var google: any;
   providedIn: 'root'
 })
 export class GoogleAuthService {
-  
-  constructor(private messageService: MessageService) {}
+
+  constructor(private messageService: MessageService) { }
 
   async initializeGoogleButton(buttonId: string): Promise<(callback: (credential: string) => void) => void> {
     await this.loadGoogleScript();
@@ -43,6 +43,7 @@ export class GoogleAuthService {
 
       const buttonContainer = document.getElementById(buttonId);
       if (buttonContainer) {
+        google.accounts.id.disableAutoSelect();
         google.accounts.id.renderButton(buttonContainer, {
           theme: 'outline',
           size: 'large',

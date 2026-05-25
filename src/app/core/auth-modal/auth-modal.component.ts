@@ -19,7 +19,7 @@ export class AuthModalComponent implements OnInit {
   visible = false;
 
   showLoading: boolean = false;
-  isGoogleLoading : boolean = false;
+  isGoogleLoading: boolean = false;
 
   googleAuthReady = true;
   loadingMessage: string = "Carregando...";
@@ -34,9 +34,6 @@ export class AuthModalComponent implements OnInit {
 
   displayModalLogin: boolean = false;
 
-  private subscriptions: Subscription[] = [];
-
-
   constructor(
     public authModalService: AuthModalService,
     private ngZone: NgZone,
@@ -46,8 +43,6 @@ export class AuthModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.authModalService.close();
-    //this.initializeGoogleAuth();
     this.googleAuthService.initOnce();
   }
 
@@ -59,16 +54,71 @@ export class AuthModalComponent implements OnInit {
     this.authModalService.open();
   }
 
-  public get isAdmin(): boolean {
-    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  // Se quizer usar o botão One Tap da Google, chame essa função no clique do botão
+  // e comente a função loginWithGoogleBigPopup()
+  loginWithGoogleOnTap() {
+    this.isGoogleLoading = true;
+
+    this.googleAuthService.showOneTap((credential) => {
+      this.handleGoogleCredential(credential);
+      this.isGoogleLoading = false;
+    });
+
+    // fallback de segurança (caso user feche popup)
+    setTimeout(() => {
+      this.isGoogleLoading = false;
+    }, 5000);
   }
 
-  public get isSuperAdmin(): boolean {
-    return this.getUserRole() === Role.SUPER_ADMIN;
+  // Se quiser usar o popup grande da Google, chame essa função no clique do botão
+  // e comente a função loginWithGoogleOnTap()
+  // Esta opção é mais confiável, pois o One Tap pode ser bloqueado por navegadores ou pelo próprio usuário
+  // Neste momento estou usando no HTML o popup grande, mas deixei o código do One Tap caso queira testar depois
+  loginWithGoogleBigPopup() {
+
+    this.isGoogleLoading = true;
+
+    this.googleAuthService.loginWithPopup((credential) => {
+
+      this.handleGoogleCredential(credential);
+
+      this.isGoogleLoading = false;
+    });
+
+    setTimeout(() => {
+      this.isGoogleLoading = false;
+    }, 5000);
   }
 
-  private getUserRole(): string {
-    return this.authenticationService.getUserFromLocalCache().role;
+  private handleGoogleCredential(credential: string) {
+
+    this.ngZone.run(() => {
+      this.showLoading = true;
+    });
+
+    this.authenticationService.loginWithGoogle(credential)
+      .subscribe({
+        next: (res: HttpResponse<User>) => {
+
+          const token = res.headers.get(HeaderType.JWT_TOKEN);
+
+          this.authenticationService.saveToken(token);
+          this.authenticationService.addUserToLocalCache(res.body);
+          this.authenticationService.notifyLoginStatus(true);
+
+          this.ngZone.run(() => {
+            this.showLoading = false;
+            this.authModalService.close();
+          });
+        },
+        error: (err: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.messageService.add({
+            severity: 'error',
+            detail: err.error?.message || 'Erro login Google'
+          });
+        }
+      });
   }
 
   sendOtp() {
@@ -147,16 +197,25 @@ export class AuthModalComponent implements OnInit {
     });
   }
 
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
-    //setTimeout(() => {
-    //  this.initializeGoogleAuth();
-    //}, 100); // Espera para o botão estar no DOM
-  }
-
   onCloseLoginPopout() {
     this.displayModalLogin = false;
     document.body.classList.remove('no-scroll');
+  }
+
+  setActiveTab(tabIndex: number) {
+    this.activeTab = tabIndex;
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isSuperAdmin(): boolean {
+    return this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
   private sendErrorNotification(message: string): void {
@@ -168,51 +227,6 @@ export class AuthModalComponent implements OnInit {
         detail: 'Ocorreu um erro. Por favor, tente novamente.',
       });
     }
-  }
-
-  loginWithGoogle() {
-    this.isGoogleLoading  = true;
-
-    this.googleAuthService.login((credential) => {
-      this.handleGoogleCredential(credential);
-      this.isGoogleLoading  = false;
-    });
-
-    // fallback de segurança (caso user feche popup)
-    setTimeout(() => {
-      this.isGoogleLoading  = false;
-    }, 5000);
-  }
-
-  private handleGoogleCredential(credential: string) {
-
-    this.ngZone.run(() => {
-      this.showLoading = true;
-    });
-
-    this.authenticationService.loginWithGoogle(credential)
-      .subscribe({
-        next: (res: HttpResponse<User>) => {
-
-          const token = res.headers.get(HeaderType.JWT_TOKEN);
-
-          this.authenticationService.saveToken(token);
-          this.authenticationService.addUserToLocalCache(res.body);
-          this.authenticationService.notifyLoginStatus(true);
-
-          this.ngZone.run(() => {
-            this.showLoading = false;
-            this.authModalService.close();
-          });
-        },
-        error: (err: HttpErrorResponse) => {
-          this.showLoading = false;
-          this.messageService.add({
-            severity: 'error',
-            detail: err.error?.message || 'Erro login Google'
-          });
-        }
-      });
   }
 
 }
