@@ -29,7 +29,7 @@ import { AuthenticationService } from 'src/app/users/authentication.service';
 })
 export class MainPanelComponent implements OnInit {
 
-  showLoading = false;
+  //showLoading = false;
   retryVisible: boolean = false;
   loadingMessage = 'Carregando';
 
@@ -41,7 +41,7 @@ export class MainPanelComponent implements OnInit {
   totalChallenges: number = 0;
   totalRecords: number = 0;
   currentPage: number = 1;
-  opcoesItensPorPagina: number[] = [5, 10, 20, 50];
+  showLoadingChallenges: boolean = false;
 
   challengeFilter: ChallengeFilter = {
     page: 0,
@@ -53,6 +53,7 @@ export class MainPanelComponent implements OnInit {
   subjectCourses: Subject[] = [];
   totalSubjectCoursesRecords: number = 0;
   totalSubjects: number = 0;
+  showLoadingCourses: boolean = false;
 
   courseFilter: SubjectFilter = {
     pagina: 0,
@@ -64,6 +65,7 @@ export class MainPanelComponent implements OnInit {
   // Quizzes
   quizzes: Quiz[] = [];
   totalQuizzes: number = 0;
+  showLoadingQuizzes: boolean = false;
 
   quizFilter = {
     userId: 0,
@@ -75,6 +77,7 @@ export class MainPanelComponent implements OnInit {
   // Exams
   exams: Exam[] = [];
   totalExames: number = 0;
+  showLoadingExames: boolean = false;
 
   exameFilter: ExameFilter = {
     pagina: 0,
@@ -84,7 +87,7 @@ export class MainPanelComponent implements OnInit {
 
   // Subject Progress
   subjectsProgress: SubjectProgressDTO[] = [];
-
+  showLoadingProgress: boolean = false;
 
   constructor(
     private authModalService: AuthModalService,
@@ -107,9 +110,10 @@ export class MainPanelComponent implements OnInit {
     });
 
     this.getChallenges();
-    if (this.isUserLoggedIn) {
-      this.getUserProgress();
-    }
+    //if (this.isUserLoggedIn) {
+    //  this.getUserProgress();
+    //}
+    this.getUserProgress();
     this.getCourses();
     this.getExames();
     this.getQuizzes();
@@ -130,6 +134,9 @@ export class MainPanelComponent implements OnInit {
   //}
 
   getChallenges(pagina: number = 0): void {
+
+    this.showLoadingChallenges = true;
+    this.loadingMessage = "Carregando desafios";
 
     if (!this.loggedUser) {
       this.loggedUser = new User();
@@ -162,10 +169,10 @@ export class MainPanelComponent implements OnInit {
         this.challenges = dados.content.slice(0, 3);
         this.totalRecords = dados.totalElements;
         this.totalChallenges = this.totalChallenges || dados.totalElements;
-        //this.showLoading = false;
+        this.showLoadingChallenges = false;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.showLoading = false;
+        this.showLoadingChallenges = false;
         this.retryVisible = true;
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
@@ -177,8 +184,11 @@ export class MainPanelComponent implements OnInit {
   }
 
   getUserProgress(): void {
+
+    console.log('Buscando progresso do usuário...');
+
     this.loadingMessage = 'Carregando progresso';
-    this.showLoading = true;
+    this.showLoadingProgress = true;
 
     this.subjectsService.getUserProgressSubjects(this.loggedUser.id).pipe(
       retryWhen(errors =>
@@ -200,11 +210,11 @@ export class MainPanelComponent implements OnInit {
     ).subscribe({
       next: (dados) => {
         this.subjectsProgress = dados.filter(subject => subject.progressEnabled);
-        //this.showLoading = false;
+        this.showLoadingProgress = false;
       },
       error: (error: HttpErrorResponse) => {
         this.sendErrorNotification(error.error.message);
-        this.showLoading = false;
+        this.showLoadingProgress = false;
       }
     });
   }
@@ -216,8 +226,8 @@ export class MainPanelComponent implements OnInit {
       this.loggedUser.id = 0;
     }
 
-    this.loadingMessage = "Carregando dados"
-    this.showLoading = true;
+    this.loadingMessage = "Carregando cursos"
+    this.showLoadingCourses = true;
     this.courseFilter.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.subjectsService.filter(this.courseFilter, this.loggedUser.id).pipe(
       retryWhen(errors =>
@@ -243,10 +253,10 @@ export class MainPanelComponent implements OnInit {
         if (this.totalSubjects == 0) {
           this.totalSubjects = dados.totalElements;
         }
-        this.showLoading = false;
+        this.showLoadingCourses = false;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.showLoading = false;
+        this.showLoadingCourses = false;
         this.retryVisible = true;
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
@@ -259,8 +269,8 @@ export class MainPanelComponent implements OnInit {
 
   getQuizzes(page: number = 0): void {
     this.retryVisible = false;
-    this.loadingMessage = "Carregando dados";
-    this.showLoading = true;
+    this.loadingMessage = "Carregando quizzes";
+    this.showLoadingQuizzes = true;
 
     this.quizFilter.userId = 0; // Todos quizzes, mesmo para não autenticados
     this.quizFilter.page = this.currentPage - 1;
@@ -289,11 +299,11 @@ export class MainPanelComponent implements OnInit {
           this.quizzes = data.content.slice(0, 3);
           this.totalRecords = data.totalElements;
           this.totalQuizzes = this.totalQuizzes || data.totalElements;
-          this.showLoading = false;
+          this.showLoadingQuizzes = false;
           this.loadingMessage = "";
         },
         (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
+          this.showLoadingQuizzes = false;
           this.retryVisible = true;
           if (!navigator.onLine) {
             this.sendErrorNotification("Você está sem conexão com a internet.");
@@ -306,8 +316,8 @@ export class MainPanelComponent implements OnInit {
 
   getExames(pagina: number = 0): void {
     this.retryVisible = false;
-    this.loadingMessage = "Carregando dados"
-    this.showLoading = true;
+    this.loadingMessage = "Carregando exames";
+    this.showLoadingExames = true;
 
     this.exameFilter.pagina = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
     this.examesService.filterWithCash(this.exameFilter).pipe(
@@ -333,10 +343,10 @@ export class MainPanelComponent implements OnInit {
         this.exams = dados.content.slice(0, 3);
         this.totalRecords = dados.totalElements;
         this.totalExames = this.totalExames || dados.totalElements;
-        //this.showLoading = false;
+        this.showLoadingExames = false;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.showLoading = false;
+        this.showLoadingExames = false;
         this.retryVisible = true;
         if (!navigator.onLine) {
           this.sendErrorNotification("Você está sem conexão com a internet.");
@@ -424,8 +434,8 @@ export class MainPanelComponent implements OnInit {
 
     // Pode participar
     this.startChallenge(challenge);
-  } 
-  
+  }
+
   getChallengeButtonText(challenge: Challenge | null | undefined): string {
 
     // Segurança
