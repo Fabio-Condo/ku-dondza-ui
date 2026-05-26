@@ -91,7 +91,7 @@ export class ChallengesComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Main painel page');
-    
+
     this.authenticationService.loginStatus$.subscribe(logged => {
       this.isUserLoggedIn = logged;
       this.loggedUser = this.authenticationService.getUserFromLocalCache();
@@ -718,17 +718,17 @@ export class ChallengesComponent implements OnInit {
       return;
     }
 
-    // Não autenticado
-    if (!this.isUserLoggedIn || !this.loggedUser) {
-      this.openLogin();
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Finalizado -> qualquer pessoa pode ver resultados
+    if (remainingHours <= 0) {
+      this.viewResults(challenge);
       return;
     }
 
-    const remainingHours = challenge.remainingHours ?? 0;
-
-    // Finalizado
-    if (remainingHours <= 0) {
-      this.viewResults(challenge);
+    // Não autenticado -> apenas para desafios activos
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      this.openLogin();
       return;
     }
 
@@ -748,16 +748,16 @@ export class ChallengesComponent implements OnInit {
       return 'Indisponível';
     }
 
-    // Não autenticado
-    if (!this.isUserLoggedIn || !this.loggedUser) {
-      return 'Entrar para participar';
-    }
-
     const remainingHours = challenge.remainingHours ?? 0;
 
     // Finalizado
     if (remainingHours <= 0) {
       return 'Ver resultado';
+    }
+
+    // Não autenticado
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      return 'Entrar para participar';
     }
 
     // Já submeteu

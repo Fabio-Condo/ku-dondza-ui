@@ -403,17 +403,17 @@ export class MainPanelComponent implements OnInit {
       return;
     }
 
-    // Não autenticado
-    if (!this.isUserLoggedIn || !this.loggedUser) {
-      this.openLogin();
+    const remainingHours = challenge.remainingHours ?? 0;
+
+    // Finalizado -> qualquer pessoa pode ver resultados
+    if (remainingHours <= 0) {
+      this.viewResults(challenge);
       return;
     }
 
-    const remainingHours = challenge.remainingHours ?? 0;
-
-    // Finalizado
-    if (remainingHours <= 0) {
-      this.viewResults(challenge);
+    // Não autenticado -> apenas para desafios activos
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      this.openLogin();
       return;
     }
 
@@ -424,8 +424,8 @@ export class MainPanelComponent implements OnInit {
 
     // Pode participar
     this.startChallenge(challenge);
-  }
-
+  } 
+  
   getChallengeButtonText(challenge: Challenge | null | undefined): string {
 
     // Segurança
@@ -433,16 +433,16 @@ export class MainPanelComponent implements OnInit {
       return 'Indisponível';
     }
 
-    // Não autenticado
-    if (!this.isUserLoggedIn || !this.loggedUser) {
-      return 'Entrar para participar';
-    }
-
     const remainingHours = challenge.remainingHours ?? 0;
 
     // Finalizado
     if (remainingHours <= 0) {
       return 'Ver resultado';
+    }
+
+    // Não autenticado
+    if (!this.isUserLoggedIn || !this.loggedUser) {
+      return 'Entrar para participar';
     }
 
     // Já submeteu
