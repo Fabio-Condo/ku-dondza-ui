@@ -91,8 +91,12 @@ export class ChallengesComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Main painel page');
-    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
+
     this.carregarDisciplinas();
     this.findAll();
     this.scrollToTop();

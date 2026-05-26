@@ -10,10 +10,12 @@ export class AuthModalService {
 
   open() {
     this.visible$.next(true);
+    document.body.classList.add('no-scroll');
   }
 
   close() {
     this.visible$.next(false);
+    document.body.classList.remove('no-scroll');
   }
 
 }

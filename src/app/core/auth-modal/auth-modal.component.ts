@@ -101,10 +101,14 @@ export class AuthModalComponent implements OnInit {
         next: (res: HttpResponse<User>) => {
 
           const token = res.headers.get(HeaderType.JWT_TOKEN);
-
           this.authenticationService.saveToken(token);
           this.authenticationService.addUserToLocalCache(res.body);
           this.authenticationService.notifyLoginStatus(true);
+          this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+          this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+          this.authModalService.close();
+          this.user = new User();
 
           this.ngZone.run(() => {
             this.showLoading = false;
@@ -147,7 +151,12 @@ export class AuthModalComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-        //this.submitAnswers();
+        this.authModalService.close();
+        this.user = new User();
+        this.otp = '';
+        this.step = 'email';
+        this.activeTab = 1;
+
         this.showLoading = false;
         this.displayModalLogin = false;
         document.body.classList.remove('no-scroll');
@@ -185,7 +194,12 @@ export class AuthModalComponent implements OnInit {
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
-        //this.submitAnswers();
+        this.authModalService.close();
+        this.user = new User();
+        this.otp = '';
+        this.step = 'email';
+        this.activeTab = 1;
+
         this.showLoading = false;
         this.displayModalLogin = false;
         document.body.classList.remove('no-scroll');

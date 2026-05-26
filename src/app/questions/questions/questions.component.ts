@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,13 +18,11 @@ import { MathExpression } from 'src/app/core/model/MathExpression';
 import { Title } from '@angular/platform-browser';
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
-import { HeaderType } from 'src/app/enum/header-type.enum';
-import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
-import { Subscription } from 'rxjs';
 import { evaluate } from 'mathjs'; //npm install mathjs
 declare const MathJax: any;
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
+import { AuthModalService } from 'src/app/core/auth-modal.service';
 
 @Component({
   selector: 'app-questions',
@@ -90,18 +88,9 @@ export class QuestionsComponent implements OnInit {
 
   correctAnswer: string | undefined; // Para armazenar a resposta correta como texto
 
-  private subscriptions: Subscription[] = [];
-  displayModalLogin: boolean = false;
-
   // mostra opções adicionais
   showOptions: boolean = false;
 
-  user = new User();
-  activeTab: number = 1;
-  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
-  otp: string = '';
-
-  googleAuthReady = true;
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
@@ -142,8 +131,7 @@ export class QuestionsComponent implements OnInit {
   };
 
   constructor(
-    private ngZone: NgZone,
-    private googleAuthService: GoogleAuthService,
+    private authModalService: AuthModalService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
     private topicService: TopicService,
@@ -158,8 +146,14 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Questions page');
-    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    //  this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    //  this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
+
     this.findAll(0);
     this.carregarDisciplinas();
     this.scrollToTop();
@@ -734,12 +728,7 @@ export class QuestionsComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -859,148 +848,6 @@ export class QuestionsComponent implements OnInit {
     return String.fromCharCode(65 + index); // 65 = 'A' em ASCII - Mostra A, B, C, ...
   }
 
-  sendOtp() {
-    this.showLoading = true;
-    //const email = this.otpForm.value.email!;
-    this.authenticationService.generateOtp(this.user.email).subscribe({
-      next: () => {
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  validateOtp() {
-    this.showLoading = true;
-    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.findAll();
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  startRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
-      next: (response) => {
-        console.log(response.body)
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  completeRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.findAll();
-        this.showLoading = false;
-        this.displayModalLogin = false; this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton =
-        await this.googleAuthService.initializeGoogleButton('google-signin-button');
-
-      setupButton((credential) => this.handleGoogleCredential(credential));
-
-      // só ativa o botão se tudo correr bem
-      this.googleAuthReady = true;
-
-    } catch (error) {
-      this.googleAuthReady = false;
-
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
-  private handleGoogleCredential(googleCredential: string): void {
-    this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá";
-      this.showLoading = true;
-    });
-
-    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.ngZone.run(() => {
-          this.findAll();
-          this.showLoading = false;
-          this.displayModalLogin = false;
-          document.body.classList.remove('no-scroll');
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(sub);
-  }
-
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
-    setTimeout(() => {
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
-  }
-
-  onCloseLoginPopout() {
-    this.displayModalLogin = false;
-    document.body.classList.remove('no-scroll');
-  }
-
   togleCorrection() {
     this.showCorrection = !this.showCorrection;
     this.renderMathExpressions();
@@ -1031,12 +878,7 @@ export class QuestionsComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -1187,6 +1029,10 @@ export class QuestionsComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  openLogin() {
+    this.authModalService.open();
   }
 
   private sendErrorNotification(message: string): void {

@@ -19,9 +19,7 @@
           <div class="auth-tab" (click)="setActiveTab(2)">Cadastrar</div>
         </div>
 
-
-        <!--<div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>-->
-        <button class="btn-google" aria-label="Entrar com Google" (click)="loginWithGoogleBigPopup()"
+        <button class="btn-google" aria-label="Entrar com Google" *ngIf="step === 'email'" (click)="loginWithGoogleBigPopup()"
           [disabled]="showLoading || isGoogleLoading">
           <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -102,7 +100,7 @@
           <div class="auth-tab active">Cadastrar</div>
         </div>
 
-        <button class="btn-google" aria-label="Entrar com Google" (click)="loginWithGoogleBigPopup()"
+        <button class="btn-google" aria-label="Entrar com Google" *ngIf="step === 'email'" (click)="loginWithGoogleBigPopup()"
           [disabled]="showLoading || isGoogleLoading">
           <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path

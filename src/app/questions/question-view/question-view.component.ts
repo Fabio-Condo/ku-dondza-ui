@@ -4,7 +4,6 @@ import { QuestionService } from '../question.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
-import { QuizService } from 'src/app/quiz/quiz.service';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Comment } from 'src/app/core/model/Comment';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
@@ -30,6 +29,7 @@ import { WalletService } from 'src/app/core/wallets/answers.service';
 import { Topic } from 'src/app/core/model/Topic';
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
+import { AuthModalService } from 'src/app/core/auth-modal.service';
 
 
 @Component({
@@ -96,16 +96,9 @@ export class QuestionViewComponent implements OnInit {
 
   openedMenuId: number | null = null;
 
-  user = new User();
-  activeTab: number = 1;
-  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
-  otp: string = '';
-
   origem: string = '';
   topicId: string = '';
   subjectId: string = '';
-
-  googleAuthReady = true;
 
   currentMessage: { text: string; type: 'info' | 'success' | 'warning' | 'error' } | null = null;
 
@@ -142,8 +135,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   constructor(
-    private ngZone: NgZone,
-    private googleAuthService: GoogleAuthService,
+    private authModalService: AuthModalService,
     private questionService: QuestionService,
     private walletService: WalletService,
     private commentService: CommentService,
@@ -159,8 +151,13 @@ export class QuestionViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Question view page');
-    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    //  this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    //  this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
 
     const questionId = this.route.snapshot.params['id'];
     if (questionId) {
@@ -326,12 +323,7 @@ export class QuestionViewComponent implements OnInit {
 
     if (!this.isUserLoggedIn) {
       this.action = 'save';
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -727,11 +719,7 @@ export class QuestionViewComponent implements OnInit {
     if (!this.isUserLoggedIn) {
       this.action = 'comment';
       this.showComments = false;
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -817,12 +805,7 @@ export class QuestionViewComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
-      //this.action = 'Like';
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -968,170 +951,6 @@ export class QuestionViewComponent implements OnInit {
     return this.authenticationService.getUserFromLocalCache().role;
   }
 
-  sendOtp() {
-    this.showLoading = true;
-    //const email = this.otpForm.value.email!;
-    this.authenticationService.generateOtp(this.user.email).subscribe({
-      next: () => {
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  validateOtp() {
-    this.showLoading = true;
-    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.findById(this.question.questionId);
-
-        if (this.action === 'solution') {
-          this.togleCorrection();
-        }
-        if (this.action === 'comment') {
-          this.showComments = true;
-        }
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  startRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
-      next: (response) => {
-        console.log(response.body)
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  completeRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        if (this.action === 'solution') {
-          this.togleCorrection();
-        }
-        if (this.action === 'comment') {
-          this.showComments = true;
-        }
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton =
-        await this.googleAuthService.initializeGoogleButton('google-signin-button');
-
-      setupButton((credential) => this.handleGoogleCredential(credential));
-
-      // só ativa o botão se tudo correr bem
-      this.googleAuthReady = true;
-
-    } catch (error) {
-      this.googleAuthReady = false;
-
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
-  private handleGoogleCredential(googleCredential: string): void {
-    this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá";
-      this.showLoading = true;
-    });
-
-    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-
-        this.ngZone.run(() => {
-          this.findById(this.question.questionId);
-          //if (this.action === 'save' && !this.question.savedByUser) {
-          //  this.toggleSaveQuestion();
-          //  this.question.savedByUser = !this.question.savedByUser;
-          //}
-          if (this.action === 'solution') {
-            this.togleCorrection();
-          }
-          if (this.action === 'comment') {
-            this.showComments = true;
-          }
-          this.showLoading = false;
-          this.displayModalLogin = false;
-          document.body.classList.remove('no-scroll');
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(sub);
-  }
-
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
-    setTimeout(() => {
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
-  }
-
-  onCloseLoginPopout() {
-    this.displayModalLogin = false;
-    document.body.classList.remove('no-scroll');
-  }
-
   // bloqueia clique se o tópico Premium não estiver liberado para o usuário logado
   isPremiumTopic(topic: Topic): boolean {
     if (!topic.premium) return false;
@@ -1226,11 +1045,7 @@ export class QuestionViewComponent implements OnInit {
       return;
     }
 
-    this.displayModalLogin = true;
-    setTimeout(() => {
-      this.displayModalUpgradePlan = false;
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
+    this.openLogin();
   }
 
   upgradePlan() {
@@ -1406,6 +1221,10 @@ export class QuestionViewComponent implements OnInit {
     if (dollarOpen % 2 !== 0) text += '$$';
 
     return text;
+  }
+
+  openLogin() {
+    this.authModalService.open();
   }
 
   private sendErrorNotification(message: string): void {

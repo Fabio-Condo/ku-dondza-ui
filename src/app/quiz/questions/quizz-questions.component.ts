@@ -10,7 +10,7 @@ import { Topic } from 'src/app/core/model/Topic';
 import { Comment } from 'src/app/core/model/Comment';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
-import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { TopicService } from 'src/app/topics/topicsService.service';
 import { QuestionService } from 'src/app/questions/question.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
@@ -34,6 +34,7 @@ import { e, evaluate } from 'mathjs'; //npm install mathjs
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
 import { ChallengeService } from 'src/app/challenges/challenge.service';
+import { AuthModalService } from 'src/app/core/auth-modal.service';
 
 
 @Component({
@@ -66,20 +67,12 @@ export class QuizzQuestionsComponent implements OnInit {
   // mostra opções adicionais
   showOptions: boolean = false;
 
-
   timerSubscription!: Subscription;
   totalTimeLimit: number = 0;
   timeLimit: number = 0;
   formattedTime: string = '00:00'; // Inicializa no formato correto
   remainingTime: number = 0;   // Tempo restante para o quiz
   startTime: number = 0; // Armazena o tempo em que o quiz foi iniciado (timestamp)
-
-  user = new User();
-  activeTab: number = 1;
-  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
-  otp: string = '';
-
-  displayModalLogin: boolean = false;
 
   displayModalQuestionsList: boolean = false;
   displayModalUpgradePlan: boolean = false;
@@ -92,8 +85,6 @@ export class QuizzQuestionsComponent implements OnInit {
 
   correctSound = new Audio('assets/sounds/correct.mpeg');
   wrongSound = new Audio('assets/sounds/wrong.mpeg');
-
-  private subscriptions: Subscription[] = [];
 
   selectedQuestion: Question = new Question();
   comment: Comment = new Comment();
@@ -283,7 +274,7 @@ export class QuizzQuestionsComponent implements OnInit {
 
   constructor(
     private ngZone: NgZone,
-    private googleAuthService: GoogleAuthService,
+    private authModalService: AuthModalService,
     private progressService: ProgressService,
     private challengeService: ChallengeService,
     private walletService: WalletService,
@@ -304,8 +295,14 @@ export class QuizzQuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('Quizzes view page');
-    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    //  this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    //  this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
+
     const quizId = this.route.snapshot.params['id'];
     if (quizId && quizId !== 'new' && quizId !== 'test' && quizId !== 'training' && quizId !== 'challenge') {
       this.getQuizByQuizId(quizId);
@@ -520,7 +517,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz.questions = this.quiz.questions.map(q => ({
           ...q,
           solution: this.isPremiumTopic(q.topic)
-            ? this.limitSolutionSafe(q.solution, 4)
+            ? this.limitSolutionSafe(q.solution, 1)
             : q.solution
         }));
 
@@ -567,7 +564,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz.questions = this.quiz.questions.map(q => ({
           ...q,
           solution: this.isPremiumTopic(q.topic)
-            ? this.limitSolutionSafe(q.solution, 4)
+            ? this.limitSolutionSafe(q.solution, 1)
             : q.solution
         }));
 
@@ -627,7 +624,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz.questions = this.quiz.questions.map(q => ({
           ...q,
           solution: this.isPremiumTopic(q.topic)
-            ? this.limitSolutionSafe(q.solution, 4)
+            ? this.limitSolutionSafe(q.solution, 1)
             : q.solution
         }));
 
@@ -800,12 +797,7 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -922,13 +914,7 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
-      //this.action = 'save';
-      document.body.classList.add('no-scroll');
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -999,7 +985,7 @@ export class QuizzQuestionsComponent implements OnInit {
         this.quiz.questions = this.quiz.questions.map(q => ({
           ...q,
           solution: this.isPremiumTopic(q.topic)
-            ? this.limitSolutionSafe(q.solution, 4)
+            ? this.limitSolutionSafe(q.solution, 1)
             : q.solution
         }));
 
@@ -1581,147 +1567,6 @@ export class QuizzQuestionsComponent implements OnInit {
     return this.authenticationService.getUserFromLocalCache().role;
   }
 
-  sendOtp() {
-    this.showLoading = true;
-    //const email = this.otpForm.value.email!;
-    this.authenticationService.generateOtp(this.user.email).subscribe({
-      next: () => {
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  validateOtp() {
-    this.showLoading = true;
-    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        //this.submitAnswers();
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  startRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
-      next: (response) => {
-        console.log(response.body)
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  completeRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        //this.submitAnswers();
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton =
-        await this.googleAuthService.initializeGoogleButton('google-signin-button');
-
-      setupButton((credential) => this.handleGoogleCredential(credential));
-
-      // só ativa o botão se tudo correr bem
-      this.googleAuthReady = true;
-
-    } catch (error) {
-      this.googleAuthReady = false;
-
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
-  private handleGoogleCredential(googleCredential: string): void {
-    this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá";
-      this.showLoading = true;
-    });
-
-    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.ngZone.run(() => {
-          //this.submitAnswers();
-          this.showLoading = false;
-          this.displayModalLogin = false;
-          document.body.classList.remove('no-scroll');
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(sub);
-  }
-
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
-    setTimeout(() => {
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
-  }
-
-  onCloseLoginPopout() {
-    this.displayModalLogin = false;
-    document.body.classList.remove('no-scroll');
-  }
-
   get editing() {
     return Boolean(this.comment.id);
   }
@@ -1781,13 +1626,7 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
-      //this.action = 'comment';
-      this.showComments = false;
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -1873,11 +1712,7 @@ export class QuizzQuestionsComponent implements OnInit {
     }
 
     if (!this.isUserLoggedIn) {
-      this.displayModalLogin = true;
-      setTimeout(() => {
-        this.initializeGoogleAuth();
-      }, 100); // Espera para o botão estar no DOM
-      return;
+      this.openLogin();
     }
   }
 
@@ -2135,11 +1970,7 @@ export class QuizzQuestionsComponent implements OnInit {
       return;
     }
 
-    this.displayModalLogin = true;
-    setTimeout(() => {
-      this.displayModalUpgradePlan = false;
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
+    this.openLogin();
   }
 
   upgradePlan() {
@@ -2351,6 +2182,10 @@ export class QuizzQuestionsComponent implements OnInit {
     if (percent >= 70) return 'Bom desempenho';
     if (percent >= 50) return 'Desempenho médio';
     return 'Fraco desempenho';
+  }
+
+  openLogin() {
+    this.authModalService.open();
   }
 
   private sendErrorNotification(message: string): void {

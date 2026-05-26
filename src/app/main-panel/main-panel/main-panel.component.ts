@@ -99,9 +99,12 @@ export class MainPanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.title.setTitle('Main painel page');
-    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    this.title.setTitle('Explorer page');
+
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
 
     this.getChallenges();
     if (this.isUserLoggedIn) {
@@ -121,6 +124,10 @@ export class MainPanelComponent implements OnInit {
   openLogin() {
     this.authModalService.open();
   }
+
+  //closeLogin() {
+  //  this.authModalService.close();
+  //}
 
   getChallenges(pagina: number = 0): void {
 

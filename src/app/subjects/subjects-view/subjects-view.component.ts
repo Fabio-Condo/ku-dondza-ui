@@ -1,13 +1,11 @@
-import { Component, NgZone, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SubjectsService } from '../subjects.service';
-import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'src/app/core/model/Subject';
 import { User } from 'src/app/core/model/User';
-import { Subscription } from 'rxjs';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { Role } from 'src/app/enum/role.enum';
@@ -21,6 +19,7 @@ import { WalletService } from 'src/app/core/wallets/answers.service';
 import { NgForm } from '@angular/forms';
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
+import { AuthModalService } from 'src/app/core/auth-modal.service';
 
 @Component({
   selector: 'app-subjects-view',
@@ -42,20 +41,11 @@ export class SubjectsViewComponent {
   //selectedContent!: TopicContent;
   @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef | undefined;
 
-  user = new User();
-  activeTab: number = 1;
-  step: 'email' | 'otp' = 'email';  // Passos para exibir o formulário de email ou OTP
-  otp: string = '';
-
   expandedTopics: number[] = [];
 
   //onlineCourseContent: OnlineCourseContent = new OnlineCourseContent();
   selectedTopicContent: TopicContent = new TopicContent();
   //showLesson: boolean = false;
-
-  private subscriptions: Subscription[] = [];
-
-  displayModalLogin: boolean = false;
 
   wallet: Wallet = new Wallet();
   userWallets: Wallet[] = [];
@@ -69,8 +59,7 @@ export class SubjectsViewComponent {
   googleAuthReady = true;
 
   constructor(
-    private ngZone: NgZone,
-    private googleAuthService: GoogleAuthService,
+    private authModalService: AuthModalService,
     private subjectsService: SubjectsService,
     private walletService: WalletService,
     private topicContentService: TopicContentService,
@@ -84,8 +73,13 @@ export class SubjectsViewComponent {
 
   ngOnInit(): void {
     this.title.setTitle('Subject view page');
-    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-    this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    //  this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    //  this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
 
     const subjectId = this.route.snapshot.params['id'];
     if (subjectId) {
@@ -354,146 +348,6 @@ export class SubjectsViewComponent {
     return this.authenticationService.getUserFromLocalCache().role;
   }
 
-  sendOtp() {
-    this.showLoading = true;
-    this.authenticationService.generateOtp(this.user.email).subscribe({
-      next: () => {
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  validateOtp() {
-    this.showLoading = true;
-    this.authenticationService.validateOtp(this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.getSubjectBySubjectId(this.subject.subjectId);
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  startRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.startRegistrationViaOtp(this.user.email).subscribe({
-      next: (response) => {
-        console.log(response.body)
-        this.step = 'otp';
-        this.showLoading = false;
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  completeRegistrationViaOtp() {
-    this.showLoading = true;
-    this.authenticationService.completeRegistrationViaOtp(this.user.fullName, this.user.email, this.otp).subscribe({
-      next: (response) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.getSubjectBySubjectId(this.subject.subjectId);
-        this.showLoading = false;
-        this.displayModalLogin = false;
-        document.body.classList.remove('no-scroll');
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    });
-  }
-
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton =
-        await this.googleAuthService.initializeGoogleButton('google-signin-button');
-
-      setupButton((credential) => this.handleGoogleCredential(credential));
-
-      // só ativa o botão se tudo correr bem
-      this.googleAuthReady = true;
-
-    } catch (error) {
-      this.googleAuthReady = false;
-
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
-  private handleGoogleCredential(googleCredential: string): void {
-    this.ngZone.run(() => {
-      this.loadingMessage = "Estamos quase lá";
-      this.showLoading = true;
-    });
-
-    const sub = this.authenticationService.loginWithGoogle(googleCredential).subscribe({
-      next: (response: HttpResponse<User>) => {
-        const token = response.headers.get(HeaderType.JWT_TOKEN);
-        this.authenticationService.saveToken(token);
-        this.authenticationService.addUserToLocalCache(response.body);
-        this.authenticationService.notifyLoginStatus(true);
-        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-        this.loggedUser = this.authenticationService.getUserFromLocalCache();
-
-        this.ngZone.run(() => {
-          this.getSubjectBySubjectId(this.subject.subjectId);
-          this.showLoading = false;
-          this.displayModalLogin = false;
-          document.body.classList.remove('no-scroll');
-        });
-      },
-      error: (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error?.message || 'Falha na autenticação com Google');
-        this.showLoading = false;
-      }
-    });
-
-    this.subscriptions.push(sub);
-  }
-
-  setActiveTab(tabIndex: number) {
-    this.activeTab = tabIndex;
-    setTimeout(() => {
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
-  }
-
-  onCloseLoginPopout() {
-    this.displayModalLogin = false;
-    document.body.classList.remove('no-scroll');
-  }
-
   getWalletsByUser(userId: number): void {
     this.loadingMessage = "Obtendo dados"
     this.showLoading = true;
@@ -563,18 +417,16 @@ export class SubjectsViewComponent {
     );
   }
 
+  openLogin() {
+    this.authModalService.open();
+  }
+
   onUpgradePlan(): void {
     if (this.isUserLoggedIn) {
-      //this.upgradePlan();
       this.openModalPaymentOptions();
       return;
     }
-
-    this.displayModalLogin = true;
-    setTimeout(() => {
-      this.displayModalUpgradePlan = false;
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
+    this.openLogin();
   }
 
   upgradePlan() {
