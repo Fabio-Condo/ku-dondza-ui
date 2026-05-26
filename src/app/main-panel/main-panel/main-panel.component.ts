@@ -472,7 +472,6 @@ export class MainPanelComponent implements OnInit {
 
     const remainingHours = challenge.remainingHours ?? 0;
 
-    // Já submeteu enquanto ainda está activo
     return (
       challenge.hasCurrentUserSubmitted === true &&
       remainingHours > 0
