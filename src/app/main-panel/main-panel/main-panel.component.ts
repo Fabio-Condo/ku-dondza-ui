@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, ElementRef, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -25,6 +25,8 @@ import { QuizService } from 'src/app/quiz/quiz.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { evaluate } from 'mathjs'; //npm install mathjs
+import { GoogleAuthServiceV2 } from 'src/app/users/google-auth.service';
+import { HeaderType } from 'src/app/enum/header-type.enum';
 declare const MathJax: any;
 
 @Component({
@@ -37,6 +39,8 @@ export class MainPanelComponent implements OnInit {
   //showLoading = false;
   retryVisible: boolean = false;
   loadingMessage = 'Carregando';
+
+  isGoogleLoading: boolean = false;
 
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
@@ -111,8 +115,10 @@ export class MainPanelComponent implements OnInit {
   showLoadingProgress: boolean = false;
 
   constructor(
+    private googleAuthService: GoogleAuthServiceV2,
     private authModalService: AuthModalService,
     private authenticationService: AuthenticationService,
+    private ngZone: NgZone,
     private challengeService: ChallengeService,
     private questionService: QuestionService,
     private subjectsService: SubjectsService,
@@ -142,6 +148,8 @@ export class MainPanelComponent implements OnInit {
     this.getQuizzes();
 
     this.scrollToTop();
+
+    this.loginWithGoogleOnTap();
   }
 
   scrollToTop() {
@@ -155,6 +163,60 @@ export class MainPanelComponent implements OnInit {
   //closeLogin() {
   //  this.authModalService.close();
   //}
+
+  loginWithGoogleOnTap() {
+
+    if(this.isUserLoggedIn) {
+      return;
+    }
+
+    this.isGoogleLoading = true;
+
+    this.googleAuthService.showOneTap((credential) => {
+      this.handleGoogleCredential(credential);
+      this.isGoogleLoading = false;
+    });
+
+    // fallback de segurança (caso user feche popup)
+    setTimeout(() => {
+      this.isGoogleLoading = false;
+    }, 5000);
+  }
+
+  private handleGoogleCredential(credential: string) {
+
+    this.ngZone.run(() => {
+    //  this.showLoading = true;
+    });
+
+    this.authenticationService.loginWithGoogle(credential)
+      .subscribe({
+        next: (res: HttpResponse<User>) => {
+
+          const token = res.headers.get(HeaderType.JWT_TOKEN);
+          this.authenticationService.saveToken(token);
+          this.authenticationService.addUserToLocalCache(res.body);
+          this.authenticationService.notifyLoginStatus(true);
+          this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+          this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+          this.authModalService.close();
+          //this.user = new User();
+
+          this.ngZone.run(() => {
+            // this.showLoading = false;
+            this.authModalService.close();
+          });
+        },
+        error: (err: HttpErrorResponse) => {
+          // this.showLoading = false;
+          this.messageService.add({
+            severity: 'error',
+            detail: err.error?.message || 'Erro login Google'
+          });
+        }
+      });
+  }
 
   getChallenges(pagina: number = 0): void {
 
