@@ -1443,9 +1443,6 @@
 
         /* ────────────────────────────────────────
            WRAPPER DA IMAGEM / CANVAS
-           Sempre quadrado 140×140 px — em todas as
-           resoluções. No mobile centra-se via o
-           align-items: center do pai.
         ──────────────────────────────────────── */
         .ex-card-img-wrap {
             flex-shrink: 0;
@@ -1503,9 +1500,6 @@
 
         /* ────────────────────────────────────────
            COLUNA DE CONTEÚDO (texto + footer)
-           Quando há imagem, ocupa o espaço restante.
-           Em mobile, largura total para não ficar
-           espremido ao lado da imagem centrada.
         ──────────────────────────────────────── */
         .ex-card-content {
             flex: 1;
@@ -1632,6 +1626,149 @@
 
         .ex-answer-btn.ex-answered svg {
             stroke: #059669;
+        }
+
+
+        /* ══════════════════════════════════════
+           ── EXERCÍCIOS DO DIA — Desktop improvements
+           Apenas ex-card-content e elementos relacionados
+           Mobile preservado; melhorias a partir de ≥700px
+        ══════════════════════════════════════ */
+
+        @media (min-width: 700px) {
+
+            /* Card: hover mais sofisticado */
+            .ex-card {
+                border-radius: 18px;
+                transition: border-color .2s, box-shadow .25s, transform .18s cubic-bezier(.34, 1.56, .64, 1);
+            }
+
+            .ex-card:hover {
+                box-shadow: 0 8px 28px rgba(67, 97, 238, .10);
+                transform: translateY(-2px);
+            }
+
+            /* Header: fundo subtil e padding generoso */
+            .ex-card-header {
+                padding: 14px 20px 13px;
+                background: #fafbff;
+                border-bottom: 1px solid #eef1f8;
+            }
+
+            /* Número: ligeiramente maior */
+            .ex-card-num {
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                font-size: 11.5px;
+            }
+
+            /* Body padding */
+            .ex-card-body {
+                padding: 20px;
+            }
+
+            .ex-card-body.has-image {
+                gap: 20px;
+                align-items: flex-start;
+            }
+
+            /* Coluna de conteúdo: usa altura total para pinning do footer */
+            .ex-card-content {
+                justify-content: space-between;
+                min-height: 140px;
+            }
+
+            /* Enunciado: leitura mais confortável */
+            .ex-card-statement {
+                font-size: 14.5px;
+                line-height: 1.78;
+                color: #2d3f58;
+                margin-bottom: 0;
+                letter-spacing: -.01em;
+                flex: 1;
+            }
+
+            /* Footer: separador visual limpo, sem wrap */
+            .ex-card-footer {
+                flex-wrap: nowrap;
+                align-items: center;
+                padding-top: 14px;
+                border-top: 1px solid #f1f5f9;
+                margin-top: 16px;
+                gap: 14px;
+            }
+
+            .ex-footer-meta {
+                gap: 8px;
+            }
+
+            .ex-footer-meta-item {
+                font-size: 11.5px;
+                color: #7c8eaa;
+                gap: 5px;
+            }
+
+            .ex-footer-meta-item svg {
+                width: 12px;
+                height: 12px;
+                stroke: #a0b0c8;
+            }
+
+            .ex-footer-sep {
+                width: 4px;
+                height: 4px;
+                background: #dde3ed;
+            }
+
+            /* Botão Responder: mais refinado */
+            .ex-answer-btn {
+                padding: 10px 20px;
+                font-size: 13px;
+                border-radius: 11px;
+                letter-spacing: -.01em;
+                box-shadow: 0 3px 12px rgba(67, 97, 238, .25);
+            }
+
+            .ex-answer-btn:hover {
+                box-shadow: 0 6px 18px rgba(67, 97, 238, .32);
+                transform: translateY(-2px);
+            }
+
+            .ex-answer-btn.ex-answered {
+                padding: 10px 20px;
+            }
+        }
+
+        /* Large desktop */
+        @media (min-width: 900px) {
+
+            .ex-card-header {
+                padding: 15px 24px 14px;
+            }
+
+            .ex-card-body {
+                padding: 22px 24px;
+            }
+
+            .ex-card-body.has-image {
+                gap: 24px;
+            }
+
+            .ex-card-statement {
+                font-size: 15px;
+                line-height: 1.8;
+            }
+
+            .ex-card-footer {
+                padding-top: 16px;
+                margin-top: 18px;
+            }
+
+            .ex-answer-btn {
+                padding: 11px 22px;
+                font-size: 13.5px;
+            }
         }
     </style>
 </head>
@@ -1929,8 +2066,7 @@
                 </div>
 
                 <!-- Canvas para expressões matemáticas -->
-                <div class="ex-card-img-wrap"
-                    *ngIf="!question.urlFile && question.mathExpressions.length > 0">
+                <div class="ex-card-img-wrap" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
                     <canvas #canvas width="400" height="400" class="math-canvas"></canvas>
                 </div>
 
