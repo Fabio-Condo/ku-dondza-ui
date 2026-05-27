@@ -1268,40 +1268,6 @@
             gap: 12px;
         }
 
-        /* Barra de progresso diária */
-        .ex-day-progress-bar-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 4px;
-        }
-
-        .ex-day-progress-bar-track {
-            flex: 1;
-            height: 5px;
-            border-radius: 99px;
-            background: #f1f5f9;
-            overflow: hidden;
-        }
-
-        .ex-day-progress-bar-fill {
-            height: 100%;
-            border-radius: 99px;
-            background: linear-gradient(90deg, #4361ee 0%, #6c85f5 100%);
-            transition: width .4s ease;
-        }
-
-        .ex-day-progress-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #94a3b8;
-            white-space: nowrap;
-        }
-
-        .ex-day-progress-label span {
-            color: #4361ee;
-        }
-
         /* Card de exercício */
         .ex-card {
             background: #fff;
@@ -2028,18 +1994,8 @@
              EXERCÍCIOS DO DIA
         ══════════════════════════════════════ -->
         <div class="sec-head f5" *ngIf="questions && questions.length > 0">
-            <span class="sec-title">Exercícios do dia</span>
+            <span class="sec-title">Explorar exercícios</span>
             <a routerLink="/questions" class="sec-link">Ver todos</a>
-        </div>
-
-        <!-- Barra de progresso diária -->
-        <div class="ex-day-progress-bar-wrap f5" *ngIf="questions && questions.length > 0">
-            <div class="ex-day-progress-bar-track">
-                <div class="ex-day-progress-bar-fill" [style.width.%]="(3 / 10) * 100"></div>
-            </div>
-            <span class="ex-day-progress-label">
-                <span>{{ 3 }}</span>/{{ 10 }} feitos
-            </span>
         </div>
 
         <div class="ex-card" *ngFor="let question of questions; let rowIndex = index">
