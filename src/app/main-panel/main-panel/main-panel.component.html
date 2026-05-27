@@ -1412,23 +1412,45 @@
             stroke-linejoin: round;
         }
 
-        /* Corpo do card — layout lado a lado quando há imagem */
+        /* ────────────────────────────────────────
+           CORPO DO CARD — layout base (sem imagem)
+        ──────────────────────────────────────── */
         .ex-card-body {
             padding: 14px 16px;
         }
 
-        /* ── LAYOUT COM IMAGEM: imagem à esquerda, texto à direita ─────────── */
+        /* ────────────────────────────────────────
+           LAYOUT COM IMAGEM
+           Desktop  (≥700 px): imagem à esquerda, texto à direita (flex row)
+           Mobile   (<700 px): imagem centrada acima, texto abaixo  (flex column)
+        ──────────────────────────────────────── */
         .ex-card-body.has-image {
             display: flex;
             gap: 14px;
             align-items: flex-start;
+
+            /* Mobile-first: coluna com imagem centrada */
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Wrapper quadrado da imagem — tamanho fixo em desktop, full-width em mobile */
+        @media (min-width: 700px) {
+            .ex-card-body.has-image {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        /* ────────────────────────────────────────
+           WRAPPER DA IMAGEM / CANVAS
+           Sempre quadrado 140×140 px — em todas as
+           resoluções. No mobile centra-se via o
+           align-items: center do pai.
+        ──────────────────────────────────────── */
         .ex-card-img-wrap {
             flex-shrink: 0;
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 10px;
             overflow: hidden;
             border: 1px solid #e8edf2;
@@ -1441,48 +1463,6 @@
         .math-canvas {
             max-width: 100%;
             display: block;
-        }
-
-        /* Em telas muito pequenas, a imagem ocupa largura total acima do texto */
-        @media (max-width: 479px) {
-            .ex-card-body.has-image {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .ex-card-img-wrap {
-                width: 100%;
-                /* Mantém proporção 1:1 com padding-top trick */
-                height: 0;
-                padding-top: 56.25%;
-                /* 16:9 em mobile para não ocupar demais */
-                position: relative;
-                border-radius: 10px;
-            }
-
-            .ex-card-img-wrap img,
-            .ex-card-img-placeholder-inner {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-            }
-        }
-
-        /* Em telas médias, imagem um pouco maior */
-        @media (min-width: 480px) and (max-width: 699px) {
-            .ex-card-img-wrap {
-                width: 100px;
-                height: 100px;
-            }
-        }
-
-        /* Em telas largas, imagem maior */
-        @media (min-width: 700px) {
-            .ex-card-img-wrap {
-                width: 140px;
-                height: 140px;
-            }
         }
 
         .ex-card-img-wrap img {
@@ -1521,10 +1501,16 @@
             padding: 0 8px;
         }
 
-        /* Coluna de conteúdo (texto + footer) quando há imagem */
+        /* ────────────────────────────────────────
+           COLUNA DE CONTEÚDO (texto + footer)
+           Quando há imagem, ocupa o espaço restante.
+           Em mobile, largura total para não ficar
+           espremido ao lado da imagem centrada.
+        ──────────────────────────────────────── */
         .ex-card-content {
             flex: 1;
             min-width: 0;
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 0;
@@ -1919,7 +1905,6 @@
             </span>
         </div>
 
-        <!-- ─── Exercício 2 — COM imagem quadrada (Física, Difícil) ─── -->
         <div class="ex-card" *ngFor="let question of questions; let rowIndex = index">
             <div class="ex-card-header">
                 <div class="ex-card-num">{{ rowIndex + 1 }}</div>
@@ -1927,16 +1912,11 @@
                     <span class="ex-tag ext-subject">{{ question.topic.subject.name }}</span>
                     <span class="ex-tag ext-difficulty-hard">{{ getType(question.difficultyLevel) }}</span>
                     <span class="ex-tag ext-topic">{{ question.topic.name }}</span>
-                    <!--<span class="ex-tag ext-xp">+10 XP</span>-->
                 </div>
             </div>
-            <!--
-                    Layout com imagem: classe "has-image" activa o flex side-by-side.
-                    Em produção substituir .ex-card-img-placeholder-inner pelo <img> real:
-                    <div class="ex-card-img-wrap"><img [src]="exercise.imageUrl" [alt]="exercise.title" /></div>
-                -->
 
             <div class="ex-card-body has-image">
+                <!-- Imagem real (quando existe urlFile e não há expressões matemáticas) -->
                 <div class="ex-card-img-wrap" *ngIf="question.urlFile && question.mathExpressions.length == 0">
                     <div class="ex-card-img-placeholder-inner">
                         <svg viewBox="0 0 24 24">
@@ -1948,24 +1928,14 @@
                     </div>
                 </div>
 
+                <!-- Canvas para expressões matemáticas -->
                 <div class="ex-card-img-wrap"
                     *ngIf="!question.urlFile && question.mathExpressions.length > 0">
                     <canvas #canvas width="400" height="400" class="math-canvas"></canvas>
                 </div>
 
-                <!--
-                <div class="ex-card-img-wrap" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-                    <canvas #canvas width="400" height="400"></canvas>
-                </div>
-                -->
-
                 <div class="ex-card-content">
                     <p class="ex-card-statement">
-                        <!--
-                        Um bloco de <strong>2 kg</strong> é puxado por uma força horizontal de <strong>10 N</strong>
-                        sobre uma superfície com coeficiente de atrito cinético <strong>μ = 0,3</strong>.
-                        Considerando <strong>g = 10 m/s²</strong>, qual é a aceleração resultante do bloco?
-                        -->
                         {{ question.text }}
                     </p>
                     <div class="ex-card-footer">
@@ -1995,15 +1965,6 @@
                             </svg>
                             Responder
                         </button>
-
-                        <!--
-                        <button class="ex-answer-btn ex-answered" disabled>
-                            <svg viewBox="0 0 24 24">
-                                <path d="M5 12l4 4L19 7" />
-                            </svg>
-                            Respondido
-                        </button>
-                        -->
                     </div>
                 </div>
             </div>
