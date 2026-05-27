@@ -1901,7 +1901,7 @@
         ══════════════════════════════════════ -->
         <div class="sec-head f5" *ngIf="questions && questions.length > 0">
             <span class="sec-title">Exercícios do dia</span>
-            <a routerLink="/exercicios" class="sec-link">Ver todos</a>
+            <a routerLink="/questions" class="sec-link">Ver todos</a>
         </div>
 
         <!-- Barra de progresso diária -->
@@ -1915,9 +1915,9 @@
         </div>
 
         <!-- ─── Exercício 2 — COM imagem quadrada (Física, Difícil) ─── -->
-        <div class="ex-card" *ngFor="let question of questions">
+        <div class="ex-card" *ngFor="let question of questions; let rowIndex = index" >
             <div class="ex-card-header">
-                <div class="ex-card-num">2</div>
+                <div class="ex-card-num">{{ rowIndex + 1 }}</div>
                 <div class="ex-card-tags">
                     <span class="ex-tag ext-subject">{{ question.topic.subject.name }}</span>
                     <span class="ex-tag ext-difficulty-hard">{{ getType(question.difficultyLevel) }}</span>
