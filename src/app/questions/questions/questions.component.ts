@@ -18,11 +18,12 @@ import { MathExpression } from 'src/app/core/model/MathExpression';
 import { Title } from '@angular/platform-browser';
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
-import { evaluate } from 'mathjs'; //npm install mathjs
-declare const MathJax: any;
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
 import { AuthModalService } from 'src/app/core/auth-modal.service';
+import { evaluate } from 'mathjs'; //npm install mathjs
+declare const MathJax: any;
+
 
 @Component({
   selector: 'app-questions',

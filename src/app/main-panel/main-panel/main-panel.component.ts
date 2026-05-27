@@ -9,18 +9,22 @@ import { AuthModalService } from 'src/app/core/auth-modal.service';
 import { ChallengeFilter } from 'src/app/core/interface/ChallengeFilter';
 import { ExameFilter } from 'src/app/core/interface/ExameFilter';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { SubjectFilter } from 'src/app/core/interface/SubjectFilter';
 import { Challenge } from 'src/app/core/model/Challenge';
 import { Exam } from 'src/app/core/model/Exame';
+import { Question } from 'src/app/core/model/Question';
 import { Quiz } from 'src/app/core/model/Quiz';
 import { Subject } from 'src/app/core/model/Subject';
 import { SubjectProgressDTO } from 'src/app/core/model/SubjectProgressDTO';
 import { User } from 'src/app/core/model/User';
 import { Role } from 'src/app/enum/role.enum';
 import { ExamesService } from 'src/app/exames/exames.service';
+import { QuestionService } from 'src/app/questions/question.service';
 import { QuizService } from 'src/app/quiz/quiz.service';
 import { SubjectsService } from 'src/app/subjects/subjects.service';
 import { AuthenticationService } from 'src/app/users/authentication.service';
+declare const MathJax: any;
 
 @Component({
   selector: 'app-main-panel',
@@ -85,6 +89,18 @@ export class MainPanelComponent implements OnInit {
     ordenamento: 'id,asc'
   };
 
+  // Questions
+  questions: Question[] = [];
+  totalQuestions: number = 0;
+  showLoadingQuestions: boolean = false;
+
+  questionFilter: QuestionFilter = {
+    page: 0,
+    itemsPerPage: 3,
+    sort: 'id,desc'
+  };
+
+
   // Subject Progress
   subjectsProgress: SubjectProgressDTO[] = [];
   showLoadingProgress: boolean = false;
@@ -93,6 +109,7 @@ export class MainPanelComponent implements OnInit {
     private authModalService: AuthModalService,
     private authenticationService: AuthenticationService,
     private challengeService: ChallengeService,
+    private questionService: QuestionService,
     private subjectsService: SubjectsService,
     private quizService: QuizService,
     private examesService: ExamesService,
@@ -114,6 +131,7 @@ export class MainPanelComponent implements OnInit {
     //  this.getUserProgress();
     //}
     this.getUserProgress();
+    this.getQuestions
     this.getCourses();
     this.getExames();
     this.getQuizzes();
@@ -355,6 +373,66 @@ export class MainPanelComponent implements OnInit {
         }
       }
     );
+  }
+
+  getQuestions(pagina: number = 0): void {
+    this.questionFilter.userId = 0;
+
+    if (!this.loggedUser) {
+      this.loggedUser = new User();
+      this.loggedUser.id = 0;
+    }
+
+    this.loadingMessage = "Carregando dados"
+    this.showLoadingQuestions = true;
+    this.questionFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
+
+    this.questionService.getQuestions(this.questionFilter, this.loggedUser.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (error.status && error.status >= 400 && error.status < 500) {
+              throw error;
+            }
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount =>
+            timer(Math.pow(2, retryCount) * 1000) // 2s → 4s → 8s
+          )
+        )
+      )
+    ).subscribe(
+      (dados: IApiResponse<Question>) => {
+        this.questions = dados.content
+        this.totalRecords = dados.totalElements;
+        this.renderMathExpressions();
+        if (this.totalQuestions == 0) {
+          this.totalQuestions = dados.totalElements;
+        }
+        this.showLoadingQuestions = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoadingQuestions = false;
+        this.retryVisible = true;
+        if (!navigator.onLine) {
+          this.sendErrorNotification("Você está sem conexão com a internet.");
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      }
+    );
+  }
+
+  // Método para renderizar expressões matemáticas
+  renderMathExpressions(): void {
+    this.showLoadingQuestions = true;
+    setTimeout(() => {
+      MathJax.typesetPromise();
+    }, 0);
+    this.showLoadingQuestions = false;
   }
 
   onDownload(exam: Exam) {
