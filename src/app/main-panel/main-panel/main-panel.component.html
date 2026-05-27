@@ -1438,6 +1438,11 @@
             justify-content: center;
         }
 
+        .math-canvas {
+            max-width: 100%;
+            display: block;
+        }
+
         /* Em telas muito pequenas, a imagem ocupa largura total acima do texto */
         @media (max-width: 479px) {
             .ex-card-body.has-image {
@@ -1915,7 +1920,7 @@
         </div>
 
         <!-- ─── Exercício 2 — COM imagem quadrada (Física, Difícil) ─── -->
-        <div class="ex-card" *ngFor="let question of questions; let rowIndex = index" >
+        <div class="ex-card" *ngFor="let question of questions; let rowIndex = index">
             <div class="ex-card-header">
                 <div class="ex-card-num">{{ rowIndex + 1 }}</div>
                 <div class="ex-card-tags">
@@ -1932,7 +1937,7 @@
                 -->
 
             <div class="ex-card-body has-image">
-                <div class="ex-card-img-wrap" *ngIf="question.urlFile;">
+                <div class="ex-card-img-wrap" *ngIf="question.urlFile && question.mathExpressions.length == 0">
                     <div class="ex-card-img-placeholder-inner">
                         <svg viewBox="0 0 24 24">
                             <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -1942,6 +1947,18 @@
                         <span>Diagrama do enunciado</span>
                     </div>
                 </div>
+
+                <div class="ex-card-img-wrap"
+                    *ngIf="!question.urlFile && question.mathExpressions.length > 0">
+                    <canvas #canvas width="400" height="400" class="math-canvas"></canvas>
+                </div>
+
+                <!--
+                <div class="ex-card-img-wrap" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
+                    <canvas #canvas width="400" height="400"></canvas>
+                </div>
+                -->
+
                 <div class="ex-card-content">
                     <p class="ex-card-statement">
                         <!--
@@ -1949,7 +1966,7 @@
                         sobre uma superfície com coeficiente de atrito cinético <strong>μ = 0,3</strong>.
                         Considerando <strong>g = 10 m/s²</strong>, qual é a aceleração resultante do bloco?
                         -->
-                        {{ question.text }} 
+                        {{ question.text }}
                     </p>
                     <div class="ex-card-footer">
                         <div class="ex-footer-meta">
