@@ -97,7 +97,7 @@ export class MainPanelComponent implements OnInit {
   questionFilter: QuestionFilter = {
     page: 0,
     itemsPerPage: 3,
-    sort: 'id,desc'
+    sort: 'id,asc'
   };
 
 
@@ -131,7 +131,7 @@ export class MainPanelComponent implements OnInit {
     //  this.getUserProgress();
     //}
     this.getUserProgress();
-    this.getQuestions
+    this.getQuestions(0);
     this.getCourses();
     this.getExames();
     this.getQuizzes();
@@ -376,6 +376,8 @@ export class MainPanelComponent implements OnInit {
   }
 
   getQuestions(pagina: number = 0): void {
+
+    console.log('Buscando questões...');
     this.questionFilter.userId = 0;
 
     if (!this.loggedUser) {
@@ -383,7 +385,7 @@ export class MainPanelComponent implements OnInit {
       this.loggedUser.id = 0;
     }
 
-    this.loadingMessage = "Carregando dados"
+    this.loadingMessage = "Carregando questões"
     this.showLoadingQuestions = true;
     this.questionFilter.page = this.currentPage - 1; // Ajuste para o padrão de paginação começando em 0
 
@@ -426,6 +428,23 @@ export class MainPanelComponent implements OnInit {
     );
   }
 
+  goToQuestion(questionId: string) {
+    this.router.navigate(['/questions', questionId], {
+      state: { from: 'questions' }
+    });
+  }
+
+  getFormattedText(text: string): string {
+    // Negrito: **texto** → <strong>texto</strong>
+    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto* → <em>texto</em>
+    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    // Quebras de linha: \n → <br>
+    return textoFormatado.replace(/\n/g, '<br>');
+  }
+
   // Método para renderizar expressões matemáticas
   renderMathExpressions(): void {
     this.showLoadingQuestions = true;
@@ -433,6 +452,19 @@ export class MainPanelComponent implements OnInit {
       MathJax.typesetPromise();
     }, 0);
     this.showLoadingQuestions = false;
+  }
+
+  getType(type: string): string {
+    switch (type) {
+      case 'BEGINNER':
+        return 'Iniciante';
+      case 'INTERMEDIATE':
+        return 'Intermediário';
+      case 'ADVANCED':
+        return 'Avançado';
+      default:
+        return '';
+    }
   }
 
   onDownload(exam: Exam) {
