@@ -710,7 +710,7 @@ export class MainPanelComponent implements OnInit {
 
     // Já submeteu
     if (challenge.hasCurrentUserSubmitted === true) {
-      this.sendErrorNotification("Já identificamos que você submeteu este desafio. Aguarde ele finalizar para ver os resultados!");
+      this.sendErrorNotification("Identificamos que você submeteu este desafio. Aguarde ele finalizar para ver os resultados!");
       return;
     }
 
