@@ -413,8 +413,9 @@
         /* ── Bloco de imagem / canvas matemático ─────── */
 
         .ex-img-wrap {
-            width: 100%;
-            height: 120px;
+            flex-shrink: 0;
+            width: 140px;
+            height: 140px;
             border-radius: 10px;
             overflow: hidden;
             border: 1px solid #e8edf2;
@@ -422,7 +423,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            margin: 0 auto;
         }
 
         .ex-img-wrap img {
@@ -1512,15 +1513,17 @@
                     </button>
 
                     <button class="tab-btn" *ngFor="let subject of subjects"
-                        [class.active]="filtro.subject === subject.id"
-                        (click)="filtro.subject = subject.id; findAll()">
+                        [class.active]="filtro.subject === subject.id" (click)="filtro.subject = subject.id; findAll()">
 
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Matemática'">
-                            <path d="M4 4h16" /><path d="M4 4l8 8-8 8" /><path d="M4 20h16" />
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Química'">
                             <path d="M9 3h6" />
@@ -1537,14 +1540,18 @@
                             <path d="M7.5 9h9" />
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'História'">
-                            <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" />
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Geografia'">
-                            <circle cx="12" cy="12" r="9" /><path d="M3 12h18" />
-                            <path d="M12 3c3 3 3 15 0 18" /><path d="M12 3c-3 3-3 15 0 18" />
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Inglês'">
-                            <circle cx="12" cy="12" r="9" /><path d="M3 12h18" />
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
                             <path d="M12 3c3 3 3 15 0 18" />
                         </svg>
 
@@ -1564,8 +1571,7 @@
                         Filtrar
                     </button>
 
-                    <button class="btn-add-header" (click)="onAddNewQuestion()"
-                        *ngIf="isUserLoggedIn && isSuperAdmin">
+                    <button class="btn-add-header" (click)="onAddNewQuestion()" *ngIf="isUserLoggedIn && isSuperAdmin">
                         <svg viewBox="0 0 24 24">
                             <line x1="12" y1="5" x2="12" y2="19" />
                             <line x1="5" y1="12" x2="19" y2="12" />
@@ -1603,9 +1609,12 @@
                         </button>
                         <div class="dropdown" *ngIf="question.isAdminMenuOpen">
                             <a (click)="copyLink(question.questionId); closeDropdown(question)">Copiar link</a>
-                            <a (click)="shareOnSocial('whatsapp', question.questionId); closeDropdown(question)">Partilhar no WhatsApp</a>
-                            <a (click)="shareOnSocial('facebook', question.questionId); closeDropdown(question)">Partilhar no Facebook</a>
-                            <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar no LinkedIn</a>
+                            <a (click)="shareOnSocial('whatsapp', question.questionId); closeDropdown(question)">Partilhar
+                                no WhatsApp</a>
+                            <a (click)="shareOnSocial('facebook', question.questionId); closeDropdown(question)">Partilhar
+                                no Facebook</a>
+                            <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar
+                                no LinkedIn</a>
                             <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
                             <a (click)="onPriviewQuestion(question); closeDropdown(question)"
                                 *ngIf="isUserLoggedIn && isSuperAdmin">Pré-visualizar</a>
@@ -1647,7 +1656,8 @@
                     <div class="ex-meta">
                         <span class="ex-meta-item">
                             <svg viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" />
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M12 7v5l3 3" />
                             </svg>
                             ~2 min
                         </span>
@@ -1655,7 +1665,9 @@
                         <span class="ex-meta-item">
                             <svg viewBox="0 0 24 24">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                <path d="M14 2v6h6" /><path d="M8 13h8" /><path d="M8 17h5" />
+                                <path d="M14 2v6h6" />
+                                <path d="M8 13h8" />
+                                <path d="M8 17h5" />
                             </svg>
                             Múltipla escolha
                         </span>
@@ -1675,8 +1687,7 @@
                 <!-- Footer do card -->
                 <div class="card-footer">
                     <div class="footer-left">
-                        <button (click)="onSave(question)" class="bookmark-btn"
-                            [class.saved]="question.savedByUser">
+                        <button (click)="onSave(question)" class="bookmark-btn" [class.saved]="question.savedByUser">
                             <i class="pi" *ngIf="!question.showLoadingSave"
                                 [ngClass]="question.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
                             <i *ngIf="question.showLoadingSave" class="pi pi-spin pi-spinner-dotted"></i>
@@ -1736,8 +1747,7 @@
                 </button>
             </ng-container>
 
-            <button class="page-btn nav" (click)="nextPage()"
-                [disabled]="currentPage === totalPages() || showLoading">
+            <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
                 Seguinte
                 <svg viewBox="0 0 24 24">
                     <polyline points="9 18 15 12 9 6" />
@@ -1839,7 +1849,9 @@
                 </div>
                 <button type="button" class="btn-modal-secondary" (click)="limparCampos()">
                     <svg viewBox="0 0 24 24">
-                        <path d="M3 6h18" /><path d="M19 6l-1 14H6L5 6" /><path d="M8 6V4h8v2" />
+                        <path d="M3 6h18" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M8 6V4h8v2" />
                     </svg>
                     Limpar filtros
                 </button>
@@ -1869,13 +1881,14 @@
 
                 <div class="form-group">
                     <label>Texto da pergunta</label>
-                    <textarea id="text" name="text" [(ngModel)]="question.text" rows="4" required minlength="1"></textarea>
+                    <textarea id="text" name="text" [(ngModel)]="question.text" rows="4" required
+                        minlength="1"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="subject">Disciplina</label>
-                    <select id="subject" name="subject" [(ngModel)]="selectedSubject"
-                        (change)="getTopicsBySubjectId()" required>
+                    <select id="subject" name="subject" [(ngModel)]="selectedSubject" (change)="getTopicsBySubjectId()"
+                        required>
                         <option value="" disabled selected>Selecione a disciplina</option>
                         <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
                     </select>
@@ -1883,8 +1896,8 @@
 
                 <div class="form-group">
                     <label for="topic">Tópico</label>
-                    <select id="topic" name="topic" [(ngModel)]="question.topic.id"
-                        [disabled]="!selectedSubject" required>
+                    <select id="topic" name="topic" [(ngModel)]="question.topic.id" [disabled]="!selectedSubject"
+                        required>
                         <option value="" disabled selected>Selecione o tópico</option>
                         <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                     </select>
@@ -2036,8 +2049,7 @@
                     <textarea name="expression" [(ngModel)]="mathExpression.expression" rows="4" required
                         minlength="1"></textarea>
                 </div>
-                <button type="submit" class="submit-button"
-                    [disabled]="frmExpression.invalid">Confirmar</button>
+                <button type="submit" class="submit-button" [disabled]="frmExpression.invalid">Confirmar</button>
             </form>
         </div>
     </div>
@@ -2062,8 +2074,7 @@
                     <label>Texto</label>
                     <textarea name="designation" [(ngModel)]="answer.text" rows="4" required minlength="1"></textarea>
                 </div>
-                <button type="submit" class="submit-button"
-                    [disabled]="frmAnswer.invalid">Confirmar</button>
+                <button type="submit" class="submit-button" [disabled]="frmAnswer.invalid">Confirmar</button>
             </form>
         </div>
     </div>
@@ -2124,8 +2135,8 @@
 
             <div class="form-group">
                 <label for="ai-topic">Tópico</label>
-                <select id="ai-topic" name="ai-topic" [(ngModel)]="question.topic.id"
-                    [disabled]="!selectedSubject" required>
+                <select id="ai-topic" name="ai-topic" [(ngModel)]="question.topic.id" [disabled]="!selectedSubject"
+                    required>
                     <option value="" disabled selected>Selecione o tópico</option>
                     <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
                 </select>
@@ -2135,7 +2146,8 @@
                 <label for="optionsNumber">Número de opções</label>
                 <select id="optionsNumber" [(ngModel)]="numberOfOptions" name="optionsNumber" required>
                     <option value="" disabled selected>Selecione o número</option>
-                    <option *ngFor="let option of numberOfOptionsList" [value]="option.value">{{ option.label }}</option>
+                    <option *ngFor="let option of numberOfOptionsList" [value]="option.value">{{ option.label }}
+                    </option>
                 </select>
             </div>
 
