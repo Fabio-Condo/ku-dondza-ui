@@ -99,6 +99,9 @@ export class QuestionsComponent implements OnInit {
 
   selectQuestionOption: string = 'ALL_QUESTIONS';
 
+  pageSizeOptions = [5, 10, 20, 50]; // Opções para itens por página
+  maxVisibleButtons = 5; // Número máximo de botões visíveis (como no PrimeNG)
+
   questionFilterOptions = [
     { label: 'Mostrar todos', value: 'ALL_QUESTIONS' },
     { label: 'Mostrar salvos (favoritos)', value: 'MY_SAVED_QUESTIONS' },
@@ -128,7 +131,7 @@ export class QuestionsComponent implements OnInit {
 
   filtro: QuestionFilter = {
     page: 0,
-    itemsPerPage: 5,
+    itemsPerPage: 6,
     sort: 'id,desc'
   };
 
@@ -785,6 +788,90 @@ export class QuestionsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRegistros / this.filtro.itemsPerPage);
+  }
+
+  goToPage(page: number): void {
+    if (
+      page >= 1 &&
+      page <= this.totalPages() &&
+      page !== this.currentPage
+    ) {
+      this.currentPage = page;
+      this.findAll();
+    }
+  }
+
+  getVisiblePages(): number[] {
+    const total = this.totalPages();
+    const current = this.currentPage;
+
+    if (total <= 5) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    const pages: number[] = [];
+
+    // primeira página sempre aparece
+    pages.push(1);
+
+    // mostrar ... se estiver longe do início
+    if (current > 3) {
+      pages.push(-1);
+    }
+
+    // páginas ao redor da atual
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    // mostrar ... se estiver longe do fim
+    if (current < total - 2) {
+      pages.push(-1);
+    }
+
+    // última página sempre aparece
+    pages.push(total);
+
+    return pages;
+  }
+
+  /** Retorna a lista de páginas visíveis com reticências */
+  getPages(): (number | string)[] {
+    const total = this.totalPages();
+    const current = this.currentPage;
+    const max = this.maxVisibleButtons;
+
+    if (total <= max) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    const pages: (number | string)[] = [];
+
+    // Sempre mostrar a primeira página
+    pages.push(1);
+
+    if (current > 3) {
+      pages.push("...");
+    }
+
+    // Páginas ao redor da página atual
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (current < total - 2) {
+      pages.push("...");
+    }
+
+    // Sempre mostrar a última página
+    pages.push(total);
+
+    return pages;
   }
 
   formatTime(seconds: number): string {

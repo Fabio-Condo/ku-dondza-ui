@@ -38,6 +38,9 @@ export class QuizzesComponent implements OnInit {
   subjects: Subject[] = [];
   topics: Topic[] = [];
 
+  pageSizeOptions = [5, 10, 20, 50]; // Opções para itens por página
+  maxVisibleButtons = 5; // Número máximo de botões visíveis (como no PrimeNG)
+
   showAllTopicsMap: { [competitionId: number]: boolean } = {};
 
   loadingMessage = "Carregando"; // Alterar dinamicamente
@@ -260,9 +263,6 @@ export class QuizzesComponent implements OnInit {
       }
     });
   }
-
-  pageSizeOptions = [5, 10, 20, 50]; // Opções para itens por página
-  maxVisibleButtons = 5; // Número máximo de botões visíveis (como no PrimeNG)
 
   changePageSize(event: any): void {
     this.filter.itemsPerPage = +event.target.value;
