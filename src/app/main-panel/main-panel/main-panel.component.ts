@@ -106,7 +106,7 @@ export class MainPanelComponent implements OnInit {
   questionFilter: QuestionFilter = {
     highlighted: true,
     page: 0,
-    itemsPerPage: 3,
+    itemsPerPage: 2,
     sort: 'id,asc'
   };
 
