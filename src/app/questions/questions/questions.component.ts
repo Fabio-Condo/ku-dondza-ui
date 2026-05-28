@@ -889,16 +889,17 @@ export class QuestionsComponent implements OnInit {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
-  getDifficultyLevelValue(level: string) {
-    switch (level) {
-      case 'EASY':
-        return 'Fácil';
-      case 'MEDIUM':
-        return 'Médio';
-      case 'HARD':
-        return 'Dificil';
+  getDifficultyLevelType(type: string): string {
+    switch (type) {
+      case 'BEGINNER':
+        return 'Iniciante';
+      case 'INTERMEDIATE':
+        return 'Intermediário';
+      case 'ADVANCED':
+        return 'Avançado';
+      default:
+        return '';
     }
-    return '';
   }
 
   getFormattedText(text: string): string {
