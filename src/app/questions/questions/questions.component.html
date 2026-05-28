@@ -2750,7 +2750,7 @@
 
             <!-- Math canvas -->
             <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-                <canvas #canva width="400" height="400" class="preview-math-canvas"></canvas>
+                <canvas [attr.data-question-id]="question.id" #canva width="400" height="400" class="preview-math-canvas"></canvas>
             </div>
 
             <!-- Question text -->

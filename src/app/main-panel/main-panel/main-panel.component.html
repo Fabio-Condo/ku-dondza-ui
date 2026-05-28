@@ -2030,7 +2030,7 @@
 
                 <!-- Canvas para expressões matemáticas -->
                 <div class="ex-card-img-wrap" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-                    <canvas #canvas width="400" height="400" class="math-canvas"></canvas>
+                    <canvas [attr.data-question-id]="question.id" #canvas width="400" height="400" class="math-canvas"></canvas>
                 </div>
 
                 <div class="ex-card-content">
