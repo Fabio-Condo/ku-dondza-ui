@@ -93,7 +93,7 @@ export class QuestionsComponent implements OnInit {
   showOptions: boolean = false;
 
 
-  //@ViewChild('canvas', { static: false }) canvas!: ElementRef;
+  @ViewChild('canva', { static: false }) canva!: ElementRef;
 
   @ViewChildren('canvas') canvases!: QueryList<ElementRef<HTMLCanvasElement>>;
 
@@ -321,7 +321,7 @@ export class QuestionsComponent implements OnInit {
         this.questions = dados.content
         this.totalRegistros = dados.totalElements;
         this.renderMathExpressions();
-        this.renderFunctions();
+        this.renderFunctions_forList();
         if (this.totalQuestions == 0) {
           this.totalQuestions = dados.totalElements;
         }
@@ -1022,7 +1022,7 @@ export class QuestionsComponent implements OnInit {
     return this.selectedAnswers.hasOwnProperty(questionId);
   }
 
-  renderFunctions() {
+  renderFunctions_forList() {
 
     setTimeout(() => {
 
@@ -1168,10 +1168,9 @@ export class QuestionsComponent implements OnInit {
     }, 0);
   }
 
-  /*
   renderFunctions() {
     setTimeout(() => {
-      const canvas = this.canvas?.nativeElement;
+      const canvas = this.canva?.nativeElement;
       if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
 
       const ctx = canvas.getContext('2d');
@@ -1258,7 +1257,6 @@ export class QuestionsComponent implements OnInit {
       });
     }, 0);
   }
-  */
 
   getBadgeClass(category: string): string {
     switch (category) {

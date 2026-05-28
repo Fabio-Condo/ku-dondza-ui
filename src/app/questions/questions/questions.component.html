@@ -2102,7 +2102,9 @@
                                 no Facebook</a>
                             <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar
                                 no LinkedIn</a>
+                            <!--  
                             <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
+                            -->  
                             <a (click)="onPriviewQuestion(question); closeDropdown(question)"
                                 *ngIf="isUserLoggedIn && isSuperAdmin">Pré-visualizar</a>
                             <a (click)="onUpdateQuestion(question); closeDropdown(question)"
@@ -2724,7 +2726,7 @@
 
             <!-- Math canvas -->
             <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-                <canvas #canvas width="400" height="400" class="preview-math-canvas"></canvas>
+                <canvas #canva width="400" height="400" class="preview-math-canvas"></canvas>
             </div>
 
             <!-- Question text -->
@@ -2803,7 +2805,6 @@
                 </svg>
                 Adicionar nos campos de salvar
             </button>
-
         </div>
     </div>
 </div>
