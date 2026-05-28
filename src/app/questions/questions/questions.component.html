@@ -1435,6 +1435,474 @@
         }
 
         /* ══════════════════════════════════════
+           MODAL PREVIEW — espelho do exercício
+        ══════════════════════════════════════ */
+
+        .preview-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.25s ease;
+            backdrop-filter: blur(3px);
+            padding: 16px;
+        }
+
+        .preview-panel {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 780px;
+            max-height: 92vh;
+            overflow-y: auto;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+            animation: popIn 0.2s ease;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.96);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .preview-inner {
+            padding: 24px;
+        }
+
+        /* ── Identity bar — igual ao componente de visualização ── */
+
+        .quiz-identity-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-identity-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .quiz-identity-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .quiz-identity-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-identity-sub {
+            font-size: 11.5px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-identity-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Subject pill */
+        .quiz-subject-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            white-space: nowrap;
+        }
+
+        .quiz-subject-pill svg {
+            width: 10px;
+            height: 10px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* Close btn */
+        .btn-close-preview {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+
+        .btn-close-preview:hover {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .btn-close-preview svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+        }
+
+        /* ── Meta strip ── */
+
+        .ex-meta-strip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .ex-meta-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .ex-meta-tag svg {
+            width: 11px;
+            height: 11px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .emt-subject {
+            background: #eef2ff;
+            color: #4361ee;
+        }
+
+        .emt-topic {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .emt-time {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        /* ── Image ── */
+
+        .preview-img-wrap {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Math canvas */
+        .preview-math-canvas {
+            max-width: 60%;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto 20px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* ── Question text ── */
+
+        .preview-question-text {
+            font-size: 15px;
+            color: #0f172a;
+            line-height: 1.75;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .preview-topic-badge {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        /* ── Answers ── */
+
+        .preview-answers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .preview-answer-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 14px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .preview-answer-option:hover {
+            border-color: #4361ee;
+            background: #eff6ff;
+            transform: translateX(2px);
+        }
+
+        .preview-answer-letter {
+            background: #4361ee;
+            color: #fff;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 12px;
+            margin-top: 1px;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+        }
+
+        .preview-answer-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .preview-answer-option--selected {
+            border-color: #4361ee;
+            background: #eff6ff;
+        }
+
+        .preview-answer-option--correct {
+            background: #f0fdf4;
+            border-color: #16a34a;
+            color: #14532d;
+        }
+
+        .preview-answer-option--incorrect {
+            background: #fef2f2;
+            border-color: #dc2626;
+            color: #7f1d1d;
+        }
+
+        .preview-answer-option--correct::after {
+            content: '✓';
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+        .preview-answer-option--incorrect::after {
+            content: '✕';
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        /* ── Tip box ── */
+
+        .preview-tip-box {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+        }
+
+        /* ── Solution box ── */
+
+        .preview-solution-box {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+
+        .preview-toggle-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .preview-toggle-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .preview-chevron {
+            transition: transform 0.2s ease;
+            color: #475569;
+        }
+
+        .preview-chevron--rotated {
+            transform: rotate(180deg);
+        }
+
+        .preview-toggle-content {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.7;
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* ── Validate button ── */
+
+        .btn-validated {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+            margin-top: 16px;
+        }
+
+        .btn-validated:hover {
+            background: #d1fae5;
+        }
+
+        .btn-not-validated {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+            margin-top: 16px;
+        }
+
+        .btn-not-validated:hover {
+            background: #fee2e2;
+        }
+
+        /* ── Add to save fields btn ── */
+
+        .btn-add-to-save {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px;
+            background: #4361ee;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.28);
+            margin-top: 20px;
+        }
+
+        .btn-add-to-save:hover {
+            background: #2e4fd6;
+            transform: translateY(-1px);
+        }
+
+        /* ══════════════════════════════════════
            RESPONSIVIDADE
         ══════════════════════════════════════ */
 
@@ -1466,6 +1934,26 @@
 
             .fab {
                 display: flex;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .preview-panel {
+                border-radius: 20px 20px 0 0;
+                max-height: 95vh;
+            }
+
+            .preview-inner {
+                padding: 16px;
+            }
+
+            .preview-math-canvas {
+                max-width: 90%;
+            }
+
+            .preview-modal-overlay {
+                align-items: flex-end;
+                padding: 0;
             }
         }
     </style>
@@ -1522,8 +2010,7 @@
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path
-                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Química'">
                             <path d="M9 3h6" />
@@ -2168,6 +2655,155 @@
             <button type="button" class="submit-button" (click)="generateFromAI()" [disabled]="showLoading">
                 {{ showLoading ? 'Gerando...' : 'Gerar questão' }}
             </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     Modal: Pré-visualização — espelho do
+     componente de visualização de exercício
+══════════════════════════════════════ -->
+<div class="preview-modal-overlay" *ngIf="displayModalPriview">
+    <div class="preview-panel">
+        <div class="preview-inner">
+
+            <!-- Identity bar -->
+            <div class="quiz-identity-bar">
+                <div class="quiz-identity-left">
+                    <div class="quiz-identity-info">
+                        <span class="quiz-identity-name">Pré-visualização</span>
+                        <div class="quiz-identity-sub">
+                            <span>{{ question.topic.name }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="quiz-identity-right">
+                    <span class="quiz-subject-pill">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+                        {{ question.topic.subject.name }}
+                    </span>
+                    <button class="btn-close-preview" (click)="closePriview()" aria-label="Fechar pré-visualização">
+                        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Meta strip -->
+            <div class="ex-meta-strip">
+                <span class="ex-meta-tag emt-subject">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                        <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                    </svg>
+                    {{ question.topic.subject.name }}
+                </span>
+                <span class="ex-meta-tag emt-topic">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                        <line x1="7" y1="7" x2="7.01" y2="7" />
+                    </svg>
+                    {{ question.topic.name }}
+                </span>
+                <span class="ex-meta-tag emt-time">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v5l3 3" />
+                    </svg>
+                    {{ formatTime(question.timeLimit) }}
+                </span>
+            </div>
+
+            <!-- Image — quando existir -->
+            <div class="preview-img-wrap" *ngIf="question.urlFile && question.mathExpressions.length === 0">
+                <img [src]="question.urlFile" alt="Imagem do enunciado" />
+            </div>
+
+            <!-- Math canvas -->
+            <div class="graph-container" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
+                <canvas #canvas width="400" height="400" class="preview-math-canvas"></canvas>
+            </div>
+
+            <!-- Question text -->
+            <div class="preview-question-text" *ngIf="question.text"
+                [innerHTML]="getFormattedText(question.text)"></div>
+
+            <!-- Answer options -->
+            <div class="preview-answers-list">
+                <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
+                    'preview-answer-option--correct':   showCorrection && answer.correct,
+                    'preview-answer-option--incorrect': showCorrection && !answer.correct && isSelected(question.id, answer.id!),
+                    'preview-answer-option--selected':  isSelected(question.id, answer.id!)
+                }" class="preview-answer-option">
+                    <span class="preview-answer-letter">{{ getOptionLetter(i) }}</span>
+                    <input type="radio" name="preview-question-{{ question.id }}" [value]="answer.id"
+                        [checked]="isSelected(question.id, answer.id!)"
+                        (change)="captureUserAnswer(question.id, answer.id!)" [disabled]="showCorrection" />
+                    <p *ngIf="answer.text" [innerHTML]="getFormattedText(answer.text)"></p>
+                </label>
+            </div>
+
+            <div class="preview-topic-badge" *ngIf="question.topic">
+                <small>Tópico: {{ question.topic.name }}</small>
+            </div>
+
+            <!-- Dica -->
+            <div class="preview-tip-box">
+                <button class="preview-toggle-btn"
+                    (click)="question.showTip = !question.showTip; renderMathExpressions();">
+                    <span class="preview-toggle-title">Dica</span>
+                    <svg [class.preview-chevron--rotated]="question.showTip" class="preview-chevron" width="18"
+                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <p class="preview-toggle-content" *ngIf="question.tip && question.showTip"
+                    [innerHTML]="getFormattedText(question.tip)"></p>
+            </div>
+
+            <!-- Resolução -->
+            <div class="preview-solution-box">
+                <button class="preview-toggle-btn"
+                    (click)="question.showSolution = !question.showSolution; renderMathExpressions();">
+                    <span class="preview-toggle-title">Resolução</span>
+                    <svg [class.preview-chevron--rotated]="question.showSolution" class="preview-chevron" width="18"
+                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <p class="preview-toggle-content" *ngIf="question.solution && question.showSolution"
+                    [innerHTML]="getFormattedText(question.solution)"></p>
+            </div>
+
+            <!-- Validação (admin) -->
+            <div *ngIf="question.id">
+                <button *ngIf="isUserLoggedIn && isSuperAdmin && question.id"
+                    (click)="toggleValidatedStatus(question)"
+                    [ngClass]="question.validated ? 'btn-validated' : 'btn-not-validated'">
+                    <i [class]="'pi ' + (question.showLoadingValidation ? 'pi-spin pi-spinner-dotted' : (question.validated ? 'pi-check' : 'pi-times'))"></i>
+                    <span>
+                        {{ question.showLoadingValidation
+                            ? (question.validated ? 'Invalidando...' : 'Validando...')
+                            : (question.validated ? 'Validado' : 'Não validado') }}
+                    </span>
+                </button>
+            </div>
+
+            <!-- Adicionar nos campos de guardar (questão gerada por IA sem ID) -->
+            <button class="btn-add-to-save" *ngIf="!question.id" (click)="onSaveGeneratedQuestionFromAI()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Adicionar nos campos de salvar
+            </button>
+
         </div>
     </div>
 </div>
