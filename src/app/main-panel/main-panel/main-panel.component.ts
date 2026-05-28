@@ -166,7 +166,7 @@ export class MainPanelComponent implements OnInit {
 
   loginWithGoogleOnTap() {
 
-    if(this.isUserLoggedIn) {
+    if (this.isUserLoggedIn) {
       return;
     }
 
@@ -186,7 +186,7 @@ export class MainPanelComponent implements OnInit {
   private handleGoogleCredential(credential: string) {
 
     this.ngZone.run(() => {
-    //  this.showLoading = true;
+      //  this.showLoading = true;
     });
 
     this.authenticationService.loginWithGoogle(credential)
@@ -498,7 +498,9 @@ export class MainPanelComponent implements OnInit {
 
   goToQuestion(questionId: string) {
     this.router.navigate(['/questions', questionId], {
-      state: { from: 'questions' }
+      queryParams: {
+        from: 'main-panel'
+      }
     });
   }
 
@@ -687,7 +689,7 @@ export class MainPanelComponent implements OnInit {
     }, 0);
   }
 
-  getType(type: string): string {
+  getDifficultyLevelType(type: string): string {
     switch (type) {
       case 'BEGINNER':
         return 'Iniciante';

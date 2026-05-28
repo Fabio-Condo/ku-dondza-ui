@@ -187,6 +187,8 @@ export class QuestionViewComponent implements OnInit {
   goBack(): void {
     if (this.origem === 'topics' && this.topicId) {
       this.router.navigate(['/topics', this.topicId]);
+    } else if (this.origem === 'main-panel') {
+      this.router.navigate(['/main-panel']);
     } else if (this.origem === 'subjects' && this.subjectId) {
       this.router.navigate(['/subjects', this.subjectId]);
     } else {

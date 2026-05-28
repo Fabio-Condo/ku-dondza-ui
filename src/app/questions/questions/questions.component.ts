@@ -112,6 +112,7 @@ export class QuestionsComponent implements OnInit {
 
   difficultyLevels = [
     { label: 'Iniciante', value: 'BEGINNER' },
+    { label: 'Intermediário', value: 'INTERMEDIATE' },
     { label: 'Avançado', value: 'ADVANCED' },
   ];
 

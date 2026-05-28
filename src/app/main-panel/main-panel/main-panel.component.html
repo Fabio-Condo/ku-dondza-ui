@@ -1330,17 +1330,17 @@
             color: #4361ee;
         }
 
-        .ext-difficulty-easy {
+        .ext-difficulty-beginner {
             background: #ecfdf5;
             color: #059669;
         }
 
-        .ext-difficulty-medium {
+        .ext-difficulty-intermediate {
             background: #fffbeb;
             color: #b45309;
         }
 
-        .ext-difficulty-hard {
+        .ext-difficulty-advanced {
             background: #fff1f2;
             color: #be123c;
         }
@@ -2003,7 +2003,14 @@
                 <div class="ex-card-num">{{ rowIndex + 1 }}</div>
                 <div class="ex-card-tags">
                     <span class="ex-tag ext-subject">{{ question.topic.subject.name }}</span>
-                    <span class="ex-tag ext-difficulty-hard">{{ getType(question.difficultyLevel) }}</span>
+
+                    <span class="ex-tag " [ngClass]="{
+                        'ext-difficulty-beginner':  question.difficultyLevel === 'BEGINNER',
+                        'ext-difficulty-intermediate': question.difficultyLevel === 'INTERMEDIATE',
+                        'ext-difficulty-advanced':     question.difficultyLevel === 'ADVANCED'
+                    }">
+                    {{ getDifficultyLevelType(question.difficultyLevel) }}</span>
+
                     <span class="ex-tag ext-topic">{{ question.topic.name }}</span>
                 </div>
             </div>
