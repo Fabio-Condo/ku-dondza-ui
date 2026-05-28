@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -93,7 +93,10 @@ export class QuestionsComponent implements OnInit {
   showOptions: boolean = false;
 
 
-  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
+  //@ViewChild('canvas', { static: false }) canvas!: ElementRef;
+
+  @ViewChildren('canvas') canvases!: QueryList<ElementRef<HTMLCanvasElement>>;
+
 
   @ViewChild('tabela') grid: any;
 
@@ -318,6 +321,7 @@ export class QuestionsComponent implements OnInit {
         this.questions = dados.content
         this.totalRegistros = dados.totalElements;
         this.renderMathExpressions();
+        this.renderFunctions();
         if (this.totalQuestions == 0) {
           this.totalQuestions = dados.totalElements;
         }
@@ -1018,6 +1022,153 @@ export class QuestionsComponent implements OnInit {
   }
 
   renderFunctions() {
+
+    setTimeout(() => {
+
+      if (!this.canvases || this.canvases.length === 0) {
+        return;
+      }
+
+      this.canvases.forEach((canvasRef, index) => {
+
+        const question = this.questions[index];
+
+        if (
+          !question ||
+          !question.mathExpressions ||
+          question.mathExpressions.length === 0
+        ) {
+          return;
+        }
+
+        const canvas = canvasRef.nativeElement;
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const width = canvas.width;
+        const height = canvas.height;
+
+        const scaleX = width / 20;
+        const scaleY = height / 20;
+
+        // Grade
+        ctx.beginPath();
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 0.5;
+
+        for (let i = -10; i <= 10; i++) {
+
+          let x = width / 2 + i * scaleX;
+
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+        }
+
+        for (let i = -10; i <= 10; i++) {
+
+          let y = height / 2 - i * scaleY;
+
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+        }
+
+        ctx.stroke();
+
+        // Eixos
+        ctx.beginPath();
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
+
+        ctx.moveTo(0, height / 2);
+        ctx.lineTo(width, height / 2);
+
+        ctx.moveTo(width / 2, 0);
+        ctx.lineTo(width / 2, height);
+
+        ctx.stroke();
+
+        // Labels
+        ctx.font = '12px Arial';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+
+        for (let i = -10; i <= 10; i++) {
+
+          let x = width / 2 + i * scaleX;
+          let y = height / 2 - i * scaleY;
+
+          if (i !== 0) {
+
+            ctx.fillText(i.toString(), x, height / 2 + 15);
+
+            ctx.fillText(i.toString(), width / 2 - 15, y + 5);
+          }
+        }
+
+        const colors = ['blue', 'red', 'green', 'orange', 'purple'];
+
+        question.mathExpressions.forEach((express, expIndex) => {
+
+          ctx.beginPath();
+
+          ctx.strokeStyle = colors[expIndex % colors.length];
+          ctx.lineWidth = 2;
+
+          let firstPoint = true;
+
+          for (let x = -10; x <= 10; x += 0.1) {
+
+            try {
+
+              const y = evaluate(
+                express.expression!.replace(/x/g, `(${x})`)
+              );
+
+              if (!isFinite(y)) continue;
+
+              const screenX = width / 2 + x * scaleX;
+              const screenY = height / 2 - y * scaleY;
+
+              if (firstPoint) {
+                ctx.moveTo(screenX, screenY);
+                firstPoint = false;
+              } else {
+                ctx.lineTo(screenX, screenY);
+              }
+
+            } catch (error) {
+              console.error(
+                `Erro ao avaliar ${express.expression}:`,
+                error
+              );
+            }
+          }
+
+          ctx.stroke();
+
+          // legenda
+          ctx.fillStyle = colors[expIndex % colors.length];
+          ctx.font = '14px Arial';
+          ctx.textAlign = 'left';
+
+          ctx.fillText(
+            express.name || `f${expIndex + 1}(x)`,
+            10,
+            20 + expIndex * 20
+          );
+
+        });
+
+      });
+
+    }, 0);
+  }
+
+  /*
+  renderFunctions() {
     setTimeout(() => {
       const canvas = this.canvas?.nativeElement;
       if (!canvas || !this.question.mathExpressions || this.question.mathExpressions.length === 0) return;
@@ -1106,6 +1257,7 @@ export class QuestionsComponent implements OnInit {
       });
     }, 0);
   }
+  */
 
   getBadgeClass(category: string): string {
     switch (category) {
