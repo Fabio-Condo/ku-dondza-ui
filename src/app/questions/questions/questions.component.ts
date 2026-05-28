@@ -1031,15 +1031,20 @@ export class QuestionsComponent implements OnInit {
 
   renderFunctions_forList() {
 
-    setTimeout(() => {
+setTimeout(() => {
 
       if (!this.canvases || this.canvases.length === 0) {
         return;
       }
 
-      this.canvases.forEach((canvasRef, index) => {
+      this.canvases.forEach((canvasRef) => {
 
-        const question = this.questions[index];
+        const canvas = canvasRef.nativeElement;
+        const questionId = Number(canvas.getAttribute('data-question-id'));
+
+        if (!questionId) return;
+
+        const question = this.questions.find(q => q.id === questionId);
 
         if (
           !question ||
@@ -1049,9 +1054,7 @@ export class QuestionsComponent implements OnInit {
           return;
         }
 
-        const canvas = canvasRef.nativeElement;
         const ctx = canvas.getContext('2d');
-
         if (!ctx) return;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1062,14 +1065,16 @@ export class QuestionsComponent implements OnInit {
         const scaleX = width / 20;
         const scaleY = height / 20;
 
-        // Grade
+        // ======================
+        // GRADE
+        // ======================
         ctx.beginPath();
         ctx.strokeStyle = '#ddd';
         ctx.lineWidth = 0.5;
 
         for (let i = -10; i <= 10; i++) {
 
-          let x = width / 2 + i * scaleX;
+          const x = width / 2 + i * scaleX;
 
           ctx.moveTo(x, 0);
           ctx.lineTo(x, height);
@@ -1077,7 +1082,7 @@ export class QuestionsComponent implements OnInit {
 
         for (let i = -10; i <= 10; i++) {
 
-          let y = height / 2 - i * scaleY;
+          const y = height / 2 - i * scaleY;
 
           ctx.moveTo(0, y);
           ctx.lineTo(width, y);
@@ -1085,7 +1090,9 @@ export class QuestionsComponent implements OnInit {
 
         ctx.stroke();
 
-        // Eixos
+        // ======================
+        // EIXOS
+        // ======================
         ctx.beginPath();
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
@@ -1098,24 +1105,27 @@ export class QuestionsComponent implements OnInit {
 
         ctx.stroke();
 
-        // Labels
+        // ======================
+        // LABELS
+        // ======================
         ctx.font = '12px Arial';
         ctx.fillStyle = 'black';
         ctx.textAlign = 'center';
 
         for (let i = -10; i <= 10; i++) {
 
-          let x = width / 2 + i * scaleX;
-          let y = height / 2 - i * scaleY;
+          if (i === 0) continue;
 
-          if (i !== 0) {
+          const x = width / 2 + i * scaleX;
+          const y = height / 2 - i * scaleY;
 
-            ctx.fillText(i.toString(), x, height / 2 + 15);
-
-            ctx.fillText(i.toString(), width / 2 - 15, y + 5);
-          }
+          ctx.fillText(i.toString(), x, height / 2 + 15);
+          ctx.fillText(i.toString(), width / 2 - 15, y + 5);
         }
 
+        // ======================
+        // FUNÇÕES
+        // ======================
         const colors = ['blue', 'red', 'green', 'orange', 'purple'];
 
         question.mathExpressions.forEach((express, expIndex) => {
@@ -1157,7 +1167,9 @@ export class QuestionsComponent implements OnInit {
 
           ctx.stroke();
 
-          // legenda
+          // ======================
+          // LEGENDA
+          // ======================
           ctx.fillStyle = colors[expIndex % colors.length];
           ctx.font = '14px Arial';
           ctx.textAlign = 'left';
