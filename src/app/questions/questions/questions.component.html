@@ -1048,11 +1048,13 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.45);
+            background: rgba(10, 15, 30, 0.52);
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            z-index: 1000;
+            z-index: 99999;
+            padding: 0;
+            backdrop-filter: blur(6px);
             animation: fadeIn 0.25s ease;
             backdrop-filter: blur(3px);
         }
@@ -2010,7 +2012,8 @@
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Química'">
                             <path d="M9 3h6" />
@@ -2104,7 +2107,7 @@
                                 no LinkedIn</a>
                             <!--  
                             <a (click)="goToQuestion(question.questionId); closeDropdown(question)">Visualizar</a>
-                            -->  
+                            -->
                             <a (click)="onPriviewQuestion(question); closeDropdown(question)"
                                 *ngIf="isUserLoggedIn && isSuperAdmin">Pré-visualizar</a>
                             <a (click)="onUpdateQuestion(question); closeDropdown(question)"
@@ -2684,12 +2687,15 @@
                     <span class="quiz-subject-pill">
                         <svg viewBox="0 0 24 24">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                         {{ question.topic.subject.name }}
                     </span>
                     <button class="btn-close-preview" (click)="closePriview()" aria-label="Fechar pré-visualização">
-                        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -2730,8 +2736,8 @@
             </div>
 
             <!-- Question text -->
-            <div class="preview-question-text" *ngIf="question.text"
-                [innerHTML]="getFormattedText(question.text)"></div>
+            <div class="preview-question-text" *ngIf="question.text" [innerHTML]="getFormattedText(question.text)">
+            </div>
 
             <!-- Answer options -->
             <div class="preview-answers-list">
@@ -2784,14 +2790,14 @@
 
             <!-- Validação (admin) -->
             <div *ngIf="question.id">
-                <button *ngIf="isUserLoggedIn && isSuperAdmin && question.id"
-                    (click)="toggleValidatedStatus(question)"
+                <button *ngIf="isUserLoggedIn && isSuperAdmin && question.id" (click)="toggleValidatedStatus(question)"
                     [ngClass]="question.validated ? 'btn-validated' : 'btn-not-validated'">
-                    <i [class]="'pi ' + (question.showLoadingValidation ? 'pi-spin pi-spinner-dotted' : (question.validated ? 'pi-check' : 'pi-times'))"></i>
+                    <i
+                        [class]="'pi ' + (question.showLoadingValidation ? 'pi-spin pi-spinner-dotted' : (question.validated ? 'pi-check' : 'pi-times'))"></i>
                     <span>
                         {{ question.showLoadingValidation
-                            ? (question.validated ? 'Invalidando...' : 'Validando...')
-                            : (question.validated ? 'Validado' : 'Não validado') }}
+                        ? (question.validated ? 'Invalidando...' : 'Validando...')
+                        : (question.validated ? 'Validado' : 'Não validado') }}
                     </span>
                 </button>
             </div>
