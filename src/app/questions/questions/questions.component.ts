@@ -363,6 +363,7 @@ export class QuestionsComponent implements OnInit {
         this.questions = [...this.questions, ...data.content];
         this.totalRegistros = data.totalElements;
         this.renderMathExpressions();
+        this.renderFunctions_forList();
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {

@@ -2098,7 +2098,7 @@
     </div>
 
     <!-- FAB: Comentários -->
-    <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-3" *ngIf="showCorrection" (click)="onGetComments()">
+    <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-3" *ngIf="isUserLoggedIn && isSuperAdmin && showCorrection" (click)="onGetComments()">
         <button class="fab fab--outline" aria-label="Comentários">
             <i class="pi pi-comments"></i>
             <span class="fab-count-badge" *ngIf="question.numberOfComments > 0">
