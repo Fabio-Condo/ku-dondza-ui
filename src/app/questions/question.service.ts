@@ -61,6 +61,10 @@ export class QuestionService {
       params = params.set('difficultyLevel', filter.difficultyLevel);
     }
 
+    if (filter.highlighted !== undefined) {
+      params = params.set('highlighted', filter.highlighted.toString());
+    }
+
     if (filter.userId) {
       params = params.set('userId', filter.userId.toString());
     }

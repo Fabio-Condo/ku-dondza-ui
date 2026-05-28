@@ -132,6 +132,12 @@ export class QuestionsComponent implements OnInit {
     { label: 'Problema contextualizado', value: 'problema contextualizado' },
   ];
 
+  highlightedOptions = [
+    { label: 'Sim', value: true },
+    { label: 'Não', value: false },
+  ];
+ 
+
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 6,

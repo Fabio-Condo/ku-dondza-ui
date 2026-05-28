@@ -5,6 +5,7 @@ export interface QuestionFilter {
     topic?: number;
     difficultyLevel?: string;
     userId?: number,
+    highlighted?: boolean,
 
     page: number,
     itemsPerPage: number,

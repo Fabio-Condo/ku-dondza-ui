@@ -16,6 +16,7 @@ export class Question {
     validated: boolean = false;
     fileName!: string;
     urlFile!: string;
+    highlighted!: boolean;
     topic = new Topic();
     answers: Answer[] = [];
     numberOfComments: number = 0;

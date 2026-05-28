@@ -104,6 +104,7 @@ export class MainPanelComponent implements OnInit {
   @ViewChildren('canvas') canvases!: QueryList<ElementRef<HTMLCanvasElement>>;
 
   questionFilter: QuestionFilter = {
+    highlighted: true,
     page: 0,
     itemsPerPage: 3,
     sort: 'id,asc'

@@ -2339,6 +2339,15 @@
                         <option *ngFor="let level of difficultyLevels" [value]="level.value">{{ level.label }}</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="highlighted">Marcado?</label>
+                    <select id="highlighted" [(ngModel)]="filtro.highlighted" name="highlighted" (ngModelChange)="findAll()">
+                        <option value="" disabled selected>Selecione o status</option>
+                        <option *ngFor="let option of highlightedOptions" [value]="option.value">{{ option.label }}
+                        </option>
+                    </select>
+                </div>
                 <button type="button" class="btn-modal-secondary" (click)="limparCampos()">
                     <svg viewBox="0 0 24 24">
                         <path d="M3 6h18" />
@@ -2408,6 +2417,15 @@
                     <select id="timeLimit" [(ngModel)]="question.timeLimit" name="timeLimit" required>
                         <option value="" disabled selected>Selecione o tempo</option>
                         <option *ngFor="let time of timeLimits" [value]="time.value">{{ time.label }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="highlighted">Marcado?</label>
+                    <select id="highlighted" [(ngModel)]="question.highlighted" name="highlighted" required>
+                        <option value="" disabled selected>Selecione o status</option>
+                        <option *ngFor="let option of highlightedOptions" [value]="option.value">{{ option.label }}
+                        </option>
                     </select>
                 </div>
 
