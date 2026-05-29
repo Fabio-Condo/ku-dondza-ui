@@ -45,12 +45,14 @@ export class TopicsComponent implements OnInit {
     { label: 'Free', value: false },
   ];
 
+  maxVisibleButtons = 5; // Número máximo de botões visíveis (como no PrimeNG)
+
   // Paginação
   currentPage: number = 1;
   opcoesItensPorPagina: number[] = [5, 10, 20, 50];
   filtro: TopicFilter = {
     pagina: 0,
-    itensPorPagina: 5,
+    itensPorPagina: 6,
     ordenamento: 'id,asc'
   };
 
@@ -286,6 +288,90 @@ export class TopicsComponent implements OnInit {
     return Math.ceil(this.totalRecords / this.filtro.itensPorPagina);
   }
 
+  goToPage(page: number): void {
+    if (
+      page >= 1 &&
+      page <= this.totalPages() &&
+      page !== this.currentPage
+    ) {
+      this.currentPage = page;
+      this.findAll();
+    }
+  }
+
+  getVisiblePages(): number[] {
+    const total = this.totalPages();
+    const current = this.currentPage;
+
+    if (total <= 5) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    const pages: number[] = [];
+
+    // primeira página sempre aparece
+    pages.push(1);
+
+    // mostrar ... se estiver longe do início
+    if (current > 3) {
+      pages.push(-1);
+    }
+
+    // páginas ao redor da atual
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    // mostrar ... se estiver longe do fim
+    if (current < total - 2) {
+      pages.push(-1);
+    }
+
+    // última página sempre aparece
+    pages.push(total);
+
+    return pages;
+  }
+
+  /** Retorna a lista de páginas visíveis com reticências */
+  getPages(): (number | string)[] {
+    const total = this.totalPages();
+    const current = this.currentPage;
+    const max = this.maxVisibleButtons;
+
+    if (total <= max) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+
+    const pages: (number | string)[] = [];
+
+    // Sempre mostrar a primeira página
+    pages.push(1);
+
+    if (current > 3) {
+      pages.push("...");
+    }
+
+    // Páginas ao redor da página atual
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (current < total - 2) {
+      pages.push("...");
+    }
+
+    // Sempre mostrar a última página
+    pages.push(total);
+
+    return pages;
+  }
+
   limparCampos() {
     this.filtro.searchParam = "";
     this.filtro.name = "";
@@ -326,17 +412,16 @@ export class TopicsComponent implements OnInit {
     });
   }
 
-  getBadgeClass(category: string): string {
+  getCategoryValue(category: string) {
     switch (category) {
       case 'EXACT_SCIENCES':
-        return 'exact-sciences';
+        return 'Ciências Exatas';
       case 'HUMAN_SCIENCES':
-        return 'human-sciences';
+        return 'Ciências Humanas';
       case 'LANGUAGES':
-        return 'languages';
-      default:
-        return '';
+        return 'Línguas';
     }
+    return '';
   }
 
   public get isAdmin(): boolean {
