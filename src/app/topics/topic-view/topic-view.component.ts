@@ -548,6 +548,18 @@ export class TopicViewComponent implements OnInit {
     });
   }
 
+  getCategoryValue(category: string) {
+    switch (category) {
+      case 'EXACT_SCIENCES':
+        return 'Ciências Exatas';
+      case 'HUMAN_SCIENCES':
+        return 'Ciências Humanas';
+      case 'LANGUAGES':
+        return 'Línguas';
+    }
+    return '';
+  }
+
   getWalletsByUser(userId: number): void {
     this.loadingMessage = "Obtendo dados"
     this.showLoading = true;

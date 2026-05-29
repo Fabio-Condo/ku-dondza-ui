@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo Diferencial e Integral I</title>
+    <title>Visualizar Tópico</title>
     <style>
         * {
             margin: 0;
@@ -14,312 +14,616 @@
 
         body {
             padding: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 780px;
             margin: 0 auto;
-            margin-top: 50px;
+            padding-top: 50px;
         }
 
-        .header-buttons {
+        /* ══════════════════════════════════════
+           BARRA DE NAVEGAÇÃO SUPERIOR
+        ══════════════════════════════════════ */
+
+        .top-nav {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 32px 24px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f0f0f0;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(67, 97, 238, 0.1);
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: #4361ee;
-            margin-bottom: 12px;
-            line-height: 1;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .main-content {
-            background: white;
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f0f0f0;
-            margin-bottom: 40px;
-        }
-
-        .main-content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-title {
-            color: var(--color-text);
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 32px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .add-topic-btn {
-            background-color: transparent;
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            margin-bottom: 32px;
-        }
-
-        .lesson-item {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            margin-bottom: 12px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .lesson-item:hover {
-            background: #f1f3f4;
-            border-color: #4361ee;
-            transform: translateX(4px);
-        }
-
-        .lesson-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .lesson-content {
-            flex: 1;
-        }
-
-        .lesson-title {
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-            font-size: 1.1rem;
-        }
-
-        .lesson-duration {
-            color: #666;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .lesson-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        button {
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-            padding: 8px 16px;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            border: none;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: #4361ee;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #3651d4;
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #e5e7eb;
-            color: #1f2937;
-        }
-
-        .btn-outline:hover {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            background: transparent;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-
-        /* Header */
-        .header {
-            background: #4361ee;
-            color: white;
-            padding: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .main {
-            padding: 40px 0;
-            min-height: calc(100vh - 170px);
-        }
-
-        /* Header Styles */
-        .topic-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            /*background-color: white;*/
-            background: linear-gradient(to right, #4299e1, #2563eb);
-            background: #4361ee;
-
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #f1f5f9;
-            padding: 20px;
-            margin-bottom: 1.5rem;
-        }
-
-        .topic-info {
-            flex: 1;
-        }
-
-        .topic-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .topic-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            /*color: #212529;*/
-            color: #fff;
-        }
-
-        .topic-meta {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0px;
-        }
-
-        .topic-stats {
-            display: flex;
-            gap: 20px;
-        }
-
-        .stat {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .topic-description {
-            line-height: 1.8;
-            margin-bottom: 20px;
-            color: white;
         }
 
         .go-back-btn {
-            padding: 10px 0px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            gap: 6px;
             background: none;
             border: none;
-            color: var(--gray);
-            font-weight: 500;
             cursor: pointer;
-            transition: color 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            padding: 0;
+            margin-top: 0.7rem;
+            margin-bottom: 0.7rem;
+            transition: color 0.15s;
+            font-family: inherit;
         }
 
         .go-back-btn:hover {
             color: #4361ee;
         }
 
-        .dropdown-btn {
-            background-color: transparent;
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--gray);
+        /* ── Dropdown da nav ─── */
+        .dropdown-container {
+            position: relative;
         }
 
-        /* Loading Container - Versão Moderna */
-        /* ─── Loading overlay ────────────────────────────── */
+        .dropdown-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+
+        .dropdown-btn:hover {
+            background: #f1f5f9;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+
+        .dropdown {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 6px);
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+            min-width: 190px;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 9px 14px;
+            font-size: 13px;
+            color: #475569;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .dropdown a:hover {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* ══════════════════════════════════════
+           HERO DO TÓPICO
+        ══════════════════════════════════════ */
+
+        .topic-hero {
+            background: #4361ee;
+            border-radius: 16px;
+            padding: 28px 28px 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Padrão decorativo sutil no fundo */
+        .topic-hero::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+        }
+
+        .topic-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            right: 80px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+        }
+
+        .hero-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .hero-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            line-height: 1;
+        }
+
+        .hero-badge.subject {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-badge.free {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .hero-badge.premium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .hero-badge svg {
+            width: 10px;
+            height: 10px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .topic-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+            letter-spacing: -0.3px;
+            margin-bottom: 10px;
+        }
+
+        .topic-description {
+            font-size: 13.5px;
+            color: rgba(255, 255, 255, 0.78);
+            line-height: 1.65;
+            margin-bottom: 20px;
+            max-width: 680px;
+        }
+
+        .hero-stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .hero-stat svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .hero-stat strong {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+        }
+
+        .hero-stat-sep {
+            width: 1px;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ══════════════════════════════════════
+           BANNER PREMIUM
+        ══════════════════════════════════════ */
+
+        .premium-banner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .premium-banner-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .premium-banner-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: #b45309;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .premium-banner-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .premium-banner-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 2px;
+        }
+
+        .premium-banner-sub {
+            font-size: 12px;
+            color: #b45309;
+        }
+
+        .premium-banner-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            border-radius: 9px;
+            border: none;
+            background: #f59e0b;
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+
+        .premium-banner-btn:hover {
+            background: #d97706;
+        }
+
+        /* ══════════════════════════════════════
+           SECÇÃO DE CONTEÚDO
+        ══════════════════════════════════════ */
+
+        .section-card {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e8edf2;
+            overflow: hidden;
+            margin-bottom: 16px;
+            animation: fadeUp 0.35s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.06);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .section-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .section-count {
+            font-size: 11.5px;
+            font-weight: 600;
+            background: #eef2ff;
+            color: #4361ee;
+            padding: 2px 7px;
+            border-radius: 99px;
+            border: 1px solid #c7d2fe;
+        }
+
+        .btn-section-add {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+
+        .btn-section-add:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .btn-section-add svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── Lista de conteúdos ─────────────────────────── */
+        .content-list {
+            padding: 8px 12px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .content-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 10px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: #f8fafc;
+            transition: background 0.15s, border-color 0.15s, transform 0.15s;
+            cursor: default;
+        }
+
+        .content-item:hover {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            transform: translateX(2px);
+        }
+
+        /* Ícone do tipo de conteúdo */
+        .content-type-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 1px solid #e8edf2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .content-type-icon.video {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+        }
+
+        .content-type-icon.file {
+            background: #fff1f2;
+            border-color: #fecdd3;
+        }
+
+        .content-type-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .content-type-icon.video svg {
+            fill: #4361ee;
+        }
+
+        .content-type-icon.file svg {
+            stroke: #e11d48;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .content-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #1e293b;
+            line-height: 1.3;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .content-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            color: #94a3b8;
+        }
+
+        .content-meta svg {
+            width: 11px;
+            height: 11px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .content-type-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 7px;
+            border-radius: 99px;
+            font-size: 10.5px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .content-type-pill.video {
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+        }
+
+        .content-type-pill.file {
+            background: #fff1f2;
+            color: #e11d48;
+            border: 1px solid #fecdd3;
+        }
+
+        /* ── Acções do item de conteúdo ─────────────────── */
+        .content-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .btn-content-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #475569;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+
+        .btn-content-action:hover:not(:disabled) {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .btn-content-action:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-content-action svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── Empty state ─────────────────────────────────── */
+        .empty-content {
+            padding: 28px 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* ══════════════════════════════════════
+           LOADING OVERLAY
+        ══════════════════════════════════════ */
+
         .loading-overlay {
             position: fixed;
             inset: 0;
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -336,22 +640,22 @@
 
         .loading-box {
             background: #fff;
-            border-radius: 16px;
-            border: 1px solid #e8eaf0;
-            padding: 2rem 2.5rem;
+            border-radius: 14px;
+            border: 1px solid #e8edf2;
+            padding: 1.75rem 2.25rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 3px solid #e0e4f5;
+            border: 2.5px solid #e0e7ff;
             border-top-color: #4361ee;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.75s linear infinite;
         }
 
         @keyframes spin {
@@ -361,131 +665,714 @@
         }
 
         .loading-text {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            color: #374151;
+            color: #64748b;
         }
 
-        @media (max-width: 900px) {
-            .container {
-                margin-top: 45px;
+        /* ══════════════════════════════════════
+           RETRY
+        ══════════════════════════════════════ */
+
+        .retry-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.25s ease;
+            backdrop-filter: blur(3px);
+        }
+
+        .retry-content {
+            background: #ffffff;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+            max-width: 380px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .retry-text {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .retry-button {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 9px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .retry-button:hover {
+            background-color: #3451d1;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
             }
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 0px;
-            }
+        /* ══════════════════════════════════════
+           MODAL — sistema partilhado
+        ══════════════════════════════════════ */
 
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
-                margin-bottom: 24px;
-            }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+            backdrop-filter: blur(3px);
+        }
 
-            .stat-card {
-                padding: 20px 16px;
-            }
-
-            .stat-number {
-                font-size: 2.2rem;
-                margin-bottom: 8px;
-            }
-
-            .stat-label {
-                font-size: 0.85rem;
-            }
-
-            .main-content {
-                padding: 10px;
-                margin-bottom: 24px;
-            }
-
-            .section-title {
-                font-size: 17px;
-                margin-bottom: 20px;
-            }
-
-            .add-topic-btn {
-                margin-bottom: 20px;
-            }
-
-            .lesson-item {
-                padding: 16px;
-                margin-bottom: 12px;
-                flex-direction: row;
+        @media (min-width: 640px) {
+            .modal-overlay {
                 align-items: center;
             }
+        }
 
-            .lesson-icon {
-                width: 40px;
-                height: 40px;
-                margin-right: 16px;
-                flex-shrink: 0;
+        .modal {
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-width: 480px;
+            max-height: 92vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s cubic-bezier(0.22, 0.68, 0, 1.2);
+        }
+
+        @media (min-width: 640px) {
+            .modal {
+                border-radius: 16px;
+                animation: scaleIn 0.25s cubic-bezier(0.22, 0.68, 0, 1.2);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
             }
 
-            .lesson-content {
-                flex: 1;
-                min-width: 0;
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
             }
 
-            .lesson-title {
-                font-size: 1rem;
-                margin-bottom: 4px;
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background: transparent;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+        }
+
+        .modal-progress-bar.visible::after {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 40%;
+            background: #4361ee;
+            animation: progressSlide 1.2s ease-in-out infinite;
+        }
+
+        @keyframes progressSlide {
+            0% {
+                transform: translateX(-100%);
             }
 
-            .lesson-duration {
-                font-size: 0.8rem;
+            100% {
+                transform: translateX(350%);
             }
+        }
 
-            .lesson-actions {
-                flex-direction: column;
-                gap: 8px;
-                flex-shrink: 0;
+        .modal-handle {
+            display: flex;
+            justify-content: center;
+            padding: 12px 0 4px;
+        }
+
+        .modal-handle span {
+            display: block;
+            width: 36px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 99px;
+        }
+
+        @media (min-width: 640px) {
+            .modal-handle {
+                display: none;
             }
+        }
 
-            .exercise-title {
-                font-size: 1.3rem;
-                margin-bottom: 12px;
-            }
+        .modal-inner {
+            padding: 4px 24px 28px;
+            transition: opacity 0.2s;
+        }
 
-            .exercise-description {
-                font-size: 0.95rem;
-                margin-bottom: 24px;
-            }
+        .modal-inner.is-loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
 
-            .btn-exercise {
-                padding: 16px 32px;
-                font-size: 1rem;
-            }
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
 
-            .topic-header {
-                flex-direction: column;
-                gap: 20px;
-                padding: 10px;
-            }
+        .modal-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
 
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            line-height: 1.3;
+        }
+
+        .modal-subtitle {
+            font-size: 12.5px;
+            color: #94a3b8;
+        }
+
+        .close-btn {
+            background: #f1f5f9;
+            border: none;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #64748b;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.15s, color 0.15s;
+            font-family: inherit;
+        }
+
+        .close-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        /* ── Formulário dentro do modal ─────────────────────── */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #475569;
+            letter-spacing: 0.2px;
+        }
+
+        .form-group select,
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 9px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 13px;
+            font-family: inherit;
+            color: #1e293b;
+            outline: none;
+            transition: border-color 0.15s, background 0.15s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-group select:focus,
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group textarea:focus {
+            border-color: #a5b4fb;
+            background: #fff;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 9px;
+            border: 1px dashed #cbd5e1;
+            background: #f8fafc;
+            font-size: 13px;
+            font-family: inherit;
+            color: #64748b;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .form-group input[type="file"]:hover {
+            border-color: #a5b4fb;
+            background: #fafbff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.5;
+        }
+
+        .btn-modal-primary {
+            width: 100%;
+            padding: 11px 16px;
+            background: #4361ee;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-top: 4px;
+        }
+
+        .btn-modal-primary:hover {
+            background: #3451d1;
+        }
+
+        .btn-modal-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ── Modal: Tabs de login/registo ─────────────────── */
+        .auth-tabs {
+            display: flex;
+            gap: 4px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 3px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .auth-tab-btn.active {
+            background: #ffffff;
+            color: #1e293b;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .auth-message {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .auth-message span {
+            font-weight: 600;
+            color: #4361ee;
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 12.5px;
+            color: #94a3b8;
+            margin-top: 14px;
+        }
+
+        .signup-link a {
+            color: #4361ee;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .go-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12.5px;
+            color: #64748b;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 0;
+            margin-bottom: 14px;
+            transition: color 0.15s;
+        }
+
+        .go-back-link:hover {
+            color: #4361ee;
+        }
+
+        .resend-btn {
+            display: block;
+            text-align: center;
+            font-size: 12.5px;
+            color: #4361ee;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .resend-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Modal: Upgrade / Plano ─────────────────────────── */
+        .plan-price-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .plan-price-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: -0.5px;
+        }
+
+        .plan-price-period {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .feature-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .feature-check svg {
+            width: 10px;
+            height: 10px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── Modal: Wallets / Pagamento ─────────────────────── */
+        .wallet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .wallet-option-label {
+            display: block;
+            cursor: pointer;
+        }
+
+        .wallet-option-label input[type="radio"] {
+            display: none;
+        }
+
+        .wallet-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .wallet-option-label input:checked+.wallet-card,
+        .wallet-card.selected {
+            border-color: #a5b4fb;
+            background: #fafbff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .wallet-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wallet-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 4px;
+        }
+
+        .wallet-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .wallet-type {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .wallet-number {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .wallet-badge {
+            display: inline-flex;
+            padding: 2px 8px;
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            border-radius: 99px;
+            font-size: 10.5px;
+            font-weight: 600;
+        }
+
+        .btn-set-default {
+            font-size: 11.5px;
+            font-weight: 500;
+            color: #64748b;
+            background: none;
+            border: 1px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        .btn-set-default:hover {
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .wallet-empty {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .wallet-detected-box {
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .plan-price-upgrade {
+            text-align: center;
+            font-size: 12.5px;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        .modal-actions-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* ── Modal: Vídeo ────────────────────────────────────── */
+        .video-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .video-modal-inner {
+            position: relative;
+            width: 100%;
+            max-width: 860px;
+            padding: 16px;
+        }
+
+        .video-close-btn {
+            position: absolute;
+            top: -4px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+            line-height: 1;
+        }
+
+        .video-close-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .video-player {
+            width: 100%;
+            border-radius: 12px;
+            max-height: 80vh;
+            display: block;
+        }
+
+        /* ── Input de telemóvel ──────────────────────────────── */
+        .input-error {
+            font-size: 11.5px;
+            color: #e11d48;
+            margin-top: 2px;
+        }
+
+        /* ── Responsividade ─────────────────────────────────── */
+        @media (max-width: 768px) {
             .topic-title {
-                font-size: 1.3rem;
-            }
-
-            .popout-container {
-                width: 95%;
-                padding: 10px;
-                max-width: 100%;
-                max-height: 70vh;
-                border-radius: 8px;
-                overflow-y: auto;
-            }
-
-            .popout-title {
                 font-size: 18px;
-                text-align: center;
             }
 
-            .close-button {
-                font-size: 20px;
-                padding: 8px;
+            .topic-description {
+                font-size: 13px;
+            }
+
+            .topic-hero {
+                padding: 20px 18px 18px;
+            }
+
+            .content-item {
+                gap: 10px;
+            }
+
+            .content-title {
+                font-size: 13px;
+            }
+
+            .btn-content-action {
+                width: 30px;
+                height: 30px;
             }
         }
     </style>
@@ -502,37 +1389,39 @@
             </div>
         </div>
 
+        <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-container">
             <div class="retry-content">
-                <svg class="retry-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
-                    fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="8" x2="12" y2="12"></line>
                     <circle cx="12" cy="16" r="1"></circle>
                 </svg>
-
                 <div class="retry-text">
-                    Ocorreu um erro ao carregar a questão.<br>
+                    Ocorreu um erro ao carregar o tópico.<br>
                     Por favor, tente novamente.
                 </div>
-
-                <button class="retry-button" (click)="retryGetTopic()">
-                    Tentar novamente
-                </button>
+                <button class="retry-button" (click)="retryGetTopic()">Tentar novamente</button>
             </div>
         </div>
 
-        <div class="header-buttons">
+        <!-- ── Navegação topo ───────────────────────────────── -->
+        <div class="top-nav">
             <button class="go-back-btn" (click)="goBack()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 12H5"></path>
-                    <path d="M12 19l-7-7 7-7"></path>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5" />
+                    <path d="M12 19l-7-7 7-7" />
                 </svg>
                 Voltar
             </button>
+
+            <!--
             <div class="dropdown-container">
-                <button class="dropdown-btn" (click)="toggleDropdown(topic)"><i class="pi pi-ellipsis-h"></i></button>
+                <button class="dropdown-btn" (click)="toggleDropdown(topic)">
+                    <i class="pi pi-ellipsis-h"></i>
+                </button>
                 <div class="dropdown" *ngIf="topic.isAdminMenuOpen">
                     <a (click)="copyLink(topic.topicId); closeDropdown(topic)">Copiar link</a>
                     <a (click)="shareOnSocial('whatsapp', topic.topicId); closeDropdown(topic)">Partilhar no
@@ -543,118 +1432,190 @@
                         LinkedIn</a>
                 </div>
             </div>
+            -->
         </div>
 
-        <div class="topic-header">
-            <div class="topic-info">
-                <h1 class="topic-title">{{ topic.name }}</h1>
-                <p class="topic-description">{{ topic.description }}</p>
-                <div class="topic-meta">
-                    <div class="topic-stats">
-                        <div class="stat">
-                            <!--
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                            </svg>
-                            -->
-                            <span>{{ topic.subject.name }}</span>
-                        </div>
-                    </div>
+        <!-- ── Hero do tópico ──────────────────────────────── -->
+        <div class="topic-hero">
+            <div class="hero-top">
+                <div class="hero-badges">
+                    <span class="hero-badge subject">{{ topic.subject.name }}</span>
+                    <span class="hero-badge free" *ngIf="!topic.premium">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
+                        </svg>
+                        Gratuito
+                    </span>
+                    <span class="hero-badge premium" *ngIf="topic.premium">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 10V7a5 5 0 0 1 10 0v3" />
+                            <rect x="5" y="10" width="14" height="10" rx="2" />
+                        </svg>
+                        Premium
+                    </span>
+                </div>
+            </div>
+
+            <h1 class="topic-title">{{ topic.name }}</h1>
+            <p class="topic-description">{{ topic.description }}</p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                        <circle cx="12" cy="17" r="1" />
+                    </svg>
+                    <strong>{{ topic.questions.length || 0 }}</strong>
+                    questões
+                </div>
+                <div class="hero-stat-sep"></div>
+                <div class="hero-stat">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                    <strong>{{ topic.contents.length || 0 }}</strong>
+                    conteúdos
+                </div>
+                <div class="hero-stat-sep"></div>
+                <div class="hero-stat">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                        <line x1="4" y1="22" x2="4" y2="15" />
+                    </svg>
+                    {{ topic.subject.category ? getCategoryValue(topic.subject.category) : '' }}
                 </div>
             </div>
         </div>
 
-        <div class="main-content" *ngIf="isPremiumTopic(topic)">
-            <p class="lock-message" *ngIf="isPremiumTopic(topic)">
-                <span class="lock-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" />
-                        <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
-                    </svg>
-                </span>
-                Conteúdo exclusivo para utilizadores <strong>Premium</strong>.
-                <a class="upgrade-link" (click)="openUpgradeModal()">Desbloquear agora</a>
-            </p>
+        <!-- ── Banner Premium ──────────────────────────────── -->
+        <div class="premium-banner" *ngIf="isPremiumTopic(topic)">
+            <div class="premium-banner-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 10V7a5 5 0 0 1 10 0v3" />
+                    <rect x="5" y="10" width="14" height="10" rx="2" />
+                </svg>
+            </div>
+            <div class="premium-banner-text">
+                <div class="premium-banner-title">Conteúdo Premium</div>
+                <div class="premium-banner-sub">Actualize o seu plano para aceder a este conteúdo</div>
+            </div>
+            <button class="premium-banner-btn" (click)="openUpgradeModal()">
+                Desbloquear
+            </button>
         </div>
 
-        <div class="main-content">
-
-            <div class="main-content-header">
-                <h2 class="section-title">Conteúdo ({{ topic.contents.length }})</h2>
-                <button class="btn add-topic-btn" (click)="onAddNewTopicContent()"
-                    *ngIf="isUserLoggedIn && isSuperAdmin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <!-- ── Secção de conteúdos ─────────────────────────── -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24">
+                            <polygon points="23 7 16 12 23 17 23 7" />
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                        </svg>
+                    </div>
+                    <span class="section-title">Conteúdo do tópico</span>
+                    <span class="section-count">{{ topic.contents.length || 0 }}</span>
+                </div>
+                <button class="btn-section-add" (click)="onAddNewTopicContent()" *ngIf="isUserLoggedIn && isSuperAdmin"
+                    title="Adicionar conteúdo">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                 </button>
             </div>
 
-            <div class="lesson-item" *ngFor="let content of topic.contents">
-                <div class="lesson-icon">
-                    <svg *ngIf="content.contentType == 'VIDEO'" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5V19L19 12L8 5Z" fill="#4361ee" />
-                    </svg>
+            <div class="content-list" *ngIf="topic.contents.length > 0; else emptyContent">
+                <div class="content-item" *ngFor="let content of topic.contents">
 
-                    <svg *ngIf="content.contentType == 'FILE'" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
-                            stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M14 2V8H20" stroke="#dc3545" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M16 13H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M16 17H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M10 9H9H8" stroke="#dc3545" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <div class="lesson-content">
-                    <div class="lesson-title">{{ content.description }}</div>
-                    <div class="lesson-duration">{{ content.time }} minutos</div>
-                </div>
-                <div class="lesson-actions">
-                    <button (click)="onPlayVideo(content)" class="btn btn-outline"
-                        *ngIf="content.contentType == 'VIDEO'"
-                        [disabled]="isPremiumTopic(topic) || content.showLoadingDownload">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+                    <!-- Ícone de tipo -->
+                    <div class="content-type-icon video" *ngIf="content.contentType === 'VIDEO'">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 5V19L19 12L8 5Z" />
                         </svg>
-                    </button>
-
-                    <button href="#" class="btn btn-outline" *ngIf="content.contentType == 'FILE'"
-                        [disabled]="isPremiumTopic(topic) || content.showLoadingDownload" (click)="onDownload(content)">
-                        <svg *ngIf="!content.showLoadingDownload" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
+                    </div>
+                    <div class="content-type-icon file" *ngIf="content.contentType === 'FILE'">
+                        <svg viewBox="0 0 24 24">
                             <path
-                                d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" />
+                            <path d="M14 2V8H20" />
+                            <path d="M16 13H8" />
+                            <path d="M16 17H8" />
+                            <path d="M10 9H8" />
                         </svg>
-                        <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
-                            style="color: #4361ee;"></i>
-                    </button>
+                    </div>
 
-                    <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
-                        <button class="btn btn-outline" (click)="toggleTopicContentDropdown(content)"><i
-                                class="pi pi-ellipsis-h"></i></button>
-                        <div class="dropdown" *ngIf="content.isAdminMenuOpen">
-                            <a
-                                (click)="onUpdateTopicContent(content, topicContentFile); closeTopicContentDropdown(content)">Editar</a>
-                            <a (click)="confirmarExclusao(content); closeTopicContentDropdown(content)">Excluir</a>
+                    <!-- Info -->
+                    <div class="content-info">
+                        <div class="content-title">{{ content.description }}</div>
+                        <div class="content-meta">
+                            <span class="content-type-pill video" *ngIf="content.contentType === 'VIDEO'">Vídeo</span>
+                            <span class="content-type-pill file" *ngIf="content.contentType === 'FILE'">Ficheiro</span>
+                            <span *ngIf="content.time">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 7v5l3 3" />
+                                </svg>
+                                {{ content.time }} min
+                            </span>
                         </div>
                     </div>
+
+                    <!-- Acções -->
+                    <div class="content-actions">
+                        <!-- Play vídeo -->
+                        <button class="btn-content-action" (click)="onPlayVideo(content)"
+                            *ngIf="content.contentType === 'VIDEO'"
+                            [disabled]="isPremiumTopic(topic) || content.showLoadingDownload" title="Reproduzir vídeo">
+                            <svg viewBox="0 0 24 24">
+                                <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                        </button>
+
+                        <!-- Download ficheiro -->
+                        <button class="btn-content-action" (click)="onDownload(content)"
+                            *ngIf="content.contentType === 'FILE'"
+                            [disabled]="isPremiumTopic(topic) || content.showLoadingDownload"
+                            title="Transferir ficheiro">
+                            <svg *ngIf="!content.showLoadingDownload" viewBox="0 0 24 24">
+                                <path
+                                    d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M7 10L12 15L17 10M12 15V3" />
+                            </svg>
+                            <i *ngIf="content.showLoadingDownload" class="pi pi-spin pi-spinner-dotted"
+                                style="color:#4361ee;font-size:14px;"></i>
+                        </button>
+
+                        <!-- Dropdown admin -->
+                        <div class="dropdown-container" *ngIf="isUserLoggedIn && isSuperAdmin">
+                            <button class="btn-content-action" (click)="toggleTopicContentDropdown(content)"
+                                title="Mais opções">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="5" r="1" fill="currentColor" stroke="none" />
+                                    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+                                    <circle cx="12" cy="19" r="1" fill="currentColor" stroke="none" />
+                                </svg>
+                            </button>
+                            <div class="dropdown" *ngIf="content.isAdminMenuOpen">
+                                <a
+                                    (click)="onUpdateTopicContent(content, topicContentFile); closeTopicContentDropdown(content)">Editar</a>
+                                <a (click)="confirmarExclusao(content); closeTopicContentDropdown(content)">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <p *ngIf="topic.contents.length == 0">Sem conteúdo para este tópico</p>
 
+            <ng-template #emptyContent>
+                <div class="empty-content">
+                    Sem conteúdo disponível para este tópico.
+                </div>
+            </ng-template>
         </div>
 
     </div>
@@ -662,347 +1623,350 @@
 
 </html>
 
-<!-- Modal de Adicionar/Editar Aula -->
-<div class="popout-overlay" *ngIf="displayModalSaveContent">
-    <div class="popout-container">
 
-        <div class="popout-header">
-            <h2 class="popout-title">{{ editingContent ? 'Editando aula' : 'Adicionando aula' }}</h2>
-            <button class="close-button" (click)="displayModalSaveContent = false">&times;</button>
+<!-- ══════════════════════════════════════
+     Modal: Adicionar / Editar conteúdo
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalSaveContent">
+    <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">{{ editingContent ? 'Editar conteúdo' : 'Novo conteúdo' }}</h2>
+                    <span class="modal-subtitle">
+                        {{ editingContent ? 'Actualize os dados do conteúdo' : 'Adicione um novo vídeo ou ficheiro' }}
+                    </span>
+                </div>
+                <button class="close-btn" (click)="displayModalSaveContent = false">&#x2715;</button>
+            </div>
+            <form autocomplete="off" #courseForm="ngForm">
+                <div class="form-group">
+                    <label for="content-type">Tipo de conteúdo</label>
+                    <select id="content-type" [(ngModel)]="topicContent.contentType" name="type" required>
+                        <option value="" disabled selected>Selecione o tipo</option>
+                        <option *ngFor="let type of contentType" [value]="type.value">{{ type.label }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="content-desc">Descrição</label>
+                    <input type="text" id="content-desc" name="description" [(ngModel)]="topicContent.description"
+                        required minlength="1" placeholder="Título do conteúdo">
+                </div>
+                <div class="form-group" *ngIf="topicContent.contentType === 'VIDEO'">
+                    <label for="content-time">Duração (minutos)</label>
+                    <input type="text" id="content-time" name="time" [(ngModel)]="topicContent.time" required
+                        minlength="1" placeholder="Ex: 15">
+                </div>
+                <div class="form-group">
+                    <label>Ficheiro</label>
+                    <input type="file" (change)="onTopicContentFileSelected($event)" name="file" accept="application/**"
+                        required />
+                </div>
+                <div class="form-group">
+                    <label for="content-position">Posição</label>
+                    <input type="text" id="content-position" name="position" [(ngModel)]="topicContent.position"
+                        required minlength="1" placeholder="Ex: 1">
+                </div>
+                <button class="btn-modal-primary" type="submit" (click)="saveContent()"
+                    [disabled]="courseForm.invalid || showLoading">
+                    {{ showLoading ? 'Aguarde...' : 'Salvar conteúdo' }}
+                </button>
+            </form>
         </div>
-
-        <form autocomplete="off" #courseForm="ngForm">
-            <div class="form-group">
-                <label for="type">Tipo</label>
-                <select id="type" [(ngModel)]="topicContent.contentType" name="type" required>
-                    <option value="" disabled selected>Selecione o tipo</option>
-                    <option *ngFor="let type of contentType" [value]="type.value">{{ type.label }}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="description">Descrição</label>
-                <input type="text" name="description" ngModel #description="ngModel" required minlength="1"
-                    [(ngModel)]="topicContent.description">
-            </div>
-            <div class="form-group" *ngIf="topicContent.contentType === 'VIDEO'">
-                <label for="time">Tempo do video</label>
-                <input type="text" name="time" ngModel #time="ngModel" required minlength="1"
-                    [(ngModel)]="topicContent.time">
-            </div>
-            <div class="form-group">
-                <input type="file" (change)="onTopicContentFileSelected($event)" name="file" accept="application/**"
-                    class="form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="position">Posição</label>
-                <input type="text" name="position" ngModel #position="ngModel" required minlength="1"
-                    [(ngModel)]="topicContent.position">
-            </div>
-
-            <button type="submit" class="submit-button" (click)="saveContent()">{{ showLoading ? 'Loading...' : 'Salvar'
-                }}</button>
-
-        </form>
     </div>
 </div>
 
-<!-- Popout -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalLogin">
-    <div class="popout-container">
 
-        <div class="login-side" *ngIf="activeTab === 1">
-
-            <div class="popout-header">
-                <h2 class="popout-title">Entre para continuar</h2>
-                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+<!-- ══════════════════════════════════════
+     Modal: Login / Registo
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalLogin">
+    <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">{{ activeTab === 1 ? 'Entrar na conta' : 'Criar conta' }}</h2>
+                    <span class="modal-subtitle">
+                        {{ activeTab === 1 ? 'Acesse o seu espaço de aprendizagem' : 'Junte-seà plataforma' }}
+                    </span>
+                </div>
+                <button class="close-btn" (click)="onCloseLoginPopout()">&#x2715;</button>
             </div>
 
-            <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-
-            <div class="divider" *ngIf="step === 'email' && googleAuthReady">
-                <span>OU</span>
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab-btn" [class.active]="activeTab === 1" (click)="setActiveTab(1)">Entrar</button>
+                <button class="auth-tab-btn" [class.active]="activeTab === 2"
+                    (click)="setActiveTab(2)">Cadastrar</button>
             </div>
 
-            <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
-
-                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
-
-                <p class="message" *ngIf="step === 'otp'">
-                    Para fazer login, insira o código enviado para o seu e-mail <span>{{ user.email }}</span>
-                </p>
-
-                <div class="input-group" *ngIf="step === 'email'">
-                    <label>Email:</label>
-                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
-                        required email [(ngModel)]="user.email">
-                </div>
-
-                <div class="input-group" *ngIf="step === 'otp'">
-                    <label>OTP:</label>
-                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
-                        [(ngModel)]="otp">
-                </div>
-
-                <button class="login-btn" type="submit" [disabled]="otpForm.invalid || showLoading">
-                    {{ step === 'email' ? 'Login' : 'Verificar' }}
-                </button>
-
-                <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para
-                    acessar sua conta se tiver se cadastrado com gmail.
-                </p>
-
+            <!-- Login -->
+            <div *ngIf="activeTab === 1">
+                <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
+                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
+                <form #otpForm="ngForm" (ngSubmit)="step === 'email' ? sendOtp() : validateOtp()">
+                    <button type="button" class="go-back-link" *ngIf="step === 'otp'" (click)="step = 'email'">
+                        ← Voltar
+                    </button>
+                    <p class="auth-message" *ngIf="step === 'otp'">
+                        Insira o código enviado para <span>{{ user.email }}</span>
+                    </p>
+                    <div class="form-group" *ngIf="step === 'email'">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" name="email" placeholder="O seu e-mail" required
+                            [(ngModel)]="user.email">
+                    </div>
+                    <div class="form-group" *ngIf="step === 'otp'">
+                        <label for="login-otp">Código OTP</label>
+                        <input type="text" id="login-otp" name="otp" placeholder="Código recebido" required
+                            [(ngModel)]="otp">
+                    </div>
+                    <button class="btn-modal-primary" type="submit" [disabled]="otpForm.invalid || showLoading">
+                        {{ step === 'email' ? 'Enviar código' : 'Verificar' }}
+                    </button>
+                    <p class="auth-message" *ngIf="step === 'email'" style="margin-top:12px;">
+                        Enviaremos um código único para o seu e-mail.
+                    </p>
+                </form>
                 <div class="signup-link">
-                    Não tem uma conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
+                    Não tem conta? <a (click)="setActiveTab(2)">Cadastre-se</a>
                 </div>
+            </div>
 
-            </form>
+            <!-- Registo -->
+            <div *ngIf="activeTab === 2">
+                <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
+                <div class="divider" *ngIf="step === 'email' && googleAuthReady"><span>OU</span></div>
+                <form autocomplete="off" #registerForm="ngForm"
+                    (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
+                    <button type="button" class="go-back-link" *ngIf="step === 'otp'" (click)="step = 'email'">
+                        ← Voltar
+                    </button>
+                    <p class="auth-message" *ngIf="step === 'otp'">
+                        Insira o código enviado para <span>{{ user.email }}</span>
+                    </p>
+                    <div class="form-group" *ngIf="step === 'email'">
+                        <label for="reg-name">Nome completo</label>
+                        <input type="text" id="reg-name" name="fullName" placeholder="O seu nome completo"
+                            [(ngModel)]="user.fullName">
+                    </div>
+                    <div class="form-group" *ngIf="step === 'email'">
+                        <label for="reg-email">E-mail</label>
+                        <input type="email" id="reg-email" name="email" placeholder="O seu e-mail" required
+                            [(ngModel)]="user.email">
+                    </div>
+                    <div class="form-group" *ngIf="step === 'otp'">
+                        <label for="reg-otp">Código OTP</label>
+                        <input type="text" id="reg-otp" name="otp" placeholder="Código recebido" required
+                            [(ngModel)]="otp">
+                    </div>
+                    <button class="btn-modal-primary" type="submit" [disabled]="registerForm.invalid || showLoading">
+                        {{ step === 'email' ? 'Criar conta' : 'Verificar' }}
+                    </button>
+                    <a *ngIf="step === 'otp'" class="resend-btn" (click)="startRegistrationViaOtp()">Reenviar código</a>
+                </form>
+                <div class="signup-link">
+                    Já tem conta? <a (click)="setActiveTab(1)">Faça login</a>
+                </div>
+            </div>
 
         </div>
+    </div>
+</div>
 
-        <div class="login-side" *ngIf="activeTab === 2">
 
-            <div class="popout-header">
-                <h2 class="popout-title">Cadastre-se para continuar</h2>
-                <button class="close-button" (click)="onCloseLoginPopout()">&times;</button>
+<!-- ══════════════════════════════════════
+     Modal: Vídeo
+══════════════════════════════════════ -->
+<div class="video-modal-overlay" *ngIf="showLesson">
+    <div class="video-modal-inner">
+        <button class="video-close-btn" (click)="showLesson = false">&#x2715;</button>
+        <video class="video-player" #videoPlayer controls *ngIf="selectedContent">
+            <source [src]="selectedContent.urlFile" type="video/mp4">
+        </video>
+    </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     Modal: Upgrade de plano
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+    <div class="modal">
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Plano Premium</h2>
+                    <span class="modal-subtitle">Desbloqueie todo o conteúdo da plataforma</span>
+                </div>
+                <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
             </div>
 
-            <div id="google-signin-button" *ngIf="step === 'email' && googleAuthReady"></div>
-
-            <div class="divider" *ngIf="step === 'email' && googleAuthReady">
-                <span>OU</span>
+            <div class="plan-price-display">
+                <div class="plan-price-amount">MT 299</div>
+                <div class="plan-price-period">por mês</div>
             </div>
 
-            <form autocomplete="off" #registerForm="ngForm"
-                (ngSubmit)="step === 'email' ? startRegistrationViaOtp() : completeRegistrationViaOtp()">
-                <div class="input-group" *ngIf="step === 'email'">
-                    <label for="name">Nome completo</label>
-                    <input type="text" id="fullName" name="fullName" #fullNameInput="ngModel" ngModel
-                        placeholder="Seu nome completo" [(ngModel)]="user.fullName">
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-check">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    Acesso ilimitado a todos os tópicos e conteúdos
                 </div>
-
-                <div class="input-group" *ngIf="step === 'email'">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" #emailInput="ngModel" ngModel placeholder="Seu e-mail"
-                        required email [(ngModel)]="user.email">
+                <div class="feature-item">
+                    <div class="feature-check">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    Resolução detalhada de questões com dicas e comentários
                 </div>
-
-                <a *ngIf="step === 'otp'" (click)="step = 'email'" class="go-back-btn">⟵ Voltar</a>
-
-                <p class="message" *ngIf="step === 'otp'">
-                    Para se cadastrar, insira o código enviado para o seu e-mail (<span>{{ user.email }}</span>)
-                </p>
-
-                <div class="input-group" *ngIf="step === 'otp'">
-                    <input type="text" id="otp" name="otp" #otpInput="ngModel" ngModel placeholder="código" required otp
-                        [(ngModel)]="otp">
+                <div class="feature-item">
+                    <div class="feature-check">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    Criação de quizzes avançados e personalizados
                 </div>
+                <div class="feature-item">
+                    <div class="feature-check">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    Mais exercícios por quiz para reforçar o aprendizado
+                </div>
+            </div>
 
-                <button class="login-btn" type="submit" [disabled]="registerForm.invalid || showLoading">
-                    {{ step === 'email' ? 'Login' : 'Verificar' }}
+            <button class="btn-modal-primary" (click)="onUpgradePlan()">
+                Fazer upgrade agora
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     Modal: Opções de pagamento
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+    <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Método de pagamento</h2>
+                    <span class="modal-subtitle">Escolha como pretende pagar</span>
+                </div>
+                <button class="close-btn" (click)="onCloseModalPaymentOptions()">&#x2715;</button>
+            </div>
+
+            <!-- Lista de carteiras -->
+            <div class="wallet-list">
+                <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+                    <label class="wallet-option-label" *ngFor="let wallet of userWallets">
+                        <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
+                        <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
+                            <div class="wallet-left">
+                                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                    class="wallet-icon" />
+                                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                    class="wallet-icon" />
+                                <div class="wallet-details">
+                                    <span class="wallet-type">{{ wallet.type }}</span>
+                                    <span class="wallet-number">{{ wallet.phoneNumber }}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn-set-default" *ngIf="!wallet.default"
+                                    (click)="setDefaultWallet(wallet)" type="button">Principal</button>
+                                <span class="wallet-badge" *ngIf="wallet.default">Principal</span>
+                            </div>
+                        </div>
+                    </label>
+                </ng-container>
+                <ng-template #noWallets>
+                    <div class="wallet-empty">Ainda não adicionou nenhuma carteira.</div>
+                </ng-template>
+            </div>
+
+            <div class="modal-actions-stack">
+                <button class="btn-modal-primary" (click)="upgradePlan()" *ngIf="userWallets.length !== 0"
+                    style="background:#4361ee;">
+                    Confirmar pagamento — 299 MT/mês
                 </button>
-
-                <a *ngIf="step === 'otp'" (click)="startRegistrationViaOtp()" class="resend-btn">Reenviar</a>
-
-                <p class="message" *ngIf="step === 'email'">
-                    Enviaremos um código de acesso único para seu e-mail. Ou, você pode usar google para se
-                    cadastradar com
-                    gmail.
-                </p>
-
-            </form>
-            <div id="google-signin-button"></div>
-            <div class="signup-link">
-                Já tem uma conta? <a (click)="setActiveTab(1); ">Faça login</a>
+                <button class="btn-modal-primary" (click)="openModalAddPaymentOption()"
+                    style="background:#ffffff; color:#4361ee; border:1px solid #c7d2fe;">
+                    + Adicionar carteira
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal de Vídeo -->
-<div *ngIf="showLesson">
-    <div class="vidio-popout-overlay">
-        <button class="vidio-close-btn" (click)="showLesson = false">&times;</button>
-        <div *ngIf="selectedContent">
-            <video class="video" #videoPlayer controls>
-                <source [src]="selectedContent.urlFile" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    </div>
-</div>
 
-
-<!-- Popout Upgrade Plan -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalUpgradePlan">
-    <div class="popout-container pricing-card popular">
-
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="plan-name popout-title">Atualize para o Plano Premium</h2>
-            <button class="close-button" (click)="onCloseUpgradeModal()">&times;</button>
-        </div>
-
-        <div class="pricing-card">
-            <div class="plan-header">
-                <!--<h3 class="plan-name">Premium</h3>-->
-                <div class="plan-price">MT 299</div>
-                <div class="plan-period">por mês</div>
+<!-- ══════════════════════════════════════
+     Modal: Adicionar carteira
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+    <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Nova carteira</h2>
+                    <span class="modal-subtitle">Adicione o seu método de pagamento</span>
+                </div>
+                <button class="close-btn" (click)="onCloseModalAddPaymentOption()">&#x2715;</button>
             </div>
 
-            <!-- Features -->
-            <div class="popout-body features">
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</span>
+            <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+                <div class="form-group">
+                    <label for="wallet-phone">Número de telemóvel</label>
+                    <input type="text" id="wallet-phone" name="phoneNumber" maxlength="9" minlength="9"
+                        [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+                        pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" />
+                    <span class="input-error" *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9">
+                        O número deve ter exatamente 9 dígitos.
+                    </span>
+                    <span class="input-error"
+                        *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9">
+                        Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+                    </span>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Resolução detalhada de todas as questões com dicas e comentários</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Criação de quizzes avançados e personalizados</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"></div>
-                    <span>Mais exercícios por quiz para reforçar o aprendizado</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- CTA / Preço -->
-        <div class="upgrade-cta">
-            <button class="cta-button btn-upgrade" (click)="onUpgradePlan()">
-                Fazer Upgrade Agora
-            </button>
-            <!--<p class="plan-price" style="margin-top: 0.5rem; text-align:center;">299 MT/mês</p>-->
-        </div>
-
-    </div>
-</div>
-
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalPaymentOptions">
-    <div class="popout-container modern-card">
-
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="popout-title">Escolha o método de pagamento</h2>
-            <button class="close-button" (click)="onCloseModalPaymentOptions()">
-                &times;
-            </button>
-        </div>
-
-        <!-- Carteiras Disponíveis -->
-        <div class="wallet-options">
-            <!-- Caso existam carteiras -->
-            <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-                <label class="wallet-option" *ngFor="let wallet of userWallets">
-                    <input type="radio" name="wallet" [value]="wallet.id" [(ngModel)]="selectedWalletId" />
-                    <div class="wallet-card" [class.selected]="selectedWalletId === wallet.id">
+                <!-- Carteira detectada -->
+                <div class="wallet-detected-box" *ngIf="wallet.type">
+                    <div class="wallet-card">
                         <div class="wallet-left">
                             <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
                                 class="wallet-icon" />
                             <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
                                 class="wallet-icon" />
-
                             <div class="wallet-details">
                                 <span class="wallet-type">{{ wallet.type }}</span>
                                 <span class="wallet-number">{{ wallet.phoneNumber }}</span>
                             </div>
                         </div>
-
-                        <div class="wallet-check">
-                            <button *ngIf="!wallet.default" (click)="setDefaultWallet(wallet)" class="btn-default">
-                                Definir como principal
-                            </button>
-                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-                        </div>
-                    </div>
-                </label>
-            </ng-container>
-
-            <!-- Caso não existam carteiras -->
-            <ng-template #noWallets>
-                <div class="wallet-card">
-                    <p class="empty-text">Você ainda não adicionou nenhuma carteira.</p>
-                </div>
-            </ng-template>
-        </div>
-
-        <!-- Caso não tenha carteiras -->
-        <div class="upgrade-cta">
-            <button class="cta-button btn-add" (click)="openModalAddPaymentOption()">
-                Adicionar Método de Pagamento
-            </button>
-        </div>
-
-        <!-- Confirmar pagamento -->
-        <div class="upgrade-cta" *ngIf="userWallets.length !== 0">
-            <button class="cta-button btn-upgrade" (click)="upgradePlan()">
-                Fazer Upgrade Agora
-            </button>
-            <p class="plan-price-upgrade">299 MT/mês</p>
-        </div>
-    </div>
-</div>
-
-<!-- Etapa 2: Escolha de pagamento -->
-<div class="popout-overlay" id="popoutOverlay" *ngIf="displayModalAddPaymentOption">
-    <div class="popout-container pricing-card popular">
-
-        <!-- Header -->
-        <div class="popout-header">
-            <h2 class="plan-name popout-title">Adicione o método de pagamento</h2>
-            <button class="close-button" (click)="onCloseModalAddPaymentOption()">&times;</button>
-        </div>
-
-        <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-
-            <!-- Número de telefone -->
-            <div class="form-group">
-                <label for="phoneNumber">Número de telefone</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
-                    [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                    pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567" class="input-control" />
-
-                <!-- Mensagem de erro -->
-                <small *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-                    O número deve ter exatamente 9 dígitos.
-                </small>
-                <small *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
-                    Parece que este número não pertence a uma carteira válida. Suportamos apenas <strong>MPESA
-                        (84/85)</strong> e
-                    <strong>EMOLA (86/87)</strong>.
-                </small>
-            </div>
-
-            <!-- Tipo de carteira detectado automaticamente -->
-            <div class="wallet-detected" *ngIf="wallet.type">
-                <div class="wallet-card">
-                    <div class="wallet-left">
-                        <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                            class="wallet-icon" />
-                        <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                            class="wallet-icon" />
-
-                        <div class="wallet-details">
-                            <span class="wallet-type">{{ wallet.type }}</span>
-                            <span class="wallet-number">{{ wallet.phoneNumber }}</span>
-                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="upgrade-cta">
-                <button class="cta-button btn-upgrade" type="submit"
-                    [disabled]="walletTypeForm.invalid || !wallet.type">
-                    {{ showLoading ? 'Adicionando carteira...' :'Adicionar carteira' }}
+                <button class="btn-modal-primary" type="submit"
+                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
+                    {{ showLoading ? 'Adicionando...' : 'Adicionar carteira' }}
                 </button>
-            </div>
-
-        </form>
-
+            </form>
+        </div>
     </div>
 </div>
