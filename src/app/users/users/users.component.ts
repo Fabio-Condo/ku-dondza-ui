@@ -48,7 +48,7 @@ export class UsersComponent implements OnInit {
 
   filtro: IUserFilter = {
     page: -1,
-    itemsPerPage: 10,
+    itemsPerPage: 5,
     sort: 'fullName,asc',
   }
 
