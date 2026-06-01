@@ -1183,7 +1183,7 @@
             <div class="tabs-bar">
 
                 <div class="tabs">
-                    <button class="tab-btn" [class.active]="!filtro.subject" (click)="limparCampos()">
+                    <button class="tab-btn" [class.active]="!filtro.subjectId" (click)="limparCampos()">
                         <svg viewBox="0 0 24 24">
                             <rect x="3" y="3" width="7" height="7" rx="1" />
                             <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -1195,7 +1195,7 @@
                     </button>
 
                     <button class="tab-btn" *ngFor="let subject of subjects"
-                        [class.active]="filtro.subject === subject.id" (click)="filtro.subject = subject.id; findAll()">
+                        [class.active]="filtro.subjectId === subject.id" (click)="filtro.subjectId = subject.id; findAll()">
 
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Matemática'">
                             <path d="M4 4h16" />
@@ -1404,12 +1404,18 @@
                                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                                 <circle cx="12" cy="17" r="1" />
                             </svg>
+                            <!--
                             <span class="stat-item-value">{{ topic.questions.length }}</span>
+                            -->
+                            <span class="stat-item-value">{{ topic.totalQuestions }}</span>
                             <span class="stat-item-label">questões</span>
                         </div>
 
+                        <!--
                         <div class="stat-sep"></div>
+                        -->
 
+                        <!--
                         <div class="stat-item">
                             <svg viewBox="0 0 24 24">
                                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -1417,6 +1423,7 @@
                             </svg>
                             <span class="stat-item-label">Tópico</span>
                         </div>
+                        -->
 
                         <!-- Badge de nível (premium/free) alinhado à direita -->
                         <span class="level-badge free" *ngIf="!topic.premium">Gratuito</span>
@@ -1535,7 +1542,7 @@
             <form autocomplete="off">
                 <div class="form-group">
                     <label for="filter-subject">Disciplina</label>
-                    <select id="filter-subject" name="subject" [(ngModel)]="filtro.subject" (change)="findAll()">
+                    <select id="filter-subject" name="subject" [(ngModel)]="filtro.subjectId" (change)="findAll()">
                         <option value="" disabled selected>Selecione a disciplina</option>
                         <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
                     </select>
@@ -1569,8 +1576,7 @@
             <div class="modal-header">
                 <div class="modal-title-group">
                     <h2 class="modal-title">{{ editing ? 'Editar tópico' : 'Novo tópico' }}</h2>
-                    <span class="modal-subtitle">{{ editing ? 'Atualize as informações do tópico' : 'Preencha os dados
-                        do novo tópico' }}</span>
+                    <span class="modal-subtitle">{{ editing ? 'Atualize as informações do tópico' : 'Preencha os dados do novo tópico' }}</span>
                 </div>
                 <button class="close-btn" (click)="displayModalSave = false">&#x2715;</button>
             </div>

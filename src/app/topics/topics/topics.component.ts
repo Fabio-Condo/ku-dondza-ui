@@ -375,7 +375,7 @@ export class TopicsComponent implements OnInit {
   limparCampos() {
     this.filtro.searchParam = "";
     this.filtro.name = "";
-    this.filtro.subject = undefined;
+    this.filtro.subjectId = undefined;
     this.findAll();
   }
 

@@ -46,8 +46,8 @@ export class TopicService {
             params = params.set('searchParam', filtro.searchParam);
         }
 
-        if (filtro.subject) {
-            params = params.set('subject', filtro.subject);
+        if (filtro.subjectId) {
+            params = params.set('subjectId', filtro.subjectId.toString());
         }
 
         if (filtro.name) {

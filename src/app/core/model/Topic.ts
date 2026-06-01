@@ -9,6 +9,7 @@ export class Topic {
     name!: string;
     description!: string;
     subject = new Subject();
+    totalQuestions!: number;
     questions: Question[] = [];
     contents: TopicContent[] = [];
     tests: Test[] = [];

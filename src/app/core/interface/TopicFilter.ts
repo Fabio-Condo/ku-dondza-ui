@@ -1,7 +1,7 @@
 export interface TopicFilter {
     searchParam?: string,
     name?: string;
-    subject?: number;
+    subjectId?: number;
 
     pagina: number,
     ordenamento: string,
