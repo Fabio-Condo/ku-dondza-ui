@@ -1991,7 +1991,7 @@
             <div class="tabs-bar">
 
                 <div class="tabs">
-                    <button class="tab-btn" [class.active]="!filtro.subject" (click)="limparCampos()">
+                    <button class="tab-btn" [class.active]="!filtro.subjectId" (click)="limparCampos()">
                         <svg viewBox="0 0 24 24">
                             <rect x="3" y="3" width="7" height="7" rx="1" />
                             <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -2003,7 +2003,7 @@
                     </button>
 
                     <button class="tab-btn" *ngFor="let subject of subjects"
-                        [class.active]="filtro.subject === subject.id" (click)="filtro.subject = subject.id; findAll()">
+                        [class.active]="filtro.subjectId === subject.id" (click)="filtro.subjectId = subject.id; findAll()">
 
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Matemática'">
                             <path d="M4 4h16" />
@@ -2312,7 +2312,7 @@
                 </div>
                 <div class="form-group">
                     <label for="subject">Disciplina</label>
-                    <select id="subject" name="subject" [(ngModel)]="selectedSubject" [(ngModel)]="filtro.subject"
+                    <select id="subject" name="subject" [(ngModel)]="selectedSubject" [(ngModel)]="filtro.subjectId"
                         (change)="getTopicsBySubjectId(); findAll()">
                         <option value="" disabled selected>Selecione a disciplina</option>
                         <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
@@ -2320,7 +2320,7 @@
                 </div>
                 <div class="form-group">
                     <label for="topic">Tópico</label>
-                    <select id="topic" name="topic" [(ngModel)]="filtro.topic" [disabled]="!selectedSubject"
+                    <select id="topic" name="topic" [(ngModel)]="filtro.topicId" [disabled]="!selectedSubject"
                         (change)="findAll()">
                         <option value="" disabled selected>Selecione o tópico</option>
                         <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>

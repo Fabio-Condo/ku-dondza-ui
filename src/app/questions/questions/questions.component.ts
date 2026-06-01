@@ -924,8 +924,8 @@ export class QuestionsComponent implements OnInit {
     this.filtro.searchParam = "";
     this.filtro.text = "";
     this.filtro.difficultyLevel = "";
-    this.filtro.subject = undefined;
-    this.filtro.topic = undefined;
+    this.filtro.subjectId = undefined;
+    this.filtro.topicId = undefined;
     this.filtro.page = 0;
     this.filtro.itemsPerPage = 10;
     this.filtro.sort = "id,desc";

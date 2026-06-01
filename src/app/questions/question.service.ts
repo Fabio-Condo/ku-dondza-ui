@@ -21,8 +21,8 @@ export class QuestionService {
   private questionsCache = new Map<string, CacheEntry<IApiResponse<Question>>>();
   private questionCache = new Map<string, CacheEntry<Question>>();
 
-  //private CACHE_TTL = 10 * 60 * 1000; // 5 minutos
-  private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
+  private CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+  //private CACHE_TTL = 1000 * 60 * 60 * 24; // 24h
 
   private isCacheValid(entry: CacheEntry<any>): boolean {
     return (Date.now() - entry.timestamp) < this.CACHE_TTL;
@@ -45,12 +45,12 @@ export class QuestionService {
       params = params.set('searchParam', filter.searchParam);
     }
 
-    if (filter.subject) {
-      params = params.set('subject', filter.subject);
+    if (filter.subjectId) {
+      params = params.set('subjectId', filter.subjectId);
     }
 
-    if (filter.topic) {
-      params = params.set('topic', filter.topic);
+    if (filter.topicId) {
+      params = params.set('topicId', filter.topicId);
     }
 
     if (filter.text) {
