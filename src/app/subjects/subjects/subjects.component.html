@@ -1356,7 +1356,7 @@
 </html>
 
 <!-- ══════════════════════════════════════
-     Modal: Adicionar / Editar exame
+     Modal: Adicionar / Editar disciplina
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
@@ -1369,15 +1369,15 @@
 
             <div class="modal-header">
                 <div class="modal-title-group">
-                    <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
+                    <h2 class="modal-title">{{ editing ? 'Editar disciplina' : 'Nova disciplina' }}</h2>
                     <span class="modal-subtitle">
-                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo'}}
+                        {{ editing ? 'Actualize os dados da disciplina' : 'Preencha os campos abaixo'}}
                     </span>
                 </div>
                 <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
             </div>
 
-            <form autocomplete="off" #exameForm="ngForm">
+            <form autocomplete="off" #disciplinaForm="ngForm">
 
 
                 <div class="form-group">
@@ -1440,7 +1440,7 @@
                         <polyline points="17 21 17 13 7 13 7 21" />
                         <polyline points="7 3 7 8 15 8" />
                     </svg>
-                    {{ showLoading ? 'Salvando...' : 'Salvar exame' }}
+                    {{ showLoading ? 'Salvando...' : 'Salvar disciplina' }}
                 </button>
             </form>
         </div>
@@ -1463,7 +1463,7 @@
                 </div>
                 <button class="close-btn" (click)="toggleFilter()">&#x2715;</button>
             </div>
-            <form autocomplete="off" #exameForm="ngForm">
+            <form autocomplete="off" #disciplinaForm="ngForm">
                 <div class="form-group">
                     <label for="subject">Disciplina</label>
                     <select id="subject" [(ngModel)]="filtro.subjectId" (change)="findAll()" name="subject" required>
