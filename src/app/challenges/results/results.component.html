@@ -122,7 +122,7 @@
         /* ── Stats strip ── */
         .stats-strip {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             border-top: 1px solid #f0f2f8;
         }
 
@@ -143,18 +143,6 @@
             color: #4361ee;
             line-height: 1;
             margin-bottom: 4px;
-        }
-
-        .stat-value.sv-green {
-            color: #059669;
-        }
-
-        .stat-value.sv-orange {
-            color: #d97706;
-        }
-
-        .stat-value.sv-red {
-            color: #ef4444;
         }
 
         .stat-label {
@@ -996,7 +984,7 @@
             }
 
             .stats-strip {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
 
             .stat-item:nth-child(2) {
@@ -1081,15 +1069,11 @@
                     <div class="stat-label">Participantes</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value sv-red">{{ challenge.totalQuestions }}</div>
+                    <div class="stat-value">{{ challenge.totalQuestions }}</div>
                     <div class="stat-label">Questões</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value sv-green">0%</div>
-                    <div class="stat-label">Média geral (N/A)</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value sv-orange">{{ challenge.xpReward }}</div>
+                    <div class="stat-value">{{ challenge.xpReward }}</div>
                     <div class="stat-label">XP possível</div>
                 </div>
             </div>
