@@ -508,8 +508,6 @@ export class ExamesComponent implements OnInit {
 
   addNewWlletType(walletTypeForm: NgForm) {
 
-    //this.wallet.user = this.loggedUser;
-
     this.detectWalletType(); // força atualização e validação
 
     const phone = this.wallet.phoneNumber || '';
