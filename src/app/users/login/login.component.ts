@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private googleAuthService2: GoogleAuthServiceV2,
+    private googleAuthService: GoogleAuthServiceV2,
   ) { }
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.isGoogleLoading = true;
 
-    this.googleAuthService2.loginWithPopup((credential) => {
+    this.googleAuthService.loginWithPopup((credential) => {
 
       this.handleGoogleCredential(credential);
 
