@@ -1,14 +1,13 @@
-import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpResponse, HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../authentication.service';
 import { User } from 'src/app/core/model/User';
-import { GoogleAuthService } from '../google-auth-service.service';
-import { FormBuilder, NgForm, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, NgForm } from '@angular/forms';
+import { GoogleAuthServiceV2 } from '../google-auth.service';
 
 declare let gtag: Function;
 
@@ -33,6 +32,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   otp: string = '';
 
+  isGoogleLoading: boolean = false;
+
   googleAuthReady = true;
 
   constructor(
@@ -41,13 +42,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private googleAuthService: GoogleAuthService
+    private googleAuthService2: GoogleAuthServiceV2,
   ) { }
 
   ngOnInit(): void {
     this.checkAuthentication();
     this.scrollToTop();
-    this.initializeGoogleAuth();
   }
 
   scrollToTop() {
@@ -56,6 +56,22 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanupSubscriptions();
+  }
+
+  loginWithGoogleBigPopup() {
+
+    this.isGoogleLoading = true;
+
+    this.googleAuthService2.loginWithPopup((credential) => {
+
+      this.handleGoogleCredential(credential);
+
+      this.isGoogleLoading = false;
+    });
+
+    setTimeout(() => {
+      this.isGoogleLoading = false;
+    }, 5000);
   }
 
   sendOtp() {
@@ -181,28 +197,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
-  private async initializeGoogleAuth(): Promise<void> {
-    try {
-      const setupButton =
-        await this.googleAuthService.initializeGoogleButton('google-signin-button');
-
-      setupButton((credential) => this.handleGoogleCredential(credential));
-
-      // só ativa o botão se tudo correr bem
-      this.googleAuthReady = true;
-
-    } catch (error) {
-      this.googleAuthReady = false;
-
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Falha ao carregar autenticação Google',
-        life: 5000
-      });
-    }
-  }
-
   private handleGoogleCredential(googleCredential: string): void {
     this.ngZone.run(() => {
       this.loadingMessage = "Estamos quase lá";
@@ -238,7 +232,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   private checkAuthentication(): void {
     if (this.authenticationService.isUserLoggedIn()) {
       this.router.navigateByUrl('/main-panel');
-      //this.router.navigateByUrl('/quizzes');
     }
   }
 
@@ -249,9 +242,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   setActiveTab(tabIndex: number) {
     this.activeTab = tabIndex;
-    setTimeout(() => {
-      this.initializeGoogleAuth();
-    }, 100); // Espera para o botão estar no DOM
   }
 
   private sendErrorNotification(message: string): void {
