@@ -54,6 +54,9 @@ export class ExamesComponent implements OnInit {
   userWallets: Wallet[] = [];
   selectedWalletId: number = 0;
 
+  selectedWalletNumber: string = '';
+
+
   displayModalQuestionsList: boolean = false;
   displayModalUpgradePlan: boolean = false;
   displayModalPaymentOptions: boolean = false;
@@ -144,8 +147,8 @@ export class ExamesComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('Questions page');
 
-  //  this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-  //  this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    //  this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+    //  this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
     this.authenticationService.loginStatus$.subscribe(logged => {
       this.isUserLoggedIn = logged;
@@ -589,6 +592,37 @@ export class ExamesComponent implements OnInit {
     this.showLoading = true;
 
     this.userService.activatePlan(this.loggedUser.id, 'PREMIUM', this.selectedWalletId).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.onCloseUpgradeModal();
+        this.onCloseModalPaymentOptions();
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
+  upgradePlanByPhoneNumber() {
+    // Se não tiver carteira selecionada, pega a default
+    if (!this.selectedWalletNumber) {
+      return;
+    }
+
+    this.loadingMessage = "Processando o pagamento";
+    this.showLoading = true;
+
+    console.log("Carteira", this.selectedWalletNumber);
+
+    this.userService.activatePlanByPhoneNumber(this.loggedUser.id, 'PREMIUM', this.selectedWalletNumber).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);

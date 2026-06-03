@@ -155,6 +155,18 @@ export class UserService {
     );
   }
 
+  activatePlanByPhoneNumber(userId: number, plan: string, phoneNumber: string): Observable<HttpResponse<User>> {
+    const params = new HttpParams()
+      .set('plan', plan)
+      .set('phoneNumber', phoneNumber);
+
+    return this.http.put<User>(
+      `${this.host}/activate-plan-by-phone-number/${userId}`,
+      {}, // corpo vazio
+      { params, observe: 'response' } // opções (params e observe)
+    );
+  }
+
   getUserSubjectInterests(userId: number): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.host}/${userId}/interests`);
   }
