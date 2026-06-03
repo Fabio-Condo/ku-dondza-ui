@@ -54,9 +54,6 @@ export class ExamesComponent implements OnInit {
   userWallets: Wallet[] = [];
   selectedWalletId: number = 0;
 
-  selectedWalletNumber: string = '';
-
-
   displayModalQuestionsList: boolean = false;
   displayModalUpgradePlan: boolean = false;
   displayModalPaymentOptions: boolean = false;
@@ -602,6 +599,7 @@ export class ExamesComponent implements OnInit {
 
         this.onCloseUpgradeModal();
         this.onCloseModalPaymentOptions();
+        this.onCloseModalAddPaymentOption();
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {
@@ -611,18 +609,16 @@ export class ExamesComponent implements OnInit {
     });
   }
 
-  upgradePlanByPhoneNumber() {
+  upgradePlanByPhoneNumber(wallet: Wallet) {
     // Se não tiver carteira selecionada, pega a default
-    if (!this.selectedWalletNumber) {
+    if (!wallet.phoneNumber || !wallet.type) {
       return;
     }
 
     this.loadingMessage = "Processando o pagamento";
     this.showLoading = true;
 
-    console.log("Carteira", this.selectedWalletNumber);
-
-    this.userService.activatePlanByPhoneNumber(this.loggedUser.id, 'PREMIUM', this.selectedWalletNumber).subscribe({
+    this.userService.activatePlanByPhoneNumber(this.loggedUser.id, 'PREMIUM', wallet.phoneNumber, wallet.type).subscribe({
       next: (response: HttpResponse<User>) => {
         const token = response.headers.get(HeaderType.JWT_TOKEN);
         this.authenticationService.saveToken(token);
@@ -633,6 +629,7 @@ export class ExamesComponent implements OnInit {
 
         this.onCloseUpgradeModal();
         this.onCloseModalPaymentOptions();
+        this.onCloseModalAddPaymentOption();
         this.showLoading = false;
       },
       error: (errorResponse: HttpErrorResponse) => {

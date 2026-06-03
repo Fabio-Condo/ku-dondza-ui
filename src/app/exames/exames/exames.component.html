@@ -2654,7 +2654,7 @@
                 <div class="form-group">
                     <label for="phoneNumber">Número de telefone</label>
                     <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
-                        [(ngModel)]="wallet.phoneNumber" [(ngModel)]="selectedWalletNumber" (ngModelChange)="detectWalletType()"
+                        [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
                         pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
                         [disabled]="showLoading" />
                     <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
@@ -2684,14 +2684,14 @@
                 </div>
 
                 <button class="btn-modal-primary"
-                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading" (click)="upgradePlanByPhoneNumber()">
+                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading" (click)="upgradePlanByPhoneNumber(wallet)">
                     <span class="btn-spinner" *ngIf="showLoading"></span>
                     <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19" />
                         <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
-                    <span *ngIf="!showLoading">Adicionar e pagar</span>
+                    <span *ngIf="!showLoading">Pagar e adicionar</span>
                     <span *ngIf="showLoading">A processar pagamento...</span>
                 </button>
             </form>

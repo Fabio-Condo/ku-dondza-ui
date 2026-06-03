@@ -149,19 +149,20 @@ export class UserService {
       .set('walletId', walletId.toString());
 
     return this.http.put<User>(
-      `${this.host}/activate-plan/${userId}`,
+      `${this.host}/${userId}/activate-plan-by-wallet-id`,
       {}, // corpo vazio
       { params, observe: 'response' } // opções (params e observe)
     );
   }
 
-  activatePlanByPhoneNumber(userId: number, plan: string, phoneNumber: string): Observable<HttpResponse<User>> {
+  activatePlanByPhoneNumber(userId: number, plan: string, phoneNumber: string, walletType: string): Observable<HttpResponse<User>> {
     const params = new HttpParams()
       .set('plan', plan)
-      .set('phoneNumber', phoneNumber);
+      .set('phoneNumber', phoneNumber)
+      .set('walletType', walletType);
 
     return this.http.put<User>(
-      `${this.host}/activate-plan-by-phone-number/${userId}`,
+      `${this.host}/${userId}/activate-plan-by-phone-number`,
       {}, // corpo vazio
       { params, observe: 'response' } // opções (params e observe)
     );
