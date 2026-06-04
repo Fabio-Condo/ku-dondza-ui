@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercícios por Disciplina</title>
+    <title>Visualizar Curso</title>
     <style>
         /* ─── Reset & Base ─────────────────────────────────── */
         *,
@@ -1878,22 +1878,42 @@
                     </div>
                 </div>
                 <ul class="feature-list">
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Acesso ilimitado a todos os tópicos e conteúdos disponíveis</li>
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            </svg>
+                        </span>
+                        Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Resolução detalhada com dicas e comentários passo a passo</li>
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            </svg>
+                        </span>
+                        Resolução detalhada com dicas e comentários passo a passo
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Criação de quizzes avançados e personalizados</li>
-                    <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            </svg>
+                        </span>
+                        Criação de quizzes avançados e personalizados
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg></span>Mais exercícios por quiz para reforçar o aprendizado</li>
+                            </svg>
+                        </span>
+                        Mais exercícios por quiz para reforçar o aprendizado
+                    </li>
                 </ul>
             </div>
 
@@ -2068,16 +2088,16 @@
                     <span class="badge-detected">Detectado</span>
                 </div>
 
-                <button class="btn-modal-primary" type="submit"
-                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
+                <button class="btn-modal-primary"
+                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading" (click)="upgradePlanByPhoneNumber(wallet)">
                     <span class="btn-spinner" *ngIf="showLoading"></span>
                     <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19" />
                         <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
-                    <span *ngIf="!showLoading">Adicionar carteira</span>
-                    <span *ngIf="showLoading">A adicionar...</span>
+                    <span *ngIf="!showLoading">Pagar e adicionar</span>
+                    <span *ngIf="showLoading">A processar pagamento...</span>
                 </button>
             </form>
         </div>

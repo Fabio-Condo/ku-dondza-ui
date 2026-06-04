@@ -1872,7 +1872,7 @@
             </svg>
             Voltar
         </button>
-        --> 
+        -->
 
         <!-- ══════════════════════════════════════
          QUESTION PANEL
@@ -1931,7 +1931,9 @@
                     </div>
                     <!-- Close -->
                     <button class="btn-close-ex" (click)="goBack()" aria-label="Fechar exercício">
-                        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -2098,7 +2100,8 @@
     </div>
 
     <!-- FAB: Comentários -->
-    <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-3" *ngIf="isUserLoggedIn && isSuperAdmin && showCorrection" (click)="onGetComments()">
+    <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-3"
+        *ngIf="isUserLoggedIn && isSuperAdmin && showCorrection" (click)="onGetComments()">
         <button class="fab fab--outline" aria-label="Comentários">
             <i class="pi pi-comments"></i>
             <span class="fab-count-badge" *ngIf="question.numberOfComments > 0">
@@ -2119,304 +2122,196 @@
         </button>
         <span class="fab-label">Responder</span>
     </div>
+</body>
 
-
-    <!-- ══════════════════════════════════════
+<!-- ══════════════════════════════════════
        COMMENTS MODAL
   ══════════════════════════════════════ -->
-    <div class="comments-modal" *ngIf="showComments">
-        <div class="comments-panel">
-            <div class="comments-header">
-                <div>
-                    <h2 class="comments-title">Comentários</h2>
-                    <span style="font-size: 12px; color: #94a3b8;">Dúvidas e insights sobre este exercício</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="comments-count-badge">{{ comments.length }}</div>
-                    <button class="close-btn" (click)="onCloseComments()">×</button>
-                </div>
+<div class="comments-modal" *ngIf="showComments">
+    <div class="comments-panel">
+        <div class="comments-header">
+            <div>
+                <h2 class="comments-title">Comentários</h2>
+                <span style="font-size: 12px; color: #94a3b8;">Dúvidas e insights sobre este exercício</span>
             </div>
-
-            <div class="comments-list">
-                <div *ngIf="comments.length === 0" class="no-comments">
-                    Nenhum comentário ainda. Seja o primeiro! 💬
-                </div>
-
-                <div *ngFor="let comment of comments" class="comment-item">
-                    <img [src]="comment.user.profileImageUrl" alt="User" class="comment-avatar" />
-                    <div class="comment-bubble">
-                        <div class="comment-header-row">
-                            <div class="comment-author">{{ comment.user.fullName }}</div>
-                            <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
-                        </div>
-                        <div class="comment-text">{{ comment.content }}</div>
-                        <div class="comment-footer">
-                            <button class="comment-action-btn" (click)="onLike(comment)">
-                                <span *ngIf="!comment.showLoadingLike" [class.liked]="comment.likedByUser">
-                                    Gosto · {{ comment.numberOfLikes }}
-                                </span>
-                                <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
-                            </button>
-                            <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
-                                class="comment-action-btn">Editar</button>
-                            <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
-                                class="comment-action-btn">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="load-more-container"
-                    *ngIf="comments.length < totalRecordComments && totalRecordComments > 0">
-                    <button class="btn-load-more" (click)="onShowMoreComments()">Carregar mais</button>
-                </div>
-            </div>
-
-            <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
-                <div class="comment-form">
-                    <div class="comment-input-area">
-                        <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User"
-                            class="comment-avatar" />
-                        <div class="comment-textarea-wrapper">
-                            <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput
-                                class="comment-textarea" name="content" [(ngModel)]="comment.content"
-                                (input)="autoResize(editInput)" placeholder="Partilhe a sua dúvida ou insight..."
-                                required></textarea>
-                            <button type="submit" class="btn-send-comment"
-                                [disabled]="commentForm.invalid || showLoading">
-                                <i class="pi pi-send"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- ══════════════════════════════════════
-       MODAL: Upgrade de plano
-  ══════════════════════════════════════ -->
-    <div class="modal-overlay" *ngIf="displayModalUpgradePlan">
-        <div class="modal">
-            <div class="modal-handle"><span></span></div>
-            <div class="modal-inner">
-                <div class="modal-header">
-                    <div class="modal-title-group">
-                        <h2 class="modal-title">Plano Premium</h2>
-                        <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
-                    </div>
-                    <button class="close-btn" (click)="onCloseUpgradeModal()">×</button>
-                </div>
-
-                <div class="pricing-hero">
-                    <div class="pricing-hero-top">
-                        <span class="plan-badge">
-                            <svg width="10" height="10" viewBox="0 0 24 24">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                            </svg>
-                            Premium
-                        </span>
-                        <div class="plan-price-wrap">
-                            <div class="plan-price-big">MT 299</div>
-                            <div class="plan-period">por mês</div>
-                        </div>
-                    </div>
-                    <ul class="feature-list">
-                        <li>
-                            <span class="feature-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </span>
-                            Acesso ilimitado a todos os tópicos e conteúdos disponíveis
-                        </li>
-                        <li>
-                            <span class="feature-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </span>
-                            Resolução detalhada com dicas e comentários passo a passo
-                        </li>
-                        <li>
-                            <span class="feature-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </span>
-                            Criação de quizzes avançados e personalizados
-                        </li>
-                        <li>
-                            <span class="feature-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </span>
-                            Mais exercícios por quiz para reforçar o aprendizado
-                        </li>
-                    </ul>
-                </div>
-
-                <button class="btn-upgrade-big" (click)="onUpgradePlan()">
-                    Fazer upgrade agora
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                    </svg>
-                </button>
-                <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="comments-count-badge">{{ comments.length }}</div>
+                <button class="close-btn" (click)="onCloseComments()">×</button>
             </div>
         </div>
+
+        <div class="comments-list">
+            <div *ngIf="comments.length === 0" class="no-comments">
+                Nenhum comentário ainda. Seja o primeiro! 💬
+            </div>
+
+            <div *ngFor="let comment of comments" class="comment-item">
+                <img [src]="comment.user.profileImageUrl" alt="User" class="comment-avatar" />
+                <div class="comment-bubble">
+                    <div class="comment-header-row">
+                        <div class="comment-author">{{ comment.user.fullName }}</div>
+                        <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
+                    </div>
+                    <div class="comment-text">{{ comment.content }}</div>
+                    <div class="comment-footer">
+                        <button class="comment-action-btn" (click)="onLike(comment)">
+                            <span *ngIf="!comment.showLoadingLike" [class.liked]="comment.likedByUser">
+                                Gosto · {{ comment.numberOfLikes }}
+                            </span>
+                            <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
+                        </button>
+                        <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
+                            class="comment-action-btn">Editar</button>
+                        <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
+                            class="comment-action-btn">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="load-more-container" *ngIf="comments.length < totalRecordComments && totalRecordComments > 0">
+                <button class="btn-load-more" (click)="onShowMoreComments()">Carregar mais</button>
+            </div>
+        </div>
+
+        <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
+            <div class="comment-form">
+                <div class="comment-input-area">
+                    <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User"
+                        class="comment-avatar" />
+                    <div class="comment-textarea-wrapper">
+                        <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput
+                            class="comment-textarea" name="content" [(ngModel)]="comment.content"
+                            (input)="autoResize(editInput)" placeholder="Partilhe a sua dúvida ou insight..."
+                            required></textarea>
+                        <button type="submit" class="btn-send-comment" [disabled]="commentForm.invalid || showLoading">
+                            <i class="pi pi-send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
+</div>
 
-
-    <!-- ══════════════════════════════════════
-       MODAL: Método de pagamento
-  ══════════════════════════════════════ -->
-    <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
-        <div class="modal">
-            <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-            <div class="modal-handle"><span></span></div>
-            <div class="modal-inner">
-                <div class="modal-header">
-                    <div class="modal-title-group">
-                        <h2 class="modal-title">Método de pagamento</h2>
-                        <span class="modal-subtitle">Selecione como pretende pagar</span>
-                    </div>
-                    <button class="close-btn" (click)="onCloseModalPaymentOptions()" [disabled]="showLoading">×</button>
+<!-- ══════════════════════════════════════
+     Modal: Upgrade de plano
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+    <div class="modal">
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Plano Premium</h2>
+                    <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
                 </div>
+                <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
+            </div>
 
-                <div class="payment-summary">
-                    <div class="payment-summary-row">
-                        <span class="payment-summary-label">Plano</span>
-                        <span class="payment-summary-value">Premium</span>
-                    </div>
-                    <div class="payment-summary-row">
-                        <span class="payment-summary-label">Renovação</span>
-                        <span class="payment-summary-value">Mensal</span>
-                    </div>
-                    <div class="payment-summary-row">
-                        <span class="payment-summary-label">Total a pagar</span>
-                        <span class="payment-summary-value payment-summary-total">MT 299</span>
-                    </div>
-                </div>
-
-                <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-                    <div class="wallet-options">
-                        <label class="wallet-card" *ngFor="let wallet of userWallets"
-                            [class.selected]="selectedWalletId === wallet.id">
-                            <div class="wallet-left">
-                                <div class="wallet-img-wrap">
-                                    <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                        class="wallet-img" />
-                                    <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                        class="wallet-img" />
-                                </div>
-                                <div>
-                                    <div class="wallet-type">{{ wallet.type }}</div>
-                                    <div class="wallet-num">{{ wallet.phoneNumber }}</div>
-                                </div>
-                            </div>
-                            <div>
-                                <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
-                                    (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir
-                                    principal</button>
-                                <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
-                        <svg viewBox="0 0 24 24">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Adicionar outro método
-                    </button>
-
-                    <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
-                        <span class="btn-spinner" *ngIf="showLoading"></span>
-                        <ng-container *ngIf="!showLoading">
-                            Confirmar e pagar
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M5 12h14" />
-                                <path d="m12 5 7 7-7 7" />
-                            </svg>
-                        </ng-container>
-                        <span *ngIf="showLoading">A processar pagamento...</span>
-                    </button>
-                    <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
-                </ng-container>
-
-                <ng-template #noWallets>
-                    <div class="empty-wallets">
-                        <div class="empty-wallets-icon">
-                            <svg viewBox="0 0 24 24">
-                                <rect x="2" y="5" width="20" height="14" rx="2" />
-                                <path d="M2 10h20" />
-                                <path d="M6 15h.01" />
-                                <path d="M10 15h4" />
-                            </svg>
-                        </div>
-                        <div class="empty-wallets-title">Nenhum método adicionado</div>
-                        <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o
-                            upgrade para Premium.</div>
-                    </div>
-                    <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            <div class="pricing-hero">
+                <div class="pricing-hero-top">
+                    <span class="plan-badge">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                         </svg>
-                        Adicionar método de pagamento
-                    </button>
-                </ng-template>
+                        Premium
+                    </span>
+                    <div class="plan-price-wrap">
+                        <div class="plan-price-big">MT 299</div>
+                        <div class="plan-period">por mês</div>
+                    </div>
+                </div>
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </span>
+                        Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </span>
+                        Resolução detalhada com dicas e comentários passo a passo
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </span>
+                        Criação de quizzes avançados e personalizados
+                    </li>
+                    <li>
+                        <span class="feature-check">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </span>
+                        Mais exercícios por quiz para reforçar o aprendizado
+                    </li>
+                </ul>
             </div>
+
+            <button class="btn-upgrade-big" (click)="onUpgradePlan()">
+                Fazer upgrade agora
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                </svg>
+            </button>
+            <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
         </div>
     </div>
+</div>
 
-
-    <!-- ══════════════════════════════════════
-       MODAL: Adicionar carteira
-  ══════════════════════════════════════ -->
-    <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
-        <div class="modal">
-            <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-            <div class="modal-handle"><span></span></div>
-            <div class="modal-inner">
-                <div class="modal-header">
-                    <div class="modal-title-group">
-                        <h2 class="modal-title">Adicionar carteira</h2>
-                        <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
-                    </div>
-                    <button class="close-btn" (click)="onCloseModalAddPaymentOption()"
-                        [disabled]="showLoading">×</button>
+<!-- ══════════════════════════════════════
+     Modal: Método de pagamento
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+    <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Método de pagamento</h2>
+                    <span class="modal-subtitle">Selecione como pretende pagar</span>
                 </div>
+                <button class="close-btn" (click)="onCloseModalPaymentOptions()"
+                    [disabled]="showLoading">&#x2715;</button>
+            </div>
 
-                <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-                    <div class="form-group">
-                        <label for="phoneNumber">Número de telefone</label>
-                        <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
-                            [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                            pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
-                            [disabled]="showLoading" />
-                        <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-                            O número deve ter exatamente 9 dígitos.
-                        </span>
-                        <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
-                            class="error-text">
-                            Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
-                        </span>
-                    </div>
+            <div class="payment-summary">
+                <div class="payment-summary-row">
+                    <span class="payment-summary-label">Plano</span>
+                    <span class="payment-summary-value">Premium</span>
+                </div>
+                <div class="payment-summary-row">
+                    <span class="payment-summary-label">Renovação</span>
+                    <span class="payment-summary-value">Mensal</span>
+                </div>
+                <div class="payment-summary-row">
+                    <span class="payment-summary-label">Total a pagar</span>
+                    <span class="payment-summary-value payment-summary-total">MT 299</span>
+                </div>
+            </div>
 
-                    <div *ngIf="wallet.type" class="wallet-card" style="margin-bottom: 1.25rem; pointer-events: none;">
+            <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+                <div class="wallet-options">
+                    <label class="wallet-card" *ngFor="let wallet of userWallets"
+                        [class.selected]="selectedWalletId === wallet.id">
                         <div class="wallet-left">
                             <div class="wallet-img-wrap">
                                 <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
@@ -2429,25 +2324,130 @@
                                 <div class="wallet-num">{{ wallet.phoneNumber }}</div>
                             </div>
                         </div>
-                        <span class="badge-detected">Detectado</span>
-                    </div>
+                        <div>
+                            <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
+                                (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir
+                                principal</button>
+                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+                        </div>
+                    </label>
+                </div>
 
-                    <button class="btn-modal-primary" type="submit"
-                        [disabled]="walletTypeForm.invalid || !wallet.type || showLoading">
-                        <span class="btn-spinner" *ngIf="showLoading"></span>
-                        <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
+                <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Adicionar outro método
+                </button>
+
+                <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
+                    <span class="btn-spinner" *ngIf="showLoading"></span>
+                    <ng-container *ngIf="!showLoading">
+                        Confirmar e pagar
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
                         </svg>
-                        <span *ngIf="!showLoading">Adicionar carteira</span>
-                        <span *ngIf="showLoading">A adicionar...</span>
-                    </button>
-                </form>
-            </div>
+                    </ng-container>
+                    <span *ngIf="showLoading">A processar pagamento...</span>
+                </button>
+                <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
+            </ng-container>
+
+            <ng-template #noWallets>
+                <div class="empty-wallets">
+                    <div class="empty-wallets-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="5" width="20" height="14" rx="2" />
+                            <path d="M2 10h20" />
+                            <path d="M6 15h.01" />
+                            <path d="M10 15h4" />
+                        </svg>
+                    </div>
+                    <div class="empty-wallets-title">Nenhum método adicionado</div>
+                    <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o
+                        upgrade
+                        para Premium.</div>
+                </div>
+                <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Adicionar método de pagamento
+                </button>
+            </ng-template>
+
         </div>
     </div>
+</div>
 
-</body>
+<!-- ══════════════════════════════════════
+     Modal: Adicionar carteira
+══════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+    <div class="modal">
+        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+        <div class="modal-handle"><span></span></div>
+        <div class="modal-inner" [class.is-loading]="showLoading">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title">Adicionar carteira</h2>
+                    <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
+                </div>
+                <button class="close-btn" (click)="onCloseModalAddPaymentOption()"
+                    [disabled]="showLoading">&#x2715;</button>
+            </div>
 
-</html>
+            <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+                <div class="form-group">
+                    <label for="phoneNumber">Número de telefone</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+                        [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+                        pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
+                        [disabled]="showLoading" />
+                    <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+                        O número deve ter exatamente 9 dígitos.
+                    </span>
+                    <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
+                        class="error-text">
+                        Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+                    </span>
+                </div>
+
+                <div *ngIf="wallet.type" class="wallet-card"
+                    style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
+                    <div class="wallet-left">
+                        <div class="wallet-img-wrap">
+                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
+                                class="wallet-img" />
+                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
+                                class="wallet-img" />
+                        </div>
+                        <div>
+                            <div class="wallet-type">{{ wallet.type }}</div>
+                            <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+                        </div>
+                    </div>
+                    <span class="badge-detected">Detectado</span>
+                </div>
+
+                <button class="btn-modal-primary" [disabled]="walletTypeForm.invalid || !wallet.type || showLoading"
+                    (click)="upgradePlanByPhoneNumber(wallet)">
+                    <span class="btn-spinner" *ngIf="showLoading"></span>
+                    <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <span *ngIf="!showLoading">Pagar e adicionar</span>
+                    <span *ngIf="showLoading">A processar pagamento...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -2033,6 +2033,36 @@ export class QuizzQuestionsComponent implements OnInit {
     });
   }
 
+  upgradePlanByPhoneNumber(wallet: Wallet) {
+    // Se não tiver carteira selecionada, pega a default
+    if (!wallet.phoneNumber || !wallet.type) {
+      return;
+    }
+
+    this.loadingMessage = "Processando o pagamento";
+    this.showLoading = true;
+
+    this.userService.activatePlanByPhoneNumber(this.loggedUser.id, 'PREMIUM', wallet.phoneNumber, wallet.type).subscribe({
+      next: (response: HttpResponse<User>) => {
+        const token = response.headers.get(HeaderType.JWT_TOKEN);
+        this.authenticationService.saveToken(token);
+        this.authenticationService.addUserToLocalCache(response.body);
+        this.authenticationService.notifyLoginStatus(true);
+        this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
+        this.loggedUser = this.authenticationService.getUserFromLocalCache();
+
+        this.onCloseUpgradeModal();
+        this.onCloseModalPaymentOptions();
+        this.onCloseModalAddPaymentOption();
+        this.showLoading = false;
+      },
+      error: (errorResponse: HttpErrorResponse) => {
+        this.sendErrorNotification(errorResponse.error.message);
+        this.showLoading = false;
+      }
+    });
+  }
+
   setDefaultWallet(wallet: Wallet) {
 
     if (!wallet.id) {
