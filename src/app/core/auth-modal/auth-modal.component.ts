@@ -47,7 +47,8 @@ export class AuthModalComponent implements OnInit {
   }
 
   closeLogin() {
-    this.authModalService.close();
+    //this.authModalService.close();
+    this.authModalService.notifyCancelled();
   }
 
   openLogin() {
@@ -107,6 +108,8 @@ export class AuthModalComponent implements OnInit {
           this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
           this.loggedUser = this.authenticationService.getUserFromLocalCache();
 
+          this.authModalService.notifyLoginSuccess(this.loggedUser);
+
           this.authModalService.close();
           this.user = new User();
 
@@ -150,6 +153,7 @@ export class AuthModalComponent implements OnInit {
         this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        this.authModalService.notifyLoginSuccess(this.loggedUser);
 
         this.authModalService.close();
         this.user = new User();
@@ -193,6 +197,7 @@ export class AuthModalComponent implements OnInit {
         this.authenticationService.notifyLoginStatus(true);
         this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
         this.loggedUser = this.authenticationService.getUserFromLocalCache();
+        this.authModalService.notifyLoginSuccess(this.loggedUser);
 
         this.authModalService.close();
         this.user = new User();

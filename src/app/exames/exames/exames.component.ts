@@ -558,17 +558,25 @@ export class ExamesComponent implements OnInit {
     );
   }
 
-  openLogin() {
-    this.authModalService.open();
-  }
-
   onUpgradePlan(): void {
+
     if (this.isUserLoggedIn) {
       this.openModalPaymentOptions();
       return;
     }
 
-    this.openLogin();
+    this.authModalService.open()
+      .subscribe(user => {
+
+        if (!user) {
+          return;
+        }
+
+        this.loggedUser = user;
+        this.isUserLoggedIn = true;
+
+        this.onCloseUpgradeModal();
+      });
   }
 
   upgradePlan() {

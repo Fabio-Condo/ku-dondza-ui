@@ -139,9 +139,6 @@ export class MainPanelComponent implements OnInit {
     });
 
     this.getChallenges();
-    //if (this.isUserLoggedIn) {
-    //  this.getUserProgress();
-    //}
     this.getUserProgress();
     this.getQuestions();
     this.getCourses();
@@ -157,13 +154,21 @@ export class MainPanelComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  openLogin() {
-    this.authModalService.open();
-  }
+  openLogin(callback?: (user: User) => void) {
 
-  //closeLogin() {
-  //  this.authModalService.close();
-  //}
+    this.authModalService.open()
+      .subscribe(user => {
+
+        if (!user) {
+          return;
+        }
+
+        this.loggedUser = user;
+        this.isUserLoggedIn = true;
+
+        callback?.(user);
+      });
+  }
 
   loginWithGoogleOnTap() {
 
@@ -781,7 +786,11 @@ export class MainPanelComponent implements OnInit {
 
     // Não autenticado -> apenas para desafios activos
     if (!this.isUserLoggedIn || !this.loggedUser) {
-      this.openLogin();
+
+      this.openLogin(() => {
+        this.startChallenge(challenge);
+      });
+
       return;
     }
 

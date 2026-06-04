@@ -417,8 +417,21 @@ export class SubjectsViewComponent {
     );
   }
 
-  openLogin() {
-    this.authModalService.open();
+  openLogin(callback?: (user: User) => void) {
+
+    this.authModalService.open()
+      .subscribe(user => {
+
+        if (!user) {
+          return;
+        }
+
+        this.loggedUser = user;
+        this.isUserLoggedIn = true;
+        //this.getSubjectBySubjectId(this.subject.subjectId);
+
+        callback?.(user);
+      });
   }
 
   onUpgradePlan(): void {

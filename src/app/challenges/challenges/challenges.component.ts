@@ -106,8 +106,20 @@ export class ChallengesComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  openLogin() {
-    this.authModalService.open();
+  openLogin(callback?: (user: User) => void) {
+
+    this.authModalService.open()
+      .subscribe(user => {
+
+        if (!user) {
+          return;
+        }
+
+        this.loggedUser = user;
+        this.isUserLoggedIn = true;
+
+        callback?.(user);
+      });
   }
 
   get editing() {

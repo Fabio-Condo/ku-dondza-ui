@@ -2184,8 +2184,20 @@ export class QuizzQuestionsComponent implements OnInit {
     return 'Fraco desempenho';
   }
 
-  openLogin() {
-    this.authModalService.open();
+  openLogin(callback?: (user: User) => void) {
+
+    this.authModalService.open()
+      .subscribe(user => {
+
+        if (!user) {
+          return;
+        }
+
+        this.loggedUser = user;
+        this.isUserLoggedIn = true;
+
+        callback?.(user);
+      });
   }
 
   private sendErrorNotification(message: string): void {

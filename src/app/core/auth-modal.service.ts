@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { User } from './model/User';
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +9,37 @@ export class AuthModalService {
 
   visible$ = new BehaviorSubject<boolean>(false);
 
-  open() {
+  private loginResultSubject?: Subject<User>;
+
+  open(): Observable<User> {
+
     this.visible$.next(true);
-    document.body.classList.add('no-scroll');
+
+    this.loginResultSubject = new Subject<User>();
+
+    return this.loginResultSubject.asObservable();
   }
 
   close() {
     this.visible$.next(false);
-    document.body.classList.remove('no-scroll');
   }
 
+  notifyLoginSuccess(user: User) {
+
+    if (this.loginResultSubject) {
+      this.loginResultSubject.next(user);
+      this.loginResultSubject.complete();
+    }
+
+    this.close();
+  }
+
+  notifyCancelled() {
+
+    if (this.loginResultSubject) {
+      this.loginResultSubject.complete();
+    }
+
+    this.close();
+  }
 }

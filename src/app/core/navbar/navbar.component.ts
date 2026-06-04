@@ -82,8 +82,20 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/progress');
   }
 
-  openLogin() {
-    this.authModalService.open();
+  openLogin(callback?: (user: User) => void) {
+
+    this.authModalService.open()
+      .subscribe(user => {
+
+        if (!user) {
+          return;
+        }
+
+        this.loggedUser = user;
+        this.isUserLoggedIn = true;
+
+        callback?.(user);
+      });
   }
 
   onLogIn(): void {
