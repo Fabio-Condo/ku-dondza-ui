@@ -43,6 +43,7 @@ export class QuestionsComponent implements OnInit {
   displayModalgenerateFromJson: boolean = false;
   displayModalPriview: boolean = false;
   displayModalFilter: boolean = false;
+  displayModalUpdateImage: boolean = false;
   isDropdownOpen: boolean = false;
   question: Question = new Question();
   //selectedQuestion: Question = new Question();
@@ -136,7 +137,7 @@ export class QuestionsComponent implements OnInit {
     { label: 'Sim', value: true },
     { label: 'Não', value: false },
   ];
- 
+
 
   filtro: QuestionFilter = {
     page: 0,
@@ -722,16 +723,30 @@ export class QuestionsComponent implements OnInit {
     question.isAdminMenuOpen = false;
   }
 
+  openModalUpdateQuestionImage(question: Question) {
+    this.question = question;
+    this.displayModalUpdateImage = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  closeModalUpdateQuestionImage() {
+    this.displayModalUpdateImage = false;
+    document.body.classList.remove('no-scroll');
+  }
+
   onUpdateQuestionImage(question: Question, event: any) {
+    this.showLoading = true;
+    this.loadingMessage = "Fazendo upload da imagem";
     if (event.target.files.length > 0) {
       this.fileToUpload = event.target.files[0];
       this.questionService.updateQuestionImage(question.id, this.fileToUpload).subscribe(
         response => {
           question = response;
-          console.log('Upload successful', response);
+          this.showLoading = false;
         },
         error => {
           console.error('Upload failed', error);
+          this.showLoading = false;
         }
       );
     }
@@ -1031,7 +1046,7 @@ export class QuestionsComponent implements OnInit {
 
   renderFunctions_forList() {
 
-setTimeout(() => {
+    setTimeout(() => {
 
       if (!this.canvases || this.canvases.length === 0) {
         return;
