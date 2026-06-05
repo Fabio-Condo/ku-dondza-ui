@@ -2009,7 +2009,7 @@
                         'ext-difficulty-intermediate': question.difficultyLevel === 'INTERMEDIATE',
                         'ext-difficulty-advanced':     question.difficultyLevel === 'ADVANCED'
                     }">
-                    {{ getDifficultyLevelType(question.difficultyLevel) }}</span>
+                        {{ getDifficultyLevelType(question.difficultyLevel) }}</span>
 
                     <span class="ex-tag ext-topic">{{ question.topic.name }}</span>
                 </div>
@@ -2018,19 +2018,24 @@
             <div class="ex-card-body has-image">
                 <!-- Imagem real (quando existe urlFile e não há expressões matemáticas) -->
                 <div class="ex-card-img-wrap" *ngIf="question.urlFile && question.mathExpressions.length == 0">
-                    <div class="ex-card-img-placeholder-inner">
-                        <svg viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
-                            <circle cx="8.5" cy="8.5" r="1.5" />
-                            <path d="M21 15l-5-5L5 21" />
-                        </svg>
-                        <span>Diagrama do enunciado</span>
-                    </div>
+                    <!-- Placeholder para a imagem -->
+                    <!--
+                        <div class="ex-img-placeholder">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <path d="M21 15l-5-5L5 21" />
+                            </svg>
+                            <span>Diagrama do enunciado</span>
+                        </div>
+                        -->
+                    <img [src]="question.urlFile" alt="Imagem do enunciado" />
                 </div>
 
                 <!-- Canvas para expressões matemáticas -->
                 <div class="ex-card-img-wrap" *ngIf="!question.urlFile && question.mathExpressions.length > 0">
-                    <canvas [attr.data-question-id]="question.id" #canvas width="400" height="400" class="math-canvas"></canvas>
+                    <canvas [attr.data-question-id]="question.id" #canvas width="400" height="400"
+                        class="math-canvas"></canvas>
                 </div>
 
                 <div class="ex-card-content">
