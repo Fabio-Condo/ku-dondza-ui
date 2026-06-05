@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
-        /* ── RESET ── */
         *,
         *::before,
         *::after {
@@ -28,94 +27,44 @@
             padding: 10px;
         }
 
-        /* ── CONTAINER ── */
         .ex-container {
             max-width: 780px;
             margin: 0 auto;
             padding-top: 60px;
         }
 
-        /* ── ANIMATIONS ── */
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 10px);
-            }
-
-            12% {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-
-            85% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(-50%, 10px);
-            }
+            0% { opacity: 0; transform: translate(-50%, 10px); }
+            12% { opacity: 1; transform: translate(-50%, 0); }
+            85% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, 10px); }
         }
 
         @keyframes popIn {
-            from {
-                transform: scale(0.96);
-                opacity: 0;
-            }
+            from { transform: scale(0.96); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
 
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes fabSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px) scale(0.88);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(12px) scale(0.88); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.08);
-                opacity: 0.75;
-            }
-        }
-
-        /* ══════════════════════════════════════
-       LOADING OVERLAY
-    ══════════════════════════════════════ */
+        /* ══ LOADING OVERLAY ══ */
         .loading-overlay {
             position: fixed;
             inset: 0;
@@ -162,7 +111,7 @@
             color: #475569;
         }
 
-        /* ── RETRY ── */
+        /* ══ RETRY ══ */
         .retry-modal {
             position: fixed;
             inset: 0;
@@ -222,7 +171,7 @@
             transform: translateY(-1px);
         }
 
-        /* ── TOAST ── */
+        /* ══ TOAST ══ */
         .toast-message {
             position: fixed;
             bottom: 24px;
@@ -238,31 +187,12 @@
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
         }
 
-        .toast-message--info {
-            background: #eff6ff;
-            color: #1e3a8a;
-            border: 1px solid #bfdbfe;
-        }
+        .toast-message--info    { background: #eff6ff; color: #1e3a8a; border: 1px solid #bfdbfe; }
+        .toast-message--success { background: #f0fdf4; color: #14532d; border: 1px solid #bbf7d0; }
+        .toast-message--warning { background: #fffbeb; color: #713f12; border: 1px solid #fde68a; }
+        .toast-message--error   { background: #fef2f2; color: #7f1d1d; border: 1px solid #fecaca; }
 
-        .toast-message--success {
-            background: #f0fdf4;
-            color: #14532d;
-            border: 1px solid #bbf7d0;
-        }
-
-        .toast-message--warning {
-            background: #fffbeb;
-            color: #713f12;
-            border: 1px solid #fde68a;
-        }
-
-        .toast-message--error {
-            background: #fef2f2;
-            color: #7f1d1d;
-            border: 1px solid #fecaca;
-        }
-
-        /* ── BACK BTN ── */
+        /* ══ BACK BTN ══ */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -279,13 +209,9 @@
             font-family: inherit;
         }
 
-        .back-btn:hover {
-            color: #4361ee;
-        }
+        .back-btn:hover { color: #4361ee; }
 
-        /* ══════════════════════════════════════
-       QUESTION PANEL — espelho do quiz
-    ══════════════════════════════════════ */
+        /* ══ QUESTION PANEL ══ */
         .question-panel {
             background: #fff;
             border-radius: 20px;
@@ -295,7 +221,7 @@
             animation: fadeUp 0.25s ease;
         }
 
-        /* ── Identity bar ── */
+        /* Identity bar */
         .quiz-identity-bar {
             display: flex;
             align-items: center;
@@ -394,23 +320,9 @@
             white-space: nowrap;
         }
 
-        .diff-pill--easy {
-            background: #f0fdf4;
-            color: #16a34a;
-            border: 1px solid #bbf7d0;
-        }
-
-        .diff-pill--medium {
-            background: #fffbeb;
-            color: #b45309;
-            border: 1px solid #fde68a;
-        }
-
-        .diff-pill--hard {
-            background: #fff1f2;
-            color: #be123c;
-            border: 1px solid #fecaca;
-        }
+        .diff-pill--easy   { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+        .diff-pill--medium { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+        .diff-pill--hard   { background: #fff1f2; color: #be123c; border: 1px solid #fecaca; }
 
         /* Close btn */
         .btn-close-ex {
@@ -444,7 +356,7 @@
             stroke-linecap: round;
         }
 
-        /* ── Meta strip (disciplina / tópico / tempo) ── */
+        /* Meta strip */
         .ex-meta-strip {
             display: flex;
             align-items: center;
@@ -474,28 +386,12 @@
             flex-shrink: 0;
         }
 
-        .emt-subject {
-            background: #eef2ff;
-            color: #4361ee;
-        }
+        .emt-subject { background: #eef2ff; color: #4361ee; }
+        .emt-topic   { background: #f1f5f9; color: #475569; }
+        .emt-time    { background: #f5f3ff; color: #7c3aed; }
+        .emt-xp      { background: #ecfdf5; color: #059669; }
 
-        .emt-topic {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        .emt-time {
-            background: #f5f3ff;
-            color: #7c3aed;
-        }
-
-        .emt-xp {
-            background: #ecfdf5;
-            color: #059669;
-        }
-
-        /* ── Image ── */
-        /* Image wrapper — quadrado responsivo */
+        /* Image */
         .ex-img-wrap {
             width: 100%;
             max-width: 320px;
@@ -511,9 +407,7 @@
         }
 
         @media (min-width: 560px) {
-            .ex-img-wrap {
-                max-width: 280px;
-            }
+            .ex-img-wrap { max-width: 280px; }
         }
 
         .ex-img-wrap img {
@@ -523,7 +417,6 @@
             display: block;
         }
 
-        /* Math canvas */
         .math-canvas {
             max-width: 60%;
             border-radius: 12px;
@@ -532,7 +425,7 @@
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
         }
 
-        /* ── Question text ── */
+        /* Question text */
         .question-text {
             font-size: 15px;
             color: #0f172a;
@@ -548,7 +441,7 @@
             margin-top: 8px;
         }
 
-        /* ── Answers ── */
+        /* Answers */
         .answers-list {
             display: flex;
             flex-direction: column;
@@ -599,22 +492,9 @@
             pointer-events: none;
         }
 
-        .answer-option--selected {
-            border-color: #4361ee;
-            background: #eff6ff;
-        }
-
-        .answer-option--correct {
-            background: #f0fdf4;
-            border-color: #16a34a;
-            color: #14532d;
-        }
-
-        .answer-option--incorrect {
-            background: #fef2f2;
-            border-color: #dc2626;
-            color: #7f1d1d;
-        }
+        .answer-option--selected  { border-color: #4361ee; background: #eff6ff; }
+        .answer-option--correct   { background: #f0fdf4; border-color: #16a34a; color: #14532d; }
+        .answer-option--incorrect { background: #fef2f2; border-color: #dc2626; color: #7f1d1d; }
 
         .answer-option--correct::after {
             content: '✓';
@@ -636,7 +516,7 @@
             font-weight: 700;
         }
 
-        /* ── Tip box ── */
+        /* Tip / Solution boxes */
         .tip-box {
             margin-top: 16px;
             padding: 14px 16px;
@@ -645,7 +525,6 @@
             border: 1px solid #fde68a;
         }
 
-        /* ── Solution box ── */
         .solution-box {
             margin-top: 16px;
             padding: 14px 16px;
@@ -672,14 +551,8 @@
             color: #0f172a;
         }
 
-        .chevron-icon {
-            transition: transform 0.2s ease;
-            color: #475569;
-        }
-
-        .chevron-icon--rotated {
-            transform: rotate(180deg);
-        }
+        .chevron-icon { transition: transform 0.2s ease; color: #475569; }
+        .chevron-icon--rotated { transform: rotate(180deg); }
 
         .toggle-content {
             font-size: 14px;
@@ -693,7 +566,7 @@
             overflow-y: auto;
         }
 
-        /* ── Lock message ── */
+        /* Lock message */
         .lock-message {
             font-size: 12px;
             color: #475569;
@@ -721,11 +594,9 @@
             transition: all 0.2s;
         }
 
-        .upgrade-link:hover {
-            text-decoration: underline;
-        }
+        .upgrade-link:hover { text-decoration: underline; }
 
-        /* ── Nav buttons ── */
+        /* Nav buttons */
         .nav-buttons {
             display: flex;
             justify-content: center;
@@ -746,11 +617,7 @@
             transition: all 0.2s;
         }
 
-        .btn svg {
-            width: 16px;
-            height: 16px;
-            stroke-width: 2.5;
-        }
+        .btn svg { width: 16px; height: 16px; stroke-width: 2.5; }
 
         .btn-prev {
             background: #fff;
@@ -771,10 +638,7 @@
             padding: 10px 24px;
         }
 
-        .btn-next:hover:not(:disabled) {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
+        .btn-next:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
 
         .btn-verify {
             background: #10b981;
@@ -782,20 +646,13 @@
             color: #fff;
         }
 
-        .btn-verify:hover:not(:disabled) {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
+        .btn-verify:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
 
-        .btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
         /* ══════════════════════════════════════
-       FABs — mesmo padrão do quiz
-    ══════════════════════════════════════ */
+           FABs
+        ══════════════════════════════════════ */
         .fab-wrapper {
             position: fixed;
             display: flex;
@@ -843,35 +700,17 @@
             transform: translateY(-1px);
         }
 
-        .fab-wrapper--disabled {
-            pointer-events: none;
-        }
-
-        .fab-wrapper--disabled .fab {
-            opacity: 0.38;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .fab-wrapper--disabled .fab-label {
-            opacity: 0.38;
-        }
+        .fab-wrapper--disabled { pointer-events: none; }
+        .fab-wrapper--disabled .fab { opacity: 0.38; cursor: not-allowed; box-shadow: none; }
+        .fab-wrapper--disabled .fab-label { opacity: 0.38; }
 
         .fab-wrapper:not(.fab-wrapper--disabled):active .fab {
             transform: scale(0.93);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
         }
 
-        .fab--primary {
-            background: #4361ee;
-            color: #fff;
-        }
-
-        .fab--green {
-            background: #10b981;
-            color: #fff;
-        }
-
+        .fab--primary { background: #4361ee; color: #fff; }
+        .fab--green   { background: #10b981; color: #fff; }
         .fab--outline {
             background: #fff;
             border: 1.5px solid #e2e8f0;
@@ -879,34 +718,15 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
         }
 
-        .fab-wrapper.fab-wrapper--primary .fab-label {
-            color: #4361ee;
-        }
+        .fab-wrapper.fab-wrapper--primary .fab-label { color: #4361ee; }
+        .fab-wrapper.fab-wrapper--green .fab-label   { color: #10b981; }
+        .fab-wrapper.fab-wrapper--outline .fab-label { color: #475569; }
 
-        .fab-wrapper.fab-wrapper--green .fab-label {
-            color: #10b981;
-        }
-
-        .fab-wrapper.fab-wrapper--outline .fab-label {
-            color: #475569;
-        }
-
-        .fab-wrapper--pos-1 {
-            bottom: 16px;
-            right: 16px;
-        }
-
-        .fab-wrapper--pos-2 {
-            bottom: 100px;
-            right: 16px;
-            animation-delay: 0.05s;
-        }
-
-        .fab-wrapper--pos-3 {
-            bottom: 184px;
-            right: 16px;
-            animation-delay: 0.10s;
-        }
+        /* FAB positioning — stack from bottom-right, each 84px apart */
+        .fab-wrapper--pos-1 { bottom: 16px;  right: 16px; }
+        .fab-wrapper--pos-2 { bottom: 100px; right: 16px; animation-delay: 0.05s; }
+        .fab-wrapper--pos-3 { bottom: 184px; right: 16px; animation-delay: 0.10s; }
+        .fab-wrapper--pos-4 { bottom: 268px; right: 16px; animation-delay: 0.15s; }
 
         .fab-count-badge {
             position: absolute;
@@ -928,92 +748,431 @@
             pointer-events: none;
         }
 
+        /* Tutor FAB accent — uses indigo brand */
+        .fab--tutor {
+            background: #4361ee;
+            color: #fff;
+        }
+
+        .fab-wrapper.fab-wrapper--tutor .fab-label { color: #4361ee; }
+
         @media (max-width: 480px) {
-            .fab {
-                width: 44px;
-                height: 44px;
-                font-size: 16px;
-            }
-
-            .fab-label {
-                font-size: 9px;
-            }
-
-            .fab-wrapper--pos-1 {
-                bottom: 14px;
-                right: 14px;
-            }
-
-            .fab-wrapper--pos-2 {
-                bottom: 92px;
-                right: 14px;
-            }
-
-            .fab-wrapper--pos-3 {
-                bottom: 170px;
-                right: 14px;
-            }
+            .fab { width: 44px; height: 44px; font-size: 16px; }
+            .fab-label { font-size: 9px; }
+            .fab-wrapper--pos-1 { bottom: 14px; right: 14px; }
+            .fab-wrapper--pos-2 { bottom: 92px;  right: 14px; }
+            .fab-wrapper--pos-3 { bottom: 170px; right: 14px; }
+            .fab-wrapper--pos-4 { bottom: 248px; right: 14px; }
         }
 
         /* ══════════════════════════════════════
-       COMMENTS MODAL
-    ══════════════════════════════════════ */
-        .comments-modal {
+           MODAL SHELL — compartilhado
+        ══════════════════════════════════════ */
+        .modal-overlay {
             position: fixed;
             inset: 0;
             background: rgba(15, 23, 42, 0.45);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
             z-index: 1000;
             backdrop-filter: blur(2px);
         }
 
-        .comments-panel {
-            display: flex;
-            flex-direction: column;
+        @media (min-width: 560px) {
+            .modal-overlay { align-items: center; }
+        }
+
+        .modal {
             background: #fff;
-            border-radius: 20px;
+            border-radius: 20px 20px 0 0;
             border: 1px solid #e2e8f0;
-            max-width: 640px;
-            width: 95%;
-            max-height: 82vh;
+            max-width: 560px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
             animation: popIn 0.2s ease;
         }
 
-        .comments-header {
+        @media (min-width: 560px) {
+            .modal { border-radius: 20px; max-height: 88vh; }
+        }
+
+        .modal-handle {
+            display: flex;
+            justify-content: center;
+            padding: 12px 0 4px;
+        }
+
+        .modal-handle span {
+            width: 36px;
+            height: 4px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            display: block;
+        }
+
+        @media (min-width: 560px) {
+            .modal-handle { display: none; }
+        }
+
+        .modal-inner { padding: 16px 24px 28px; }
+
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 20px 24px 16px;
-            border-bottom: 1px solid #e2e8f0;
-            position: sticky;
-            top: 0;
-            background: #fff;
-            z-index: 10;
-            border-radius: 20px 20px 0 0;
+            margin-bottom: 20px;
+            gap: 12px;
         }
 
-        .comments-title {
+        .modal-title-group { flex: 1; min-width: 0; }
+
+        .modal-title {
             font-size: 18px;
             font-weight: 700;
             color: #0f172a;
         }
 
-        .comments-count-badge {
-            background: #4361ee;
-            color: #fff;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 999px;
+        .modal-subtitle {
+            font-size: 12px;
+            color: #94a3b8;
+            display: block;
+            margin-top: 2px;
         }
 
-        .comments-list {
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+
+        .close-btn:hover {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        /* ══ MODAL PROGRESS BAR ══ */
+        .modal-progress-bar {
+            height: 3px;
+            background: #4361ee;
+            border-radius: 999px 999px 0 0;
+            width: 0;
+            transition: width 0.4s ease;
+            opacity: 0;
+        }
+
+        .modal-progress-bar.visible { opacity: 1; width: 100%; }
+
+        /* ══════════════════════════════════════
+           TUTOR AI MODAL — mesmo padrão dos outros
+        ══════════════════════════════════════ */
+
+        /* Tutor modal usa modal-overlay + modal alargado */
+        .modal--tutor {
+            max-width: 640px;
+            display: flex;
+            flex-direction: column;
+            max-height: 88vh;
+        }
+
+        @media (min-width: 560px) {
+            .modal--tutor { max-height: 82vh; }
+        }
+
+        /* Cabeçalho do tutor */
+        .tutor-header-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tutor-header-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Área de mensagens */
+        .tutor-messages {
+            flex: 1;
             overflow-y: auto;
-            padding: 16px 24px;
-            flex-grow: 1;
+            padding: 0 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Bolha do assistente */
+        .tutor-bubble {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .tutor-bubble-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .tutor-bubble-avatar svg {
+            width: 15px;
+            height: 15px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .tutor-bubble-content {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0 12px 12px 12px;
+            padding: 12px 14px;
+            flex: 1;
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        /* Bolha do utilizador */
+        .tutor-bubble--user {
+            flex-direction: row-reverse;
+        }
+
+        .tutor-bubble--user .tutor-bubble-content {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            border-radius: 12px 0 12px 12px;
+            color: #1e3a8a;
+        }
+
+        /* Indicador "a pensar" */
+        .tutor-thinking {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 0;
+        }
+
+        .tutor-thinking-dots {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .tutor-thinking-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #94a3b8;
+            animation: tutorDot 1.2s infinite ease-in-out;
+        }
+
+        .tutor-thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .tutor-thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes tutorDot {
+            0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+            40%            { transform: scale(1);   opacity: 1; }
+        }
+
+        .tutor-thinking-label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Estado vazio */
+        .tutor-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 32px 16px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .tutor-empty-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tutor-empty-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .tutor-empty-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .tutor-empty-desc {
+            font-size: 12px;
+            color: #94a3b8;
+            max-width: 260px;
+            line-height: 1.6;
+        }
+
+        /* Chips de sugestão */
+        .tutor-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 4px;
+        }
+
+        .tutor-suggestion-chip {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+
+        .tutor-suggestion-chip:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        /* Área de input */
+        .tutor-input-area {
+            padding: 14px 24px 20px;
+            border-top: 1px solid #e2e8f0;
+            background: #fff;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .tutor-input-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .tutor-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .tutor-textarea-wrap {
+            position: relative;
+            flex: 1;
+        }
+
+        .tutor-textarea {
+            width: 100%;
+            padding: 11px 44px 11px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: none;
+            min-height: 80px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #fff;
+            color: #0f172a;
+            transition: border-color 0.15s;
+        }
+
+        .tutor-textarea:focus {
+            outline: none;
+            border-color: #4361ee;
+        }
+
+        .tutor-send-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            color: #4361ee;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: background 0.15s;
+        }
+
+        .tutor-send-btn:hover  { background: #eef2ff; }
+        .tutor-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ══════════════════════════════════════
+           COMMENTS MODAL
+        ══════════════════════════════════════ */
+        .modal--comments {
+            max-width: 640px;
+            display: flex;
+            flex-direction: column;
+            max-height: 88vh;
+        }
+
+        @media (min-width: 560px) {
+            .modal--comments { max-height: 82vh; }
+        }
+
+        .comments-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 24px 8px;
         }
 
         .no-comments {
@@ -1058,16 +1217,8 @@
             margin-bottom: 8px;
         }
 
-        .comment-author {
-            font-size: 13px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .comment-date {
-            font-size: 11px;
-            color: #94a3b8;
-        }
+        .comment-author { font-size: 13px; font-weight: 700; color: #0f172a; }
+        .comment-date   { font-size: 11px; color: #94a3b8; }
 
         .comment-text {
             font-size: 13px;
@@ -1097,26 +1248,16 @@
             gap: 4px;
         }
 
-        .comment-action-btn:hover {
-            background: #eff6ff;
-            color: #4361ee;
-        }
+        .comment-action-btn:hover { background: #eff6ff; color: #4361ee; }
+        .liked { color: #4361ee; font-weight: 700; }
 
-        .liked {
-            color: #4361ee;
-            font-weight: 700;
-        }
-
-        .comment-form {
-            padding: 14px 24px;
+        .comment-input-area {
+            padding: 14px 24px 20px;
             border-top: 1px solid #e2e8f0;
-            position: sticky;
-            bottom: 0;
-            background: #fff;
             border-radius: 0 0 20px 20px;
         }
 
-        .comment-input-area {
+        .comment-input-row {
             display: flex;
             align-items: flex-start;
             gap: 10px;
@@ -1143,10 +1284,7 @@
             transition: border-color 0.15s;
         }
 
-        .comment-textarea:focus {
-            outline: none;
-            border-color: #4361ee;
-        }
+        .comment-textarea:focus { outline: none; border-color: #4361ee; }
 
         .btn-send-comment {
             position: absolute;
@@ -1162,19 +1300,13 @@
             transition: background 0.15s;
         }
 
-        .btn-send-comment:hover {
-            background: #eff6ff;
-        }
-
-        .btn-send-comment:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
+        .btn-send-comment:hover   { background: #eff6ff; }
+        .btn-send-comment:disabled { opacity: 0.4; cursor: not-allowed; }
 
         .load-more-container {
             display: flex;
             justify-content: center;
-            padding: 20px;
+            padding: 12px 0;
         }
 
         .btn-load-more {
@@ -1190,129 +1322,10 @@
             transition: all 0.15s;
         }
 
-        .btn-load-more:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-        }
+        .btn-load-more:hover    { background: #f8fafc; border-color: #cbd5e1; }
+        .btn-load-more:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .btn-load-more:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* ══════════════════════════════════════
-       MODALS (shared shell)
-    ══════════════════════════════════════ */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.45);
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            z-index: 1000;
-            backdrop-filter: blur(2px);
-        }
-
-        @media (min-width: 560px) {
-            .modal-overlay {
-                align-items: center;
-            }
-        }
-
-        .modal {
-            background: #fff;
-            border-radius: 20px 20px 0 0;
-            border: 1px solid #e2e8f0;
-            max-width: 560px;
-            width: 100%;
-            max-height: 92vh;
-            overflow-y: auto;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
-            animation: popIn 0.2s ease;
-        }
-
-        @media (min-width: 560px) {
-            .modal {
-                border-radius: 20px;
-                max-height: 88vh;
-            }
-        }
-
-        .modal-handle {
-            display: flex;
-            justify-content: center;
-            padding: 12px 0 4px;
-        }
-
-        .modal-handle span {
-            width: 36px;
-            height: 4px;
-            border-radius: 999px;
-            background: #e2e8f0;
-            display: block;
-        }
-
-        @media (min-width: 560px) {
-            .modal-handle {
-                display: none;
-            }
-        }
-
-        .modal-inner {
-            padding: 16px 24px 28px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            gap: 12px;
-        }
-
-        .modal-title-group {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .modal-subtitle {
-            font-size: 12px;
-            color: #94a3b8;
-            display: block;
-            margin-top: 2px;
-        }
-
-        .close-btn {
-            width: 32px;
-            height: 32px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: transparent;
-            cursor: pointer;
-            font-size: 14px;
-            color: #475569;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: inherit;
-            transition: all 0.15s;
-            flex-shrink: 0;
-        }
-
-        .close-btn:hover {
-            background: #fef2f2;
-            color: #dc2626;
-            border-color: #fecaca;
-        }
-
-        /* ── Upgrade modal ── */
+        /* ══ UPGRADE MODAL ══ */
         .pricing-hero {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -1343,30 +1356,9 @@
             font-weight: 700;
         }
 
-        .plan-badge svg {
-            width: 10px;
-            height: 10px;
-            stroke: #f59e0b;
-            fill: #f59e0b;
-            stroke-width: 0;
-        }
-
-        .plan-price-wrap {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-
-        .plan-price-big {
-            font-size: 28px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .plan-period {
-            font-size: 12px;
-            color: #94a3b8;
-        }
+        .plan-price-wrap { display: flex; align-items: baseline; gap: 6px; }
+        .plan-price-big  { font-size: 28px; font-weight: 700; color: #0f172a; }
+        .plan-period     { font-size: 12px; color: #94a3b8; }
 
         .feature-list {
             list-style: none;
@@ -1396,9 +1388,7 @@
             margin-top: 1px;
         }
 
-        .feature-check svg {
-            stroke: #fff;
-        }
+        .feature-check svg { stroke: #fff; }
 
         .btn-upgrade-big {
             display: flex;
@@ -1419,16 +1409,8 @@
             box-shadow: 0 4px 14px rgba(67, 97, 238, 0.28);
         }
 
-        .btn-upgrade-big:hover {
-            background: #2e4fd6;
-            transform: translateY(-1px);
-        }
-
-        .btn-upgrade-big:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-upgrade-big:hover { background: #2e4fd6; transform: translateY(-1px); }
+        .btn-upgrade-big:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .plan-price-note {
             font-size: 11px;
@@ -1437,7 +1419,7 @@
             margin-top: 8px;
         }
 
-        /* ── Payment modal ── */
+        /* ══ PAYMENT MODAL ══ */
         .payment-summary {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -1456,20 +1438,9 @@
             font-size: 13px;
         }
 
-        .payment-summary-label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .payment-summary-value {
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .payment-summary-total {
-            font-size: 15px;
-            color: #4361ee;
-        }
+        .payment-summary-label { color: #64748b; font-weight: 500; }
+        .payment-summary-value { font-weight: 600; color: #0f172a; }
+        .payment-summary-total { font-size: 15px; color: #4361ee; }
 
         .wallet-options {
             display: flex;
@@ -1490,10 +1461,7 @@
             background: #fff;
         }
 
-        .wallet-card:hover {
-            border-color: #4361ee;
-            background: #f8fafc;
-        }
+        .wallet-card:hover { border-color: #4361ee; background: #f8fafc; }
 
         .wallet-card.selected {
             border-color: #4361ee;
@@ -1501,11 +1469,7 @@
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
 
-        .wallet-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .wallet-left { display: flex; align-items: center; gap: 12px; }
 
         .wallet-img-wrap {
             width: 40px;
@@ -1519,22 +1483,9 @@
             overflow: hidden;
         }
 
-        .wallet-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .wallet-type {
-            font-weight: 700;
-            font-size: 13px;
-            color: #0f172a;
-        }
-
-        .wallet-num {
-            font-size: 12px;
-            color: #94a3b8;
-        }
+        .wallet-img { width: 100%; height: 100%; object-fit: contain; }
+        .wallet-type { font-weight: 700; font-size: 13px; color: #0f172a; }
+        .wallet-num  { font-size: 12px; color: #94a3b8; }
 
         .wallet-badge {
             background: #4361ee;
@@ -1558,9 +1509,7 @@
             transition: background 0.15s;
         }
 
-        .btn-set-default:hover {
-            background: #e0e7ff;
-        }
+        .btn-set-default:hover { background: #e0e7ff; }
 
         .btn-add-wallet {
             display: flex;
@@ -1581,10 +1530,7 @@
             margin-bottom: 12px;
         }
 
-        .btn-add-wallet:hover {
-            background: #f1f5f9;
-            border-color: #94a3b8;
-        }
+        .btn-add-wallet:hover { background: #f1f5f9; border-color: #94a3b8; }
 
         .btn-add-wallet svg {
             width: 14px;
@@ -1595,7 +1541,6 @@
             stroke-linecap: round;
         }
 
-        /* empty wallets */
         .empty-wallets {
             text-align: center;
             padding: 24px 0 16px;
@@ -1625,23 +1570,11 @@
             stroke-linejoin: round;
         }
 
-        .empty-wallets-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #0f172a;
-        }
+        .empty-wallets-title { font-size: 14px; font-weight: 700; color: #0f172a; }
+        .empty-wallets-desc  { font-size: 12px; color: #94a3b8; max-width: 280px; line-height: 1.5; }
 
-        .empty-wallets-desc {
-            font-size: 12px;
-            color: #94a3b8;
-            max-width: 280px;
-            line-height: 1.5;
-        }
-
-        /* ── Add wallet form ── */
-        .form-group {
-            margin-bottom: 16px;
-        }
+        /* Add wallet form */
+        .form-group { margin-bottom: 16px; }
 
         .form-group label {
             display: block;
@@ -1663,15 +1596,8 @@
             transition: border-color 0.15s;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #4361ee;
-        }
-
-        .form-group input:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+        .form-group input:focus    { outline: none; border-color: #4361ee; }
+        .form-group input:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .error-text {
             font-size: 11px;
@@ -1710,15 +1636,8 @@
             transition: all 0.2s;
         }
 
-        .btn-modal-primary:hover:not(:disabled) {
-            background: #2e4fd6;
-            transform: translateY(-1px);
-        }
-
-        .btn-modal-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .btn-modal-primary:hover:not(:disabled) { background: #2e4fd6; transform: translateY(-1px); }
+        .btn-modal-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .btn-spinner {
             width: 16px;
@@ -1730,25 +1649,8 @@
             flex-shrink: 0;
         }
 
-        /* ── Modal progress bar ── */
-        .modal-progress-bar {
-            height: 3px;
-            background: #4361ee;
-            border-radius: 999px 999px 0 0;
-            width: 0;
-            transition: width 0.4s ease;
-            opacity: 0;
-        }
-
-        .modal-progress-bar.visible {
-            opacity: 1;
-            width: 100%;
-        }
-
-        /* ── Dropdown ── */
-        .dropdown-container {
-            position: relative;
-        }
+        /* ══ DROPDOWN ══ */
+        .dropdown-container { position: relative; }
 
         .dropdown-btn {
             background: transparent;
@@ -1762,9 +1664,7 @@
             transition: background 0.15s;
         }
 
-        .dropdown-btn:hover {
-            background: #f1f5f9;
-        }
+        .dropdown-btn:hover { background: #f1f5f9; }
 
         .dropdown {
             position: absolute;
@@ -1790,39 +1690,24 @@
             text-decoration: none;
         }
 
-        .dropdown a:hover {
-            background: #f8fafc;
-        }
+        .dropdown a:hover { background: #f8fafc; }
 
-        /* ── RESPONSIVE ── */
+        /* ══ RESPONSIVE ══ */
         @media (max-width: 640px) {
-            .question-panel {
-                padding: 16px;
-            }
+            .question-panel { padding: 16px; }
+            .nav-buttons { gap: 8px; }
+            .btn-next { padding: 10px 18px; }
 
-            .nav-buttons {
-                gap: 8px;
-            }
-
-            .btn-next {
-                padding: 10px 18px;
-            }
-
-            .comments-panel {
+            .modal--tutor,
+            .modal--comments {
                 width: 100%;
                 height: 100%;
-                max-height: none;
+                max-height: 100vh;
                 border-radius: 0;
+                overflow-y: auto;
             }
 
-            .comments-header,
-            .comment-form {
-                border-radius: 0;
-            }
-
-            .math-canvas {
-                max-width: 90%;
-            }
+            .math-canvas { max-width: 90%; }
         }
     </style>
 </head>
@@ -1830,7 +1715,7 @@
 <body>
     <div class="ex-container">
 
-        <!-- ── Loading ── -->
+        <!-- Loading -->
         <div class="loading-overlay" [class.loading-overlay--visible]="showLoading" aria-live="polite">
             <div class="loading-card">
                 <div class="spinner"></div>
@@ -1838,7 +1723,7 @@
             </div>
         </div>
 
-        <!-- ── Retry ── -->
+        <!-- Retry -->
         <div *ngIf="retryVisible" class="retry-modal">
             <div class="retry-card">
                 <div class="retry-icon">
@@ -1854,29 +1739,15 @@
             </div>
         </div>
 
-        <!-- ── Toast ── -->
+        <!-- Toast -->
         <div *ngIf="currentMessage" class="toast-message" [ngClass]="{
-      'toast-message--info':    currentMessage.type === 'info',
-      'toast-message--success': currentMessage.type === 'success',
-      'toast-message--warning': currentMessage.type === 'warning',
-      'toast-message--error':   currentMessage.type === 'error'
-    }">{{ currentMessage.text }}</div>
+            'toast-message--info':    currentMessage.type === 'info',
+            'toast-message--success': currentMessage.type === 'success',
+            'toast-message--warning': currentMessage.type === 'warning',
+            'toast-message--error':   currentMessage.type === 'error'
+        }">{{ currentMessage.text }}</div>
 
-        <!-- ── Back ── -->
-        <!--
-        <button class="back-btn" (click)="goBack()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5" />
-                <path d="M12 19l-7-7 7-7" />
-            </svg>
-            Voltar
-        </button>
-        -->
-
-        <!-- ══════════════════════════════════════
-         QUESTION PANEL
-    ══════════════════════════════════════ -->
+        <!-- ══ QUESTION PANEL ══ -->
         <div class="question-panel">
 
             <!-- Identity bar -->
@@ -1885,23 +1756,15 @@
                     <div class="quiz-identity-info">
                         <span class="quiz-identity-name">Exercício</span>
                         <div class="quiz-identity-sub">
-                            <!--
-                            <span>{{ question.topic.subject.name }}</span>
-                            -->
-                            <!--
-                            <span class="quiz-identity-sep"></span>
-                            -->
                             <span>{{ question.topic.name }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="quiz-identity-right">
-                    <!-- Meta tags condensadas -->
                     <span class="quiz-subject-pill">
                         <svg viewBox="0 0 24 24">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
-                            <path
-                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                            <path d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
                         {{ question.topic.subject.name }}
                     </span>
@@ -1917,12 +1780,9 @@
                         </button>
                         <div class="dropdown" *ngIf="question.isAdminMenuOpen">
                             <a (click)="copyLink(question.questionId); closeDropdown(question)">Copiar link</a>
-                            <a (click)="shareOnSocial('whatsapp', question.questionId); closeDropdown(question)">Partilhar
-                                no WhatsApp</a>
-                            <a (click)="shareOnSocial('facebook', question.questionId); closeDropdown(question)">Partilhar
-                                no Facebook</a>
-                            <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar
-                                no LinkedIn</a>
+                            <a (click)="shareOnSocial('whatsapp', question.questionId); closeDropdown(question)">Partilhar no WhatsApp</a>
+                            <a (click)="shareOnSocial('facebook', question.questionId); closeDropdown(question)">Partilhar no Facebook</a>
+                            <a (click)="shareOnSocial('linkedin', question.questionId); closeDropdown(question)">Partilhar no LinkedIn</a>
                             <a (click)="onSave(); closeDropdown(question)">
                                 <span *ngIf="question.savedByUser">Remover dos favoritos</span>
                                 <span *ngIf="!question.savedByUser">Guardar nos favoritos</span>
@@ -1961,18 +1821,9 @@
                     </svg>
                     {{ formatTime(question.timeLimit) }}
                 </span>
-                <!--
-        <span class="ex-meta-tag emt-xp">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-              stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          +{{ 10 }} XP
-        </span>
-        -->
             </div>
 
-            <!-- Image — quadrada quando existir -->
+            <!-- Image -->
             <div class="ex-img-wrap" *ngIf="question.urlFile && question.mathExpressions.length === 0">
                 <img [src]="question.urlFile" alt="Imagem do enunciado" />
             </div>
@@ -1989,10 +1840,10 @@
             <!-- Answer options -->
             <div class="answers-list">
                 <label *ngFor="let answer of question.answers; let i = index" [ngClass]="{
-            'answer-option--correct':   showCorrection && answer.correct,
-            'answer-option--incorrect': showCorrection && !answer.correct && isSelected(question.id, answer.id!),
-            'answer-option--selected':  isSelected(question.id, answer.id!)
-          }" class="answer-option">
+                    'answer-option--correct':   showCorrection && answer.correct,
+                    'answer-option--incorrect': showCorrection && !answer.correct && isSelected(question.id, answer.id!),
+                    'answer-option--selected':  isSelected(question.id, answer.id!)
+                }" class="answer-option">
                     <span class="answer-letter">{{ getOptionLetter(i) }}</span>
                     <input type="radio" name="question-{{ question.id }}" [value]="answer.id"
                         [checked]="isSelected(question.id, answer.id!)"
@@ -2037,8 +1888,7 @@
                 <p class="lock-message" *ngIf="isPremiumTopic(question.topic) && question.showSolution">
                     <span class="lock-icon">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                            <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" />
+                            <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                             <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" />
                         </svg>
                     </span>
@@ -2072,15 +1922,36 @@
 
 
     <!-- ══════════════════════════════════════
-       FABs
-  ══════════════════════════════════════ -->
+         FABs
+         Ordem (de baixo para cima):
+           pos-1 → Tutor AI       (sempre visível quando logado)
+           pos-2 → Verificar      (antes de corrigir + resposta selecionada)
+           pos-2 → Guardar        (após correção + logado)
+           pos-3 → Comentários    (após correção + admin)
+    ══════════════════════════════════════ -->
 
-    <!-- FAB: Verificar (mostrar solução) -->
-    <div class="fab-wrapper fab-wrapper--green fab-wrapper--pos-1"
-        *ngIf="!showCorrection && isCurrentQuestionAnswered(question.id)" (click)="onViewSolution()">
-        <button class="fab fab--green" aria-label="Ver solução">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                stroke-linecap="round" stroke-linejoin="round">
+    <!-- pos-1: Tutor AI — sempre disponível para utilizadores autenticados -->
+    <div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1"
+        *ngIf="isUserLoggedIn"
+        (click)="displayModalTutor = true">
+        <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="none"/>
+            </svg>
+        </button>
+        <span class="fab-label">Tutor AI</span>
+    </div>
+
+    <!-- pos-2: Verificar — visível quando ainda não corrigiu mas já escolheu resposta -->
+    <div class="fab-wrapper fab-wrapper--green fab-wrapper--pos-2"
+        *ngIf="!showCorrection && isCurrentQuestionAnswered(question.id)"
+        (click)="onViewSolution()">
+        <button class="fab fab--green" aria-label="Verificar resposta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                 <circle cx="12" cy="12" r="3" />
             </svg>
@@ -2088,9 +1959,11 @@
         <span class="fab-label">Verificar</span>
     </div>
 
-    <!-- FAB: Guardar nos favoritos -->
-    <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-2" *ngIf="isUserLoggedIn && showCorrection"
-        [class.fab-wrapper--disabled]="question.showLoadingSave" (click)="onSave()">
+    <!-- pos-2: Guardar — visível após correção -->
+    <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-2"
+        *ngIf="isUserLoggedIn && showCorrection"
+        [class.fab-wrapper--disabled]="question.showLoadingSave"
+        (click)="onSave()">
         <button class="fab fab--outline" aria-label="Guardar nos favoritos">
             <i class="pi" *ngIf="!question.showLoadingSave"
                 [ngClass]="question.savedByUser ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
@@ -2099,9 +1972,10 @@
         <span class="fab-label">{{ question.savedByUser ? 'Guardado' : 'Favoritar' }}</span>
     </div>
 
-    <!-- FAB: Comentários -->
+    <!-- pos-3: Comentários — apenas admins, após correção -->
     <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-3"
-        *ngIf="isUserLoggedIn && isSuperAdmin && showCorrection" (click)="onGetComments()">
+        *ngIf="isUserLoggedIn && isSuperAdmin && showCorrection"
+        (click)="onGetComments()">
         <button class="fab fab--outline" aria-label="Comentários">
             <i class="pi pi-comments"></i>
             <span class="fab-count-badge" *ngIf="question.numberOfComments > 0">
@@ -2111,343 +1985,478 @@
         <span class="fab-label">Comentários</span>
     </div>
 
-    <!-- FAB: Submeter (sem solução ainda) -->
-    <div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-1"
-        *ngIf="!showCorrection && !isCurrentQuestionAnswered(question.id)">
-        <button class="fab fab--primary" disabled aria-label="Selecione uma resposta">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-            </svg>
-        </button>
-        <span class="fab-label">Responder</span>
-    </div>
-</body>
 
-<!-- ══════════════════════════════════════
-       COMMENTS MODAL
-  ══════════════════════════════════════ -->
-<div class="comments-modal" *ngIf="showComments">
-    <div class="comments-panel">
-        <div class="comments-header">
-            <div>
-                <h2 class="comments-title">Comentários</h2>
-                <span style="font-size: 12px; color: #94a3b8;">Dúvidas e insights sobre este exercício</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="comments-count-badge">{{ comments.length }}</div>
-                <button class="close-btn" (click)="onCloseComments()">×</button>
-            </div>
-        </div>
-
-        <div class="comments-list">
-            <div *ngIf="comments.length === 0" class="no-comments">
-                Nenhum comentário ainda. Seja o primeiro! 💬
-            </div>
-
-            <div *ngFor="let comment of comments" class="comment-item">
-                <img [src]="comment.user.profileImageUrl" alt="User" class="comment-avatar" />
-                <div class="comment-bubble">
-                    <div class="comment-header-row">
-                        <div class="comment-author">{{ comment.user.fullName }}</div>
-                        <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
+    <!-- ══════════════════════════════════════
+         MODAL: Tutor AI
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay" *ngIf="displayModalTutor">
+        <div class="modal modal--tutor">
+            <div class="modal-handle"><span></span></div>
+            <div class="modal-inner" style="padding-bottom: 0;">
+                <div class="modal-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="tutor-header-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                            </svg>
+                        </div>
+                        <div class="modal-title-group">
+                            <h2 class="modal-title">Tutor AI</h2>
+                            <span class="modal-subtitle">Dúvidas e insights sobre este exercício</span>
+                        </div>
                     </div>
-                    <div class="comment-text">{{ comment.content }}</div>
-                    <div class="comment-footer">
-                        <button class="comment-action-btn" (click)="onLike(comment)">
-                            <span *ngIf="!comment.showLoadingLike" [class.liked]="comment.likedByUser">
-                                Gosto · {{ comment.numberOfLikes }}
-                            </span>
-                            <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
-                        </button>
-                        <button *ngIf="comment.user.id === loggedUser.id" (click)="onUpdateComment(comment)"
-                            class="comment-action-btn">Editar</button>
-                        <button *ngIf="comment.user.id === loggedUser.id" (click)="confirmarExclusao(comment)"
-                            class="comment-action-btn">Eliminar</button>
-                    </div>
+                    <button class="close-btn" (click)="displayModalTutor = false">&#x2715;</button>
                 </div>
             </div>
 
-            <div class="load-more-container" *ngIf="comments.length < totalRecordComments && totalRecordComments > 0">
-                <button class="btn-load-more" (click)="onShowMoreComments()">Carregar mais</button>
-            </div>
-        </div>
+            <!-- Mensagens -->
+            <div class="tutor-messages">
 
-        <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
-            <div class="comment-form">
-                <div class="comment-input-area">
-                    <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="User"
-                        class="comment-avatar" />
-                    <div class="comment-textarea-wrapper">
-                        <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput
-                            class="comment-textarea" name="content" [(ngModel)]="comment.content"
-                            (input)="autoResize(editInput)" placeholder="Partilhe a sua dúvida ou insight..."
-                            required></textarea>
-                        <button type="submit" class="btn-send-comment" [disabled]="commentForm.invalid || showLoading">
+                <!-- Estado vazio (sem histórico) -->
+                <!-- 
+                <div class="tutor-empty" *ngIf="!tutorResponse && !showTutorThinking && tutorHistory.length === 0">
+                    <div class="tutor-empty-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                        </svg>
+                    </div>
+                    <div class="tutor-empty-title">Como posso ajudar?</div>
+                    <div class="tutor-empty-desc">Faça uma pergunta sobre este exercício ou escolha uma sugestão abaixo.</div>
+                    <div class="tutor-suggestions">
+                        <button class="tutor-suggestion-chip"
+                            (click)="tutorRequest.message = 'Explica-me como resolver este exercício passo a passo.'">
+                            Explicar passo a passo
+                        </button>
+                        <button class="tutor-suggestion-chip"
+                            (click)="tutorRequest.message = 'Qual é o conceito principal que este exercício testa?'">
+                            Conceito principal
+                        </button>
+                        <button class="tutor-suggestion-chip"
+                            (click)="tutorRequest.message = 'Tenho dúvidas sobre esta pergunta, podes ajudar?'">
+                            Tenho uma dúvida
+                        </button>
+                    </div>
+                </div>
+                -->
+
+                <!-- Histórico de mensagens -->
+                <!--
+                <ng-container  *ngFor="let msg of tutorHistory">
+                    <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'user'">
+                        <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
+                            alt="Utilizador" class="tutor-bubble-avatar" style="border: none; background: transparent;" />
+                        <div class="tutor-bubble-content">{{ msg.content }}</div>
+                    </div>
+                    <div class="tutor-bubble" *ngIf="msg.role === 'assistant'">
+                        <div class="tutor-bubble-avatar">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                            </svg>
+                        </div>
+                        <div class="tutor-bubble-content"
+                            [innerHTML]="getFormattedText(msg.content)"></div>
+                    </div>
+                </ng-container>
+                -->
+
+                <!-- Resposta mais recente (fora do histórico, se ainda não guardada) -->
+                <div class="tutor-bubble" *ngIf="tutorResponse">
+                    <div class="tutor-bubble-avatar">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                        </svg>
+                    </div>
+                    <div id="math-container-tutor" class="tutor-bubble-content"
+                        [innerHTML]="getFormattedText(tutorResponse)"></div>
+                </div>
+
+                <!-- Indicador "a pensar" -->
+                <div class="tutor-thinking" *ngIf="showTutorThinking">
+                    <div class="tutor-bubble-avatar">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                        </svg>
+                    </div>
+                    <div class="tutor-thinking-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span class="tutor-thinking-label">A pensar...</span>
+                </div>
+
+            </div>
+            <!-- /tutor-messages -->
+
+            <!-- Input area -->
+            <div class="tutor-input-area">
+                <div class="tutor-input-row">
+                    <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
+                        alt="Utilizador" class="tutor-user-avatar" />
+                    <div class="tutor-textarea-wrap">
+                        <textarea autocorrect="off" autocapitalize="off" spellcheck="false"
+                            #tutorInput
+                            class="tutor-textarea"
+                            name="tutorMessage"
+                            [(ngModel)]="tutorRequest.message"
+                            (input)="autoResize(tutorInput)"
+                            placeholder="Escreva a sua dúvida... (Enter para enviar)"
+                            [disabled]="showTutorThinking"></textarea>
+                        <button class="tutor-send-btn"
+                            (click)="askTutor()"
+                            [disabled]="!tutorRequest.message || showTutorThinking"
+                            aria-label="Enviar">
                             <i class="pi pi-send"></i>
                         </button>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-</div>
 
-<!-- ══════════════════════════════════════
-     Modal: Upgrade de plano
-══════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalUpgradePlan">
-    <div class="modal">
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Plano Premium</h2>
-                    <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
-                </div>
-                <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
-            </div>
-
-            <div class="pricing-hero">
-                <div class="pricing-hero-top">
-                    <span class="plan-badge">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                        Premium
-                    </span>
-                    <div class="plan-price-wrap">
-                        <div class="plan-price-big">MT 299</div>
-                        <div class="plan-period">por mês</div>
-                    </div>
-                </div>
-                <ul class="feature-list">
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Acesso ilimitado a todos os tópicos e conteúdos disponíveis
-                    </li>
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Resolução detalhada com dicas e comentários passo a passo
-                    </li>
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Criação de quizzes avançados e personalizados
-                    </li>
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Mais exercícios por quiz para reforçar o aprendizado
-                    </li>
-                </ul>
-            </div>
-
-            <button class="btn-upgrade-big" (click)="onUpgradePlan()">
-                Fazer upgrade agora
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                </svg>
-            </button>
-            <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
         </div>
     </div>
-</div>
 
-<!-- ══════════════════════════════════════
-     Modal: Método de pagamento
-══════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalPaymentOptions">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Método de pagamento</h2>
-                    <span class="modal-subtitle">Selecione como pretende pagar</span>
-                </div>
-                <button class="close-btn" (click)="onCloseModalPaymentOptions()"
-                    [disabled]="showLoading">&#x2715;</button>
-            </div>
 
-            <div class="payment-summary">
-                <div class="payment-summary-row">
-                    <span class="payment-summary-label">Plano</span>
-                    <span class="payment-summary-value">Premium</span>
-                </div>
-                <div class="payment-summary-row">
-                    <span class="payment-summary-label">Renovação</span>
-                    <span class="payment-summary-value">Mensal</span>
-                </div>
-                <div class="payment-summary-row">
-                    <span class="payment-summary-label">Total a pagar</span>
-                    <span class="payment-summary-value payment-summary-total">MT 299</span>
+    <!-- ══════════════════════════════════════
+         MODAL: Comentários
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay" *ngIf="showComments">
+        <div class="modal modal--comments">
+            <div class="modal-handle"><span></span></div>
+            <div class="modal-inner" style="padding-bottom: 0;">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">Comentários</h2>
+                        <span class="modal-subtitle">Dúvidas e insights sobre este exercício</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #4361ee; color: #fff; font-size: 11px; font-weight: 700;
+                            padding: 4px 12px; border-radius: 999px;">{{ comments.length }}</span>
+                        <button class="close-btn" (click)="onCloseComments()">&#x2715;</button>
+                    </div>
                 </div>
             </div>
 
-            <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-                <div class="wallet-options">
-                    <label class="wallet-card" *ngFor="let wallet of userWallets"
-                        [class.selected]="selectedWalletId === wallet.id">
+            <!-- Lista de comentários -->
+            <div class="comments-scroll-area">
+                <div *ngIf="comments.length === 0" class="no-comments">
+                    Nenhum comentário ainda. Seja o primeiro! 💬
+                </div>
+
+                <div *ngFor="let comment of comments" class="comment-item">
+                    <img [src]="comment.user.profileImageUrl" alt="User" class="comment-avatar" />
+                    <div class="comment-bubble">
+                        <div class="comment-header-row">
+                            <div class="comment-author">{{ comment.user.fullName }}</div>
+                            <div class="comment-date">{{ formatarTempoRelativo(comment.createdAt) }}</div>
+                        </div>
+                        <div class="comment-text">{{ comment.content }}</div>
+                        <div class="comment-footer">
+                            <button class="comment-action-btn" (click)="onLike(comment)">
+                                <span *ngIf="!comment.showLoadingLike" [class.liked]="comment.likedByUser">
+                                    Gosto · {{ comment.numberOfLikes }}
+                                </span>
+                                <i *ngIf="comment.showLoadingLike" class="pi pi-spin pi-spinner-dotted"></i>
+                            </button>
+                            <button *ngIf="comment.user.id === loggedUser.id"
+                                (click)="onUpdateComment(comment)" class="comment-action-btn">Editar</button>
+                            <button *ngIf="comment.user.id === loggedUser.id"
+                                (click)="confirmarExclusao(comment)" class="comment-action-btn">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="load-more-container"
+                    *ngIf="comments.length < totalRecordComments && totalRecordComments > 0">
+                    <button class="btn-load-more" (click)="onShowMoreComments()">Carregar mais</button>
+                </div>
+            </div>
+
+            <!-- Input de comentário -->
+            <form #commentForm="ngForm" (ngSubmit)="onComment(commentForm)">
+                <div class="comment-input-area">
+                    <div class="comment-input-row">
+                        <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
+                            alt="User" class="comment-avatar" />
+                        <div class="comment-textarea-wrapper">
+                            <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #editInput
+                                class="comment-textarea" name="content" [(ngModel)]="comment.content"
+                                (input)="autoResize(editInput)"
+                                placeholder="Partilhe a sua dúvida ou insight..."
+                                required></textarea>
+                            <button type="submit" class="btn-send-comment"
+                                [disabled]="commentForm.invalid || showLoading">
+                                <i class="pi pi-send"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════
+         Modal: Upgrade de plano
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay" *ngIf="displayModalUpgradePlan">
+        <div class="modal">
+            <div class="modal-handle"><span></span></div>
+            <div class="modal-inner">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">Plano Premium</h2>
+                        <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
+                    </div>
+                    <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
+                </div>
+
+                <div class="pricing-hero">
+                    <div class="pricing-hero-top">
+                        <span class="plan-badge">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                            Premium
+                        </span>
+                        <div class="plan-price-wrap">
+                            <div class="plan-price-big">MT 299</div>
+                            <div class="plan-period">por mês</div>
+                        </div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-check">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </span>
+                            Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+                        </li>
+                        <li>
+                            <span class="feature-check">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </span>
+                            Resolução detalhada com dicas e comentários passo a passo
+                        </li>
+                        <li>
+                            <span class="feature-check">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </span>
+                            Criação de quizzes avançados e personalizados
+                        </li>
+                        <li>
+                            <span class="feature-check">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </span>
+                            Mais exercícios por quiz para reforçar o aprendizado
+                        </li>
+                    </ul>
+                </div>
+
+                <button class="btn-upgrade-big" (click)="onUpgradePlan()">
+                    Fazer upgrade agora
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                    </svg>
+                </button>
+                <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════
+         Modal: Método de pagamento
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
+        <div class="modal">
+            <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+            <div class="modal-handle"><span></span></div>
+            <div class="modal-inner" [class.is-loading]="showLoading">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">Método de pagamento</h2>
+                        <span class="modal-subtitle">Selecione como pretende pagar</span>
+                    </div>
+                    <button class="close-btn" (click)="onCloseModalPaymentOptions()"
+                        [disabled]="showLoading">&#x2715;</button>
+                </div>
+
+                <div class="payment-summary">
+                    <div class="payment-summary-row">
+                        <span class="payment-summary-label">Plano</span>
+                        <span class="payment-summary-value">Premium</span>
+                    </div>
+                    <div class="payment-summary-row">
+                        <span class="payment-summary-label">Renovação</span>
+                        <span class="payment-summary-value">Mensal</span>
+                    </div>
+                    <div class="payment-summary-row">
+                        <span class="payment-summary-label">Total a pagar</span>
+                        <span class="payment-summary-value payment-summary-total">MT 299</span>
+                    </div>
+                </div>
+
+                <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+                    <div class="wallet-options">
+                        <label class="wallet-card" *ngFor="let wallet of userWallets"
+                            [class.selected]="selectedWalletId === wallet.id">
+                            <div class="wallet-left">
+                                <div class="wallet-img-wrap">
+                                    <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
+                                    <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />
+                                </div>
+                                <div>
+                                    <div class="wallet-type">{{ wallet.type }}</div>
+                                    <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
+                                    (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir principal</button>
+                                <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Adicionar outro método
+                    </button>
+
+                    <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
+                        <span class="btn-spinner" *ngIf="showLoading"></span>
+                        <ng-container *ngIf="!showLoading">
+                            Confirmar e pagar
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                            </svg>
+                        </ng-container>
+                        <span *ngIf="showLoading">A processar pagamento...</span>
+                    </button>
+                    <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
+                </ng-container>
+
+                <ng-template #noWallets>
+                    <div class="empty-wallets">
+                        <div class="empty-wallets-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="2" y="5" width="20" height="14" rx="2" />
+                                <path d="M2 10h20" />
+                                <path d="M6 15h.01" />
+                                <path d="M10 15h4" />
+                            </svg>
+                        </div>
+                        <div class="empty-wallets-title">Nenhum método adicionado</div>
+                        <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o upgrade para Premium.</div>
+                    </div>
+                    <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Adicionar método de pagamento
+                    </button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════
+         Modal: Adicionar carteira
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
+        <div class="modal">
+            <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+            <div class="modal-handle"><span></span></div>
+            <div class="modal-inner" [class.is-loading]="showLoading">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">Adicionar carteira</h2>
+                        <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
+                    </div>
+                    <button class="close-btn" (click)="onCloseModalAddPaymentOption()"
+                        [disabled]="showLoading">&#x2715;</button>
+                </div>
+
+                <form autocomplete="off" #walletTypeForm="ngForm"
+                    (ngSubmit)="addNewWlletType(walletTypeForm)">
+                    <div class="form-group">
+                        <label for="phoneNumber">Número de telefone</label>
+                        <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+                            [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
+                            pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
+                            [disabled]="showLoading" />
+                        <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+                            O número deve ter exatamente 9 dígitos.
+                        </span>
+                        <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
+                            class="error-text">
+                            Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+                        </span>
+                    </div>
+
+                    <div *ngIf="wallet.type" class="wallet-card"
+                        style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
                         <div class="wallet-left">
                             <div class="wallet-img-wrap">
-                                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                    class="wallet-img" />
-                                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                    class="wallet-img" />
+                                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
+                                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />
                             </div>
                             <div>
                                 <div class="wallet-type">{{ wallet.type }}</div>
                                 <div class="wallet-num">{{ wallet.phoneNumber }}</div>
                             </div>
                         </div>
-                        <div>
-                            <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
-                                (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir
-                                principal</button>
-                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-                        </div>
-                    </label>
-                </div>
-
-                <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Adicionar outro método
-                </button>
-
-                <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
-                    <span class="btn-spinner" *ngIf="showLoading"></span>
-                    <ng-container *ngIf="!showLoading">
-                        Confirmar e pagar
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </ng-container>
-                    <span *ngIf="showLoading">A processar pagamento...</span>
-                </button>
-                <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
-            </ng-container>
-
-            <ng-template #noWallets>
-                <div class="empty-wallets">
-                    <div class="empty-wallets-icon">
-                        <svg viewBox="0 0 24 24">
-                            <rect x="2" y="5" width="20" height="14" rx="2" />
-                            <path d="M2 10h20" />
-                            <path d="M6 15h.01" />
-                            <path d="M10 15h4" />
-                        </svg>
+                        <span class="badge-detected">Detectado</span>
                     </div>
-                    <div class="empty-wallets-title">Nenhum método adicionado</div>
-                    <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o
-                        upgrade
-                        para Premium.</div>
-                </div>
-                <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Adicionar método de pagamento
-                </button>
-            </ng-template>
 
-        </div>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     Modal: Adicionar carteira
-══════════════════════════════════════ -->
-<div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Adicionar carteira</h2>
-                    <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
-                </div>
-                <button class="close-btn" (click)="onCloseModalAddPaymentOption()"
-                    [disabled]="showLoading">&#x2715;</button>
+                    <button class="btn-modal-primary"
+                        [disabled]="walletTypeForm.invalid || !wallet.type || showLoading"
+                        (click)="upgradePlanByPhoneNumber(wallet)">
+                        <span class="btn-spinner" *ngIf="showLoading"></span>
+                        <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        <span *ngIf="!showLoading">Pagar e adicionar</span>
+                        <span *ngIf="showLoading">A processar pagamento...</span>
+                    </button>
+                </form>
             </div>
-
-            <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-                <div class="form-group">
-                    <label for="phoneNumber">Número de telefone</label>
-                    <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
-                        [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                        pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
-                        [disabled]="showLoading" />
-                    <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-                        O número deve ter exatamente 9 dígitos.
-                    </span>
-                    <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
-                        class="error-text">
-                        Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
-                    </span>
-                </div>
-
-                <div *ngIf="wallet.type" class="wallet-card"
-                    style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
-                    <div class="wallet-left">
-                        <div class="wallet-img-wrap">
-                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                class="wallet-img" />
-                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                class="wallet-img" />
-                        </div>
-                        <div>
-                            <div class="wallet-type">{{ wallet.type }}</div>
-                            <div class="wallet-num">{{ wallet.phoneNumber }}</div>
-                        </div>
-                    </div>
-                    <span class="badge-detected">Detectado</span>
-                </div>
-
-                <button class="btn-modal-primary" [disabled]="walletTypeForm.invalid || !wallet.type || showLoading"
-                    (click)="upgradePlanByPhoneNumber(wallet)">
-                    <span class="btn-spinner" *ngIf="showLoading"></span>
-                    <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    <span *ngIf="!showLoading">Pagar e adicionar</span>
-                    <span *ngIf="showLoading">A processar pagamento...</span>
-                </button>
-            </form>
         </div>
     </div>
-</div>
+
+</body>
+</html>

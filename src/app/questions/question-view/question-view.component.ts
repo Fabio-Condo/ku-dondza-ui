@@ -30,6 +30,8 @@ import { Topic } from 'src/app/core/model/Topic';
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
 import { AuthModalService } from 'src/app/core/auth-modal.service';
+import { TutorAiService } from 'src/app/core/tutor-ai.service';
+import { TutorRequest } from 'src/app/core/model/TutorRequest';
 
 
 @Component({
@@ -38,6 +40,11 @@ import { AuthModalService } from 'src/app/core/auth-modal.service';
   styleUrls: ['./question-view.component.css']
 })
 export class QuestionViewComponent implements OnInit {
+
+  tutorRequest: TutorRequest = new TutorRequest();
+  tutorResponse: string = '';
+  showTutorThinking: boolean = false;
+
 
   question: Question = new Question();
 
@@ -63,6 +70,7 @@ export class QuestionViewComponent implements OnInit {
   displayModalUpgradePlan: boolean = false;
   displayModalPaymentOptions: boolean = false;
   displayModalAddPaymentOption: boolean = false;
+  displayModalTutor: boolean = false;
 
   loadingMessage = "Carregando..."; // Alterar dinamicamente
 
@@ -135,6 +143,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   constructor(
+    private tutorAiService: TutorAiService,
     private authModalService: AuthModalService,
     private questionService: QuestionService,
     private walletService: WalletService,
@@ -501,6 +510,9 @@ export class QuestionViewComponent implements OnInit {
 
   // Método para capturar a resposta do usuário
   captureUserAnswer(questionId: number, answerId: number | null): void {
+
+    this.tutorRequest.questionId = questionId;
+    this.tutorRequest.selectedAnswerId = answerId;
 
     const question = this.questions.find(q => q.id === questionId);
     if (question) {
@@ -1152,6 +1164,27 @@ export class QuestionViewComponent implements OnInit {
       error: (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);
         this.showLoading = false;
+      }
+    });
+  }
+
+  askTutor() {
+
+    this.tutorRequest.questionId = this.question.id;
+
+    this.showTutorThinking = true;
+
+    this.tutorAiService.askTutor(this.tutorRequest).subscribe({
+      next: (res) => {
+        this.tutorResponse = res;
+        this.renderMathExpressions();
+        this.renderFunctions();
+        this.showTutorThinking = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.tutorResponse = 'Erro ao contactar tutor AI';
+        this.showTutorThinking = false;
       }
     });
   }
