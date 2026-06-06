@@ -32,6 +32,8 @@ import { timer } from 'rxjs';
 import { AuthModalService } from 'src/app/core/auth-modal.service';
 import { TutorAiService } from 'src/app/core/tutor-ai.service';
 import { TutorRequest } from 'src/app/core/model/TutorRequest';
+import { TutorConversationService } from 'src/app/core/wallets/tutor-conversation.service';
+import { TutorMessageResponse } from 'src/app/core/model/TutorMessageResponse';
 
 
 @Component({
@@ -45,6 +47,11 @@ export class QuestionViewComponent implements OnInit {
   tutorResponse: string = '';
   showTutorThinking: boolean = false;
 
+  tutorMessages: TutorMessageResponse[] = [];
+
+  totalRecords: number = 0;
+  currentPage: number = 1;
+  totalMessages: number = 0;
 
   question: Question = new Question();
 
@@ -144,6 +151,7 @@ export class QuestionViewComponent implements OnInit {
 
   constructor(
     private tutorAiService: TutorAiService,
+    private tutorConversationService: TutorConversationService,
     private authModalService: AuthModalService,
     private questionService: QuestionService,
     private walletService: WalletService,
@@ -1168,9 +1176,20 @@ export class QuestionViewComponent implements OnInit {
     });
   }
 
+  onAskTutor() {
+    if (this.isUserLoggedIn) {
+      this.askTutor();
+      return;
+    }
+
+    //this.action = 'tutor';
+    this.openLogin();
+  }
+
   askTutor() {
 
     this.tutorRequest.questionId = this.question.id;
+    this.tutorRequest.userId = this.loggedUser.id;
 
     this.showTutorThinking = true;
 
@@ -1187,6 +1206,80 @@ export class QuestionViewComponent implements OnInit {
         this.showTutorThinking = false;
       }
     });
+  }
+
+  onGetConversationsMessages() {
+    this.displayModalTutor = true;
+    this.tutorMessages = [];
+    this.getConversationsMessages();
+  }
+
+  getConversationsMessages(): void {
+    this.retryVisible = false;
+    this.loadingMessage = 'Carregando mensagens da conversa';
+    this.showLoading = true;
+
+    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error;
+
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
+        )
+      )
+    ).subscribe(
+      (data: IApiResponse<TutorMessageResponse>) => {
+        this.tutorMessages = data.content;
+        this.renderMathExpressions();
+        this.totalRecords = data.totalElements;
+        this.totalMessages = data.totalElements;
+        this.showLoading = false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+
+        if (!navigator.onLine) {
+          this.sendErrorNotification('Você está sem conexão com a internet.');
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      }
+    );
+  }
+
+  loadMoreConversationsMessages(): void {
+
+    this.loadingMessage = 'Carregando mensagens da conversa';
+    this.showLoading = true;
+
+    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id)
+      .subscribe(
+        (data: IApiResponse<TutorMessageResponse>) => {
+          this.tutorMessages = [...this.tutorMessages, ...data.content];
+          this.totalMessages = data.totalElements;
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      );
+  }
+
+  get isLoadMoreDisabled(): boolean {
+    return this.tutorMessages.length >= this.totalMessages && this.totalMessages > 0;
+  }
+
+  retryGetRanking(): void {
+    this.retryVisible = false;
+    this.loadMoreConversationsMessages();
   }
 
   openUpgradeModal() {

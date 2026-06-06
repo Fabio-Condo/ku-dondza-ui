@@ -722,7 +722,7 @@
         .fab-wrapper.fab-wrapper--green .fab-label   { color: #10b981; }
         .fab-wrapper.fab-wrapper--outline .fab-label { color: #475569; }
 
-        /* FAB positioning — stack from bottom-right, each 84px apart */
+        /* FAB positioning */
         .fab-wrapper--pos-1 { bottom: 16px;  right: 16px; }
         .fab-wrapper--pos-2 { bottom: 100px; right: 16px; animation-delay: 0.05s; }
         .fab-wrapper--pos-3 { bottom: 184px; right: 16px; animation-delay: 0.10s; }
@@ -748,7 +748,6 @@
             pointer-events: none;
         }
 
-        /* Tutor FAB accent — uses indigo brand */
         .fab--tutor {
             background: #4361ee;
             color: #fff;
@@ -766,7 +765,7 @@
         }
 
         /* ══════════════════════════════════════
-           MODAL SHELL — compartilhado
+           MODAL SHELL
         ══════════════════════════════════════ */
         .modal-overlay {
             position: fixed;
@@ -877,27 +876,89 @@
 
         .modal-progress-bar.visible { opacity: 1; width: 100%; }
 
+
         /* ══════════════════════════════════════
-           TUTOR AI MODAL — mesmo padrão dos outros
+           TUTOR AI MODAL — melhorado
         ══════════════════════════════════════ */
 
-        /* Tutor modal usa modal-overlay + modal alargado */
-        .modal--tutor {
-            max-width: 640px;
+        /* Overlay do tutor: alinhado ao fundo em mobile, centrado em desktop */
+        .modal-overlay--tutor {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
             display: flex;
-            flex-direction: column;
-            max-height: 88vh;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
         }
 
         @media (min-width: 560px) {
-            .modal--tutor { max-height: 82vh; }
+            .modal-overlay--tutor { align-items: center; }
         }
 
-        /* Cabeçalho do tutor */
+        /*
+          O modal do tutor em mobile:
+          - NÃO ocupa tela cheia: max-height de 82vh deixa espaço visível acima
+          - Tem handle arrastável no topo
+          - É um flex container em coluna para separar header, mensagens e input
+        */
+        .modal--tutor {
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            border: 1px solid #e2e8f0;
+            max-width: 640px;
+            width: 100%;
+            /* Mobile: espaço visível acima — nunca full-screen */
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+            animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+
+        @media (min-width: 560px) {
+            .modal--tutor {
+                border-radius: 20px;
+                max-height: 78vh;
+                /* Em desktop: altura mínima para não parecer vazio */
+                min-height: 520px;
+                animation: popIn 0.2s ease;
+            }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(60px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        /* Cabeçalho fixo do tutor (não scrolla) */
+        .tutor-header {
+            flex-shrink: 0;
+            padding: 0 24px 0;
+        }
+
+        .tutor-header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 16px 0 16px;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 12px;
+        }
+
+        .tutor-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Ícone do robô no header */
         .tutor-header-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             background: #eef2ff;
             border: 1px solid #c7d2fe;
             display: flex;
@@ -906,24 +967,58 @@
             flex-shrink: 0;
         }
 
-        .tutor-header-icon svg {
-            width: 18px;
-            height: 18px;
-            stroke: #4361ee;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* Área de mensagens */
+        /* Área de mensagens — scrollable, ocupa o espaço disponível */
         .tutor-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 0 24px 16px;
+            padding: 16px 24px;
             display: flex;
             flex-direction: column;
             gap: 12px;
+            /* Garante scroll suave em iOS */
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        /* Botão "ver mensagens antigas" */
+        .tutor-load-older {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 4px;
+            flex-shrink: 0;
+        }
+
+        .btn-load-older {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+
+        .btn-load-older:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .btn-load-older svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
         }
 
         /* Bolha do assistente */
@@ -946,16 +1041,6 @@
             margin-top: 2px;
         }
 
-        .tutor-bubble-avatar svg {
-            width: 15px;
-            height: 15px;
-            stroke: #4361ee;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
         .tutor-bubble-content {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -965,6 +1050,9 @@
             font-size: 13px;
             color: #475569;
             line-height: 1.7;
+            /* Evita que conteúdo longo quebre o layout */
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         /* Bolha do utilizador */
@@ -1038,16 +1126,6 @@
             justify-content: center;
         }
 
-        .tutor-empty-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: #4361ee;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
         .tutor-empty-title {
             font-size: 14px;
             font-weight: 700;
@@ -1089,9 +1167,10 @@
             color: #4361ee;
         }
 
-        /* Área de input */
+        /* Área de input — fixa no fundo do modal */
         .tutor-input-area {
-            padding: 14px 24px 20px;
+            flex-shrink: 0;
+            padding: 12px 24px 20px;
             border-top: 1px solid #e2e8f0;
             background: #fff;
             border-radius: 0 0 20px 20px;
@@ -1125,12 +1204,13 @@
             font-size: 13px;
             font-family: inherit;
             resize: none;
-            min-height: 80px;
-            max-height: 200px;
+            min-height: 72px;
+            max-height: 160px;
             overflow-y: auto;
             background: #fff;
             color: #0f172a;
             transition: border-color 0.15s;
+            -webkit-overflow-scrolling: touch;
         }
 
         .tutor-textarea:focus {
@@ -1698,13 +1778,10 @@
             .nav-buttons { gap: 8px; }
             .btn-next { padding: 10px 18px; }
 
-            .modal--tutor,
             .modal--comments {
                 width: 100%;
-                height: 100%;
-                max-height: 100vh;
-                border-radius: 0;
-                overflow-y: auto;
+                max-height: 84vh;
+                border-radius: 20px 20px 0 0;
             }
 
             .math-canvas { max-width: 90%; }
@@ -1923,29 +2000,39 @@
 
     <!-- ══════════════════════════════════════
          FABs
-         Ordem (de baixo para cima):
-           pos-1 → Tutor AI       (sempre visível quando logado)
-           pos-2 → Verificar      (antes de corrigir + resposta selecionada)
-           pos-2 → Guardar        (após correção + logado)
-           pos-3 → Comentários    (após correção + admin)
     ══════════════════════════════════════ -->
 
-    <!-- pos-1: Tutor AI — sempre disponível para utilizadores autenticados -->
+    <!-- pos-1: Tutor AI -->
     <div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1"
         *ngIf="isUserLoggedIn"
-        (click)="displayModalTutor = true">
+        (click)="onGetConversationsMessages();">
         <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="none"/>
+            <!-- Robô SVG -->
+            <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Antena -->
+                <line x1="18" y1="2" x2="18" y2="7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="18" cy="2" r="1.5" fill="white"/>
+                <!-- Cabeça -->
+                <rect x="6" y="7" width="24" height="16" rx="5" fill="white" fill-opacity="0.22" stroke="white" stroke-width="1.8"/>
+                <!-- Olhos -->
+                <rect x="10" y="12" width="5" height="4" rx="2" fill="white"/>
+                <rect x="21" y="12" width="5" height="4" rx="2" fill="white"/>
+                <!-- Boca -->
+                <path d="M12 20 Q18 23 24 20" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                <!-- Corpo -->
+                <rect x="10" y="24" width="16" height="9" rx="3" fill="white" fill-opacity="0.22" stroke="white" stroke-width="1.8"/>
+                <!-- Braços -->
+                <rect x="3" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white" stroke-width="1.6"/>
+                <rect x="28" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white" stroke-width="1.6"/>
+                <!-- Pernas -->
+                <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7"/>
+                <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7"/>
             </svg>
         </button>
         <span class="fab-label">Tutor AI</span>
     </div>
 
-    <!-- pos-2: Verificar — visível quando ainda não corrigiu mas já escolheu resposta -->
+    <!-- pos-2: Verificar -->
     <div class="fab-wrapper fab-wrapper--green fab-wrapper--pos-2"
         *ngIf="!showCorrection && isCurrentQuestionAnswered(question.id)"
         (click)="onViewSolution()">
@@ -1959,7 +2046,7 @@
         <span class="fab-label">Verificar</span>
     </div>
 
-    <!-- pos-2: Guardar — visível após correção -->
+    <!-- pos-2: Guardar -->
     <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-2"
         *ngIf="isUserLoggedIn && showCorrection"
         [class.fab-wrapper--disabled]="question.showLoadingSave"
@@ -1972,7 +2059,7 @@
         <span class="fab-label">{{ question.savedByUser ? 'Guardado' : 'Favoritar' }}</span>
     </div>
 
-    <!-- pos-3: Comentários — apenas admins, após correção -->
+    <!-- pos-3: Comentários -->
     <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-3"
         *ngIf="isUserLoggedIn && isSuperAdmin && showCorrection"
         (click)="onGetComments()">
@@ -1988,18 +2075,33 @@
 
     <!-- ══════════════════════════════════════
          MODAL: Tutor AI
+         — Em mobile: slide-up, max-height 82vh, espaço visível no topo
+         — Em desktop: modal centrado, max-height 78vh
     ══════════════════════════════════════ -->
-    <div class="modal-overlay" *ngIf="displayModalTutor">
-        <div class="modal modal--tutor">
+    <div class="modal-overlay--tutor" *ngIf="displayModalTutor">
+        <div class="modal--tutor">
+
+            <!-- Handle apenas mobile -->
             <div class="modal-handle"><span></span></div>
-            <div class="modal-inner" style="padding-bottom: 0;">
-                <div class="modal-header">
-                    <div style="display: flex; align-items: center; gap: 12px;">
+
+            <!-- Cabeçalho fixo -->
+            <div class="tutor-header">
+                <div class="tutor-header-inner">
+                    <div class="tutor-header-left">
                         <div class="tutor-header-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
-                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                                <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                            <!-- Robô no header -->
+                            <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="18" cy="1.5" r="1.5" fill="#4361ee"/>
+                                <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8"/>
+                                <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                                <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                                <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                                <rect x="10" y="23" width="16" height="9" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8"/>
+                                <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6"/>
+                                <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6"/>
+                                <rect x="12" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe"/>
+                                <rect x="20" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe"/>
                             </svg>
                         </div>
                         <div class="modal-title-group">
@@ -2007,21 +2109,40 @@
                             <span class="modal-subtitle">Dúvidas e insights sobre este exercício</span>
                         </div>
                     </div>
-                    <button class="close-btn" (click)="displayModalTutor = false">&#x2715;</button>
+                    <button class="close-btn" (click)="displayModalTutor = false" aria-label="Fechar tutor">&#x2715;</button>
                 </div>
             </div>
 
-            <!-- Mensagens -->
-            <div class="tutor-messages">
+            <!-- Botão "Ver mensagens antigas" — aparece quando há histórico -->
+            <div class="tutor-load-older" *ngIf="tutorMessages.length > 0">
+                <button class="btn-load-older" (click)="loadMoreConversationsMessages()">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="17 11 12 6 7 11" />
+                        <polyline points="17 18 12 13 7 18" />
+                    </svg>
+                    Ver mensagens anteriores
+                </button>
+            </div>
 
-                <!-- Estado vazio (sem histórico) -->
-                <!-- 
-                <div class="tutor-empty" *ngIf="!tutorResponse && !showTutorThinking && tutorHistory.length === 0">
+            <!-- Área de mensagens — scroll interno -->
+            <div class="tutor-messages" #tutorMessagesContainer>
+
+                <!-- Estado vazio -->
+                <div class="tutor-empty" *ngIf="tutorMessages.length === 0 && !tutorResponse && !showTutorThinking">
                     <div class="tutor-empty-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                            <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                        <!-- Robô no empty state -->
+                        <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="18" cy="1.5" r="1.5" fill="#4361ee"/>
+                            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8"/>
+                            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                            <rect x="10" y="23" width="16" height="9" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8"/>
+                            <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6"/>
+                            <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6"/>
+                            <rect x="12" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe"/>
+                            <rect x="20" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe"/>
                         </svg>
                     </div>
                     <div class="tutor-empty-title">Como posso ajudar?</div>
@@ -2041,37 +2162,42 @@
                         </button>
                     </div>
                 </div>
-                -->
 
                 <!-- Histórico de mensagens -->
-                <!--
-                <ng-container  *ngFor="let msg of tutorHistory">
-                    <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'user'">
+                <ng-container *ngFor="let msg of tutorMessages">
+                    <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'USER'">
                         <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
-                            alt="Utilizador" class="tutor-bubble-avatar" style="border: none; background: transparent;" />
+                            alt="Utilizador" class="tutor-bubble-avatar"
+                            style="border: none; background: transparent; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
                         <div class="tutor-bubble-content">{{ msg.content }}</div>
                     </div>
-                    <div class="tutor-bubble" *ngIf="msg.role === 'assistant'">
+                    <div class="tutor-bubble" *ngIf="msg.role === 'ASSISTANT'">
                         <div class="tutor-bubble-avatar">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
-                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                                <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                            <!-- Robô pequeno nas bolhas -->
+                            <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round"/>
+                                <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>
+                                <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                                <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                                <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>
                             </svg>
                         </div>
                         <div class="tutor-bubble-content"
                             [innerHTML]="getFormattedText(msg.content)"></div>
                     </div>
                 </ng-container>
-                -->
 
-                <!-- Resposta mais recente (fora do histórico, se ainda não guardada) -->
+                <!-- Resposta mais recente -->
                 <div class="tutor-bubble" *ngIf="tutorResponse">
                     <div class="tutor-bubble-avatar">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                            <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                        <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round"/>
+                            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>
+                            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>
                         </svg>
                     </div>
                     <div id="math-container-tutor" class="tutor-bubble-content"
@@ -2081,10 +2207,13 @@
                 <!-- Indicador "a pensar" -->
                 <div class="tutor-thinking" *ngIf="showTutorThinking">
                     <div class="tutor-bubble-avatar">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                            <circle cx="12" cy="17" r="0.5" fill="#4361ee" stroke="none"/>
+                        <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round"/>
+                            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>
+                            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee"/>
+                            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>
                         </svg>
                     </div>
                     <div class="tutor-thinking-dots">
@@ -2096,7 +2225,7 @@
             </div>
             <!-- /tutor-messages -->
 
-            <!-- Input area -->
+            <!-- Input area — fixo no fundo -->
             <div class="tutor-input-area">
                 <div class="tutor-input-row">
                     <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
@@ -2111,7 +2240,7 @@
                             placeholder="Escreva a sua dúvida... (Enter para enviar)"
                             [disabled]="showTutorThinking"></textarea>
                         <button class="tutor-send-btn"
-                            (click)="askTutor()"
+                            (click)="onAskTutor()"
                             [disabled]="!tutorRequest.message || showTutorThinking"
                             aria-label="Enviar">
                             <i class="pi pi-send"></i>
