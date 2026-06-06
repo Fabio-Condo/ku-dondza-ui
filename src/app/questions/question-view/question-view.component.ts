@@ -1263,6 +1263,7 @@ export class QuestionViewComponent implements OnInit {
       .subscribe(
         (data: IApiResponse<TutorMessageResponse>) => {
           this.tutorMessages = [...this.tutorMessages, ...data.content];
+          this.renderMathExpressions();
           this.totalMessages = data.totalElements;
           this.showLoading = false;
         },
