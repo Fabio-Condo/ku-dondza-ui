@@ -1279,10 +1279,12 @@ export class QuestionViewComponent implements OnInit {
   onGetConversationsMessages() {
     this.tutorMessages = [];
     this.getConversationsMessages();
+    document.body.classList.add('no-scroll');
   }
 
   onCloseModalTutor() {
     this.displayModalTutor = false;
+    document.body.classList.remove('no-scroll');
   }
 
   getConversationsMessages(): void {
@@ -1312,6 +1314,7 @@ export class QuestionViewComponent implements OnInit {
         this.totalMessages = data.totalElements;
         this.showLoading = false;
         this.displayModalTutor = true;
+        document.body.classList.add('no-scroll');
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
