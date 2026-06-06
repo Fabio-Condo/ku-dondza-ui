@@ -135,6 +135,9 @@ export class QuestionViewComponent implements OnInit {
     "O importante é continuar!",
   ];
 
+  @ViewChild('tutorMessagesContainer')
+  tutorMessagesContainer!: ElementRef;
+
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
   commentFilter: CommentFilter = {
@@ -199,6 +202,16 @@ export class QuestionViewComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  scrollToBottom(): void {
+    setTimeout(() => {
+      const container = this.tutorMessagesContainer?.nativeElement;
+
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }, 50);
   }
 
   goBack(): void {
@@ -1186,7 +1199,7 @@ export class QuestionViewComponent implements OnInit {
     this.openLogin();
   }
 
-  askTutor() {
+  askTutor2() {
 
     this.tutorRequest.questionId = this.question.id;
     this.tutorRequest.userId = this.loggedUser.id;
@@ -1204,6 +1217,61 @@ export class QuestionViewComponent implements OnInit {
         console.error(err);
         this.tutorResponse = 'Erro ao contactar tutor AI';
         this.showTutorThinking = false;
+      }
+    });
+  }
+
+  askTutor() {
+
+    const userMessage = this.tutorRequest.message;
+    const now = new Date();
+
+    this.tutorMessages.push({
+      id: 0,
+      role: 'USER',
+      content: userMessage,
+      createdAt: now
+    });
+
+    this.tutorRequest.questionId = this.question.id;
+    this.tutorRequest.userId = this.loggedUser.id;
+
+    this.showTutorThinking = true;
+
+    this.scrollToBottom();
+
+    this.tutorAiService.askTutor(this.tutorRequest).subscribe({
+      next: (res) => {
+
+        this.tutorMessages.push({
+          id: 0,
+          role: 'ASSISTANT',
+          content: res,
+          createdAt: new Date()
+        });
+
+        this.renderMathExpressions();
+        this.renderFunctions();
+
+        this.showTutorThinking = false;
+
+        this.tutorRequest.message = '';
+
+        this.scrollToBottom();
+      },
+      error: (err) => {
+        console.error(err);
+
+        this.showTutorThinking = false;
+
+        this.tutorMessages.push({
+          id: 0,
+          role: 'ASSISTANT',
+          content: 'Erro ao contactar Tutor AI.',
+          createdAt: new Date()
+        });
+
+        this.scrollToBottom();
       }
     });
   }
