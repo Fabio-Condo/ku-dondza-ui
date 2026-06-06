@@ -32,8 +32,9 @@ import { timer } from 'rxjs';
 import { AuthModalService } from 'src/app/core/auth-modal.service';
 import { TutorAiService } from 'src/app/core/tutor-ai.service';
 import { TutorRequest } from 'src/app/core/model/TutorRequest';
-import { TutorConversationService } from 'src/app/core/wallets/tutor-conversation.service';
+import { TutorConversationService } from 'src/app/core/tutor-conversation.service';
 import { TutorMessageResponse } from 'src/app/core/model/TutorMessageResponse';
+import { ConversationFilter } from 'src/app/core/interface/ConversationFilter';
 
 
 @Component({
@@ -151,6 +152,11 @@ export class QuestionViewComponent implements OnInit {
     itemsPerPage: 5,
     sort: 'id,asc'
   }
+
+  conversationFilter: ConversationFilter = {
+    page: 0,
+    itemsPerPage: 10,
+  };
 
   constructor(
     private tutorAiService: TutorAiService,
@@ -1292,7 +1298,9 @@ export class QuestionViewComponent implements OnInit {
     this.loadingMessage = 'Carregando mensagens da conversa';
     this.showLoading = true;
 
-    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id).pipe(
+    this.conversationFilter.page = this.currentPage - 1;
+
+    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
@@ -1334,10 +1342,13 @@ export class QuestionViewComponent implements OnInit {
     this.loadingMessage = 'Carregando mensagens da conversa';
     this.showLoading = true;
 
-    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id)
+    this.conversationFilter.page++;
+
+    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter)
       .subscribe(
         (data: IApiResponse<TutorMessageResponse>) => {
-          this.tutorMessages = [...this.tutorMessages, ...data.content];
+          //this.tutorMessages = [...this.tutorMessages, ...data.content];
+          this.tutorMessages = [...data.content, ...this.tutorMessages];
           this.renderMathExpressions();
           this.totalMessages = data.totalElements;
           this.showLoading = false;

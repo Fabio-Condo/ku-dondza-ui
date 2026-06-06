@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { TutorMessageResponse } from '../model/TutorMessageResponse';
-import { IApiResponse } from '../interface/IApiResponse';
+import { TutorMessageResponse } from './model/TutorMessageResponse';
+import { IApiResponse } from './interface/IApiResponse';
+import { ConversationFilter } from './interface/ConversationFilter';
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,8 +14,12 @@ export class TutorConversationService {
 
     constructor(private http: HttpClient) { }
 
-    getConversationsMessages(userId: number, questionId: number): Observable<IApiResponse<TutorMessageResponse>> {
+    getConversationsMessages(userId: number, questionId: number, filtro: ConversationFilter): Observable<IApiResponse<TutorMessageResponse>> {
         let params = new HttpParams()
+        
+            .set('page', filtro.page)
+            .set('size', filtro.itemsPerPage)
+
             .set('userId', userId)
             .set('questionId', questionId);
 

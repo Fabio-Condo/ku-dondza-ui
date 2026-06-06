@@ -2524,7 +2524,7 @@
 
             <!-- Botão "Ver mensagens antigas" — aparece quando há histórico -->
             <div class="tutor-load-older" *ngIf="tutorMessages.length > 0">
-                <button class="btn-load-older" (click)="loadMoreConversationsMessages()">
+                <button class="btn-load-older" [disabled]="isLoadMoreDisabled" (click)="loadMoreConversationsMessages()">
                     <svg viewBox="0 0 24 24">
                         <polyline points="17 11 12 6 7 11" />
                         <polyline points="17 18 12 13 7 18" />
