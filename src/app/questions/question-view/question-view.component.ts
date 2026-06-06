@@ -1209,9 +1209,12 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onGetConversationsMessages() {
-    this.displayModalTutor = true;
     this.tutorMessages = [];
     this.getConversationsMessages();
+  }
+
+  onCloseModalTutor() {
+    this.displayModalTutor = false;
   }
 
   getConversationsMessages(): void {
@@ -1240,6 +1243,7 @@ export class QuestionViewComponent implements OnInit {
         this.totalRecords = data.totalElements;
         this.totalMessages = data.totalElements;
         this.showLoading = false;
+        this.displayModalTutor = true;
       },
       (errorResponse: HttpErrorResponse) => {
         this.showLoading = false;
