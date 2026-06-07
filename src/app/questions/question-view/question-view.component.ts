@@ -155,7 +155,9 @@ export class QuestionViewComponent implements OnInit {
 
   conversationFilter: ConversationFilter = {
     page: 0,
-    itemsPerPage: 10,
+    itemsPerPage: 2,
+    //sort: 'createdAt,asc',
+    sort: 'createdAt,desc',
   };
 
   constructor(
@@ -1295,7 +1297,7 @@ export class QuestionViewComponent implements OnInit {
 
   getConversationsMessages(): void {
     this.retryVisible = false;
-    this.loadingMessage = 'Carregando mensagens da conversa';
+    this.loadingMessage = 'Carregando mensagens';
     this.showLoading = true;
 
     this.conversationFilter.page = this.currentPage - 1;
@@ -1316,7 +1318,10 @@ export class QuestionViewComponent implements OnInit {
       )
     ).subscribe(
       (data: IApiResponse<TutorMessageResponse>) => {
-        this.tutorMessages = data.content;
+
+        const olderMessages = data.content.reverse();
+        this.tutorMessages = olderMessages;
+        
         this.renderMathExpressions();
         this.totalRecords = data.totalElements;
         this.totalMessages = data.totalElements;
@@ -1339,25 +1344,26 @@ export class QuestionViewComponent implements OnInit {
 
   loadMoreConversationsMessages(): void {
 
-    this.loadingMessage = 'Carregando mensagens da conversa';
-    this.showLoading = true;
-
     this.conversationFilter.page++;
 
-    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter)
-      .subscribe(
-        (data: IApiResponse<TutorMessageResponse>) => {
-          //this.tutorMessages = [...this.tutorMessages, ...data.content];
-          this.tutorMessages = [...data.content, ...this.tutorMessages];
-          this.renderMathExpressions();
-          this.totalMessages = data.totalElements;
-          this.showLoading = false;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.showLoading = false;
-          this.sendErrorNotification(errorResponse.error.message);
-        }
-      );
+    this.tutorConversationService
+      .getConversationsMessages(
+        this.loggedUser.id,
+        this.question.id,
+        this.conversationFilter
+      )
+      .subscribe(data => {
+
+        const olderMessages = data.content.reverse();
+
+        this.tutorMessages = [
+          ...olderMessages,
+          ...this.tutorMessages
+        ];
+
+        this.totalMessages = data.totalElements;
+        this.renderMathExpressions();
+      });
   }
 
   get isLoadMoreDisabled(): boolean {

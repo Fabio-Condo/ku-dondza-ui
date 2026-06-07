@@ -19,6 +19,7 @@ export class TutorConversationService {
         
             .set('page', filtro.page)
             .set('size', filtro.itemsPerPage)
+            .set('sort', filtro.sort)
 
             .set('userId', userId)
             .set('questionId', questionId);
