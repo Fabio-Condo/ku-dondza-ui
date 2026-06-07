@@ -2710,7 +2710,7 @@
                     </div>
                 </div>
                 <!-- NOVO: contador de caracteres -->
-                <div class="tutor-char-counter">
+                <div class="tutor-char-counter" *ngIf="tutorRequest.message">
                     <span [class.tutor-char-counter--warn]="(tutorRequest.message.length || 0) >= 400 && (tutorRequest.message.length || 0) < 500"
                         [class.tutor-char-counter--limit]="(tutorRequest.message.length || 0) >= 500">
                         {{ tutorRequest.message.length || 0 }}/500
