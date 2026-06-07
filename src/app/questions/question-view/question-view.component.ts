@@ -156,7 +156,6 @@ export class QuestionViewComponent implements OnInit {
   conversationFilter: ConversationFilter = {
     page: 0,
     itemsPerPage: 2,
-    //sort: 'createdAt,asc',
     sort: 'createdAt,desc',
   };
 
@@ -1321,7 +1320,7 @@ export class QuestionViewComponent implements OnInit {
 
         const olderMessages = data.content.reverse();
         this.tutorMessages = olderMessages;
-        
+
         this.renderMathExpressions();
         this.totalRecords = data.totalElements;
         this.totalMessages = data.totalElements;
