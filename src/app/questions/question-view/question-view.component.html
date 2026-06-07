@@ -1096,7 +1096,6 @@
            TUTOR AI MODAL — melhorado
         ══════════════════════════════════════ */
 
-        /* Overlay do tutor: alinhado ao fundo em mobile, centrado em desktop */
         .modal-overlay--tutor {
             position: fixed;
             inset: 0;
@@ -1114,19 +1113,12 @@
             }
         }
 
-        /*
-          O modal do tutor em mobile:
-          - NÃO ocupa tela cheia: max-height de 82vh deixa espaço visível acima
-          - Tem handle arrastável no topo
-          - É um flex container em coluna para separar header, mensagens e input
-        */
         .modal--tutor {
             background: #fff;
             border-radius: 20px 20px 0 0;
             border: 1px solid #e2e8f0;
             max-width: 640px;
             width: 100%;
-            /* Mobile: espaço visível acima — nunca full-screen */
             max-height: 82vh;
             display: flex;
             flex-direction: column;
@@ -1139,7 +1131,6 @@
             .modal--tutor {
                 border-radius: 20px;
                 max-height: 78vh;
-                /* Em desktop: altura mínima para não parecer vazio */
                 min-height: 520px;
                 animation: popIn 0.2s ease;
             }
@@ -1178,7 +1169,6 @@
             gap: 12px;
         }
 
-        /* Ícone do robô no header */
         .tutor-header-icon {
             width: 40px;
             height: 40px;
@@ -1191,7 +1181,23 @@
             flex-shrink: 0;
         }
 
-        /* Área de mensagens — scrollable, ocupa o espaço disponível */
+        /* ── NOVO: badge de total de mensagens no header ── */
+        .tutor-msg-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 999px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Área de mensagens — scrollable */
         .tutor-messages {
             flex: 1;
             overflow-y: auto;
@@ -1199,7 +1205,6 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            /* Garante scroll suave em iOS */
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
         }
@@ -1275,11 +1280,8 @@
             font-size: 13px;
             color: #475569;
             line-height: 1.7;
-
-            /* Limitação */
             max-height: 100%;
             max-width: 100%;
-
             overflow-y: auto;
             overflow-x: auto;
         }
@@ -1296,7 +1298,7 @@
             color: #1e3a8a;
         }
 
-        /* Data/hora nas mensagens do tutor */
+        /* ── Data/hora nas mensagens — visível em AMBAS as bolhas ── */
         .tutor-bubble-date {
             display: block;
             font-size: 10px;
@@ -1307,6 +1309,7 @@
 
         .tutor-bubble--user .tutor-bubble-date {
             text-align: right;
+            color: #7c9ee8;
         }
 
         /* Indicador "a pensar" */
@@ -1473,6 +1476,30 @@
         .tutor-textarea:focus {
             outline: none;
             border-color: #4361ee;
+        }
+
+        /* ── NOVO: contador de caracteres abaixo do textarea ── */
+        .tutor-char-counter {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+            padding-right: 2px;
+        }
+
+        .tutor-char-counter span {
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .tutor-char-counter span.tutor-char-counter--warn {
+            color: #f59e0b;
+        }
+
+        .tutor-char-counter span.tutor-char-counter--limit {
+            color: #dc2626;
         }
 
         .tutor-send-btn {
@@ -2476,8 +2503,6 @@
 
     <!-- ══════════════════════════════════════
          MODAL: Tutor AI
-         — Em mobile: slide-up, max-height 82vh, espaço visível no topo
-         — Em desktop: modal centrado, max-height 78vh
     ══════════════════════════════════════ -->
     <div class="modal-overlay--tutor" *ngIf="displayModalTutor">
         <div class="modal--tutor">
@@ -2517,14 +2542,20 @@
                             <span class="modal-subtitle">Dúvidas e insights sobre este exercício</span>
                         </div>
                     </div>
-                    <button class="close-btn" (click)="onCloseModalTutor()"
-                        aria-label="Fechar tutor">&#x2715;</button>
+                    <!-- NOVO: total de mensagens + botão fechar -->
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                        <span class="tutor-msg-count" *ngIf="tutorMessages.length > 0">
+                            {{ tutorMessages.length }} {{ tutorMessages.length === 1 ? 'mensagem' : 'mensagens' }}
+                        </span>
+                        <button class="close-btn" (click)="onCloseModalTutor()"
+                            aria-label="Fechar tutor">&#x2715;</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Botão "Ver mensagens antigas" — aparece quando há histórico -->
-            <div class="tutor-load-older" *ngIf="tutorMessages.length > 0">
-                <button class="btn-load-older" [disabled]="isLoadMoreDisabled" (click)="loadMoreConversationsMessages()">
+            <!-- Botão "Ver mensagens antigas" -->
+            <div class="tutor-load-older" *ngIf="!isLoadMoreDisabled">
+                <button class="btn-load-older" (click)="loadMoreConversationsMessages()">
                     <svg viewBox="0 0 24 24">
                         <polyline points="17 11 12 6 7 11" />
                         <polyline points="17 18 12 13 7 18" />
@@ -2539,7 +2570,6 @@
                 <!-- Estado vazio -->
                 <div class="tutor-empty" *ngIf="tutorMessages.length === 0 && !tutorResponse && !showTutorThinking">
                     <div class="tutor-empty-icon">
-                        <!-- Robô no empty state -->
                         <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2"
                                 stroke-linecap="round" />
@@ -2581,18 +2611,20 @@
 
                 <!-- Histórico de mensagens -->
                 <ng-container *ngFor="let msg of tutorMessages">
+                    <!-- Bolha do utilizador -->
                     <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'USER'">
                         <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
                             class="tutor-bubble-avatar"
                             style="border: none; background: transparent; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
                         <div class="tutor-bubble-content">
                             {{ msg.content }}
+                            <!-- NOVO: data e hora na bolha do USER -->
                             <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                         </div>
                     </div>
+                    <!-- Bolha do assistente -->
                     <div class="tutor-bubble" *ngIf="msg.role === 'ASSISTANT'">
                         <div class="tutor-bubble-avatar">
-                            <!-- Robô pequeno nas bolhas -->
                             <svg width="16" height="16" viewBox="0 0 36 36" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
@@ -2607,7 +2639,9 @@
                                     stroke-width="2" />
                             </svg>
                         </div>
-                        <div class="tutor-bubble-content" [innerHTML]="getFormattedText(msg.content)">
+                        <div class="tutor-bubble-content">
+                            <span [innerHTML]="getFormattedText(msg.content)"></span>
+                            <!-- NOVO: data e hora na bolha do ASSISTANT -->
                             <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                         </div>
                     </div>
@@ -2667,12 +2701,21 @@
                         <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #tutorInput
                             class="tutor-textarea" name="tutorMessage" [(ngModel)]="tutorRequest.message"
                             (input)="autoResize(tutorInput)" placeholder="Escreva a sua dúvida..."
-                            [disabled]="showTutorThinking"></textarea>
+                            [disabled]="showTutorThinking"
+                            maxlength="500"></textarea>
                         <button class="tutor-send-btn" (click)="onAskTutor()"
                             [disabled]="!tutorRequest.message || showTutorThinking" aria-label="Enviar">
                             <i class="pi pi-send"></i>
                         </button>
                     </div>
+                </div>
+                <!-- NOVO: contador de caracteres -->
+                <div class="tutor-char-counter">
+                    <span
+                        [class.tutor-char-counter--warn]="(tutorRequest.message?.length || 0) >= 400 && (tutorRequest.message?.length || 0) < 500"
+                        [class.tutor-char-counter--limit]="(tutorRequest.message?.length || 0) >= 500">
+                        {{ tutorRequest.message?.length || 0 }}/500
+                    </span>
                 </div>
             </div>
 
