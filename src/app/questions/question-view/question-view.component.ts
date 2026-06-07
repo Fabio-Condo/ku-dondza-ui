@@ -154,7 +154,7 @@ export class QuestionViewComponent implements OnInit {
 
   conversationFilter: ConversationFilter = {
     page: 0,
-    itemsPerPage: 4,
+    itemsPerPage: 2,
     sort: 'createdAt,desc',
   };
 
