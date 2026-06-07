@@ -12,7 +12,6 @@ import { User } from 'src/app/core/model/User';
 import { Role } from 'src/app/enum/role.enum';
 import { Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
-import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { Title } from '@angular/platform-browser';
 
 declare const MathJax: any;
@@ -155,7 +154,7 @@ export class QuestionViewComponent implements OnInit {
 
   conversationFilter: ConversationFilter = {
     page: 0,
-    itemsPerPage: 2,
+    itemsPerPage: 4,
     sort: 'createdAt,desc',
   };
 
