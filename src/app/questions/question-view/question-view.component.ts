@@ -1284,7 +1284,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onGetConversationsMessages() {
-    this.tutorMessages = [];
+    //this.tutorMessages = [];
     this.getConversationsMessages();
     document.body.classList.add('no-scroll');
   }
@@ -1295,6 +1295,15 @@ export class QuestionViewComponent implements OnInit {
   }
 
   getConversationsMessages(): void {
+
+    if (this.tutorMessages.length > 0) {
+      this.renderMathExpressions();
+      this.scrollToBottom();
+      this.displayModalTutor = true;
+      document.body.classList.add('no-scroll');
+      return;
+    }
+
     this.retryVisible = false;
     this.loadingMessage = 'Carregando mensagens';
     this.showLoading = true;
@@ -1325,6 +1334,7 @@ export class QuestionViewComponent implements OnInit {
         this.totalRecords = data.totalElements;
         this.totalMessages = data.totalElements;
         this.showLoading = false;
+        this.scrollToBottom();
         this.displayModalTutor = true;
         document.body.classList.add('no-scroll');
       },
@@ -1342,16 +1352,13 @@ export class QuestionViewComponent implements OnInit {
   }
 
   loadMoreConversationsMessages(): void {
+    this.loadingMessage = 'Carregando mensagens';
+    this.showLoading = true;
 
     this.conversationFilter.page++;
 
-    this.tutorConversationService
-      .getConversationsMessages(
-        this.loggedUser.id,
-        this.question.id,
-        this.conversationFilter
-      )
-      .subscribe(data => {
+    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter)
+      .subscribe((data: IApiResponse<TutorMessageResponse>) => {
 
         const olderMessages = data.content.reverse();
 
@@ -1362,7 +1369,19 @@ export class QuestionViewComponent implements OnInit {
 
         this.totalMessages = data.totalElements;
         this.renderMathExpressions();
-      });
+        this.showLoading = false;
+      },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+
+          if (!navigator.onLine) {
+            this.sendErrorNotification('Você está sem conexão com a internet.');
+          } else {
+            this.sendErrorNotification(errorResponse.error.message);
+          }
+        }
+      );
   }
 
   get isLoadMoreDisabled(): boolean {
