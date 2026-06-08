@@ -1093,7 +1093,7 @@
 
 
         /* ══════════════════════════════════════
-           TUTOR AI MODAL — melhorado
+           TUTOR AI MODAL
         ══════════════════════════════════════ */
 
         .modal-overlay--tutor {
@@ -1148,7 +1148,7 @@
             }
         }
 
-        /* Cabeçalho fixo do tutor (não scrolla) */
+        /* Cabeçalho fixo do tutor */
         .tutor-header {
             flex-shrink: 0;
             padding: 0 24px 0;
@@ -1181,7 +1181,7 @@
             flex-shrink: 0;
         }
 
-        /* ── NOVO: badge de total de mensagens no header ── */
+        /* Badge de total de mensagens no header */
         .tutor-msg-count {
             display: inline-flex;
             align-items: center;
@@ -1298,7 +1298,7 @@
             color: #1e3a8a;
         }
 
-        /* ── Data/hora nas mensagens — visível em AMBAS as bolhas ── */
+        /* Data/hora nas mensagens */
         .tutor-bubble-date {
             display: block;
             font-size: 10px;
@@ -1399,6 +1399,39 @@
             line-height: 1.6;
         }
 
+        /* ── Banner de política do Tutor ── */
+        .tutor-policy-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 10px 14px;
+            max-width: 320px;
+            width: 100%;
+        }
+
+        .tutor-policy-icon {
+            color: #b45309;
+            flex-shrink: 0;
+            margin-top: 1px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .tutor-policy-text {
+            font-size: 12px;
+            color: #78350f;
+            line-height: 1.65;
+            text-align: left;
+        }
+
+        .tutor-policy-text strong {
+            font-weight: 700;
+            color: #92400e;
+        }
+
         /* Chips de sugestão */
         .tutor-suggestions {
             display: flex;
@@ -1427,7 +1460,7 @@
             color: #4361ee;
         }
 
-        /* Área de input — fixa no fundo do modal */
+        /* Área de input — fixo no fundo do modal */
         .tutor-input-area {
             flex-shrink: 0;
             padding: 12px 24px 20px;
@@ -1478,7 +1511,7 @@
             border-color: #4361ee;
         }
 
-        /* ── NOVO: contador de caracteres abaixo do textarea ── */
+        /* Contador de caracteres abaixo do textarea */
         .tutor-char-counter {
             display: flex;
             justify-content: flex-end;
@@ -2539,10 +2572,11 @@
                         </div>
                         <div class="modal-title-group">
                             <h2 class="modal-title">Tutor AI</h2>
-                            <span class="modal-subtitle">Dúvidas e insights sobre este exercício</span>
+                            <!-- ① Subtitle actualizado: comunicar claramente a política -->
+                            <span class="modal-subtitle">Orienta · Explica · Não resolve por ti</span>
                         </div>
                     </div>
-                    <!-- NOVO: total de mensagens + botão fechar -->
+                    <!-- Total de mensagens + botão fechar -->
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                         <span class="tutor-msg-count" *ngIf="tutorMessages.length > 0">
                             {{ tutorMessages.length }} {{ tutorMessages.length === 1 ? 'mensagem' : 'mensagens' }}
@@ -2567,7 +2601,7 @@
             <!-- Área de mensagens — scroll interno -->
             <div class="tutor-messages" #tutorMessagesContainer>
 
-                <!-- Estado vazio -->
+                <!-- ② Empty state actualizado com banner de política -->
                 <div class="tutor-empty" *ngIf="tutorMessages.length === 0 && !tutorResponse && !showTutorThinking">
                     <div class="tutor-empty-icon">
                         <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2591,20 +2625,37 @@
                         </svg>
                     </div>
                     <div class="tutor-empty-title">Como posso ajudar?</div>
-                    <div class="tutor-empty-desc">Faça uma pergunta sobre este exercício ou escolha uma sugestão abaixo.
+                    <div class="tutor-empty-desc">Faça uma pergunta e eu guio-te até à resposta — sem a revelar.</div>
+
+                    <!-- Banner de política -->
+                    <div class="tutor-policy-banner">
+                        <div class="tutor-policy-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4" />
+                                <path d="M12 8h.01" />
+                            </svg>
+                        </div>
+                        <p class="tutor-policy-text">
+                            O Tutor AI <strong>orienta e explica conceitos</strong>, mas
+                            <strong>não resolve nem revela a resposta</strong> — o esforço é teu.
+                        </p>
                     </div>
+
+                    <!-- ③ Chips actualizados para não sugerir "resolver" -->
                     <div class="tutor-suggestions">
                         <button class="tutor-suggestion-chip"
-                            (click)="tutorRequest.message = 'Explica-me como resolver este exercício passo a passo.'">
-                            Explicar passo a passo
+                            (click)="tutorRequest.message = 'Explica-me o conceito por detrás deste exercício.'">
+                            Explicar o conceito
                         </button>
                         <button class="tutor-suggestion-chip"
                             (click)="tutorRequest.message = 'Qual é o conceito principal que este exercício testa?'">
                             Conceito principal
                         </button>
                         <button class="tutor-suggestion-chip"
-                            (click)="tutorRequest.message = 'Tenho dúvidas sobre esta pergunta, podes ajudar?'">
-                            Tenho uma dúvida
+                            (click)="tutorRequest.message = 'Tenho dúvidas sobre esta pergunta, podes guiar-me?'">
+                            Preciso de orientação
                         </button>
                     </div>
                 </div>
@@ -2618,7 +2669,7 @@
                             style="border: none; background: transparent; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
                         <div class="tutor-bubble-content">
                             {{ msg.content }}
-                            <!-- NOVO: data e hora na bolha do USER -->
+                            <!-- Data e hora na bolha do USER -->
                             <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                         </div>
                     </div>
@@ -2641,7 +2692,7 @@
                         </div>
                         <div class="tutor-bubble-content">
                             <span [innerHTML]="getFormattedText(msg.content)"></span>
-                            <!-- NOVO: data e hora na bolha do ASSISTANT -->
+                            <!-- Data e hora na bolha do ASSISTANT -->
                             <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                         </div>
                     </div>
@@ -2709,7 +2760,7 @@
                         </button>
                     </div>
                 </div>
-                <!-- NOVO: contador de caracteres -->
+                <!-- Contador de caracteres -->
                 <div class="tutor-char-counter" *ngIf="tutorRequest.message">
                     <span [class.tutor-char-counter--warn]="(tutorRequest.message.length || 0) >= 400 && (tutorRequest.message.length || 0) < 500"
                         [class.tutor-char-counter--limit]="(tutorRequest.message.length || 0) >= 500">
