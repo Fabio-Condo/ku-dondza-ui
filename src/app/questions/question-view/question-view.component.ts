@@ -399,6 +399,8 @@ export class QuestionViewComponent implements OnInit {
       this.renderFunctions();
       this.scrollToTop();
 
+      this.tutorRequest.questionId = this.question.id;
+
       if (this.isCurrentQuestionAnswered(this.question.id) && this.question.verified) {
         this.showCorrection = true;
       } else {
@@ -415,6 +417,8 @@ export class QuestionViewComponent implements OnInit {
       this.renderMathExpressions();
       this.renderFunctions();
       this.scrollToTop();
+
+      this.tutorRequest.questionId = this.question.id;
 
       if (this.isCurrentQuestionAnswered(this.question.id) && this.question.verified) {
         this.showCorrection = true;
@@ -1205,28 +1209,6 @@ export class QuestionViewComponent implements OnInit {
     this.openLogin();
   }
 
-  askTutor2() {
-
-    this.tutorRequest.questionId = this.question.id;
-    this.tutorRequest.userId = this.loggedUser.id;
-
-    this.showTutorThinking = true;
-
-    this.tutorAiService.askTutor(this.tutorRequest).subscribe({
-      next: (res) => {
-        this.tutorResponse = res;
-        this.renderMathExpressions();
-        this.renderFunctions();
-        this.showTutorThinking = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.tutorResponse = 'Erro ao contactar tutor AI';
-        this.showTutorThinking = false;
-      }
-    });
-  }
-
   askTutor() {
 
     const userMessage = this.tutorRequest.message;
@@ -1283,7 +1265,7 @@ export class QuestionViewComponent implements OnInit {
   }
 
   onGetConversationsMessages() {
-    //this.tutorMessages = [];
+    this.tutorMessages = [];
     this.getConversationsMessages();
     document.body.classList.add('no-scroll');
   }
@@ -1295,13 +1277,13 @@ export class QuestionViewComponent implements OnInit {
 
   getConversationsMessages(): void {
 
-    if (this.tutorMessages.length > 0) {
-      this.renderMathExpressions();
-      this.scrollToBottom();
-      this.displayModalTutor = true;
-      document.body.classList.add('no-scroll');
-      return;
-    }
+    //if (this.tutorMessages.length > 0) {
+    //  this.renderMathExpressions();
+    //  this.scrollToBottom();
+    //  this.displayModalTutor = true;
+    //  document.body.classList.add('no-scroll');
+    //  return;
+    //}
 
     this.retryVisible = false;
     this.loadingMessage = 'Carregando mensagens';
