@@ -1283,14 +1283,6 @@ export class QuestionViewComponent implements OnInit {
 
   getConversationsMessages(): void {
 
-    //if (this.tutorMessages.length > 0) {
-    //  this.renderMathExpressions();
-    //  this.scrollToBottom();
-    //  this.displayModalTutor = true;
-    //  document.body.classList.add('no-scroll');
-    //  return;
-    //}
-
     this.retryVisible = false;
     this.loadingMessage = 'Carregando mensagens';
     this.showLoading = true;

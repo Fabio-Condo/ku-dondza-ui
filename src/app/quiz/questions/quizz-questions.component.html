@@ -1175,6 +1175,11 @@
       right: 16px;
     }
 
+    .fab-wrapper--pos-bottom-right-4 {
+      bottom: 268px;
+      right: 16px;
+    }
+
     /* ── Animação de entrada ── */
     .fab-wrapper {
       animation: fabSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -1188,11 +1193,53 @@
       animation-delay: 0.10s;
     }
 
+    .fab-wrapper.fab-wrapper--tutor .fab-label {
+      color: #4361ee;
+    }
+
+    .fab--tutor {
+      background: #4361ee;
+      color: #fff;
+    }
+
+    @media (max-width: 480px) {
+      .fab {
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+      }
+
+      .fab-label {
+        font-size: 9px;
+      }
+
+      .fab-wrapper--pos-1 {
+        bottom: 14px;
+        right: 14px;
+      }
+
+      .fab-wrapper--pos-2 {
+        bottom: 92px;
+        right: 14px;
+      }
+
+      .fab-wrapper--pos-3 {
+        bottom: 170px;
+        right: 14px;
+      }
+
+      .fab-wrapper--pos-4 {
+        bottom: 248px;
+        right: 14px;
+      }
+    }
+
     @keyframes fabSlideIn {
       from {
         opacity: 0;
         transform: translateY(12px) scale(0.88);
       }
+
       to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -1221,7 +1268,8 @@
     }
 
     .fab {
-      position: relative; /* para o badge ficar relativo ao botão */
+      position: relative;
+      /* para o badge ficar relativo ao botão */
     }
 
     /* ── Responsivo mobile ── */
@@ -2073,6 +2121,569 @@
       margin-left: 4px;
     }
 
+    /* ══════════════════════════════════════
+            TUTOR AI MODAL
+        ══════════════════════════════════════ */
+
+    .modal-overlay--tutor {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 1000;
+      backdrop-filter: blur(2px);
+    }
+
+    @media (min-width: 560px) {
+      .modal-overlay--tutor {
+        align-items: center;
+      }
+    }
+
+    .modal--tutor {
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      border: 1px solid #e2e8f0;
+      max-width: 640px;
+      width: 100%;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+      animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    @media (min-width: 560px) {
+      .modal--tutor {
+        border-radius: 20px;
+        max-height: 78vh;
+        min-height: 520px;
+        animation: popIn 0.2s ease;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(60px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Cabeçalho fixo do tutor */
+    .tutor-header {
+      flex-shrink: 0;
+      padding: 0 24px 0;
+    }
+
+    .tutor-header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 16px 0 16px;
+      border-bottom: 1px solid #f1f5f9;
+      gap: 12px;
+    }
+
+    .tutor-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tutor-header-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Badge de total de mensagens no header */
+    .tutor-msg-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #eef2ff;
+      color: #4361ee;
+      border: 1px solid #c7d2fe;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Área de mensagens — scrollable */
+    .tutor-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    /* Botão "ver mensagens antigas" */
+    .tutor-load-older {
+      display: flex;
+      justify-content: center;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      flex-shrink: 0;
+    }
+
+    .btn-load-older {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .btn-load-older:hover {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      color: #4361ee;
+    }
+
+    .btn-load-older svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Bolha do assistente */
+    .tutor-bubble {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .tutor-bubble-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .tutor-bubble-content {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0 12px 12px 12px;
+      padding: 12px 14px;
+      flex: 1;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.7;
+      max-height: 100%;
+      max-width: 100%;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+
+    /* Bolha do utilizador */
+    .tutor-bubble--user {
+      flex-direction: row-reverse;
+    }
+
+    .tutor-bubble--user .tutor-bubble-content {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      border-radius: 12px 0 12px 12px;
+      color: #1e3a8a;
+    }
+
+    /* Data/hora nas mensagens */
+    .tutor-bubble-date {
+      display: block;
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .tutor-bubble--user .tutor-bubble-date {
+      text-align: right;
+      color: #7c9ee8;
+    }
+
+    /* Indicador "a pensar" */
+    .tutor-thinking {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0;
+    }
+
+    .tutor-thinking-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .tutor-thinking-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #94a3b8;
+      animation: tutorDot 1.2s infinite ease-in-out;
+    }
+
+    .tutor-thinking-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .tutor-thinking-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes tutorDot {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0.7);
+        opacity: 0.4;
+      }
+
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .tutor-thinking-label {
+      font-size: 12px;
+      color: #94a3b8;
+      font-style: italic;
+    }
+
+    /* Estado vazio */
+    .tutor-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 32px 16px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .tutor-empty-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tutor-empty-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .tutor-empty-desc {
+      font-size: 12px;
+      color: #94a3b8;
+      max-width: 260px;
+      line-height: 1.6;
+    }
+
+    /* ── Banner de política do Tutor ── */
+    .tutor-policy-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 10px 14px;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .tutor-policy-icon {
+      color: #b45309;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .tutor-policy-text {
+      font-size: 12px;
+      color: #78350f;
+      line-height: 1.65;
+      text-align: left;
+    }
+
+    .tutor-policy-text strong {
+      font-weight: 700;
+      color: #92400e;
+    }
+
+    /* Chips de sugestão */
+    .tutor-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .tutor-suggestion-chip {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .tutor-suggestion-chip:hover {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      color: #4361ee;
+    }
+
+    /* Área de input — fixo no fundo do modal */
+    .tutor-input-area {
+      flex-shrink: 0;
+      padding: 12px 24px 20px;
+      border-top: 1px solid #e2e8f0;
+      background: #fff;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .tutor-input-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .tutor-user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .tutor-textarea-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .tutor-textarea {
+      width: 100%;
+      padding: 11px 44px 11px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 13px;
+      font-family: inherit;
+      resize: none;
+      min-height: 72px;
+      max-height: 160px;
+      overflow-y: auto;
+      background: #fff;
+      color: #0f172a;
+      transition: border-color 0.15s;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tutor-textarea:focus {
+      outline: none;
+      border-color: #4361ee;
+    }
+
+    /* Contador de caracteres abaixo do textarea */
+    .tutor-char-counter {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 5px;
+      padding-right: 2px;
+    }
+
+    .tutor-char-counter span {
+      font-size: 10px;
+      font-weight: 600;
+      color: #94a3b8;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: color 0.2s;
+    }
+
+    .tutor-char-counter span.tutor-char-counter--warn {
+      color: #f59e0b;
+    }
+
+    .tutor-char-counter span.tutor-char-counter--limit {
+      color: #dc2626;
+    }
+
+    .tutor-send-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      color: #4361ee;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+      transition: background 0.15s;
+    }
+
+    .tutor-send-btn:hover {
+      background: #eef2ff;
+    }
+
+    .tutor-send-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ─── Tutor AI Topic Button ────────────────────────── */
+    .tutor-topic-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin: 4px 0 0;
+      padding: 13px 16px;
+      background: #f5f7ff;
+      border: 1.5px solid #c7d2fe;
+      border-radius: 0 0 11px 11px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+      text-align: left;
+    }
+
+    .tutor-topic-btn:hover {
+      background: #eef2ff;
+      border-color: #a5b4fc;
+      box-shadow: 0 2px 10px rgba(67, 97, 238, 0.1);
+    }
+
+    .tutor-topic-btn:active {
+      transform: scale(0.995);
+    }
+
+    .tutor-topic-btn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tutor-topic-btn-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tutor-topic-btn-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #3451d1;
+      line-height: 1.2;
+      margin-bottom: 3px;
+    }
+
+    .tutor-topic-btn-scope {
+      font-size: 11px;
+      color: #6b7280;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    .tutor-topic-btn-scope strong {
+      color: #4361ee;
+      font-weight: 700;
+    }
+
+    .tutor-topic-btn-arrow {
+      color: #a5b4fc;
+      flex-shrink: 0;
+      transition: transform 0.18s, color 0.18s;
+    }
+
+    .tutor-topic-btn:hover .tutor-topic-btn-arrow {
+      color: #4361ee;
+      transform: translateX(3px);
+    }
+
+    .tutor-topic-btn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #eef2ff;
+      color: #4361ee;
+      border: 1px solid #c7d2fe;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
     /* --------------------------------------------
        ANIMATIONS
     -------------------------------------------- */
@@ -2585,9 +3196,7 @@
         <div class="score-ring">
           <svg class="progress-svg" viewBox="0 0 120 120">
             <circle class="track" cx="60" cy="60" r="52" />
-            <circle class="fill" cx="60" cy="60" r="52" [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.80 ? '#16a34a' :
-              (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'"
-              [style.stroke-dashoffset]="326.73 - (result.correctAnswers / quiz.questions.length) * 326.73" />
+            <circle class="fill" cx="60" cy="60" r="52" [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.80 ? '#16a34a' : (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'" [style.stroke-dashoffset]="326.73 - (result.correctAnswers / quiz.questions.length) * 326.73" />
           </svg>
           <div class="score-center">
             <div class="score-number">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
@@ -2910,9 +3519,41 @@
         </div>
       </div>
 
-      <!-- ════════════════════════════════════════
-           FABs — quiz activo (com labels)
-      ════════════════════════════════════════ -->
+      <!-- ══════════════════════════════════════
+         FABs
+    ══════════════════════════════════════ -->
+
+      <!-- pos-1: Tutor AI -->
+      <div class="fab-wrapper fab-wrapper--pos-bottom-right-4" (click)="onStartConversation();" *ngIf="!showInitQuizScreen">
+        <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
+          <!-- Robô SVG -->
+          <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Antena -->
+            <line x1="18" y1="2" x2="18" y2="7" stroke="white" stroke-width="2" stroke-linecap="round" />
+            <circle cx="18" cy="2" r="1.5" fill="white" />
+            <!-- Cabeça -->
+            <rect x="6" y="7" width="24" height="16" rx="5" fill="white" fill-opacity="0.22" stroke="white"
+              stroke-width="1.8" />
+            <!-- Olhos -->
+            <rect x="10" y="12" width="5" height="4" rx="2" fill="white" />
+            <rect x="21" y="12" width="5" height="4" rx="2" fill="white" />
+            <!-- Boca -->
+            <path d="M12 20 Q18 23 24 20" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <!-- Corpo -->
+            <rect x="10" y="24" width="16" height="9" rx="3" fill="white" fill-opacity="0.22" stroke="white"
+              stroke-width="1.8" />
+            <!-- Braços -->
+            <rect x="3" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white"
+              stroke-width="1.6" />
+            <rect x="28" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white"
+              stroke-width="1.6" />
+            <!-- Pernas -->
+            <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7" />
+            <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7" />
+          </svg>
+        </button>
+        <span class="fab-label">Tutor AI</span>
+      </div>
 
       <!-- FAB: Guardar nos favoritos (posição 3 — mais acima) -->
       <div class="fab-wrapper fab-wrapper--outline fab-wrapper--pos-bottom-right-3"
@@ -2935,8 +3576,7 @@
         <button class="fab fab--outline" (click)="onGetComments(quiz.questions[currentQuestionIndex])"
           aria-label="Ver comentários da questão">
           <i class="pi pi-comments"></i>
-          <span class="fab-count-badge"
-            *ngIf="quiz.questions[currentQuestionIndex].numberOfComments > 0">
+          <span class="fab-count-badge" *ngIf="quiz.questions[currentQuestionIndex].numberOfComments > 0">
             {{ quiz.questions[currentQuestionIndex].numberOfComments }}
           </span>
         </button>
@@ -2944,10 +3584,8 @@
       </div>
 
       <!-- FAB: Mais opções / recolher (posição 1 — base) -->
-      <div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1"
-        *ngIf="quiz.id && showCorrection">
-        <button class="fab fab--primary" (click)="toggleShowOptions()"
-          aria-label="Mostrar ou ocultar opções">
+      <div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1" *ngIf="quiz.id && showCorrection">
+        <button class="fab fab--primary" (click)="toggleShowOptions()" aria-label="Mostrar ou ocultar opções">
           <i class="pi pi-ellipsis-h"></i>
         </button>
         <span class="fab-label">Opções</span>
@@ -2963,11 +3601,9 @@
 ════════════════════════════════════════ -->
 
 <!-- FAB: Submeter respostas -->
-<div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1"
-  *ngIf="(!showInitQuizScreen && !quiz.id)"
+<div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1" *ngIf="(!showInitQuizScreen && !quiz.id)"
   [class.fab-wrapper--disabled]="quiz.isSubmitted || !allQuestionsAnswered()">
-  <button class="fab fab--primary" (click)="onSubmitAnswers()"
-    [disabled]="quiz.isSubmitted || !allQuestionsAnswered()"
+  <button class="fab fab--primary" (click)="onSubmitAnswers()" [disabled]="quiz.isSubmitted || !allQuestionsAnswered()"
     aria-label="Submeter respostas">
     <i class="pi pi-upload"></i>
   </button>
@@ -2977,8 +3613,7 @@
 <!-- FAB: Guardar quiz (posição 2, acima de "Ver questões") -->
 <div class="fab-wrapper fab-wrapper--save-quiz fab-wrapper--pos-bottom-right-2"
   *ngIf="quiz.isSubmitted && (!quiz.id || quiz.id === 0)">
-  <button class="fab fab--save-quiz" (click)="onSaveQuiz()"
-    aria-label="Guardar quiz">
+  <button class="fab fab--save-quiz" (click)="onSaveQuiz()" aria-label="Guardar quiz">
     <i class="pi pi-save"></i>
   </button>
   <span class="fab-label">Guardar</span>
@@ -2996,10 +3631,8 @@
 </div>
 
 <!-- FAB: Ver questões (resultados) -->
-<div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1"
-  *ngIf="showStartScreen">
-  <button class="fab fab--primary" (click)="startCorretion()"
-    aria-label="Ver lista de questões">
+<div class="fab-wrapper fab-wrapper--primary fab-wrapper--pos-bottom-right-1" *ngIf="showStartScreen">
+  <button class="fab fab--primary" (click)="startCorretion()" aria-label="Ver lista de questões">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -3121,255 +3754,456 @@
      Modal: Upgrade de plano
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalUpgradePlan">
-    <div class="modal">
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Plano Premium</h2>
-                    <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
-                </div>
-                <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
-            </div>
-
-            <div class="pricing-hero">
-                <div class="pricing-hero-top">
-                    <span class="plan-badge">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                        Premium
-                    </span>
-                    <div class="plan-price-wrap">
-                        <div class="plan-price-big">MT 299</div>
-                        <div class="plan-period">por mês</div>
-                    </div>
-                </div>
-                <ul class="feature-list">
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Acesso ilimitado a todos os tópicos e conteúdos disponíveis
-                    </li>
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Resolução detalhada com dicas e comentários passo a passo
-                    </li>
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Criação de quizzes avançados e personalizados
-                    </li>
-                    <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
-                        Mais exercícios por quiz para reforçar o aprendizado
-                    </li>
-                </ul>
-            </div>
-
-            <button class="btn-upgrade-big" (click)="onUpgradePlan()">
-                Fazer upgrade agora
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                </svg>
-            </button>
-            <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
+  <div class="modal">
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Plano Premium</h2>
+          <span class="modal-subtitle">Acesso completo a todos os conteúdos</span>
         </div>
+        <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
+      </div>
+
+      <div class="pricing-hero">
+        <div class="pricing-hero-top">
+          <span class="plan-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            Premium
+          </span>
+          <div class="plan-price-wrap">
+            <div class="plan-price-big">MT 299</div>
+            <div class="plan-period">por mês</div>
+          </div>
+        </div>
+        <ul class="feature-list">
+          <li>
+            <span class="feature-check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            Acesso ilimitado a todos os tópicos e conteúdos disponíveis
+          </li>
+          <li>
+            <span class="feature-check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            Resolução detalhada com dicas e comentários passo a passo
+          </li>
+          <li>
+            <span class="feature-check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            Criação de quizzes avançados e personalizados
+          </li>
+          <li>
+            <span class="feature-check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            Mais exercícios por quiz para reforçar o aprendizado
+          </li>
+        </ul>
+      </div>
+
+      <button class="btn-upgrade-big" (click)="onUpgradePlan()">
+        Fazer upgrade agora
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </button>
+      <p class="plan-price-note">Cancele a qualquer momento &middot; Sem compromisso</p>
     </div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════
      Modal: Método de pagamento
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Método de pagamento</h2>
-                    <span class="modal-subtitle">Selecione como pretende pagar</span>
-                </div>
-                <button class="close-btn" (click)="onCloseModalPaymentOptions()"
-                    [disabled]="showLoading">&#x2715;</button>
-            </div>
-
-            <div class="payment-summary">
-                <div class="payment-summary-row">
-                    <span class="payment-summary-label">Plano</span>
-                    <span class="payment-summary-value">Premium</span>
-                </div>
-                <div class="payment-summary-row">
-                    <span class="payment-summary-label">Renovação</span>
-                    <span class="payment-summary-value">Mensal</span>
-                </div>
-                <div class="payment-summary-row">
-                    <span class="payment-summary-label">Total a pagar</span>
-                    <span class="payment-summary-value payment-summary-total">MT 299</span>
-                </div>
-            </div>
-
-            <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
-                <div class="wallet-options">
-                    <label class="wallet-card" *ngFor="let wallet of userWallets"
-                        [class.selected]="selectedWalletId === wallet.id">
-                        <div class="wallet-left">
-                            <div class="wallet-img-wrap">
-                                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                    class="wallet-img" />
-                                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                    class="wallet-img" />
-                            </div>
-                            <div>
-                                <div class="wallet-type">{{ wallet.type }}</div>
-                                <div class="wallet-num">{{ wallet.phoneNumber }}</div>
-                            </div>
-                        </div>
-                        <div>
-                            <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
-                                (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir principal</button>
-                            <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
-                        </div>
-                    </label>
-                </div>
-
-                <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Adicionar outro método
-                </button>
-
-                <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
-                    <span class="btn-spinner" *ngIf="showLoading"></span>
-                    <ng-container *ngIf="!showLoading">
-                        Confirmar e pagar
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </ng-container>
-                    <span *ngIf="showLoading">A processar pagamento...</span>
-                </button>
-                <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
-            </ng-container>
-
-            <ng-template #noWallets>
-                <div class="empty-wallets">
-                    <div class="empty-wallets-icon">
-                        <svg viewBox="0 0 24 24">
-                            <rect x="2" y="5" width="20" height="14" rx="2" />
-                            <path d="M2 10h20" />
-                            <path d="M6 15h.01" />
-                            <path d="M10 15h4" />
-                        </svg>
-                    </div>
-                    <div class="empty-wallets-title">Nenhum método adicionado</div>
-                    <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o upgrade
-                        para Premium.</div>
-                </div>
-                <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Adicionar método de pagamento
-                </button>
-            </ng-template>
-
+  <div class="modal">
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Método de pagamento</h2>
+          <span class="modal-subtitle">Selecione como pretende pagar</span>
         </div>
+        <button class="close-btn" (click)="onCloseModalPaymentOptions()" [disabled]="showLoading">&#x2715;</button>
+      </div>
+
+      <div class="payment-summary">
+        <div class="payment-summary-row">
+          <span class="payment-summary-label">Plano</span>
+          <span class="payment-summary-value">Premium</span>
+        </div>
+        <div class="payment-summary-row">
+          <span class="payment-summary-label">Renovação</span>
+          <span class="payment-summary-value">Mensal</span>
+        </div>
+        <div class="payment-summary-row">
+          <span class="payment-summary-label">Total a pagar</span>
+          <span class="payment-summary-value payment-summary-total">MT 299</span>
+        </div>
+      </div>
+
+      <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
+        <div class="wallet-options">
+          <label class="wallet-card" *ngFor="let wallet of userWallets"
+            [class.selected]="selectedWalletId === wallet.id">
+            <div class="wallet-left">
+              <div class="wallet-img-wrap">
+                <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
+                <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />
+              </div>
+              <div>
+                <div class="wallet-type">{{ wallet.type }}</div>
+                <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+              </div>
+            </div>
+            <div>
+              <button *ngIf="!wallet.default" class="btn-set-default" [disabled]="showLoading"
+                (click)="$event.stopPropagation(); setDefaultWallet(wallet)">Definir principal</button>
+              <span *ngIf="wallet.default" class="wallet-badge">Principal</span>
+            </div>
+          </label>
+        </div>
+
+        <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Adicionar outro método
+        </button>
+
+        <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
+          <span class="btn-spinner" *ngIf="showLoading"></span>
+          <ng-container *ngIf="!showLoading">
+            Confirmar e pagar
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </ng-container>
+          <span *ngIf="showLoading">A processar pagamento...</span>
+        </button>
+        <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
+      </ng-container>
+
+      <ng-template #noWallets>
+        <div class="empty-wallets">
+          <div class="empty-wallets-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <path d="M2 10h20" />
+              <path d="M6 15h.01" />
+              <path d="M10 15h4" />
+            </svg>
+          </div>
+          <div class="empty-wallets-title">Nenhum método adicionado</div>
+          <div class="empty-wallets-desc">Adicione uma carteira MPESA ou eMola para continuar com o upgrade
+            para Premium.</div>
+        </div>
+        <button class="btn-upgrade-big" (click)="openModalAddPaymentOption()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Adicionar método de pagamento
+        </button>
+      </ng-template>
+
     </div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════
      Modal: Adicionar carteira
 ══════════════════════════════════════ -->
 <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
-    <div class="modal">
-        <div class="modal-progress-bar" [class.visible]="showLoading"></div>
-        <div class="modal-handle"><span></span></div>
-        <div class="modal-inner" [class.is-loading]="showLoading">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <h2 class="modal-title">Adicionar carteira</h2>
-                    <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
-                </div>
-                <button class="close-btn" (click)="onCloseModalAddPaymentOption()"
-                    [disabled]="showLoading">&#x2715;</button>
-            </div>
-
-            <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
-                <div class="form-group">
-                    <label for="phoneNumber">Número de telefone</label>
-                    <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
-                        [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()"
-                        pattern="^(84|85|86|87)[0-9]{7}$" required placeholder="Ex: 841234567"
-                        [disabled]="showLoading" />
-                    <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
-                        O número deve ter exatamente 9 dígitos.
-                    </span>
-                    <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9"
-                        class="error-text">
-                        Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
-                    </span>
-                </div>
-
-                <div *ngIf="wallet.type" class="wallet-card"
-                    style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
-                    <div class="wallet-left">
-                        <div class="wallet-img-wrap">
-                            <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA"
-                                class="wallet-img" />
-                            <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA"
-                                class="wallet-img" />
-                        </div>
-                        <div>
-                            <div class="wallet-type">{{ wallet.type }}</div>
-                            <div class="wallet-num">{{ wallet.phoneNumber }}</div>
-                        </div>
-                    </div>
-                    <span class="badge-detected">Detectado</span>
-                </div>
-
-                <button class="btn-modal-primary"
-                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading" (click)="upgradePlanByPhoneNumber(wallet)">
-                    <span class="btn-spinner" *ngIf="showLoading"></span>
-                    <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    <span *ngIf="!showLoading">Pagar e adicionar</span>
-                    <span *ngIf="showLoading">A processar pagamento...</span>
-                </button>
-            </form>
+  <div class="modal">
+    <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+    <div class="modal-handle"><span></span></div>
+    <div class="modal-inner" [class.is-loading]="showLoading">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Adicionar carteira</h2>
+          <span class="modal-subtitle">MPESA (84/85) ou eMola (86/87)</span>
         </div>
+        <button class="close-btn" (click)="onCloseModalAddPaymentOption()" [disabled]="showLoading">&#x2715;</button>
+      </div>
+
+      <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
+        <div class="form-group">
+          <label for="phoneNumber">Número de telefone</label>
+          <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" minlength="9"
+            [(ngModel)]="wallet.phoneNumber" (ngModelChange)="detectWalletType()" pattern="^(84|85|86|87)[0-9]{7}$"
+            required placeholder="Ex: 841234567" [disabled]="showLoading" />
+          <span *ngIf="wallet.phoneNumber && wallet.phoneNumber.length !== 9" class="error-text">
+            O número deve ter exatamente 9 dígitos.
+          </span>
+          <span *ngIf="wallet.phoneNumber && !wallet.type && wallet.phoneNumber.length === 9" class="error-text">
+            Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
+          </span>
+        </div>
+
+        <div *ngIf="wallet.type" class="wallet-card"
+          style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
+          <div class="wallet-left">
+            <div class="wallet-img-wrap">
+              <img *ngIf="wallet.type === 'MPESA'" src="assets/images/mpesa.png" alt="MPESA" class="wallet-img" />
+              <img *ngIf="wallet.type === 'EMOLA'" src="assets/images/emola.png" alt="EMOLA" class="wallet-img" />
+            </div>
+            <div>
+              <div class="wallet-type">{{ wallet.type }}</div>
+              <div class="wallet-num">{{ wallet.phoneNumber }}</div>
+            </div>
+          </div>
+          <span class="badge-detected">Detectado</span>
+        </div>
+
+        <button class="btn-modal-primary" [disabled]="walletTypeForm.invalid || !wallet.type || showLoading"
+          (click)="upgradePlanByPhoneNumber(wallet)">
+          <span class="btn-spinner" *ngIf="showLoading"></span>
+          <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span *ngIf="!showLoading">Pagar e adicionar</span>
+          <span *ngIf="showLoading">A processar pagamento...</span>
+        </button>
+      </form>
     </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+         MODAL: Tutor AI
+    ══════════════════════════════════════ -->
+<div class="modal-overlay--tutor" *ngIf="displayModalTutor">
+  <div class="modal--tutor">
+
+    <!-- Handle apenas mobile -->
+    <div class="modal-handle"><span></span></div>
+
+    <!-- Cabeçalho fixo -->
+    <div class="tutor-header">
+      <div class="tutor-header-inner">
+        <div class="tutor-header-left">
+          <div class="tutor-header-icon">
+            <!-- Robô no header -->
+            <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2" stroke-linecap="round" />
+              <circle cx="18" cy="1.5" r="1.5" fill="#4361ee" />
+              <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8" />
+              <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+              <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+              <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="1.6" stroke-linecap="round" fill="none" />
+              <rect x="10" y="23" width="16" height="9" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8" />
+              <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6" />
+              <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6" />
+              <rect x="12" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+              <rect x="20" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+            </svg>
+          </div>
+          <div class="modal-title-group">
+            <h2 class="modal-title">Tutor AI</h2>
+            <!-- ① Subtitle actualizado: comunicar claramente a política -->
+            <span class="modal-subtitle">Orienta · Não resolve por ti</span>
+          </div>
+        </div>
+        <!-- Total de mensagens + botão fechar -->
+        <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+          <span class="tutor-msg-count" *ngIf="totalMessages > 0">
+            {{ totalMessages }} {{ totalMessages === 1 ? 'mensagem' : 'mensagens' }}
+          </span>
+          <button class="close-btn" (click)="onCloseModalTutor()" aria-label="Fechar tutor">&#x2715;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão "Ver mensagens antigas" -->
+    <div class="tutor-load-older" *ngIf="!isLoadMoreDisabled && tutorMessages.length != 0">
+      <button class="btn-load-older" (click)="loadMoreConversationsMessages()">
+        <svg viewBox="0 0 24 24">
+          <polyline points="17 11 12 6 7 11" />
+          <polyline points="17 18 12 13 7 18" />
+        </svg>
+        Ver mensagens anteriores
+      </button>
+    </div>
+
+    <!-- Área de mensagens — scroll interno -->
+    <div class="tutor-messages" #tutorMessagesContainer>
+
+      <!-- ② Empty state actualizado com banner de política -->
+      <div class="tutor-empty" *ngIf="tutorMessages.length === 0 && !tutorResponse && !showTutorThinking">
+        <div class="tutor-empty-icon">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2" stroke-linecap="round" />
+            <circle cx="18" cy="1.5" r="1.5" fill="#4361ee" />
+            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8" />
+            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <rect x="10" y="23" width="16" height="9" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="1.8" />
+            <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6" />
+            <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6" />
+            <rect x="12" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+            <rect x="20" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+          </svg>
+        </div>
+        <div class="tutor-empty-title">Como posso ajudar?</div>
+        <div class="tutor-empty-desc">Faça uma pergunta e eu guio-te até à resposta — sem a revelar.</div>
+
+        <!-- Banner de política -->
+        <div class="tutor-policy-banner">
+          <div class="tutor-policy-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg>
+          </div>
+          <p class="tutor-policy-text">
+            O Tutor AI <strong>orienta e explica conceitos</strong>, mas
+            <strong>não resolve nem revela a resposta</strong> — o esforço é teu.
+          </p>
+        </div>
+
+        <!-- ③ Chips actualizados para não sugerir "resolver" -->
+        <div class="tutor-suggestions">
+          <button class="tutor-suggestion-chip"
+            (click)="tutorRequest.message = 'Explica-me o conceito por detrás deste exercício.'">
+            Explicar o conceito
+          </button>
+          <button class="tutor-suggestion-chip"
+            (click)="tutorRequest.message = 'Qual é o conceito principal que este exercício testa?'">
+            Conceito principal
+          </button>
+          <button class="tutor-suggestion-chip"
+            (click)="tutorRequest.message = 'Tenho dúvidas sobre esta pergunta, podes guiar-me?'">
+            Preciso de orientação
+          </button>
+        </div>
+      </div>
+
+      <!-- Histórico de mensagens -->
+      <ng-container *ngFor="let msg of tutorMessages">
+        <!-- Bolha do utilizador -->
+        <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'USER'">
+          <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
+            class="tutor-bubble-avatar"
+            style="border: none; background: transparent; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
+          <div class="tutor-bubble-content">
+            {{ msg.content }}
+            <!-- Data e hora na bolha do USER -->
+            <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        </div>
+        <!-- Bolha do assistente -->
+        <div class="tutor-bubble" *ngIf="msg.role === 'ASSISTANT'">
+          <div class="tutor-bubble-avatar">
+            <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round" />
+              <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+              <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+              <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+              <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none" />
+              <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+            </svg>
+          </div>
+          <div class="tutor-bubble-content">
+            <span [innerHTML]="getFormattedText(msg.content)"></span>
+            <!-- Data e hora na bolha do ASSISTANT -->
+            <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Resposta mais recente -->
+      <div class="tutor-bubble" *ngIf="tutorResponse">
+        <div class="tutor-bubble-avatar">
+          <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round" />
+            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none" />
+            <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+          </svg>
+        </div>
+        <div id="math-container-tutor" class="tutor-bubble-content" [innerHTML]="getFormattedText(tutorResponse)"></div>
+      </div>
+
+      <!-- Indicador "a pensar" -->
+      <div class="tutor-thinking" *ngIf="showTutorThinking">
+        <div class="tutor-bubble-avatar">
+          <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round" />
+            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none" />
+            <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+          </svg>
+        </div>
+        <div class="tutor-thinking-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="tutor-thinking-label">A pensar...</span>
+      </div>
+
+    </div>
+    <!-- /tutor-messages -->
+
+    <!-- Input area — fixo no fundo -->
+    <div class="tutor-input-area">
+      <div class="tutor-input-row">
+        <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
+          class="tutor-user-avatar" />
+        <div class="tutor-textarea-wrap">
+          <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #tutorInput class="tutor-textarea"
+            name="tutorMessage" [(ngModel)]="tutorRequest.message" (input)="autoResize(tutorInput)"
+            placeholder="Escreva a sua dúvida..." [disabled]="showTutorThinking" maxlength="500"></textarea>
+          <button class="tutor-send-btn" (click)="onAskTutor()" [disabled]="!tutorRequest.message || showTutorThinking"
+            aria-label="Enviar">
+            <i class="pi pi-send"></i>
+          </button>
+        </div>
+      </div>
+      <!-- Contador de caracteres -->
+      <div class="tutor-char-counter" *ngIf="tutorRequest.message">
+        <span
+          [class.tutor-char-counter--warn]="(tutorRequest.message.length || 0) >= 400 && (tutorRequest.message.length || 0) < 500"
+          [class.tutor-char-counter--limit]="(tutorRequest.message.length || 0) >= 500">
+          {{ tutorRequest.message.length || 0 }}/500
+        </span>
+      </div>
+    </div>
+
+  </div>
 </div>

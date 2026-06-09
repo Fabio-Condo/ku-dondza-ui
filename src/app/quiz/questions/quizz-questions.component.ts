@@ -18,7 +18,6 @@ import { Subject } from 'src/app/core/model/Subject';
 import { Answer } from 'src/app/core/model/Answer';
 import { interval, Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
-import { GoogleAuthService } from 'src/app/users/google-auth-service.service';
 import { CommentLikeService } from 'src/app/likes/commentLike.service';
 import { CommentService } from 'src/app/comments/comment.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
@@ -35,6 +34,11 @@ import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
 import { ChallengeService } from 'src/app/challenges/challenge.service';
 import { AuthModalService } from 'src/app/core/auth-modal.service';
+import { TutorMessageResponse } from 'src/app/core/model/TutorMessageResponse';
+import { TutorConversationService } from 'src/app/core/tutor-conversation.service';
+import { TutorAiService } from 'src/app/core/tutor-ai.service';
+import { ConversationFilter } from 'src/app/core/interface/ConversationFilter';
+import { TutorRequest } from 'src/app/core/model/TutorRequest';
 
 
 @Component({
@@ -43,9 +47,21 @@ import { AuthModalService } from 'src/app/core/auth-modal.service';
   styleUrls: ['./quizz-questions.component.css'],
 })
 export class QuizzQuestionsComponent implements OnInit {
-  [x: string]: any;
+  //[x: string]: any;
   quiz: Quiz = new Quiz();
   topics: Topic[] = [];
+
+  tutorRequest: TutorRequest = new TutorRequest();
+  tutorResponse: string = '';
+  showTutorThinking: boolean = false;
+
+  tutorMessages: TutorMessageResponse[] = [];
+
+  totalRecords: number = 0;
+  //currentPage: number = 1;
+  totalMessages: number = 0;
+
+  displayModalTutor: boolean = false;
 
   showLoading: boolean = false;
   retryVisible: boolean = false;
@@ -124,6 +140,9 @@ export class QuizzQuestionsComponent implements OnInit {
   imagePath = './assets/images/funcao do grau 2.png';
 
   @ViewChild('tabela') grid: any;
+
+  @ViewChild('tutorMessagesContainer')
+  tutorMessagesContainer!: ElementRef;
 
   // Mensagens de acerto
   correctMessages: string[] = [
@@ -272,9 +291,17 @@ export class QuizzQuestionsComponent implements OnInit {
     sort: 'id,asc',
   };
 
+  conversationFilter: ConversationFilter = {
+    page: 0,
+    itemsPerPage: 10,
+    sort: 'createdAt,desc',
+  };
+
   constructor(
     private ngZone: NgZone,
     private authModalService: AuthModalService,
+    private tutorAiService: TutorAiService,
+    private tutorConversationService: TutorConversationService,
     private progressService: ProgressService,
     private challengeService: ChallengeService,
     private walletService: WalletService,
@@ -335,6 +362,16 @@ export class QuizzQuestionsComponent implements OnInit {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  scrollToBottom(): void {
+    setTimeout(() => {
+      const container = this.tutorMessagesContainer?.nativeElement;
+
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }, 50);
   }
 
   ngOnDestroy(): void {
@@ -2083,6 +2120,174 @@ export class QuizzQuestionsComponent implements OnInit {
         this.showLoading = false;
       }
     });
+  }
+
+  onAskTutor() {
+    if (this.isUserLoggedIn) {
+      this.askTutor();
+      return;
+    }
+
+    //this.action = 'tutor';
+    this.openLogin();
+  }
+
+  askTutor() {
+
+    const userMessage = this.tutorRequest.message;
+    const now = new Date();
+
+    this.tutorMessages.push({
+      id: 0,
+      role: 'USER',
+      content: userMessage,
+      createdAt: now
+    });
+
+    this.tutorRequest.questionId = this.quiz.questions[this.currentQuestionIndex].id; 
+    this.tutorRequest.userId = this.loggedUser.id;
+
+    this.showTutorThinking = true;
+
+    this.scrollToBottom();
+
+    this.tutorAiService.askQuestions(this.tutorRequest).subscribe({
+      next: (res) => {
+
+        this.tutorMessages.push({
+          id: 0,
+          role: 'ASSISTANT',
+          content: res,
+          createdAt: new Date()
+        });
+
+        this.renderMathExpressions();
+        this.renderFunctions();
+
+        this.showTutorThinking = false;
+
+        this.tutorRequest.message = '';
+
+        this.scrollToBottom();
+      },
+      error: (err) => {
+        console.error(err);
+
+        this.showTutorThinking = false;
+
+        this.tutorMessages.push({
+          id: 0,
+          role: 'ASSISTANT',
+          content: 'Erro ao contactar Tutor AI.',
+          createdAt: new Date()
+        });
+
+        this.scrollToBottom();
+      }
+    });
+  }
+
+  onStartConversation() {
+
+    if (this.isUserLoggedIn) {
+      this.tutorMessages = [];
+      this.getConversationsMessages();
+      document.body.classList.add('no-scroll');
+      return;
+    }
+
+    this.openLogin();
+  }
+
+  onCloseModalTutor() {
+    this.displayModalTutor = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  getConversationsMessages(): void {
+
+    this.retryVisible = false;
+    this.loadingMessage = 'Carregando mensagens';
+    this.showLoading = true;
+
+    this.conversationFilter.page = this.currentPage - 1;
+
+    this.tutorConversationService.getQuestionConversationsMessages(this.loggedUser.id, this.quiz.questions[this.currentQuestionIndex].id, this.conversationFilter).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error;
+
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
+        )
+      )
+    ).subscribe(
+      (data: IApiResponse<TutorMessageResponse>) => {
+
+        const olderMessages = data.content.reverse();
+        this.tutorMessages = olderMessages;
+
+        this.renderMathExpressions();
+        this.totalRecords = data.totalElements;
+        this.totalMessages = data.totalElements;
+        this.showLoading = false;
+        this.scrollToBottom();
+        this.displayModalTutor = true;
+        document.body.classList.add('no-scroll');
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+
+        if (!navigator.onLine) {
+          this.sendErrorNotification('Você está sem conexão com a internet.');
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      }
+    );
+  }
+
+  loadMoreConversationsMessages(): void {
+    this.loadingMessage = 'Carregando mensagens';
+    this.showLoading = true;
+
+    this.conversationFilter.page++;
+
+    this.tutorConversationService.getQuestionConversationsMessages(this.loggedUser.id, this.quiz.questions[this.currentQuestionIndex].id, this.conversationFilter)
+      .subscribe((data: IApiResponse<TutorMessageResponse>) => {
+
+        const olderMessages = data.content.reverse();
+
+        this.tutorMessages = [
+          ...olderMessages,
+          ...this.tutorMessages
+        ];
+
+        this.totalMessages = data.totalElements;
+        this.renderMathExpressions();
+        this.showLoading = false;
+      },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+
+          if (!navigator.onLine) {
+            this.sendErrorNotification('Você está sem conexão com a internet.');
+          } else {
+            this.sendErrorNotification(errorResponse.error.message);
+          }
+        }
+      );
+  }
+
+  get isLoadMoreDisabled(): boolean {
+    return this.tutorMessages.length >= this.totalMessages && this.totalMessages > 0;
   }
 
   openUpgradeModal() {
