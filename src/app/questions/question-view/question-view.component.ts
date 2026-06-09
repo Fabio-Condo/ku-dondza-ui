@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
 import { Title } from '@angular/platform-browser';
 
-declare const MathJax: any;
 import { evaluate, re } from 'mathjs'; //npm install mathjs
 import { NgForm } from '@angular/forms';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
@@ -35,6 +34,7 @@ import { TutorConversationService } from 'src/app/core/tutor-conversation.servic
 import { TutorMessageResponse } from 'src/app/core/model/TutorMessageResponse';
 import { ConversationFilter } from 'src/app/core/interface/ConversationFilter';
 
+declare const MathJax: any;
 
 @Component({
   selector: 'app-question-view',
@@ -1228,7 +1228,7 @@ export class QuestionViewComponent implements OnInit {
 
     this.scrollToBottom();
 
-    this.tutorAiService.askTutor(this.tutorRequest).subscribe({
+    this.tutorAiService.askQuestions(this.tutorRequest).subscribe({
       next: (res) => {
 
         this.tutorMessages.push({
@@ -1264,10 +1264,16 @@ export class QuestionViewComponent implements OnInit {
     });
   }
 
-  onGetConversationsMessages() {
-    this.tutorMessages = [];
-    this.getConversationsMessages();
-    document.body.classList.add('no-scroll');
+  onStartConversation() {
+
+    if (this.isUserLoggedIn) {
+      this.tutorMessages = [];
+      this.getConversationsMessages();
+      document.body.classList.add('no-scroll');
+      return;
+    }
+
+    this.openLogin();
   }
 
   onCloseModalTutor() {
@@ -1291,7 +1297,7 @@ export class QuestionViewComponent implements OnInit {
 
     this.conversationFilter.page = this.currentPage - 1;
 
-    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter).pipe(
+    this.tutorConversationService.getQuestionConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter).pipe(
       retryWhen(errors =>
         errors.pipe(
           scan((retryCount, error) => {
@@ -1338,7 +1344,7 @@ export class QuestionViewComponent implements OnInit {
 
     this.conversationFilter.page++;
 
-    this.tutorConversationService.getConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter)
+    this.tutorConversationService.getQuestionConversationsMessages(this.loggedUser.id, this.question.id, this.conversationFilter)
       .subscribe((data: IApiResponse<TutorMessageResponse>) => {
 
         const olderMessages = data.content.reverse();

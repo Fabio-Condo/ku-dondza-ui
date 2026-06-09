@@ -2465,8 +2465,8 @@
     ══════════════════════════════════════ -->
 
     <!-- pos-1: Tutor AI -->
-    <div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1" *ngIf="isUserLoggedIn"
-        (click)="onGetConversationsMessages();">
+    <div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1"
+        (click)="onStartConversation();">
         <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
             <!-- Robô SVG -->
             <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2578,8 +2578,8 @@
                     </div>
                     <!-- Total de mensagens + botão fechar -->
                     <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                        <span class="tutor-msg-count" *ngIf="tutorMessages.length > 0">
-                            {{ tutorMessages.length }} {{ tutorMessages.length === 1 ? 'mensagem' : 'mensagens' }}
+                        <span class="tutor-msg-count" *ngIf="totalMessages > 0">
+                            {{ totalMessages }} {{ totalMessages === 1 ? 'mensagem' : 'mensagens' }}
                         </span>
                         <button class="close-btn" (click)="onCloseModalTutor()"
                             aria-label="Fechar tutor">&#x2715;</button>

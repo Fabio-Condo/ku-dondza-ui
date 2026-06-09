@@ -24,8 +24,15 @@ export class TutorAiService {
     /**
      * Envia pergunta do aluno para o Tutor AI
      */
-    askTutor(request: TutorRequest): Observable<string> {
-        return this.http.post(`${this.host}/ask`, 
+    askQuestions(request: TutorRequest): Observable<string> {
+        return this.http.post(`${this.host}/ask/question`,
+            request,
+            { responseType: 'text' } // importante porque backend retorna String
+        );
+    }
+
+    askTopics(request: TutorRequest): Observable<string> {
+        return this.http.post(`${this.host}/ask/topic`,
             request,
             { responseType: 'text' } // importante porque backend retorna String
         );

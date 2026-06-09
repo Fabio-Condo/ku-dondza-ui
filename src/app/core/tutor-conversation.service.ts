@@ -14,9 +14,9 @@ export class TutorConversationService {
 
     constructor(private http: HttpClient) { }
 
-    getConversationsMessages(userId: number, questionId: number, filtro: ConversationFilter): Observable<IApiResponse<TutorMessageResponse>> {
+    getQuestionConversationsMessages(userId: number, questionId: number, filtro: ConversationFilter): Observable<IApiResponse<TutorMessageResponse>> {
         let params = new HttpParams()
-        
+
             .set('page', filtro.page)
             .set('size', filtro.itemsPerPage)
             .set('sort', filtro.sort)
@@ -24,6 +24,19 @@ export class TutorConversationService {
             .set('userId', userId)
             .set('questionId', questionId);
 
-        return this.http.get<IApiResponse<TutorMessageResponse>>(`${this.host}/${userId}/messages`, { params });
+        return this.http.get<IApiResponse<TutorMessageResponse>>(`${this.host}/${userId}/messages/question`, { params });
+    }
+
+    getTopicConversationsMessages(userId: number, topicId: number, filtro: ConversationFilter): Observable<IApiResponse<TutorMessageResponse>> {
+        let params = new HttpParams()
+
+            .set('page', filtro.page)
+            .set('size', filtro.itemsPerPage)
+            .set('sort', filtro.sort)
+
+            .set('userId', userId)
+            .set('topicId', topicId);
+
+        return this.http.get<IApiResponse<TutorMessageResponse>>(`${this.host}/${userId}/messages/topic`, { params });
     }
 }

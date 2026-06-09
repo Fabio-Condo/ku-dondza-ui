@@ -12,7 +12,6 @@ import { Role } from 'src/app/enum/role.enum';
 import { TopicContent } from 'src/app/core/model/Topic-content';
 import { TopicContentService } from 'src/app/topics/TopicContentService.service';
 import { UserService } from 'src/app/users/user.service';
-import { Question } from 'src/app/core/model/Question';
 import { Topic } from 'src/app/core/model/Topic';
 import { Wallet } from 'src/app/core/model/Wallet';
 import { WalletService } from 'src/app/core/wallets/answers.service';
@@ -20,6 +19,15 @@ import { NgForm } from '@angular/forms';
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
 import { timer } from 'rxjs';
 import { AuthModalService } from 'src/app/core/auth-modal.service';
+import { TutorRequest } from 'src/app/core/model/TutorRequest';
+import { TutorMessageResponse } from 'src/app/core/model/TutorMessageResponse';
+import { TutorAiService } from 'src/app/core/tutor-ai.service';
+import { ConversationFilter } from 'src/app/core/interface/ConversationFilter';
+import { TutorConversationService } from 'src/app/core/tutor-conversation.service';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+
+declare const MathJax: any;
+
 
 @Component({
   selector: 'app-subjects-view',
@@ -27,6 +35,22 @@ import { AuthModalService } from 'src/app/core/auth-modal.service';
   styleUrls: ['./subjects-view.component.css']
 })
 export class SubjectsViewComponent {
+
+  // Tutor
+  tutorRequest: TutorRequest = new TutorRequest();
+  tutorResponse: string = '';
+  showTutorThinking: boolean = false;
+  displayModalTutor: boolean = false;
+
+  selectedTopic: Topic = new Topic();
+
+  tutorMessages: TutorMessageResponse[] = [];
+
+  totalRecords: number = 0;
+  currentPage: number = 1;
+  totalMessages: number = 0;
+
+  showLatexLoading: boolean = false;
 
   subject: Subject = new Subject();
   showLoading: boolean = false;
@@ -51,14 +75,24 @@ export class SubjectsViewComponent {
   userWallets: Wallet[] = [];
   selectedWalletId: number = 0;
 
-  displayModalQuestionsList: boolean = false;
   displayModalUpgradePlan: boolean = false;
   displayModalPaymentOptions: boolean = false;
   displayModalAddPaymentOption: boolean = false;
 
   googleAuthReady = true;
 
+  conversationFilter: ConversationFilter = {
+    page: 0,
+    itemsPerPage: 10,
+    sort: 'createdAt,desc',
+  };
+
+  @ViewChild('tutorMessagesContainer')
+  tutorMessagesContainer!: ElementRef;
+
   constructor(
+    private tutorAiService: TutorAiService,
+    private tutorConversationService: TutorConversationService,
     private authModalService: AuthModalService,
     private subjectsService: SubjectsService,
     private walletService: WalletService,
@@ -94,6 +128,16 @@ export class SubjectsViewComponent {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  scrollToBottom(): void {
+    setTimeout(() => {
+      const container = this.tutorMessagesContainer?.nativeElement;
+
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }, 50);
   }
 
   getSubjectBySubjectId(subjectId: string) {
@@ -299,10 +343,7 @@ export class SubjectsViewComponent {
     });
   }
 
-  // Embaralhar a ordem
-  shuffleQuestions(questions: Question[]): Question[] {
-    return questions.sort(() => Math.random() - 0.5);
-  }
+
 
   getVideoCount(topic: any): number {
     if (!topic || !topic.contents) return 0;
@@ -527,6 +568,202 @@ export class SubjectsViewComponent {
         this.showLoading = false;
       }
     });
+  }
+
+
+  onAskTutor() {
+    if (this.isUserLoggedIn) {
+      this.askTutor();
+      return;
+    }
+
+    //this.action = 'tutor';
+    this.openLogin();
+  }
+
+  askTutor() {
+
+    const userMessage = this.tutorRequest.message;
+    const now = new Date();
+
+    this.tutorMessages.push({
+      id: 0,
+      role: 'USER',
+      content: userMessage,
+      createdAt: now
+    });
+
+    this.tutorRequest.topicId = this.selectedTopic.id;
+    this.tutorRequest.userId = this.loggedUser.id;
+
+    this.showTutorThinking = true;
+
+    this.scrollToBottom();
+
+    this.tutorAiService.askTopics(this.tutorRequest).subscribe({
+      next: (res) => {
+
+        this.tutorMessages.push({
+          id: 0,
+          role: 'ASSISTANT',
+          content: res,
+          createdAt: new Date()
+        });
+
+        this.renderMathExpressions();
+
+        this.showTutorThinking = false;
+
+        this.tutorRequest.message = '';
+
+        this.scrollToBottom();
+      },
+      error: (err) => {
+        console.error(err);
+
+        this.showTutorThinking = false;
+
+        this.tutorMessages.push({
+          id: 0,
+          role: 'ASSISTANT',
+          content: 'Erro ao contactar Tutor AI.',
+          createdAt: new Date()
+        });
+
+        this.scrollToBottom();
+      }
+    });
+  }
+
+  onStartConversation(topic: Topic) {
+
+    this.selectedTopic = topic;
+
+    if (this.isUserLoggedIn) {
+      this.tutorMessages = [];
+      this.getConversationsMessages();
+      document.body.classList.add('no-scroll');
+      return;
+    }
+
+    this.openLogin();
+  }
+
+  onCloseModalTutor() {
+    this.displayModalTutor = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  getConversationsMessages(): void {
+
+    this.retryVisible = false;
+    this.loadingMessage = 'Carregando mensagens';
+    this.showLoading = true;
+
+    this.conversationFilter.page = this.currentPage - 1;
+
+    this.tutorConversationService.getTopicConversationsMessages(this.loggedUser.id, this.selectedTopic.id, this.conversationFilter).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 3) throw error;
+
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
+        )
+      )
+    ).subscribe(
+      (data: IApiResponse<TutorMessageResponse>) => {
+
+        const olderMessages = data.content.reverse();
+        this.tutorMessages = olderMessages;
+
+        this.renderMathExpressions();
+        this.totalRecords = data.totalElements;
+        this.totalMessages = data.totalElements;
+        this.showLoading = false;
+        this.scrollToBottom();
+        this.displayModalTutor = true;
+        document.body.classList.add('no-scroll');
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.showLoading = false;
+        this.retryVisible = true;
+
+        if (!navigator.onLine) {
+          this.sendErrorNotification('Você está sem conexão com a internet.');
+        } else {
+          this.sendErrorNotification(errorResponse.error.message);
+        }
+      }
+    );
+  }
+
+  loadMoreConversationsMessages(): void {
+    this.loadingMessage = 'Carregando mensagens';
+    this.showLoading = true;
+
+    this.conversationFilter.page++;
+
+    this.tutorConversationService.getTopicConversationsMessages(this.loggedUser.id, this.selectedTopic.id, this.conversationFilter)
+      .subscribe((data: IApiResponse<TutorMessageResponse>) => {
+
+        const olderMessages = data.content.reverse();
+
+        this.tutorMessages = [
+          ...olderMessages,
+          ...this.tutorMessages
+        ];
+
+        this.totalMessages = data.totalElements;
+        this.renderMathExpressions();
+        this.showLoading = false;
+      },
+        (errorResponse: HttpErrorResponse) => {
+          this.showLoading = false;
+          this.retryVisible = true;
+
+          if (!navigator.onLine) {
+            this.sendErrorNotification('Você está sem conexão com a internet.');
+          } else {
+            this.sendErrorNotification(errorResponse.error.message);
+          }
+        }
+      );
+  }
+
+  get isLoadMoreDisabled(): boolean {
+    return this.tutorMessages.length >= this.totalMessages && this.totalMessages > 0;
+  }
+
+  // Método para renderizar expressões matemáticas
+  renderMathExpressions(): void {
+    this.showLatexLoading = true;
+    setTimeout(() => {
+      MathJax.typesetPromise();
+    }, 0);
+    this.showLatexLoading = false;
+  }
+
+  getFormattedText(text: string): string {
+    // Negrito: **texto** → <strong>texto</strong>
+    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto* → <em>texto</em>
+    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    // Quebras de linha: \n → <br>
+    return textoFormatado.replace(/\n/g, '<br>');
+  }
+
+  autoResize(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto'; // reseta para recalcular corretamente
+    const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
+    textarea.style.height = `${newHeight}px`;
   }
 
   openUpgradeModal() {
