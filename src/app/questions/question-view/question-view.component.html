@@ -1054,26 +1054,31 @@
         }
 
         .close-btn {
-            width: 32px;
-            height: 32px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: transparent;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
             cursor: pointer;
-            font-size: 14px;
-            color: #475569;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: inherit;
-            transition: all 0.15s;
-            flex-shrink: 0;
+            color: #64748b;
+            font-size: 13px;
+            transition: background 0.15s, color 0.15s;
+            padding: 0;
+            margin-top: 2px;
         }
 
         .close-btn:hover {
-            background: #fef2f2;
-            color: #dc2626;
-            border-color: #fecaca;
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .close-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
 
         /* ══ MODAL PROGRESS BAR ══ */
@@ -1093,7 +1098,7 @@
 
 
         /* ══════════════════════════════════════
-           TUTOR AI MODAL
+            TUTOR AI MODAL
         ══════════════════════════════════════ */
 
         .modal-overlay--tutor {
@@ -1148,7 +1153,7 @@
             }
         }
 
-        /* Cabeçalho fixo do tutor */
+/* Cabeçalho fixo do tutor */
         .tutor-header {
             flex-shrink: 0;
             padding: 0 24px 0;
@@ -1556,6 +1561,103 @@
         .tutor-send-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
+        }
+
+        /* ─── Tutor AI Topic Button ────────────────────────── */
+        .tutor-topic-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            margin: 4px 0 0;
+            padding: 13px 16px;
+            background: #f5f7ff;
+            border: 1.5px solid #c7d2fe;
+            border-radius: 0 0 11px 11px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+            text-align: left;
+        }
+
+        .tutor-topic-btn:hover {
+            background: #eef2ff;
+            border-color: #a5b4fc;
+            box-shadow: 0 2px 10px rgba(67, 97, 238, 0.1);
+        }
+
+        .tutor-topic-btn:active {
+            transform: scale(0.995);
+        }
+
+        .tutor-topic-btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tutor-topic-btn-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .tutor-topic-btn-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #3451d1;
+            line-height: 1.2;
+            margin-bottom: 3px;
+        }
+
+        .tutor-topic-btn-scope {
+            font-size: 11px;
+            color: #6b7280;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .tutor-topic-btn-scope strong {
+            color: #4361ee;
+            font-weight: 700;
+        }
+
+        .tutor-topic-btn-arrow {
+            color: #a5b4fc;
+            flex-shrink: 0;
+            transition: transform 0.18s, color 0.18s;
+        }
+
+        .tutor-topic-btn:hover .tutor-topic-btn-arrow {
+            color: #4361ee;
+            transform: translateX(3px);
+        }
+
+        .tutor-topic-btn-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 999px;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* ══════════════════════════════════════
@@ -2465,8 +2567,7 @@
     ══════════════════════════════════════ -->
 
     <!-- pos-1: Tutor AI -->
-    <div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1"
-        (click)="onStartConversation();">
+    <div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1" (click)="onStartConversation();">
         <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
             <!-- Robô SVG -->
             <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2573,7 +2674,7 @@
                         <div class="modal-title-group">
                             <h2 class="modal-title">Tutor AI</h2>
                             <!-- ① Subtitle actualizado: comunicar claramente a política -->
-                            <span class="modal-subtitle">Orienta · Explica · Não resolve por ti</span>
+                            <span class="modal-subtitle">Orienta · Não resolve por ti</span>
                         </div>
                     </div>
                     <!-- Total de mensagens + botão fechar -->
@@ -2752,8 +2853,7 @@
                         <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #tutorInput
                             class="tutor-textarea" name="tutorMessage" [(ngModel)]="tutorRequest.message"
                             (input)="autoResize(tutorInput)" placeholder="Escreva a sua dúvida..."
-                            [disabled]="showTutorThinking"
-                            maxlength="500"></textarea>
+                            [disabled]="showTutorThinking" maxlength="500"></textarea>
                         <button class="tutor-send-btn" (click)="onAskTutor()"
                             [disabled]="!tutorRequest.message || showTutorThinking" aria-label="Enviar">
                             <i class="pi pi-send"></i>
@@ -2762,7 +2862,8 @@
                 </div>
                 <!-- Contador de caracteres -->
                 <div class="tutor-char-counter" *ngIf="tutorRequest.message">
-                    <span [class.tutor-char-counter--warn]="(tutorRequest.message.length || 0) >= 400 && (tutorRequest.message.length || 0) < 500"
+                    <span
+                        [class.tutor-char-counter--warn]="(tutorRequest.message.length || 0) >= 400 && (tutorRequest.message.length || 0) < 500"
                         [class.tutor-char-counter--limit]="(tutorRequest.message.length || 0) >= 500">
                         {{ tutorRequest.message.length || 0 }}/500
                     </span>
