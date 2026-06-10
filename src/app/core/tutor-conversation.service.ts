@@ -39,4 +39,17 @@ export class TutorConversationService {
 
         return this.http.get<IApiResponse<TutorMessageResponse>>(`${this.host}/${userId}/messages/topic`, { params });
     }
+
+    getSubjectConversationsMessages(userId: number, subjectId: number, filtro: ConversationFilter): Observable<IApiResponse<TutorMessageResponse>> {
+        let params = new HttpParams()
+
+            .set('page', filtro.page)
+            .set('size', filtro.itemsPerPage)
+            .set('sort', filtro.sort)
+
+            .set('userId', userId)
+            .set('subjectId', subjectId);
+
+        return this.http.get<IApiResponse<TutorMessageResponse>>(`${this.host}/${userId}/messages/subject`, { params });
+    }
 }

@@ -2366,7 +2366,8 @@
 
                                 </div>
 
-                                <button class="tutor-topic-btn" (click)="onStartConversation(topic)" [disabled]="isPremiumTopic(topic)">
+                                <button class="tutor-topic-btn" (click)="onStartTopicConversation(topic)"
+                                    [disabled]="isPremiumTopic(topic)">
                                     <div class="tutor-topic-btn-icon">
                                         <svg width="20" height="20" viewBox="0 0 36 36" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -2420,6 +2421,37 @@
 </body>
 
 </html>
+
+<div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1" (click)="onStartSubjectConversation();">
+    <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
+        <!-- Robô SVG -->
+        <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Antena -->
+            <line x1="18" y1="2" x2="18" y2="7" stroke="white" stroke-width="2" stroke-linecap="round" />
+            <circle cx="18" cy="2" r="1.5" fill="white" />
+            <!-- Cabeça -->
+            <rect x="6" y="7" width="24" height="16" rx="5" fill="white" fill-opacity="0.22" stroke="white"
+                stroke-width="1.8" />
+            <!-- Olhos -->
+            <rect x="10" y="12" width="5" height="4" rx="2" fill="white" />
+            <rect x="21" y="12" width="5" height="4" rx="2" fill="white" />
+            <!-- Boca -->
+            <path d="M12 20 Q18 23 24 20" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <!-- Corpo -->
+            <rect x="10" y="24" width="16" height="9" rx="3" fill="white" fill-opacity="0.22" stroke="white"
+                stroke-width="1.8" />
+            <!-- Braços -->
+            <rect x="3" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white"
+                stroke-width="1.6" />
+            <rect x="28" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white"
+                stroke-width="1.6" />
+            <!-- Pernas -->
+            <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7" />
+            <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7" />
+        </svg>
+    </button>
+    <span class="fab-label">Tutor AI</span>
+</div>
 
 <!-- Modal de Vídeo -->
 <div *ngIf="showLesson">
@@ -2692,9 +2724,252 @@
 </div>
 
 <!-- ══════════════════════════════════════
-         MODAL: Tutor AI
+         MODAL: Tutor AI da disciplina
     ══════════════════════════════════════ -->
-<div class="modal-overlay--tutor" *ngIf="displayModalTutor">
+<div class="modal-overlay--tutor" *ngIf="displayModalSubjectTutor">
+    <div class="modal--tutor">
+
+        <!-- Handle apenas mobile -->
+        <div class="modal-handle"><span></span></div>
+
+        <!-- Cabeçalho fixo -->
+        <div class="tutor-header">
+            <div class="tutor-header-inner">
+                <div class="tutor-header-left">
+                    <div class="tutor-header-icon">
+                        <!-- Robô no header -->
+                        <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2"
+                                stroke-linecap="round" />
+                            <circle cx="18" cy="1.5" r="1.5" fill="#4361ee" />
+                            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
+                                stroke-width="1.8" />
+                            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="1.6" stroke-linecap="round"
+                                fill="none" />
+                            <rect x="10" y="23" width="16" height="9" rx="3" fill="#eef2ff" stroke="#4361ee"
+                                stroke-width="1.8" />
+                            <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee"
+                                stroke-width="1.6" />
+                            <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee"
+                                stroke-width="1.6" />
+                            <rect x="12" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+                            <rect x="20" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+                        </svg>
+                    </div>
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">Tutor AI</h2>
+                        <span class="modal-subtitle">Só responde sobre <strong>{{ subject.name }}</strong></span>
+                    </div>
+                </div>
+                <!-- Total de mensagens + botão fechar -->
+                <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                    <span class="tutor-msg-count" *ngIf="totalSubjectMessages > 0">
+                        {{ totalSubjectMessages }} {{ totalSubjectMessages === 1 ? 'mensagem' : 'mensagens' }}
+                    </span>
+                    <button class="close-btn" (click)="onCloseModalSubjectTutor()"
+                        aria-label="Fechar tutor">&#x2715;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão "Ver mensagens antigas" -->
+        <div class="tutor-load-older" *ngIf="!isLoadMoreSubjectsDisabled && tutorSubjectMessages.length != 0">
+            <button class="btn-load-older" (click)="loadMoreSubjectConversationsMessages()">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="17 11 12 6 7 11" />
+                    <polyline points="17 18 12 13 7 18" />
+                </svg>
+                Ver mensagens anteriores
+            </button>
+        </div>
+
+        <!-- Área de mensagens — scroll interno -->
+        <div class="tutor-messages" #tutorMessagesContainer>
+
+            <!-- ② Empty state actualizado com banner de política -->
+            <div class="tutor-empty"
+                *ngIf="tutorSubjectMessages.length === 0 && !tutorSubjectResponse && !showTutorThinking">
+                <div class="tutor-empty-icon">
+                    <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2" stroke-linecap="round" />
+                        <circle cx="18" cy="1.5" r="1.5" fill="#4361ee" />
+                        <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="1.8" />
+                        <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                        <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                        <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="1.6" stroke-linecap="round"
+                            fill="none" />
+                        <rect x="10" y="23" width="16" height="9" rx="3" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="1.8" />
+                        <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="1.6" />
+                        <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="1.6" />
+                        <rect x="12" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+                        <rect x="20" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
+                    </svg>
+                </div>
+                <div class="tutor-empty-title">Como posso ajudar?</div>
+                <div class="tutor-empty-desc">Faça uma pergunta e eu ajudo-te até à resposta.</div>
+
+                <!-- Banner de política -->
+                <div class="tutor-policy-banner">
+                    <div class="tutor-policy-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 16v-4" />
+                            <path d="M12 8h.01" />
+                        </svg>
+                    </div>
+                    <p class="tutor-policy-text">
+                        Sou o teu <strong>Tutor AI de {{ subject.name }}</strong>.
+                        Posso explicar conceitos, esclarecer dúvidas, dar exemplos,
+                        criar exercícios e ajudar-te a compreender melhor o conteúdo.
+                    </p>
+                </div>
+
+                <!-- ③ Chips actualizados para não sugerir "resolver" -->
+                <div class="tutor-suggestions">
+                    <button class="tutor-suggestion-chip"
+                        (click)="tutorSubjectRequest.message = 'Explica este tópico de forma simples.'">
+                        Explicar o tópico
+                    </button>
+
+                    <button class="tutor-suggestion-chip"
+                        (click)="tutorSubjectRequest.message = 'Dá-me um exemplo prático relacionado com este tópico.'">
+                        Dar exemplo
+                    </button>
+
+                    <button class="tutor-suggestion-chip"
+                        (click)="tutorSubjectRequest.message = 'Cria um pequeno exercício para eu praticar.'">
+                        Criar exercício
+                    </button>
+
+                    <button class="tutor-suggestion-chip"
+                        (click)="tutorSubjectRequest.message = 'Quais são os conceitos mais importantes deste tópico?'">
+                        Conceitos importantes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Histórico de mensagens -->
+            <ng-container *ngFor="let msg of tutorSubjectMessages">
+                <!-- Bolha do utilizador -->
+                <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'USER'">
+                    <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
+                        class="tutor-bubble-avatar"
+                        style="border: none; background: transparent; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
+                    <div class="tutor-bubble-content">
+                        {{ msg.content }}
+                        <!-- Data e hora na bolha do USER -->
+                        <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                    </div>
+                </div>
+                <!-- Bolha do assistente -->
+                <div class="tutor-bubble" *ngIf="msg.role === 'ASSISTANT'">
+                    <div class="tutor-bubble-avatar">
+                        <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
+                                stroke-linecap="round" />
+                            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
+                                stroke-width="2" />
+                            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round"
+                                fill="none" />
+                            <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee"
+                                stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="tutor-bubble-content">
+                        <span [innerHTML]="getFormattedText(msg.content)"></span>
+                        <!-- Data e hora na bolha do ASSISTANT -->
+                        <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Resposta mais recente -->
+            <div class="tutor-bubble" *ngIf="tutorSubjectResponse">
+                <div class="tutor-bubble-avatar">
+                    <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
+                            stroke-linecap="round" />
+                        <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="2" />
+                        <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                        <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                        <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round"
+                            fill="none" />
+                        <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="2" />
+                    </svg>
+                </div>
+                <div id="math-container-tutor" class="tutor-bubble-content"
+                    [innerHTML]="getFormattedText(tutorSubjectResponse)"></div>
+            </div>
+
+            <!-- Indicador "a pensar" -->
+            <div class="tutor-thinking" *ngIf="showTutorThinking">
+                <div class="tutor-bubble-avatar">
+                    <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
+                            stroke-linecap="round" />
+                        <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="2" />
+                        <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                        <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+                        <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round"
+                            fill="none" />
+                        <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee"
+                            stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="tutor-thinking-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <span class="tutor-thinking-label">A pensar...</span>
+            </div>
+
+        </div>
+        <!-- /tutor-messages -->
+
+        <!-- Input area — fixo no fundo -->
+        <div class="tutor-input-area">
+            <div class="tutor-input-row">
+                <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
+                    class="tutor-user-avatar" />
+                <div class="tutor-textarea-wrap">
+                    <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #tutorInput
+                        class="tutor-textarea" name="tutorMessage" [(ngModel)]="tutorSubjectRequest.message"
+                        (input)="autoResize(tutorInput)" placeholder="Escreva a sua dúvida..."
+                        [disabled]="showTutorThinking" maxlength="500"></textarea>
+                    <button class="tutor-send-btn" (click)="onAskSubjectTutor()"
+                        [disabled]="!tutorSubjectRequest.message || showTutorThinking" aria-label="Enviar">
+                        <i class="pi pi-send"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Contador de caracteres -->
+            <div class="tutor-char-counter" *ngIf="tutorSubjectRequest.message">
+                <span
+                    [class.tutor-char-counter--warn]="(tutorSubjectRequest.message.length || 0) >= 400 && (tutorSubjectRequest.message.length || 0) < 500"
+                    [class.tutor-char-counter--limit]="(tutorSubjectRequest.message.length || 0) >= 500">
+                    {{ tutorSubjectRequest.message.length || 0 }}/500
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+         MODAL: Tutor AI do topico
+    ══════════════════════════════════════ -->
+<div class="modal-overlay--tutor" *ngIf="displayModalTopicTutor">
     <div class="modal--tutor">
 
         <!-- Handle apenas mobile -->
@@ -2733,17 +3008,18 @@
                 </div>
                 <!-- Total de mensagens + botão fechar -->
                 <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                    <span class="tutor-msg-count" *ngIf="totalMessages > 0">
-                        {{ totalMessages }} {{ totalMessages === 1 ? 'mensagem' : 'mensagens' }}
+                    <span class="tutor-msg-count" *ngIf="totalTopicMessages > 0">
+                        {{ totalTopicMessages }} {{ totalTopicMessages === 1 ? 'mensagem' : 'mensagens' }}
                     </span>
-                    <button class="close-btn" (click)="onCloseModalTutor()" aria-label="Fechar tutor">&#x2715;</button>
+                    <button class="close-btn" (click)="onCloseModalTopicTutor()"
+                        aria-label="Fechar tutor">&#x2715;</button>
                 </div>
             </div>
         </div>
 
         <!-- Botão "Ver mensagens antigas" -->
-        <div class="tutor-load-older" *ngIf="!isLoadMoreDisabled && tutorMessages.length != 0">
-            <button class="btn-load-older" (click)="loadMoreConversationsMessages()">
+        <div class="tutor-load-older" *ngIf="!isLoadMoreTopicsDisabled && tutorTopicMessages.length != 0">
+            <button class="btn-load-older" (click)="loadMoreTopicConversationsMessages()">
                 <svg viewBox="0 0 24 24">
                     <polyline points="17 11 12 6 7 11" />
                     <polyline points="17 18 12 13 7 18" />
@@ -2756,7 +3032,8 @@
         <div class="tutor-messages" #tutorMessagesContainer>
 
             <!-- ② Empty state actualizado com banner de política -->
-            <div class="tutor-empty" *ngIf="tutorMessages.length === 0 && !tutorResponse && !showTutorThinking">
+            <div class="tutor-empty"
+                *ngIf="tutorTopicMessages.length === 0 && !tutorTopicResponse && !showTutorThinking">
                 <div class="tutor-empty-icon">
                     <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2" stroke-linecap="round" />
@@ -2800,29 +3077,29 @@
                 <!-- ③ Chips actualizados para não sugerir "resolver" -->
                 <div class="tutor-suggestions">
                     <button class="tutor-suggestion-chip"
-                        (click)="tutorRequest.message = 'Explica este tópico de forma simples.'">
+                        (click)="tutorTopicRequest.message = 'Explica este tópico de forma simples.'">
                         Explicar o tópico
                     </button>
 
                     <button class="tutor-suggestion-chip"
-                        (click)="tutorRequest.message = 'Dá-me um exemplo prático relacionado com este tópico.'">
+                        (click)="tutorTopicRequest.message = 'Dá-me um exemplo prático relacionado com este tópico.'">
                         Dar exemplo
                     </button>
 
                     <button class="tutor-suggestion-chip"
-                        (click)="tutorRequest.message = 'Cria um pequeno exercício para eu praticar.'">
+                        (click)="tutorTopicRequest.message = 'Cria um pequeno exercício para eu praticar.'">
                         Criar exercício
                     </button>
 
                     <button class="tutor-suggestion-chip"
-                        (click)="tutorRequest.message = 'Quais são os conceitos mais importantes deste tópico?'">
+                        (click)="tutorTopicRequest.message = 'Quais são os conceitos mais importantes deste tópico?'">
                         Conceitos importantes
                     </button>
                 </div>
             </div>
 
             <!-- Histórico de mensagens -->
-            <ng-container *ngFor="let msg of tutorMessages">
+            <ng-container *ngFor="let msg of tutorTopicMessages">
                 <!-- Bolha do utilizador -->
                 <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'USER'">
                     <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
@@ -2859,7 +3136,7 @@
             </ng-container>
 
             <!-- Resposta mais recente -->
-            <div class="tutor-bubble" *ngIf="tutorResponse">
+            <div class="tutor-bubble" *ngIf="tutorTopicResponse">
                 <div class="tutor-bubble-avatar">
                     <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
@@ -2875,7 +3152,7 @@
                     </svg>
                 </div>
                 <div id="math-container-tutor" class="tutor-bubble-content"
-                    [innerHTML]="getFormattedText(tutorResponse)"></div>
+                    [innerHTML]="getFormattedText(tutorTopicResponse)"></div>
             </div>
 
             <!-- Indicador "a pensar" -->
@@ -2910,21 +3187,21 @@
                     class="tutor-user-avatar" />
                 <div class="tutor-textarea-wrap">
                     <textarea autocorrect="off" autocapitalize="off" spellcheck="false" #tutorInput
-                        class="tutor-textarea" name="tutorMessage" [(ngModel)]="tutorRequest.message"
+                        class="tutor-textarea" name="tutorMessage" [(ngModel)]="tutorTopicRequest.message"
                         (input)="autoResize(tutorInput)" placeholder="Escreva a sua dúvida..."
                         [disabled]="showTutorThinking" maxlength="500"></textarea>
-                    <button class="tutor-send-btn" (click)="onAskTutor()"
-                        [disabled]="!tutorRequest.message || showTutorThinking" aria-label="Enviar">
+                    <button class="tutor-send-btn" (click)="onAskTopicTutor()"
+                        [disabled]="!tutorTopicRequest.message || showTutorThinking" aria-label="Enviar">
                         <i class="pi pi-send"></i>
                     </button>
                 </div>
             </div>
             <!-- Contador de caracteres -->
-            <div class="tutor-char-counter" *ngIf="tutorRequest.message">
+            <div class="tutor-char-counter" *ngIf="tutorTopicRequest.message">
                 <span
-                    [class.tutor-char-counter--warn]="(tutorRequest.message.length || 0) >= 400 && (tutorRequest.message.length || 0) < 500"
-                    [class.tutor-char-counter--limit]="(tutorRequest.message.length || 0) >= 500">
-                    {{ tutorRequest.message.length || 0 }}/500
+                    [class.tutor-char-counter--warn]="(tutorTopicRequest.message.length || 0) >= 400 && (tutorTopicRequest.message.length || 0) < 500"
+                    [class.tutor-char-counter--limit]="(tutorTopicRequest.message.length || 0) >= 500">
+                    {{ tutorTopicRequest.message.length || 0 }}/500
                 </span>
             </div>
         </div>

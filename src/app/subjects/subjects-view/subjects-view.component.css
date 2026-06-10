@@ -1,0 +1,141 @@
+/* ══════════════════════════════════════
+    FABs
+══════════════════════════════════════ */
+.fab-wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    z-index: 1000;
+    animation: fabSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.fab-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.fab {
+    position: relative;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 17px;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
+    font-family: inherit;
+    outline: none;
+}
+
+.fab-wrapper:not(.fab-wrapper--disabled):hover .fab {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16), 0 4px 8px rgba(0, 0, 0, 0.10);
+}
+
+.fab-wrapper:not(.fab-wrapper--disabled):hover .fab-label {
+    transform: translateY(-1px);
+}
+
+.fab-wrapper--disabled {
+    pointer-events: none;
+}
+
+.fab-wrapper--disabled .fab {
+    opacity: 0.38;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.fab-wrapper--disabled .fab-label {
+    opacity: 0.38;
+}
+
+.fab-wrapper:not(.fab-wrapper--disabled):active .fab {
+    transform: scale(0.93);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.fab--primary {
+    background: #4361ee;
+    color: #fff;
+}
+
+.fab--green {
+    background: #10b981;
+    color: #fff;
+}
+
+.fab--outline {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    color: #4361ee;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.fab-wrapper.fab-wrapper--primary .fab-label {
+    color: #4361ee;
+}
+
+/* FAB positioning */
+.fab-wrapper--pos-1 {
+    bottom: 16px;
+    right: 16px;
+}
+
+.fab-count-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 17px;
+    height: 17px;
+    background: #f43f5e;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #fff;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.fab--tutor {
+    background: #4361ee;
+    color: #fff;
+}
+
+.fab-wrapper.fab-wrapper--tutor .fab-label {
+    color: #4361ee;
+}
+
+@media (max-width: 480px) {
+    .fab {
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+    }
+
+    .fab-label {
+        font-size: 9px;
+    }
+
+    .fab-wrapper--pos-1 {
+        bottom: 14px;
+        right: 14px;
+    }
+}

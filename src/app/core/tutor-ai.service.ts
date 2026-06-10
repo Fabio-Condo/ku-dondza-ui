@@ -37,4 +37,11 @@ export class TutorAiService {
             { responseType: 'text' } // importante porque backend retorna String
         );
     }
+
+    askSubjects(request: TutorRequest): Observable<string> {
+        return this.http.post(`${this.host}/ask/subject`,
+            request,
+            { responseType: 'text' } // importante porque backend retorna String
+        );
+    }
 }
