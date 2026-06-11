@@ -5,7 +5,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Question } from 'src/app/core/model/Question';
 import { Quiz } from 'src/app/core/model/Quiz';
-import { Comment } from 'src/app/core/model/Comment';
 import { QuizFilter } from 'src/app/core/interface/QuizFilter';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
@@ -17,9 +16,6 @@ import { Title } from '@angular/platform-browser';
 import { evaluate, re } from 'mathjs'; //npm install mathjs
 import { NgForm } from '@angular/forms';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
-import { CommentService } from 'src/app/comments/comment.service';
-import { CommentFilter } from 'src/app/core/interface/CommentFilter';
-import { CommentLikeService } from 'src/app/likes/commentLike.service';
 import { UserService } from 'src/app/users/user.service';
 import { Answer } from 'src/app/core/model/Answer';
 import { Wallet } from 'src/app/core/model/Wallet';
@@ -94,13 +90,7 @@ export class QuestionViewComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   displayModalLogin: boolean = false;
-  action: 'solution' | 'comment' | 'save' = 'solution';
-
-  comment: Comment = new Comment();
-  comments: Comment[] = [];
-  totalRecordComments: number = 0;
-  showComments: boolean = false;
-  selectedComment: Comment = new Comment();
+  action: 'solution' | 'save' = 'solution';
 
   private editarFoco = false;
 
@@ -140,12 +130,6 @@ export class QuestionViewComponent implements OnInit {
 
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
 
-  commentFilter: CommentFilter = {
-    page: -1,
-    itemsPerPage: 25,
-    sort: 'id,asc',
-  }
-
   quizFilter: QuizFilter = {
     page: 0,
     itemsPerPage: 5,
@@ -164,8 +148,6 @@ export class QuestionViewComponent implements OnInit {
     private authModalService: AuthModalService,
     private questionService: QuestionService,
     private walletService: WalletService,
-    private commentService: CommentService,
-    private commentLikeService: CommentLikeService,
     private userService: UserService,
     private confirmationService: ConfirmationService,
     private authenticationService: AuthenticationService,
@@ -703,76 +685,6 @@ export class QuestionViewComponent implements OnInit {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
-  get editing() {
-    return Boolean(this.comment.id);
-  }
-
-  save(commentForm: NgForm) {
-    if (this.editing) {
-      this.updateComment(commentForm);
-    } else {
-      this.addNewComment(commentForm);
-    }
-  }
-
-  addNewComment(commentForm: NgForm) {
-    this.loadingMessage = "Adicioando comentário";
-    this.showLoading = true;
-    this.comment.user = this.loggedUser;
-    this.comment.question = this.question;
-    this.commentService.add(this.comment).subscribe(
-      (response) => {
-        this.comment = response;
-        this.showLoading = false;
-        this.comments.unshift(this.comment); // Adiciona o novo comentário no início da lista
-        this.totalRecordComments++;
-        this.question.numberOfComments++;
-        this.comment = new Comment(); // Reseta o objeto de comentário
-        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  updateComment(commentForm: NgForm) {
-    this.loadingMessage = "Atualizando comentário";
-    this.showLoading = true;
-    this.comment.user = this.loggedUser;
-    this.comment.question = this.question;
-    this.commentService.update(this.comment).subscribe(
-      (response) => {
-        this.comment = response;
-        this.showLoading = false;
-        this.comment = new Comment(); // Reseta o objeto de comentário
-        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onComment(commentForm: NgForm) {
-    if (this.isUserLoggedIn) {
-      this.save(commentForm);
-    }
-
-    if (!this.isUserLoggedIn) {
-      this.action = 'comment';
-      this.showComments = false;
-      this.openLogin();
-    }
-  }
-
-  onUpdateComment(comment: Comment): void {
-    this.comment = comment;
-    this.editarFoco = true;
-  }
-
   ngAfterViewChecked(): void {
     if (this.editarFoco && this.editInputRef) {
       this.editInputRef.nativeElement.focus();
@@ -780,121 +692,10 @@ export class QuestionViewComponent implements OnInit {
     }
   }
 
-  toggleMenu(commentId: number): void {
-    if (this.openedMenuId === commentId) {
-      this.openedMenuId = null;
-    } else {
-      this.openedMenuId = commentId;
-    }
-  }
-
-  excluir(comment: Comment) {
-    this.loadingMessage = "Excluíndo comentário";
-    this.showLoading = true;
-    this.commentService.excluir(comment.id).subscribe(() => {
-      this.showLoading = false;
-      this.comments = this.comments.filter(c => c.id !== comment.id);
-      this.totalRecordComments--;
-      this.question.numberOfComments--;
-      this.messageService.add({ severity: 'success', detail: 'Comentário excluído com sucesso!' });
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  confirmarExclusao(comment: Comment): void {
-    this.confirmationService.confirm({
-      message: 'Tem certeza que deseja excluir?',
-      accept: () => {
-        this.excluir(comment);
-      }
-    });
-  }
-
-  getComments(questionId: number): void {
-
-    if (!this.loggedUser) {
-      this.loggedUser = new User();
-      this.loggedUser.id = 0;
-    }
-
-    this.loadingMessage = "Carregando dados"
-    this.showLoading = true;
-    this.commentFilter.page++;
-    this.commentService.getCommentsByQuestion(questionId, this.loggedUser.id, this.commentFilter).subscribe(
-      (dados: IApiResponse<Comment>) => {
-        //this.comments = dados.content;
-        this.comments = [...this.comments, ...dados.content];
-        this.totalRecordComments = dados.totalElements;
-
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onShowMoreComments(): void {
-    this.getComments(this.question.id);
-  }
-
-  onLike(comment: Comment) {
-    this.selectedComment = comment;
-    if (this.isUserLoggedIn) {
-      this.toggleLike(comment);
-    }
-
-    if (!this.isUserLoggedIn) {
-      this.openLogin();
-    }
-  }
-
-  toggleLike(comment: Comment): void {
-    comment.showLoadingLike = true;
-    this.commentLikeService.toggleLike(comment.id, this.loggedUser.id).subscribe(
-      response => {
-        comment.likedByUser = !comment.likedByUser;
-        if (comment.likedByUser) {
-          comment.numberOfLikes = comment.numberOfLikes + 1;
-        } else {
-          comment.numberOfLikes = comment.numberOfLikes - 1;
-        }
-        comment.showLoadingLike = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        comment.showLoadingLike = false;
-      }
-    );
-  }
-
   autoResize(textarea: HTMLTextAreaElement): void {
     textarea.style.height = 'auto'; // reseta para recalcular corretamente
     const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
     textarea.style.height = `${newHeight}px`;
-  }
-
-  onGetComments() {
-    this.comments = [];
-    this.commentFilter.page = -1;
-    this.totalRecordComments = 0
-
-    if (this.question.numberOfComments > 0) {
-      this.getComments(this.question.id);
-    }
-
-    this.showComments = true;
-    document.body.classList.add('no-scroll');
-  }
-
-  onCloseComments() {
-    this.showComments = false;
-    document.body.classList.remove('no-scroll');
   }
 
   toggleDropdown(question: Question) {

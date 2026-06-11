@@ -7,7 +7,6 @@ import { Quiz } from 'src/app/core/model/Quiz';
 import { Question } from 'src/app/core/model/Question';
 import { QuestionFilter } from 'src/app/core/interface/QuestionFilter';
 import { Topic } from 'src/app/core/model/Topic';
-import { Comment } from 'src/app/core/model/Comment';
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { User } from 'src/app/core/model/User';
 import { Title } from '@angular/platform-browser';
@@ -18,12 +17,9 @@ import { Subject } from 'src/app/core/model/Subject';
 import { Answer } from 'src/app/core/model/Answer';
 import { interval, Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
-import { CommentLikeService } from 'src/app/likes/commentLike.service';
-import { CommentService } from 'src/app/comments/comment.service';
 import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { NgForm } from '@angular/forms';
 import { Role } from 'src/app/enum/role.enum';
-import { CommentFilter } from 'src/app/core/interface/CommentFilter';
 import { UserService } from 'src/app/users/user.service';
 import { WalletService } from 'src/app/core/wallets/answers.service';
 import { Wallet } from 'src/app/core/model/Wallet';
@@ -80,9 +76,6 @@ export class QuizzQuestionsComponent implements OnInit {
   // desabilita inputs ou edições
   disableEditing: boolean = false;
 
-  // mostra opções adicionais
-  showOptions: boolean = false;
-
   timerSubscription!: Subscription;
   totalTimeLimit: number = 0;
   timeLimit: number = 0;
@@ -103,11 +96,6 @@ export class QuizzQuestionsComponent implements OnInit {
   wrongSound = new Audio('assets/sounds/wrong.mpeg');
 
   selectedQuestion: Question = new Question();
-  comment: Comment = new Comment();
-  comments: Comment[] = [];
-  totalRecordComments: number = 0;
-  showComments: boolean = false;
-  selectedComment: Comment = new Comment();
 
   wallet: Wallet = new Wallet();
   userWallets: Wallet[] = [];
@@ -279,12 +267,6 @@ export class QuizzQuestionsComponent implements OnInit {
     //{ label: 'ALL', value: 1000000 },
   ];
 
-  commentFilter: CommentFilter = {
-    page: -1,
-    itemsPerPage: 25,
-    sort: 'id,asc',
-  }
-
   filtro: QuestionFilter = {
     page: 0,
     itemsPerPage: 5,
@@ -308,8 +290,6 @@ export class QuizzQuestionsComponent implements OnInit {
     private quizService: QuizService,
     private topicService: TopicService,
     private questionService: QuestionService,
-    private commentService: CommentService,
-    private commentLikeService: CommentLikeService,
     private userService: UserService,
     private subjectsService: SubjectsService,
     private confirmationService: ConfirmationService,
@@ -1422,10 +1402,6 @@ export class QuizzQuestionsComponent implements OnInit {
     this.disableEditing = !this.disableEditing;
   }
 
-  toggleShowOptions() {
-    this.showOptions = !this.showOptions;
-  }
-
   renderMathExpressions(): void {
     setTimeout(() => {
       const mathContainer = document.getElementById(`math-container-${this.currentQuestionIndex}`);
@@ -1604,195 +1580,11 @@ export class QuizzQuestionsComponent implements OnInit {
     return this.authenticationService.getUserFromLocalCache().role;
   }
 
-  get editing() {
-    return Boolean(this.comment.id);
-  }
-
-  save(commentForm: NgForm) {
-    if (this.editing) {
-      this.updateComment(commentForm);
-    } else {
-      this.addNewComment(commentForm);
-    }
-  }
-
-  addNewComment(commentForm: NgForm) {
-    this.loadingMessage = "Adicioando comentário";
-    this.showLoading = true;
-    this.comment.user = this.loggedUser;
-    this.comment.question = this.selectedQuestion;
-    this.commentService.add(this.comment).subscribe(
-      (response) => {
-        this.comment = response;
-        this.showLoading = false;
-        this.comments.unshift(this.comment); // Adiciona o novo comentário no início da lista
-        this.totalRecordComments++;
-        this.quiz.questions[this.currentQuestionIndex].numberOfComments++;
-        this.comment = new Comment(); // Reseta o objeto de comentário
-        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  updateComment(commentForm: NgForm) {
-    this.loadingMessage = "Atualizando comentário";
-    this.showLoading = true;
-    this.comment.user = this.loggedUser;
-    this.comment.question = this.selectedQuestion;
-    this.commentService.update(this.comment).subscribe(
-      (response) => {
-        this.comment = response;
-        this.showLoading = false;
-        this.comment = new Comment(); // Reseta o objeto de comentário
-        commentForm.resetForm(); // Limpa o formulário após adicionar o comentário
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onComment(commentForm: NgForm) {
-    if (this.isUserLoggedIn) {
-      this.save(commentForm);
-    }
-
-    if (!this.isUserLoggedIn) {
-      this.openLogin();
-    }
-  }
-
-  onUpdateComment(comment: Comment): void {
-    this.comment = comment;
-    this.editarFoco = true;
-  }
-
   ngAfterViewChecked(): void {
     if (this.editarFoco && this.editInputRef) {
       this.editInputRef.nativeElement.focus();
       this.editarFoco = false;
     }
-  }
-
-  toggleMenu(commentId: number): void {
-    if (this.openedMenuId === commentId) {
-      this.openedMenuId = null;
-    } else {
-      this.openedMenuId = commentId;
-    }
-  }
-
-  excluir(comment: Comment) {
-    this.loadingMessage = "Excluíndo comentário";
-    this.showLoading = true;
-    this.commentService.excluir(comment.id).subscribe(() => {
-      this.showLoading = false;
-      this.comments = this.comments.filter(c => c.id !== comment.id);
-      this.totalRecordComments--;
-      this.quiz.questions[this.currentQuestionIndex].numberOfComments--;
-      this.messageService.add({ severity: 'success', detail: 'Comentário excluído com sucesso!' });
-    },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  confirmarExclusao(comment: Comment): void {
-    this.confirmationService.confirm({
-      message: 'Tem certeza que deseja excluir?',
-      accept: () => {
-        this.excluir(comment);
-      }
-    });
-  }
-
-  getComments(questionId: number): void {
-
-    if (!this.loggedUser) {
-      this.loggedUser = new User();
-      this.loggedUser.id = 0;
-    }
-
-    this.loadingMessage = "Carregando dados"
-    this.showLoading = true;
-    this.commentFilter.page++;
-    this.commentService.getCommentsByQuestion(questionId, this.loggedUser.id, this.commentFilter).subscribe(
-      (dados: IApiResponse<Comment>) => {
-        //this.comments = dados.content;
-        this.comments = [...this.comments, ...dados.content];
-        this.totalRecordComments = dados.totalElements;
-
-        this.showLoading = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        this.showLoading = false;
-      }
-    );
-  }
-
-  onShowMoreComments(): void {
-    this.getComments(this.selectedQuestion.id);
-  }
-
-  onLike(comment: Comment) {
-    this.selectedComment = comment;
-    if (this.isUserLoggedIn) {
-      this.toggleLike(comment);
-    }
-
-    if (!this.isUserLoggedIn) {
-      this.openLogin();
-    }
-  }
-
-  toggleLike(comment: Comment): void {
-    comment.showLoadingLike = true;
-    this.commentLikeService.toggleLike(comment.id, this.loggedUser.id).subscribe(
-      response => {
-        comment.likedByUser = !comment.likedByUser;
-        if (comment.likedByUser) {
-          comment.numberOfLikes = comment.numberOfLikes + 1;
-        } else {
-          comment.numberOfLikes = comment.numberOfLikes - 1;
-        }
-        comment.showLoadingLike = false;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendErrorNotification(errorResponse.error.message);
-        comment.showLoadingLike = false;
-      }
-    );
-  }
-
-  autoResize(textarea: HTMLTextAreaElement): void {
-    textarea.style.height = 'auto'; // reseta para recalcular corretamente
-    const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
-    textarea.style.height = `${newHeight}px`;
-  }
-
-  onGetComments(question: Question) {
-    this.selectedQuestion = question;
-    this.comments = [];
-    this.commentFilter.page = -1;
-    this.totalRecordComments = 0
-
-    this.getComments(this.selectedQuestion.id);
-
-    this.showComments = true;
-    document.body.classList.add('no-scroll');
-  }
-
-  onCloseComments() {
-    this.showComments = false;
-    document.body.classList.remove('no-scroll');
   }
 
   formatarTempoRelativo(data: Date | string): string {
@@ -2144,7 +1936,7 @@ export class QuizzQuestionsComponent implements OnInit {
       createdAt: now
     });
 
-    this.tutorRequest.questionId = this.quiz.questions[this.currentQuestionIndex].id; 
+    this.tutorRequest.questionId = this.quiz.questions[this.currentQuestionIndex].id;
     this.tutorRequest.userId = this.loggedUser.id;
 
     this.showTutorThinking = true;
@@ -2417,6 +2209,12 @@ export class QuizzQuestionsComponent implements OnInit {
     if (percent >= 70) return 'Bom desempenho';
     if (percent >= 50) return 'Desempenho médio';
     return 'Fraco desempenho';
+  }
+
+  autoResize(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto'; // reseta para recalcular corretamente
+    const newHeight = Math.min(textarea.scrollHeight, 250); // até 250px
+    textarea.style.height = `${newHeight}px`;
   }
 
   openLogin(callback?: (user: User) => void) {
