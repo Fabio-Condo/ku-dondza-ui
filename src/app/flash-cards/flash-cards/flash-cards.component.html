@@ -197,7 +197,7 @@
                 <button class="fc-btn-learning-only" (click)="repeatLearning()" *ngIf="learningCount > 0">
                     Repetir a aprender ({{ learningCount }})
                 </button>
-                <button class="fc-btn-close" (click)="onClose()">Fechar</button>
+                <button class="fc-btn-close" [routerLink]="['/subjects', currentDeck.subjectId]">Fechar</button>
             </div>
         </div>
     </div>

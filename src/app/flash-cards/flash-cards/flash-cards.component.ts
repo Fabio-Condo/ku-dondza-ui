@@ -40,7 +40,7 @@ export class FlashCardsComponent {
   showCompleted = false;
 
   showLoading: boolean = false;
-  loadingMessage = "Carregando..."; // Alterar dinamicamente
+  loadingMessage = "Carregando"; // Alterar dinamicamente
 
   //@Input() deckInput?: FlashCardDeck;
   //@Output() closed = new EventEmitter<void>();
@@ -85,7 +85,7 @@ export class FlashCardsComponent {
 
     this.showLoading = true;
 
-    this.flashCardsService.getDeck(topicId)
+    this.flashCardsService.getDeck(topicId, this.loggedUser.id)
       .subscribe({
 
         next: response => {
