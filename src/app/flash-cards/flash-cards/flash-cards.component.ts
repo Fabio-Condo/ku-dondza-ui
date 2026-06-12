@@ -1,6 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { AuthModalService } from 'src/app/core/auth-modal.service';
+import { SubjectsService } from 'src/app/subjects/subjects.service';
+import { TopicContentService } from 'src/app/topics/TopicContentService.service';
+import { AuthenticationService } from 'src/app/users/authentication.service';
+import { UserService } from 'src/app/users/user.service';
+import { User } from 'src/app/core/model/User';
 
 
 export interface FlashCard {
@@ -26,6 +35,8 @@ export interface FlashCardDeck {
 })
 export class FlashCardsComponent {
 
+  loggedUser: User = new User();
+  isUserLoggedIn: boolean = false;
 
   @Input() deckInput?: FlashCardDeck;
   @Output() closed = new EventEmitter<void>();
@@ -36,6 +47,36 @@ export class FlashCardsComponent {
     topic: 'Funções e Gráficos',
     cards: [],
   };
+
+  constructor(
+    private authModalService: AuthModalService,
+    private subjectsService: SubjectsService,
+    private topicContentService: TopicContentService,
+    private userService: UserService,
+    private authenticationService: AuthenticationService,
+    private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private title: Title
+  ) { }
+
+  ngOnInit(): void {
+    this.title.setTitle('Flash cards view page');
+
+    this.authenticationService.loginStatus$.subscribe(logged => {
+      this.isUserLoggedIn = logged;
+      this.loggedUser = this.authenticationService.getUserFromLocalCache();
+    });
+
+    this.scrollToTop();
+
+    if (this.deckInput) {
+      this.currentDeck = this.deckInput;
+      this.cards = this.deckInput.cards.map(c => ({ ...c }));
+    } else {
+      this.cards = this.demoCards.map(c => ({ ...c }));
+    }
+  }
 
   private readonly demoCards: FlashCard[] = [
     {
@@ -135,16 +176,6 @@ export class FlashCardsComponent {
     return this.cards.filter(c => c.saved).length;
   }
 
-  // ── Lifecycle ──────────────────────────────────────────────────────────
-  ngOnInit(): void {
-    if (this.deckInput) {
-      this.currentDeck = this.deckInput;
-      this.cards = this.deckInput.cards.map(c => ({ ...c }));
-    } else {
-      this.cards = this.demoCards.map(c => ({ ...c }));
-    }
-  }
-
   // ── Actions ────────────────────────────────────────────────────────────
   flipCard(): void {
     if (this.isAnimating) return;
@@ -216,4 +247,7 @@ export class FlashCardsComponent {
     this.closed.emit();
   }
 
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
