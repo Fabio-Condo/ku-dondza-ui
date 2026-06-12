@@ -46,6 +46,7 @@ import { PaymentsRoutingModule } from './payments/payments-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ChallengesModule } from './challenges/challenges.module';
 import { ChallengesRoutingModule } from './challenges/challenges-routing.module';
+import { FlashCardsRoutingModule } from './flash-cards/flash-cards-routing.module';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ChallengesRoutingModule } from './challenges/challenges-routing.module'
     ProgressRoutingModule,
     PaymentsRoutingModule,
     ChallengesRoutingModule,
+    FlashCardsRoutingModule,
 
     SubjectsModule,
     TopicsModule,

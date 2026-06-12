@@ -2352,7 +2352,7 @@
 
                                     <!-- Flash Cards -->
                                     <button class="module-action-btn module-action-btn--flashcards"
-                                        (click)="onOpenFlashCards(topic)"
+                                        (click)="onOpenFlashCards(topic)" [routerLink]="['/flash-cards/topic', topic.id]"
                                         [disabled]="isPremiumTopic(topic)"
                                         [attr.aria-label]="'Flash cards do tópico ' + topic.name">
                                         <div class="action-btn-icon">
@@ -2372,7 +2372,7 @@
 
                                     <!-- Fazer Testes -->
                                     <button class="module-action-btn module-action-btn--quiz"
-                                        (click)="onStartTopicQuiz(topic)"
+                                        (click)="onStartTopicQuiz(topic)" [routerLink]="['/progress/subjects', subject.subjectId]"
                                         [disabled]="isPremiumTopic(topic)"
                                         [attr.aria-label]="'Fazer teste do tópico ' + topic.name">
                                         <div class="action-btn-icon">
