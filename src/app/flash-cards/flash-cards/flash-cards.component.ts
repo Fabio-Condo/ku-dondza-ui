@@ -224,6 +224,7 @@ export class FlashCardsComponent {
       this.goToCard(this.currentIndex + 1);
     } else {
       this.showCompleted = true;
+      document.body.classList.add('no-scroll');
     }
   }
 
@@ -267,6 +268,7 @@ export class FlashCardsComponent {
   }
 
   onClose(): void {
+    document.body.classList.remove('no-scroll');
     this.router.navigate(['/subjects', this.currentDeck.subjectId]);
   }
 
