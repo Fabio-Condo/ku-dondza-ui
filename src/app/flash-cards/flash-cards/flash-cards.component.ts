@@ -10,23 +10,16 @@ import { TopicContentService } from 'src/app/topics/TopicContentService.service'
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
+import { FlashCardsService } from './flash-cards.service';
+import { FlashCardDeckResponse } from 'src/app/core/model/FlashCardDeckResponse';
+import { FlashCard } from 'src/app/core/model/FlashCard';
 
+//export interface FlashCardDeck {
+//  subject: string;
+//  topic: string;
+//  cards: FlashCard[];
+//}
 
-export interface FlashCard {
-  id: number;
-  question: string;
-  answer: string;
-  category: string;
-  note?: string;
-  status: 'unseen' | 'known' | 'learning';
-  saved: boolean;
-}
-
-export interface FlashCardDeck {
-  subject: string;
-  topic: string;
-  cards: FlashCard[];
-}
 
 @Component({
   selector: 'app-flash-cards',
@@ -38,117 +31,6 @@ export class FlashCardsComponent {
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
 
-  @Input() deckInput?: FlashCardDeck;
-  @Output() closed = new EventEmitter<void>();
-
-  // ── Demo data (hardcoded for first phase) ──────────────────────────────
-  currentDeck: FlashCardDeck = {
-    subject: 'Matemática',
-    topic: 'Funções e Gráficos',
-    cards: [],
-  };
-
-  constructor(
-    private authModalService: AuthModalService,
-    private subjectsService: SubjectsService,
-    private topicContentService: TopicContentService,
-    private userService: UserService,
-    private authenticationService: AuthenticationService,
-    private messageService: MessageService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private title: Title
-  ) { }
-
-  ngOnInit(): void {
-    this.title.setTitle('Flash cards view page');
-
-    this.authenticationService.loginStatus$.subscribe(logged => {
-      this.isUserLoggedIn = logged;
-      this.loggedUser = this.authenticationService.getUserFromLocalCache();
-    });
-
-    this.scrollToTop();
-
-    if (this.deckInput) {
-      this.currentDeck = this.deckInput;
-      this.cards = this.deckInput.cards.map(c => ({ ...c }));
-    } else {
-      this.cards = this.demoCards.map(c => ({ ...c }));
-    }
-  }
-
-  private readonly demoCards: FlashCard[] = [
-    {
-      id: 1,
-      question: 'O que é uma função matemática?',
-      answer: 'Uma função é uma relação entre dois conjuntos em que cada elemento do domínio corresponde a um único elemento no contradomínio.',
-      category: 'Conceito Base',
-      note: 'Notação: f: A → B, lê-se "f de A em B".',
-      status: 'unseen',
-      saved: false,
-    },
-    {
-      id: 2,
-      question: 'Qual é a forma geral de uma função afim?',
-      answer: 'f(x) = ax + b, onde "a" é o coeficiente angular (declive) e "b" é o coeficiente linear (ordenada na origem).',
-      category: 'Função Afim',
-      note: 'Quando a = 0, a função é constante. Quando b = 0, é chamada função linear.',
-      status: 'unseen',
-      saved: false,
-    },
-    {
-      id: 3,
-      question: 'O que representa o coeficiente angular de uma função afim?',
-      answer: 'O coeficiente angular (a) representa a taxa de variação da função — ou seja, quanto y varia quando x aumenta 1 unidade. Determina a inclinação da reta.',
-      category: 'Função Afim',
-      note: 'Se a > 0, a função é crescente. Se a < 0, é decrescente.',
-      status: 'unseen',
-      saved: false,
-    },
-    {
-      id: 4,
-      question: 'Qual é a forma geral de uma função quadrática?',
-      answer: 'f(x) = ax² + bx + c, com a ≠ 0. O gráfico é uma parábola que abre para cima se a > 0 e para baixo se a < 0.',
-      category: 'Função Quadrática',
-      status: 'unseen',
-      saved: false,
-    },
-    {
-      id: 5,
-      question: 'Como se calcula o vértice de uma parábola?',
-      answer: 'As coordenadas do vértice são: xv = −b / (2a) e yv = −Δ / (4a), onde Δ = b² − 4ac.',
-      category: 'Função Quadrática',
-      note: 'O vértice é o ponto de máximo ou mínimo da função quadrática.',
-      status: 'unseen',
-      saved: false,
-    },
-    {
-      id: 6,
-      question: 'O que é o domínio de uma função?',
-      answer: 'O domínio é o conjunto de todos os valores de x para os quais a função está definida e produz um resultado real.',
-      category: 'Conceito Base',
-      status: 'unseen',
-      saved: false,
-    },
-    {
-      id: 7,
-      question: 'Qual é a diferença entre zeros e raízes de uma função?',
-      answer: 'São o mesmo conceito: os zeros (ou raízes) de f(x) são os valores de x onde f(x) = 0, isto é, os pontos onde o gráfico intercepta o eixo das abcissas.',
-      category: 'Conceito Base',
-      status: 'unseen',
-      saved: false,
-    },
-    {
-      id: 8,
-      question: 'O que é uma função par? Dê um exemplo.',
-      answer: 'Uma função f é par se f(−x) = f(x) para todo x no domínio. O gráfico é simétrico em relação ao eixo y. Exemplo: f(x) = x².',
-      category: 'Propriedades',
-      status: 'unseen',
-      saved: false,
-    },
-  ];
-
   // ── State ──────────────────────────────────────────────────────────────
   cards: FlashCard[] = [];
   currentIndex = 0;
@@ -157,19 +39,131 @@ export class FlashCardsComponent {
   hasFlippedOnce = false;
   showCompleted = false;
 
+  showLoading: boolean = false;
+  loadingMessage = "Carregando..."; // Alterar dinamicamente
+
+  //@Input() deckInput?: FlashCardDeck;
+  //@Output() closed = new EventEmitter<void>();
+
+  // ── Demo data (hardcoded for first phase) ──────────────────────────────
+  currentDeck!: FlashCardDeckResponse;
+
+
+  constructor(
+    private authModalService: AuthModalService,
+    private subjectsService: SubjectsService,
+    private topicContentService: TopicContentService,
+    private userService: UserService,
+    private authenticationService: AuthenticationService,
+    private flashCardsService: FlashCardsService,
+    private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private title: Title
+  ) { }
+
+  ngOnInit(): void {
+
+    this.title.setTitle('Flash cards view page');
+
+    this.authenticationService.loginStatus$
+      .subscribe(logged => {
+        this.isUserLoggedIn = logged;
+        this.loggedUser =
+          this.authenticationService.getUserFromLocalCache();
+      });
+
+    const topicId = this.route.snapshot.params['id'];
+    if (topicId) {
+      this.loadDeck(topicId);
+    }
+
+    this.scrollToTop();
+  }
+
+  private loadDeck(topicId: number): void {
+
+    this.showLoading = true;
+
+    this.flashCardsService.getDeck(topicId)
+      .subscribe({
+
+        next: response => {
+
+          this.currentDeck = response;
+
+          this.cards = response.cards;
+
+          this.currentIndex = 0;
+
+          this.showLoading = false;
+        },
+
+        error: () => {
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Não foi possível carregar os flash cards.'
+          });
+
+          this.showLoading = false;
+          
+        }
+      });
+  }
+
+  toggleSave(): void {
+
+    const card = this.cards[this.currentIndex];
+
+    if (!card) {
+      return;
+    }
+
+    card.saved = !card.saved;
+
+    this.flashCardsService.saveCard({ flashCardId: card.id, saved: card.saved })
+      .subscribe({
+        error: () => {
+
+          card.saved = !card.saved;
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Não foi possível guardar o flash card.'
+          });
+        }
+      });
+  }
+
   // ── Computed ───────────────────────────────────────────────────────────
   get progressPercent(): number {
-    if (!this.cards.length) return 0;
-    const seen = this.cards.filter(c => c.status !== 'unseen').length;
-    return Math.round((seen / this.cards.length) * 100);
+
+    if (!this.cards.length) {
+      return 0;
+    }
+
+    const seen = this.cards.filter(
+      c => c.status !== 'UNSEEN'
+    ).length;
+
+    return Math.round(
+      (seen / this.cards.length) * 100
+    );
   }
 
   get knownCount(): number {
-    return this.cards.filter(c => c.status === 'known').length;
+    return this.cards.filter(
+      c => c.status === 'KNOWN'
+    ).length;
   }
 
   get learningCount(): number {
-    return this.cards.filter(c => c.status === 'learning').length;
+    return this.cards.filter(
+      c => c.status === 'LEARNING'
+    ).length;
   }
 
   get savedCount(): number {
@@ -185,20 +179,43 @@ export class FlashCardsComponent {
     setTimeout(() => (this.isAnimating = false), 420);
   }
 
-  toggleSave(): void {
-    if (!this.cards[this.currentIndex]) return;
-    this.cards[this.currentIndex].saved = !this.cards[this.currentIndex].saved;
-  }
-
   markKnown(): void {
-    if (!this.isFlipped) return;
-    this.cards[this.currentIndex].status = 'known';
+
+    if (!this.isFlipped) {
+      return;
+    }
+
+    const card = this.cards[this.currentIndex];
+
+    card.status = 'KNOWN';
+
+    this.flashCardsService
+      .updateProgress({
+        flashCardId: card.id,
+        status: 'KNOWN'
+      })
+      .subscribe();
+
     this.advance();
   }
 
   markLearning(): void {
-    if (!this.isFlipped) return;
-    this.cards[this.currentIndex].status = 'learning';
+
+    if (!this.isFlipped) {
+      return;
+    }
+
+    const card = this.cards[this.currentIndex];
+
+    card.status = 'LEARNING';
+
+    this.flashCardsService
+      .updateProgress({
+        flashCardId: card.id,
+        status: 'LEARNING'
+      })
+      .subscribe();
+
     this.advance();
   }
 
@@ -231,20 +248,26 @@ export class FlashCardsComponent {
   }
 
   restartDeck(): void {
-    this.cards = this.cards.map(c => ({ ...c, status: 'unseen' as const }));
+
+    this.cards = this.cards.map(card => ({
+      ...card,
+      status: 'UNSEEN'
+    }));
+
     this.goToCard(0);
+
     this.showCompleted = false;
   }
 
   repeatLearning(): void {
-    const learning = this.cards.filter(c => c.status === 'learning').map(c => ({ ...c, status: 'unseen' as const }));
+    const learning = this.cards.filter(c => c.status === 'LEARNING').map(c => ({ ...c, status: 'UNSEEN' as const }));
     this.cards = learning;
     this.goToCard(0);
     this.showCompleted = false;
   }
 
   onClose(): void {
-    this.closed.emit();
+    //this.closed.emit();
   }
 
   scrollToTop() {

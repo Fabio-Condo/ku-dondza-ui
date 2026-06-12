@@ -47,6 +47,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { ChallengesModule } from './challenges/challenges.module';
 import { ChallengesRoutingModule } from './challenges/challenges-routing.module';
 import { FlashCardsRoutingModule } from './flash-cards/flash-cards-routing.module';
+import { FlashCardsModule } from './flash-cards/flash-cards.module';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { FlashCardsRoutingModule } from './flash-cards/flash-cards-routing.modul
     ProgressModule,
     PaymentsModule,
     ChallengesModule,
+    FlashCardsModule,
 
     CoreRoutingModule,
     AppRoutingModule,

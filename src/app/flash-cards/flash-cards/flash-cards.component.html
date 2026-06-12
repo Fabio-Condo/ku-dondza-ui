@@ -1,201 +1,213 @@
-<div class="fc-page">
+<div class="fc-page" *ngIf="cards && cards.length > 0">
 
-  <!-- ── Header ── -->
-  <div class="fc-header">
-    <button class="fc-back-btn" (click)="onClose()" aria-label="Fechar flash cards">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
-      </svg>
-    </button>
-
-    <div class="fc-header-meta">
-      <span class="fc-subject-pill">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-        </svg>
-        {{ currentDeck.subject }}
-      </span>
-      <span class="fc-topic-name">{{ currentDeck.topic }}</span>
-    </div>
-
-    <button class="fc-fav-btn"
-      [class.fc-fav-btn--active]="cards[currentIndex].saved"
-      (click)="toggleSave()"
-      aria-label="Guardar nos favoritos">
-      <svg width="18" height="18" viewBox="0 0 24 24"
-        [attr.fill]="cards[currentIndex].saved ? '#4361ee' : 'none'"
-        stroke="#4361ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- ── Progress ── -->
-  <div class="fc-progress-section">
-    <div class="fc-progress-row">
-      <span class="fc-progress-label">Progresso</span>
-      <span class="fc-progress-counter">{{ currentIndex + 1 }}/{{ cards.length }}</span>
-    </div>
-    <div class="fc-progress-track">
-      <div class="fc-progress-fill" [style.width.%]="progressPercent"></div>
-    </div>
-    <div class="fc-pill-row">
-      <span class="fc-pill fc-pill--known">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-          stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        {{ knownCount }} sei
-      </span>
-      <span class="fc-pill fc-pill--learning">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-        </svg>
-        {{ learningCount }} a aprender
-      </span>
-      <span class="fc-pill fc-pill--saved" *ngIf="savedCount > 0">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-        </svg>
-        {{ savedCount }} guardados
-      </span>
-    </div>
-  </div>
-
-  <!-- ── Card Scene ── -->
-  <div class="fc-scene-wrapper">
-    <div class="fc-dots">
-      <span *ngFor="let c of cards; let i = index" class="fc-dot"
-        [class.fc-dot--active]="i === currentIndex"
-        [class.fc-dot--known]="c.status === 'known'"
-        [class.fc-dot--learning]="c.status === 'learning'">
-      </span>
-    </div>
-
-    <div class="fc-scene" (click)="flipCard()">
-      <div class="fc-card" [class.fc-card--flipped]="isFlipped" [class.fc-card--flip-anim]="isAnimating">
-
-        <!-- Front -->
-        <div class="fc-card-face fc-card-face--front">
-          <div class="fc-face-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+    <!-- ── Header ── -->
+    <div class="fc-header">
+        <button class="fc-back-btn" (click)="onClose()" aria-label="Fechar flash cards">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
             </svg>
-            Pergunta
-          </div>
-          <div class="fc-face-category">{{ cards[currentIndex].category }}</div>
-          <div class="fc-face-content">{{ cards[currentIndex].question }}</div>
-          <div class="fc-flip-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-            </svg>
-            Clique para revelar
-          </div>
+        </button>
+
+        <div class="fc-header-meta">
+            <span class="fc-subject-pill">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                {{ currentDeck.subjectName }}
+            </span>
+            <span class="fc-topic-name">{{ currentDeck.topicName }}</span>
         </div>
 
-        <!-- Back -->
-        <div class="fc-card-face fc-card-face--back">
-          <div class="fc-face-tag fc-face-tag--answer">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"/>
+        <button class="fc-fav-btn" [class.fc-fav-btn--active]="cards[currentIndex].saved" (click)="toggleSave()"
+            aria-label="Guardar nos favoritos">
+            <svg width="18" height="18" viewBox="0 0 24 24" [attr.fill]="cards[currentIndex].saved ? '#4361ee' : 'none'"
+                stroke="#4361ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            Resposta
-          </div>
-          <div class="fc-face-category">{{ cards[currentIndex].category }}</div>
-          <div class="fc-face-content">{{ cards[currentIndex].answer }}</div>
-          <div class="fc-face-note" *ngIf="cards[currentIndex].note">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-            </svg>
-            {{ cards[currentIndex].note }}
-          </div>
+        </button>
+    </div>
+
+    <!-- ── Progress ── -->
+    <div class="fc-progress-section">
+        <div class="fc-progress-row">
+            <span class="fc-progress-label">Progresso</span>
+            <span class="fc-progress-counter">{{ currentIndex + 1 }}/{{ cards.length }}</span>
+        </div>
+        <div class="fc-progress-track">
+            <div class="fc-progress-fill" [style.width.%]="progressPercent"></div>
+        </div>
+        <div class="fc-pill-row">
+            <span class="fc-pill fc-pill--known">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                </svg>
+                {{ knownCount }} sei
+            </span>
+            <span class="fc-pill fc-pill--learning">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 4v6h6" />
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                </svg>
+                {{ learningCount }} a aprender
+            </span>
+            <span class="fc-pill fc-pill--saved" *ngIf="savedCount > 0">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                </svg>
+                {{ savedCount }} guardados
+            </span>
+        </div>
+    </div>
+
+    <!-- ── Card Scene ── -->
+    <div class="fc-scene-wrapper">
+        <div class="fc-dots">
+            <span *ngFor="let c of cards; let i = index" class="fc-dot" [class.fc-dot--active]="i === currentIndex"
+                [class.fc-dot--known]="c.status === 'KNOWN'" [class.fc-dot--learning]="c.status === 'LEARNING'">
+            </span>
         </div>
 
-      </div>
+        <div class="fc-scene" (click)="flipCard()">
+            <div class="fc-card" [class.fc-card--flipped]="isFlipped" [class.fc-card--flip-anim]="isAnimating">
+
+                <!-- Front -->
+                <div class="fc-card-face fc-card-face--front">
+                    <div class="fc-face-tag">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 8v4" />
+                            <path d="M12 16h.01" />
+                        </svg>
+                        Pergunta
+                    </div>
+                    <div class="fc-face-category">{{ cards[currentIndex].category }}</div>
+                    <div class="fc-face-content">{{ cards[currentIndex].question }}</div>
+                    <div class="fc-flip-hint">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 4v6h6" />
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                        </svg>
+                        Clique para revelar
+                    </div>
+                </div>
+
+                <!-- Back -->
+                <div class="fc-card-face fc-card-face--back">
+                    <div class="fc-face-tag fc-face-tag--answer">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        Resposta
+                    </div>
+                    <div class="fc-face-category">{{ cards[currentIndex].category }}</div>
+                    <div class="fc-face-content">{{ cards[currentIndex].answer }}</div>
+                    <div class="fc-face-note" *ngIf="cards[currentIndex].note">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        {{ cards[currentIndex].note }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tap hint (only before first flip) -->
+        <p class="fc-tap-hint" *ngIf="!hasFlippedOnce">Toque no cartão para ver a resposta</p>
     </div>
 
-    <!-- Tap hint (only before first flip) -->
-    <p class="fc-tap-hint" *ngIf="!hasFlippedOnce">Toque no cartão para ver a resposta</p>
-  </div>
-
-  <!-- ── Rating buttons (visible after flip) ── -->
-  <div class="fc-rating" [class.fc-rating--visible]="isFlipped">
-    <button class="fc-rate-btn fc-rate-btn--learning" (click)="markLearning()" [disabled]="!isFlipped">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-      </svg>
-      Ainda a aprender
-    </button>
-    <button class="fc-rate-btn fc-rate-btn--known" (click)="markKnown()" [disabled]="!isFlipped">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
-      Sei bem
-    </button>
-  </div>
-
-  <!-- ── Navigation ── -->
-  <div class="fc-nav">
-    <button class="fc-nav-btn" (click)="prevCard()" [disabled]="currentIndex === 0" aria-label="Anterior">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15 18l-6-6 6-6"/>
-      </svg>
-    </button>
-
-    <div class="fc-nav-index">
-      <span class="fc-nav-current">{{ currentIndex + 1 }}</span>
-      <span class="fc-nav-sep">/</span>
-      <span class="fc-nav-total">{{ cards.length }}</span>
-    </div>
-
-    <button class="fc-nav-btn fc-nav-btn--next" (click)="nextCard()"
-      [disabled]="currentIndex === cards.length - 1" aria-label="Próximo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 18l6-6-6-6"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- ── Completed State ── -->
-  <div class="fc-completed" *ngIf="showCompleted">
-    <div class="fc-completed-inner">
-      <div class="fc-completed-icon">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4361ee" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-          <polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
-      </div>
-      <h2 class="fc-completed-title">Sessão concluída!</h2>
-      <p class="fc-completed-desc">
-        Terminaste {{ cards.length }} flash cards.<br>
-        <strong>{{ knownCount }}</strong> dominados · <strong>{{ learningCount }}</strong> a rever
-      </p>
-      <div class="fc-completed-actions">
-        <button class="fc-btn-restart" (click)="restartDeck()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-          </svg>
-          Repetir todos
+    <!-- ── Rating buttons (visible after flip) ── -->
+    <div class="fc-rating" [class.fc-rating--visible]="isFlipped">
+        <button class="fc-rate-btn fc-rate-btn--learning" (click)="markLearning()" [disabled]="!isFlipped">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 4v6h6" />
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+            Ainda a aprender
         </button>
-        <button class="fc-btn-learning-only" (click)="repeatLearning()" *ngIf="learningCount > 0">
-          Repetir a aprender ({{ learningCount }})
+        <button class="fc-rate-btn fc-rate-btn--known" (click)="markKnown()" [disabled]="!isFlipped">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Sei bem
         </button>
-        <button class="fc-btn-close" (click)="onClose()">Fechar</button>
-      </div>
     </div>
-  </div>
 
+    <!-- ── Navigation ── -->
+    <div class="fc-nav">
+        <button class="fc-nav-btn" (click)="prevCard()" [disabled]="currentIndex === 0" aria-label="Anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+        </button>
+
+        <div class="fc-nav-index">
+            <span class="fc-nav-current">{{ currentIndex + 1 }}</span>
+            <span class="fc-nav-sep">/</span>
+            <span class="fc-nav-total">{{ cards.length }}</span>
+        </div>
+
+        <button class="fc-nav-btn fc-nav-btn--next" (click)="nextCard()" [disabled]="currentIndex === cards.length - 1"
+            aria-label="Próximo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- ── Completed State ── -->
+    <div class="fc-completed" *ngIf="showCompleted">
+        <div class="fc-completed-inner">
+            <div class="fc-completed-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4361ee" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+            </div>
+            <h2 class="fc-completed-title">Sessão concluída!</h2>
+            <p class="fc-completed-desc">
+                Terminaste {{ cards.length }} flash cards.<br>
+                <strong>{{ knownCount }}</strong> dominados · <strong>{{ learningCount }}</strong> a rever
+            </p>
+            <div class="fc-completed-actions">
+                <button class="fc-btn-restart" (click)="restartDeck()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 4v6h6" />
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                    </svg>
+                    Repetir todos
+                </button>
+                <button class="fc-btn-learning-only" (click)="repeatLearning()" *ngIf="learningCount > 0">
+                    Repetir a aprender ({{ learningCount }})
+                </button>
+                <button class="fc-btn-close" (click)="onClose()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+    <div class="loading-box">
+        <div class="spinner"></div>
+        <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+    </div>
 </div>
