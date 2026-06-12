@@ -108,7 +108,7 @@ export class FlashCardsComponent {
           });
 
           this.showLoading = false;
-          
+
         }
       });
   }
@@ -267,7 +267,7 @@ export class FlashCardsComponent {
   }
 
   onClose(): void {
-    //this.closed.emit();
+    this.router.navigate(['/subjects', this.currentDeck.subjectId]);
   }
 
   scrollToTop() {
