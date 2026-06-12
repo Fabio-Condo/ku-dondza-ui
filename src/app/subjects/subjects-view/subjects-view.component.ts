@@ -1002,6 +1002,12 @@ export class SubjectsViewComponent {
     }
   }
 
+  onOpenFlashCards(topic: Topic) {
+  }
+
+  onStartTopicQuiz(topic: Topic) {
+  }
+
   private sendErrorNotification(message: string): void {
     if (message) {
       this.messageService.add({ severity: 'error', detail: message });

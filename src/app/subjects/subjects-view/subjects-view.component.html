@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Curso</title>
     <style>
-        /* ─── Reset & Base ─────────────────────────────────── */
         *,
         *::before,
         *::after {
@@ -26,7 +25,6 @@
             margin-top: 50px;
         }
 
-        /* ─── Loading Overlay ──────────────────────────────── */
         .loading-overlay {
             position: fixed;
             inset: 0;
@@ -78,7 +76,6 @@
             color: #374151;
         }
 
-        /* ─── Retry Container ──────────────────────────────── */
         .retry-container {
             position: fixed;
             inset: 0;
@@ -131,7 +128,6 @@
             transform: scale(0.98);
         }
 
-        /* ─── Back button ────────────────────────────────── */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -153,7 +149,6 @@
             color: #4361ee;
         }
 
-        /* ─── Course Header (Hero) ─────────────────────────── */
         .course-header {
             border-radius: 16px;
             overflow: hidden;
@@ -162,7 +157,6 @@
             box-shadow: 0 2px 16px rgba(67, 97, 238, 0.07);
         }
 
-        /* Thumbnail do hero */
         .course-thumb {
             position: relative;
             height: 200px;
@@ -189,7 +183,6 @@
                     rgba(10, 15, 40, 0.72) 100%);
         }
 
-        /* Badge e rating sobrepostos na imagem */
         .course-thumb-badge {
             position: absolute;
             top: 14px;
@@ -237,7 +230,6 @@
             font-size: 12px;
         }
 
-        /* Título e descrição sobrepostos no rodapé da imagem */
         .course-thumb-info {
             position: absolute;
             bottom: 0;
@@ -261,7 +253,6 @@
             font-weight: 500;
         }
 
-        /* Painel inferior do header (descrição + stats) */
         .course-body {
             background: #fff;
             padding: 18px 20px 20px;
@@ -274,7 +265,6 @@
             margin-bottom: 18px;
         }
 
-        /* ─── Stats Grid ────────────────────────────────────── */
         .course-stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -331,7 +321,6 @@
             letter-spacing: 0.2px;
         }
 
-        /* ─── Progress Bar ─────────────────────────────────── */
         .progress-wrapper {
             display: flex;
             align-items: center;
@@ -369,7 +358,6 @@
             text-align: right;
         }
 
-        /* ─── Section Header ───────────────────────────────── */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -385,7 +373,6 @@
             color: #a0a8b8;
         }
 
-        /* ─── Buttons ──────────────────────────────────────── */
         button {
             font-family: 'Segoe UI', system-ui, sans-serif;
             cursor: pointer;
@@ -425,7 +412,6 @@
             border-color: #b0bbee;
         }
 
-        /* ─── Modules List ─────────────────────────────────── */
         .modules-list {
             display: flex;
             flex-direction: column;
@@ -523,7 +509,6 @@
             transform: rotate(180deg);
         }
 
-        /* ─── Lock / Premium Message ───────────────────────── */
         .lock-message {
             display: flex;
             align-items: center;
@@ -556,7 +541,6 @@
             text-decoration: underline;
         }
 
-        /* ─── Lesson Items ─────────────────────────────────── */
         .lesson-item {
             display: flex;
             align-items: center;
@@ -574,7 +558,6 @@
             background: #f8f9ff;
         }
 
-        /* ─── Checkbox ─────────────────────────────────────── */
         .styled-checkbox {
             appearance: none;
             width: 16px;
@@ -610,7 +593,6 @@
             cursor: not-allowed;
         }
 
-        /* ─── Lesson Type Icon ─────────────────────────────── */
         .lesson-type-icon {
             width: 32px;
             height: 32px;
@@ -642,7 +624,6 @@
             color: #1d9e75;
         }
 
-        /* ─── Lesson Content ───────────────────────────────── */
         .lesson-content {
             flex: 1;
             min-width: 0;
@@ -664,7 +645,6 @@
             margin-top: 2px;
         }
 
-        /* ─── Lesson Action Buttons ────────────────────────── */
         .lesson-actions {
             display: flex;
             gap: 6px;
@@ -711,7 +691,6 @@
             color: #1d9e75;
         }
 
-        /* ─── Video Popout ─────────────────────────────────── */
         .vidio-popout-overlay {
             position: fixed;
             inset: 0;
@@ -756,7 +735,6 @@
             border-radius: 12px;
         }
 
-        /* ─── Misc ─────────────────────────────────────────── */
         .main {
             padding: 40px 0;
             min-height: calc(100vh - 170px);
@@ -801,13 +779,8 @@
         }
 
         @keyframes overlayIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @media (min-width: 600px) {
@@ -841,27 +814,13 @@
         }
 
         @keyframes sheetUp {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(14px) scale(0.97);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .modal-handle {
@@ -880,9 +839,7 @@
         }
 
         @media (min-width: 600px) {
-            .modal-handle {
-                display: none;
-            }
+            .modal-handle { display: none; }
         }
 
         .modal-inner {
@@ -1017,9 +974,7 @@
         }
 
         @keyframes btn-spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         .btn-spinner {
@@ -1069,13 +1024,8 @@
         }
 
         @keyframes progress-slide {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(350%);
-            }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(350%); }
         }
 
         .btn-modal-primary {
@@ -1563,18 +1513,10 @@
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(60px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(60px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        /* Cabeçalho fixo do tutor */
         .tutor-header {
             flex-shrink: 0;
             padding: 0 24px 0;
@@ -1607,7 +1549,6 @@
             flex-shrink: 0;
         }
 
-        /* Badge de total de mensagens no header */
         .tutor-msg-count {
             display: inline-flex;
             align-items: center;
@@ -1623,7 +1564,6 @@
             flex-shrink: 0;
         }
 
-        /* Área de mensagens — scrollable */
         .tutor-messages {
             flex: 1;
             overflow-y: auto;
@@ -1635,7 +1575,6 @@
             overscroll-behavior: contain;
         }
 
-        /* Botão "ver mensagens antigas" */
         .tutor-load-older {
             display: flex;
             justify-content: center;
@@ -1677,7 +1616,6 @@
             flex-shrink: 0;
         }
 
-        /* Bolha do assistente */
         .tutor-bubble {
             display: flex;
             align-items: flex-start;
@@ -1712,7 +1650,6 @@
             overflow-x: auto;
         }
 
-        /* Bolha do utilizador */
         .tutor-bubble--user {
             flex-direction: row-reverse;
         }
@@ -1724,7 +1661,6 @@
             color: #1e3a8a;
         }
 
-        /* Data/hora nas mensagens */
         .tutor-bubble-date {
             display: block;
             font-size: 10px;
@@ -1738,7 +1674,6 @@
             color: #7c9ee8;
         }
 
-        /* Indicador "a pensar" */
         .tutor-thinking {
             display: flex;
             align-items: center;
@@ -1760,27 +1695,12 @@
             animation: tutorDot 1.2s infinite ease-in-out;
         }
 
-        .tutor-thinking-dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .tutor-thinking-dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+        .tutor-thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .tutor-thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes tutorDot {
-
-            0%,
-            80%,
-            100% {
-                transform: scale(0.7);
-                opacity: 0.4;
-            }
-
-            40% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
         .tutor-thinking-label {
@@ -1789,7 +1709,6 @@
             font-style: italic;
         }
 
-        /* Estado vazio */
         .tutor-empty {
             display: flex;
             flex-direction: column;
@@ -1825,7 +1744,6 @@
             line-height: 1.6;
         }
 
-        /* ── Banner de política do Tutor ── */
         .tutor-policy-banner {
             display: flex;
             align-items: flex-start;
@@ -1858,7 +1776,6 @@
             color: #92400e;
         }
 
-        /* Chips de sugestão */
         .tutor-suggestions {
             display: flex;
             flex-wrap: wrap;
@@ -1886,7 +1803,6 @@
             color: #4361ee;
         }
 
-        /* Área de input — fixo no fundo do modal */
         .tutor-input-area {
             flex-shrink: 0;
             padding: 12px 24px 20px;
@@ -1937,7 +1853,6 @@
             border-color: #4361ee;
         }
 
-        /* Contador de caracteres abaixo do textarea */
         .tutor-char-counter {
             display: flex;
             justify-content: flex-end;
@@ -1953,13 +1868,8 @@
             transition: color 0.2s;
         }
 
-        .tutor-char-counter span.tutor-char-counter--warn {
-            color: #f59e0b;
-        }
-
-        .tutor-char-counter span.tutor-char-counter--limit {
-            color: #dc2626;
-        }
+        .tutor-char-counter span.tutor-char-counter--warn { color: #f59e0b; }
+        .tutor-char-counter span.tutor-char-counter--limit { color: #dc2626; }
 
         .tutor-send-btn {
             position: absolute;
@@ -1975,14 +1885,8 @@
             transition: background 0.15s;
         }
 
-        .tutor-send-btn:hover {
-            background: #eef2ff;
-        }
-
-        .tutor-send-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
+        .tutor-send-btn:hover { background: #eef2ff; }
+        .tutor-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
         /* ─── Tutor AI Topic Button ────────────────────────── */
         .tutor-topic-btn {
@@ -1990,26 +1894,23 @@
             align-items: center;
             gap: 12px;
             width: 100%;
-            margin: 4px 0 0;
+            margin: 0;
             padding: 13px 16px;
             background: #f5f7ff;
-            border: 1.5px solid #c7d2fe;
-            border-radius: 0 0 11px 11px;
+            border: none;
+            border-top: 1px solid #e8edf5;
             cursor: pointer;
             font-family: inherit;
-            transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+            transition: background 0.18s, box-shadow 0.18s;
             text-align: left;
         }
 
         .tutor-topic-btn:hover {
             background: #eef2ff;
-            border-color: #a5b4fc;
-            box-shadow: 0 2px 10px rgba(67, 97, 238, 0.1);
+            box-shadow: none;
         }
 
-        .tutor-topic-btn:active {
-            transform: scale(0.995);
-        }
+        .tutor-topic-btn:active { transform: scale(0.995); }
 
         .tutor-topic-btn-icon {
             width: 36px;
@@ -2065,58 +1966,145 @@
             transform: translateX(3px);
         }
 
+        /* ══════════════════════════════════════════════════════
+           NOVA BARRA DE ACÇÕES DO MÓDULO (Flash Cards + Testes)
+           ══════════════════════════════════════════════════════ */
+
+        /* Separador antes da barra de acções */
+        .module-actions-bar {
+            display: flex;
+            align-items: stretch;
+            border-top: 1px solid #e8edf5;
+            background: #fcfcff;
+        }
+
+        /* Cada botão ocupa metade da largura */
+        .module-action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 14px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.15s, color 0.15s;
+            text-align: center;
+            min-height: 44px;
+        }
+
+        /* Divisor vertical entre os dois botões */
+        .module-action-btn + .module-action-btn {
+            border-left: 1px solid #e8edf5;
+        }
+
+        /* Flash Cards — tom violeta/indigo */
+        .module-action-btn--flashcards {
+            color: #4361ee;
+        }
+
+        .module-action-btn--flashcards:hover:not(:disabled) {
+            background: #eef2ff;
+            color: #3451d1;
+        }
+
+        .module-action-btn--flashcards .action-btn-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .module-action-btn--flashcards:hover:not(:disabled) .action-btn-icon {
+            background: #e0e7ff;
+            border-color: #a5b4fc;
+        }
+
+        /* Fazer Testes — tom verde/teal */
+        .module-action-btn--quiz {
+            color: #0f766e;
+        }
+
+        .module-action-btn--quiz:hover:not(:disabled) {
+            background: #f0fdf4;
+            color: #065f56;
+        }
+
+        .module-action-btn--quiz .action-btn-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #e8f5ed;
+            border: 1px solid #a7d9bc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .module-action-btn--quiz:hover:not(:disabled) .action-btn-icon {
+            background: #d1fae5;
+            border-color: #6ee7b7;
+        }
+
+        .module-action-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        /* Texto do botão de acção — duas linhas */
+        .action-btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1px;
+        }
+
+        .action-btn-label {
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .action-btn-sub {
+            font-size: 10px;
+            font-weight: 500;
+            opacity: 0.7;
+            line-height: 1.2;
+        }
+
         /* ─── Responsive ───────────────────────────────────── */
         @media (max-width: 900px) {
-            .container {
-                margin-top: 45px;
-            }
+            .container { margin-top: 45px; }
         }
 
         @media (max-width: 768px) {
-            .course-thumb {
-                height: 165px;
-            }
-
-            .course-thumb-title {
-                font-size: 1.2rem;
-            }
-
-            .course-body {
-                padding: 14px 16px 16px;
-            }
-
-            /* Em mobile, o grid de 3 colunas mantém-se mas pode colapsar para 1 linha inteira */
-            .course-stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .module-header {
-                padding: 12px 16px;
-            }
-
-            .module-header-left {
-                gap: 10px;
-            }
-
-            .lesson-item {
-                padding: 12px 16px;
-            }
-
-            .vidio-popout-overlay h2 {
-                font-size: 16px;
-            }
-
-            .vidio-close-btn {
-                top: 10px;
-                right: 10px;
-                font-size: 28px;
-            }
+            .course-thumb { height: 165px; }
+            .course-thumb-title { font-size: 1.2rem; }
+            .course-body { padding: 14px 16px 16px; }
+            .course-stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .module-header { padding: 12px 16px; }
+            .module-header-left { gap: 10px; }
+            .lesson-item { padding: 12px 16px; }
+            .vidio-popout-overlay h2 { font-size: 16px; }
+            .vidio-close-btn { top: 10px; right: 10px; font-size: 28px; }
+            .action-btn-label { font-size: 11px; }
+            .action-btn-sub { display: none; }
         }
 
         @media (max-width: 400px) {
-            .course-stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .course-stats-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
@@ -2170,12 +2158,10 @@
                 ══════════════════════════════ -->
                 <div class="course-header">
 
-                    <!-- Thumbnail da disciplina -->
                     <div class="course-thumb">
                         <img [src]="subject.urlFile" [alt]="subject.name" loading="lazy">
                         <div class="course-thumb-overlay"></div>
 
-                        <!-- Badge de categoria -->
                         <span class="course-thumb-badge">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -2184,28 +2170,23 @@
                             ciencias
                         </span>
 
-                        <!-- Rating chip -->
                         <div class="course-thumb-rating">
                             <span class="star">★</span>
                             {{ 4.5 }}
                         </div>
 
-                        <!-- Título e categoria sobrepostos na imagem -->
                         <div class="course-thumb-info">
                             <h1 class="course-thumb-title">{{ subject.name }}</h1>
                             <span class="course-thumb-category">{{ 10 }}</span>
                         </div>
                     </div>
 
-                    <!-- Painel inferior: descrição + stats -->
                     <div class="course-body">
 
                         <p class="course-description">{{ subject.description }}</p>
 
-                        <!-- Grid de estatísticas (3 colunas — Duração removida) -->
                         <div class="course-stats-grid">
 
-                            <!-- Ficheiros -->
                             <div class="course-stat-item">
                                 <div class="course-stat-icon">
                                     <svg viewBox="0 0 24 24">
@@ -2213,13 +2194,10 @@
                                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                     </svg>
                                 </div>
-                                <div class="course-stat-value">
-                                    {{ subject.totalFiles || '0' }}
-                                </div>
+                                <div class="course-stat-value">{{ subject.totalFiles || '0' }}</div>
                                 <div class="course-stat-label">Ficheiros</div>
                             </div>
 
-                            <!-- Aulas -->
                             <div class="course-stat-item">
                                 <div class="course-stat-icon">
                                     <svg viewBox="0 0 24 24">
@@ -2231,7 +2209,6 @@
                                 <div class="course-stat-label">Aulas</div>
                             </div>
 
-                            <!-- Tópicos -->
                             <div class="course-stat-item">
                                 <div class="course-stat-icon">
                                     <svg viewBox="0 0 24 24">
@@ -2334,8 +2311,7 @@
                                     <div class="lesson-content">
                                         <label class="lesson-title">{{ content.description }}</label>
                                         <div class="lesson-duration">
-                                            <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula · {{ content.time }}
-                                                min</span>
+                                            <span *ngIf="content.contentType == 'VIDEO'">Vídeo aula · {{ content.time }} min</span>
                                             <span *ngIf="content.contentType == 'FILE'">Ficheiro para baixar</span>
                                         </div>
                                     </div>
@@ -2366,6 +2342,58 @@
 
                                 </div>
 
+                                <!-- ══════════════════════════════════════════════
+                                     Barra de acções do módulo:
+                                     Flash Cards · Fazer Testes · Tutor AI
+                                ══════════════════════════════════════════════ -->
+
+                                <!-- Linha 1: Flash Cards + Fazer Testes -->
+                                <div class="module-actions-bar">
+
+                                    <!-- Flash Cards -->
+                                    <button class="module-action-btn module-action-btn--flashcards"
+                                        (click)="onOpenFlashCards(topic)"
+                                        [disabled]="isPremiumTopic(topic)"
+                                        [attr.aria-label]="'Flash cards do tópico ' + topic.name">
+                                        <div class="action-btn-icon">
+                                            <!-- Ícone: stack de cartões -->
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                stroke="#4361ee" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="2" y="7" width="16" height="13" rx="2" />
+                                                <path d="M6 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2" />
+                                            </svg>
+                                        </div>
+                                        <div class="action-btn-text">
+                                            <span class="action-btn-label">Flash Cards</span>
+                                            <span class="action-btn-sub">Memorização rápida</span>
+                                        </div>
+                                    </button>
+
+                                    <!-- Fazer Testes -->
+                                    <button class="module-action-btn module-action-btn--quiz"
+                                        (click)="onStartTopicQuiz(topic)"
+                                        [disabled]="isPremiumTopic(topic)"
+                                        [attr.aria-label]="'Fazer teste do tópico ' + topic.name">
+                                        <div class="action-btn-icon">
+                                            <!-- Ícone: lista com check -->
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                stroke="#0f766e" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M9 11l3 3L22 4" />
+                                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                                            </svg>
+                                        </div>
+                                        <div class="action-btn-text">
+                                            <span class="action-btn-label">Fazer Testes</span>
+                                            <span class="action-btn-sub">Avaliar conhecimento</span>
+                                        </div>
+                                    </button>
+
+                                </div>
+                                <!-- /module-actions-bar -->
+
+                                <!-- Linha 2: Tutor AI (mantido em baixo, largura total) -->
                                 <button class="tutor-topic-btn" (click)="onStartTopicConversation(topic)"
                                     [disabled]="isPremiumTopic(topic)">
                                     <div class="tutor-topic-btn-icon">
@@ -2390,7 +2418,6 @@
                                             <rect x="20" y="32" width="4" height="2.5" rx="1.2" fill="#c7d2fe" />
                                         </svg>
                                     </div>
-                                    <!-- Text body -->
                                     <div class="tutor-topic-btn-body">
                                         <div class="tutor-topic-btn-title">
                                             Tutor AI
@@ -2399,7 +2426,6 @@
                                             Só responde sobre <strong>{{ topic.name }}</strong>
                                         </span>
                                     </div>
-                                    <!-- Arrow -->
                                     <svg class="tutor-topic-btn-arrow" width="16" height="16" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -2407,6 +2433,7 @@
                                         <path d="m12 5 7 7-7 7" />
                                     </svg>
                                 </button>
+
                             </div>
                         </div>
                     </div>
@@ -2424,28 +2451,20 @@
 
 <div class="fab-wrapper fab-wrapper--tutor fab-wrapper--pos-1" (click)="onStartSubjectConversation();">
     <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
-        <!-- Robô SVG -->
         <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Antena -->
             <line x1="18" y1="2" x2="18" y2="7" stroke="white" stroke-width="2" stroke-linecap="round" />
             <circle cx="18" cy="2" r="1.5" fill="white" />
-            <!-- Cabeça -->
             <rect x="6" y="7" width="24" height="16" rx="5" fill="white" fill-opacity="0.22" stroke="white"
                 stroke-width="1.8" />
-            <!-- Olhos -->
             <rect x="10" y="12" width="5" height="4" rx="2" fill="white" />
             <rect x="21" y="12" width="5" height="4" rx="2" fill="white" />
-            <!-- Boca -->
             <path d="M12 20 Q18 23 24 20" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none" />
-            <!-- Corpo -->
             <rect x="10" y="24" width="16" height="9" rx="3" fill="white" fill-opacity="0.22" stroke="white"
                 stroke-width="1.8" />
-            <!-- Braços -->
             <rect x="3" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white"
                 stroke-width="1.6" />
             <rect x="28" y="25" width="5" height="7" rx="2.5" fill="white" fill-opacity="0.22" stroke="white"
                 stroke-width="1.6" />
-            <!-- Pernas -->
             <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7" />
             <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="white" fill-opacity="0.7" />
         </svg>
@@ -2729,15 +2748,12 @@
 <div class="modal-overlay--tutor" *ngIf="displayModalSubjectTutor">
     <div class="modal--tutor">
 
-        <!-- Handle apenas mobile -->
         <div class="modal-handle"><span></span></div>
 
-        <!-- Cabeçalho fixo -->
         <div class="tutor-header">
             <div class="tutor-header-inner">
                 <div class="tutor-header-left">
                     <div class="tutor-header-icon">
-                        <!-- Robô no header -->
                         <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2"
                                 stroke-linecap="round" />
@@ -2763,7 +2779,6 @@
                         <span class="modal-subtitle">Só responde sobre <strong>{{ subject.name }}</strong></span>
                     </div>
                 </div>
-                <!-- Total de mensagens + botão fechar -->
                 <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                     <span class="tutor-msg-count" *ngIf="totalSubjectMessages > 0">
                         {{ totalSubjectMessages }} {{ totalSubjectMessages === 1 ? 'mensagem' : 'mensagens' }}
@@ -2774,7 +2789,6 @@
             </div>
         </div>
 
-        <!-- Botão "Ver mensagens antigas" -->
         <div class="tutor-load-older" *ngIf="!isLoadMoreSubjectsDisabled && tutorSubjectMessages.length != 0">
             <button class="btn-load-older" (click)="loadMoreSubjectConversationsMessages()">
                 <svg viewBox="0 0 24 24">
@@ -2785,10 +2799,8 @@
             </button>
         </div>
 
-        <!-- Área de mensagens — scroll interno -->
         <div class="tutor-messages" #tutorMessagesContainer>
 
-            <!-- ② Empty state actualizado com banner de política -->
             <div class="tutor-empty"
                 *ngIf="tutorSubjectMessages.length === 0 && !tutorSubjectResponse && !showTutorThinking">
                 <div class="tutor-empty-icon">
@@ -2814,7 +2826,6 @@
                 <div class="tutor-empty-title">Como posso ajudar?</div>
                 <div class="tutor-empty-desc">Faça uma pergunta e eu ajudo-te até à resposta.</div>
 
-                <!-- Banner de política -->
                 <div class="tutor-policy-banner">
                     <div class="tutor-policy-icon">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -2831,23 +2842,19 @@
                     </p>
                 </div>
 
-                <!-- ③ Chips actualizados para não sugerir "resolver" -->
                 <div class="tutor-suggestions">
                     <button class="tutor-suggestion-chip"
                         (click)="tutorSubjectRequest.message = 'Explica esta disciplina de forma simples.'">
                         Explicar a disciplina
                     </button>
-
                     <button class="tutor-suggestion-chip"
                         (click)="tutorSubjectRequest.message = 'Dá-me um exemplo prático relacionado com esta disciplina.'">
                         Dar exemplo
                     </button>
-
                     <button class="tutor-suggestion-chip"
                         (click)="tutorSubjectRequest.message = 'Cria um pequeno exercício para eu praticar.'">
                         Criar exercício
                     </button>
-
                     <button class="tutor-suggestion-chip"
                         (click)="tutorSubjectRequest.message = 'Quais são os conceitos mais importantes desta disciplina?'">
                         Conceitos importantes
@@ -2855,20 +2862,16 @@
                 </div>
             </div>
 
-            <!-- Histórico de mensagens -->
             <ng-container *ngFor="let msg of tutorSubjectMessages">
-                <!-- Bolha do utilizador -->
                 <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'USER'">
                     <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
                         class="tutor-bubble-avatar"
                         style="border: none; background: transparent; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
                     <div class="tutor-bubble-content">
                         {{ msg.content }}
-                        <!-- Data e hora na bolha do USER -->
                         <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                     </div>
                 </div>
-                <!-- Bolha do assistente -->
                 <div class="tutor-bubble" *ngIf="msg.role === 'ASSISTANT'">
                     <div class="tutor-bubble-avatar">
                         <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2886,13 +2889,11 @@
                     </div>
                     <div class="tutor-bubble-content">
                         <span [innerHTML]="getFormattedText(msg.content)"></span>
-                        <!-- Data e hora na bolha do ASSISTANT -->
                         <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                     </div>
                 </div>
             </ng-container>
 
-            <!-- Resposta mais recente -->
             <div class="tutor-bubble" *ngIf="tutorSubjectResponse">
                 <div class="tutor-bubble-avatar">
                     <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2912,7 +2913,6 @@
                     [innerHTML]="getFormattedText(tutorSubjectResponse)"></div>
             </div>
 
-            <!-- Indicador "a pensar" -->
             <div class="tutor-thinking" *ngIf="showTutorThinking">
                 <div class="tutor-bubble-avatar">
                     <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2935,9 +2935,7 @@
             </div>
 
         </div>
-        <!-- /tutor-messages -->
 
-        <!-- Input area — fixo no fundo -->
         <div class="tutor-input-area">
             <div class="tutor-input-row">
                 <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
@@ -2953,7 +2951,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Contador de caracteres -->
             <div class="tutor-char-counter" *ngIf="tutorSubjectRequest.message">
                 <span
                     [class.tutor-char-counter--warn]="(tutorSubjectRequest.message.length || 0) >= 400 && (tutorSubjectRequest.message.length || 0) < 500"
@@ -2972,15 +2969,12 @@
 <div class="modal-overlay--tutor" *ngIf="displayModalTopicTutor">
     <div class="modal--tutor">
 
-        <!-- Handle apenas mobile -->
         <div class="modal-handle"><span></span></div>
 
-        <!-- Cabeçalho fixo -->
         <div class="tutor-header">
             <div class="tutor-header-inner">
                 <div class="tutor-header-left">
                     <div class="tutor-header-icon">
-                        <!-- Robô no header -->
                         <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2"
                                 stroke-linecap="round" />
@@ -3006,7 +3000,6 @@
                         <span class="modal-subtitle">Só responde sobre <strong>{{ selectedTopic.name }}</strong></span>
                     </div>
                 </div>
-                <!-- Total de mensagens + botão fechar -->
                 <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                     <span class="tutor-msg-count" *ngIf="totalTopicMessages > 0">
                         {{ totalTopicMessages }} {{ totalTopicMessages === 1 ? 'mensagem' : 'mensagens' }}
@@ -3017,7 +3010,6 @@
             </div>
         </div>
 
-        <!-- Botão "Ver mensagens antigas" -->
         <div class="tutor-load-older" *ngIf="!isLoadMoreTopicsDisabled && tutorTopicMessages.length != 0">
             <button class="btn-load-older" (click)="loadMoreTopicConversationsMessages()">
                 <svg viewBox="0 0 24 24">
@@ -3028,10 +3020,8 @@
             </button>
         </div>
 
-        <!-- Área de mensagens — scroll interno -->
         <div class="tutor-messages" #tutorMessagesContainer>
 
-            <!-- ② Empty state actualizado com banner de política -->
             <div class="tutor-empty"
                 *ngIf="tutorTopicMessages.length === 0 && !tutorTopicResponse && !showTutorThinking">
                 <div class="tutor-empty-icon">
@@ -3057,7 +3047,6 @@
                 <div class="tutor-empty-title">Como posso ajudar?</div>
                 <div class="tutor-empty-desc">Faça uma pergunta e eu ajudo-te até à resposta.</div>
 
-                <!-- Banner de política -->
                 <div class="tutor-policy-banner">
                     <div class="tutor-policy-icon">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -3074,23 +3063,19 @@
                     </p>
                 </div>
 
-                <!-- ③ Chips actualizados para não sugerir "resolver" -->
                 <div class="tutor-suggestions">
                     <button class="tutor-suggestion-chip"
                         (click)="tutorTopicRequest.message = 'Explica este tópico de forma simples.'">
                         Explicar o tópico
                     </button>
-
                     <button class="tutor-suggestion-chip"
                         (click)="tutorTopicRequest.message = 'Dá-me um exemplo prático relacionado com este tópico.'">
                         Dar exemplo
                     </button>
-
                     <button class="tutor-suggestion-chip"
                         (click)="tutorTopicRequest.message = 'Cria um pequeno exercício para eu praticar.'">
                         Criar exercício
                     </button>
-
                     <button class="tutor-suggestion-chip"
                         (click)="tutorTopicRequest.message = 'Quais são os conceitos mais importantes deste tópico?'">
                         Conceitos importantes
@@ -3098,20 +3083,16 @@
                 </div>
             </div>
 
-            <!-- Histórico de mensagens -->
             <ng-container *ngFor="let msg of tutorTopicMessages">
-                <!-- Bolha do utilizador -->
                 <div class="tutor-bubble tutor-bubble--user" *ngIf="msg.role === 'USER'">
                     <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
                         class="tutor-bubble-avatar"
                         style="border: none; background: transparent; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
                     <div class="tutor-bubble-content">
                         {{ msg.content }}
-                        <!-- Data e hora na bolha do USER -->
                         <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                     </div>
                 </div>
-                <!-- Bolha do assistente -->
                 <div class="tutor-bubble" *ngIf="msg.role === 'ASSISTANT'">
                     <div class="tutor-bubble-avatar">
                         <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3129,13 +3110,11 @@
                     </div>
                     <div class="tutor-bubble-content">
                         <span [innerHTML]="getFormattedText(msg.content)"></span>
-                        <!-- Data e hora na bolha do ASSISTANT -->
                         <span class="tutor-bubble-date">{{ msg.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                     </div>
                 </div>
             </ng-container>
 
-            <!-- Resposta mais recente -->
             <div class="tutor-bubble" *ngIf="tutorTopicResponse">
                 <div class="tutor-bubble-avatar">
                     <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3155,7 +3134,6 @@
                     [innerHTML]="getFormattedText(tutorTopicResponse)"></div>
             </div>
 
-            <!-- Indicador "a pensar" -->
             <div class="tutor-thinking" *ngIf="showTutorThinking">
                 <div class="tutor-bubble-avatar">
                     <svg width="16" height="16" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3178,9 +3156,7 @@
             </div>
 
         </div>
-        <!-- /tutor-messages -->
 
-        <!-- Input area — fixo no fundo -->
         <div class="tutor-input-area">
             <div class="tutor-input-row">
                 <img *ngIf="loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl" alt="Utilizador"
@@ -3196,7 +3172,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Contador de caracteres -->
             <div class="tutor-char-counter" *ngIf="tutorTopicRequest.message">
                 <span
                     [class.tutor-char-counter--warn]="(tutorTopicRequest.message.length || 0) >= 400 && (tutorTopicRequest.message.length || 0) < 500"
