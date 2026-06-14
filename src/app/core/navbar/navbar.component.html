@@ -714,6 +714,12 @@
                   </svg>
                   Tópicos
                 </a>
+                <a [class.active]="isActive('/flash-cards')" routerLink="/flash-cards" (click)="isMoreMenuOpen = false">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h16M4 12h16M4 18h7" />
+                  </svg>
+                  Flash Cards
+                </a>
                 <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="isMoreMenuOpen = false">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect width="20" height="14" x="2" y="5" rx="2" />
@@ -833,6 +839,9 @@
       <li><a routerLink="/challenges" (click)="toggleMenu()">Campeonatos</a></li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
         <a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a>
+      <li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin">
+        <a [class.active]="isActive('/flash-cards')" routerLink="/flash-cards" (click)="toggleMenu()">Flash cards</a>
       </li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
         <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="toggleMenu()">Pagamentos</a>

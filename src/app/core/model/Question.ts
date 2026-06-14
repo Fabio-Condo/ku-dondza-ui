@@ -1,6 +1,5 @@
 import { Answer } from "./Answer";
 import { MathExpression } from "./MathExpression";
-import { Subject } from "./Subject";
 import { Topic } from "./Topic";
 
 export class Question {

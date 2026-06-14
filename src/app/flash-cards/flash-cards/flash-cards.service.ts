@@ -1,11 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FlashCard } from 'src/app/core/model/FlashCard';
 import { FlashCardDeckResponse } from 'src/app/core/model/FlashCardDeckResponse';
-import { FlashCardProgressRequest } from 'src/app/core/model/FlashCardProgressRequest';
-import { SaveFlashCardRequest } from 'src/app/core/model/SaveFlashCardRequest';
 import { environment } from 'src/environments/environment';
+import { IApiResponse } from 'src/app/core/interface/IApiResponse';
+import { FlashCardFilter } from 'src/app/core/interface/FlashCardFilter';
+import { FlashCard } from 'src/app/core/model/FlashCard';
 
 
 @Injectable({
@@ -17,6 +17,25 @@ export class FlashCardsService {
 
     constructor(private http: HttpClient) {
         this.host = `${environment.apiUrl}/flash-cards`;
+    }
+
+    findAll(filtro: FlashCardFilter): Observable<IApiResponse<FlashCard>> {
+
+        let params = new HttpParams()
+            .set('page', filtro.page)
+            .set('sort', filtro.sort)
+            .set('size', filtro.itemsPerPage);
+
+        if (filtro.subjectId) {
+            params = params.set('subjectId', filtro.subjectId.toString());
+        }
+
+        if (filtro.topicId) {
+            params = params.set('topicId', filtro.topicId.toString());
+        }
+
+        return this.http.get<IApiResponse<FlashCard>>(`${this.host}/filter`, { params });
+
     }
 
     /**
@@ -32,32 +51,11 @@ export class FlashCardsService {
         );
     }
 
-    /**
-     * Actualiza progresso do cartão
-     */
-    updateProgress(request: FlashCardProgressRequest): Observable<void> {
-        return this.http.put<void>(
-            `${this.host}/progress`,
-            request
-        );
+    save(flashCard: FlashCard): Observable<FlashCard> {
+       return this.http.post<FlashCard>(this.host, flashCard);
     }
 
-    /**
-     * Guardar / remover favorito
-     */
-    saveCard(request: SaveFlashCardRequest): Observable<void> {
-        return this.http.put<void>(
-            `${this.host}/save`,
-            request
-        );
-    }
-
-    /**
-     * Buscar favoritos do aluno
-     */
-    getSavedCards(): Observable<FlashCard[]> {
-        return this.http.get<FlashCard[]>(
-            `${this.host}/saved`
-        );
+    update(flashCard: FlashCard): Observable<FlashCard> {
+        return this.http.put<FlashCard>(`${this.host}/${flashCard.id}`, flashCard);
     }
 }

@@ -1,213 +1,2346 @@
-<div class="fc-page" *ngIf="cards && cards.length > 0">
+<!DOCTYPE html>
+<html lang="pt">
 
-    <!-- ── Header ── -->
-    <div class="fc-header">
-        <button class="fc-back-btn" (click)="onClose()" aria-label="Fechar flash cards">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5" />
-                <path d="M12 19l-7-7 7-7" />
-            </svg>
-        </button>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flash Cards – Dikahub</title>
+    <style>
+        /* ─── Reset ──────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        <div class="fc-header-meta">
-            <span class="fc-subject-pill">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                </svg>
-                {{ currentDeck.subjectName }}
-            </span>
-            <span class="fc-topic-name">{{ currentDeck.topicName }}</span>
-        </div>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 10px;
+            min-height: 100vh;
+        }
 
-        <button class="fc-fav-btn" [class.fc-fav-btn--active]="cards[currentIndex].saved" (click)="toggleSave()"
-            aria-label="Guardar nos favoritos">
-            <svg width="18" height="18" viewBox="0 0 24 24" [attr.fill]="cards[currentIndex].saved ? '#4361ee' : 'none'"
-                stroke="#4361ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-            </svg>
-        </button>
-    </div>
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
-    <!-- ── Progress ── -->
-    <div class="fc-progress-section">
-        <div class="fc-progress-row">
-            <span class="fc-progress-label">Progresso</span>
-            <span class="fc-progress-counter">{{ currentIndex + 1 }}/{{ cards.length }}</span>
-        </div>
-        <div class="fc-progress-track">
-            <div class="fc-progress-fill" [style.width.%]="progressPercent"></div>
-        </div>
-        <div class="fc-pill-row">
-            <span class="fc-pill fc-pill--known">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                </svg>
-                {{ knownCount }} sei
-            </span>
-            <span class="fc-pill fc-pill--learning">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M1 4v6h6" />
-                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-                </svg>
-                {{ learningCount }} a aprender
-            </span>
-            <span class="fc-pill fc-pill--saved" *ngIf="savedCount > 0">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-                </svg>
-                {{ savedCount }} guardados
-            </span>
-        </div>
-    </div>
+        /* ══════════════════════════════════════
+       APP HEADER
+    ══════════════════════════════════════ */
+        .app-header {
+            position: sticky;
+            top: 0;
+            margin-top: 50px;
+            z-index: 20;
+            border-bottom: 1px solid #e8edf2;
+            margin-bottom: 24px;
+            border-radius: 0;
+        }
 
-    <!-- ── Card Scene ── -->
-    <div class="fc-scene-wrapper">
-        <div class="fc-dots">
-            <span *ngFor="let c of cards; let i = index" class="fc-dot" [class.fc-dot--active]="i === currentIndex"
-                [class.fc-dot--known]="c.status === 'KNOWN'" [class.fc-dot--learning]="c.status === 'LEARNING'">
-            </span>
-        </div>
+        .header-top {
+            padding: 20px 24px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
 
-        <div class="fc-scene" (click)="flipCard()">
-            <div class="fc-card" [class.fc-card--flipped]="isFlipped" [class.fc-card--flip-anim]="isAnimating">
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: -0.4px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-                <!-- Front -->
-                <div class="fc-card-face fc-card-face--front">
-                    <div class="fc-face-tag">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 8v4" />
-                            <path d="M12 16h.01" />
+        .header-title-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Tabs bar */
+        .tabs-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tabs-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .tab-btn.active {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .tab-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .tab-count {
+            font-size: 11px;
+            font-weight: 600;
+            background: #e0e7ff;
+            color: #4361ee;
+            padding: 1px 6px;
+            border-radius: 99px;
+            line-height: 1.5;
+        }
+
+        .tab-btn.active .tab-count {
+            background: #c7d2fe;
+        }
+
+        .tabs-divider {
+            width: 1px;
+            height: 24px;
+            background: #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .btn-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-filter:hover {
+            border-color: #c7d2fe;
+            background: #fafbff;
+            color: #4361ee;
+        }
+
+        .btn-filter svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .btn-add-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 10px;
+            border: none;
+            background: #4361ee;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-add-header:hover {
+            background: #3451d1;
+        }
+
+        .btn-add-header svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ══════════════════════════════════════
+       GRID DE CARDS
+    ══════════════════════════════════════ */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+            padding-bottom: 40px;
+        }
+
+        /* ── Card de flash card ── */
+        .fc-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e8edf2;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+            animation: fadeUp 0.35s ease both;
+            cursor: pointer;
+        }
+
+        .fc-card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.08);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fc-card-header {
+            padding: 14px 16px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fc-subject-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #eef2ff;
+            border: 1px solid #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .fc-subject-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: #4361ee;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .fc-card-meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .fc-card-subject {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4361ee;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .fc-card-topic {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        .fc-fav-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbd5e1;
+            transition: color 0.15s, background 0.15s;
+            flex-shrink: 0;
+            padding: 0;
+        }
+
+        .fc-fav-btn:hover {
+            color: #f59e0b;
+            background: #fefce8;
+        }
+
+        .fc-fav-btn.active {
+            color: #f59e0b;
+        }
+
+        .fc-fav-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .fc-fav-btn.active svg {
+            fill: #f59e0b;
+        }
+
+        /* Corpo: prévia da pergunta */
+        .fc-card-body {
+            padding: 0 16px 14px;
+            flex: 1;
+        }
+
+        .fc-question-preview {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #1e293b;
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Footer do card */
+        .fc-card-footer {
+            border-top: 1px solid #f1f5f9;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .fc-difficulty {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 99px;
+        }
+
+        .fc-difficulty.easy {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .fc-difficulty.medium {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .fc-difficulty.hard {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .fc-study-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #e0e7ff;
+            background: #eef2ff;
+            color: #4361ee;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .fc-study-btn:hover {
+            background: #e0e7ff;
+            border-color: #a5b4fc;
+        }
+
+        .fc-study-btn svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── Estados especiais ── */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: #94a3b8;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            grid-column: 1 / -1;
+        }
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .empty-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .empty-desc {
+            font-size: 13px;
+            color: #94a3b8;
+            max-width: 280px;
+            line-height: 1.6;
+        }
+
+        /* ── FAB mobile ── */
+        .fab {
+            display: none;
+            position: fixed;
+            bottom: 75px;
+            right: 16px;
+            background: #4361ee;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            font-size: 22px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(67, 97, 238, 0.35);
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        /* ── Loading overlay ── */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .loading-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-box {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e8edf2;
+            padding: 1.75rem 2.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2.5px solid #e0e7ff;
+            border-top-color: #4361ee;
+            animation: spin 0.75s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        /* ── Retry ── */
+        .retry-container {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.25s ease;
+            backdrop-filter: blur(3px);
+        }
+
+        .retry-content {
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+            max-width: 380px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .retry-text {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .retry-button {
+            background: #4361ee;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 9px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .retry-button:hover {
+            background: #3451d1;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ── Paginação ── */
+        .pagination-desktop {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 28px 0 8px;
+        }
+
+        .page-btn {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 9px;
+            border: 1px solid #e8edf2;
+            background: #fff;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            border-color: #c7d2fe;
+            color: #4361ee;
+        }
+
+        .page-btn.active {
+            background: #4361ee;
+            color: #fff;
+            border-color: #4361ee;
+        }
+
+        .page-btn.nav {
+            padding: 0 14px;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .page-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .page-dots {
+            color: #94a3b8;
+            font-size: 13px;
+            padding: 0 2px;
+            user-select: none;
+        }
+
+        /* Load more mobile */
+        .load-more-wrap {
+            margin-top: 1rem;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .load-more-info {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .load-more-info span {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: 1px solid #c7d0f8;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4361ee;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .load-more-btn:hover {
+            background: #eef1fd;
+            border-color: #a5b4fb;
+        }
+
+        /* ══════════════════════════════════════
+       MODAIS — base copiada do projecto
+    ══════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 30, 0.52);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 99999;
+            padding: 0;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            animation: overlayIn 0.18s ease;
+        }
+
+        @keyframes overlayIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (min-width: 600px) {
+            .modal-overlay {
+                align-items: center;
+                padding: 20px;
+            }
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 500px;
+            max-height: 93vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            animation: sheetUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+        }
+
+        @media (min-width: 600px) {
+            .modal {
+                border-radius: 22px;
+                animation: modalIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+                max-height: 88vh;
+            }
+        }
+
+        @keyframes sheetUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-handle {
+            display: flex;
+            justify-content: center;
+            padding: 12px 0 2px;
+            flex-shrink: 0;
+        }
+
+        .modal-handle span {
+            width: 36px;
+            height: 4px;
+            border-radius: 2px;
+            background: #e2e8f0;
+            display: block;
+        }
+
+        @media (min-width: 600px) {
+            .modal-handle {
+                display: none;
+            }
+        }
+
+        .modal-inner {
+            padding: 1.25rem 1.5rem 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex: 1;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.4px;
+            line-height: 1.2;
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .close-btn {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 13px;
+            transition: background 0.15s, color 0.15s;
+            padding: 0;
+            margin-top: 2px;
+        }
+
+        .close-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 7px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-group select,
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1.5px solid #e8edf2;
+            border-radius: 11px;
+            font-size: 14px;
+            color: #0f172a;
+            background: #f8fafc;
+            transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+            font-family: inherit;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 13px center;
+            background-color: #f8fafc;
+            padding-right: 38px;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #4361ee;
+            background: #fff;
+            box-shadow: 0 0 0 3.5px rgba(67, 97, 238, 0.09);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-modal-primary {
+            width: 100%;
+            padding: 13px;
+            border-radius: 12px;
+            border: none;
+            background: #4361ee;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-modal-primary:hover:not(:disabled) {
+            background: #3451d1;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 18px rgba(67, 97, 238, 0.28);
+        }
+
+        .btn-modal-primary:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn-modal-secondary {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .btn-modal-secondary:hover:not(:disabled) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .modal-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e0e7ff;
+            border-radius: 3px 3px 0 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .modal-progress-bar.visible {
+            display: block;
+        }
+
+        .modal-progress-bar::after {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 40%;
+            background: #4361ee;
+            border-radius: 3px;
+            animation: progress-slide 1.2s ease-in-out infinite;
+        }
+
+        @keyframes progress-slide {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(350%);
+            }
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1rem 0;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e8edf2;
+        }
+
+        /* ══════════════════════════════════════
+       MODAL FLASH CARD — PLAYER
+    ══════════════════════════════════════ */
+
+        /* Overlay específico do player — maior que o padrão */
+        .modal-overlay--player {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 30, 0.62);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 99999;
+            padding: 0;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: overlayIn 0.2s ease;
+        }
+
+        @media (min-width: 600px) {
+            .modal-overlay--player {
+                align-items: center;
+                padding: 20px;
+            }
+        }
+
+        .modal--player {
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 560px;
+            display: flex;
+            flex-direction: column;
+            animation: sheetUp 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+            max-height: 96vh;
+        }
+
+        @media (min-width: 600px) {
+            .modal--player {
+                border-radius: 22px;
+                animation: modalIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+                max-height: 90vh;
+            }
+        }
+
+        /* Barra de progresso no topo do player */
+        .player-progress-track {
+            height: 4px;
+            background: #e0e7ff;
+            flex-shrink: 0;
+        }
+
+        .player-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a5b4fc, #4361ee);
+            border-radius: 0 2px 2px 0;
+            transition: width 0.4s ease;
+        }
+
+        /* Cabeçalho do player */
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px 10px;
+            flex-shrink: 0;
+        }
+
+        .player-context {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .player-subject {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4361ee;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .player-topic {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .player-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #eef2ff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 11px;
+            border-radius: 999px;
+        }
+
+        .player-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 13px;
+            transition: background 0.15s, color 0.15s;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .player-close:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .player-header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Botão favorito no player */
+        .player-fav-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            transition: color 0.15s, background 0.15s;
+            padding: 0;
+        }
+
+        .player-fav-btn:hover {
+            color: #f59e0b;
+            background: #fefce8;
+        }
+
+        .player-fav-btn.active {
+            color: #f59e0b;
+            background: #fefce8;
+        }
+
+        .player-fav-btn svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .player-fav-btn.active svg {
+            fill: #f59e0b;
+        }
+
+        /* Progress info */
+        .player-progress-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 20px 10px;
+            flex-shrink: 0;
+        }
+
+        .player-progress-text {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .player-progress-text strong {
+            color: #4361ee;
+            font-weight: 700;
+        }
+
+        /* ─── FLIP CARD ─────────────────────────────── */
+        .flip-card-wrap {
+            padding: 0 20px 16px;
+            flex-shrink: 0;
+        }
+
+        .flip-card {
+            width: 100%;
+            height: 220px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        @media (min-width: 480px) {
+            .flip-card {
+                height: 240px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .flip-card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flip-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 28px;
+            text-align: center;
+        }
+
+        /* Frente — pergunta */
+        .flip-face--front {
+            background: linear-gradient(145deg, #eef2ff 0%, #e0e7ff 100%);
+            border: 1.5px solid #c7d2fe;
+        }
+
+        .flip-face--front .flip-tag {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6366f1;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .flip-face--front .flip-tag svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .flip-face--front .flip-question {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e3a8a;
+            line-height: 1.5;
+        }
+
+        .flip-face--front .flip-hint {
+            margin-top: 16px;
+            font-size: 11px;
+            color: #818cf8;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .flip-face--front .flip-hint svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Verso — resposta */
+        .flip-face--back {
+            background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1.5px solid #86efac;
+            transform: rotateY(180deg);
+        }
+
+        .flip-face--back .flip-tag {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #16a34a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .flip-face--back .flip-tag svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .flip-face--back .flip-answer {
+            font-size: 15px;
+            font-weight: 600;
+            color: #14532d;
+            line-height: 1.55;
+        }
+
+        /* Dificuldade no player */
+        .player-difficulty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 20px 14px;
+            flex-shrink: 0;
+        }
+
+        .player-diff-label {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .player-diff-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 99px;
+        }
+
+        .player-diff-badge.easy {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .player-diff-badge.medium {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .player-diff-badge.hard {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        /* Botões de auto-avaliação */
+        .player-rating {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            padding: 0 20px 16px;
+            flex-shrink: 0;
+        }
+
+        .rating-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 8px;
+            border-radius: 12px;
+            border: 1.5px solid;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+
+        .rating-btn-label {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .rating-btn-sub {
+            font-size: 10px;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        .rating-btn--hard {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #b91c1c;
+        }
+
+        .rating-btn--hard:hover {
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+
+        .rating-btn--ok {
+            background: #fffbeb;
+            border-color: #fde68a;
+            color: #b45309;
+        }
+
+        .rating-btn--ok:hover {
+            background: #fef3c7;
+            border-color: #fcd34d;
+        }
+
+        .rating-btn--easy {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            color: #15803d;
+        }
+
+        .rating-btn--easy:hover {
+            background: #dcfce7;
+            border-color: #86efac;
+        }
+
+        /* Hint visível antes de virar */
+        .player-flip-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0 20px 14px;
+            flex-shrink: 0;
+        }
+
+        .player-flip-hint span {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .player-flip-hint svg {
+            width: 13px;
+            height: 13px;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Botões de navegação */
+        .player-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px 22px;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .player-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 11px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1.5px solid;
+        }
+
+        .player-nav-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .player-nav-btn--prev {
+            background: #fff;
+            border-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .player-nav-btn--prev:hover:not(:disabled) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .player-nav-btn--prev:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .player-nav-btn--next {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: #fff;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .player-nav-btn--next:hover:not(:disabled) {
+            background: #3451d1;
+            border-color: #3451d1;
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.3);
+        }
+
+        .player-nav-btn--next:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .player-nav-btn--finish {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: #fff;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .player-nav-btn--finish:hover {
+            background: #3451d1;
+            border-color: #3451d1;
+        }
+
+        /* Ecrã de conclusão */
+        .player-done {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 24px 28px;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .player-done-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+            border: 2px solid #86efac;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .player-done-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: #16a34a;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .player-done-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+
+        .player-done-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .player-done-stats {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .done-stat {
+            flex: 1;
+            padding: 12px 8px;
+            border-radius: 12px;
+            border: 1.5px solid;
+            text-align: center;
+        }
+
+        .done-stat--easy {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .done-stat--ok {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .done-stat--hard {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .done-stat-val {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .done-stat--easy .done-stat-val {
+            color: #15803d;
+        }
+
+        .done-stat--ok .done-stat-val {
+            color: #b45309;
+        }
+
+        .done-stat--hard .done-stat-val {
+            color: #b91c1c;
+        }
+
+        .done-stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .player-done-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .header-top {
+                padding: 16px 16px 10px;
+            }
+
+            .tabs-bar {
+                padding: 0 12px 12px;
+                gap: 6px;
+            }
+
+            .btn-add-header {
+                display: none;
+            }
+
+            .fab {
+                display: flex;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pagination-desktop {
+                display: none;
+            }
+
+            .load-more-wrap {
+                display: flex;
+            }
+
+            .flip-card {
+                height: 200px;
+            }
+
+            .player-rating {
+                gap: 6px;
+            }
+
+            .rating-btn {
+                padding: 9px 6px;
+            }
+
+            .rating-btn-label {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- ══════════════════════════════════════
+       APP HEADER
+  ══════════════════════════════════════ -->
+        <div class="app-header">
+
+            <div class="header-top">
+                <div class="header-title">
+                    <div class="header-title-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4361ee" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="16" height="13" rx="2" />
+                            <path d="M6 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2" />
                         </svg>
-                        Pergunta
                     </div>
-                    <div class="fc-face-category">{{ cards[currentIndex].category }}</div>
-                    <div class="fc-face-content">{{ cards[currentIndex].question }}</div>
-                    <div class="fc-flip-hint">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 4v6h6" />
-                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                    Flash Cards
+                </div>
+                <div class="header-subtitle">Estude e memorize os conceitos mais importantes de cada disciplina</div>
+            </div>
+
+            <div class="tabs-bar">
+                <div class="tabs">
+                    <!-- Tab Todos -->
+                    <button class="tab-btn" [class.active]="!filtro.subjectId" (click)="limparFiltros()">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <rect x="14" y="14" width="7" height="7" rx="1" />
                         </svg>
-                        Clique para revelar
-                    </div>
+                        Todos
+                        <span class="tab-count">{{ totalFlashCards }}</span>
+                    </button>
+
+                    <!-- Tabs de disciplinas (dinâmico via *ngFor) -->
+                    <button class="tab-btn" *ngFor="let subject of subjects"
+                        [class.active]="filtro.subjectId === subject.id"
+                        (click)="filtro.subjectId = subject.id; findAll()">
+                        <!-- Ícone Matemática -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Matemática'">
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
+                        </svg>
+                        <!-- Ícone Português -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+                        <!-- Ícone Física -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Física'">
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                        </svg>
+                        <!-- Ícone Química -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Química'">
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        </svg>
+                        <!-- Ícone Biologia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Biologia'">
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 9h9" />
+                        </svg>
+                        <!-- Ícone História -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'História'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
+                        <!-- Ícone Geografia -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Geografia'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                            <path d="M12 3c-3 3-3 15 0 18" />
+                        </svg>
+                        <!-- Ícone Inglês -->
+                        <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Inglês'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                        </svg>
+                        {{ subject.name }}
+                    </button>
                 </div>
 
-                <!-- Back -->
-                <div class="fc-card-face fc-card-face--back">
-                    <div class="fc-face-tag fc-face-tag--answer">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                        Resposta
-                    </div>
-                    <div class="fc-face-category">{{ cards[currentIndex].category }}</div>
-                    <div class="fc-face-content">{{ cards[currentIndex].answer }}</div>
-                    <div class="fc-face-note" *ngIf="cards[currentIndex].note">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                        </svg>
-                        {{ cards[currentIndex].note }}
-                    </div>
-                </div>
+                <div class="tabs-divider"></div>
 
+                <div class="header-actions">
+                    <button class="btn-filter" (click)="onOpenFilter()">
+                        <svg viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6" />
+                            <line x1="7" y1="12" x2="17" y2="12" />
+                            <line x1="10" y1="18" x2="14" y2="18" />
+                        </svg>
+                        Filtrar
+                    </button>
+                    <button class="btn-add-header" (click)="onAddNewFlashCard()" *ngIf="isUserLoggedIn && isAdmin">
+                        <svg viewBox="0 0 24 24">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Novo
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- /app-header -->
+
+        <!-- Loading -->
+        <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
+            <div class="loading-box">
+                <div class="spinner"></div>
+                <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
             </div>
         </div>
 
-        <!-- Tap hint (only before first flip) -->
-        <p class="fc-tap-hint" *ngIf="!hasFlippedOnce">Toque no cartão para ver a resposta</p>
-    </div>
-
-    <!-- ── Rating buttons (visible after flip) ── -->
-    <div class="fc-rating" [class.fc-rating--visible]="isFlipped">
-        <button class="fc-rate-btn fc-rate-btn--learning" (click)="markLearning()" [disabled]="!isFlipped">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 4v6h6" />
-                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-            </svg>
-            Ainda a aprender
-        </button>
-        <button class="fc-rate-btn fc-rate-btn--known" (click)="markKnown()" [disabled]="!isFlipped">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-            </svg>
-            Sei bem
-        </button>
-    </div>
-
-    <!-- ── Navigation ── -->
-    <div class="fc-nav">
-        <button class="fc-nav-btn" (click)="prevCard()" [disabled]="currentIndex === 0" aria-label="Anterior">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 18l-6-6 6-6" />
-            </svg>
+        <!-- FAB mobile -->
+        <button class="fab" (click)="onAddNewFlashCard()" *ngIf="isUserLoggedIn && isAdmin">
+            <i class="pi pi-plus"></i>
         </button>
 
-        <div class="fc-nav-index">
-            <span class="fc-nav-current">{{ currentIndex + 1 }}</span>
-            <span class="fc-nav-sep">/</span>
-            <span class="fc-nav-total">{{ cards.length }}</span>
+        <!-- Grid de flash cards -->
+        <div class="cards-grid">
+
+            <ng-container *ngIf="!showLoading && flashCards.length === 0 && !retryVisible">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="7" width="16" height="13" rx="2" />
+                            <path d="M6 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2" />
+                        </svg>
+                    </div>
+                    <div class="empty-title">Nenhum flash card encontrado</div>
+                    <div class="empty-desc">Tente remover os filtros ou volte mais tarde.</div>
+                </div>
+            </ng-container>
+
+            <div class="fc-card" *ngFor="let fc of flashCards">
+
+                <div class="fc-card-header">
+                    <div class="fc-subject-icon">
+                        <!-- Ícones repetidos por disciplina — igual ao exames.component -->
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'Matemática'">
+                            <path d="M4 4h16" />
+                            <path d="M4 4l8 8-8 8" />
+                            <path d="M4 20h16" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'Português'">
+                            <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
+                            <path
+                                d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'Física'">
+                            <circle cx="12" cy="12" r="2" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'Química'">
+                            <path d="M9 3h6" />
+                            <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'Biologia'">
+                            <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
+                            <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
+                            <path d="M7.5 9h9" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'História'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'Geografia'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" *ngIf="fc.topic.subject.name === 'Inglês'">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M3 12h18" />
+                            <path d="M12 3c3 3 3 15 0 18" />
+                        </svg>
+                    </div>
+
+                    <div class="fc-card-meta">
+                        <div class="fc-card-subject">{{ fc.topic.subject.name }}</div>
+                        <div class="fc-card-topic">{{ fc.topic.name }}</div>
+                    </div>
+
+                    <!-- Dropdown de acções -->
+                    <div class="dropdown-container">
+                        <button class="dropdown-btn" (click)="toggleDropdown(fc)">
+                            <i class="pi pi-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown" *ngIf="fc.isAdminMenuOpen">
+
+                            <a (click)="onUpdateFlashCard(fc); closeDropdown(fc)"
+                                *ngIf="isUserLoggedIn && isSuperAdmin">Editar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fc-card-body">
+                    <div class="fc-question-preview">{{ fc.question }}</div>
+                </div>
+
+                <div class="fc-card-footer">
+                    <span class="fc-difficulty">
+                        Médio
+                    </span>
+                    <button class="fc-study-btn" (click)="$event.stopPropagation();">
+                        Estudar
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <!-- /cards-grid -->
+
+        <!-- Retry -->
+        <div *ngIf="retryVisible" class="retry-container">
+            <div class="retry-content">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <circle cx="12" cy="16" r="1" />
+                </svg>
+                <div class="retry-text">Ocorreu um erro ao carregar os flash cards.<br>Por favor, tente novamente.</div>
+                <button class="retry-button" (click)="retryFindAll()">Tentar novamente</button>
+            </div>
         </div>
 
-        <button class="fc-nav-btn fc-nav-btn--next" (click)="nextCard()" [disabled]="currentIndex === cards.length - 1"
-            aria-label="Próximo">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 18l6-6-6-6" />
-            </svg>
-        </button>
-    </div>
-
-    <!-- ── Completed State ── -->
-    <div class="fc-completed" *ngIf="showCompleted">
-        <div class="fc-completed-inner">
-            <div class="fc-completed-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4361ee" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
+        <!-- Paginação desktop -->
+        <div class="pagination-desktop">
+            <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="15 18 9 12 15 6" />
                 </svg>
+                Anterior
+            </button>
+            <ng-container *ngFor="let page of getVisiblePages()">
+                <span *ngIf="page === -1" class="page-dots">...</span>
+                <button *ngIf="page !== -1" class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)" [disabled]="showLoading">{{ page }}</button>
+            </ng-container>
+            <button class="page-btn nav" (click)="nextPage()" [disabled]="currentPage === totalPages() || showLoading">
+                Seguinte
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Load more mobile -->
+        <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
+            <div class="load-more-info">A mostrar <span>{{ flashCards.length }}</span> de <span>{{ totalFlashCards
+                    }}</span> flash cards</div>
+            <button class="load-more-btn" [disabled]="isLoadMoreDisabled" (click)="loadMore()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+                Carregar mais
+            </button>
+        </div>
+
+    </div>
+    <!-- /container -->
+
+
+    <!-- ══════════════════════════════════════════════════════════
+     MODAL: PLAYER DE FLASH CARDS (virar card)
+══════════════════════════════════════════════════════════ -->
+    <!--
+    <div class="modal-overlay--player" *ngIf="displayModalPlayer">
+        <div class="modal--player">
+
+            <div class="player-progress-track">
+                <div class="player-progress-fill" [style.width]="getProgressPercent() + '%'"></div>
             </div>
-            <h2 class="fc-completed-title">Sessão concluída!</h2>
-            <p class="fc-completed-desc">
-                Terminaste {{ cards.length }} flash cards.<br>
-                <strong>{{ knownCount }}</strong> dominados · <strong>{{ learningCount }}</strong> a rever
-            </p>
-            <div class="fc-completed-actions">
-                <button class="fc-btn-restart" (click)="restartDeck()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 4v6h6" />
-                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+
+            <div class="player-header">
+                <div class="player-context">
+                    <span class="player-subject">{{ currentCard?.subject?.name }}</span>
+                    <span class="player-topic">{{ currentCard?.topic?.name }}</span>
+                </div>
+                <div class="player-header-right">
+                    <span class="player-counter">{{ currentIndex + 1 }} / {{ studyDeck.length }}</span>
+                    <button class="player-fav-btn" [class.active]="currentCard?.isFavorite"
+                        (click)="onToggleFavorite(currentCard)"
+                        [attr.aria-label]="currentCard?.isFavorite ? 'Remover dos favoritos' : 'Guardar nos favoritos'">
+                        <svg viewBox="0 0 24 24">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg>
+                    </button>
+                    <button class="player-close" (click)="onClosePlayer()"
+                        aria-label="Fechar flash cards">&#x2715;</button>
+                </div>
+            </div>
+
+            <div class="player-progress-info">
+                <span class="player-progress-text">
+                    Card <strong>{{ currentIndex + 1 }}</strong> de <strong>{{ studyDeck.length }}</strong>
+                    &nbsp;·&nbsp; {{ getProgressPercent() | number:'1.0-0' }}% concluído
+                </span>
+            </div>
+
+            <div class="flip-card-wrap" *ngIf="!isDone">
+                <div class="flip-card" (click)="flipCard()">
+                    <div class="flip-card-inner" [class.flipped]="isFlipped">
+
+                        <div class="flip-face flip-face--front">
+                            <div class="flip-tag">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                                </svg>
+                                Pergunta
+                            </div>
+                            <div class="flip-question">{{ currentCard?.question }}</div>
+                            <div class="flip-hint">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M15 3h6v6" />
+                                    <path d="M10 14 21 3" />
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                </svg>
+                                Toca para ver a resposta
+                            </div>
+                        </div>
+
+                        <div class="flip-face flip-face--back">
+                            <div class="flip-tag">
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                Resposta
+                            </div>
+                            <div class="flip-answer">{{ currentCard?.answer }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="player-flip-hint" *ngIf="!isFlipped && !isDone">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15 3h6v6" />
+                    <path d="M10 14 21 3" />
+                </svg>
+                <span>Toca no cartão para revelar a resposta</span>
+            </div>
+
+            <ng-container *ngIf="isFlipped && !isDone">
+                <div class="player-difficulty">
+                    <span class="player-diff-label">Dificuldade:</span>
+                    <span class="player-diff-badge" [class.easy]="currentCard?.difficulty === 'EASY'"
+                        [class.medium]="currentCard?.difficulty === 'MEDIUM'"
+                        [class.hard]="currentCard?.difficulty === 'HARD'">
+                        {{ currentCard?.difficulty === 'EASY' ? 'Fácil' : currentCard?.difficulty === 'MEDIUM' ? 'Médio'
+                        : 'Difícil' }}
+                    </span>
+                </div>
+                <div class="player-rating">
+                    <button class="rating-btn rating-btn--hard" (click)="onRate('hard')">
+                        <span class="rating-btn-label">Não sei</span>
+                        <span class="rating-btn-sub">Repetir</span>
+                    </button>
+                    <button class="rating-btn rating-btn--ok" (click)="onRate('ok')">
+                        <span class="rating-btn-label">Quase</span>
+                        <span class="rating-btn-sub">Rever</span>
+                    </button>
+                    <button class="rating-btn rating-btn--easy" (click)="onRate('easy')">
+                        <span class="rating-btn-label">Sei bem</span>
+                        <span class="rating-btn-sub">Seguinte</span>
+                    </button>
+                </div>
+            </ng-container>
+
+            <div class="player-done" *ngIf="isDone">
+                <div class="player-done-icon">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12" />
+                        <circle cx="12" cy="12" r="10" fill="none" />
                     </svg>
-                    Repetir todos
+                </div>
+                <div class="player-done-title">Sessão concluída!</div>
+                <div class="player-done-desc">Estudaste {{ studyDeck.length }} flash card{{ studyDeck.length !== 1 ? 's'
+                    : '' }} de {{ currentCard?.subject?.name }}.</div>
+
+                <div class="player-done-stats">
+                    <div class="done-stat done-stat--easy">
+                        <div class="done-stat-val">{{ ratingCounts.easy }}</div>
+                        <div class="done-stat-label">Sei bem</div>
+                    </div>
+                    <div class="done-stat done-stat--ok">
+                        <div class="done-stat-val">{{ ratingCounts.ok }}</div>
+                        <div class="done-stat-label">Quase</div>
+                    </div>
+                    <div class="done-stat done-stat--hard">
+                        <div class="done-stat-val">{{ ratingCounts.hard }}</div>
+                        <div class="done-stat-label">Não sei</div>
+                    </div>
+                </div>
+
+                <div class="player-done-actions">
+                    <button class="btn-modal-primary" (click)="onRestartStudy()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 4v6h6" />
+                            <path d="M3.51 15a9 9 0 1 0 .49-5.07" />
+                        </svg>
+                        Estudar novamente
+                    </button>
+                    <button class="btn-modal-secondary" (click)="onClosePlayer()">Fechar</button>
+                </div>
+            </div>
+
+            <div class="player-nav" *ngIf="!isDone">
+                <button class="player-nav-btn player-nav-btn--prev" (click)="onPrev()" [disabled]="currentIndex === 0">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                    Anterior
                 </button>
-                <button class="fc-btn-learning-only" (click)="repeatLearning()" *ngIf="learningCount > 0">
-                    Repetir a aprender ({{ learningCount }})
+                <button class="player-nav-btn player-nav-btn--next" (click)="onNext()"
+                    *ngIf="currentIndex < studyDeck.length - 1">
+                    Próximo
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
                 </button>
-                <button class="fc-btn-close" (click)="onClose()">Fechar</button>
+                <button class="player-nav-btn player-nav-btn--finish" (click)="onFinish()"
+                    *ngIf="currentIndex === studyDeck.length - 1">
+                    Concluir
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+    </div>
+    -->
+
+    <!-- ══════════════════════════════════════
+     MODAL: Filtrar Flash Cards
+══════════════════════════════════════ -->
+    <div class="modal-overlay" *ngIf="displayModalFilter">
+        <div class="modal">
+            <div class="modal-handle"><span></span></div>
+            <div class="modal-inner">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">Filtrar Flash Cards</h2>
+                        <span class="modal-subtitle">Refine os resultados por critérios</span>
+                    </div>
+                    <button class="close-btn" (click)="onCloseFilter()">&#x2715;</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Disciplina</label>
+                    <select id="subject" name="subject" [(ngModel)]="selectedSubject" [(ngModel)]="filtro.subjectId"
+                        (change)="getTopicsBySubjectId(); findAll()">
+                        <option value="" disabled selected>Selecione a disciplina</option>
+                        <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="topic">Tópico</label>
+                    <select id="topic" name="topic" [(ngModel)]="filtro.topicId" [disabled]="!selectedSubject"
+                        (change)="findAll()">
+                        <option value="" disabled selected>Selecione o tópico</option>
+                        <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+                    </select>
+                </div>
+
+                <button class="btn-modal-secondary" (click)="limparFiltros()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M8 6V4h8v2" />
+                    </svg>
+                    Limpar filtros
+                </button>
             </div>
         </div>
     </div>
 
-</div>
 
-<!-- Loading overlay -->
-<div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
-    <div class="loading-box">
-        <div class="spinner"></div>
-        <div class="loading-text">{{ loadingMessage || 'Carregando' }}...</div>
+    <!-- ══════════════════════════════════════
+     MODAL: Adicionar / Editar Flash Card
+══════════════════════════════════════ -->
+    <div class="modal-overlay" *ngIf="displayModalSave">
+        <div class="modal">
+            <div class="modal-progress-bar" [class.visible]="showLoading"></div>
+            <div class="modal-handle"><span></span></div>
+            <div class="modal-inner" [class.is-loading]="showLoading">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <h2 class="modal-title">{{ editing ? 'Editar Flash Card' : 'Novo Flash Card' }}</h2>
+                        <span class="modal-subtitle">{{ editing ? 'Actualize os dados' : 'Preencha os campos abaixo'
+                            }}</span>
+                    </div>
+                    <button class="close-btn" (click)="closeSavePopout()"
+                        [disabled]="showLoading">&#x2715;</button>
+                </div>
+
+                <form autocomplete="off" #fcForm="ngForm">
+                    <div class="form-group">
+                        <label for="subject">Disciplina</label>
+                        <select id="subject" name="subject" [(ngModel)]="selectedSubject"
+                            (change)="getTopicsBySubjectId()" required>
+                            <option value="" disabled selected>Selecione a disciplina</option>
+                            <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="topic">Tópico</label>
+                        <select id="topic" name="topic" [(ngModel)]="flashCard.topic.id" [disabled]="!selectedSubject"
+                            required>
+                            <option value="" disabled selected>Selecione o tópico</option>
+                            <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pergunta</label>
+                        <textarea [(ngModel)]="flashCard.question" name="question" required [disabled]="showLoading"
+                            placeholder="Escreva a pergunta do flash card..." rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Resposta</label>
+                        <textarea [(ngModel)]="flashCard.answer" name="answer" required [disabled]="showLoading"
+                            placeholder="Escreva a resposta..." rows="3"></textarea>
+                    </div>
+
+                    <button class="btn-modal-primary" type="button" (click)="save()"
+                        [disabled]="fcForm.invalid || showLoading">
+                        <span class="btn-spinner" *ngIf="showLoading"
+                            style="width:15px;height:15px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .65s linear infinite;flex-shrink:0;display:inline-block;"></span>
+                        <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        {{ showLoading ? 'A guardar...' : (editing ? 'Actualizar' : 'Criar Flash Card') }}
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
+
+</body>
+
+</html>

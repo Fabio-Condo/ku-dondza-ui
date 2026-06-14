@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FlashCardsComponent } from './flash-cards/flash-cards.component';
+import { TopicFlashCardsComponent } from './topic-flash-cards/topic-flash-cards.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'flash-cards/topic/:id',
-    component: FlashCardsComponent,
+    component: TopicFlashCardsComponent,
     //canActivate: [AuthenticationGuard], 
     //data: { 
     //  roles: ['ROLE_USER'], 
