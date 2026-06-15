@@ -19,7 +19,7 @@ import { IApiResponse } from 'src/app/core/interface/IApiResponse';
 import { Subject } from 'src/app/core/model/Subject';
 import { TopicService } from 'src/app/topics/topicsService.service';
 import { Topic } from 'src/app/core/model/Topic';
-
+declare const MathJax: any;
 
 
 @Component({
@@ -65,6 +65,8 @@ export class FlashCardsComponent {
   currentIndex: number = 0;
   isFlipped: boolean = false;
   isDone: boolean = false;
+
+  showLatexLoading: boolean = false;
 
   filtro: FlashCardFilter = {
     page: 0,
@@ -194,6 +196,7 @@ export class FlashCardsComponent {
         this.flashCards = dados.content
         this.totalRecords = dados.totalElements;
         this.totalFlashCards = this.totalFlashCards || dados.totalElements;
+        this.renderMathExpressions();
         this.showLoading = false;
       },
       (errorResponse: HttpErrorResponse) => {
@@ -387,6 +390,7 @@ export class FlashCardsComponent {
     this.isFlipped = false;
     this.isDone = false;
     this.displayModalPlayer = true;
+    this.renderMathExpressions();
 
     document.body.classList.add('no-scroll');
   }
@@ -406,6 +410,7 @@ export class FlashCardsComponent {
     if (this.currentIndex < this.studyDeck.length - 1) {
       this.currentIndex++;
       this.isFlipped = false;
+      this.renderMathExpressionsForDeck();
     } else {
       this.isDone = true;
     }
@@ -416,6 +421,7 @@ export class FlashCardsComponent {
     if (this.currentIndex > 0) {
       this.currentIndex--;
       this.isFlipped = false;
+      this.renderMathExpressionsForDeck();
     }
   }
 
@@ -430,6 +436,44 @@ export class FlashCardsComponent {
     }
 
     return ((this.currentIndex + 1) / this.studyDeck.length) * 100;
+  }
+
+  // Método para renderizar expressões matemáticas
+  renderMathExpressions(): void {
+    this.showLoading = true;
+    setTimeout(() => {
+      MathJax.typesetPromise();
+    }, 0);
+    this.showLoading = false;
+  }
+
+  getFormattedText(text: string): string {
+    // Negrito: **texto**
+    let result = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto*
+    result = result.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    return result;
+  }
+
+  renderMathExpressionsForDeck(): void {
+    setTimeout(() => {
+      const q = document.getElementById(`math-container-${this.currentIndex}`);
+      const a = document.getElementById(`math-container-solution-${this.currentIndex}`);
+
+      if (q) {
+        q.innerHTML = this.getFormattedText(this.studyDeck[this.currentIndex].question);
+      }
+
+      if (a) {
+        a.innerHTML = this.getFormattedText(this.studyDeck[this.currentIndex].answer);
+      }
+
+      MathJax.typesetPromise()
+        .then(() => console.log('MathJax OK'))
+        .catch(console.error);
+    }, 0);
   }
 
   public get isAdmin(): boolean {

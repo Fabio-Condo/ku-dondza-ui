@@ -13,6 +13,8 @@ import { User } from 'src/app/core/model/User';
 import { FlashCardDeckResponse } from 'src/app/core/model/FlashCardDeckResponse';
 import { FlashCard } from 'src/app/core/model/FlashCard';
 import { FlashCardsService } from '../flash-cards/flash-cards.service';
+declare const MathJax: any;
+
 
 @Component({
   selector: 'app-topic-flash-cards',
@@ -83,13 +85,10 @@ export class TopicFlashCardsComponent {
       .subscribe({
 
         next: response => {
-
           this.currentDeck = response;
-
           this.cards = response.cards;
-
           this.currentIndex = 0;
-
+          this.renderMathExpressionsForDeck();
           this.showLoading = false;
         },
 
@@ -218,6 +217,7 @@ export class TopicFlashCardsComponent {
     setTimeout(() => {
       this.currentIndex = index;
       this.hasFlippedOnce = false;
+      this.renderMathExpressionsForDeck();
     }, 200);
   }
 
@@ -247,6 +247,35 @@ export class TopicFlashCardsComponent {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  getFormattedText(text: string): string {
+    // Negrito: **texto**
+    let result = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Itálico: *texto*
+    result = result.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    return result;
+  }
+
+  renderMathExpressionsForDeck(): void {
+    setTimeout(() => {
+      const q = document.getElementById(`math-container-${this.currentIndex}`);
+      const a = document.getElementById(`math-container-solution-${this.currentIndex}`);
+
+      if (q) {
+        q.innerHTML = this.getFormattedText(this.cards[this.currentIndex].question);
+      }
+
+      if (a) {
+        a.innerHTML = this.getFormattedText(this.cards[this.currentIndex].answer);
+      }
+
+      MathJax.typesetPromise()
+        .then(() => console.log('MathJax OK'))
+        .catch(console.error);
+    }, 0);
   }
 }
 

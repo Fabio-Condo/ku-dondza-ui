@@ -1980,7 +1980,8 @@
                 </div>
 
                 <div class="fc-card-body">
-                    <div class="fc-question-preview">{{ fc.question }}</div>
+                    <div id="math-container" class="fc-question-preview" *ngIf="fc.question"
+                        [innerHTML]="getFormattedText(fc.question)"></div>
                 </div>
 
                 <div class="fc-card-footer">
@@ -2106,7 +2107,8 @@
                                 Pergunta
                             </div>
 
-                            <div class="flip-question">
+                            <div id="math-container-{{ currentIndex }}" class="flip-question"
+                                *ngIf="currentCard.question">
                                 {{ currentCard.question }}
                             </div>
 
@@ -2119,7 +2121,8 @@
                                 Resposta
                             </div>
 
-                            <div class="flip-answer">
+                            <div id="math-container-solution-{{ currentIndex }}" class="flip-answer"
+                                *ngIf="currentCard.answer">
                                 {{ currentCard.answer }}
                             </div>
 
