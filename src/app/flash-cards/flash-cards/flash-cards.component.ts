@@ -377,6 +377,61 @@ export class FlashCardsComponent {
     document.body.classList.remove('no-scroll');
   }
 
+  openPlayer(flashCard: FlashCard): void {
+
+    this.studyDeck = this.flashCards;
+
+    this.currentIndex =
+      this.flashCards.findIndex(fc => fc.id === flashCard.id);
+
+    this.isFlipped = false;
+    this.isDone = false;
+    this.displayModalPlayer = true;
+
+    document.body.classList.add('no-scroll');
+  }
+
+  closePlayer(): void {
+    this.displayModalPlayer = false;
+    this.isFlipped = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  toggleFlip(): void {
+    this.isFlipped = !this.isFlipped;
+  }
+
+  nextCard(): void {
+
+    if (this.currentIndex < this.studyDeck.length - 1) {
+      this.currentIndex++;
+      this.isFlipped = false;
+    } else {
+      this.isDone = true;
+    }
+  }
+
+  previousCard(): void {
+
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.isFlipped = false;
+    }
+  }
+
+  get currentCard(): FlashCard {
+    return this.studyDeck[this.currentIndex];
+  }
+
+  get progressPercentage(): number {
+
+    if (!this.studyDeck.length) {
+      return 0;
+    }
+
+    return ((this.currentIndex + 1) / this.studyDeck.length) * 100;
+  }
+
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
