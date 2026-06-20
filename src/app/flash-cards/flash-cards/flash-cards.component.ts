@@ -71,7 +71,7 @@ export class FlashCardsComponent {
   filtro: FlashCardFilter = {
     page: 0,
     itemsPerPage: 6,
-    sort: 'id,asc',
+    sort: 'id,desc',
   };
 
   constructor(

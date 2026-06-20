@@ -22,10 +22,6 @@
             margin: 0 auto;
         }
 
-        /* ══════════════════════════════════════
-           APP HEADER
-        ══════════════════════════════════════ */
-
         .app-header {
             position: sticky;
             top: 0;
@@ -58,8 +54,6 @@
             text-align: center;
             line-height: 1.5;
         }
-
-        /* ── Barra de tabs + acções numa só linha ── */
 
         .tabs-bar {
             display: flex;
@@ -143,16 +137,12 @@
             background: #c7d2fe;
         }
 
-        /* ── Divisor vertical entre tabs e acções ── */
-
         .tabs-divider {
             width: 1px;
             height: 24px;
             background: #e2e8f0;
             flex-shrink: 0;
         }
-
-        /* ── Acções alinhadas com as tabs ── */
 
         .header-actions {
             display: flex;
@@ -228,7 +218,7 @@
         }
 
         /* ══════════════════════════════════════
-           FIM APP HEADER
+           CARDS
         ══════════════════════════════════════ */
 
         .cards-container {
@@ -236,10 +226,6 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
         }
-
-        /* ══════════════════════════════════════
-           CARD
-        ══════════════════════════════════════ */
 
         .card {
             background-color: #ffffff;
@@ -276,65 +262,104 @@
             gap: 12px;
         }
 
-        /* ─── CARD BODY ─────────────────────────── */
         .card-body {
             padding: 0;
             display: flex;
             flex-direction: column;
         }
 
-        /* Barra de métricas */
+        /* ══════════════════════════════════════
+           META ROW — 3 colunas
+        ══════════════════════════════════════ */
+
         .meta-row {
-            display: flex;
-            align-items: stretch;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             border-top: 1px solid #f1f5f9;
             border-bottom: 1px solid #f1f5f9;
         }
 
         .meta-item {
-            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 13px 6px;
-            gap: 3px;
-            text-align: center;
+            gap: 5px;
+            padding: 12px 16px;
         }
 
         .meta-item:not(:last-child) {
             border-right: 1px solid #f1f5f9;
         }
 
-        .meta-value {
-            font-size: 12px;
-            font-weight: 600;
-            color: #1e293b;
-            line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-            padding: 0 2px;
-        }
-
         .meta-label {
             font-size: 10px;
             color: #cbd5e1;
             text-transform: uppercase;
-            letter-spacing: .5px;
+            letter-spacing: .6px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
-        .meta-value-premium {
-            color: #7c3aed;
+        .meta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.4;
+            width: fit-content;
+            white-space: nowrap;
         }
 
-        .meta-value-free {
-            color: #2563eb;
+        .meta-badge svg {
+            width: 10px;
+            height: 10px;
+            flex-shrink: 0;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        /* ─── CARD FOOTER ────────────────────────── */
+        .badge-inst {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+        }
+
+        .badge-year {
+            background: #fafbff;
+            color: #4361ee;
+            border: 1px solid #c7d2fe;
+        }
+
+        .badge-enunciado {
+            background: #eff6ff;
+            color: #4361ee;
+            border: 1px solid #bfdbfe;
+        }
+
+        .badge-resolucao {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .badge-premium {
+            background: #f5f3ff;
+            color: #6d28d9;
+            border: 1px solid #ddd6fe;
+        }
+
+        .badge-gratuito {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* ── Card footer ── */
         .card-footer {
             display: flex;
             gap: 8px;
@@ -446,63 +471,6 @@
         .dropdown a:hover {
             background: #f8fafc;
             color: #1e293b;
-        }
-
-        .card-meta {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-        }
-
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .meta-label {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: #cbd5e1;
-        }
-
-        .meta-value {
-            font-size: 13px;
-            font-weight: 500;
-            color: #334155;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            line-height: 1.2;
-        }
-
-        .meta-value svg {
-            width: 13px;
-            height: 13px;
-            stroke: #94a3b8;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
-        }
-
-        .meta-value.premium-val {
-            color: #7c3aed;
-        }
-
-        .meta-value.premium-val svg {
-            stroke: #a855f7;
-        }
-
-        .meta-value.free-val {
-            color: #2563eb;
-        }
-
-        .meta-value.free-val svg {
-            stroke: #60a5fa;
         }
 
         .download-btn {
@@ -920,7 +888,7 @@
 
         /* ═══════════════════════════════════════════════════════
            MODAIS
-           ═══════════════════════════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
 
         .modal-overlay {
             position: fixed;
@@ -1936,10 +1904,6 @@
                 padding: 10px 14px 14px;
             }
 
-            .card-meta {
-                gap: 8px;
-            }
-
             .btn-add-header {
                 display: none;
             }
@@ -1959,6 +1923,10 @@
             .load-more-wrap {
                 display: flex;
             }
+
+            .meta-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
@@ -1967,18 +1935,13 @@
 
     <div class="container">
 
-        <!-- ══════════════════════════════════════
-             APP HEADER
-        ══════════════════════════════════════ -->
         <div class="app-header">
 
-            <!-- Título e subtítulo centralizados -->
             <div class="header-top">
                 <div class="header-title">Exames</div>
                 <div class="header-subtitle">Encontre e baixe exames anteriores das principais instituições</div>
             </div>
 
-            <!-- Tabs + divisor + acções numa única linha com scroll horizontal -->
             <div class="tabs-bar">
 
                 <div class="tabs">
@@ -1997,55 +1960,40 @@
                         [class.active]="filtro.subjectId === subject.id"
                         (click)="filtro.subjectId = subject.id; findAll()">
 
-                        <!-- Ícone Matemática -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Matemática'">
                             <path d="M4 4h16" />
                             <path d="M4 4l8 8-8 8" />
                             <path d="M4 20h16" />
                         </svg>
-
-                        <!-- Ícone Português -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Português'">
                             <path d="M2 6c0-1.1.9-2 2-2h5a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4a2 2 0 0 1-2-2V6z" />
                             <path
                                 d="M22 6c0-1.1-.9-2-2-2h-5a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20a2 2 0 0 0 2-2V6z" />
                         </svg>
-
-                        <!-- Ícone Quimica -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Quimica'">
                             <path d="M9 3h6" />
                             <path d="M10 3v5l-4.5 7.5A2 2 0 0 0 7.24 19h9.52a2 2 0 0 0 1.74-2.5L14 8V3" />
                         </svg>
-
-                        <!-- Ícone Física -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Física'">
                             <circle cx="12" cy="12" r="2" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
                         </svg>
-
-                        <!-- Ícone Biologia -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Biologia'">
                             <path d="M7 3c0 0 2 2.5 2 6s-2 6-2 6" />
                             <path d="M17 3c0 0-2 2.5-2 6s2 6 2 6" />
                             <path d="M7.5 9h9" />
                         </svg>
-
-                        <!-- Ícone História -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'História'">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M12 7v5l3 3" />
                         </svg>
-
-                        <!-- Ícone Geografia -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Geografia'">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M3 12h18" />
                             <path d="M12 3c3 3 3 15 0 18" />
                             <path d="M12 3c-3 3-3 15 0 18" />
                         </svg>
-
-                        <!-- Ícone Inglês -->
                         <svg viewBox="0 0 24 24" *ngIf="subject.name === 'Inglês'">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M3 12h18" />
@@ -2056,10 +2004,8 @@
                     </button>
                 </div>
 
-                <!-- Divisor vertical -->
                 <div class="tabs-divider"></div>
 
-                <!-- Acções: Filtrar + Novo -->
                 <div class="header-actions">
                     <button class="btn-filter" (click)="onFilter()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -2081,7 +2027,6 @@
 
             </div>
         </div>
-        <!-- FIM APP HEADER -->
 
         <div class="loading-overlay" [class.visible]="showLoading" aria-live="polite">
             <div class="loading-box">
@@ -2180,32 +2125,54 @@
                 </div>
 
                 <div class="card-body">
+
                     <div class="meta-row">
-                        
+
+                        <!-- Instituição -->
                         <div class="meta-item">
-                            <span class="meta-value">{{ exam.institution }}</span>
                             <span class="meta-label">Instituição</span>
-                        </div>
-
-                        <div class="meta-item">
-                            <span class="meta-value">{{ exam.year }}</span>
-                            <span class="meta-label">Ano</span>
-                        </div>
-
-                        <div class="meta-item">
-                            <span class="meta-value">{{ getType(exam.examType) }}</span>
-                            <span class="meta-label">Tipo</span>
-                        </div>
-
-                        <div class="meta-item">
-                            <span class="meta-value"
-                                [ngClass]="exam.premium ? 'meta-value-premium' : 'meta-value-free'">
-                                {{ exam.premium ? 'Premium' : 'Gratuito' }}
+                            <span class="meta-badge badge-inst">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 21h18" />
+                                    <path d="M5 21V7l7-4 7 4v14" />
+                                    <path d="M9 21v-4h6v4" />
+                                </svg>
+                                {{ exam.institution }}
                             </span>
-                            <span class="meta-label">Acesso</span>
+                        </div>
+
+                        <!-- Ano -->
+                        <div class="meta-item">
+                            <span class="meta-label">Ano</span>
+                            <span class="meta-badge badge-year">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <path d="M16 2v4M8 2v4M3 10h18" />
+                                </svg>
+                                {{ exam.year }}
+                            </span>
+                        </div>
+
+                        <!-- Tipo -->
+                        <div class="meta-item">
+                            <span class="meta-label">Tipo</span>
+                            <span class="meta-badge"
+                                [ngClass]="exam.examType === 'RESOLUCAO' ? 'badge-resolucao' : 'badge-enunciado'">
+                                <svg *ngIf="exam.examType === 'RESOLUCAO'" viewBox="0 0 24 24">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                <svg *ngIf="exam.examType !== 'RESOLUCAO'" viewBox="0 0 24 24">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                                {{ getType(exam.examType) }}
+                            </span>
                         </div>
 
                     </div>
+
                 </div>
 
                 <div class="card-footer">
@@ -2247,7 +2214,6 @@
             </div>
         </div>
 
-        <!-- Paginação desktop -->
         <div class="pagination-desktop">
             <button class="page-btn nav" (click)="previousPage()" [disabled]="currentPage === 1 || showLoading">
                 <svg viewBox="0 0 24 24">
@@ -2272,7 +2238,6 @@
             </button>
         </div>
 
-        <!-- Load more mobile -->
         <div class="load-more-wrap" *ngIf="!retryVisible || !isLoadMoreDisabled">
             <div class="load-more-info">Mostrando <span>{{ totalRecords }}</span> de <span>{{ totalExames }}</span>
                 exames</div>
@@ -2290,9 +2255,7 @@
 
 </html>
 
-<!-- ══════════════════════════════════════
-     Modal: Adicionar / Editar exame
-══════════════════════════════════════ -->
+<!-- Modal: Adicionar / Editar exame -->
 <div class="modal-overlay" *ngIf="displayModalSave">
     <div class="modal">
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
@@ -2301,9 +2264,7 @@
             <div class="modal-header">
                 <div class="modal-title-group">
                     <h2 class="modal-title">{{ editing ? 'Editar exame' : 'Novo exame' }}</h2>
-                    <span class="modal-subtitle">
-                        {{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo' }}
-                    </span>
+                    <span class="modal-subtitle">{{ editing ? 'Actualize os dados do exame' : 'Preencha os campos abaixo' }}</span>
                 </div>
                 <button class="close-btn" (click)="displayModalSave = false" [disabled]="showLoading">&#x2715;</button>
             </div>
@@ -2372,9 +2333,7 @@
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     Modal: Filtrar exames
-══════════════════════════════════════ -->
+<!-- Modal: Filtrar exames -->
 <div class="modal-overlay" *ngIf="displayModalFilter">
     <div class="modal">
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
@@ -2442,9 +2401,7 @@
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     Modal: Upgrade de plano
-══════════════════════════════════════ -->
+<!-- Modal: Upgrade de plano -->
 <div class="modal-overlay" *ngIf="displayModalUpgradePlan">
     <div class="modal">
         <div class="modal-handle"><span></span></div>
@@ -2456,7 +2413,6 @@
                 </div>
                 <button class="close-btn" (click)="onCloseUpgradeModal()">&#x2715;</button>
             </div>
-
             <div class="pricing-hero">
                 <div class="pricing-hero-top">
                     <span class="plan-badge">
@@ -2474,44 +2430,35 @@
                 </div>
                 <ul class="feature-list">
                     <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
+                        <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
+                            </svg></span>
                         Acesso ilimitado a todos os tópicos e conteúdos disponíveis
                     </li>
                     <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
+                        <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
+                            </svg></span>
                         Resolução detalhada com dicas e comentários passo a passo
                     </li>
                     <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
+                        <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
+                            </svg></span>
                         Criação de quizzes avançados e personalizados
                     </li>
                     <li>
-                        <span class="feature-check">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round">
+                        <span class="feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        </span>
+                            </svg></span>
                         Mais exercícios por quiz para reforçar o aprendizado
                     </li>
                 </ul>
             </div>
-
             <button class="btn-upgrade-big" (click)="onUpgradePlan()">
                 Fazer upgrade agora
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -2525,9 +2472,7 @@
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     Modal: Método de pagamento
-══════════════════════════════════════ -->
+<!-- Modal: Método de pagamento -->
 <div class="modal-overlay" *ngIf="displayModalPaymentOptions">
     <div class="modal">
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
@@ -2541,7 +2486,6 @@
                 <button class="close-btn" (click)="onCloseModalPaymentOptions()"
                     [disabled]="showLoading">&#x2715;</button>
             </div>
-
             <div class="payment-summary">
                 <div class="payment-summary-row">
                     <span class="payment-summary-label">Plano</span>
@@ -2556,7 +2500,6 @@
                     <span class="payment-summary-value payment-summary-total">MT 299</span>
                 </div>
             </div>
-
             <ng-container *ngIf="userWallets && userWallets.length > 0; else noWallets">
                 <div class="wallet-options">
                     <label class="wallet-card" *ngFor="let wallet of userWallets"
@@ -2580,7 +2523,6 @@
                         </div>
                     </label>
                 </div>
-
                 <button class="btn-add-wallet" (click)="openModalAddPaymentOption()" [disabled]="showLoading">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -2589,7 +2531,6 @@
                     </svg>
                     Adicionar outro método
                 </button>
-
                 <button class="btn-upgrade-big" (click)="upgradePlan()" [disabled]="showLoading">
                     <span class="btn-spinner" *ngIf="showLoading"></span>
                     <ng-container *ngIf="!showLoading">
@@ -2604,7 +2545,6 @@
                 </button>
                 <p class="plan-price-note">MT 299 debitados mensalmente &middot; Cancele a qualquer momento</p>
             </ng-container>
-
             <ng-template #noWallets>
                 <div class="empty-wallets">
                     <div class="empty-wallets-icon">
@@ -2628,14 +2568,11 @@
                     Adicionar método de pagamento
                 </button>
             </ng-template>
-
         </div>
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     Modal: Adicionar carteira
-══════════════════════════════════════ -->
+<!-- Modal: Adicionar carteira -->
 <div class="modal-overlay" *ngIf="displayModalAddPaymentOption">
     <div class="modal">
         <div class="modal-progress-bar" [class.visible]="showLoading"></div>
@@ -2649,7 +2586,6 @@
                 <button class="close-btn" (click)="onCloseModalAddPaymentOption()"
                     [disabled]="showLoading">&#x2715;</button>
             </div>
-
             <form autocomplete="off" #walletTypeForm="ngForm" (ngSubmit)="addNewWlletType(walletTypeForm)">
                 <div class="form-group">
                     <label for="phoneNumber">Número de telefone</label>
@@ -2665,7 +2601,6 @@
                         Número inválido. Suportamos MPESA (84/85) e EMOLA (86/87).
                     </span>
                 </div>
-
                 <div *ngIf="wallet.type" class="wallet-card"
                     style="margin-bottom: 1.25rem; pointer-events: none; cursor: default;">
                     <div class="wallet-left">
@@ -2682,9 +2617,8 @@
                     </div>
                     <span class="badge-detected">Detectado</span>
                 </div>
-
-                <button class="btn-modal-primary"
-                    [disabled]="walletTypeForm.invalid || !wallet.type || showLoading" (click)="upgradePlanByPhoneNumber(wallet)">
+                <button class="btn-modal-primary" [disabled]="walletTypeForm.invalid || !wallet.type || showLoading"
+                    (click)="upgradePlanByPhoneNumber(wallet)">
                     <span class="btn-spinner" *ngIf="showLoading"></span>
                     <svg *ngIf="!showLoading" width="15" height="15" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
