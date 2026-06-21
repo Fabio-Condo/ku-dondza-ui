@@ -1660,6 +1660,7 @@
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border-radius: 16px;
       margin-bottom: 48px;
     }
@@ -1740,8 +1741,6 @@
       min-width: 36px;
       text-align: right;
     }
-
-  
 
     .load-more-container {
       display: flex;
@@ -2616,6 +2615,10 @@
         font-size: 13px;
       }
 
+      .results-table {
+        min-width: 700px;
+      }
+
       /* Results */
       .results-hero {
         grid-template-columns: 1fr;
@@ -2918,7 +2921,9 @@
         <div class="score-ring">
           <svg class="progress-svg" viewBox="0 0 120 120">
             <circle class="track" cx="60" cy="60" r="52" />
-            <circle class="fill" cx="60" cy="60" r="52" [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.80 ? '#16a34a' : (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'" [style.stroke-dashoffset]="326.73 - (result.correctAnswers / quiz.questions.length) * 326.73" />
+            <circle class="fill" cx="60" cy="60" r="52"
+              [style.stroke]="(result.correctAnswers / quiz.questions.length) >= 0.80 ? '#16a34a' : (result.correctAnswers / quiz.questions.length) >= 0.4 ? '#d97706' : '#dc2626'"
+              [style.stroke-dashoffset]="326.73 - (result.correctAnswers / quiz.questions.length) * 326.73" />
           </svg>
           <div class="score-center">
             <div class="score-number">{{ ((result.correctAnswers / quiz.questions.length) * 100).toFixed(1) }}</div>
@@ -3260,7 +3265,8 @@
       </div>
 
       <!-- pos-1: Tutor AI -->
-      <div class="fab-wrapper fab-wrapper--pos-bottom-right-1" (click)="onStartConversation();" *ngIf="!showInitQuizScreen">
+      <div class="fab-wrapper fab-wrapper--pos-bottom-right-1" (click)="onStartConversation();"
+        *ngIf="!showInitQuizScreen">
         <button class="fab fab--tutor" aria-label="Abrir Tutor AI">
           <!-- Robô SVG -->
           <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
