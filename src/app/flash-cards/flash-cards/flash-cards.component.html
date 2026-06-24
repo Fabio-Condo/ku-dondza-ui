@@ -2108,8 +2108,7 @@
                             </div>
 
                             <div id="math-container-{{ currentIndex }}" class="flip-question"
-                                *ngIf="currentCard.question">
-                                {{ currentCard.question }}
+                                *ngIf="currentCard.question" [innerHTML]="getFormattedText(currentCard.question)">
                             </div>
 
                         </div>
@@ -2122,8 +2121,7 @@
                             </div>
 
                             <div id="math-container-solution-{{ currentIndex }}" class="flip-answer"
-                                *ngIf="currentCard.answer">
-                                {{ currentCard.answer }}
+                                *ngIf="currentCard.answer" [innerHTML]="getFormattedText(currentCard.answer)">
                             </div>
 
                         </div>

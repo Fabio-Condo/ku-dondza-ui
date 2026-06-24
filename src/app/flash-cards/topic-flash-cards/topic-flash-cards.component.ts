@@ -250,13 +250,14 @@ export class TopicFlashCardsComponent {
   }
 
   getFormattedText(text: string): string {
-    // Negrito: **texto**
-    let result = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Negrito: **texto** → <strong>texto</strong>
+    let textoFormatado = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
-    // Itálico: *texto*
-    result = result.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Itálico: *texto* → <em>texto</em>
+    textoFormatado = textoFormatado.replace(/\*(.+?)\*/g, '<em>$1</em>');
 
-    return result;
+    // Quebras de linha: \n → <br>
+    return textoFormatado.replace(/\n/g, '<br>');
   }
 
   renderMathExpressionsForDeck(): void {
