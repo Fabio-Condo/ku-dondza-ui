@@ -48,6 +48,8 @@ import { ChallengesModule } from './challenges/challenges.module';
 import { ChallengesRoutingModule } from './challenges/challenges-routing.module';
 import { FlashCardsRoutingModule } from './flash-cards/flash-cards-routing.module';
 import { FlashCardsModule } from './flash-cards/flash-cards.module';
+import { TutorModule } from './tutor/tutor.module';
+import { TutorRoutingModule } from './tutor/tutor-routing.module';
 
 @NgModule({
   declarations: [
@@ -74,6 +76,7 @@ import { FlashCardsModule } from './flash-cards/flash-cards.module';
     PaymentsRoutingModule,
     ChallengesRoutingModule,
     FlashCardsRoutingModule,
+    TutorRoutingModule,
 
     SubjectsModule,
     TopicsModule,
@@ -91,6 +94,7 @@ import { FlashCardsModule } from './flash-cards/flash-cards.module';
     PaymentsModule,
     ChallengesModule,
     FlashCardsModule,
+    TutorModule,
 
     CoreRoutingModule,
     AppRoutingModule,

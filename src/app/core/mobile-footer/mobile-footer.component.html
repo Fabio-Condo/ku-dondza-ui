@@ -199,11 +199,13 @@
     }
 
     @keyframes ring-pulse {
+
       0%,
       100% {
         opacity: 1;
         transform: scale(1);
       }
+
       50% {
         opacity: 0;
         transform: scale(1.16);
@@ -277,7 +279,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
             stroke-linejoin="round">
             <circle cx="12" cy="12" r="9" />
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
         </div>
         <span class="nav-text">Explorar</span>
@@ -315,7 +318,41 @@
         <span class="cta-label">Praticar</span>
       </div>
 
+      <!-- Perfil -->
+      <a [class.active]="isActive('/tutor-ai')" routerLink="/tutor-ai" class="nav-item" data-section="progresso">
+        <div class="icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Antena -->
+            <line x1="18" y1="2" x2="18" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <circle cx="18" cy="2" r="1.5" fill="currentColor" />
+            <!-- Cabeça -->
+            <rect x="6" y="7" width="24" height="16" rx="5" fill="currentColor" fill-opacity="0.22" stroke="currentColor"
+              stroke-width="1.8" />
+            <!-- Olhos -->
+            <rect x="10" y="12" width="5" height="4" rx="2" fill="currentColor" />
+            <rect x="21" y="12" width="5" height="4" rx="2" fill="currentColor" />
+            <!-- Boca -->
+            <path d="M12 20 Q18 23 24 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <!-- Corpo -->
+            <rect x="10" y="24" width="16" height="9" rx="3" fill="currentColor" fill-opacity="0.22" stroke="currentColor"
+              stroke-width="1.8" />
+            <!-- Braços -->
+            <rect x="3" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22" stroke="currentColor"
+              stroke-width="1.6" />
+            <rect x="28" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22" stroke="currentColor"
+              stroke-width="1.6" />
+            <!-- Pernas -->
+            <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+            <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+          </svg>
+        </div>
+        <span class="nav-text">Tutor AI</span>
+        <div class="active-dot"></div>
+        <div class="notif"></div>
+      </a>
+
       <!-- Exame -->
+      <!-- 
       <a [class.active]="isActive('/exames')" routerLink="/exames" class="nav-item" data-section="exame">
         <div class="icon-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
@@ -330,9 +367,11 @@
         <div class="active-dot"></div>
         <div class="notif"></div>
       </a>
+      -->
 
       <!-- Perfil -->
-      <a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()" class="nav-item" data-section="progresso">
+      <a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()" class="nav-item"
+        data-section="progresso">
         <div class="icon-wrap">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <rect x="4" y="10" width="3" height="10" rx="1.5" />
