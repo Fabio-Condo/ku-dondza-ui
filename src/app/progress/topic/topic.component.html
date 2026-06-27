@@ -190,7 +190,7 @@
             margin-bottom: 2px;
         }
 
-        .subject-info>span {
+        .subject-info > span {
             font-size: 12px;
             color: #6b7280;
         }
@@ -372,11 +372,11 @@
          * Locked cards: dim only the non-admin content.
          * The admin-row sits OUTSIDE these selectors so it stays fully opaque.
          */
-        .test-card.locked>.card-top,
-        .test-card.locked>.test-num,
-        .test-card.locked>.test-meta,
-        .test-card.locked>.card-xp-row,
-        .test-card.locked>.locked-footer {
+        .test-card.locked > .card-top,
+        .test-card.locked > .test-num,
+        .test-card.locked > .test-meta,
+        .test-card.locked > .card-xp-row,
+        .test-card.locked > .locked-footer {
             opacity: 0.48;
             pointer-events: none;
         }
@@ -922,28 +922,8 @@
             </div>
         </div>
 
-        <!-- Topic filter -->
-        <div class="topic-select-wrap" *ngIf="subject.topicDtoWithTests && subject.topicDtoWithTests.length > 1">
-            <label class="topic-select-label" for="topicSelect">Filtrar por tópico</label>
-            <div style="position: relative;">
-                <select id="topicSelect" class="topic-select" [ngModel]="selectedTopicId"
-                    (ngModelChange)="selectedTopicId = $event === 'null' ? null : +$event">
-                    <option [value]="null">Todos os tópicos</option>
-                    <option *ngFor="let topic of subject.topicDtoWithTests; let ti = index" [value]="topic.topicId">
-                        {{ ti + 1 }} · {{ topic.topicName }}
-                    </option>
-                </select>
-                <svg class="topic-select-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    aria-hidden="true">
-                    <polyline points="6 9 12 15 18 9" />
-                </svg>
-            </div>
-        </div>
-
         <!-- Topics -->
-        <!--<div *ngFor="let topic of subject.topicDtoWithTests; let topicIndex = index" class="topic-block">-->
-        <div *ngFor="let topic of filteredTopics; let topicIndex = index" class="topic-block">
+        <div *ngFor="let topic of subject.topicDtoWithTests; let topicIndex = index" class="topic-block">
             <div class="topic-header">
                 <div class="topic-meta">
                     <!-- Numbered topic name -->
@@ -972,9 +952,8 @@
                         <div class="card-top">
                             <span class="test-label">Teste {{ i + 1 }}</span>
                             <div class="test-score-badge">
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"
-                                    stroke="none">
-                                    <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" stroke="none">
+                                    <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
                                 </svg>
                                 {{ test.accuracyRate.toFixed(1) }}%
                             </div>
@@ -984,48 +963,47 @@
                         <div class="completed-bottom">
                             <div class="completed-bottom-left">
                                 <div class="test-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</div>
-                                        <div class="test-meta">{{ test.totalQuestions }} questões</div>
-                                </div>
-                                <div class="completed-bottom-right">
-                                    <span class="card-xp-pill">
-                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"
-                                            stroke="none">
-                                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                        </svg>
-                                        {{ test.earnedPoints }} XP
-                                    </span>
-                                </div>
+                                <div class="test-meta">{{ test.totalQuestions }} questões</div>
                             </div>
-
-                            <!-- Admin row -->
-                            <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
-                                <button class="admin-btn a-view"
-                                    (click)="$event.stopPropagation(); onGetSelectedQuestionsByTopicId(test)">
-                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                        <circle cx="12" cy="12" r="3" />
+                            <div class="completed-bottom-right">
+                                <span class="card-xp-pill">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                                     </svg>
-                                    Ver
-                                </button>
-                                <button class="admin-btn a-edit"
-                                    (click)="$event.stopPropagation(); onGetQuestionsByTopicId(test)">
-                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                    </svg>
-                                    Editar
-                                </button>
+                                    {{ test.earnedPoints }} XP
+                                </span>
                             </div>
+                        </div>
 
-                            <!-- Review button -->
-                            <div class="card-divider"></div>
-                            <div>
-                                <button class="start-btn btn-review" (click)="reviewTest(test)">
-                                    Revisar
-                                </button>
-                            </div>
+                        <!-- Admin row -->
+                        <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
+                            <button class="admin-btn a-view"
+                                (click)="$event.stopPropagation(); onGetSelectedQuestionsByTopicId(test)">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                Ver
+                            </button>
+                            <button class="admin-btn a-edit"
+                                (click)="$event.stopPropagation(); onGetQuestionsByTopicId(test)">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                                Editar
+                            </button>
+                        </div>
+
+                        <!-- Review button -->
+                        <div class="card-divider"></div>
+                        <div>
+                            <button class="start-btn btn-review" (click)="reviewTest(test)">
+                                Revisar
+                            </button>
+                        </div>
 
                     </ng-container>
 
@@ -1041,55 +1019,53 @@
                         </div>
 
                         <div class="test-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</div>
-                                <div class="test-meta">{{ test.totalQuestions }} questões</div>
+                        <div class="test-meta">{{ test.totalQuestions }} questões</div>
 
-                                <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
-                                    <button class="admin-btn a-view"
-                                        (click)="$event.stopPropagation(); onGetSelectedQuestionsByTopicId(test)">
-                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                            <circle cx="12" cy="12" r="3" />
-                                        </svg>
-                                        Ver
-                                    </button>
-                                    <button class="admin-btn a-edit"
-                                        (click)="$event.stopPropagation(); onGetQuestionsByTopicId(test)">
-                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                        </svg>
-                                        Editar
-                                    </button>
-                                </div>
+                        <div class="admin-row" *ngIf="isSuperAdmin && loggedUser">
+                            <button class="admin-btn a-view"
+                                (click)="$event.stopPropagation(); onGetSelectedQuestionsByTopicId(test)">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                Ver
+                            </button>
+                            <button class="admin-btn a-edit"
+                                (click)="$event.stopPropagation(); onGetQuestionsByTopicId(test)">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                                Editar
+                            </button>
+                        </div>
 
-                                <!-- Active footer -->
-                                <ng-container *ngIf="isActive(topic, test, i)">
-                                    <div class="card-divider"></div>
-                                    <div>
-                                        <button class="start-btn btn-start" (click)="startTest(test, topic)">
-                                            Iniciar
-                                        </button>
-                                    </div>
-                                </ng-container>
+                        <!-- Active footer -->
+                        <ng-container *ngIf="isActive(topic, test, i)">
+                            <div class="card-divider"></div>
+                            <div>
+                                <button class="start-btn btn-start" (click)="startTest(test, topic)">
+                                    Iniciar
+                                </button>
+                            </div>
+                        </ng-container>
 
-                                <!-- Locked footer -->
-                                <ng-container *ngIf="isLocked(topic, test, i)">
-                                    <div class="locked-footer">
-                                        <div class="card-divider"></div>
-                                        <div class="lock-row">
-                                            <div class="lock-icon">
-                                                <div class="lock-shackle3"></div>
-                                                <div class="lock-body3">
-                                                    <div class="lock-hole"></div>
-                                                </div>
-                                            </div>
+                        <!-- Locked footer -->
+                        <ng-container *ngIf="isLocked(topic, test, i)">
+                            <div class="locked-footer">
+                                <div class="card-divider"></div>
+                                <div class="lock-row">
+                                    <div class="lock-icon">
+                                        <div class="lock-shackle3"></div>
+                                        <div class="lock-body3">
+                                            <div class="lock-hole"></div>
                                         </div>
                                     </div>
-                                </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
 
                     </ng-container>
 

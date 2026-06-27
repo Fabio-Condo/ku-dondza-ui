@@ -4,6 +4,7 @@ import { AuthenticationGuard } from '../security/Guard/authentication.guard';
 import { ProgressComponent } from './progress/progress.component';
 import { ProgressSubjectsComponent } from './progress-subjects/progress-subjects.component';
 import { RankingComponent } from './ranking/ranking.component';
+import { TopicComponent } from './topic/topic.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,15 @@ const routes: Routes = [
   {
     path: 'progress',
     component: ProgressSubjectsComponent,
+    canActivate: [AuthenticationGuard],
+    //data: { 
+    //  roles: ['ROLE_USER'], 
+    //  requiresRoleCheck: true
+    //} 
+  },
+  {
+    path: 'progress/topics/:id',
+    component: TopicComponent,
     canActivate: [AuthenticationGuard],
     //data: { 
     //  roles: ['ROLE_USER'], 

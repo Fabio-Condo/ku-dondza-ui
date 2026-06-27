@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProgressSubjectsComponent } from './progress-subjects/progress-subjects.component';
 import { RankingComponent } from './ranking/ranking.component';
+import { TopicComponent } from './topic/topic.component';
 
 
 
@@ -24,7 +25,8 @@ import { RankingComponent } from './ranking/ranking.component';
   declarations: [
     ProgressComponent,
     ProgressSubjectsComponent,
-    RankingComponent
+    RankingComponent,
+    TopicComponent
   ],
   imports: [
     CommonModule,

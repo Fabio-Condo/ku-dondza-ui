@@ -26,12 +26,13 @@ import { evaluate } from 'mathjs'; //npm install mathjs
 
 
 @Component({
-  selector: 'app-progress',
-  templateUrl: './progress.component.html',
-  styleUrls: ['./progress.component.css']
+  selector: 'app-topic',
+  templateUrl: './topic.component.html',
+  styleUrls: ['./topic.component.css']
 })
-export class ProgressComponent implements OnInit {
-  subject: SubjectProgressDTO = new SubjectProgressDTO();
+export class TopicComponent {
+
+ subject: SubjectProgressDTO = new SubjectProgressDTO();
   //subjects: Subject[] = [];
 
   test: Test = new Test();
@@ -44,8 +45,6 @@ export class ProgressComponent implements OnInit {
 
   selectedQuestions: Question[] = [];
   displayModalSelectedQuestionsList: boolean = false;
-
-  selectedTopicId: number | null = null;
 
   loggedUser: User = new User();
   isUserLoggedIn: boolean = false;
@@ -786,11 +785,6 @@ export class ProgressComponent implements OnInit {
       (total: number, topic: any) => total + (topic.tests?.length || 0),
       0
     ) || 0;
-  }
-
-  get filteredTopics() {
-    if (this.selectedTopicId === null) return this.subject.topicDtoWithTests;
-    return this.subject.topicDtoWithTests.filter(t => t.topicId === this.selectedTopicId);
   }
 
   private sendErrorNotification(message: string): void {
