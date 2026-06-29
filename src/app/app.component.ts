@@ -40,7 +40,8 @@ export class AppComponent {
   }
 
   showFooter() {
-    return this.router.url !== '/pagina-nao-encontrada' && this.router.url !== '/pagina-nao-autorizada';
+    return this.router.url === '/home';
+    //return this.router.url !== '/pagina-nao-encontrada' && this.router.url !== '/pagina-nao-autorizada';
   }
 
   showMobileFooter() {
