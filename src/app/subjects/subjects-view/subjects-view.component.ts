@@ -1002,6 +1002,18 @@ export class SubjectsViewComponent {
     }
   }
 
+  getCategoryValue(category: string) {
+    switch (category) {
+      case 'EXACT_SCIENCES':
+        return 'Ciências Exatas';
+      case 'HUMAN_SCIENCES':
+        return 'Ciências Humanas';
+      case 'LANGUAGES':
+        return 'Línguas';
+    }
+    return '';
+  }
+
   onOpenFlashCards(topic: Topic) {
   }
 

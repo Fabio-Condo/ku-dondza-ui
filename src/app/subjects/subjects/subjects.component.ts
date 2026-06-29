@@ -22,7 +22,7 @@ export class SubjectsComponent implements OnInit {
 
   subjects: Subject[] = [];
   subject: Subject = new Subject();
-  selectedSubject: Subject = new Subject();
+  //selectedSubject: Subject = new Subject();
   file!: File;
 
   subjectsForSelects: Subject[] = [];

@@ -259,7 +259,24 @@ export class ExamesComponent implements OnInit {
 
     this.filtro.pagina++;
 
-    this.examesService.filterWithCash(this.filtro).subscribe(
+    this.examesService.filterWithCash(this.filtro).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (error.status && error.status >= 400 && error.status < 500) {
+              throw error;
+            }
+            if (retryCount >= 3) throw error; // 3 tentativas
+            const nextRetry = retryCount + 1;
+            this.loadingMessage = `Tentando reconectar (${nextRetry}/3)`;
+            return nextRetry;
+          }, 0),
+          delayWhen(retryCount =>
+            timer(Math.pow(2, retryCount) * 1000) // 2s → 4s → 8s
+          )
+        )
+      )
+    ).subscribe(
       (data: IApiResponse<Exam>) => {
         this.exams = [...this.exams, ...data.content];
         this.totalRecords = data.totalElements;

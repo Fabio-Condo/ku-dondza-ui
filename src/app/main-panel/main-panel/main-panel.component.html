@@ -2222,7 +2222,7 @@
                 </div>
                 <button class="exam-download-btn" (click)="onDownload(exam); $event.stopPropagation()"
                     [disabled]="exam.showLoadingDownload || isPremiumExam(exam)">
-                    <svg viewBox="0 0 24 24">
+                    <svg *ngIf="!exam.showLoadingDownload" viewBox="0 0 24 24">
                         <path d="M12 15V3" />
                         <path d="M7 10l5 5 5-5" />
                         <path d="M20 21H4" />

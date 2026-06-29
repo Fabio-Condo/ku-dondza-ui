@@ -8,7 +8,7 @@ import { TopicContentService } from 'src/app/topics/TopicContentService.service'
 import { AuthenticationService } from 'src/app/users/authentication.service';
 import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
-import { FlashCardsService } from './flash-cards.service';
+import { FlashCardsService } from '../flash-cards.service';
 import { FlashCard } from 'src/app/core/model/FlashCard';
 import { FlashCardFilter } from 'src/app/core/interface/FlashCardFilter';
 import { retryWhen, delayWhen, scan } from 'rxjs/operators';
@@ -222,6 +222,7 @@ export class FlashCardsComponent {
         this.flashCards = [...this.flashCards, ...data.content];
         this.totalRecords = data.totalElements;
         this.showLoading = false;
+        this.renderMathExpressions();
       },
       (errorResponse: HttpErrorResponse) => {
         this.sendErrorNotification(errorResponse.error.message);

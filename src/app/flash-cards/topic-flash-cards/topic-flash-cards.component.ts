@@ -12,7 +12,7 @@ import { UserService } from 'src/app/users/user.service';
 import { User } from 'src/app/core/model/User';
 import { FlashCardDeckResponse } from 'src/app/core/model/FlashCardDeckResponse';
 import { FlashCard } from 'src/app/core/model/FlashCard';
-import { FlashCardsService } from '../flash-cards/flash-cards.service';
+import { FlashCardsService } from '../flash-cards.service';
 declare const MathJax: any;
 
 
