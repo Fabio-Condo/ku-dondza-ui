@@ -146,6 +146,18 @@
             transform: scale(0.98);
         }
 
+        .tp-btn-new:focus-visible,
+        .tp-btn-close-sb:focus-visible,
+        .tp-btn-menu:focus-visible,
+        .tp-icon-btn:focus-visible,
+        .tp-conv-item:focus-visible,
+        .tp-chip:focus-visible,
+        .tp-send-btn:focus-visible,
+        .tp-textarea:focus-visible {
+            outline: 2px solid #4361ee;
+            outline-offset: 2px;
+        }
+
         .tp-btn-new i {
             font-size: 14px;
         }
@@ -225,14 +237,19 @@
             padding: 10px 8px 4px;
         }
 
+        /* Conversation item — text only, no per-item icon.
+           Selection is communicated with background + left accent bar
+           so the list stays calm and scannable. */
         .tp-conv-item {
             display: flex;
             align-items: flex-start;
-            gap: 9px;
-            padding: 8px 9px;
-            border-radius: 10px;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 10px 10px 11px;
+            border-left: 3px solid transparent;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.12s;
+            transition: background 0.12s, border-color 0.12s;
             margin-bottom: 1px;
         }
 
@@ -248,24 +265,13 @@
             color: #4361ee;
         }
 
-        .tp-conv-emoji {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
         .tp-conv-body {
             flex: 1;
             min-width: 0;
         }
 
         .tp-conv-title {
-            font-size: 12px;
+            font-size: 12.5px;
             font-weight: 700;
             color: #1e293b;
             white-space: nowrap;
@@ -287,8 +293,34 @@
         .tp-conv-time {
             font-size: 10px;
             color: #cbd5e1;
+            font-weight: 600;
             flex-shrink: 0;
             padding-top: 2px;
+            white-space: nowrap;
+        }
+
+        .tp-sb-empty {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+            padding: 32px 16px;
+            color: #94a3b8;
+        }
+
+        .tp-sb-empty i {
+            font-size: 22px;
+            color: #cbd5e1;
+        }
+
+        .tp-sb-empty span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tp-sb-empty.show {
+            display: flex;
         }
 
         /* ══════════════════════════════════
@@ -353,7 +385,6 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            font-size: 16px;
         }
 
         .tp-topbar-title {
@@ -445,7 +476,7 @@
             white-space: nowrap;
         }
 
-        /* Bubbles */
+        /* Bubbles — only the tutor and the user get an avatar/icon */
         .tp-bubble {
             display: flex;
             align-items: flex-start;
@@ -812,37 +843,52 @@
                 padding: 4px 10px;
             }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- Shared icon sprite: the bot glyph is defined once and reused via
+         <use> in the sidebar brand, topbar and every tutor bubble, so the
+         "tutor" identity stays visually consistent everywhere it appears. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="tp-bot-icon" viewBox="0 0 36 36">
+            <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="18" cy="1.5" r="1.5" fill="#4361ee" />
+            <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+            <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
+            <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none" />
+            <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2" />
+            <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6" />
+            <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee" stroke-width="1.6" />
+        </symbol>
+    </svg>
+
     <div class="tp-container">
         <div class="tp-wrap" id="tpWrap">
 
-            <div class="tp-overlay" id="tpOverlay" onclick="closeSidebar()"></div>
+            <div class="tp-overlay" id="tpOverlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
 
             <!-- ════════════ SIDEBAR ════════════ -->
-            <aside class="tp-sidebar" id="tpSidebar">
+            <aside class="tp-sidebar" id="tpSidebar" [class.open]="sidebarOpen">
 
                 <div class="tp-sb-head">
                     <div class="tp-sb-brand">
                         <div class="tp-sb-icon">
-                            <svg width="20" height="20" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-                                <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2"
-                                    stroke-linecap="round" />
-                                <circle cx="18" cy="1.5" r="1.5" fill="#4361ee" />
-                                <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="1.8" />
-                                <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="1.6" stroke-linecap="round"
-                                    fill="none" />
-                                <rect x="10" y="23" width="16" height="9" rx="3" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="1.8" />
-                                <rect x="3" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="1.6" />
-                                <rect x="28" y="24" width="5" height="7" rx="2.5" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="1.6" />
+                            <svg width="20" height="20" aria-hidden="true">
+                                <use href="#tp-bot-icon"></use>
                             </svg>
                         </div>
                         <div>
@@ -851,11 +897,11 @@
                         </div>
                     </div>
                     <div class="tp-sb-toprow">
-                        <button class="tp-btn-new" onclick="newConversation()">
+                        <button class="tp-btn-new">
                             <i class="ti ti-plus" aria-hidden="true"></i>
                             Nova conversa
                         </button>
-                        <button class="tp-btn-close-sb" onclick="closeSidebar()" aria-label="Fechar sidebar">
+                        <button class="tp-btn-close-sb" (click)="closeSidebar()" aria-label="Fechar sidebar">
                             <i class="ti ti-x" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -864,18 +910,16 @@
                 <div class="tp-sb-search">
                     <div class="tp-sb-search-wrap">
                         <i class="ti ti-search" aria-hidden="true"></i>
-                        <input type="text" placeholder="Pesquisar conversas..." oninput="filterConvs(this.value)"
-                            aria-label="Pesquisar conversas" />
+                        <input type="text" id="tpSearchInput" placeholder="Pesquisar conversas..."
+                            oninput="filterConvs(this.value)" aria-label="Pesquisar conversas" />
                     </div>
                 </div>
 
                 <div class="tp-sb-list" id="tpConvList">
 
-                    <div class="tp-section-label">Hoje</div>
+                    <div class="tp-section-label" data-group="hoje">Hoje</div>
 
-                    <div class="tp-conv-item active"
-                        onclick="selectConv(this, '📐', 'Funções Quadráticas', 'Iniciada hoje às 09:14')">
-                        <div class="tp-conv-emoji" style="background:#dbeafe">📐</div>
+                    <div class="tp-conv-item active" role="button" tabindex="0" aria-current="true">
                         <div class="tp-conv-body">
                             <span class="tp-conv-title">Funções Quadráticas</span>
                             <span class="tp-conv-preview">Como resolver ax² + bx + c = 0?</span>
@@ -883,9 +927,7 @@
                         <span class="tp-conv-time">09:14</span>
                     </div>
 
-                    <div class="tp-conv-item"
-                        onclick="selectConv(this, '🧬', 'Genética Mendeliana', 'Iniciada hoje às 07:30')">
-                        <div class="tp-conv-emoji" style="background:#dcfce7">🧬</div>
+                    <div class="tp-conv-item" role="button" tabindex="0">
                         <div class="tp-conv-body">
                             <span class="tp-conv-title">Genética Mendeliana</span>
                             <span class="tp-conv-preview">Diferença entre dominante e recessivo</span>
@@ -893,11 +935,9 @@
                         <span class="tp-conv-time">07:30</span>
                     </div>
 
-                    <div class="tp-section-label">Ontem</div>
+                    <div class="tp-section-label" data-group="ontem">Ontem</div>
 
-                    <div class="tp-conv-item"
-                        onclick="selectConv(this, '⚗️', 'Reações Redox', 'Iniciada ontem às 21:05')">
-                        <div class="tp-conv-emoji" style="background:#fef3c7">⚗️</div>
+                    <div class="tp-conv-item" role="button" tabindex="0">
                         <div class="tp-conv-body">
                             <span class="tp-conv-title">Reações Redox</span>
                             <span class="tp-conv-preview">Equilíbrio de semirreações</span>
@@ -905,9 +945,7 @@
                         <span class="tp-conv-time">21:05</span>
                     </div>
 
-                    <div class="tp-conv-item"
-                        onclick="selectConv(this, '🌍', 'Segunda Guerra Mundial', 'Iniciada ontem às 18:42')">
-                        <div class="tp-conv-emoji" style="background:#ede9fe">🌍</div>
+                    <div class="tp-conv-item" role="button" tabindex="0">
                         <div class="tp-conv-body">
                             <span class="tp-conv-title">Segunda Guerra Mundial</span>
                             <span class="tp-conv-preview">Causas e consequências do conflito</span>
@@ -915,11 +953,9 @@
                         <span class="tp-conv-time">18:42</span>
                     </div>
 
-                    <div class="tp-section-label">Esta semana</div>
+                    <div class="tp-section-label" data-group="semana">Esta semana</div>
 
-                    <div class="tp-conv-item"
-                        onclick="selectConv(this, '📖', 'Romantismo Português', 'Iniciada há 3 dias')">
-                        <div class="tp-conv-emoji" style="background:#fce7f3">📖</div>
+                    <div class="tp-conv-item" role="button" tabindex="0">
                         <div class="tp-conv-body">
                             <span class="tp-conv-title">Romantismo Português</span>
                             <span class="tp-conv-preview">Autores e obras principais</span>
@@ -927,14 +963,17 @@
                         <span class="tp-conv-time">Seg</span>
                     </div>
 
-                    <div class="tp-conv-item"
-                        onclick="selectConv(this, '📊', 'Estatística Descritiva', 'Iniciada há 4 dias')">
-                        <div class="tp-conv-emoji" style="background:#dbeafe">📊</div>
+                    <div class="tp-conv-item" role="button" tabindex="0">
                         <div class="tp-conv-body">
                             <span class="tp-conv-title">Estatística Descritiva</span>
                             <span class="tp-conv-preview">Média, mediana e moda</span>
                         </div>
                         <span class="tp-conv-time">Dom</span>
+                    </div>
+
+                    <div class="tp-sb-empty" id="tpSbEmpty">
+                        <i class="ti ti-message-search" aria-hidden="true"></i>
+                        <span>Sem conversas para essa pesquisa</span>
                     </div>
 
                 </div>
@@ -945,10 +984,14 @@
 
                 <div class="tp-topbar">
                     <div class="tp-topbar-left">
-                        <button class="tp-btn-menu" onclick="openSidebar()" aria-label="Abrir conversas">
+                        <button class="tp-btn-menu" (click)="openSidebar()" aria-label="Abrir conversas">
                             <i class="ti ti-menu-2" aria-hidden="true"></i>
                         </button>
-                        <div class="tp-topbar-icon" id="tpTopIcon">📐</div>
+                        <div class="tp-topbar-icon" aria-hidden="true">
+                            <svg width="18" height="18">
+                                <use href="#tp-bot-icon"></use>
+                            </svg>
+                        </div>
                         <div>
                             <div class="tp-topbar-title" id="tpTopTitle">Funções Quadráticas</div>
                             <div class="tp-topbar-sub" id="tpTopSub">Iniciada hoje às 09:14</div>
@@ -976,17 +1019,8 @@
                     <!-- Bubble AI -->
                     <div class="tp-bubble">
                         <div class="tp-bubble-av" aria-hidden="true">
-                            <svg width="14" height="14" viewBox="0 0 36 36" fill="none">
-                                <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
-                                    stroke-linecap="round" />
-                                <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
-                                <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round"
-                                    fill="none" />
-                                <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
+                            <svg width="14" height="14">
+                                <use href="#tp-bot-icon"></use>
                             </svg>
                         </div>
                         <div>
@@ -1012,17 +1046,8 @@
                     <!-- Bubble AI -->
                     <div class="tp-bubble">
                         <div class="tp-bubble-av" aria-hidden="true">
-                            <svg width="14" height="14" viewBox="0 0 36 36" fill="none">
-                                <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
-                                    stroke-linecap="round" />
-                                <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
-                                <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round"
-                                    fill="none" />
-                                <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
+                            <svg width="14" height="14">
+                                <use href="#tp-bot-icon"></use>
                             </svg>
                         </div>
                         <div>
@@ -1050,17 +1075,8 @@
                     <!-- Bubble AI -->
                     <div class="tp-bubble">
                         <div class="tp-bubble-av" aria-hidden="true">
-                            <svg width="14" height="14" viewBox="0 0 36 36" fill="none">
-                                <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
-                                    stroke-linecap="round" />
-                                <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
-                                <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round"
-                                    fill="none" />
-                                <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
+                            <svg width="14" height="14">
+                                <use href="#tp-bot-icon"></use>
                             </svg>
                         </div>
                         <div>
@@ -1079,17 +1095,8 @@
                     <div class="tp-thinking" id="tpThinking" style="display:none" aria-live="polite"
                         aria-label="Tutor a pensar">
                         <div class="tp-bubble-av" aria-hidden="true">
-                            <svg width="14" height="14" viewBox="0 0 36 36" fill="none">
-                                <line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5"
-                                    stroke-linecap="round" />
-                                <rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
-                                <rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee" />
-                                <path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round"
-                                    fill="none" />
-                                <rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee"
-                                    stroke-width="2" />
+                            <svg width="14" height="14">
+                                <use href="#tp-bot-icon"></use>
                             </svg>
                         </div>
                         <div class="tp-dots"><span></span><span></span><span></span></div>
@@ -1125,7 +1132,7 @@
                                 placeholder="Faz uma pergunta ou pede uma orientação..." maxlength="500" rows="1"
                                 aria-label="Escreve a tua mensagem" oninput="handleInput(this)"
                                 onkeydown="handleKey(event)"></textarea>
-                            <button class="tp-send-btn" id="tpSendBtn" onclick="sendMessage()"
+                            <button class="tp-send-btn" id="tpSendBtn"
                                 aria-label="Enviar mensagem">
                                 <i class="ti ti-send" aria-hidden="true"></i>
                             </button>
@@ -1139,153 +1146,7 @@
 
         </div>
     </div>
-
-    <script>
-        let msgCount = 4;
-
-        function openSidebar() {
-            document.getElementById('tpSidebar').classList.add('open');
-            document.getElementById('tpOverlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeSidebar() {
-            document.getElementById('tpSidebar').classList.remove('open');
-            document.getElementById('tpOverlay').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function selectConv(el, icon, title, sub) {
-            document.querySelectorAll('.tp-conv-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('tpTopIcon').textContent = icon;
-            document.getElementById('tpTopTitle').textContent = title;
-            document.getElementById('tpTopSub').textContent = sub;
-            closeSidebar();
-        }
-
-        function filterConvs(val) {
-            document.querySelectorAll('.tp-conv-item').forEach(item => {
-                const title = item.querySelector('.tp-conv-title').textContent.toLowerCase();
-                item.style.display = title.includes(val.toLowerCase()) ? '' : 'none';
-            });
-        }
-
-        function handleInput(el) {
-            el.style.height = 'auto';
-            el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-            const len = el.value.length;
-            const charEl = document.getElementById('tpChar');
-            charEl.style.display = len > 0 ? 'block' : 'none';
-            charEl.textContent = len + ' / 500';
-            charEl.className = 'tp-char' + (len >= 500 ? ' limit' : len >= 400 ? ' warn' : '');
-        }
-
-        function handleKey(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
-
-        function sendMessage() {
-            const inp = document.getElementById('tpInput');
-            const val = inp.value.trim();
-            if (!val) return;
-
-            addBubble(val, 'user');
-            inp.value = '';
-            inp.style.height = '';
-            document.getElementById('tpChar').style.display = 'none';
-
-            const thinking = document.getElementById('tpThinking');
-            thinking.style.display = 'flex';
-            inp.disabled = true;
-            scrollBottom();
-
-            setTimeout(() => {
-                thinking.style.display = 'none';
-                inp.disabled = false;
-                addBubble('Boa reflexão! Continua a pensar sobre isso — estás no caminho certo. Que parte ainda te gera dúvida?', 'ai');
-                msgCount += 2;
-                document.getElementById('tpMsgNum').textContent = msgCount;
-                scrollBottom();
-                inp.focus();
-            }, 1800);
-        }
-
-        function addBubble(text, role) {
-            const msgs = document.getElementById('tpMessages');
-            const thinking = document.getElementById('tpThinking');
-            const now = new Date();
-            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            const div = document.createElement('div');
-
-            if (role === 'user') {
-                div.className = 'tp-bubble tp-bubble--user';
-                div.innerHTML =
-                    '<div class="tp-user-av" aria-label="Tu">FC</div>' +
-                    '<div>' +
-                    '<div class="tp-bubble-content">' + escapeHtml(text) + '</div>' +
-                    '<span class="tp-bubble-time">' + time + '</span>' +
-                    '</div>';
-            } else {
-                div.className = 'tp-bubble';
-                div.innerHTML =
-                    '<div class="tp-bubble-av" aria-hidden="true">' + botSvg() + '</div>' +
-                    '<div>' +
-                    '<div class="tp-bubble-content">' + text + '</div>' +
-                    '<span class="tp-bubble-time">' + time + '</span>' +
-                    '</div>';
-            }
-
-            msgs.insertBefore(div, thinking);
-            scrollBottom();
-        }
-
-        function newConversation() {
-            const msgs = document.getElementById('tpMessages');
-            msgs.innerHTML =
-                '<div class="tp-date-sep">' +
-                '<div class="tp-date-line"></div>' +
-                '<span class="tp-date-txt">Hoje, 26 de junho</span>' +
-                '<div class="tp-date-line"></div>' +
-                '</div>' +
-                '<div class="tp-thinking" id="tpThinking" style="display:none">' +
-                '<div class="tp-bubble-av" aria-hidden="true">' + botSvg() + '</div>' +
-                '<div class="tp-dots"><span></span><span></span><span></span></div>' +
-                '<span class="tp-thinking-label">A pensar...</span>' +
-                '</div>';
-            document.getElementById('tpChips').style.display = 'flex';
-            document.getElementById('tpTopTitle').textContent = 'Nova conversa';
-            document.getElementById('tpTopSub').textContent = 'Começa agora';
-            document.getElementById('tpTopIcon').textContent = '✨';
-            document.getElementById('tpMsgNum').textContent = '0';
-            document.querySelectorAll('.tp-conv-item').forEach(i => i.classList.remove('active'));
-            msgCount = 0;
-            closeSidebar();
-        }
-
-        function scrollBottom() {
-            const msgs = document.getElementById('tpMessages');
-            msgs.scrollTop = msgs.scrollHeight;
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-
-        function botSvg() {
-            return '<svg width="14" height="14" viewBox="0 0 36 36" fill="none">' +
-                '<line x1="18" y1="1" x2="18" y2="6" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round"/>' +
-                '<rect x="6" y="6" width="24" height="16" rx="5" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>' +
-                '<rect x="10" y="11" width="5" height="4" rx="2" fill="#4361ee"/>' +
-                '<rect x="21" y="11" width="5" height="4" rx="2" fill="#4361ee"/>' +
-                '<path d="M12 19 Q18 22 24 19" stroke="#4361ee" stroke-width="2" stroke-linecap="round" fill="none"/>' +
-                '<rect x="10" y="23" width="16" height="10" rx="3" fill="#eef2ff" stroke="#4361ee" stroke-width="2"/>' +
-                '</svg>';
-        }
-    </script>
+        
 </body>
 
 </html>

@@ -41,6 +41,8 @@ export class TutorAiComponent {
   showLoading: boolean = false;
   retryVisible: boolean = false;
 
+  sidebarOpen: boolean = false;
+
   @ViewChild('tutorMessagesContainer')
   tutorMessagesContainer!: ElementRef;
 
@@ -293,6 +295,18 @@ export class TutorAiComponent {
       .join('')
       .toUpperCase()
       .substring(0, 2);
+  }
+
+  openSidebar(): void {
+    this.sidebarOpen = true;
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen = false;
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 
   private sendErrorNotification(message: string): void {

@@ -323,6 +323,10 @@
       gap: 8px;
     }
 
+    .options-grid--quiz-types {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
     .options-grid--topics {
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
@@ -2720,7 +2724,7 @@
             <span class="step-badge">1</span>
             <p class="step-description">Selecione o tipo de quiz que deseja criar.</p>
           </div>
-          <div class="options-grid">
+          <div class="options-grid options-grid--quiz-types">
             <div *ngFor="let type of quizTypes" (click)="quiz.type = type.value"
               [class.option-card--selected]="quiz.type === type.value" class="option-card">
               <h3>{{ type.label }}</h3>

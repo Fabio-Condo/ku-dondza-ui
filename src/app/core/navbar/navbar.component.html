@@ -7,7 +7,25 @@
   <title>Dikahub - Plataforma Acadêmica</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
+    html,
+    body,
+    div,
+    span,
+    header,
+    nav,
+    ul,
+    li,
+    a,
+    button,
+    img,
+    svg,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -93,8 +111,11 @@
     }
 
     .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       text-decoration: none;
-      color: #555;
+      color: #1e293b;
       font-size: 13.5px;
       font-weight: 500;
       padding: 6px 12px;
@@ -103,15 +124,31 @@
       white-space: nowrap;
     }
 
+    .nav-links a svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
     .nav-links a:hover {
       color: #4361ee;
       background: rgba(67, 97, 238, 0.07);
+    }
+
+    .nav-links a:hover svg {
+      opacity: 1;
     }
 
     .nav-links a.active {
       color: #4361ee;
       background: rgba(67, 97, 238, 0.1);
       font-weight: 600;
+    }
+
+    .nav-links a.active svg {
+      opacity: 1;
     }
 
     /* ── MAIS DROPDOWN ── */
@@ -526,16 +563,31 @@
     }
 
     .mobile-nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
       color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
       font-size: 22px;
       font-weight: 600;
       padding: 10px 16px;
       border-radius: 12px;
-      display: block;
       transition: all 0.2s;
       opacity: 0;
       transform: translateX(20px);
+    }
+
+    .mobile-nav-links a svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      opacity: 0.75;
+      transition: opacity 0.2s ease;
+    }
+
+    .mobile-nav-links a:hover svg,
+    .mobile-nav-links a.active svg {
+      opacity: 1;
     }
 
     .mobile-menu.active .mobile-nav-links li:nth-child(1) a {
@@ -663,13 +715,92 @@
 
         <!-- Nav links -->
         <ul class="nav-links">
-          <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel">Início</a></li>
-          <li><a [class.active]="isActive('/subjects')" routerLink="/subjects">Estudar</a></li>
-          <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes">Quizzes</a></li>
-          <li><a [class.active]="isActive('/tutor-ai')" routerLink="/tutor-ai">Tutor AI</a></li>
-          <li><a [class.active]="isActive('/exames')" routerLink="/exames">Exames</a></li>
-          <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()"
-              style="cursor: pointer;">Progresso</a></li>
+          <li>
+            <a [class.active]="isActive('/main-panel')" routerLink="/main-panel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M3 9.5 12 3l9 6.5" />
+                <path d="M5 10v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V10" />
+              </svg>
+              Início
+            </a>
+          </li>
+          <li>
+            <a [class.active]="isActive('/subjects')" routerLink="/subjects">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                <line x1="9" y1="9" x2="15" y2="9" />
+                <line x1="9" y1="13" x2="13" y2="13" />
+              </svg>
+              Estudar
+            </a>
+          </li>
+          <li>
+            <a [class.active]="isActive('/quizzes/new')" routerLink="/quizzes/new">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              Praticar
+            </a>
+          </li>
+          <li>
+            <a [class.active]="isActive('/tutor-ai')" routerLink="/tutor-ai">
+              <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Antena -->
+                <line x1="18" y1="2" x2="18" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <circle cx="18" cy="2" r="1.5" fill="currentColor" />
+                <!-- Cabeça -->
+                <rect x="6" y="7" width="24" height="16" rx="5" fill="currentColor" fill-opacity="0.22"
+                  stroke="currentColor" stroke-width="1.8" />
+                <!-- Olhos -->
+                <rect x="10" y="12" width="5" height="4" rx="2" fill="currentColor" />
+                <rect x="21" y="12" width="5" height="4" rx="2" fill="currentColor" />
+                <!-- Boca -->
+                <path d="M12 20 Q18 23 24 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                  fill="none" />
+                <!-- Corpo -->
+                <rect x="10" y="24" width="16" height="9" rx="3" fill="currentColor" fill-opacity="0.22"
+                  stroke="currentColor" stroke-width="1.8" />
+                <!-- Braços -->
+                <rect x="3" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22"
+                  stroke="currentColor" stroke-width="1.6" />
+                <rect x="28" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22"
+                  stroke="currentColor" stroke-width="1.6" />
+                <!-- Pernas -->
+                <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+                <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+              </svg>
+              Tutor AI
+            </a>
+          </li>
+          <!--
+          <li>
+            <a [class.active]="isActive('/exames')" routerLink="/exames">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z" />
+                <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" />
+                <path d="m9 14 2 2 4-4" />
+              </svg>
+              Exames
+            </a>
+          </li>
+          -->
+          <li>
+            <a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()" style="cursor: pointer;">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <rect x="4" y="10" width="3" height="10" rx="1.5" />
+                <rect x="10.5" y="6" width="3" height="14" rx="1.5" />
+                <rect x="17" y="13" width="3" height="7" rx="1.5" />
+              </svg>
+              Progresso
+            </a>
+          </li>
 
           <!-- ── MAIS BUTTON ── -->
           <li class="nav-more">
@@ -685,6 +816,15 @@
 
               <!-- Links gerais -->
               <div class="menu-section-label">Explorar</div>
+              <a [class.active]="isActive('/exames')" routerLink="/exames" (click)="isMoreMenuOpen = false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z" />
+                  <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" />
+                  <path d="m9 14 2 2 4-4" />
+                </svg>
+                Exames
+              </a>
               <a [class.active]="isActive('/questions')" routerLink="/questions" (click)="isMoreMenuOpen = false">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
@@ -716,8 +856,10 @@
                   Tópicos
                 </a>
                 <a [class.active]="isActive('/flash-cards')" routerLink="/flash-cards" (click)="isMoreMenuOpen = false">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 6h16M4 12h16M4 18h7" />
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="16" height="13" rx="2" />
+                    <path d="M6 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2" />
                   </svg>
                   Flash Cards
                 </a>
@@ -831,24 +973,122 @@
     <button class="close-btn" (click)="toggleMenu()">✕</button>
 
     <ul class="mobile-nav-links">
-      <li><a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">Início</a></li>
-      <li><a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">Estudar</a></li>
-      <li><a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">Exames</a></li>
-      <li><a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">Quizzes</a></li>
-      <li><a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel(); toggleMenu()">Progresso</a></li>
-      <li><a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">Exercícios</a></li>
-      <li><a routerLink="/challenges" (click)="toggleMenu()">Campeonatos</a></li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin">
-        <a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">Tópicos</a>
       <li>
-      <li *ngIf="isUserLoggedIn && isSuperAdmin">
-        <a [class.active]="isActive('/flash-cards')" routerLink="/flash-cards" (click)="toggleMenu()">Flash cards</a>
+        <a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M3 9.5 12 3l9 6.5" />
+            <path d="M5 10v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V10" />
+          </svg>
+          Início
+        </a>
+      </li>
+      <li>
+        <a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+          Estudar
+        </a>
+      </li>
+      <li>
+        <a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z" />
+            <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" />
+            <path d="m9 14 2 2 4-4" />
+          </svg>
+          Exames
+        </a>
+      </li>
+      <li>
+        <a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          Quizzes
+        </a>
+      </li>
+      <li>
+        <a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel(); toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+          </svg>
+          Progresso
+        </a>
+      </li>
+      <li>
+        <a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Exercícios
+        </a>
+      </li>
+      <li>
+        <a routerLink="/challenges" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+            <path d="M4 22h16" />
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+          </svg>
+          Campeonatos
+        </a>
       </li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
-        <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="toggleMenu()">Pagamentos</a>
+        <a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h7" />
+          </svg>
+          Tópicos
+        </a>
       </li>
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
-        <a [class.active]="isActive('/users')" routerLink="/users" (click)="toggleMenu()">Pessoas</a>
+        <a [class.active]="isActive('/flash-cards')" routerLink="/flash-cards" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="7" width="16" height="13" rx="2" />
+            <path d="M6 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2" />
+          </svg>
+          Flash cards
+        </a>
+      </li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin">
+        <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="5" rx="2" />
+            <path d="M2 10h20" />
+          </svg>
+          Pagamentos
+        </a>
+      </li>
+      <li *ngIf="isUserLoggedIn && isSuperAdmin">
+        <a [class.active]="isActive('/users')" routerLink="/users" (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          Pessoas
+        </a>
       </li>
     </ul>
 
