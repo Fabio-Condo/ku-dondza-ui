@@ -471,6 +471,67 @@
             display: block;
         }
 
+        /* ─── Progresso por tópico ─────────────────────────── */
+        .topic-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 7px;
+        }
+
+        .topic-progress-bar {
+            flex: 1;
+            max-width: 130px;
+            height: 5px;
+            background: #e3e7f8;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .topic-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a5b4fc, #4361ee);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        .topic-progress-fill.topic-progress-fill--done {
+            background: linear-gradient(90deg, #6ee7b7, #10b981);
+        }
+
+        .topic-progress-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4361ee;
+            white-space: nowrap;
+        }
+
+        .topic-progress-text.topic-progress-text--done {
+            color: #0f766e;
+        }
+
+        .topic-progress-check {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            flex-shrink: 0;
+        }
+
+        .topic-progress-check svg {
+            width: 8px;
+            height: 8px;
+            stroke: #16a34a;
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         .module-info {
             display: flex;
             align-items: center;
@@ -2080,6 +2141,7 @@
             .vidio-close-btn { top: 10px; right: 10px; font-size: 28px; }
             .action-btn-label { font-size: 11px; }
             .action-btn-sub { display: none; }
+            .topic-progress-bar { max-width: 90px; }
         }
 
         @media (max-width: 400px) {
@@ -2235,6 +2297,27 @@
                                             {{ getVideoCount(topic) }} vídeo{{ getVideoCount(topic) !== 1 ? 's' : '' }},
                                             {{ getFileCount(topic) }} ficheiro{{ getFileCount(topic) !== 1 ? 's' : '' }}
                                         </span>
+
+                                        <!-- Progresso do tópico: total concluído -->
+                                        <div class="topic-progress" *ngIf="isUserLoggedIn && getTopicTotalCount(topic) > 0">
+                                            <!--
+                                            <div class="topic-progress-bar">
+                                                <div class="topic-progress-fill"
+                                                    [class.topic-progress-fill--done]="getTopicProgressPercent(topic) === 100"
+                                                    [style.width.%]="getTopicProgressPercent(topic)"></div>
+                                            </div>
+                                            -->
+                                            <span class="topic-progress-text"
+                                                [class.topic-progress-text--done]="getTopicProgressPercent(topic) === 100">
+                                                {{ getTopicCompletedCount(topic) }}/{{ getTopicTotalCount(topic) }} concluído{{ getTopicTotalCount(topic) !== 1 ? 's' : '' }}
+                                            </span>
+                                            <span class="topic-progress-check" *ngIf="getTopicProgressPercent(topic) === 100">
+                                                <svg viewBox="0 0 24 24">
+                                                    <polyline points="20 6 9 17 4 12" />
+                                                </svg>
+                                            </span>
+                                        </div>
+
                                         <p class="lock-message"
                                             *ngIf="isPremiumTopic(topic) && isTopicExpanded(topic.id)">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

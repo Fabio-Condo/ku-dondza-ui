@@ -1014,6 +1014,22 @@ export class SubjectsViewComponent {
     return '';
   }
 
+  getTopicTotalCount(topic: any): number {
+    if (!topic || !topic.contents) return 0;
+    return topic.contents.length;
+  }
+
+  getTopicCompletedCount(topic: any): number {
+    if (!topic || !topic.contents) return 0;
+    return topic.contents.filter((c: any) => c.markedByUser).length;
+  }
+
+  getTopicProgressPercent(topic: any): number {
+    const total = this.getTopicTotalCount(topic);
+    if (total === 0) return 0;
+    return (this.getTopicCompletedCount(topic) / total) * 100;
+  }
+
   onOpenFlashCards(topic: Topic) {
   }
 
