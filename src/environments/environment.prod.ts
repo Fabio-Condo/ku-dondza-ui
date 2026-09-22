@@ -6,7 +6,9 @@ export const environment = {
   //apiUrl: 'http://192.168.11.96:8080',
 
   //apiUrl: 'http://192.168.11.45:8080',
-  apiUrl: 'http://72.60.37.196:80',
+  //apiUrl: 'http://72.60.37.196:80',
+  //appUrl: 'http://api.dikahubapp.com',
+  appUrl: 'https://api.dikahubapp.com',
   //apiUrl: 'http://api.dikahub.com',
   //apiUrl: 'https://api.dikahub.com',
   googleClientId: '170476897572-k758vjru9e2qqa707qhb5ns2kaaegquc.apps.googleusercontent.com'
