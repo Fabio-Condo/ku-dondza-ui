@@ -1,11 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Dikahub - Plataforma Acadêmica</title>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     html,
     body,
@@ -40,6 +46,7 @@
     }
 
     /* ── NAV ── */
+
     nav {
       height: 64px;
       display: flex;
@@ -66,6 +73,7 @@
     }
 
     /* ── LOGO ── */
+
     .logo {
       display: flex;
       align-items: center;
@@ -103,6 +111,7 @@
     }
 
     /* ── NAV LINKS ── */
+
     .nav-links {
       display: flex;
       align-items: center;
@@ -151,7 +160,40 @@
       opacity: 1;
     }
 
+    /* ── TUTOR AI DESATIVADO ── */
+
+    .nav-links a.tutor-disabled {
+      color: #94a3b8;
+      background: transparent;
+      cursor: not-allowed;
+      opacity: 0.65;
+      pointer-events: none;
+      position: relative;
+    }
+
+    .nav-links a.tutor-disabled svg {
+      opacity: 0.45;
+    }
+
+    .nav-links a.tutor-disabled:hover {
+      color: #94a3b8;
+      background: transparent;
+    }
+
+    .nav-links a.tutor-disabled .coming-soon {
+      font-size: 9px;
+      font-weight: 700;
+      color: #94a3b8;
+      background: #f1f5f9;
+      padding: 2px 5px;
+      border-radius: 4px;
+      line-height: 1;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
     /* ── MAIS DROPDOWN ── */
+
     .nav-more {
       position: relative;
       list-style: none;
@@ -265,7 +307,8 @@
       margin: 4px 0;
     }
 
-    /* ── PRATICAR BUTTON (desktop only) ── */
+    /* ── PRATICAR BUTTON ── */
+
     .btn-pratice {
       display: inline-flex;
       align-items: center;
@@ -346,6 +389,7 @@
     }
 
     /* ── RIGHT SECTION ── */
+
     .right-section {
       display: flex;
       align-items: center;
@@ -361,6 +405,7 @@
     }
 
     /* ── BUTTONS ── */
+
     .btn {
       font-size: 13.5px;
       font-weight: 600;
@@ -401,6 +446,7 @@
     }
 
     /* ── USER AVATAR ── */
+
     .user-icon {
       width: 34px;
       height: 34px;
@@ -424,6 +470,7 @@
     }
 
     /* ── DROPDOWN ── */
+
     .dropdown-container {
       position: relative;
     }
@@ -494,6 +541,7 @@
     }
 
     /* ── MOBILE TOGGLE ── */
+
     .mobile-toggle {
       display: none;
       background: rgba(67, 97, 238, 0.08);
@@ -514,6 +562,7 @@
     }
 
     /* ── MOBILE MENU ── */
+
     .mobile-menu {
       position: fixed;
       inset: 0;
@@ -633,6 +682,38 @@
       color: white;
     }
 
+    /* ── TUTOR AI MOBILE DESATIVADO ── */
+
+    .mobile-nav-links a.tutor-disabled {
+      color: rgba(255, 255, 255, 0.45);
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .mobile-nav-links a.tutor-disabled:hover,
+    .mobile-nav-links a.tutor-disabled.active {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .mobile-nav-links a.tutor-disabled svg {
+      opacity: 0.45;
+    }
+
+    .mobile-nav-links a.tutor-disabled .coming-soon {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.12);
+      padding: 4px 7px;
+      border-radius: 5px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
     .mobile-footer {
       margin-top: auto;
       display: flex;
@@ -694,419 +775,795 @@
       nav {
         padding: 0 10px;
       }
+
     }
   </style>
+
 </head>
 
 <body>
+
   <header>
+
+    ```
     <nav>
+
       <div class="container">
 
         <!-- Logo -->
+
         <div class="logo">
+
           <div class="logo-mark">
+
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
               <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+
             </svg>
+
           </div>
+
           <span class="logo-text">Dika<span>hub</span></span>
+
         </div>
 
         <!-- Nav links -->
+
         <ul class="nav-links">
+
           <li>
+
             <a [class.active]="isActive('/main-panel')" routerLink="/main-panel">
+
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round">
+
                 <path d="M3 9.5 12 3l9 6.5" />
+
                 <path d="M5 10v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V10" />
+
               </svg>
+
               Início
+
             </a>
+
           </li>
+
           <li>
+
             <a [class.active]="isActive('/subjects')" routerLink="/subjects">
+
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                 stroke-linejoin="round">
+
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+
                 <line x1="9" y1="9" x2="15" y2="9" />
+
                 <line x1="9" y1="13" x2="13" y2="13" />
+
               </svg>
+
               Estudar
+
             </a>
+
           </li>
+
           <li>
+
             <a [class.active]="isActive('/quizzes/new')" routerLink="/quizzes/new">
+
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round">
+
                 <circle cx="12" cy="12" r="10" />
+
                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4" />
+
                 <line x1="12" y1="17" x2="12.01" y2="17" />
+
               </svg>
+
               Praticar
+
             </a>
+
           </li>
+
+          <!-- Tutor AI desativado -->
+
           <li>
-            <a [class.active]="isActive('/tutor-ai')" routerLink="/tutor-ai">
+
+            <a class="tutor-disabled" aria-disabled="true" tabindex="-1" title="Tutor AI estará disponível em breve">
+
               <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+
                 <!-- Antena -->
+
                 <line x1="18" y1="2" x2="18" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+
                 <circle cx="18" cy="2" r="1.5" fill="currentColor" />
+
                 <!-- Cabeça -->
+
                 <rect x="6" y="7" width="24" height="16" rx="5" fill="currentColor" fill-opacity="0.22"
                   stroke="currentColor" stroke-width="1.8" />
+
                 <!-- Olhos -->
+
                 <rect x="10" y="12" width="5" height="4" rx="2" fill="currentColor" />
+
                 <rect x="21" y="12" width="5" height="4" rx="2" fill="currentColor" />
+
                 <!-- Boca -->
+
                 <path d="M12 20 Q18 23 24 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
                   fill="none" />
+
                 <!-- Corpo -->
+
                 <rect x="10" y="24" width="16" height="9" rx="3" fill="currentColor" fill-opacity="0.22"
                   stroke="currentColor" stroke-width="1.8" />
+
                 <!-- Braços -->
+
                 <rect x="3" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22"
                   stroke="currentColor" stroke-width="1.6" />
+
                 <rect x="28" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22"
                   stroke="currentColor" stroke-width="1.6" />
+
                 <!-- Pernas -->
+
                 <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+
                 <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+
               </svg>
-              Tutor AI
+
+              <span>Tutor AI</span>
+
+              <span class="coming-soon">Em breve</span>
+
             </a>
+
           </li>
-          <!--
+
           <li>
-            <a [class.active]="isActive('/exames')" routerLink="/exames">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z" />
-                <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" />
-                <path d="m9 14 2 2 4-4" />
-              </svg>
-              Exames
-            </a>
-          </li>
-          -->
-          <li>
+
             <a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel()" style="cursor: pointer;">
+
               <svg viewBox="0 0 24 24" fill="currentColor">
+
                 <rect x="4" y="10" width="3" height="10" rx="1.5" />
+
                 <rect x="10.5" y="6" width="3" height="14" rx="1.5" />
+
                 <rect x="17" y="13" width="3" height="7" rx="1.5" />
+
               </svg>
+
               Progresso
+
             </a>
+
           </li>
 
           <!-- ── MAIS BUTTON ── -->
+
           <li class="nav-more">
+
             <button class="nav-more-btn" [class.open]="isMoreMenuOpen" (click)="toggleMoreMenu()" type="button">
+
               Mais
+
               <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round" stroke-linejoin="round">
+
                 <polyline points="6 9 12 15 18 9"></polyline>
+
               </svg>
+
             </button>
 
             <div class="nav-more-menu" [class.open]="isMoreMenuOpen">
 
               <!-- Links gerais -->
+
               <div class="menu-section-label">Explorar</div>
+
               <a [class.active]="isActive('/exames')" routerLink="/exames" (click)="isMoreMenuOpen = false">
+
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round">
+
                   <path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z" />
+
                   <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" />
+
                   <path d="m9 14 2 2 4-4" />
+
                 </svg>
+
                 Exames
+
               </a>
 
               <a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="isMoreMenuOpen = false">
+
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round">
+
                   <circle cx="12" cy="12" r="10" />
+
                   <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4" />
+
                   <line x1="12" y1="17" x2="12.01" y2="17" />
+
                 </svg>
+
                 Quizzes
+
               </a>
 
               <a [class.active]="isActive('/questions')" routerLink="/questions" (click)="isMoreMenuOpen = false">
+
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                   <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+
                   <polyline points="14 2 14 8 20 8" />
+
                 </svg>
+
                 Exercícios
+
               </a>
 
               <a [class.active]="isActive('/challenges')" routerLink="/challenges" (click)="isMoreMenuOpen = false">
+
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                   <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+
                   <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+
                   <path d="M4 22h16" />
+
                   <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+
                   <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+
                   <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+
                 </svg>
+
                 Campeonatos
+
               </a>
 
-              <!-- Admin links (ngIf equivalents via *ngIf in Angular) -->
+              <!-- Admin links -->
+
               <ng-container *ngIf="isUserLoggedIn && isSuperAdmin">
+
                 <hr>
+
                 <div class="menu-section-label">Administração</div>
+
                 <a [class.active]="isActive('/topics')" routerLink="/topics" (click)="isMoreMenuOpen = false">
+
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                     <path d="M4 6h16M4 12h16M4 18h7" />
+
                   </svg>
+
                   Tópicos
+
                 </a>
+
                 <a [class.active]="isActive('/flash-cards')" routerLink="/flash-cards" (click)="isMoreMenuOpen = false">
+
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
+
                     <rect x="2" y="7" width="16" height="13" rx="2" />
+
                     <path d="M6 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2" />
+
                   </svg>
+
                   Flash Cards
+
                 </a>
+
                 <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="isMoreMenuOpen = false">
+
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                     <rect width="20" height="14" x="2" y="5" rx="2" />
+
                     <path d="M2 10h20" />
+
                   </svg>
+
                   Pagamentos
+
                 </a>
+
                 <a [class.active]="isActive('/users')" routerLink="/users" (click)="isMoreMenuOpen = false">
+
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+
                     <circle cx="9" cy="7" r="4" />
+
                     <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+
                   </svg>
+
                   Pessoas
+
                 </a>
+
               </ng-container>
 
             </div>
+
           </li>
-          <!-- ── FIM MAIS ── -->
+
         </ul>
 
         <!-- Right section -->
+
         <div class="right-section">
 
-          <!-- Praticar CTA (desktop only) -->
+          <!-- Praticar CTA -->
+
           <a (click)="onPratice()" class="btn-pratice">
+
             <span class="pratice-icon">
+
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                 stroke-linejoin="round">
+
                 <line x1="12" y1="5" x2="12" y2="19" />
+
                 <line x1="5" y1="12" x2="19" y2="12" />
+
               </svg>
+
             </span>
+
             <span class="pratice-text">Praticar</span>
+
           </a>
 
-          <!-- Auth buttons (logged out) -->
+          <!-- Auth buttons -->
+
           <div class="auth-buttons" *ngIf="!loggedUser">
+
             <a routerLink="/login" class="btn btn-outline">Login</a>
+
           </div>
 
           <div class="section-divider" *ngIf="isUserLoggedIn"></div>
 
-          <!-- User avatar (with photo) -->
+          <!-- User avatar -->
+
           <img *ngIf="!showNavButtons() && loggedUser && loggedUser.profileImageUrl" [src]="loggedUser.profileImageUrl"
             alt="Foto de perfil" class="user-icon" (click)="goToProfile()" />
 
-          <!-- User avatar (no photo) -->
           <div *ngIf="!showNavButtons() && loggedUser && !loggedUser.profileImageUrl" class="user-icon"
             (click)="goToProfile()">
+
             <i class="fas fa-user"></i>
+
           </div>
 
           <!-- Dropdown menu -->
+
           <div class="dropdown-container" *ngIf="isUserLoggedIn">
+
             <button class="dropdown-btn" (click)="toggleDropdown()">
+
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+
                 <circle cx="12" cy="5" r="2" />
+
                 <circle cx="12" cy="12" r="2" />
+
                 <circle cx="12" cy="19" r="2" />
+
               </svg>
+
             </button>
+
             <div class="dropdown" *ngIf="isDropdownOpen">
+
               <a (click)="goToProfile(); toggleDropdown()">
+
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+
                   <circle cx="12" cy="7" r="4" />
+
                 </svg>
+
                 Perfil
+
               </a>
+
               <a *ngIf="isUserLoggedIn" (click)="onGoToProgressPanel(); toggleDropdown()">
+
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                   <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+
                 </svg>
+
                 Progresso
+
               </a>
+
               <hr>
+
               <a class="danger" (click)="onLogOut(); toggleDropdown()">
+
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+
                   <polyline points="16 17 21 12 16 7" />
+
                   <line x1="21" y1="12" x2="9" y2="12" />
+
                 </svg>
+
                 Sair
+
               </a>
+
             </div>
+
           </div>
 
           <!-- Mobile toggle -->
+
           <button class="mobile-toggle" (click)="toggleMenu()">
+
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
               stroke-linecap="round">
+
               <line x1="3" y1="6" x2="21" y2="6" />
+
               <line x1="3" y1="12" x2="21" y2="12" />
+
               <line x1="3" y1="18" x2="21" y2="18" />
+
             </svg>
+
           </button>
 
         </div>
+
       </div>
+
     </nav>
+    ```
+
   </header>
 
   <!-- Mobile Menu -->
+
   <div class="mobile-menu" [class.active]="isMenuActive">
+
+    ```
     <button class="close-btn" (click)="toggleMenu()">✕</button>
 
     <ul class="mobile-nav-links">
+
       <li>
+
         <a [class.active]="isActive('/main-panel')" routerLink="/main-panel" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <path d="M3 9.5 12 3l9 6.5" />
+
             <path d="M5 10v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V10" />
+
           </svg>
+
           Início
+
         </a>
+
       </li>
+
       <li>
+
         <a [class.active]="isActive('/subjects')" routerLink="/subjects" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+
           </svg>
+
           Estudar
+
         </a>
+
       </li>
+
       <li>
+
         <a [class.active]="isActive('/exames')" routerLink="/exames" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z" />
+
             <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" />
+
             <path d="m9 14 2 2 4-4" />
+
           </svg>
+
           Exames
+
         </a>
+
       </li>
+
       <li>
+
         <a [class.active]="isActive('/quizzes')" routerLink="/quizzes" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <circle cx="12" cy="12" r="10" />
+
             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4" />
+
             <line x1="12" y1="17" x2="12.01" y2="17" />
+
           </svg>
+
           Quizzes
+
         </a>
+
       </li>
+
+      <!-- Tutor AI desativado no mobile -->
+
       <li>
+
+        <a class="tutor-disabled" aria-disabled="true" tabindex="-1" title="Tutor AI estará disponível em breve">
+
+          <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Antena -->
+
+            <line x1="18" y1="2" x2="18" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+
+            <circle cx="18" cy="2" r="1.5" fill="currentColor" />
+
+            <!-- Cabeça -->
+
+            <rect x="6" y="7" width="24" height="16" rx="5" fill="currentColor" fill-opacity="0.22"
+              stroke="currentColor" stroke-width="1.8" />
+
+            <!-- Olhos -->
+
+            <rect x="10" y="12" width="5" height="4" rx="2" fill="currentColor" />
+
+            <rect x="21" y="12" width="5" height="4" rx="2" fill="currentColor" />
+
+            <!-- Boca -->
+
+            <path d="M12 20 Q18 23 24 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" />
+
+            <!-- Corpo -->
+
+            <rect x="10" y="24" width="16" height="9" rx="3" fill="currentColor" fill-opacity="0.22"
+              stroke="currentColor" stroke-width="1.8" />
+
+            <!-- Braços -->
+
+            <rect x="3" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22"
+              stroke="currentColor" stroke-width="1.6" />
+
+            <rect x="28" y="25" width="5" height="7" rx="2.5" fill="currentColor" fill-opacity="0.22"
+              stroke="currentColor" stroke-width="1.6" />
+
+            <!-- Pernas -->
+
+            <rect x="12" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+
+            <rect x="20" y="33" width="4" height="2.5" rx="1.2" fill="currentColor" fill-opacity="0.7" />
+
+          </svg>
+
+          <span>Tutor AI</span>
+
+          <span class="coming-soon">Em breve</span>
+
+        </a>
+
+      </li>
+
+      <li>
+
         <a [class.active]="isActive('/progress')" (click)="onGoToProgressPanel(); toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+
             <polyline points="17 6 23 6 23 12" />
+
           </svg>
+
           Progresso
+
         </a>
+
       </li>
+
       <li>
+
         <a [class.active]="isActive('/questions')" routerLink="/questions" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+
             <polyline points="14 2 14 8 20 8" />
+
           </svg>
+
           Exercícios
+
         </a>
+
       </li>
+
       <li>
+
         <a routerLink="/challenges" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+
             <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+
             <path d="M4 22h16" />
+
             <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+
             <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+
             <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+
           </svg>
+
           Campeonatos
+
         </a>
+
       </li>
+
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
+
         <a [class.active]="isActive('/topics')" routerLink="/topics" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <path d="M4 6h16M4 12h16M4 18h7" />
+
           </svg>
+
           Tópicos
+
         </a>
+
       </li>
+
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
+
         <a [class.active]="isActive('/flash-cards')" routerLink="/flash-cards" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <rect x="2" y="7" width="16" height="13" rx="2" />
+
             <path d="M6 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2" />
+
           </svg>
+
           Flash cards
+
         </a>
+
       </li>
+
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
+
         <a [class.active]="isActive('/payments')" routerLink="/payments" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <rect width="20" height="14" x="2" y="5" rx="2" />
+
             <path d="M2 10h20" />
+
           </svg>
+
           Pagamentos
+
         </a>
+
       </li>
+
       <li *ngIf="isUserLoggedIn && isSuperAdmin">
+
         <a [class.active]="isActive('/users')" routerLink="/users" (click)="toggleMenu()">
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
+
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+
             <circle cx="9" cy="7" r="4" />
+
             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+
             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+
           </svg>
+
           Pessoas
+
         </a>
+
       </li>
+
     </ul>
 
     <div class="mobile-footer" *ngIf="!loggedUser">
+
       <a routerLink="/login" class="btn-white">Login</a>
+
       <a routerLink="/login" class="btn-ghost">Cadastre-se</a>
+
     </div>
+
+
   </div>
 
 </body>
